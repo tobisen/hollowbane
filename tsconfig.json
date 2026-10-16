@@ -10,7 +10,10 @@
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "types": ["node"]
+    "types": ["node", "vite/client"],
+    "paths": {
+      "phaser3": ["./src/phaser3.d.ts"]
+    }
   },
   "include": ["src", "tests", "*.ts"]
 }

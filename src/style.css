@@ -78,3 +78,35 @@ output {
     scroll-behavior: auto;
   }
 }
+.direction-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  padding: 24px 0;
+}
+.direction-gallery figure {
+  margin: 0;
+  background: radial-gradient(ellipse at center, #313a3c, #1b2226);
+  border: 1px solid #4c4d40;
+  padding: 24px 12px;
+  text-align: center;
+}
+.direction-gallery canvas {
+  width: 128px;
+  height: 128px;
+  margin: auto;
+}
+.direction-gallery figcaption {
+  font: 10px system-ui;
+  letter-spacing: 0.18em;
+  color: #b8ac8f;
+  margin-top: 16px;
+}
+.gallery-note {
+  font: 12px system-ui;
+}
+@media (max-width: 700px) {
+  .direction-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
