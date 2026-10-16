@@ -1,4 +1,5 @@
 import { expect, it, vi } from "vitest";
+import backlog from "../docs/backlog.json";
 interface RecordData {
   number: number;
   title?: string;
@@ -57,16 +58,16 @@ it("resumes an interrupted GitHub import and creates no duplicates on rerun", as
     await expect(import(modulePath)).rejects.toThrow("429");
     vi.resetModules();
     await import(modulePath);
-    expect(collections.issues).toHaveLength(231);
+    expect(collections.issues).toHaveLength(backlog.length);
     expect(collections.milestones).toHaveLength(36);
     expect(collections.labels).toHaveLength(52);
     vi.resetModules();
     await import(modulePath);
-    expect(collections.issues).toHaveLength(231);
+    expect(collections.issues).toHaveLength(backlog.length);
     expect(collections.milestones).toHaveLength(36);
     expect(new Set(collections.issues!.map((i) => i.title))).toHaveProperty(
       "size",
-      231,
+      backlog.length,
     );
   } finally {
     process.argv = argv;

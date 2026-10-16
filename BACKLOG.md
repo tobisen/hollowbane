@@ -235,3 +235,18 @@ Imported all 231 original requirements verbatim from [the source](docs/source/di
 | DBL-229 | 35           | p1       | Anonymous optional feedback workflow without third-party tracking by default.                                                                       |
 | DBL-230 | 35           | p1       | Post-release bugfix triage and balance telemetry via opt-in local export.                                                                           |
 | DBL-231 | 35           | p1       | Multiplayer feasibility ADR: server authoritative combat, persistence, anti-cheat, hosting budget; no implementation yet.                           |
+
+## Scoped G1 increments
+
+The 231 original requirements/IDs remain intact. Broad parents stay partial; these independently verified slices record only the approved visual prototype scope. No later combat/loot requirements are closed by G1 work.
+
+| ID      | Parent  | Delivered scope                                          |
+| ------- | ------- | -------------------------------------------------------- |
+| DBL-232 | DBL-015 | G1 foot-anchor sorting and readable tall-prop occlusion  |
+| DBL-233 | DBL-018 | G1 baked atmosphere and selective runtime lighting       |
+| DBL-234 | DBL-019 | G1 scene asset packaging and bounded render cost         |
+| DBL-235 | DBL-023 | G1 eight-direction idle/walk atlas export                |
+| DBL-236 | DBL-028 | G1 click and keyboard exploration without combat intents |
+| DBL-237 | DBL-029 | G1 static-obstacle A-star with precise grid joins        |
+| DBL-238 | DBL-031 | G1 retarget and focus-loss locomotion policy             |
+| DBL-239 | DBL-034 | G1 reachable-ground cursor and destination feedback      |

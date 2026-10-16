@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-16T22:11:17.064Z",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "browser": "156.0.8078.4",
+    "rendererMode": "Explicit SwiftShader software WebGL; adaptive balanced detail",
+    "browserName": "chromium",
+    "workload": "Continuous keyboard traversal; decorative effects active",
+    "server": "local production preview"
+  },
+  "seconds": 60,
+  "samples": 2504,
+  "medianFps": 59.88023952094243,
+  "p95FrameMs": 33.400000000001455,
+  "p99FrameMs": 33.400000000001455,
+  "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "metrics": {
+    "engine": "4.2.1",
+    "renderer": "WebGL",
+    "samples": 2936,
+    "fps": 40.98994404170894,
+    "p95FrameMs": 25.01000000000058,
+    "readyMs": 1750,
+    "heapBytes": 14300000,
+    "drawCalls": 12
+  },
+  "renderState": {
+    "x": 961.0193359837558,
+    "y": 337.0825976146196,
+    "direction": 6,
+    "walking": true,
+    "frame": 55,
+    "zoom": 1.25,
+    "tick": 4157,
+    "routeLength": 0,
+    "destination": null,
+    "occluded": 0,
+    "decorationPaused": false,
+    "inputFeedbackMs": 8.799999997019768,
+    "inputSamples": 70,
+    "renderWidth": 960,
+    "renderHeight": 540,
+    "balancedDetail": true,
+    "view": {
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 864
+    }
+  },
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "resources": [
+    {
+      "name": "index-4gfa-zXb.css",
+      "bytes": 739
+    },
+    {
+      "name": "index-DhtnbkgF.js",
+      "bytes": 1332
+    },
+    {
+      "name": "prototype-DG_0UU6l.css",
+      "bytes": 1180
+    },
+    {
+      "name": "prototype-BBs7ctAH.js",
+      "bytes": 5963
+    },
+    {
+      "name": "phaser.esm-xoYOsKJC.js",
+      "bytes": 371536
+    },
+    {
+      "name": "diagnostics-DRNQRLnB.js",
+      "bytes": 708
+    },
+    {
+      "name": "cloister.webp",
+      "bytes": 631876
+    },
+    {
+      "name": "props.webp",
+      "bytes": 608438
+    },
+    {
+      "name": "wanderer.webp",
+      "bytes": 511732
+    }
+  ],
+  "inputFeedback": {
+    "samples": 12,
+    "p95Ms": 35.099999994039536
+  },
+  "errors": []
+}

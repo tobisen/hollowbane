@@ -159,10 +159,10 @@
     "phase": 2,
     "priority": "p0",
     "dependencies": ["DBL-014"],
-    "status": "completed",
+    "status": "partial",
     "body": "## Purpose\nLager och sorteringsregler för sprites, byggnader, broar och överskymning.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 02; P0. Target roadmap phase 02; source phase metadata retained.\n\n## Dependencies\nDBL-014\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Lager och sorteringsregler för sprites, byggnader, broar och överskymning.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-015; no known critical regression.\n",
     "targetPhase": 2,
-    "evidence": "Foot-anchor depth order, stable ties and occlusion predicates verified by unit tests; renderer integration follows."
+    "evidence": "Foot-anchor depth order, stable ties and occlusion predicates verified by unit tests; renderer integration follows. G1 scope delivered; broader original source requirements are deferred and this parent is not fully closed. Completed G1 slice tracked separately as DBL-232."
   },
   {
     "id": "DBL-016",
@@ -173,7 +173,7 @@
     "status": "completed",
     "body": "## Purpose\nKamera följning, zoom, clamp, resolution scaling, ultrawide.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 02; P0. Target roadmap phase 02; source phase metadata retained.\n\n## Dependencies\nDBL-014\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Kamera följning, zoom, clamp, resolution scaling, ultrawide.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-016; no known critical regression.\n",
     "targetPhase": 2,
-    "evidence": "Zoom clamps and frame-rate-independent camera smoothing unit-verified; scene integration in the prototype increment."
+    "evidence": "Smooth follow, bounded zoom, wide/tall coverage and quality-switch coordinate invariance pass unit/E2E checks."
   },
   {
     "id": "DBL-017",
@@ -192,10 +192,10 @@
     "phase": 2,
     "priority": "p0",
     "dependencies": ["DBL-015"],
-    "status": "completed",
+    "status": "partial",
     "body": "## Purpose\nLjus/normal maps, skuggor, dimma, glow, particles spike.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 02; P0. Target roadmap phase 02; source phase metadata retained.\n\n## Dependencies\nDBL-015\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Ljus/normal maps, skuggor, dimma, glow, particles spike.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-018; no known critical regression.\n",
     "targetPhase": 2,
-    "evidence": "Reusable radial mist/lantern effect textures and additive glow adapter typecheck/lint pass; scene integration and screenshot review follow in DBL-026."
+    "evidence": "Reusable radial mist/lantern effect textures and additive glow adapter typecheck/lint pass; scene integration and screenshot review follow in DBL-026. G1 scope delivered; broader original source requirements are deferred and this parent is not fully closed. Completed G1 slice tracked separately as DBL-233."
   },
   {
     "id": "DBL-019",
@@ -203,10 +203,10 @@
     "phase": 2,
     "priority": "p0",
     "dependencies": ["DBL-018"],
-    "status": "completed",
+    "status": "partial",
     "body": "## Purpose\nGPU texture atlas/batch-pipeline, inkrementell inladdning, renderer diagnostics.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 02; P0. Target roadmap phase 02; source phase metadata retained.\n\n## Dependencies\nDBL-018\n\n## Acceptance criteria\n- Deliver the independently reviewable result: GPU texture atlas/batch-pipeline, inkrementell inladdning, renderer diagnostics.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-019; no known critical regression.\n",
     "targetPhase": 2,
-    "evidence": "Reproducible WebP packaging, versioned metadata and lazy scene loading foundation; source assets preserved. Production build passes."
+    "evidence": "Reproducible WebP packaging, versioned metadata and lazy scene loading foundation; source assets preserved. Production build passes. G1 scope delivered; broader original source requirements are deferred and this parent is not fully closed. Completed G1 slice tracked separately as DBL-234."
   },
   {
     "id": "DBL-020",
@@ -217,7 +217,7 @@
     "status": "completed",
     "body": "## Purpose\nScreenshot regression av projektion, occlusion och skuggor.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 02; P0. Target roadmap phase 02; source phase metadata retained.\n\n## Dependencies\nDBL-015, DBL-016, DBL-018, DBL-019\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Screenshot regression av projektion, occlusion och skuggor.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-020; no known critical regression.\n",
     "targetPhase": 2,
-    "evidence": "Twenty projection/front-back reference cases and existing screenshot regressions pass; prototype screenshot added with scene integration."
+    "evidence": "Twenty projection/occlusion references plus initial/behind-prop/gallery screenshots and retained G0 visual regression pass."
   },
   {
     "id": "DBL-021",
@@ -247,10 +247,10 @@
     "phase": 3,
     "priority": "p0",
     "dependencies": ["DBL-021", "DBL-022"],
-    "status": "completed",
+    "status": "partial",
     "body": "## Purpose\nSprite exporters för 8 riktningar, pivots, skalor, normal maps, shadows.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 03; P0. Target roadmap phase 03; source phase metadata retained.\n\n## Dependencies\nDBL-021, DBL-022\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Sprite exporters för 8 riktningar, pivots, skalor, normal maps, shadows.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-023; no known critical regression.\n",
     "targetPhase": 3,
-    "evidence": "Reproducible alpha-trimmed 8-direction idle/walk exporter and four-prop atlas; 64 normalized foot pivots verified. Combat actions/normal maps are explicitly deferred beyond locomotion prototype."
+    "evidence": "Reproducible alpha-trimmed 8-direction idle/walk exporter and four-prop atlas; 64 normalized foot pivots verified. Combat actions/normal maps are explicitly deferred beyond locomotion prototype. G1 scope delivered; broader original source requirements are deferred and this parent is not fully closed. Completed G1 slice tracked separately as DBL-235."
   },
   {
     "id": "DBL-024",
@@ -301,10 +301,10 @@
     "phase": 4,
     "priority": "p0",
     "dependencies": ["DBL-017", "DBL-026"],
-    "status": "completed",
+    "status": "partial",
     "body": "## Purpose\nClick to move med semantik för attack/interact/loot och högre handlingsprioritet.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 04; P0. Target roadmap phase 05; source phase metadata retained.\n\n## Dependencies\nDBL-017, DBL-026\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Click to move med semantik för attack/interact/loot och högre handlingsprioritet.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-028; no known critical regression.\n",
     "targetPhase": 5,
-    "evidence": "Fixed-tick click/WASD traversal with target feedback, eight-direction animation and obstacle-aware routes; 36 unit and 8 E2E checks pass."
+    "evidence": "Fixed-tick click/WASD traversal with target feedback, eight-direction animation and obstacle-aware routes; 36 unit and 8 E2E checks pass. Completed G1 slice tracked separately as DBL-236."
   },
   {
     "id": "DBL-029",
@@ -312,10 +312,10 @@
     "phase": 4,
     "priority": "p0",
     "dependencies": ["DBL-028"],
-    "status": "completed",
+    "status": "partial",
     "body": "## Purpose\nPrecise pathfinding, diagonal distance, dynamic obstacle replan.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 04; P0. Target roadmap phase 05; source phase metadata retained.\n\n## Dependencies\nDBL-028\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Precise pathfinding, diagonal distance, dynamic obstacle replan.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-029; no known critical regression.\n",
     "targetPhase": 5,
-    "evidence": "Deterministic diagonal-cost A* prevents corner cutting and validates the fractional start-to-grid join; obstacle route tests pass. Dynamic replanning for moving enemies remains outside G1."
+    "evidence": "Deterministic diagonal-cost A* prevents corner cutting and validates the fractional start-to-grid join; obstacle route tests pass. Dynamic replanning for moving enemies remains outside G1. G1 scope delivered; broader original source requirements are deferred and this parent is not fully closed. Completed G1 slice tracked separately as DBL-237."
   },
   {
     "id": "DBL-030",
@@ -333,10 +333,10 @@
     "phase": 4,
     "priority": "p0",
     "dependencies": ["DBL-028", "DBL-029"],
-    "status": "completed",
+    "status": "partial",
     "body": "## Purpose\nRetarget, interrupt, queue och input buffering enligt definierade regler.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 04; P0. Target roadmap phase 05; source phase metadata retained.\n\n## Dependencies\nDBL-028, DBL-029\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Retarget, interrupt, queue och input buffering enligt definierade regler.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-031; no known critical regression.\n",
     "targetPhase": 5,
-    "evidence": "Immediate click retarget, keyboard override and focus-loss traversal cleanup verified in deterministic/browser scenarios; no attack queues in G1."
+    "evidence": "Immediate click retarget, keyboard override and focus-loss traversal cleanup verified in deterministic/browser scenarios; no attack queues in G1. Completed G1 slice tracked separately as DBL-238."
   },
   {
     "id": "DBL-032",
@@ -365,10 +365,10 @@
     "phase": 4,
     "priority": "p0",
     "dependencies": ["DBL-028"],
-    "status": "completed",
+    "status": "partial",
     "body": "## Purpose\nHover, selection, cursor feedback, interactable highlighting.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 04; P0. Target roadmap phase 05; source phase metadata retained.\n\n## Dependencies\nDBL-028\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Hover, selection, cursor feedback, interactable highlighting.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-034; no known critical regression.\n",
     "targetPhase": 5,
-    "evidence": "Reachable-ground cursor, destination marker, blocked-ground status and keyboard-focus policy verified; loot/interaction cursor states deferred with gameplay."
+    "evidence": "Reachable-ground cursor, destination marker, blocked-ground status and keyboard-focus policy verified; loot/interaction cursor states deferred with gameplay. Completed G1 slice tracked separately as DBL-239."
   },
   {
     "id": "DBL-035",
@@ -376,9 +376,10 @@
     "phase": 4,
     "priority": "p0",
     "dependencies": ["DBL-029", "DBL-031", "DBL-032", "DBL-034"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nInput latency och rörelsekänsla testscenarier.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 04; P0. Target roadmap phase 05; source phase metadata retained.\n\n## Dependencies\nDBL-029, DBL-031, DBL-032, DBL-034\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Input latency och rörelsekänsla testscenarier.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-035; no known critical regression.\n",
-    "targetPhase": 5
+    "targetPhase": 5,
+    "evidence": "Input/performance scenario tools completed: continuous-movement 60-second Chromium sample, 10-second warmup; median 59.9 FPS, p95 frame 33.4 ms, input p95 35.1 ms. Tail-frame/full-detail budgets remain open, not falsely accepted."
   },
   {
     "id": "DBL-036",
@@ -2339,5 +2340,101 @@
     "status": "planned",
     "body": "## Purpose\nMultiplayer feasibility ADR: server authoritative combat, persistence, anti-cheat, hosting budget; no implementation yet.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 35; P1. Target roadmap phase 35; source phase metadata retained.\n\n## Dependencies\nDBL-230\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Multiplayer feasibility ADR: server authoritative combat, persistence, anti-cheat, hosting budget; no implementation yet.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-231; no known critical regression.\n",
     "targetPhase": 35
+  },
+  {
+    "id": "DBL-232",
+    "title": "G1 foot-anchor sorting and readable tall-prop occlusion",
+    "phase": 2,
+    "targetPhase": 2,
+    "priority": "p0",
+    "parent": "DBL-015",
+    "dependencies": ["DBL-014"],
+    "status": "completed",
+    "body": "## Purpose\nG1 foot-anchor sorting and readable tall-prop occlusion\n\n## Scope\nA focused G1 slice of DBL-015.\n\n## Non-goals\nBroader parent requirements, combat, loot and later phase gameplay.\n\n## Phase and priority\nSource phase 02; target phase 02; P0. Authorized delivery: Phase 1 visual prototype.\n\n## Dependencies\nDBL-014\n\n## Acceptance criteria\nStable foot-depth ordering with deterministic tie-breaks; player can walk behind/in front of authored props; occluding prop fades for readability.\n\n## Test requirements\nsrc/world/depth.ts; twenty reference cases and behind-cenotaph screenshot/E2E; typecheck, lint, unit tests, relevant E2E, format, asset/backlog validation and production build.\n\n## Assets and licensing\nOriginal G1 reference kit; sources and built-in generation prompts retained in assets/source and docs/art/prompts.md.\n\n## Definition of done\nImplemented, independently verified, evidence inspected, docs/status updated, committed. G1 visual approval remains a separate user gate.\n",
+    "evidence": "src/world/depth.ts; twenty reference cases and behind-cenotaph screenshot/E2E"
+  },
+  {
+    "id": "DBL-233",
+    "title": "G1 baked atmosphere and selective runtime lighting",
+    "phase": 2,
+    "targetPhase": 2,
+    "priority": "p0",
+    "parent": "DBL-018",
+    "dependencies": ["DBL-232"],
+    "status": "completed",
+    "body": "## Purpose\nG1 baked atmosphere and selective runtime lighting\n\n## Scope\nA focused G1 slice of DBL-018.\n\n## Non-goals\nBroader parent requirements, combat, loot and later phase gameplay.\n\n## Phase and priority\nSource phase 02; target phase 02; P0. Authorized delivery: Phase 1 visual prototype.\n\n## Dependencies\nDBL-232\n\n## Acceptance criteria\nDetailed baked environment/prop light, dynamic actor point light, contact shadows, additive lantern glow and reduced-motion-aware mist; no production normal maps or physical cast shadows.\n\n## Test requirements\nsrc/rendering/atmosphere.ts and prototype.ts; inspected scene screenshots; typecheck, lint, unit tests, relevant E2E, format, asset/backlog validation and production build.\n\n## Assets and licensing\nOriginal G1 reference kit; sources and built-in generation prompts retained in assets/source and docs/art/prompts.md.\n\n## Definition of done\nImplemented, independently verified, evidence inspected, docs/status updated, committed. G1 visual approval remains a separate user gate.\n",
+    "evidence": "src/rendering/atmosphere.ts and prototype.ts; inspected scene screenshots"
+  },
+  {
+    "id": "DBL-234",
+    "title": "G1 scene asset packaging and bounded render cost",
+    "phase": 2,
+    "targetPhase": 2,
+    "priority": "p0",
+    "parent": "DBL-019",
+    "dependencies": ["DBL-233"],
+    "status": "completed",
+    "body": "## Purpose\nG1 scene asset packaging and bounded render cost\n\n## Scope\nA focused G1 slice of DBL-019.\n\n## Non-goals\nBroader parent requirements, combat, loot and later phase gameplay.\n\n## Phase and priority\nSource phase 02; target phase 02; P0. Authorized delivery: Phase 1 visual prototype.\n\n## Dependencies\nDBL-233\n\n## Acceptance criteria\nVersioned WebP packaging, scene-scoped loading, two GPU atlases, diagnostics and full/balanced detail with stable input/camera composition; no general region streaming.\n\n## Test requirements\nscripts/package-assets.mjs; render-size/camera tests; 60-second workload artifact; typecheck, lint, unit tests, relevant E2E, format, asset/backlog validation and production build.\n\n## Assets and licensing\nOriginal G1 reference kit; sources and built-in generation prompts retained in assets/source and docs/art/prompts.md.\n\n## Definition of done\nImplemented, independently verified, evidence inspected, docs/status updated, committed. G1 visual approval remains a separate user gate.\n",
+    "evidence": "scripts/package-assets.mjs; render-size/camera tests; 60-second workload artifact"
+  },
+  {
+    "id": "DBL-235",
+    "title": "G1 eight-direction idle/walk atlas export",
+    "phase": 3,
+    "targetPhase": 3,
+    "priority": "p0",
+    "parent": "DBL-023",
+    "dependencies": ["DBL-021", "DBL-022"],
+    "status": "completed",
+    "body": "## Purpose\nG1 eight-direction idle/walk atlas export\n\n## Scope\nA focused G1 slice of DBL-023.\n\n## Non-goals\nBroader parent requirements, combat, loot and later phase gameplay.\n\n## Phase and priority\nSource phase 03; target phase 03; P0. Authorized delivery: Phase 1 visual prototype.\n\n## Dependencies\nDBL-021, DBL-022\n\n## Acceptance criteria\nNormalize 64 alpha-trimmed idle/walk cells into 128px atlas frames with exact feet at (64,112); export four 512px props; retain sources and prompts. Normal-map/full-action export remains in parent.\n\n## Test requirements\nscripts/export-sprites.mjs; byte-identical regeneration and asset validator; typecheck, lint, unit tests, relevant E2E, format, asset/backlog validation and production build.\n\n## Assets and licensing\nOriginal G1 reference kit; sources and built-in generation prompts retained in assets/source and docs/art/prompts.md.\n\n## Definition of done\nImplemented, independently verified, evidence inspected, docs/status updated, committed. G1 visual approval remains a separate user gate.\n",
+    "evidence": "scripts/export-sprites.mjs; byte-identical regeneration and asset validator"
+  },
+  {
+    "id": "DBL-236",
+    "title": "G1 click and keyboard exploration without combat intents",
+    "phase": 4,
+    "targetPhase": 5,
+    "priority": "p0",
+    "parent": "DBL-028",
+    "dependencies": ["DBL-017", "DBL-026", "DBL-235"],
+    "status": "completed",
+    "body": "## Purpose\nG1 click and keyboard exploration without combat intents\n\n## Scope\nA focused G1 slice of DBL-028.\n\n## Non-goals\nBroader parent requirements, combat, loot and later phase gameplay.\n\n## Phase and priority\nSource phase 04; target phase 05; P0. Authorized delivery: Phase 1 visual prototype.\n\n## Dependencies\nDBL-017, DBL-026, DBL-235\n\n## Acceptance criteria\nClick a reachable point to walk deterministically; WASD/arrows override route; blocked ground is rejected. Attack/loot/NPC interaction intents remain in parent.\n\n## Test requirements\nsrc/simulation/locomotion.ts and prototype.ts; deterministic movement/E2E; typecheck, lint, unit tests, relevant E2E, format, asset/backlog validation and production build.\n\n## Assets and licensing\nOriginal G1 reference kit; sources and built-in generation prompts retained in assets/source and docs/art/prompts.md.\n\n## Definition of done\nImplemented, independently verified, evidence inspected, docs/status updated, committed. G1 visual approval remains a separate user gate.\n",
+    "evidence": "src/simulation/locomotion.ts and prototype.ts; deterministic movement/E2E"
+  },
+  {
+    "id": "DBL-237",
+    "title": "G1 static-obstacle A-star with precise grid joins",
+    "phase": 4,
+    "targetPhase": 5,
+    "priority": "p0",
+    "parent": "DBL-029",
+    "dependencies": ["DBL-236"],
+    "status": "completed",
+    "body": "## Purpose\nG1 static-obstacle A-star with precise grid joins\n\n## Scope\nA focused G1 slice of DBL-029.\n\n## Non-goals\nBroader parent requirements, combat, loot and later phase gameplay.\n\n## Phase and priority\nSource phase 04; target phase 05; P0. Authorized delivery: Phase 1 visual prototype.\n\n## Dependencies\nDBL-236\n\n## Acceptance criteria\nDeterministic diagonal-cost paths avoid corner cutting and validate the continuous start join; authored static obstacle routes complete. Moving-obstacle replanning remains in parent.\n\n## Test requirements\nsrc/world/navigation.ts; fractional join and obstacle route unit tests/E2E; typecheck, lint, unit tests, relevant E2E, format, asset/backlog validation and production build.\n\n## Assets and licensing\nOriginal G1 reference kit; sources and built-in generation prompts retained in assets/source and docs/art/prompts.md.\n\n## Definition of done\nImplemented, independently verified, evidence inspected, docs/status updated, committed. G1 visual approval remains a separate user gate.\n",
+    "evidence": "src/world/navigation.ts; fractional join and obstacle route unit tests/E2E"
+  },
+  {
+    "id": "DBL-238",
+    "title": "G1 retarget and focus-loss locomotion policy",
+    "phase": 4,
+    "targetPhase": 5,
+    "priority": "p0",
+    "parent": "DBL-031",
+    "dependencies": ["DBL-236", "DBL-237"],
+    "status": "completed",
+    "body": "## Purpose\nG1 retarget and focus-loss locomotion policy\n\n## Scope\nA focused G1 slice of DBL-031.\n\n## Non-goals\nBroader parent requirements, combat, loot and later phase gameplay.\n\n## Phase and priority\nSource phase 04; target phase 05; P0. Authorized delivery: Phase 1 visual prototype.\n\n## Dependencies\nDBL-236, DBL-237\n\n## Acceptance criteria\nNew click replaces previous route; keyboard input takes priority; focus loss clears held keys/route; no stale action buffering. Combat interruption/queues remain in parent.\n\n## Test requirements\nretarget unit test and focus-loss/browser traversal regression; typecheck, lint, unit tests, relevant E2E, format, asset/backlog validation and production build.\n\n## Assets and licensing\nOriginal G1 reference kit; sources and built-in generation prompts retained in assets/source and docs/art/prompts.md.\n\n## Definition of done\nImplemented, independently verified, evidence inspected, docs/status updated, committed. G1 visual approval remains a separate user gate.\n",
+    "evidence": "retarget unit test and focus-loss/browser traversal regression"
+  },
+  {
+    "id": "DBL-239",
+    "title": "G1 reachable-ground cursor and destination feedback",
+    "phase": 4,
+    "targetPhase": 5,
+    "priority": "p0",
+    "parent": "DBL-034",
+    "dependencies": ["DBL-236"],
+    "status": "completed",
+    "body": "## Purpose\nG1 reachable-ground cursor and destination feedback\n\n## Scope\nA focused G1 slice of DBL-034.\n\n## Non-goals\nBroader parent requirements, combat, loot and later phase gameplay.\n\n## Phase and priority\nSource phase 04; target phase 05; P0. Authorized delivery: Phase 1 visual prototype.\n\n## Dependencies\nDBL-236\n\n## Acceptance criteria\nReachable ground shows crosshair and destination marker; blocked ground shows default cursor and accessible status; UI focus prevents keyboard motion. Interactable-specific highlighting remains in parent.\n\n## Test requirements\nprototype cursor/status adapter and E2E blocked-ground/focus assertions; typecheck, lint, unit tests, relevant E2E, format, asset/backlog validation and production build.\n\n## Assets and licensing\nOriginal G1 reference kit; sources and built-in generation prompts retained in assets/source and docs/art/prompts.md.\n\n## Definition of done\nImplemented, independently verified, evidence inspected, docs/status updated, committed. G1 visual approval remains a separate user gate.\n",
+    "evidence": "prototype cursor/status adapter and E2E blocked-ground/focus assertions"
   }
 ]

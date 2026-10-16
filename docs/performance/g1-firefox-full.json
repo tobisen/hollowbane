@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-16T22:01:22.160Z",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "browser": "157.0",
+    "rendererMode": "Firefox default GPU backend; see recorded GPU identity",
+    "browserName": "firefox",
+    "server": "local production preview"
+  },
+  "seconds": 60,
+  "samples": 2286,
+  "medianFps": 30.469226081657798,
+  "p95FrameMs": 34.099999999998545,
+  "p99FrameMs": 34.55999999999949,
+  "gpu": "Apple M1, or similar",
+  "metrics": {
+    "engine": "4.2.1",
+    "renderer": "WebGL",
+    "samples": 2683,
+    "fps": 39.65014994788493,
+    "p95FrameMs": 28.331999999999244,
+    "readyMs": 342,
+    "heapBytes": null,
+    "drawCalls": 13
+  },
+  "renderState": {
+    "x": 780,
+    "y": 500,
+    "direction": 0,
+    "walking": false,
+    "frame": 1,
+    "zoom": 1.25,
+    "tick": 4158,
+    "routeLength": 0,
+    "destination": null,
+    "occluded": 0,
+    "decorationPaused": false,
+    "inputFeedbackMs": null,
+    "inputSamples": 0,
+    "renderWidth": 1920,
+    "renderHeight": 1080,
+    "balancedDetail": false,
+    "view": {
+      "x": 0,
+      "y": 68,
+      "width": 1536,
+      "height": 864
+    }
+  },
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "resources": [
+    {
+      "name": "index-IuebgzkD.js",
+      "bytes": 1331
+    },
+    {
+      "name": "index-4gfa-zXb.css",
+      "bytes": 739
+    },
+    {
+      "name": "favicon.ico",
+      "bytes": 120
+    },
+    {
+      "name": "prototype-DG_0UU6l.css",
+      "bytes": 1180
+    },
+    {
+      "name": "diagnostics-DRNQRLnB.js",
+      "bytes": 708
+    },
+    {
+      "name": "prototype-D3v6I0pV.js",
+      "bytes": 5772
+    },
+    {
+      "name": "phaser.esm-xoYOsKJC.js",
+      "bytes": 371536
+    },
+    {
+      "name": "cloister.webp",
+      "bytes": 631876
+    },
+    {
+      "name": "wanderer.webp",
+      "bytes": 511732
+    },
+    {
+      "name": "props.webp",
+      "bytes": 608438
+    }
+  ],
+  "inputFeedback": {
+    "samples": 12,
+    "p95Ms": 33
+  },
+  "errors": []
+}

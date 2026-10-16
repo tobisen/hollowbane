@@ -1,4 +1,5 @@
 import sharp from "sharp";
+import { format } from "prettier";
 import { writeFile } from "node:fs/promises";
 const frames = [];
 async function boundedFrame(source, region, size, height) {
@@ -103,26 +104,29 @@ await sharp({
   .toFile("public/assets/props.webp");
 await writeFile(
   "public/assets/sprites.json",
-  JSON.stringify(
-    {
-      version: 1,
-      hero: {
-        columns: 8,
-        rows: 8,
-        cell: 128,
-        frames,
-        pivot: { x: 64, y: 112 },
+  await format(
+    JSON.stringify(
+      {
+        version: 1,
+        hero: {
+          columns: 8,
+          rows: 8,
+          cell: 128,
+          frames,
+          pivot: { x: 64, y: 112 },
+        },
+        props: {
+          columns: 2,
+          rows: 2,
+          cell: 512,
+          pivot: { x: 256, y: 496 },
+          names: ["cenotaph", "tree", "sarcophagus", "lantern"],
+        },
       },
-      props: {
-        columns: 2,
-        rows: 2,
-        cell: 512,
-        pivot: { x: 256, y: 496 },
-        names: ["cenotaph", "tree", "sarcophagus", "lantern"],
-      },
-    },
-    null,
-    2,
-  ) + "\n",
+      null,
+      2,
+    ),
+    { parser: "json" },
+  ),
 );
 console.log("Exported 64 normalized character frames and 4 anchored props.");

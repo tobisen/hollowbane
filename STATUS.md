@@ -1,28 +1,15 @@
 # Status
 
-- G0: approved by user; complete. Phaser 4.2.1 preserved.
-- Phase 1 – Visual Prototype: authorized through G1; implementation in progress. No combat or loot.
-- Published foundation: https://tobisen.github.io/hollowbane/ . c2b51cc passed CI and hosted verification; approved documentation 4e63a8e publication in progress.
-- Completed foundation: DBL-001–013. See docs/g0-verification.md.
-- Current issue: DBL-035 performance and input response
-- Dependency policy: original sequential backlog dependencies were explicitly provisional. Refine only visual prototype tasks to their actual prerequisites; defer unrelated audio, combat and stamina systems.
-- Visual plan: original abandoned gothic cloister, wet basalt, bronze lanterns, cold mist; small reference asset kit for G1 review, no mass content production.
-- GitHub CLI: Homebrew install/auth investigation in progress; do not block visual work.
-- Gate: stop for G1 visual/playability approval. No automatic continuation beyond this prototype.
-- Latest increment: DBL-015 — Foot-anchor depth order, stable ties and occlusion predicates verified by unit tests; renderer integration follows.
-- Latest increment: DBL-016 — Zoom clamps and frame-rate-independent camera smoothing unit-verified; scene integration in the prototype increment.
-- Latest increment: DBL-017 — Independent polygon/ellipse collision representation and deterministic obstacle-aware route tests pass.
-- Latest increment: DBL-018 — Reusable radial mist/lantern effect textures and additive glow adapter typecheck/lint pass; scene integration and screenshot review follow in DBL-026.
-- Latest increment: DBL-019 — Reproducible WebP packaging, versioned metadata and lazy scene loading foundation; source assets preserved. Production build passes.
-- Latest increment: DBL-020 — Twenty projection/front-back reference cases and existing screenshot regressions pass; prototype screenshot added with scene integration.
-- Latest increment: DBL-021 — Cohesive Veiled Cloister art direction, original prompt set and small reference kit inspected; G1 approval remains pending.
-- Latest increment: DBL-022 — Retained three generated source images with rights/provenance records; six asset records validate.
-- Latest increment: DBL-023 — Reproducible alpha-trimmed 8-direction idle/walk exporter and four-prop atlas; 64 normalized foot pivots verified. Combat actions/normal maps are explicitly deferred beyond locomotion prototype.
-- Latest increment: DBL-024 — Validators check 64 nonempty character cells, four props, alpha edges, exact dimensions, foot anchors, source/provenance and runtime budgets.
-- Latest increment: DBL-025 — Eight-direction browser animation gallery with play/pause, foot-pivot markers and reviewed screenshot baseline passes E2E.
-- Latest increment: DBL-026 — Detailed original cloister scene, four depth-sorted props, layered lighting/mist/shadows, bounded smooth camera and reviewed visual baseline. Movement integration follows DBL-028.
-- Latest increment: DBL-028 — Fixed-tick click/WASD traversal with target feedback, eight-direction animation and obstacle-aware routes; 36 unit and 8 E2E checks pass.
-- Latest increment: DBL-029 — Deterministic diagonal-cost A* prevents corner cutting and validates the fractional start-to-grid join; obstacle route tests pass. Dynamic replanning for moving enemies remains outside G1.
-- Latest increment: DBL-031 — Immediate click retarget, keyboard override and focus-loss traversal cleanup verified in deterministic/browser scenarios; no attack queues in G1.
-- Latest increment: DBL-032 — All eight rendered facing rows and idle/walk transitions match fixed-tick locomotion; alpha-normalized foot pivots and atelier screenshot verified.
-- Latest increment: DBL-034 — Reachable-ground cursor, destination marker, blocked-ground status and keyboard-focus policy verified; loot/interaction cursor states deferred with gameplay.
+- G0: approved and complete. Documentation 4e63a8e pushed as explicitly authorized. Phaser 4.2.1 preserved.
+- Current scope: Phase 1 – Visual Prototype candidate prepared; **STOPPED at G1 for user visual/playability review**. No later gameplay authorized.
+- Completed this phase: DBL-014, DBL-016–017, DBL-020–022, DBL-024–026, DBL-032, DBL-035 and scoped DBL-232–239. Foundation DBL-001–013 remains complete.
+- Partial parents: DBL-015/018/019/023/028/029/031/034 retain broader bridge, material/shadow, streaming, export and dynamic-obstacle and later interaction/action scope. Their G1 components are delivered; do not close the full original requirements. Audio 027, stamina 030 and crowd steering 033 deferred.
+- Candidate: original Veiled Cloister, eight-direction idle/walk, click/WASD navigation, foot sorting/occlusion, smooth camera/zoom, lighting/shadows/mist, atlas tools and animation atelier. No combat/loot/progression.
+- Review: docs/g1-review.md; screenshots: docs/review; prompts/provenance: docs/art/prompts.md; runtime assets: public/assets.
+- Checks: npm run check, format:check, 40 unit tests, 10 Chromium E2E tests, Firefox 157/WebKit 27.2 smoke checks and reproducible asset export pass. Screenshots inspected.
+- Final 1920×1080 Apple M4 Chromium SwiftShader balanced workload: 60 seconds after 10-second warmup, continuous movement/effects; 59.9 FPS median, 33.4 ms p95, input p95 35.1 ms, 14.3 MB JS heap, 12 submissions, 1.75 s local readiness, zero exceptions. Raw evidence: docs/performance.
+- Performance limits: p95 frame budget remains above 20 ms; full-detail Firefox reference ~30.5 FPS / 34.1 ms p95. Automatic balanced fallback and manual detail choice are implemented. No full performance/native-browser certification claimed.
+- Remote state: main/Pages remains the G0 foundation plus approved documentation. Documentation run 38969123901 failed its browser step; local harness fix 590711c passed repeated checks but cannot be remotely verified yet. Auto-review rejected publishing new commits because push approval named G0 commits; new Phase 1 commits are local and await push approval.
+- GitHub CLI: installed through Homebrew. `gh auth status` reports no logged-in GitHub hosts. No API token available; idempotent importer dry-run/recovery tests pass, but live 239-record import (231 original plus eight G1 slices) remains blocked and was not attempted.
+- Head checkpoint: `git log -1`; local history records independently verified increments.
+- Next: request G1 review and approval to publish local commits for CI/Pages verification. Do not begin another phase automatically.

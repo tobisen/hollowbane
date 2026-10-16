@@ -1,12 +1,13 @@
 import Phaser from "phaser";
 import { createDiagnostics, instrumentDrawCalls } from "./diagnostics";
 import { createAtmosphereTextures, addLanternGlow } from "./atmosphere";
-import { clampZoom, followAlpha } from "../world/camera";
+import { clampZoom, followAlpha, minimumZoom } from "../world/camera";
 import { footDepth, isOccluding } from "../world/depth";
 import { canWalk, fromGround, onGround } from "../world/navigation";
 import { moveTick, retarget, type Walker } from "../simulation/locomotion";
 import { CLOISTER_NAV, CLOISTER_PROPS, LANTERNS } from "../content/cloister";
 import type { Point } from "../world/isometric";
+import { renderSize, shouldBalanceDetail } from "../world/render-size";
 export interface PrototypeState {
   x: number;
   y: number;
@@ -19,6 +20,11 @@ export interface PrototypeState {
   destination: Point | null;
   occluded: number;
   decorationPaused: boolean;
+  inputFeedbackMs: number | null;
+  inputSamples: number;
+  renderWidth: number;
+  renderHeight: number;
+  balancedDetail: boolean;
   view: { x: number; y: number; width: number; height: number };
 }
 declare global {
@@ -29,7 +35,7 @@ declare global {
 export function startPrototype(): Phaser.Game {
   const root = document.querySelector("main")!;
   root.className = "prototype";
-  root.innerHTML = `<div id="world" role="application" aria-label="The Veiled Cloister. Click to walk, WASD or arrow keys to move, scroll to zoom." tabindex="0"></div><div class="vignette" aria-hidden="true"></div><header class="world-header"><div class="world-brand"><span class="sigil" aria-hidden="true">H</span><div><span class="world-wordmark">HOLLOWBANE</span><span class="world-tagline">A WORLD BENEATH THE ASH</span></div></div><div class="chapter-mark"><span>CHAPTER ZERO</span><span>THE VEILED CLOISTER</span></div><a class="atelier-link" href="?gallery=1">Art atelier <span aria-hidden="true">↗</span></a></header><aside class="location-card"><span class="eyebrow">THE OLD SANCTUARY</span><h1>The Veiled Cloister</h1><p>Only the lanterns remember.</p><span class="location-rule"></span><span class="region-status">EXPLORATION PROTOTYPE · G1 REVIEW</span></aside><div class="world-controls"><button id="zoom-out" aria-label="Zoom out">−</button><button id="zoom-in" aria-label="Zoom in">+</button><button id="world-motion" aria-pressed="false">Still the mist</button><button id="reset-view">Return to gate</button></div><div class="travel-hint">CLICK TO WALK <span>·</span> WASD / ARROWS <span>·</span> SCROLL TO ZOOM</div><output id="world-metrics" aria-live="off">Entering the cloister…</output><div id="world-status" role="status" class="sr-only"></div>`;
+  root.innerHTML = `<div id="world" role="application" aria-label="The Veiled Cloister. Click to walk, WASD or arrow keys to move, scroll to zoom." tabindex="0"></div><div class="vignette" aria-hidden="true"></div><header class="world-header"><div class="world-brand"><span class="sigil" aria-hidden="true">H</span><div><span class="world-wordmark">HOLLOWBANE</span><span class="world-tagline">A WORLD BENEATH THE ASH</span></div></div><div class="chapter-mark"><span>CHAPTER ZERO</span><span>THE VEILED CLOISTER</span></div><a class="atelier-link" href="?gallery=1">Art atelier <span aria-hidden="true">↗</span></a></header><aside class="location-card"><span class="eyebrow">THE OLD SANCTUARY</span><h1>The Veiled Cloister</h1><p>Only the lanterns remember.</p><span class="location-rule"></span><span class="region-status">EXPLORATION PROTOTYPE · G1 REVIEW</span></aside><div class="world-controls"><button id="zoom-out" aria-label="Zoom out">−</button><button id="zoom-in" aria-label="Zoom in">+</button><button id="world-motion" aria-pressed="false">Still the mist</button><button id="world-detail">Full detail</button><button id="reset-view">Return to gate</button></div><div class="travel-hint">CLICK TO WALK <span>·</span> WASD / ARROWS <span>·</span> SCROLL TO ZOOM</div><output id="world-metrics" aria-live="off">Entering the cloister…</output><div id="world-status" role="status" class="sr-only"></div>`;
   document.title = "Hollowbane · The Veiled Cloister";
   const query = new URLSearchParams(location.search);
   class Cloister extends Phaser.Scene {
@@ -56,6 +62,15 @@ export function startPrototype(): Phaser.Game {
     private paused = matchMedia("(prefers-reduced-motion: reduce)").matches;
     private desiredZoom = 1.12;
     private loaded = false;
+    private inputAt: number | null = null;
+    private lastInputMs: number | null = null;
+    private inputSamples = 0;
+    private resolutionRatio = 1;
+    private balancedDetail = false;
+    private manualDetail = query.get("quality") === "full";
+    private presentationAt = 0;
+    private presentationStart = 0;
+    private presentationFrames: number[] = [];
     preload(): void {
       const base = import.meta.env.BASE_URL + "assets/";
       this.load.image("cloister", base + "cloister.webp");
@@ -68,7 +83,35 @@ export function startPrototype(): Phaser.Game {
         frameHeight: 512,
       });
     }
+    private syncResolution = (): void => {
+      const size = renderSize(
+        { x: window.innerWidth, y: window.innerHeight },
+        this.balancedDetail,
+      );
+      const previousRatio = this.resolutionRatio;
+      this.resolutionRatio = size.ratio;
+      this.scale.resize(size.x, size.y);
+      if (this.cameras?.main)
+        this.cameras.main.setZoom(
+          (this.cameras.main.zoom * this.resolutionRatio) / previousRatio,
+        );
+    };
     create(): void {
+      if (this.game.renderer.type === Phaser.WEBGL) {
+        const gl = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)
+          .gl;
+        const debug = gl.getExtension("WEBGL_debug_renderer_info");
+        const name = debug
+          ? String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL))
+          : "";
+        this.balancedDetail = /swiftshader|llvmpipe|software/i.test(name);
+      } else this.balancedDetail = true;
+      if (query.get("quality") === "full") this.balancedDetail = false;
+      this.syncResolution();
+      window.addEventListener("resize", this.syncResolution);
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () =>
+        window.removeEventListener("resize", this.syncResolution),
+      );
       this.add.image(0, 0, "cloister").setOrigin(0).setDepth(-1000);
       createAtmosphereTextures(this);
       for (const config of CLOISTER_PROPS) {
@@ -105,7 +148,7 @@ export function startPrototype(): Phaser.Game {
       if (this.game.renderer.type === Phaser.WEBGL) {
         this.lights.enable().setAmbientColor(0xc0ccd3);
         this.actor.setLighting(true);
-        for (const p of this.props) p.image.setLighting(true);
+        // Static props retain their painted light; only the moving actor needs dynamic shading.
         for (const l of LANTERNS)
           this.lights.addLight(l.x, l.y, l.radius, 0xffb267, 1.1);
         this.lights.addLight(780, 470, 110, 0x9ebed8, 0.3);
@@ -122,13 +165,32 @@ export function startPrototype(): Phaser.Game {
         );
       this.cameras.main
         .setBounds(0, 0, 1536, 1024)
-        .setZoom(this.desiredZoom)
+        .setZoom(this.desiredZoom * this.resolutionRatio)
         .centerOn(780, 500);
       this.keys = this.input.keyboard!.addKeys(
         "W,A,S,D,UP,DOWN,LEFT,RIGHT",
       ) as Record<string, Phaser.Input.Keyboard.Key>;
       this.input.keyboard!.addCapture(["UP", "DOWN", "LEFT", "RIGHT", "SPACE"]);
       const world = document.querySelector<HTMLElement>("#world")!;
+      world.addEventListener("pointerdown", () => {
+        this.inputAt = performance.now();
+      });
+      world.addEventListener("keydown", (event) => {
+        if (
+          !event.repeat &&
+          [
+            "w",
+            "a",
+            "s",
+            "d",
+            "arrowup",
+            "arrowdown",
+            "arrowleft",
+            "arrowright",
+          ].includes(event.key.toLowerCase())
+        )
+          this.inputAt = performance.now();
+      });
       this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
         if (pointer.button !== 0) return;
         world.focus({ preventScroll: true });
@@ -155,14 +217,23 @@ export function startPrototype(): Phaser.Game {
       this.input.on(
         "wheel",
         (_p: unknown, _o: unknown, _dx: number, dy: number) => {
-          this.desiredZoom = clampZoom(this.desiredZoom - dy * 0.001);
+          this.desiredZoom = clampZoom(this.desiredZoom - dy * 0.001, {
+            x: this.scale.width,
+            y: this.scale.height,
+          });
         },
       );
       document.querySelector<HTMLButtonElement>("#zoom-in")!.onclick = () => {
-        this.desiredZoom = clampZoom(this.desiredZoom + 0.12);
+        this.desiredZoom = clampZoom(this.desiredZoom + 0.12, {
+          x: window.innerWidth,
+          y: window.innerHeight,
+        });
       };
       document.querySelector<HTMLButtonElement>("#zoom-out")!.onclick = () => {
-        this.desiredZoom = clampZoom(this.desiredZoom - 0.12);
+        this.desiredZoom = clampZoom(this.desiredZoom - 0.12, {
+          x: window.innerWidth,
+          y: window.innerHeight,
+        });
       };
       const motion =
         document.querySelector<HTMLButtonElement>("#world-motion")!;
@@ -174,6 +245,20 @@ export function startPrototype(): Phaser.Game {
       motion.onclick = () => {
         this.paused = !this.paused;
         syncMotion();
+      };
+      const detail =
+        document.querySelector<HTMLButtonElement>("#world-detail")!;
+      const syncDetail = () => {
+        detail.textContent = this.balancedDetail
+          ? "Full detail"
+          : "Balanced detail";
+      };
+      syncDetail();
+      detail.onclick = () => {
+        this.manualDetail = true;
+        this.balancedDetail = !this.balancedDetail;
+        this.syncResolution();
+        syncDetail();
       };
       document.querySelector<HTMLButtonElement>("#reset-view")!.onclick =
         () => {
@@ -227,7 +312,7 @@ export function startPrototype(): Phaser.Game {
         direction: this.walker.direction,
         walking: this.walker.walking,
         frame: Number(this.actor.frame.name),
-        zoom: this.cameras.main.zoom,
+        zoom: this.cameras.main.zoom / this.resolutionRatio,
         tick: this.walker.tick,
         routeLength: this.walker.route.length,
         destination: this.walker.route.length
@@ -235,6 +320,11 @@ export function startPrototype(): Phaser.Game {
           : null,
         occluded,
         decorationPaused: this.paused,
+        inputFeedbackMs: this.lastInputMs,
+        inputSamples: this.inputSamples,
+        renderWidth: this.scale.width,
+        renderHeight: this.scale.height,
+        balancedDetail: this.balancedDetail,
         view: {
           x: this.cameras.main.worldView.x,
           y: this.cameras.main.worldView.y,
@@ -245,6 +335,28 @@ export function startPrototype(): Phaser.Game {
     }
     update(_time: number, delta: number): void {
       if (!this.loaded) return;
+      const presented = performance.now();
+      if (this.presentationAt) {
+        this.presentationFrames.push(presented - this.presentationAt);
+        if (this.presentationFrames.length > 180)
+          this.presentationFrames.shift();
+      } else this.presentationStart = presented;
+      this.presentationAt = presented;
+      if (
+        !this.balancedDetail &&
+        this.game.loop.frame % 60 === 0 &&
+        shouldBalanceDetail(
+          this.presentationFrames,
+          presented - this.presentationStart,
+          this.manualDetail,
+        )
+      ) {
+        this.balancedDetail = true;
+        this.syncResolution();
+        document.querySelector<HTMLButtonElement>(
+          "#world-detail",
+        )!.textContent = "Full detail";
+      }
       const dt = Math.min(delta, 100);
       this.accumulator += dt;
       while (this.accumulator >= 1000 / 60) {
@@ -254,6 +366,11 @@ export function startPrototype(): Phaser.Game {
           this.keyboardVector(),
         );
         this.accumulator -= 1000 / 60;
+      }
+      if (this.walker.walking && this.inputAt !== null) {
+        this.lastInputMs = performance.now() - this.inputAt;
+        this.inputSamples++;
+        this.inputAt = null;
       }
       const p = onGround(this.walker.position);
       this.actor.setPosition(p.x, p.y).setDepth(footDepth(p.y, 500));
@@ -278,7 +395,14 @@ export function startPrototype(): Phaser.Game {
       }
       const camera = this.cameras.main,
         alpha = followAlpha(dt);
-      camera.setZoom(camera.zoom + (this.desiredZoom - camera.zoom) * alpha);
+      const viewport = { x: window.innerWidth, y: window.innerHeight };
+      this.desiredZoom = clampZoom(this.desiredZoom, viewport);
+      if (camera.zoom < minimumZoom(viewport) * this.resolutionRatio)
+        camera.setZoom(minimumZoom(viewport) * this.resolutionRatio);
+      camera.setZoom(
+        camera.zoom +
+          (this.desiredZoom * this.resolutionRatio - camera.zoom) * alpha,
+      );
       // Centered smoothing is clamped by Phaser's authored world bounds.
       const cx = camera.scrollX + camera.width / 2,
         cy = camera.scrollY + camera.height / 2;
@@ -308,9 +432,16 @@ export function startPrototype(): Phaser.Game {
     height: window.innerHeight,
     backgroundColor: "#0a1015",
     scene: Cloister,
-    scale: { mode: Phaser.Scale.RESIZE, autoCenter: Phaser.Scale.CENTER_BOTH },
+    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
     banner: false,
-    render: { antialias: true, roundPixels: false },
+    render: {
+      antialias: true,
+      antialiasGL: false,
+      stencil: false,
+      maxLights: 5,
+      selfShadow: false,
+      roundPixels: false,
+    },
     input: { mouse: { preventDefaultWheel: true } },
   });
 }

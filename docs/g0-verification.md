@@ -31,3 +31,5 @@ DBL-010 is complete based on actual hosted verification. G0 technical publicatio
 ## Post-approval CI follow-up
 
 The approved documentation push (4e63a8e, run 38969123901) passed static/unit/build checks but failed its browser step. Full logs/artifacts require API authentication unavailable locally. The browser harness now explicitly selects software WebGL, runs one worker to avoid concurrent GPU pressure, and emits GitHub test annotations. Twelve repeated local browser checks passed without changing screenshot tolerances or baselines. A new remote run must verify this harness change; the exact original failure is not claimed diagnosed.
+
+G0 was explicitly approved by the user, and documentation commit 4e63a8e was published as authorized. Phase 1 – Visual Prototype was authorized through G1 only. G0 is complete; the later documentation CI failure and local harness fix are recorded above, with remote re-verification pending publication approval.

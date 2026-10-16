@@ -180,8 +180,18 @@ test("player sorts behind and in front of a tall prop with readable occlusion", 
     .toBe(0);
 });
 
-test("focus loss clears traversal", async ({ page }) => {
+test("wide viewport zoom remains inside the world and focus loss clears traversal", async ({
+  page,
+}) => {
   await ready(page);
+  await page.setViewportSize({ width: 1920, height: 800 });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.view.width))
+    .toBeLessThan(1537);
+  await page.getByRole("button", { name: "Zoom out" }).click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.zoom))
+    .toBeGreaterThanOrEqual(1.25);
   await clickGround(page, 900, 510);
   await expect
     .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
@@ -193,4 +203,38 @@ test("focus loss clears traversal", async ({ page }) => {
   await expect
     .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
     .toBe(false);
+});
+
+test("detail mode preserves world composition and input alignment", async ({
+  page,
+}) => {
+  await ready(page);
+  const before = await page.evaluate(
+    () => window.hollowbanePrototype!.view.width,
+  );
+  await page.getByRole("button", { name: "Full detail", exact: true }).click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.balancedDetail))
+    .toBe(false);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.renderWidth))
+    .toBe(1280);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        (width) => Math.abs(window.hollowbanePrototype!.view.width - width),
+        before,
+      ),
+    )
+    .toBeLessThan(2);
+  await page
+    .getByRole("button", { name: "Balanced detail", exact: true })
+    .click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.renderWidth))
+    .toBe(960);
+  await clickGround(page, 850, 510);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
 });
