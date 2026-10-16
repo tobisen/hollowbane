@@ -27,3 +27,7 @@ These brief sequential browser samples are smoke evidence, not a controlled engi
 ## Gate state
 
 DBL-010 is complete based on actual hosted verification. G0 technical publication is verified. Stop for user review/approval before further phase implementation. Cross-browser support, long-duration hardware benchmarking and production visual approval remain future validation work.
+
+## Post-approval CI follow-up
+
+The approved documentation push (4e63a8e, run 38969123901) passed static/unit/build checks but failed its browser step. Full logs/artifacts require API authentication unavailable locally. The browser harness now explicitly selects software WebGL, runs one worker to avoid concurrent GPU pressure, and emits GitHub test annotations. Twelve repeated local browser checks passed without changing screenshot tolerances or baselines. A new remote run must verify this harness change; the exact original failure is not claimed diagnosed.
