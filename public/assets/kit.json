@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "projection": "2:1",
+  "environment": {
+    "width": 1536,
+    "height": 1024,
+    "path": "assets/cloister.webp"
+  },
+  "source": "Original built-in imagegen reference kit; see docs/art/prompts.md"
+}
