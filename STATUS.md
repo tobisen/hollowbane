@@ -1,12 +1,14 @@
 # Status
 
-- Current scope: initialization / source phases 00–01; stop at G0.
-- Last approved gate: none. G0 and engine ADR approval remain pending.
-- Completed: DBL-001–009, DBL-011–013. Design completion means specifications, not implemented gameplay.
-- DBL-010: CI/Pages configured; local base-path checks pass; remote run and hosted verification pending.
-- GitHub issue import blocker: no gh CLI or GITHUB_TOKEN/GH_TOKEN. Idempotent importer dry-run and mocked recovery/rerun pass; 231 records and 36 milestones ready.
-- SSH origin access verified. Push/publication was rejected by automatic approval review because main could trigger public CI/Pages before G0 approval; no push occurred. Publication requires user approval.
-- Last checks: typecheck/lint/format, 4 unit tests, assets/backlog, production build, 4 Chromium E2E checks pass; both screenshots inspected. npm audit: zero vulnerabilities.
-- Remaining limits: first Linux CI baseline unverified; Firefox/Safari and long reference-hardware benchmarks deferred. No production art, combat, persistence or movement.
-- Head checkpoint: use `git log -1`; engine ADR: docs/adr/0001-engine.md.
-- Next issue: DBL-010 remote verification; then stop for G0 approval before further implementation.
+- Current scope: G0 publication/verification complete; stopped. No Phase 1 implementation authorized or begun in this session.
+- Approval: user explicitly authorized publishing c2b51cc and predecessors. Further phase implementation requires fresh approval.
+- Completed: DBL-001–013, including DBL-010 hosted CI/Pages verification. Design completion means specifications, not implemented gameplay.
+- Selected engine: Phaser 4.2.1; Phaser 3.90.0 retained for G0 comparison. See docs/adr/0001-engine.md.
+- Published: https://tobisen.github.io/hollowbane/ . Source foundation: c2b51cc.
+- CI: https://github.com/tobisen/hollowbane/actions/runs/38968458568 — verify and deploy succeeded, including Linux screenshot regression.
+- Hosted checks: HTTP 200; both engines render in WebGL; reduced-motion/pause/resume pass; zero page exceptions or failed requests; screenshot visually inspected. Evidence: docs/g0-verification.md.
+- Local checks: typecheck/lint/format, 4 unit tests, assets/backlog validation, production build and 4 Chromium E2E checks pass. Tracked files reviewed; no credentials, secrets or unintended artifacts found.
+- GitHub backlog import blocker: `gh auth status` returns command not found; no gh binary in standard locations, no ~/.config/gh/hosts.yml, no GITHUB_TOKEN/GH_TOKEN. SSH push access does not provide API issue authentication. Script preserved, dry-run and mocked interrupted/repeated import pass; no remote issues created by this session.
+- Remaining validation: Firefox/Safari and long reference-hardware benchmarks deferred. No production art, combat, persistence or movement.
+- Head checkpoint: `git log -1` (local DBL-010 evidence commit). Auto-review rejected pushing this follow-up because publication approval explicitly covered c2b51cc and predecessors; evidence commit awaits separate push approval. Deployed main remains c2b51cc.
+- Next: request approval before further phase work. Do not automatically remove comparison engine or begin another issue.

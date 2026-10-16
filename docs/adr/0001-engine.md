@@ -1,6 +1,6 @@
 # ADR 0001 — Phaser 4 behind a renderer adapter
 
-Date: 2026-10-16. Status: proposed for G0 approval; implementation uses 4.2.1 by default.
+Date: 2026-10-16. Status: Phaser 4.2.1 selected for the published G0 candidate; further phase approval pending.
 
 ## Context
 
@@ -12,7 +12,7 @@ Both bundled engines run the same seeded 12×12 courtyard with 50 images, two po
 
 ## Decision
 
-Prefer Phaser 4.2.1 for the supported current renderer and long-term maintenance. Keep 3.90.0 as an evaluation-only dev dependency until G0 approval. Retain a pure TypeScript simulation and explicit version-specific rendering calls. No engine advantage in measured speed is claimed from this small, short software/CI-compatible test. FPS, p95, readiness, optional GL calls and browser-supported heap are diagnostic samples, not reference-hardware certification.
+Prefer Phaser 4.2.1 for the supported current renderer and long-term maintenance. Keep 3.90.0 as an evaluation-only dev dependency through G0 review; removal is deferred until further work is approved. Retain a pure TypeScript simulation and explicit version-specific rendering calls. No engine advantage in measured speed is claimed from this small, short software/CI-compatible test. FPS, p95, readiness, optional GL calls and browser-supported heap are diagnostic samples, not reference-hardware certification.
 
 ## Consequences and risks
 

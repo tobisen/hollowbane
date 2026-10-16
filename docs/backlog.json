@@ -104,10 +104,10 @@
     "phase": 1,
     "priority": "p0",
     "dependencies": ["DBL-009"],
-    "status": "blocked",
+    "status": "completed",
     "body": "## Purpose\nGithub Actions: typecheck/lint/unit/E2E/build och Pages preview/deploy.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 01; P0. Target roadmap phase 00; source phase metadata retained.\n\n## Dependencies\nDBL-009\n\n## Acceptance criteria\n- GitHub Actions checks typecheck/lint/unit/format/validators/E2E/build before main deployment.\n- Deploy Pages artifact with /hollowbane/ base and verify actual hosted URL; blocked until authenticated access.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-010; no known critical regression.\n",
     "targetPhase": 0,
-    "evidence": "Workflow configured; local production base-path/browser checks passed. Hosted run/publication verification pending."
+    "evidence": "c2b51cc pushed to main; GitHub Actions run 38968458568 verify and deploy succeeded. https://tobisen.github.io/hollowbane/ returns HTTP 200; hosted Chromium verified both engine scenes, WebGL, pause/reduced-motion and no failed requests/page exceptions. See docs/g0-verification.md."
   },
   {
     "id": "DBL-011",
