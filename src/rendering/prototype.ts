@@ -4,13 +4,7 @@ import { createAtmosphereTextures, addLanternGlow } from "./atmosphere";
 import { clampZoom, followAlpha } from "../world/camera";
 import { footDepth, isOccluding } from "../world/depth";
 import { canWalk, fromGround, onGround } from "../world/navigation";
-interface Walker {
-  position: Point;
-  route: Point[];
-  direction: number;
-  walking: boolean;
-  tick: number;
-}
+import { moveTick, retarget, type Walker } from "../simulation/locomotion";
 import { CLOISTER_NAV, CLOISTER_PROPS, LANTERNS } from "../content/cloister";
 import type { Point } from "../world/isometric";
 export interface PrototypeState {
@@ -141,7 +135,7 @@ export function startPrototype(): Phaser.Game {
         const p = this.cameras.main.getWorldPoint(pointer.x, pointer.y),
           target = fromGround(p);
         if (canWalk(CLOISTER_NAV, target)) {
-          const changed = { ...this.walker, route: [] as Point[] }; // Movement is wired in DBL-028.
+          const changed = retarget(this.walker, CLOISTER_NAV, target);
           if (changed.route.length) {
             this.walker = changed;
             this.marker.setPosition(p.x, p.y).setVisible(true);
@@ -254,7 +248,11 @@ export function startPrototype(): Phaser.Game {
       const dt = Math.min(delta, 100);
       this.accumulator += dt;
       while (this.accumulator >= 1000 / 60) {
-        this.walker = { ...this.walker, tick: this.walker.tick + 1 };
+        this.walker = moveTick(
+          this.walker,
+          CLOISTER_NAV,
+          this.keyboardVector(),
+        );
         this.accumulator -= 1000 / 60;
       }
       const p = onGround(this.walker.position);

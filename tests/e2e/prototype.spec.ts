@@ -8,6 +8,19 @@ async function ready(page: Page) {
   );
   await expect(page.locator("#world-metrics")).toContainText("PHASER 4.2.1");
 }
+async function clickGround(page: Page, x: number, y: number) {
+  const screen = await page.evaluate(
+    ({ x, y }) => {
+      const v = window.hollowbanePrototype!.view;
+      return {
+        x: ((x - v.x) * innerWidth) / v.width,
+        y: ((y - v.y) * innerHeight) / v.height,
+      };
+    },
+    { x, y },
+  );
+  await page.locator("#world").click({ position: screen });
+}
 test("detailed cloister renders without errors and preserves its visual reference", async ({
   page,
 }) => {
@@ -26,4 +39,131 @@ test("detailed cloister renders without errors and preserves its visual referenc
   expect(
     await page.evaluate(() => window.hollowbaneDiagnostics?.renderer),
   ).toBe("WebGL");
+});
+test("click routes, retargeting, keyboard directions, collision and zoom work", async ({
+  page,
+}) => {
+  await ready(page);
+  await clickGround(page, 900, 510);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype?.walking))
+    .toBe(true);
+  await clickGround(page, 700, 450);
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const goal = window.hollowbanePrototype!.destination;
+        return goal ? Math.hypot(goal.x - 700, goal.y - 450) : Infinity;
+      }),
+    )
+    .toBeLessThan(12);
+  const selected = await page.evaluate(
+    () => window.hollowbanePrototype!.destination!,
+  );
+  // Camera tracking continues between coordinate sampling and the physical click.
+  expect(Math.hypot(selected.x - 700, selected.y - 450)).toBeLessThan(12);
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          (target) =>
+            Math.hypot(
+              window.hollowbanePrototype!.x - target.x,
+              window.hollowbanePrototype!.y - target.y,
+            ),
+          selected,
+        ),
+      { timeout: 10000 },
+    )
+    .toBeLessThan(0.5);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype?.walking))
+    .toBe(false);
+  const directions = [
+    ["s", 0],
+    ["a+s", 1],
+    ["a", 2],
+    ["a+w", 3],
+    ["w", 4],
+    ["w+d", 5],
+    ["d", 6],
+    ["d+s", 7],
+  ] as const;
+  for (const [keys, direction] of directions) {
+    await page.locator("#world").focus();
+    for (const key of keys.split("+")) await page.keyboard.down(key);
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbanePrototype?.direction))
+      .toBe(direction);
+    for (const key of keys.split("+")) await page.keyboard.up(key);
+  }
+  await page.getByRole("button", { name: "Zoom in" }).click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.zoom))
+    .toBeGreaterThan(1.2);
+  await page.getByRole("button", { name: "Zoom out" }).click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.zoom))
+    .toBeLessThan(1.18);
+  await page.getByRole("button", { name: "Return to gate" }).click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.x))
+    .toBe(780);
+  await clickGround(page, 500, 300);
+  expect(
+    await page.evaluate(() => window.hollowbanePrototype!.routeLength),
+  ).toBe(0);
+  await page.getByRole("button", { name: "Wake the mist" }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.hollowbanePrototype!.decorationPaused),
+    )
+    .toBe(false);
+  await page.getByRole("button", { name: "Still the mist" }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.hollowbanePrototype!.decorationPaused),
+    )
+    .toBe(true);
+});
+test("player sorts behind and in front of a tall prop with readable occlusion", async ({
+  page,
+}) => {
+  await ready(page);
+  await clickGround(page, 1020, 440);
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          Math.hypot(
+            window.hollowbanePrototype!.x - 1020,
+            window.hollowbanePrototype!.y - 440,
+          ),
+        ),
+      { timeout: 15000 },
+    )
+    .toBeLessThan(3);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.occluded))
+    .toBeGreaterThan(0);
+  await expect(page.locator("main")).toHaveScreenshot("behind-cenotaph.png", {
+    mask: [page.locator("#world-metrics")],
+    maxDiffPixelRatio: 0.01,
+  });
+  await clickGround(page, 1020, 525);
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          Math.hypot(
+            window.hollowbanePrototype!.x - 1020,
+            window.hollowbanePrototype!.y - 525,
+          ),
+        ),
+      { timeout: 15000 },
+    )
+    .toBeLessThan(3);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.occluded))
+    .toBe(0);
 });
