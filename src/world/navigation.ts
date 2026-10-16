@@ -42,14 +42,19 @@ export function canWalk(nav: Navigation, world: Point): boolean {
 /** Static visual-prototype navigation; world grid is independent of painted pixels. */
 export function nearestNode(nav: Navigation, p: Point): Point | null {
   const rounded = { x: Math.round(p.x * 2) / 2, y: Math.round(p.y * 2) / 2 };
-  if (canWalk(nav, rounded)) return rounded;
+  if (canWalk(nav, rounded) && segmentWalkable(nav, p, rounded)) return rounded;
   let best: Point | null = null,
     distance = Infinity;
   for (let x = -2; x <= 2; x++)
     for (let y = -2; y <= 2; y++) {
       const candidate = { x: rounded.x + x * 0.5, y: rounded.y + y * 0.5 };
       const d = Math.hypot(p.x - candidate.x, p.y - candidate.y);
-      if (d < distance && d <= 0.8 && canWalk(nav, candidate)) {
+      if (
+        d < distance &&
+        d <= 0.8 &&
+        canWalk(nav, candidate) &&
+        segmentWalkable(nav, p, candidate)
+      ) {
         best = candidate;
         distance = d;
       }

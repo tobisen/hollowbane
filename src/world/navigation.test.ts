@@ -37,3 +37,12 @@ it("returns identical paths for identical inputs", () => {
     b = fromGround({ x: 950, y: 600 });
   expect(findPath(nav, a, b)).toEqual(findPath(nav, a, b));
 });
+
+it("joins the grid without crossing an obstacle from a fractional start", () => {
+  const start = fromGround({ x: 701, y: 510 });
+  const route = findPath(nav, start, fromGround({ x: 950, y: 550 }));
+  expect(route.length).toBeGreaterThan(0);
+  expect(segmentWalkable(nav, start, route[0]!)).toBe(true);
+  for (let i = 1; i < route.length; i++)
+    expect(segmentWalkable(nav, route[i - 1]!, route[i]!)).toBe(true);
+});
