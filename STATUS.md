@@ -4,7 +4,7 @@
 - Phase 1 – Visual Prototype: authorized through G1; implementation in progress. No combat or loot.
 - Published foundation: https://tobisen.github.io/hollowbane/ . c2b51cc passed CI and hosted verification; approved documentation 4e63a8e publication in progress.
 - Completed foundation: DBL-001–013. See docs/g0-verification.md.
-- Current issue: DBL-023 sprite export
+- Current issue: DBL-024 asset validation
 - Dependency policy: original sequential backlog dependencies were explicitly provisional. Refine only visual prototype tasks to their actual prerequisites; defer unrelated audio, combat and stamina systems.
 - Visual plan: original abandoned gothic cloister, wet basalt, bronze lanterns, cold mist; small reference asset kit for G1 review, no mass content production.
 - GitHub CLI: Homebrew install/auth investigation in progress; do not block visual work.
@@ -17,3 +17,4 @@
 - Latest increment: DBL-020 — Twenty projection/front-back reference cases and existing screenshot regressions pass; prototype screenshot added with scene integration.
 - Latest increment: DBL-021 — Cohesive Veiled Cloister art direction, original prompt set and small reference kit inspected; G1 approval remains pending.
 - Latest increment: DBL-022 — Retained three generated source images with rights/provenance records; six asset records validate.
+- Latest increment: DBL-023 — Reproducible alpha-trimmed 8-direction idle/walk exporter and four-prop atlas; 64 normalized foot pivots verified. Combat actions/normal maps are explicitly deferred beyond locomotion prototype.

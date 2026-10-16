@@ -20,7 +20,8 @@
     "validate:backlog": "node scripts/validate-backlog.mjs",
     "check": "npm run typecheck && npm run lint && npm test && npm run validate:assets && npm run validate:backlog && npm run build",
     "github:import": "node scripts/import-github.mjs",
-    "assets:package": "node scripts/package-assets.mjs"
+    "assets:package": "node scripts/package-assets.mjs",
+    "assets:export": "node scripts/package-assets.mjs && node scripts/export-sprites.mjs"
   },
   "dependencies": {
     "phaser": "4.2.1"
