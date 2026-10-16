@@ -16,5 +16,32 @@
     "source": "src/rendering/observatory.ts",
     "rights": "original",
     "placeholder": true
+  },
+  {
+    "id": "cloister",
+    "source": "assets/source/cloister.png",
+    "runtime": "public/assets/cloister.webp",
+    "rights": "Original project prompt; built-in AI-generated art; release provenance review pending",
+    "placeholder": false,
+    "type": "environment",
+    "provenance": "docs/art/prompts.md"
+  },
+  {
+    "id": "wanderer",
+    "source": "assets/source/wanderer.png",
+    "runtime": "public/assets/wanderer.webp",
+    "rights": "Original project prompt; built-in AI-generated art; release provenance review pending",
+    "placeholder": false,
+    "type": "character-atlas",
+    "provenance": "docs/art/prompts.md"
+  },
+  {
+    "id": "cloister-props",
+    "source": "assets/source/props.png",
+    "runtime": "public/assets/props.webp",
+    "rights": "Original project prompt; built-in AI-generated art; release provenance review pending",
+    "placeholder": false,
+    "type": "prop-atlas",
+    "provenance": "docs/art/prompts.md"
   }
 ]
