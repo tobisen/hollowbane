@@ -1,12 +1,12 @@
 # Status
 
 - Current scope: initialization / source phases 00–01; stop at G0.
-- Last approved gate: none. G0 remains pending.
-- Design DBL-001–006: specified; gameplay validation deferred to applicable gates.
-- Foundation DBL-007–012: verification in progress; DBL-010 remote deployment blocked.
-- DBL-013: FPS/p95 present; memory/draw/load harness pending.
-- GitHub blocker: no gh CLI or GITHUB_TOKEN/GH_TOKEN; idempotent import prepared, dry-run passes.
-- Publication blocker: no authenticated GitHub access; workflow unexecuted remotely.
-- Last checks: typecheck/lint/unit (3)/assets/backlog/build pass; both engine browser screenshots captured and inspected locally.
-- Head checkpoint: see `git log -1`; final verified checkpoint pending.
-- Next: finish diagnostics, regression run and ADR; report G0 readiness without crossing gate.
+- Last approved gate: none. G0 and engine ADR approval remain pending.
+- Completed: DBL-001–009, DBL-011–013. Design completion means specifications, not implemented gameplay.
+- DBL-010: CI/Pages configured; local base-path checks pass; remote run and hosted verification pending.
+- GitHub issue import blocker: no gh CLI or GITHUB_TOKEN/GH_TOKEN. Idempotent importer dry-run and mocked recovery/rerun pass; 231 records and 36 milestones ready.
+- SSH origin access verified. Push/publication was rejected by automatic approval review because main could trigger public CI/Pages before G0 approval; no push occurred. Publication requires user approval.
+- Last checks: typecheck/lint/format, 4 unit tests, assets/backlog, production build, 4 Chromium E2E checks pass; both screenshots inspected. npm audit: zero vulnerabilities.
+- Remaining limits: first Linux CI baseline unverified; Firefox/Safari and long reference-hardware benchmarks deferred. No production art, combat, persistence or movement.
+- Head checkpoint: use `git log -1`; engine ADR: docs/adr/0001-engine.md.
+- Next issue: DBL-010 remote verification; then stop for G0 approval before further implementation.

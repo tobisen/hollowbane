@@ -8,13 +8,13 @@
 | DBL-004 camera/input             | projection, controls, accessibility                              | specified                    |
 | DBL-005 fun test                 | five sessions and observed targets                               | specified; gameplay deferred |
 | DBL-006 design/art documentation | linked design and art bible                                      | specified                    |
-| DBL-007 foundation               | typecheck/lint/unit/build                                        | pending execution            |
-| DBL-008 comparison               | both query-selected engine demos; lights/50 sprites; screenshots | pending execution            |
+| DBL-007 foundation               | typecheck/lint/unit/build                                        | passed locally               |
+| DBL-008 comparison               | both query-selected engine demos; lights/50 sprites; screenshots | passed locally               |
 | DBL-009 architecture             | adapter boundary and ADR                                         | documented                   |
 | DBL-010 CI/Pages                 | workflow plus hosted smoke                                       | remote pending               |
 | DBL-011 conventions              | AGENTS/status/templates/import                                   | prepared                     |
-| DBL-012 simulation               | seed/tick/replay tests                                           | pending execution            |
-| DBL-013 diagnostics              | FPS and p95 measured; remaining metrics                          | partial                      |
+| DBL-012 simulation               | seed/tick/replay tests                                           | passed locally               |
+| DBL-013 diagnostics              | FPS/p95/ready, optional GL calls and supported heap              | passed locally               |
 
 G0 additionally requires publication verification and user approval of engine ADR. No approval is inferred from passing tests.
 

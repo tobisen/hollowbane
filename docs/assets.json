@@ -1,0 +1,20 @@
+[
+  {
+    "id": "courtyard-tiles",
+    "source": "src/rendering/observatory.ts",
+    "rights": "original",
+    "placeholder": true
+  },
+  {
+    "id": "sentinel",
+    "source": "src/rendering/observatory.ts",
+    "rights": "original",
+    "placeholder": true
+  },
+  {
+    "id": "torches",
+    "source": "src/rendering/observatory.ts",
+    "rights": "original",
+    "placeholder": true
+  }
+]

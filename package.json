@@ -1,0 +1,39 @@
+{
+  "name": "hollowbane",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "validate:assets": "node scripts/validate-assets.mjs",
+    "validate:backlog": "node scripts/validate-backlog.mjs",
+    "check": "npm run typecheck && npm run lint && npm test && npm run validate:assets && npm run validate:backlog && npm run build",
+    "github:import": "node scripts/import-github.mjs"
+  },
+  "dependencies": {
+    "phaser": "4.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^22.18.0",
+    "eslint": "^9.39.0",
+    "phaser3": "npm:phaser@3.90.0",
+    "prettier": "^3.6.2",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.0",
+    "vite": "^7.1.12",
+    "vitest": "^4.1.12"
+  }
+}
