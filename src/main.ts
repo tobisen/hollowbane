@@ -3,7 +3,7 @@ const query = new URLSearchParams(location.search);
 if (query.has("gallery")) {
   const { startGallery } = await import("./rendering/gallery");
   await startGallery();
-} else {
+} else if (query.has("engine")) {
   const engine = query.get("engine") === "3" ? "3" : "4";
   const Phaser =
     engine === "3"
@@ -11,4 +11,8 @@ if (query.has("gallery")) {
       : (await import("phaser")).default;
   const { startObservatory } = await import("./rendering/observatory");
   startObservatory(Phaser, engine);
+} else {
+  await import("./prototype.css");
+  const { startPrototype } = await import("./rendering/prototype");
+  startPrototype();
 }

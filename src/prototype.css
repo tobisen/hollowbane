@@ -1,0 +1,233 @@
+main.prototype {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background: #090e12;
+}
+.prototype #world {
+  position: absolute;
+  inset: 0;
+  outline: none;
+}
+.prototype canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 50% 50%,
+      transparent 36%,
+      #080d1340 70%,
+      #060b13bd 100%
+    ),
+    linear-gradient(#07101aa8, transparent 24%, transparent 70%, #07101aa8);
+  z-index: 2;
+}
+.prototype .world-header {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 36px;
+  border: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.world-header a {
+  pointer-events: auto;
+}
+.world-brand {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.sigil {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 48px;
+  font: 32px Georgia;
+  color: #d5b47a;
+  border: 1px solid #ad885a88;
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+  background: #141d2280;
+}
+.world-wordmark {
+  display: block;
+  font: 23px Georgia;
+  letter-spacing: 0.23em;
+  color: #e9d5ad;
+  text-shadow: 0 2px 12px #000;
+}
+.world-tagline {
+  display: block;
+  font: 8px system-ui;
+  letter-spacing: 0.25em;
+  color: #b9b5aa;
+  margin-top: 7px;
+}
+.chapter-mark {
+  text-align: center;
+  color: #d0c7b4;
+  font: 10px system-ui;
+  letter-spacing: 0.22em;
+  line-height: 2.1;
+}
+.chapter-mark span {
+  display: block;
+}
+.chapter-mark span:first-child {
+  font-size: 8px;
+  color: #8d9a9f;
+}
+.prototype .atelier-link {
+  border: 1px solid #b4966344;
+  background: #131b225e;
+  font: 10px system-ui;
+  letter-spacing: 0.13em;
+  padding: 11px 15px;
+  color: #dfd1b6;
+}
+.atelier-link span {
+  margin-left: 10px;
+  color: #b99a67;
+}
+.location-card {
+  position: absolute;
+  left: 38px;
+  bottom: 105px;
+  z-index: 3;
+  text-shadow: 0 2px 14px #000;
+  pointer-events: none;
+}
+.location-card .eyebrow {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+}
+.location-card h1 {
+  font-size: 38px;
+  margin: 12px 0 5px;
+  color: #e5d3b1;
+}
+.location-card p {
+  font: italic 14px Georgia;
+  color: #aab8b9;
+  margin: 0 0 20px;
+}
+.location-rule {
+  display: block;
+  width: 90px;
+  height: 1px;
+  background: linear-gradient(90deg, #bd975e, transparent);
+  margin: 0 0 13px;
+}
+.region-status {
+  font: 8px system-ui;
+  letter-spacing: 0.22em;
+  color: #89979d;
+}
+.world-controls {
+  position: absolute;
+  right: 36px;
+  bottom: 40px;
+  display: flex;
+  gap: 7px;
+  z-index: 4;
+}
+.prototype button {
+  background: #0c161de0;
+  border: 1px solid #a98a574d;
+  font: 10px system-ui;
+  color: #d2c6ad;
+  letter-spacing: 0.06em;
+  padding: 11px 13px;
+  backdrop-filter: blur(6px);
+}
+.prototype #zoom-in,
+.prototype #zoom-out {
+  font-size: 17px;
+  width: 34px;
+  padding: 6px;
+}
+.travel-hint {
+  position: absolute;
+  bottom: 43px;
+  left: 38px;
+  font: 8px system-ui;
+  letter-spacing: 0.15em;
+  color: #a4afb4;
+  z-index: 3;
+  text-shadow: 0 2px 5px #000;
+  pointer-events: none;
+}
+.travel-hint span {
+  padding: 0 10px;
+  color: #b99765;
+}
+.prototype output {
+  position: absolute;
+  top: 110px;
+  right: 37px;
+  z-index: 3;
+  font: 8px system-ui;
+  letter-spacing: 0.1em;
+  color: #9aa9af;
+  text-shadow: 0 1px 4px #000;
+  pointer-events: none;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (max-width: 800px) {
+  .prototype .world-header {
+    padding: 20px;
+  }
+  .chapter-mark {
+    display: none;
+  }
+  .location-card {
+    left: 20px;
+    bottom: 100px;
+  }
+  .location-card h1 {
+    font-size: 29px;
+  }
+  .world-wordmark {
+    font-size: 17px;
+  }
+  .world-tagline {
+    font-size: 7px;
+  }
+  .world-controls {
+    right: 20px;
+    bottom: 20px;
+  }
+  .travel-hint {
+    left: 20px;
+    bottom: 72px;
+    font-size: 7px;
+  }
+  .prototype output {
+    top: 86px;
+    right: 20px;
+  }
+  .prototype .atelier-link {
+    font-size: 8px;
+    padding: 9px;
+  }
+}
