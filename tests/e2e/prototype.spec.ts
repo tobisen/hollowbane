@@ -95,7 +95,18 @@ test("click routes, retargeting, keyboard directions, collision and zoom work", 
     await expect
       .poll(() => page.evaluate(() => window.hollowbanePrototype?.direction))
       .toBe(direction);
+    await expect
+      .poll(() =>
+        page.evaluate(() => ({
+          direction: Math.floor(window.hollowbanePrototype!.frame / 8),
+          walking: window.hollowbanePrototype!.walking,
+        })),
+      )
+      .toEqual({ direction, walking: true });
     for (const key of keys.split("+")) await page.keyboard.up(key);
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+      .toBe(false);
   }
   await page.getByRole("button", { name: "Zoom in" }).click();
   await expect
@@ -110,6 +121,7 @@ test("click routes, retargeting, keyboard directions, collision and zoom work", 
     .poll(() => page.evaluate(() => window.hollowbanePrototype!.x))
     .toBe(780);
   await clickGround(page, 500, 300);
+  await expect(page.locator("#world")).toHaveCSS("cursor", "default");
   expect(
     await page.evaluate(() => window.hollowbanePrototype!.routeLength),
   ).toBe(0);
@@ -166,4 +178,19 @@ test("player sorts behind and in front of a tall prop with readable occlusion", 
   await expect
     .poll(() => page.evaluate(() => window.hollowbanePrototype!.occluded))
     .toBe(0);
+});
+
+test("focus loss clears traversal", async ({ page }) => {
+  await ready(page);
+  await clickGround(page, 900, 510);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+  await page.evaluate(() => window.dispatchEvent(new Event("blur")));
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.routeLength))
+    .toBe(0);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(false);
 });

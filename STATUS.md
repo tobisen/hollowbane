@@ -4,7 +4,7 @@
 - Phase 1 – Visual Prototype: authorized through G1; implementation in progress. No combat or loot.
 - Published foundation: https://tobisen.github.io/hollowbane/ . c2b51cc passed CI and hosted verification; approved documentation 4e63a8e publication in progress.
 - Completed foundation: DBL-001–013. See docs/g0-verification.md.
-- Current issue: DBL-031 focus/retarget policy
+- Current issue: DBL-035 performance and input response
 - Dependency policy: original sequential backlog dependencies were explicitly provisional. Refine only visual prototype tasks to their actual prerequisites; defer unrelated audio, combat and stamina systems.
 - Visual plan: original abandoned gothic cloister, wet basalt, bronze lanterns, cold mist; small reference asset kit for G1 review, no mass content production.
 - GitHub CLI: Homebrew install/auth investigation in progress; do not block visual work.
@@ -23,3 +23,6 @@
 - Latest increment: DBL-026 — Detailed original cloister scene, four depth-sorted props, layered lighting/mist/shadows, bounded smooth camera and reviewed visual baseline. Movement integration follows DBL-028.
 - Latest increment: DBL-028 — Fixed-tick click/WASD traversal with target feedback, eight-direction animation and obstacle-aware routes; 36 unit and 8 E2E checks pass.
 - Latest increment: DBL-029 — Deterministic diagonal-cost A* prevents corner cutting and validates the fractional start-to-grid join; obstacle route tests pass. Dynamic replanning for moving enemies remains outside G1.
+- Latest increment: DBL-031 — Immediate click retarget, keyboard override and focus-loss traversal cleanup verified in deterministic/browser scenarios; no attack queues in G1.
+- Latest increment: DBL-032 — All eight rendered facing rows and idle/walk transitions match fixed-tick locomotion; alpha-normalized foot pivots and atelier screenshot verified.
+- Latest increment: DBL-034 — Reachable-ground cursor, destination marker, blocked-ground status and keyboard-focus policy verified; loot/interaction cursor states deferred with gameplay.

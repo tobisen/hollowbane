@@ -333,9 +333,10 @@
     "phase": 4,
     "priority": "p0",
     "dependencies": ["DBL-028", "DBL-029"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nRetarget, interrupt, queue och input buffering enligt definierade regler.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 04; P0. Target roadmap phase 05; source phase metadata retained.\n\n## Dependencies\nDBL-028, DBL-029\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Retarget, interrupt, queue och input buffering enligt definierade regler.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-031; no known critical regression.\n",
-    "targetPhase": 5
+    "targetPhase": 5,
+    "evidence": "Immediate click retarget, keyboard override and focus-loss traversal cleanup verified in deterministic/browser scenarios; no attack queues in G1."
   },
   {
     "id": "DBL-032",
@@ -343,9 +344,10 @@
     "phase": 4,
     "priority": "p0",
     "dependencies": ["DBL-023", "DBL-028"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\n8-riktningsanimation med fotfäste/pivot och transitions.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 04; P0. Target roadmap phase 05; source phase metadata retained.\n\n## Dependencies\nDBL-023, DBL-028\n\n## Acceptance criteria\n- Deliver the independently reviewable result: 8-riktningsanimation med fotfäste/pivot och transitions.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-032; no known critical regression.\n",
-    "targetPhase": 5
+    "targetPhase": 5,
+    "evidence": "All eight rendered facing rows and idle/walk transitions match fixed-tick locomotion; alpha-normalized foot pivots and atelier screenshot verified."
   },
   {
     "id": "DBL-033",
@@ -363,9 +365,10 @@
     "phase": 4,
     "priority": "p0",
     "dependencies": ["DBL-028"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nHover, selection, cursor feedback, interactable highlighting.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 04; P0. Target roadmap phase 05; source phase metadata retained.\n\n## Dependencies\nDBL-028\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Hover, selection, cursor feedback, interactable highlighting.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-034; no known critical regression.\n",
-    "targetPhase": 5
+    "targetPhase": 5,
+    "evidence": "Reachable-ground cursor, destination marker, blocked-ground status and keyboard-focus policy verified; loot/interaction cursor states deferred with gameplay."
   },
   {
     "id": "DBL-035",
