@@ -2,10 +2,10 @@
 
 - G0 and G1: approved. Phaser 4.2.1 and original visual foundation preserved. Historical evidence: docs/g1-review.md.
 - Phase 2 movement quality approved by user on 2026-10-17 based on movement tests and verified CI. Phase 3 Combat Fundamentals authorized through combat quality review only. No loot, inventory, advanced AI, skill trees or campaign.
-- Current increment: DBL-253 timing, DBL-254 targeting controller and DBL-259 seeded damage complete; DBL-255–258 remain planned. Detailed scope and verification: docs/combat/phase3.md.
+- Current increment: DBL-253–255 combat timing/targeting/damage and DBL-259 prerequisite complete; DBL-256–258 remain planned. Detailed scope and verification: docs/combat/phase3.md.
 - Completed scoped issues: DBL-240–244; publication baseline follow-up DBL-252. Original DBL-036 is partial: idle/move and pure combat timeline delivered; combat integration and block remain incomplete. Broader original parents remain partial where their later requirements are unmet.
 - Movement: exact click targets, direct/smoothed routes, swept wall/prop collision and clearance, deterministic walk/run acceleration/deceleration, distance-driven eight-direction frames, immediate reversals, stop/facing/queue intents, held steering, persistent remappable inputs/speeds, CSS/camera projection and smooth following.
-- Phase 3 checks: 77 unit tests and npm run check pass; format check passes. Browser regression outcome is retained in docs/combat/phase3.md.
+- Phase 3 checks: 82 unit tests and npm run check pass; format check passes. Browser regression outcome is retained in docs/combat/phase3.md.
 - Phase 2 checks: 61 unit tests; 15 Chromium E2E cases; five movement cases each in Chromium/Firefox/WebKit; Firefox/WebKit smoke; check/format/build and asset/backlog validation pass. Screenshots inspected; Phase 2 scene baselines refreshed in DBL-252, original 1% tolerances preserved.
 - Balanced matched comparison: median FPS 59.9 → 59.9; frame p95 33.4 → 33.4 ms; event-to-movement input p95 36.6 → 38.8 ms. Software-rendering and full-detail/Firefox limits remain documented.
 - Follow-ups: DBL-245–251 separately track seven requested performance/art limitations; run artwork provisionally reuses walk frames. No new assets added.

@@ -2620,8 +2620,9 @@
     "priority": "p0",
     "parent": "DBL-040",
     "dependencies": ["DBL-254"],
-    "status": "planned",
-    "body": "## Purpose\nSeeded physical damage and reaction resolution\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nSeeded accuracy/defense/critical, configurable physical mitigation and resistance caps, typed events, death, invulnerability, stagger/knockback foundation; replay tests.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+    "status": "completed",
+    "body": "## Purpose\nSeeded physical damage and reaction resolution\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nSeeded accuracy/defense/critical, configurable physical mitigation and resistance caps, typed events, death, invulnerability, stagger/knockback foundation; replay tests.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n",
+    "evidence": "Five world resolution/reaction tests; 82 unit tests and full check pass. Serializable seeded world; strike-boundary damage, death, stagger guard, invulnerability and swept knockback. docs/combat/phase3.md."
   },
   {
     "id": "DBL-256",
