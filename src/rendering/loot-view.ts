@@ -241,6 +241,16 @@ export class LootView {
     const bottom = this.root
       .querySelector(".skill-bar")!
       .getBoundingClientRect().top;
+    const panelTop =
+      Math.ceil(
+        this.root.querySelector(".polish-navigation")!.getBoundingClientRect()
+          .bottom,
+      ) + 16;
+    const topStyle = `${panelTop}px`,
+      heightStyle = `${Math.max(40, Math.min(innerHeight * 0.45, bottom - panelTop - 12))}px`;
+    if (this.panel.style.top !== topStyle) this.panel.style.top = topStyle;
+    if (this.panel.style.maxHeight !== heightStyle)
+      this.panel.style.maxHeight = heightStyle;
     const visible = new Set<string>(),
       boxes: { x: number; y: number; w: number }[] = [];
     // Selected item has priority; at most 32 labels, all 128 selectable through D-pad.
@@ -276,10 +286,6 @@ export class LootView {
         label = document.createElement("button");
         label.className = "loot-label";
         label.dataset.item = d.item.id;
-        label.onpointerenter = () => {
-          this.selected = d.item.id;
-          this.inspected = false;
-        };
         label.onclick = () => {
           this.selected = d.item.id;
           this.interact();
@@ -289,9 +295,15 @@ export class LootView {
         this.labels.set(d.item.id, label);
       }
       if (label.textContent !== text) label.textContent = text;
-      label.style.cssText = `left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;width:${w}px;color:${LOOT_COLORS[d.item.quality]}`;
+      const layout = `left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;width:${w}px;color:${LOOT_COLORS[d.item.quality]}`;
+      if (label.dataset.layout !== layout) {
+        label.style.cssText = layout;
+        label.dataset.layout = layout;
+      }
       label.dataset.quality = d.item.quality;
-      label.setAttribute("aria-pressed", String(d.item.id === this.selected));
+      const selected = String(d.item.id === this.selected);
+      if (label.getAttribute("aria-pressed") !== selected)
+        label.setAttribute("aria-pressed", selected);
       label.hidden = false;
     }
     for (const [id, label] of this.labels)

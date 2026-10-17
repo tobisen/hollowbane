@@ -299,3 +299,5 @@ Polish technical candidate delivered: scoped DBL-299–309 complete; user qualit
 ## L1 – Item Architecture & Loot
 
 Polish technically approved. DBL-310 content, 311 generation, 312 inspection/save, 313 death drops, 314 playable interaction, 315 diagnostics/statistics, 316 regression/performance/publication, 317 quality evidence. Original topics11–13 and parent dependencies preserved; these scoped slices do not complete inventory/equipment or broader itemization. Stop at L1 review; no L2 without approval.
+
+L1 quality work split before completion: DBL-316 regression/visual, DBL-317 repeated performance/hosted verification, DBL-318 final review evidence. Scope is now310–318; stable original IDs/topics preserved, no duplicate acceptance.

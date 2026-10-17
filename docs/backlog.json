@@ -3433,19 +3433,20 @@
   },
   {
     "id": "DBL-316",
-    "title": "L1 regression visual performance and hosted verification",
+    "title": "L1 regression and visual verification",
     "parent": "DBL-074",
     "phase": 11,
     "targetPhase": 11,
     "deliveryPhase": "loot-l1",
     "priority": "p0",
     "dependencies": ["DBL-315"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nL1 regression visual performance and hosted verification. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nL1 regression and visual verification. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review.",
+    "evidence": "Full check191; 68 existing Chromium scenarios plus six L1 final cases pass, new1% reference/unmasked capture reviewed, ten final FF/WebKit cases pass, including actual hostile death and adaptive navigation spacing. Stable-build rerun after aborted build race. Performance/publication split into317; final gate318."
   },
   {
     "id": "DBL-317",
-    "title": "L1 quality gate evidence",
+    "title": "L1 repeated performance and hosted verification",
     "parent": "DBL-077",
     "phase": 11,
     "targetPhase": 11,
@@ -3453,6 +3454,18 @@
     "priority": "p0",
     "dependencies": ["DBL-316"],
     "status": "planned",
-    "body": "## Acceptance criteria\nL1 quality gate evidence. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review."
+    "body": "## Acceptance criteria\nL1 repeated performance and hosted verification. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review."
+  },
+  {
+    "id": "DBL-318",
+    "title": "L1 final quality gate evidence",
+    "parent": "DBL-077",
+    "phase": 11,
+    "targetPhase": 11,
+    "deliveryPhase": "loot-l1",
+    "priority": "p0",
+    "dependencies": ["DBL-317"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nCollect verified L1 item, loot, browser, performance, public and remaining-scope evidence. Stop for user L1 review.\n\n## Non-goals\nL2, inventory/equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nReference verified L1 regression/performance/publication evidence.\n\n## Definition of done\nL1 technical candidate delivered; user approval remains false."
   }
 ]

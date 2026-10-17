@@ -14,12 +14,16 @@ async function ready(page: Page, query = "&training=1") {
   await page.locator("#combat-world").focus();
 }
 async function replay(page: Page, seq: number) {
-  await page.locator(".loot-panel summary").click();
+  if (
+    (await page.locator(".loot-panel > details").getAttribute("open")) === null
+  )
+    await page.locator(".loot-panel > details > summary").click();
+  const before = await page.evaluate(() => window.hollowbaneLoot!.drops.length);
   await page.locator("#loot-sequence").fill(String(seq));
   await page.locator("#loot-test").click();
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneLoot!.drops.length))
-    .toBeGreaterThan(0);
+    .toBe(before + 1);
 }
 async function point(page: Page, x: number, y: number) {
   return page.evaluate(
@@ -37,7 +41,7 @@ async function point(page: Page, x: number, y: number) {
 test("monster death produces exactly one deterministic natural drop", async ({
   page,
 }) => {
-  await ready(page);
+  await ready(page, "");
   const a = await page.evaluate(() => window.hollowbaneCombat!.actors[1]!);
   const p = await point(page, a.x, a.y - 28);
   await page.mouse.move(p.x, p.y);
@@ -75,7 +79,7 @@ test("inspection identification archive and corrupted load preserve generated it
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneLoot?.drops.length))
     .toBe(0);
-  await page.locator(".loot-panel summary").click();
+  await page.locator(".loot-panel > details > summary").click();
   await page.locator("#loot-load").click();
   await expect
     .poll(() =>
@@ -118,6 +122,8 @@ for (const id of ["Xbox virtual standard", "Wireless Controller"])
     }, id);
     await ready(page);
     await replay(page, 1);
+    await replay(page, 37);
+    const selected = await page.evaluate(() => window.hollowbaneLoot!.selected);
     await page.locator("#combat-world").focus();
     await expect
       .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
@@ -149,6 +155,9 @@ for (const id of ["Xbox virtual standard", "Wireless Controller"])
     await expect
       .poll(() => page.evaluate(() => window.hollowbaneInput?.device))
       .toBe("gamepad");
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneLoot!.selected))
+      .not.toBe(selected);
     await press(13, false);
     await press(0, true);
     await expect(page.locator("#loot-message")).toContainText(
@@ -173,7 +182,7 @@ test("loot labels and inspection retain their visual reference", async ({
   await ready(page);
   await replay(page, 35078);
   await page.locator("#loot-identify").click();
-  await page.locator(".loot-panel summary").click();
+  await page.locator(".loot-panel > details > summary").click();
   await page.locator("#combat-pause").click();
   await expect(page).toHaveScreenshot("l1-loot.png", {
     maxDiffPixelRatio: 0.01,
@@ -184,4 +193,37 @@ test("loot labels and inspection retain their visual reference", async ({
       page.locator("#loot-help"),
     ],
   });
+});
+
+test("multiple labels avoid overlap and duplicate replay preserves identities", async ({
+  page,
+}) => {
+  await ready(page);
+  for (const seq of [0, 1, 37, 35078]) await replay(page, seq);
+  const boxes = await page.locator(".loot-label").evaluateAll((nodes) =>
+    nodes.map((n) => {
+      const r = n.getBoundingClientRect();
+      return { x: r.x, y: r.y, w: r.width, h: r.height };
+    }),
+  );
+  expect(boxes).toHaveLength(4);
+  const panel = await page.locator(".loot-panel").boundingBox(),
+    nav = await page.locator(".polish-navigation").boundingBox();
+  expect(panel!.y).toBeGreaterThanOrEqual(nav!.y + nav!.height);
+  for (let i = 0; i < boxes.length; i++)
+    for (let j = i + 1; j < boxes.length; j++) {
+      const a = boxes[i]!,
+        b = boxes[j]!;
+      expect(
+        a.x + a.w <= b.x ||
+          b.x + b.w <= a.x ||
+          a.y + a.h <= b.y ||
+          b.y + b.h <= a.y,
+      ).toBe(true);
+    }
+  await page.locator("#loot-test").click();
+  await expect(page.locator("#loot-message")).toContainText("Duplicate");
+  expect(await page.evaluate(() => window.hollowbaneLoot!.drops.length)).toBe(
+    4,
+  );
 });

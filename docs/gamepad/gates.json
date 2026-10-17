@@ -102,6 +102,6 @@
   "lootL1": {
     "authorized": true,
     "qualityGateApproved": false,
-    "scope": ["DBL-310", "DBL-317"]
+    "scope": ["DBL-310", "DBL-318"]
   }
 }

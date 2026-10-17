@@ -421,7 +421,7 @@
 .loot-panel {
   position: fixed;
   left: 16px;
-  top: 150px;
+  top: 200px;
   width: 280px;
   max-height: 45vh;
   overflow: auto;
@@ -494,7 +494,7 @@
 }
 @media (max-width: 800px) {
   .loot-panel {
-    top: 190px;
+    top: 250px;
     left: 8px;
     width: 220px;
     font-size: 11px;

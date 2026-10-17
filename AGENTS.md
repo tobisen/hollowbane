@@ -33,3 +33,5 @@ Skills approval / Polish authorization (2026-10-17): user technically approved S
 Polish quality checkpoint (2026-10-17): DBL-299–309 technically delivered. Runtime 2ea9256 passed CI/Pages 39041156725, 176 unit/68 Chromium, 30 Firefox-WebKit and 42 hosted controller/skill/polish scenarios. Stop for user polish review; quality approval remains false. Physical controller, dedicated animation/art and broader reference-hardware/software rendering limitations remain open. Do not start new gameplay. Evidence: docs/polish/milestone.md.
 
 User approval / L1 authorization: polish DBL-299–309 approved. L1 Item Architecture & Loot authorized through scoped DBL-310–317 and L1 quality gate, superseding earlier loot prohibition only for this scope. No full inventory, equipment UI, crafting, vendors, sockets, runewords or progression. Stop before L2.
+
+L1 quality work split before completion: DBL-316 regression/visual, DBL-317 repeated performance/hosted verification, DBL-318 final review evidence. Scope is now310–318; stable original IDs/topics preserved, no duplicate acceptance.
