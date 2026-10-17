@@ -1,0 +1,20 @@
+{
+  "browser": "157.0",
+  "viewport": "1920x1080",
+  "method": "1-second warmup plus 5-second sample each; hiding canvas leaves simulation and WebGL rendering running",
+  "blank": {
+    "medianMs": 16.660000000000082,
+    "p95Ms": 18.259999999999764,
+    "samples": 301
+  },
+  "game": {
+    "medianMs": 33.220000000000255,
+    "p95Ms": 33.460000000000036,
+    "samples": 192
+  },
+  "hiddenCanvas": {
+    "medianMs": 16.660000000001673,
+    "p95Ms": 18.38000000000011,
+    "samples": 301
+  }
+}

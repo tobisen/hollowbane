@@ -15,4 +15,4 @@
 - Next: G1 approved, published and verified; stop here. No next-phase implementation authorized.
 
 - Final review follow-up: hosted Firefox/WebKit and Chromium movement/atelier rechecked; 41 unit and 10 Chromium regressions pass. Diagnostic percentile sorting reduced to HUD cadence (DBL-020). Fresh isolated balanced Chromium 59.9 FPS / 33.4 ms p95; full Chromium SwiftShader 20 FPS / 66.6 ms; Firefox balanced/full ~30 FPS / 33.7–34 ms. Short-sample caveats, layer-exclusion evidence and inspected new captures are in docs/g1-review.md. No proven GPU cost ranking or p95-budget compliance claimed.
-- Publication follow-up checkpoint: new review/diagnostics increment verified locally; pending push/CI confirmation below. No Phase 2 authorization.
+- Publication follow-up checkpoint: optimization/review commit `7317c4c` pushed; verification/deployment run https://github.com/tobisen/hollowbane/actions/runs/39007828439. Final hosted outcome is reported in the session. Firefox visible-canvas pacing investigation is documented in the review. No Phase 2 authorization.
