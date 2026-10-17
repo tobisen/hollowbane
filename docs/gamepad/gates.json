@@ -133,6 +133,36 @@
   "inventoryL2": {
     "authorized": true,
     "qualityGateApproved": false,
-    "scope": ["DBL-320", "DBL-332"]
+    "scope": ["DBL-320", "DBL-332"],
+    "technicalCandidateReady": true,
+    "stoppedForReview": true,
+    "applicationSourceCommit": "9288dd1",
+    "ciRun": "39071489421",
+    "ciPassed": true,
+    "hostedVerified": true,
+    "unitTests": 213,
+    "chromiumCases": 85,
+    "firefoxWebkitCases": 134,
+    "hostedInventoryCases": 29,
+    "intentionalNonChromiumVisualSkips": 4,
+    "physicalControllerVerified": false,
+    "completedIssues": [
+      "DBL-320",
+      "DBL-321",
+      "DBL-322",
+      "DBL-323",
+      "DBL-324",
+      "DBL-325",
+      "DBL-326",
+      "DBL-327",
+      "DBL-328",
+      "DBL-329",
+      "DBL-330",
+      "DBL-331",
+      "DBL-332"
+    ],
+    "evidence": "docs/inventory/l2.md and performance*.json",
+    "publicUrl": "https://tobisen.github.io/hollowbane/?inventory=1",
+    "remainingFollowup": "DBL-333 and physical DBL-282\u2013286; original broad parents remain partial"
   }
 }
