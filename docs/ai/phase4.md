@@ -19,3 +19,7 @@ Explicit validated idle/patrol/alert/chase/attack/retreat/return/dead transition
 ## DBL-278
 
 Pack alerts require an actually visible live threat and a same-pack neighbor with unobstructed communication; support heralds rally a wider radius. At most three committed melee attackers per target, with remaining actors approaching via existing navigation. Deterministic two-pass separation preserves player position and attack/hitstun commitment, checks swept obstacle clearance, and excludes corpses. Two pack/crowd tests plus behavior suite pass; full check: 126 tests.
+
+## DBL-279
+
+Seeded encounter composition supports 1–50 monsters with bounded safe-spawn searches, monotonically increasing IDs, champion stat/label foundation and obstacle geometry. Death/corpse expiry uses simulation ticks; despawn clears stale selection/projectiles without cancelling committed attack timing. Deterministic 5/10/20/30/50-enemy replay/obstacle tests, corpse/identity and invalid spawn tests pass. Full check/format: 129 tests. Corpses have no loot, resurrection or inventory behavior.

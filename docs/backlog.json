@@ -2948,8 +2948,9 @@
     "priority": "p0",
     "parent": "DBL-063",
     "dependencies": ["DBL-278"],
-    "status": "in-progress",
-    "body": "## Purpose\nEncounter spawning, champion foundation and corpses\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review."
+    "status": "completed",
+    "body": "## Purpose\nEncounter spawning, champion foundation and corpses\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review.",
+    "evidence": "Seeded encounter composition supports 1–50 monsters with bounded safe-spawn searches, monotonically increasing IDs, champion stat/label foundation and obstacle geometry. Death/corpse expiry uses simulation ticks; despawn clears stale selection/projectiles without cancelling committed attack timing. Deterministic 5/10/20/30/50-enemy replay/obstacle tests, corpse/identity and invalid spawn tests pass. Full check/format: 129 tests. Corpses have no loot, resurrection or inventory behavior."
   },
   {
     "id": "DBL-280",
@@ -2960,7 +2961,7 @@
     "priority": "p0",
     "parent": "DBL-062",
     "dependencies": ["DBL-279"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Purpose\nPlayable monster encounter and AI diagnostics\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review."
   },
   {
