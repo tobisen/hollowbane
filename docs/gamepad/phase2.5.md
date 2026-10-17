@@ -23,3 +23,7 @@ Xbox, PlayStation and generic standard-compatible layouts map to identical seman
 ## DBL-266 / DBL-GP04
 
 Radial deadzone, outer saturation, sensitivity and configurable power curve preserve 360-degree heading and bounded magnitude. Three analog tests cover drift, diagonals, monotonic response and invalid configuration; typecheck/lint pass.
+
+## DBL-267 / DBL-GP05
+
+Established walker now accepts bounded analog speed scaling without changing keyboard/click defaults. Browser adapter polls Gamepad API with Phaser gamepad enabled; meaningful direct movement clears routes/queues, neutral pads preserve click-to-move. Full check: 104 unit tests. Two virtual-pad scenarios plus five original movement cases pass in Chromium; physical hardware not tested.

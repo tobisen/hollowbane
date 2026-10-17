@@ -1,3 +1,4 @@
+import { controllerInput } from "./controller-input";
 import Phaser from "phaser";
 import { createDiagnostics, instrumentDrawCalls } from "./diagnostics";
 import { createAtmosphereTextures, addLanternGlow } from "./atmosphere";
@@ -78,6 +79,7 @@ export function startPrototype(): Phaser.Game {
     private lastHeldTarget: Point | null = null;
     private commandFeedback = "Ready";
     private accumulator = 0;
+    private controllerSequence = 0;
     private clock = 0;
     private paused = matchMedia("(prefers-reduced-motion: reduce)").matches;
     private desiredZoom = 1.12;
@@ -436,14 +438,25 @@ export function startPrototype(): Phaser.Game {
           "#world-detail",
         )!.textContent = "Full detail";
       }
+      if (
+        controllerInput.frame.device === "gamepad" &&
+        this.controllerSequence !== controllerInput.sequence
+      ) {
+        this.controllerSequence = controllerInput.sequence;
+        this.pointerHeld = false;
+        this.lastHeldTarget = null;
+        this.inputAt = controllerInput.activityAt;
+      }
+      const direct = controllerInput.movement(this.controls.vector());
       const dt = Math.min(delta, 100);
       this.accumulator += dt;
       while (this.accumulator >= 1000 / 60) {
         this.walker = moveTick(
           this.walker,
           CLOISTER_NAV,
-          this.controls.vector(),
+          direct.vector,
           this.preferences.config,
+          direct.scale,
         );
         this.accumulator -= 1000 / 60;
       }
@@ -554,6 +567,6 @@ export function startPrototype(): Phaser.Game {
       selfShadow: false,
       roundPixels: false,
     },
-    input: { mouse: { preventDefaultWheel: true } },
+    input: { mouse: { preventDefaultWheel: true }, gamepad: true },
   });
 }

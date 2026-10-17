@@ -125,7 +125,10 @@ export function moveTick(
   nav: Navigation,
   keyboard: Point = { x: 0, y: 0 },
   config: MovementConfig = MOVEMENT,
+  inputScale = 1,
 ): Walker {
+  if (!Number.isFinite(inputScale) || inputScale < 0 || inputScale > 1)
+    throw new RangeError("Invalid analog input scale");
   let result: Walker = {
     ...walker,
     tick: walker.tick + 1,
@@ -135,8 +138,8 @@ export function moveTick(
   const desired =
     key || result.route.length
       ? walker.gait === "run"
-        ? config.runSpeed
-        : config.walkSpeed
+        ? config.runSpeed * (key ? inputScale : 1)
+        : config.walkSpeed * (key ? inputScale : 1)
       : 0;
   const change =
     (desired > walker.speed ? config.acceleration : config.deceleration) / 60;

@@ -1,3 +1,5 @@
+import { controllerInput } from "./rendering/controller-input";
+controllerInput.start();
 import "./style.css";
 const query = new URLSearchParams(location.search);
 if (query.has("combat")) {
