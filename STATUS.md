@@ -1,6 +1,6 @@
 # Status
 
-- Phase 2.5 progress: DBL-263, DBL-264, DBL-265, DBL-266, DBL-267. G2.5 approval pending; no Phase 3 resumption.
+- Phase 2.5 progress: DBL-263, DBL-264, DBL-265, DBL-266, DBL-267, DBL-268. G2.5 approval pending; no Phase 3 resumption.
 
 - G0/G1 approved; Phase 2 movement quality approved by user on 2026-10-17. Phaser remains 4.2.1.
 - Current authorization: Phase 2.5 Gamepad Support through G2.5; DBL-263–274 / DBL-GP01–12. Phase 3 is frozen and its completed work preserved. Resume requires DBL-274 plus explicit G2.5 approval. See docs/gamepad/phase2.5.md.

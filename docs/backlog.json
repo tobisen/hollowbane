@@ -2798,9 +2798,10 @@
     "priority": "p0",
     "parent": "DBL-009",
     "dependencies": ["DBL-267"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nIndependent aim and existing semantic gameplay adapters\n\n## Scope\nAuthorized Phase 2.5 gamepad support. Stable numeric ID DBL-268; requested alias DBL-GP06. Preserve Phaser 4.2.1 and existing keyboard/mouse and completed combat.\n\n## Non-goals\nNew combat mechanics, loot, inventory or resuming Phase 3 before G2.5 user approval.\n\n## Acceptance criteria\nIndependent aim and existing semantic gameplay adapters; deterministic device-independent intents; safe boundaries and documented fallback behavior.\n\n## Test requirements\nTargeted unit/browser coverage, check at milestones, full regression before G2.5; distinguish emulation from physical verification.\n\n## Definition of done\nVerified scoped increment committed with evidence in docs/gamepad/phase2.5.md; stop for G2.5 review after DBL-274.",
-    "deliveryPhase": "2.5"
+    "deliveryPhase": "2.5",
+    "evidence": "Independent right-stick facing preserves eight-direction visuals without altering analog movement. L3 uses existing persistent gait command. Semantic primary/target selection adapt preserved combat only; unfinished skills/interact/pickup/secondary remain honest reservations. Four virtual-pad browser scenarios and 105 unit tests pass. Fixed a same-poll DOM/gamepad arbitration race; new sampled pad edges win ties, stationary held axes do not steal ownership. No combat mechanics changed."
   },
   {
     "id": "DBL-269",

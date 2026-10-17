@@ -12,6 +12,7 @@ import { footDepth, isOccluding } from "../world/depth";
 import { canWalk, fromGround, onGround } from "../world/navigation";
 import {
   createWalker,
+  directionFor,
   moveTick,
   movementFrame,
   stopWalker,
@@ -447,9 +448,36 @@ export function startPrototype(): Phaser.Game {
         this.lastHeldTarget = null;
         this.inputAt = controllerInput.activityAt;
       }
+      if (
+        controllerInput.frame.device === "gamepad" &&
+        controllerInput.take("toggleRun")
+      )
+        this.controls.toggleRun();
+      if (
+        !controllerInput.blockGameplay &&
+        controllerInput.frame.device !== "mouse"
+      )
+        for (const action of [
+          "primary",
+          "secondary",
+          "skill1",
+          "skill2",
+          "skill3",
+          "skill4",
+          "interact",
+          "pickup",
+          "targetLock",
+        ] as const) {
+          if (controllerInput.take(action))
+            this.commandFeedback = `${action} is not available in the movement scene`;
+        }
       const direct = controllerInput.movement(this.controls.vector());
       const dt = Math.min(delta, 100);
       this.accumulator += dt;
+      if (controllerInput.blockGameplay) {
+        this.accumulator = 0;
+        this.walker = stopWalker(this.walker);
+      }
       while (this.accumulator >= 1000 / 60) {
         this.walker = moveTick(
           this.walker,
@@ -458,6 +486,9 @@ export function startPrototype(): Phaser.Game {
           this.preferences.config,
           direct.scale,
         );
+        const aim = controllerInput.frame.aim;
+        if (Math.hypot(aim.x, aim.y) > 0.01)
+          this.walker = { ...this.walker, direction: directionFor(aim) };
         this.accumulator -= 1000 / 60;
       }
       if (this.walker.walking && this.inputAt !== null) {

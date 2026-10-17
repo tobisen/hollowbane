@@ -120,3 +120,46 @@ test("disconnection stops active analog movement", async ({ page }) => {
 });
 // More screen/remapping/safety acceptance scenarios are added with their scoped adapters.
 export { ready, axes, button };
+test("right stick faces independently and L3 toggles persisted gait", async ({
+  page,
+}) => {
+  await ready(page);
+  const before = await page.evaluate(() => window.hollowbanePrototype!);
+  await axes(page, [0, 0, 1, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.direction))
+    .toBe(6);
+  expect(await page.evaluate(() => window.hollowbanePrototype!.x)).toBe(
+    before.x,
+  );
+  await button(page, 10, true);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.gait))
+    .toBe("run");
+  await button(page, 10, false);
+  await axes(page, [0, -0.7, 1, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+  expect(await page.evaluate(() => window.hollowbanePrototype!.direction)).toBe(
+    6,
+  );
+});
+test("semantic primary drives existing timed combat without new mechanics", async ({
+  page,
+}) => {
+  await ready(page, "./?combat=1");
+  await page.locator("#combat-hostile").uncheck();
+  await axes(page, [0, 0, 0, 0]);
+  await button(page, 2, true);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase))
+    .toBe("windup");
+  expect(
+    await page.evaluate(() => window.hollowbaneCombat!.actors[1]!.hp),
+  ).toBe(160);
+  await button(page, 2, false);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[1]!.hp))
+    .toBeLessThan(160);
+});

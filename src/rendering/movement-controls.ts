@@ -195,6 +195,7 @@ export function movementControls(
   world.addEventListener("blur", blur);
   sync();
   return {
+    toggleRun: toggle,
     vector: () =>
       document.activeElement === world
         ? movementVector(held, preferences.bindings)

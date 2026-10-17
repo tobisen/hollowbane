@@ -1,3 +1,5 @@
+import { controllerInput } from "./controller-input";
+import { directionFor } from "../simulation/locomotion";
 import { renderSize, shouldBalanceDetail } from "../world/render-size";
 import Phaser from "phaser";
 import {
@@ -499,7 +501,85 @@ export function startCombatArena(): Phaser.Game {
           Number(this.keys.has("s") || this.keys.has("arrowdown")) -
           Number(this.keys.has("w") || this.keys.has("arrowup")),
       };
-      if (!this.paused) {
+      const direct = controllerInput.movement(keys);
+      if (
+        controllerInput.frame.device === "gamepad" &&
+        !controllerInput.blockGameplay
+      ) {
+        const candidates = this.world.actors.filter(
+          (a) => a.id !== 0 && a.hp > 0,
+        );
+        if (controllerInput.take("targetLock")) {
+          const i = candidates.findIndex(
+            (a) => a.id === player.controller.selected,
+          );
+          player.controller = {
+            ...player.controller,
+            selected:
+              candidates[(i + 1) % Math.max(1, candidates.length)]?.id ?? null,
+          };
+        }
+        if (controllerInput.take("toggleRun"))
+          player.controller.walker.gait =
+            player.controller.walker.gait === "walk" ? "run" : "walk";
+        if (controllerInput.take("primary")) {
+          const aim = controllerInput.frame.aim,
+            p = onGround(player.controller.walker.position);
+          const chosen =
+            candidates.find((a) => a.id === player.controller.selected) ??
+            [...candidates].sort((a, b) => {
+              const score = (a: CombatActor) => {
+                const q = onGround(a.controller.walker.position),
+                  dx = q.x - p.x,
+                  dy = q.y - p.y,
+                  d = Math.hypot(dx, dy);
+                return (
+                  d +
+                  (Math.hypot(aim.x, aim.y) > 0.01
+                    ? 200 *
+                      (1 -
+                        (dx * aim.x + dy * aim.y) /
+                          Math.max(1, d * Math.hypot(aim.x, aim.y)))
+                    : 0)
+                );
+              };
+              return score(a) - score(b) || a.id - b.id;
+            })[0];
+          if (chosen) {
+            player.controller = commandCombat(player.controller, {
+              kind: "attack",
+              target: chosen.id,
+              repeat: true,
+            });
+            this.inputAt = performance.now();
+          }
+        }
+        if (controllerInput.released("primary"))
+          player.controller = commandCombat(player.controller, {
+            kind: "release",
+          });
+        if (controllerInput.take("cancel"))
+          player.controller = commandCombat(player.controller, {
+            kind: "stop",
+          });
+        for (const a of [
+          "secondary",
+          "skill1",
+          "skill2",
+          "skill3",
+          "skill4",
+          "interact",
+          "pickup",
+        ] as const)
+          if (controllerInput.take(a))
+            document.querySelector("#combat-log")!.textContent =
+              `${a} is reserved; no new system is active.`;
+      }
+      if (controllerInput.blockGameplay) {
+        this.accumulator = 0;
+        player.controller = commandCombat(player.controller, { kind: "stop" });
+      }
+      if (!this.paused && !controllerInput.blockGameplay) {
         const capped = Math.min(delta, 100);
         this.droppedTicks += Math.max(
           0,
@@ -509,7 +589,13 @@ export function startCombatArena(): Phaser.Game {
         while (this.accumulator >= 1000 / 60) {
           const tickStart = performance.now(),
             oldSequence = player.controller.timeline.sequence;
-          stepCombat(this.world, ARENA_NAV, keys);
+          stepCombat(this.world, ARENA_NAV, direct.vector, direct.scale);
+          const aim = controllerInput.frame.aim;
+          if (
+            player.controller.timeline.phase === "idle" &&
+            Math.hypot(aim.x, aim.y) > 0.01
+          )
+            player.controller.walker.direction = directionFor(aim);
           this.record(this.simulations, performance.now() - tickStart);
           if (
             player.controller.timeline.sequence > oldSequence &&

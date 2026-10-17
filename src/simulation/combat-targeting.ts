@@ -129,6 +129,7 @@ export function stepController(
   hitRecovery = 6,
   keyboard: Point = { x: 0, y: 0 },
   config: MovementConfig = MOVEMENT,
+  inputScale = 1,
 ): { controller: CombatController; events: TimelineEvent[] } {
   if (!Number.isFinite(range) || range <= 0)
     throw new Error("Invalid attack range");
@@ -201,7 +202,7 @@ export function stepController(
   // The entire recovery tick remains committed, even when it ends in idle.
   const canMove = idle && command === "wait";
   next.walker = canMove
-    ? moveTick(next.walker, nav, keyboard, config)
+    ? moveTick(next.walker, nav, keyboard, config, inputScale)
     : { ...stopWalker(next.walker), tick: next.walker.tick + 1 };
   return { controller: next, events: timeline.events };
 }

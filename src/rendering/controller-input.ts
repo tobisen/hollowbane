@@ -55,11 +55,13 @@ export class ControllerInput {
   family: GlyphFamily = "generic";
   supported = false;
   suspended = false;
+  blockGameplay = false;
   sequence = 0;
   activityAt = 0;
   pollTimes: number[] = [];
   samples = 0;
   private keys = new Set<string>();
+  private mouse = new Set<Action>();
   private previous = new Set<Action>();
   private presses = new Set<Action>();
   private releases = new Set<Action>();
@@ -72,9 +74,14 @@ export class ControllerInput {
       this.activity = "keyboard";
     });
     window.addEventListener("keyup", (e) => this.keys.delete(e.code));
-    window.addEventListener("pointerdown", () => {
+    window.addEventListener("pointerdown", (e) => {
       this.activity = "mouse";
+      if (e.button === 0) this.mouse.add("primary");
+      if (e.button === 2) this.mouse.add("secondary");
     });
+    window.addEventListener("pointerup", (e) =>
+      this.mouse.delete(e.button === 0 ? "primary" : "secondary"),
+    );
     window.addEventListener("pointermove", (e) => {
       if (e.movementX || e.movementY) this.activity = "mouse";
     });
@@ -98,6 +105,7 @@ export class ControllerInput {
   }
   clear(): void {
     this.keys.clear();
+    this.mouse.clear();
     this.previous.clear();
     this.presses.clear();
     this.releases.clear();
@@ -121,7 +129,7 @@ export class ControllerInput {
     return found;
   }
   movement(keyboard: Point): { vector: Point; scale: number } {
-    if (this.suspended || !this.focused)
+    if (this.suspended || this.blockGameplay || !this.focused)
       return { vector: { x: 0, y: 0 }, scale: 1 };
     return this.frame.device === "gamepad"
       ? {
@@ -175,7 +183,9 @@ export class ControllerInput {
           ? padActions(p, this.settings.bindings)
           : this.state.source === "keyboard" && !this.suspended && this.focused
             ? keyActions(this.keys)
-            : new Set<Action>();
+            : this.state.source === "mouse" && !this.suspended && this.focused
+              ? new Set(this.mouse)
+              : new Set<Action>();
     const axes =
       p && profile
         ? this.settings.axes.map(

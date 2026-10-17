@@ -39,7 +39,7 @@ export function stepDevices(
         pads[0]?.index ??
         null);
   let source = activity ?? state.source;
-  if (preferred === null && focused && !activity) {
+  if (preferred === null && focused) {
     for (const p of pads) {
       const old = state.previous.find(
         (o) => o.index === p.index && o.id === p.id,

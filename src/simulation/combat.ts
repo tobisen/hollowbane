@@ -275,6 +275,7 @@ export function stepCombat(
   world: CombatWorld,
   nav: Navigation = ARENA_NAV,
   keyboard: Point = { x: 0, y: 0 },
+  inputScale = 1,
 ): void {
   world.tick++;
   for (const actor of world.actors) {
@@ -317,6 +318,8 @@ export function stepCombat(
       "wait",
       breakpointFrames(actor.recoveryBonus, RECOVERY_BREAKPOINTS),
       actor.kind === "player" ? keyboard : { x: 0, y: 0 },
+      undefined,
+      actor.kind === "player" ? inputScale : 1,
     );
     actor.controller = next.controller;
     logPhases(world, actor, next.events);

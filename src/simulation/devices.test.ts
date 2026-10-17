@@ -39,4 +39,11 @@ describe("device lifecycle", () => {
     s = stepDevices(s, [pad()]).state;
     expect(stepDevices(s, [held]).pad).not.toBeNull();
   });
+  it("does not lose a newly sampled button edge to an earlier queued DOM event", () => {
+    const s = stepDevices(createDeviceState(), [pad()]).state;
+    const p = { ...pad(), buttons: [0, 0, 1, ...Array<number>(14).fill(0)] };
+    expect(stepDevices(s, [p], null, true, "mouse").state.source).toBe(
+      "gamepad",
+    );
+  });
 });
