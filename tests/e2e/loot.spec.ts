@@ -184,15 +184,18 @@ test("loot labels and inspection retain their visual reference", async ({
   await page.locator("#loot-identify").click();
   await page.locator(".loot-panel > details > summary").click();
   await page.locator("#combat-pause").click();
-  await expect(page).toHaveScreenshot("l1-loot.png", {
-    maxDiffPixelRatio: 0.01,
-    mask: [
-      page.locator(".arena-header"),
-      page.locator(".arena-panel"),
-      page.locator(".skill-bar"),
-      page.locator("#loot-help"),
-    ],
-  });
+  await expect(page).toHaveScreenshot(
+    process.platform === "linux" ? "l1-loot-linux.png" : "l1-loot.png",
+    {
+      maxDiffPixelRatio: 0.01,
+      mask: [
+        page.locator(".arena-header"),
+        page.locator(".arena-panel"),
+        page.locator(".skill-bar"),
+        page.locator("#loot-help"),
+      ],
+    },
+  );
 });
 
 test("multiple labels avoid overlap and duplicate replay preserves identities", async ({
