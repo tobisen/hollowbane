@@ -1,5 +1,6 @@
 import type { Navigation } from "../world/navigation";
 export const CLOISTER_NAV: Navigation = {
+  clearance: 4,
   boundary: [
     { x: 440, y: 365 },
     { x: 740, y: 270 },

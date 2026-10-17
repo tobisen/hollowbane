@@ -77,6 +77,11 @@ export function retarget(
   nav: Navigation,
   target: Point,
 ): Walker {
+  if (
+    Math.hypot(target.x - walker.position.x, target.y - walker.position.y) <
+    1e-9
+  )
+    return stopWalker(walker);
   const route = findPath(nav, walker.position, target);
   // Rejected commands cannot silently cancel an already accepted route.
   return route.length ? { ...walker, route } : walker;
@@ -137,6 +142,7 @@ export function moveTick(
   if (key) result.route = [];
   let budget = result.speed / 60,
     moved = 0;
+  let replanned = false;
   // Consume zero-length and short waypoints in this tick rather than pausing at grid nodes.
   for (let i = 0; i < 128 && budget > 1e-9; i++) {
     const goal = result.route[0];
@@ -160,6 +166,12 @@ export function moveTick(
       y: result.position.y + unit.y * amount,
     };
     if (!segmentWalkable(nav, result.position, next)) {
+      if (!key && goal && !replanned) {
+        const end = result.route.at(-1)!;
+        result.route = findPath(nav, result.position, end);
+        replanned = true;
+        if (result.route.length) continue;
+      }
       result = stopWalker(result);
       break;
     }
