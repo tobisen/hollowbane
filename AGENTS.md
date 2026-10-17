@@ -21,3 +21,5 @@ Phase 4 authorization: user approved G2.5 and authorized Monster AI through its 
 Phase 4 gate checkpoint: DBL-275–281 and DBL-287–288 technically delivered. Runtime ab46984 passed CI/Pages and 29 hosted scenarios. Stop at Monster AI quality review; quality approval remains false. Physical DBL-282–286, reference-hardware performance and broader original parents remain open. Do not begin loot/inventory/skill trees/campaign or new phase work without user approval. Evidence: docs/ai/phase4.md.
 
 User quality feedback authorizes DBL-289 controller gameplay-focus repair within the delivered candidate. Preserve gate stop for new phase work; record browser versus physical evidence separately.
+
+Controller follow-up DBL-290 addresses reported unknown-layout/index readiness with verified generic recovery only. Native friend device metadata is pending; do not infer a raw Xbox/handheld layout from its name or claim physical verification. Keep Monster AI review gate pending.

@@ -3084,5 +3084,18 @@
     "status": "completed",
     "body": "## Acceptance criteria\nD-pad actions during gameplay cannot focus page controls or block analog movement. Controller navigation remains available in menus and settings.\n\n## Non-goals\nNew gameplay systems or claiming physical hardware verification.\n\n## Test requirements\nReproduce failure before fix; exercise all four D-pad directions then analog movement in cloister, combat and monster scenes across browsers; preserve existing menu/navigation coverage.\n\n## Definition of done\nVerified fix committed/published with evidence; Monster AI review remains pending.",
     "evidence": "Confirmed D-pad focus-stealing regression fails before repair. UI navigation now respects gameplay ownership. Full check/format 133 tests; all 22 Chromium controller cases and 42 Firefox/WebKit controller behaviors pass across full suite plus new diagnostics-return fixture. All four D-pad directions and subsequent actual movement verified in three scenes. User follow-up reports unknown layout and missing saved index: that is separate unresolved compatibility/lifecycle scope, not claimed fixed by this patch."
+  },
+  {
+    "id": "DBL-290",
+    "parent": "DBL-009",
+    "title": "Recover selected controller identity and expose activation/layout readiness",
+    "phase": 4,
+    "targetPhase": 5,
+    "deliveryPhase": "4-quality-fix",
+    "priority": "p0",
+    "dependencies": ["DBL-289"],
+    "status": "completed",
+    "body": "## Acceptance criteria\nPersistent explicit controller choice follows its reported ID when its browser index changes; never select an unrelated device that reuses an index. Manual layout overrides survive absent API snapshots and reload. Explain waiting-for-activation versus unsupported mapping.\n\n## Non-goals\nGuessing an unknown vendor button layout or claiming physical hardware success.\n\n## Test requirements\nLegacy settings migration, index reuse/reconnect, unknown mapping override persistence and delayed per-document visibility tests.\n\n## Definition of done\nVerified scoped correction committed; native metadata still required for unrecognized physical layouts.",
+    "evidence": "Verified generic compatibility/lifecycle correction; native physical layout remains unverified pending friend report. Persist explicit reported ID plus index hint, migrate v1 index-only settings, preserve overrides while API list is hidden, follow reindex without binding an unrelated replacement. Readiness separates activation, unsupported layout and API denial; raw configuration/error exposed. Safe capability guard prevents Phaser startup failure under API denial. Full check/format 135 tests; all 25 Chromium and 48 Firefox/WebKit controller cases pass; readiness screenshot reviewed. No arbitrary Xbox raw layout guessed. Publication pending."
   }
 ]

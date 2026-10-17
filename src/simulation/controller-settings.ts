@@ -8,6 +8,7 @@ import {
 export interface ControllerSettings {
   version: 1;
   selected: number | null;
+  deviceId: string | null;
   profile: "auto" | GlyphFamily;
   bindings: PadBindings;
   move: StickSettings;
@@ -21,6 +22,7 @@ export function defaultControllerSettings(): ControllerSettings {
   return {
     version: 1,
     selected: null,
+    deviceId: null,
     profile: "auto",
     bindings: defaultPadBindings(),
     move: { ...DEFAULT_STICK },
@@ -39,6 +41,11 @@ export function validateControllerSettings(
       s.selected === null ||
       (Number.isInteger(s.selected) && s.selected >= 0 && s.selected <= 15)
     ) ||
+    (s.deviceId !== undefined &&
+      s.deviceId !== null &&
+      (typeof s.deviceId !== "string" ||
+        s.deviceId.length === 0 ||
+        s.deviceId.length > 1024)) ||
     !["auto", "xbox", "playstation", "generic"].includes(s.profile) ||
     typeof s.vibration !== "boolean" ||
     !Array.isArray(s.centers) ||
@@ -57,6 +64,7 @@ export function validateControllerSettings(
   return {
     version: 1,
     selected: s.selected,
+    deviceId: s.selected === null ? null : (s.deviceId ?? null),
     profile: s.profile,
     vibration: s.vibration,
     bindings,

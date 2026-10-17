@@ -131,6 +131,6 @@ export function startObservatory(P: typeof Phaser, version: string): void {
     scene: Observatory,
     scale: { mode: P.Scale.FIT, autoCenter: P.Scale.CENTER_BOTH },
     banner: false,
-    input: { gamepad: true },
+    input: { gamepad: controllerInput.nativeGamepadAvailable() },
   });
 }

@@ -67,3 +67,45 @@ it("supports neutral/ownership thresholds on already calibrated axes", () => {
   ).state;
   expect(s.source).toBe("gamepad");
 });
+
+it("follows a saved controller ID across indexes and ignores an unrelated index replacement", () => {
+  const original = { ...pad(), id: "My Xbox" };
+  let s = stepDevices(
+    createDeviceState(),
+    [original],
+    0,
+    true,
+    null,
+    undefined,
+    "My Xbox",
+  ).state;
+  const other = { ...pad(), id: "Other controller" },
+    moved = { ...original, index: 2 };
+  s = stepDevices(s, [other, moved], 0, true, null, undefined, "My Xbox").state;
+  expect(s.selected).toBe(2);
+  const waiting = stepDevices(s, [other], 0, true, null, undefined, "My Xbox");
+  expect(waiting.state.selected).toBeNull();
+  expect(waiting.pad).toBeNull();
+  s = stepDevices(
+    waiting.state,
+    [other, moved],
+    0,
+    true,
+    null,
+    undefined,
+    "My Xbox",
+  ).state;
+  expect(s.selected).toBe(2);
+  expect(s.armed).toBe(true);
+  expect(
+    stepDevices(
+      s,
+      [other, { ...moved, axes: [0.8, 0, 0, 0] }],
+      0,
+      true,
+      null,
+      undefined,
+      "My Xbox",
+    ).pad?.id,
+  ).toBe("My Xbox");
+});

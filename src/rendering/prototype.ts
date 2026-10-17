@@ -610,6 +610,9 @@ export function startPrototype(): Phaser.Game {
       selfShadow: false,
       roundPixels: false,
     },
-    input: { mouse: { preventDefaultWheel: true }, gamepad: true },
+    input: {
+      mouse: { preventDefaultWheel: true },
+      gamepad: controllerInput.nativeGamepadAvailable(),
+    },
   });
 }

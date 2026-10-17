@@ -11,15 +11,20 @@ interface VirtualPad {
 declare global {
   interface Window {
     virtualPads: VirtualPad[];
+    savedVirtualPad?: VirtualPad;
   }
 }
-async function ready(page: Page, url = "./") {
-  await page.addInitScript(() => {
+async function ready(
+  page: Page,
+  url = "./",
+  profile = { id: "Xbox virtual standard", mapping: "standard" },
+) {
+  await page.addInitScript((profile) => {
     window.virtualPads = [
       {
         index: 0,
-        id: "Xbox virtual standard",
-        mapping: "standard",
+        id: profile.id,
+        mapping: profile.mapping,
         connected: true,
         axes: [0, 0, 0, 0],
         buttons: Array.from({ length: 17 }, () => ({
@@ -34,7 +39,7 @@ async function ready(page: Page, url = "./") {
       configurable: true,
       value: () => window.virtualPads,
     });
-  });
+  }, profile);
   await page.goto(url);
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
@@ -655,4 +660,112 @@ test("controller returns from diagnostics to gameplay without a mouse focus clic
   await expect
     .poll(() => page.evaluate(() => window.hollowbanePrototype!.x))
     .toBeGreaterThan(x + 5);
+});
+
+for (const selection of ["auto", "0"]) {
+  test(`unmapped Xbox override survives hidden API and reindex with ${selection} selection`, async ({
+    page,
+  }) => {
+    await ready(page, "./?controller=1", {
+      id: "Xbox nonstandard test device",
+      mapping: "",
+    });
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneInput?.supported))
+      .toBe(false);
+    await page.locator("#pad-profile").selectOption("xbox");
+    await page.locator("#pad-selected").selectOption(selection);
+    await page.locator("#pad-save").click();
+    await expect(page.locator("#pad-error")).toHaveText(
+      "Controller settings saved.",
+    );
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneInput?.supported))
+      .toBe(true);
+    await page.addInitScript(() => {
+      window.savedVirtualPad = window.virtualPads[0]!;
+      window.virtualPads = [];
+    });
+    await page.goto("./");
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-prototype-ready",
+      "true",
+    );
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneInput?.apiStatus))
+      .toBe("waiting");
+    expect(
+      await page.evaluate(() => window.hollowbaneInput!.configuration.profile),
+    ).toBe("xbox");
+    await expect(page.locator("#controller-open")).toContainText(
+      "Activate controller",
+    );
+    await page.evaluate((selection) => {
+      const pad = { ...window.savedVirtualPad!, index: 1 };
+      window.virtualPads =
+        selection === "0"
+          ? [{ ...pad, index: 0, id: "Unrelated replacement" }, pad]
+          : [pad];
+    }, selection);
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneInput?.selected))
+      .toBe(1);
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+      .toBe(true);
+    if (selection === "0") {
+      await page.evaluate(() => {
+        window.virtualPads[0]!.axes = [1, 0, 0, 0];
+      });
+      const tick = await page.evaluate(() => window.hollowbanePrototype!.tick);
+      await page.waitForFunction(
+        (t) => window.hollowbanePrototype!.tick > t + 8,
+        tick,
+      );
+      expect(
+        await page.evaluate(() => window.hollowbanePrototype!.walking),
+      ).toBe(false);
+    }
+    await page.evaluate(() => {
+      window.virtualPads.find((p) => p.index === 1)!.axes = [0.8, 0, 0, 0];
+    });
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+      .toBe(true);
+  });
+}
+test("blocked Gamepad API reports its cause and leaves keyboard gameplay available", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "getGamepads", {
+      value: () => {
+        throw new DOMException(
+          "Gamepad permissions policy blocked access",
+          "SecurityError",
+        );
+      },
+      configurable: true,
+    });
+  });
+  await page.goto("./");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-prototype-ready",
+    "true",
+  );
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.apiStatus))
+    .toBe("blocked");
+  expect(await page.evaluate(() => window.hollowbaneInput!.apiError)).toContain(
+    "permissions policy",
+  );
+  await expect(page.locator("#controller-open")).toContainText(
+    "access unavailable",
+  );
+  await page.locator("#world").focus();
+  await page.keyboard.down("w");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+  await page.keyboard.up("w");
 });

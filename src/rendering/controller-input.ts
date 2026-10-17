@@ -44,6 +44,8 @@ export class ControllerInput {
   frame: ActionFrame = actionFrame("keyboard", new Set(), new Set());
   family: GlyphFamily = "generic";
   supported = false;
+  apiStatus: "waiting" | "ready" | "unavailable" | "blocked" = "waiting";
+  apiError: string | null = null;
   suspended = false;
   blockGameplay = false;
   movementKeys = new Set<string>();
@@ -123,6 +125,15 @@ export class ControllerInput {
     };
     requestAnimationFrame(poll);
   }
+  nativeGamepadAvailable(): boolean {
+    try {
+      if (typeof navigator.getGamepads !== "function") return false;
+      navigator.getGamepads();
+      return true;
+    } catch {
+      return false;
+    }
+  }
   vibrate(): Promise<HapticResult> {
     return pulseHaptics(
       this.actuator,
@@ -171,9 +182,20 @@ export class ControllerInput {
     const start = performance.now();
     let native: readonly (Gamepad | null)[] = [];
     try {
-      native = navigator.getGamepads?.() ?? [];
-    } catch {
-      /* Secure-context/privacy fallback. */
+      if (typeof navigator.getGamepads !== "function") {
+        this.apiStatus = "unavailable";
+        this.apiError = "This browser does not expose the Gamepad API.";
+      } else {
+        native = Array.from(navigator.getGamepads());
+        this.apiStatus = native.some((p) => p?.connected) ? "ready" : "waiting";
+        this.apiError = null;
+      }
+    } catch (error) {
+      this.apiStatus = "blocked";
+      this.apiError =
+        error instanceof Error
+          ? error.message
+          : "Browser blocked controller access.";
     }
     this.pads = Array.from(native).flatMap((p) =>
       p
@@ -189,6 +211,22 @@ export class ControllerInput {
           ]
         : [],
     );
+    if (this.settings.selected !== null && !this.settings.deviceId) {
+      const selected = this.pads.find(
+        (p) => p.connected && p.index === this.settings.selected,
+      );
+      if (selected) {
+        this.settings.deviceId = selected.id;
+        try {
+          localStorage.setItem(
+            CONTROLLER_STORAGE,
+            JSON.stringify(this.settings),
+          );
+        } catch {
+          /* Session-only identity when storage is unavailable. */
+        }
+      }
+    }
     const oldId = this.state.previous.find(
       (p) => p.index === this.state.selected,
     )?.id;
@@ -224,6 +262,7 @@ export class ControllerInput {
       this.focused && !this.suspended,
       this.activity,
       { neutral: 0.001, active: 0.001, delta: 0.001 },
+      this.settings.deviceId,
     );
     this.state = result.state;
     this.activity = null;
@@ -304,6 +343,13 @@ export class ControllerInput {
       this.cachedPollP95 = sorted[Math.floor(sorted.length * 0.95)] ?? 0;
     }
     window.hollowbaneInput = {
+      apiStatus: this.apiStatus,
+      apiError: this.apiError,
+      configuration: {
+        profile: this.settings.profile,
+        index: this.settings.selected,
+        id: this.settings.deviceId,
+      },
       device: this.state.source,
       selected: this.state.selected,
       armed: this.state.armed,
@@ -324,6 +370,13 @@ export const controllerInput = new ControllerInput();
 declare global {
   interface Window {
     hollowbaneInput?: {
+      apiStatus: "waiting" | "ready" | "unavailable" | "blocked";
+      apiError: string | null;
+      configuration: {
+        profile: "auto" | GlyphFamily;
+        index: number | null;
+        id: string | null;
+      };
       device: Device;
       selected: number | null;
       armed: boolean;

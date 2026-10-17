@@ -15,7 +15,7 @@ export function installControllerSettings(): void {
     (_, i) =>
       `<option value="${i}">${i + 1}: ${buttonGlyph(i, "xbox")} / ${buttonGlyph(i, "playstation")}</option>`,
   ).join("");
-  host.innerHTML = `<form id="controller-settings-form"><h2>Input settings</h2><p>D-pad / LS: navigate · Left/right: adjust · A/Cross: choose · B/Circle: back. Unknown nonstandard layouts need an explicit standard override and axis calibration.</p><div class="settings-grid"><fieldset><legend>Device and layout</legend><label>Active controller<select id="pad-selected"><option value="auto">Automatic</option></select></label><label>Layout / glyphs<select id="pad-profile"><option value="auto">Auto standard</option><option value="xbox">Xbox standard override</option><option value="playstation">PlayStation standard override</option><option value="generic">Generic standard override</option></select></label><label>Optional vibration<input type="checkbox" id="pad-vibration"></label>${["Move X", "Move Y", "Aim X", "Aim Y"].map((name, i) => `<label>${name} axis<select id="pad-axis-${i}">${Array.from({ length: 16 }, (_, i) => `<option value="${i}">Axis ${i}</option>`).join("")}</select></label>`).join("")}</fieldset>${[
+  host.innerHTML = `<form id="controller-settings-form"><h2>Input settings</h2><p id="pad-readiness" role="status"></p><p>Device selection and input layout are separate settings.</p><p>D-pad / LS: navigate · Left/right: adjust · A/Cross: choose · B/Circle: back. Unknown nonstandard layouts need an explicit standard override and axis calibration.</p><div class="settings-grid"><fieldset><legend>Device and layout</legend><label>Active controller<select id="pad-selected"><option value="auto">Automatic</option></select></label><label>Input layout<select id="pad-profile"><option value="auto">Auto standard</option><option value="xbox">Xbox standard override</option><option value="playstation">PlayStation standard override</option><option value="generic">Generic standard override</option></select></label><label>Optional vibration<input type="checkbox" id="pad-vibration"></label>${["Move X", "Move Y", "Aim X", "Aim Y"].map((name, i) => `<label>${name} axis<select id="pad-axis-${i}">${Array.from({ length: 16 }, (_, i) => `<option value="${i}">Axis ${i}</option>`).join("")}</select></label>`).join("")}</fieldset>${[
     "move",
     "aim",
   ]
@@ -40,23 +40,35 @@ export function installControllerSettings(): void {
     select = (id: string) => form.querySelector<HTMLSelectElement>(`#${id}`)!,
     input = (id: string) => form.querySelector<HTMLInputElement>(`#${id}`)!;
   const devices = () => {
-    const chosen = select("pad-selected").value;
+    const control = select("pad-selected"),
+      chosen = control.value;
+    control.innerHTML = '<option value="auto">Automatic</option>';
     const saved = hub.settings.selected;
-    select("pad-selected").innerHTML =
-      '<option value="auto">Automatic</option>';
-    for (const p of hub.pads) {
-      const o = new Option(`#${p.index}: ${p.id}`, String(p.index));
-      select("pad-selected").add(o);
-    }
-    if (saved !== null && !hub.pads.some((p) => p.index === saved))
-      select("pad-selected").add(
-        new Option(`#${saved}: not connected`, String(saved)),
+    if (saved !== null) {
+      const connected = hub.pads.find(
+        (p) =>
+          p.connected &&
+          (hub.settings.deviceId
+            ? p.id === hub.settings.deviceId
+            : p.index === saved),
       );
-    select("pad-selected").value = chosen || String(saved ?? "auto");
+      const label = connected
+        ? `Saved: #${connected.index}: ${connected.id}`
+        : `Saved: ${hub.settings.deviceId ?? `controller #${saved}`} — press a button to activate`;
+      control.add(new Option(label, "saved"));
+    }
+    for (const p of hub.pads)
+      if (p.connected)
+        control.add(new Option(`#${p.index}: ${p.id}`, String(p.index)));
+    control.value = Array.from(control.options).some((o) => o.value === chosen)
+      ? chosen
+      : saved === null
+        ? "auto"
+        : "saved";
   };
   const render = (s: ControllerSettings) => {
     devices();
-    select("pad-selected").value = String(s.selected ?? "auto");
+    select("pad-selected").value = s.selected === null ? "auto" : "saved";
     select("pad-profile").value = s.profile;
     input("pad-vibration").checked = s.vibration;
     s.axes.forEach((v, i) => (select(`pad-axis-${i}`).value = String(v)));
@@ -73,7 +85,23 @@ export function installControllerSettings(): void {
       draft.selected =
         select("pad-selected").value === "auto"
           ? null
-          : Number(select("pad-selected").value);
+          : select("pad-selected").value === "saved"
+            ? hub.settings.selected
+            : Number(select("pad-selected").value);
+      draft.deviceId =
+        draft.selected === null
+          ? null
+          : select("pad-selected").value === "saved"
+            ? hub.settings.deviceId
+            : (hub.pads.find((p) => p.index === draft.selected)?.id ?? null);
+      if (
+        draft.selected !== null &&
+        select("pad-selected").value !== "saved" &&
+        !draft.deviceId
+      )
+        throw new Error(
+          "Controller is not visible yet. Press and release a face button, or select Automatic.",
+        );
       draft.profile = select("pad-profile")
         .value as ControllerSettings["profile"];
       draft.vibration = input("pad-vibration").checked;
@@ -115,11 +143,29 @@ export function installControllerSettings(): void {
   render(hub.settings);
   let signature = "";
   const update = () => {
+    const readiness = form.querySelector("#pad-readiness")!;
+    const selected = hub.pads.find((p) => p.index === hub.state.selected);
+    const message =
+      hub.apiStatus === "blocked"
+        ? "Browser blocked controller access. Open the game directly in a browser; see Live controller state for details."
+        : hub.apiStatus === "unavailable"
+          ? "This browser does not expose the Gamepad API."
+          : hub.apiStatus === "waiting"
+            ? "No controller visible to this page yet. Keep the game focused and press/release a face button. Saved layouts are retained."
+            : !selected
+              ? "The saved controller is not visible. Choose Automatic or select a connected device."
+              : !hub.supported
+                ? `Detected ${selected.id}, but the browser supplied no standard input mapping. Selecting the device name is not enough: choose an Input layout (for example Xbox standard override), then Save controller settings.`
+                : !hub.state.armed
+                  ? "Release all sticks and buttons to activate the controller."
+                  : `Controller ready: ${selected.id}. Input layout: ${hub.settings.profile}.`;
+    if (readiness.textContent !== message) readiness.textContent = message;
     const next = hub.pads.map((p) => `${p.index}:${p.id}`).join("|");
     if (signature !== next) {
       signature = next;
       devices();
     }
   };
+  update();
   window.setInterval(update, 500);
 }

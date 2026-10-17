@@ -133,7 +133,10 @@ export function installControllerUI(): void {
     return false;
   };
   const loop = (now: number) => {
-    widget.hidden = hub.pads.length === 0;
+    widget.hidden =
+      hub.apiStatus === "waiting" &&
+      hub.settings.profile === "auto" &&
+      hub.settings.selected === null;
     const active = document.activeElement,
       gameFocus =
         Boolean(world()) && (active === world() || active === document.body);
@@ -208,18 +211,28 @@ export function installControllerUI(): void {
     if (now - refreshedAt > 100) {
       refreshedAt = now;
       widget.textContent =
-        hub.frame.device === "gamepad"
-          ? hub.supported
-            ? contextPrompt(
-                location.search.includes("combat") ||
-                  location.search.includes("monsters")
-                  ? "combat"
-                  : "movement",
-                hub.family,
-                hub.settings.bindings,
-              )
-            : "Unknown layout · F2: choose mapping in controller settings"
-          : "Controller menu · F2";
+        hub.apiStatus === "blocked" || hub.apiStatus === "unavailable"
+          ? "Controller access unavailable · Settings"
+          : hub.apiStatus === "waiting"
+            ? "Activate controller · press and release a face button · Settings"
+            : hub.state.selected === null && hub.settings.selected !== null
+              ? "Saved controller not visible · Settings"
+              : !hub.supported
+                ? "Controller detected · choose layout in Settings"
+                : !hub.state.armed
+                  ? "Release sticks and buttons to activate · Settings"
+                  : hub.frame.device === "gamepad"
+                    ? hub.supported
+                      ? contextPrompt(
+                          location.search.includes("combat") ||
+                            location.search.includes("monsters")
+                            ? "combat"
+                            : "movement",
+                          hub.family,
+                          hub.settings.bindings,
+                        )
+                      : "Unknown layout · F2: choose mapping in controller settings"
+                    : "Controller menu · F2";
       menu.querySelector("#controller-prompts")!.textContent =
         hub.frame.device === "gamepad"
           ? contextPrompt("menu", hub.family, hub.settings.bindings)

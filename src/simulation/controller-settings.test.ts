@@ -40,3 +40,20 @@ describe("controller persistence", () => {
     expect(validateControllerSettings(s).bindings.pause).toEqual([16]);
   });
 });
+
+it("migrates index-only settings without losing explicit layout or remapping", () => {
+  const current = defaultControllerSettings();
+  current.selected = 0;
+  current.profile = "xbox";
+  const legacy = { ...current } as Partial<typeof current>;
+  delete legacy.deviceId;
+  expect(readControllerSettings(JSON.stringify(legacy))).toEqual(current);
+  current.deviceId = "Xbox wireless #reported";
+  expect(readControllerSettings(JSON.stringify(current))).toEqual(current);
+  expect(() =>
+    validateControllerSettings({ ...current, deviceId: "" }),
+  ).toThrow();
+  expect(
+    validateControllerSettings({ ...current, selected: null }).deviceId,
+  ).toBeNull();
+});

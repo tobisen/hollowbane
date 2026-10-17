@@ -29,13 +29,18 @@ export function stepDevices(
   focused = true,
   activity: Device | null = null,
   thresholds = { neutral: 0.18, active: 0.2, delta: 0.04 },
+  preferredId: string | null = null,
 ): { state: DeviceState; pad: PadSnapshot | null; disconnected: boolean } {
   const pads = snapshots.filter((p) => p.connected),
     disconnected =
       state.selected !== null && !pads.some((p) => p.index === state.selected);
   let selected =
     preferred !== null
-      ? (pads.find((p) => p.index === preferred)?.index ?? null)
+      ? ((preferredId
+          ? (pads.find((p) => p.index === preferred && p.id === preferredId) ??
+            pads.find((p) => p.id === preferredId))
+          : pads.find((p) => p.index === preferred)
+        )?.index ?? null)
       : (pads.find((p) => p.index === state.selected)?.index ??
         pads[0]?.index ??
         null);
