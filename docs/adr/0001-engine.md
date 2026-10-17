@@ -1,6 +1,6 @@
 # ADR 0001 — Phaser 4 behind a renderer adapter
 
-Date: 2026-10-16. Status: Phaser 4.2.1 preserved at approved G0 and in the authorized Phase 1 visual candidate; G1 approval pending.
+Date: 2026-10-16. Status: Phaser 4.2.1 preserved at approved G0 and in the authorized Phase 1 visual candidate; G1 approved and hosted verification complete.
 
 ## Context
 

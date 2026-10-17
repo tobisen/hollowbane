@@ -1,6 +1,6 @@
 # Hollowbane
 
-Original browser-first, singleplayer dark fantasy ARPG. Current local build is the G1 visual prototype: a detailed gothic cloister, eight-direction animated wanderer, click/WASD traversal, depth sorting, smooth camera/zoom and atmospheric effects. G0 is approved; G1 awaits review. No combat or loot. The deployed site remains the G0 candidate until publication is approved.
+Original browser-first, singleplayer dark fantasy ARPG. Current local build is the G1 visual prototype: a detailed gothic cloister, eight-direction animated wanderer, click/WASD traversal, depth sorting, smooth camera/zoom and atmospheric effects. G0 and G1 are approved. The [published prototype](https://tobisen.github.io/hollowbane/) passed CI and all ten hosted browser tests. No combat or loot.
 
 ## Development
 

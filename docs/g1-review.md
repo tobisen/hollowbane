@@ -6,7 +6,7 @@ Review checkpoint date: 2026-10-17 (Europe/Stockholm).
 
 ## Review the candidate
 
-Run `npm ci`, `npm run dev`, then open http://localhost:5173/hollowbane/ . The root route runs Phaser 4.2.1. `?gallery=1` opens the eight-direction animation atelier; `?engine=3` and `?engine=4` retain the G0 observatory. The user approved G1 and publication; the 18 commits through 2e3bf19 are on main. Hosted rollout awaits successful CI.
+Run `npm ci`, `npm run dev`, then open http://localhost:5173/hollowbane/ . The root route runs Phaser 4.2.1. `?gallery=1` opens the eight-direction animation atelier; `?engine=3` and `?engine=4` retain the G0 observatory. The user approved G1 and publication; the 18 commits through 2e3bf19 are on main. The hosted prototype is verified at https://tobisen.github.io/hollowbane/.
 
 - Click reachable flagstones to walk. A second click immediately replaces the route.
 - Click the world or focus it with Tab, then use WASD/arrows. Keyboard input overrides a click route.
@@ -23,7 +23,7 @@ Original built-in imagegen reference kit: detailed cloister background, eight-di
 
 ## Acceptance limits
 
-The environment is a single illustrated orthographic-style background plate with authored traversal. It does not provide procedural tile geometry, arbitrary bridges/elevation, streamed regions or general building occlusion. Its perspective and baked lighting are visually authored rather than physically reconstructed. Runtime effects add mist, lantern glow, selective actor lighting and contact shadows; production normal maps and physically cast dynamic shadows remain deferred. Only idle and walk animation are provided; generated frame consistency still needs human G1 review. AI provenance/rights review remains a release requirement.
+The environment is a single illustrated orthographic-style background plate with authored traversal. It does not provide procedural tile geometry, arbitrary bridges/elevation, streamed regions or general building occlusion. Its perspective and baked lighting are visually authored rather than physically reconstructed. Runtime effects add mist, lantern glow, selective actor lighting and contact shadows; production normal maps and physically cast dynamic shadows remain deferred. Only idle and walk animation are provided; generated frame consistency remains an asset-production limitation. AI provenance/rights review remains a release requirement.
 
 Keyboard controls are fixed for this prototype; remapping, audio, stamina/run modes, crowd steering, monsters and later gameplay are deferred. Chromium has the complete regression suite; Firefox 157 and WebKit 27.2 also passed WebGL, movement and zoom smoke tests. Real Safari/other hardware certification is not inferred from WebKit automation. Native/full and software/balanced performance samples are recorded separately.
 
@@ -31,7 +31,7 @@ Keyboard controls are fixed for this prototype; remapping, audio, stamina/run mo
 
 The candidate must pass `npm run check`, `npm run format:check`, full Playwright regression, inspected screenshots and recorded production performance samples before review. The G0 documentation-only push 4e63a8e failed its Linux browser step; its exact original failure could not be read without authenticated log access. The local harness fix selects explicit software WebGL, uses a single worker and emits GitHub annotations; all local regression checks pass. Remote verification of subsequent commits is blocked until push approval.
 
-G1 visual quality/playability and publication were approved by the user. Complete publication verification, then stop; no later phase implementation is authorized.
+G1 visual quality/playability and publication were approved by the user. Publication verification is complete; stop here; no later phase implementation is authorized.
 
 Some source issues are broader than this approved prototype. DBL-015 (bridges/general layer rules), DBL-018 (production normals/physical shadows), DBL-019 (general streaming), DBL-023 (normal-map/full action export), and DBL-029 (moving-obstacle replanning) remain partial rather than falsely closed. Their G1 components are implemented and tested. Audio DBL-027, stamina DBL-030, crowd steering DBL-033 and later gameplay are deferred.
 
@@ -48,7 +48,7 @@ On this Apple M4 / macOS arm64 production preview at 1920×1080, the 60-second C
 - Firefox full-detail reference: [g1-firefox-full.json](performance/g1-firefox-full.json).
 - Browser compatibility checks: [g1-browser-smoke.json](performance/g1-browser-smoke.json).
 
-Final checks: 40 unit tests and 10 Chromium E2E checks pass, plus Firefox/WebKit smoke checks. Runtime assets regenerate byte-for-byte; source/provenance/alpha/pivot/budget validation, typecheck, lint, format and production build pass. GitHub CLI was installed via Homebrew but has no authenticated hosts; live import remains blocked. G1 and publication were approved by the user. The initial main push failed two Linux visual tests; the narrow cross-platform line-height and explicit camera-settle fixes retain the existing image tolerances. CI and hosted verification are in progress.
+Final checks: 40 unit tests and 10 Chromium E2E checks pass, plus Firefox/WebKit smoke checks. Runtime assets regenerate byte-for-byte; source/provenance/alpha/pivot/budget validation, typecheck, lint, format and production build pass. GitHub CLI was installed via Homebrew but has no authenticated hosts; live import remains blocked. G1 and publication were approved by the user. The initial main push failed two Linux visual tests; the narrow cross-platform line-height and explicit camera-settle fixes retain the existing image tolerances. CI and hosted verification passed.
 
 ## Granular completion records
 
@@ -57,3 +57,5 @@ Eight scoped issues DBL-232–239 separate delivered G1 sorting/atmosphere/packa
 ## Approved publication follow-up — 2026-10-17
 
 User approved the G1 visual candidate and publishing its 18 commits. CI run 39006653964 passed static checks and most browser cases, but exposed platform-default caption line-height and a snapshot taken before player/camera settlement. Gallery captions now use explicit 14px line-height. The occlusion test waits for idle locomotion and correct clamped camera position before comparing, with sufficient capture time for software rendering. Image tolerances remain 1%; no product movement or camera behavior is weakened.
+
+Publication evidence: commit `7f06f65`, [successful CI and Pages deployment](https://github.com/tobisen/hollowbane/actions/runs/39006960568). All ten Chromium E2E tests passed against https://tobisen.github.io/hollowbane/ on 2026-10-17, covering runtime requests/errors, visual baselines, eight-direction animation, click/WASD movement, collision, camera/zoom, occlusion, viewport/focus and detail controls. G1 is approved, published and verified. No later phase is authorized or started.
