@@ -1,6 +1,9 @@
 # Status
 
+- Phase 2.5 progress: DBL-263. G2.5 approval pending; no Phase 3 resumption.
+
 - G0/G1 approved; Phase 2 movement quality approved by user on 2026-10-17. Phaser remains 4.2.1.
+- Current authorization: Phase 2.5 Gamepad Support through G2.5; DBL-263–274 / DBL-GP01–12. Phase 3 is frozen and its completed work preserved. Resume requires DBL-274 plus explicit G2.5 approval. See docs/gamepad/phase2.5.md.
 - Phase 3 Combat Fundamentals quality candidate delivered and hosted. **Stop for user combat quality review.** This is delivery evidence, not subjective combat-feel approval. No loot, inventory, advanced AI, skill trees or campaign is authorized.
 - Completed Phase 3 scoped issues: DBL-253–259, DBL-261–262. DBL-260 remains planned for dedicated combat art/audio polish. Original parents remain partial: DBL-036 has integrated idle/move/windup/active/recovery/hitstun/dead, but block and full original acceptance remain incomplete.
 - Playable arena: deterministic fixed-tick committed melee/projectile attacks, configurable timing/breakpoints, hover/selection/facing/approach, seeded physical accuracy/defense/critical/armor/resistance, health/death, hit recovery/stagger guard, swept knockback foundation, target dummies/patrol/minimal hostile, procedural animation/audio proxies and diagnostics.

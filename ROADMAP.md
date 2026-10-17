@@ -54,3 +54,9 @@ Original source phases 00–01 cover initialization. Target phases 04–05 split
 ## Source-to-target allocation
 
 The import uses `phase` for original source numbering and `targetPhase` for GitHub phase labels/milestones. Topic allocation is explicit in docs/backlog.json. Target phase 04 (world prototype) is an integration gate composed from projection, art and movement requirements; it has no fabricated replacement DBL ID. Source companion/challenge systems map to target phase 27; source save/reliability requirements map to target phase 34. Broader source requirements are split into new dependent IDs only when entering an approved phase.
+
+## Delivery insertion: Phase 2.5 — Complete Gamepad & Controller Support
+
+Authorized 2026-10-17, after approved movement and before any further combat development. This delivery phase does not renumber the original 36 target phases above. All completed Phase 3 work through `4f68d1f` is preserved; the request to pause after DBL-253 is applied prospectively because later combat increments were already completed. No combat systems are added in this phase.
+
+DBL-GP01–12 map uniquely to stable DBL-263–274 (see BACKLOG.md). Complete semantic input, lifecycle/profiles, analog movement/aim, existing-screen navigation, prompts, persistent settings, calibration, safety/haptics, browser/performance validation, then stop at **G2.5**. Phase 3 resumption depends on DBL-274 completion **and explicit G2.5 user approval**; docs/gamepad/gates.json records this dependency. Emulated browser validation never substitutes for physical-controller verification.

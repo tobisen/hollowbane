@@ -250,3 +250,22 @@ The 231 original requirements/IDs remain intact. Broad parents stay partial; the
 | DBL-237 | DBL-029 | G1 static-obstacle A-star with precise grid joins        |
 | DBL-238 | DBL-031 | G1 retarget and focus-loss locomotion policy             |
 | DBL-239 | DBL-034 | G1 reachable-ground cursor and destination feedback      |
+
+## Phase 2.5 — Gamepad support (G2.5)
+
+Original numeric IDs and all 36 roadmap phases remain unchanged. Requested GP IDs are aliases, not duplicate issues. Phase 3 is frozen with its completed increments preserved. Resuming Phase 3 requires DBL-274 and explicit G2.5 approval.
+
+| Requested ID | Stable issue | Scope                                        |
+| ------------ | ------------ | -------------------------------------------- |
+| DBL-GP01     | DBL-263      | Unified semantic actions                     |
+| DBL-GP02     | DBL-264      | Lifecycle and active-controller selection    |
+| DBL-GP03     | DBL-265      | Standard/vendor mapping profiles             |
+| DBL-GP04     | DBL-266      | Analog axes, deadzones and speed curves      |
+| DBL-GP05     | DBL-267      | Movement integration and priority            |
+| DBL-GP06     | DBL-268      | Independent aim and existing action adapters |
+| DBL-GP07     | DBL-269      | Every existing screen/menu navigation        |
+| DBL-GP08     | DBL-270      | Context prompts and device glyphs            |
+| DBL-GP09     | DBL-271      | Persistent remapping and conflicts           |
+| DBL-GP10     | DBL-272      | Diagnostics/calibration                      |
+| DBL-GP11     | DBL-273      | Vibration and safe input lifecycle           |
+| DBL-GP12     | DBL-274      | Cross-browser/performance evidence and G2.5  |

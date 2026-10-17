@@ -1,0 +1,10 @@
+{
+  "phase3": {
+    "frozen": true,
+    "preservedThrough": "4f68d1f",
+    "resumeRequires": ["DBL-274", "G2.5-user-approval"]
+  },
+  "G2.5": {
+    "approved": false
+  }
+}

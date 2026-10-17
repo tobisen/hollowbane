@@ -11,3 +11,5 @@ Phase authorization update (2026-10-17): User approved Phase 2 movement quality 
 Phase 3 continuation policy (2026-10-17): After each verified issue commit, continue automatically to the next ready scoped issue. Stop only at the combat quality gate, a critical blocker, or an outside-scope decision. Preserve checkpoint evidence for another Codex session.
 
 Phase 3 gate checkpoint (2026-10-17): DBL-253–259 and DBL-261–262 delivered; CI/Pages and hosted combat verified. Stop at combat quality review. DBL-260 art/audio polish and incomplete original parents remain visible; do not continue gameplay work beyond this gate without user approval.
+
+Priority change (2026-10-17): Phase 2.5 Gamepad Support is authorized through G2.5. Preserve completed combat through 4f68d1f; freeze further Phase 3 work. Execute DBL-263–274 (aliases DBL-GP01–12) sequentially and autonomously, committing verified increments. Phase 3 resumption requires DBL-274 and explicit G2.5 user approval. Never claim physical-controller verification from virtual tests.
