@@ -255,6 +255,7 @@ export function startPrototype(): Phaser.Game {
       world.addEventListener("pointerdown", down);
       world.addEventListener("pointermove", move);
       world.addEventListener("pointerup", release);
+      world.addEventListener("blur", release);
       world.addEventListener("pointercancel", release);
       world.addEventListener("lostpointercapture", release);
       world.addEventListener("pointerleave", leave);
@@ -271,6 +272,7 @@ export function startPrototype(): Phaser.Game {
         world.removeEventListener("pointerdown", down);
         world.removeEventListener("pointermove", move);
         world.removeEventListener("pointerup", release);
+        world.removeEventListener("blur", release);
         world.removeEventListener("pointercancel", release);
         world.removeEventListener("lostpointercapture", release);
         world.removeEventListener("pointerleave", leave);
@@ -365,8 +367,9 @@ export function startPrototype(): Phaser.Game {
         gait: this.walker.gait === "run" ? "Running" : "Walking",
       };
       this.commandFeedback = messages[result.feedback];
-      document.querySelector("#world-status")!.textContent =
-        this.commandFeedback;
+      const status = document.querySelector("#world-status")!;
+      if (status.textContent !== this.commandFeedback)
+        status.textContent = this.commandFeedback;
       const target = this.walker.route.at(-1);
       if (target) {
         const p = onGround(target);
@@ -499,7 +502,7 @@ export function startPrototype(): Phaser.Game {
         document.querySelector<HTMLElement>("#world")!.style.cursor = reachable
           ? "crosshair"
           : "default";
-        if (this.pointerHeld && this.game.loop.frame % 6 === 0) {
+        if (this.pointerHeld) {
           const next = fromGround(target);
           if (
             !this.lastHeldTarget ||
@@ -526,8 +529,9 @@ export function startPrototype(): Phaser.Game {
       this.publishState(occluded);
       if (this.game.loop.frame % 30 === 0) {
         const d = this.diagnostics.state;
-        document.querySelector("#movement-feedback")!.textContent =
-          `${this.walker.gait === "run" ? "Run" : "Walk"} · ${this.commandFeedback}${this.walker.queuedTargets.length ? ` · ${this.walker.queuedTargets.length} queued` : ""}`;
+        const feedback = document.querySelector("#movement-feedback")!;
+        const message = `${this.walker.gait === "run" ? "Run" : "Walk"} · ${this.commandFeedback}${this.walker.queuedTargets.length ? ` · ${this.walker.queuedTargets.length} queued` : ""}`;
+        if (feedback.textContent !== message) feedback.textContent = message;
         document.querySelector("#world-metrics")!.textContent =
           `PHASER ${Phaser.VERSION} · ${d.renderer.toUpperCase()} · ${d.fps.toFixed(0)} FPS · P95 ${d.p95FrameMs.toFixed(1)} MS`;
       }

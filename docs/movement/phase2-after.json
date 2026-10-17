@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-17T06:28:28.422Z",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "browser": "156.0.8078.4",
+    "rendererMode": "Explicit SwiftShader software WebGL; adaptive balanced detail",
+    "browserName": "chromium",
+    "workload": "Continuous keyboard traversal; decorative effects active",
+    "server": "local production preview"
+  },
+  "seconds": 30,
+  "samples": 1451,
+  "medianFps": 59.88023952095548,
+  "p95FrameMs": 33.399999999999636,
+  "p99FrameMs": 33.400000000001455,
+  "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+  "metrics": {
+    "engine": "4.2.1",
+    "renderer": "WebGL",
+    "samples": 1955,
+    "fps": 48.89296845486181,
+    "p95FrameMs": 21.670000000000435,
+    "readyMs": 1744.7999999970198,
+    "heapBytes": 14300000,
+    "drawCalls": 12
+  },
+  "renderState": {
+    "x": 680.4393652089342,
+    "y": 461.5333911034518,
+    "direction": 2,
+    "walking": true,
+    "gait": "walk",
+    "speed": 3,
+    "motion": "move",
+    "queuedMoves": 0,
+    "commandFeedback": "Ready",
+    "frame": 22,
+    "zoom": 1.25,
+    "tick": 2379,
+    "routeLength": 0,
+    "destination": null,
+    "occluded": 0,
+    "decorationPaused": false,
+    "inputFeedbackMs": 1.8000000044703484,
+    "inputSamples": 40,
+    "renderWidth": 960,
+    "renderHeight": 540,
+    "balancedDetail": true,
+    "view": {
+      "x": 0,
+      "y": 29.410287895931447,
+      "width": 1536,
+      "height": 864
+    }
+  },
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "resources": [
+    {
+      "name": "index-C08I2enj.js",
+      "bytes": 1328
+    },
+    {
+      "name": "index-DxoBu8QJ.css",
+      "bytes": 746
+    },
+    {
+      "name": "prototype-7nghaurF.css",
+      "bytes": 1548
+    },
+    {
+      "name": "diagnostics-lbkVggx2.js",
+      "bytes": 739
+    },
+    {
+      "name": "prototype-IKloZrg1.js",
+      "bytes": 9890
+    },
+    {
+      "name": "phaser.esm-xoYOsKJC.js",
+      "bytes": 371536
+    },
+    {
+      "name": "cloister.webp",
+      "bytes": 631876
+    },
+    {
+      "name": "props.webp",
+      "bytes": 608438
+    },
+    {
+      "name": "wanderer.webp",
+      "bytes": 511732
+    }
+  ],
+  "inputFeedback": {
+    "samples": 12,
+    "p95Ms": 38.80000000447035
+  },
+  "errors": []
+}

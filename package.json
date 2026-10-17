@@ -23,7 +23,8 @@
     "assets:package": "node scripts/package-assets.mjs",
     "assets:export": "node scripts/package-assets.mjs && node scripts/export-sprites.mjs",
     "benchmark": "node scripts/benchmark.mjs",
-    "test:browsers": "node scripts/browser-smoke.mjs"
+    "test:browsers": "node scripts/browser-smoke.mjs",
+    "test:movement": "playwright test --config playwright.movement.config.ts"
   },
   "dependencies": {
     "phaser": "4.2.1"

@@ -323,9 +323,10 @@
     "phase": 4,
     "priority": "p0",
     "dependencies": ["DBL-029"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nWalk/run mode och valfritt stamina-system; kalibrera mot målkänsla.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 04; P0. Target roadmap phase 05; source phase metadata retained.\n\n## Dependencies\nDBL-029\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Walk/run mode och valfritt stamina-system; kalibrera mot målkänsla.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-030; no known critical regression.\n",
-    "targetPhase": 5
+    "targetPhase": 5,
+    "evidence": "Configurable walk/run, acceleration/deceleration and distance-driven animation delivered in DBL-240/243. Movement-feel approval awaits the Phase 2 quality gate; optional stamina is omitted and original run artwork is a tracked placeholder."
   },
   {
     "id": "DBL-031",
@@ -387,9 +388,10 @@
     "phase": 5,
     "priority": "p0",
     "dependencies": ["DBL-035"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nAction states: idle, move, windup, strike, recovery, hitstun, block, dead.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-035\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Action states: idle, move, windup, strike, recovery, hitstun, block, dead.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-036; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Only the Phase 2 idle/move state foundation is delivered in DBL-240. Windup/strike/recovery/hitstun/block/dead and all combat behavior remain explicitly unauthorized and unimplemented."
   },
   {
     "id": "DBL-037",
@@ -2493,8 +2495,9 @@
     "priority": "p0",
     "parent": "DBL-035",
     "dependencies": ["DBL-243"],
-    "status": "planned",
-    "body": "## Purpose\nPhase 2 movement quality gate, browser interactions and latency evidence\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nKeep existing checks green; deterministic replay/navigation/collision and browser scenarios; measure input latency/frame pacing; inspect visual evidence; document remaining limits; stop for user movement approval.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+    "status": "completed",
+    "body": "## Purpose\nPhase 2 movement quality gate, browser interactions and latency evidence\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nKeep existing checks green; deterministic replay/navigation/collision and browser scenarios; measure input latency/frame pacing; inspect visual evidence; document remaining limits; stop for user movement approval.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n",
+    "evidence": "Movement gate candidate complete: 61 unit tests, 15 Chromium E2E cases, five movement cases per Chromium/Firefox/WebKit, smoke checks, original visual baselines unchanged, inspected captures and retained matched 30-second performance samples. Balanced median 59.9 FPS, frame p95 33.4 ms, event-to-movement input p95 38.8 ms; subjective quality approval remains user-owned. No combat or later gate crossed."
   },
   {
     "id": "DBL-245",

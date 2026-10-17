@@ -138,6 +138,7 @@ main.prototype {
   color: #89979d;
 }
 .world-controls {
+  backdrop-filter: blur(6px);
   position: absolute;
   right: 36px;
   bottom: 40px;
@@ -316,4 +317,9 @@ main.prototype {
   .location-card {
     bottom: 175px;
   }
+}
+
+/* Composite the toolbar once rather than creating one blurred surface per control. */
+.prototype .world-controls button {
+  backdrop-filter: none;
 }

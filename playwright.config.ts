@@ -5,16 +5,21 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   use: {
-    baseURL: "http://127.0.0.1:4173/hollowbane/",
+    baseURL:
+      process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:4173/hollowbane/",
     viewport: { width: 1280, height: 800 },
     launchOptions: {
       args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"],
     },
   },
-  webServer: {
-    command: "npm run build && npm run preview -- --host 127.0.0.1",
-    url: "http://127.0.0.1:4173/hollowbane/",
-    reuseExistingServer: !process.env.CI,
-  },
+  ...(process.env.PLAYWRIGHT_BASE_URL
+    ? {}
+    : {
+        webServer: {
+          command: "npm run build && npm run preview -- --host 127.0.0.1",
+          url: "http://127.0.0.1:4173/hollowbane/",
+          reuseExistingServer: !process.env.CI,
+        },
+      }),
   reporter: process.env.CI ? [["list"], ["github"]] : "list",
 });
