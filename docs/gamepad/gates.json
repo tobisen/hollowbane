@@ -68,11 +68,34 @@
       "DBL-297",
       "DBL-298"
     ],
-    "openPerformanceFollowup": "DBL-299"
+    "openPerformanceFollowup": "Scoped DBL-299 complete; broader software/native/full-detail DBL-245/246/074 remain open"
   },
   "polish": {
     "authorized": true,
     "qualityGateApproved": false,
-    "scope": ["DBL-299", "DBL-309"]
+    "scope": ["DBL-299", "DBL-309"],
+    "technicalCandidateDelivered": true,
+    "stoppedForReview": true,
+    "runtimeCommit": "2ea9256",
+    "ciRun": "39041156725",
+    "unitTests": 176,
+    "chromiumCases": 68,
+    "firefoxWebkitSkillPolishCases": 30,
+    "hostedControllerSkillPolishCases": 42,
+    "physicalControllerVerified": false,
+    "completedIssues": [
+      "DBL-299",
+      "DBL-300",
+      "DBL-301",
+      "DBL-302",
+      "DBL-303",
+      "DBL-304",
+      "DBL-305",
+      "DBL-306",
+      "DBL-307",
+      "DBL-308",
+      "DBL-309"
+    ],
+    "evidence": "docs/polish/milestone.md and performance.json; user quality approval remains false"
   }
 }

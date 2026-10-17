@@ -71,4 +71,6 @@ G4 Monster AI approved by user. Original topic 10 and scoped source DBL-044/046/
 
 ## Intermediate Gameplay & Visual Polish
 
-Skills technically approved. DBL-299 HUD performance, then scoped DBL-300 motion, 301 skill effects, 302 HUD readability, 303 audio, 304 contact/lighting consistency, 305 repeated performance/regression/gate. These refine existing DBL-260/042/050/057/063/074 slices, not duplicate full requirements. Preserve the original 36 phases and IDs; no gameplay expansion. Stop for polish review.
+Skills technically approved. DBL-299 HUD performance, then scoped DBL-300 motion, 301 skill effects, 302 HUD readability, 303 audio, 304 contact/lighting consistency, 305 regression/showcase, 306 repeated performance, 307 hosted verification, 308 HUD-safe camera and 309 final gate evidence. These refine existing DBL-260/042/050/057/063/074 slices, not duplicate full requirements. Preserve the original 36 phases and IDs; no gameplay expansion. Stop for polish review.
+
+Polish technical candidate delivered: scoped DBL-299–309 complete; user quality approval pending. Original 36 phases, IDs and broader partial parents preserved. Stop before new gameplay. Evidence: docs/polish/milestone.md.

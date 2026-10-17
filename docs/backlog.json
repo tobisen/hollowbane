@@ -3349,7 +3349,8 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p1",
     "dependencies": ["DBL-307", "DBL-308"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nCollect final verified gameplay/visual/audio/performance and public evidence, then stop for user review.\n\n## Non-goals\nNew gameplay or claiming physical hardware results from emulation.\n\n## Test requirements\nRecord CI, hosted verification and scoped camera correction evidence; all existing regression checks stay green.\n\n## Definition of done\nReview candidate delivered; user approval remains false and no next phase begins."
+    "status": "complete",
+    "body": "## Acceptance criteria\nCollect final verified gameplay/visual/audio/performance and public evidence, then stop for user review.\n\n## Non-goals\nNew gameplay or claiming physical hardware results from emulation.\n\n## Test requirements\nRecord CI, hosted verification and scoped camera correction evidence; all existing regression checks stay green.\n\n## Definition of done\nReview candidate delivered; user approval remains false and no next phase begins.",
+    "evidence": "docs/polish/milestone.md; final runtime 2ea9256, 176 unit/68 CI Chromium/30 Firefox-WebKit/42 hosted; original gameplay untouched; stopped for user polish review, approval false."
   }
 ]
