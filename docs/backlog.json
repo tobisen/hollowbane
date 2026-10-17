@@ -3453,9 +3453,9 @@
     "deliveryPhase": "loot-l1",
     "priority": "p0",
     "dependencies": ["DBL-316", "DBL-319"],
-    "status": "planned",
+    "status": "complete",
     "body": "## Acceptance criteria\nL1 repeated performance and hosted verification. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review.",
-    "evidence": "Initial timing retained locally; burst test exposed correlated first30 rolls across nearby seeds. Pause publication/final timing until scoped DBL-319 correction."
+    "evidence": "Final CI/Pages39067012054 (b565a1e; app source d3179c4) verify/deploy success;74 Chromium,194 unit,40 final FF-WebKit combined and48 hosted scenarios pass. 18-case corrected-content2 performance and1000 death bursts retained; software threshold limitation explicit. docs/loot/l1.md."
   },
   {
     "id": "DBL-318",
