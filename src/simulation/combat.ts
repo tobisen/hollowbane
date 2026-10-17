@@ -1,3 +1,4 @@
+import type { Element } from "./skill-content";
 import {
   launchProjectile,
   projectileContact,
@@ -37,6 +38,7 @@ export const ARENA_NAV: Navigation = {
 export type Weapon = "melee" | "projectile";
 export interface CombatActor {
   id: number;
+  powerMultiplier?: number;
   movement?: MovementConfig;
   name: string;
   kind: "player" | "dummy" | "moving" | "hostile";
@@ -77,6 +79,7 @@ export type CombatEvent =
 export interface CombatHooks {
   beforeTick?: () => void;
   strike?: (actor: CombatActor) => boolean;
+  afterTick?: () => void;
   controlsActor?: (actor: CombatActor) => boolean;
 }
 export interface CombatWorld {
@@ -188,6 +191,7 @@ export function applyCombatHit(
   source: CombatActor,
   target: CombatActor,
   nav: Navigation,
+  hit?: { damage: number; element: Element; guaranteed?: boolean },
 ): void {
   if (target.hp <= 0 || source.hp <= 0) return;
   if (world.tick < target.invulnerableUntil) {
@@ -203,7 +207,19 @@ export function applyCombatHit(
     world.seed = (Math.imul(world.seed, 1664525) + 1013904223) >>> 0;
     return world.seed / 4294967296;
   };
-  const result = resolveDamage(source.offense, target.defense, random);
+  const result = resolveDamage(
+    {
+      ...source.offense,
+      damage:
+        (hit?.damage ?? source.offense.damage) * (source.powerMultiplier ?? 1),
+      ...(hit?.guaranteed ? { criticalChance: 0 } : {}),
+    },
+    target.defense,
+    random,
+    undefined,
+    hit?.element ?? "physical",
+    hit?.guaranteed ?? false,
+  );
   log(world, {
     tick: world.tick,
     actor: source.id,
@@ -421,4 +437,5 @@ export function stepCombat(
     projectile.position = end;
     return true;
   });
+  hooks.afterTick?.();
 }

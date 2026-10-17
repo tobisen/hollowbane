@@ -19,3 +19,5 @@
 - DBL-291 complete: six original prototype definitions + passive, atomic validation; 137 unit tests/full check pass. DBL-292 execution next.
 
 - DBL-292 complete: shared timeline execution/resources/breakpoints, 141 unit tests/full check. DBL-293 effects next.
+
+- DBL-293 complete: elements, geometry, projectiles and statuses; full check 150 tests. DBL-294 playable skill arena next.

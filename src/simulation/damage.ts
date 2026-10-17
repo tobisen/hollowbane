@@ -1,3 +1,4 @@
+import type { Element } from "./skill-content";
 /** Deterministic physical damage: RNG is injected, never global. */
 export interface Offense {
   damage: number;
@@ -9,6 +10,7 @@ export interface Defense {
   defense: number;
   armor: number;
   physicalResistance: number;
+  resistances?: Partial<Record<Element, number>>;
 }
 export interface DamageFormula {
   minimumAccuracy: number;
@@ -25,7 +27,7 @@ export const DAMAGE_FORMULA: Readonly<DamageFormula> = Object.freeze({
   maximumResistance: 0.75,
 });
 export type DamageResult = {
-  type: "physical";
+  type: Element;
   outcome: "hit" | "miss";
   critical: boolean;
   amount: number;
@@ -38,11 +40,16 @@ export function resolveDamage(
   defense: Defense,
   random: () => number,
   formula: DamageFormula = DAMAGE_FORMULA,
+  element: Element = "physical",
+  guaranteed = false,
 ): DamageResult {
   if (
     ![
       ...Object.values(offense),
-      ...Object.values(defense),
+      defense.defense,
+      defense.armor,
+      defense.physicalResistance,
+      ...Object.values(defense.resistances ?? {}),
       ...Object.values(formula),
     ].every(Number.isFinite) ||
     offense.damage < 0 ||
@@ -73,18 +80,21 @@ export function resolveDamage(
     formula.maximumAccuracy,
   );
   const critical = criticalRoll < offense.criticalChance;
-  const hit = hitRoll < chance;
+  const hit = guaranteed || hitRoll < chance;
   const raw = offense.damage * (critical ? offense.criticalMultiplier : 1);
   const mitigated =
-    ((raw * formula.armorScale) / (formula.armorScale + defense.armor)) *
+    ((raw * formula.armorScale) /
+      (formula.armorScale + (element === "physical" ? defense.armor : 0))) *
     (1 -
       clamp(
-        defense.physicalResistance,
+        element === "physical"
+          ? defense.physicalResistance
+          : (defense.resistances?.[element] ?? 0),
         formula.minimumResistance,
         formula.maximumResistance,
       ));
   return {
-    type: "physical",
+    type: element,
     outcome: hit ? "hit" : "miss",
     critical: hit && critical,
     amount: hit ? Math.max(0, Math.floor(mitigated)) : 0,

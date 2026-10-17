@@ -1,3 +1,10 @@
+import {
+  createEffects,
+  stepStatuses,
+  stepSkillBolts,
+  releaseSkill,
+  type Effects,
+} from "./skill-effects";
 import data from "../content/skills.json";
 import {
   validateSkills,
@@ -55,6 +62,7 @@ export type SkillEvent = {
   direction: Point;
 };
 export interface SkillRuntime {
+  effects: Effects;
   combat: CombatWorld;
   definitions: readonly SkillDefinition[];
   users: SkillUser[];
@@ -67,6 +75,7 @@ export function createSkills(
 ): SkillRuntime {
   return {
     combat,
+    effects: createEffects(),
     definitions,
     users: combat.actors.map((a) => ({
       actor: a.id,
@@ -150,7 +159,9 @@ export function skillHooks(
 ): CombatHooks {
   return {
     controlsActor: (a) => !!r.users.find((u) => u.actor === a.id)?.cast,
+    afterTick: () => stepSkillBolts(r, nav),
     beforeTick: () => {
+      stepStatuses(r, nav);
       for (const u of r.users) {
         const a = r.combat.actors.find((a) => a.id === u.actor);
         if (!a) continue;
@@ -234,6 +245,7 @@ export function skillHooks(
         c.resolved = true;
         const s = activeSkill(r, c.skill)!;
         const reason = validateTarget(r, a, { actor: a.id, ...c }, s, nav);
+        if (!reason) releaseSkill(r, s, a, c, nav);
         event(
           r,
           { actor: a.id, ...c },
