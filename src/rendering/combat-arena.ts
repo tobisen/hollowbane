@@ -1,3 +1,4 @@
+import { LootView, LOOT_COLORS } from "./loot-view";
 import { arenaView } from "../world/arena-view";
 import { createPolishGround } from "./polish-ground";
 import { CombatAudio } from "./combat-audio";
@@ -134,7 +135,8 @@ declare global {
 }
 export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
-  const polish = query.has("polish");
+  const loot = query.has("loot");
+  const polish = query.has("polish") || loot;
   const skills = query.has("skills") || polish;
   const requested = Number(query.get("count") ?? 5);
   const initialCount = [5, 10, 20, 30].includes(requested) ? requested : 5;
@@ -187,6 +189,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       ? createEncounter(initialCount)
       : null;
     private world = this.encounter?.combat ?? createCombat();
+    private lootView: LootView | null = null;
     private abilities = skills ? createSkills(this.world) : null;
     private selectedSkill = 0;
     private mouseGround: Point = { x: 790, y: 560 };
@@ -255,6 +258,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
       });
     }
     create(): void {
+      if (loot)
+        this.lootView = new LootView(
+          root,
+          nav,
+          Number(query.get("lootSeed") ?? 42),
+          (quality) => this.soundBank.play({ kind: "loot", quality }),
+        );
       controllerInput.movementKeys = new Set([
         "KeyW",
         "KeyA",
@@ -448,6 +458,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.skillCosts = [];
           this.skillLatencies = [];
           this.motion = {};
+          this.lootView?.reset();
           this.impactUntil.clear();
           this.numberUntil.clear();
           this.deathAt.clear();
@@ -522,6 +533,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         field.removeEventListener("blur", stop);
         void this.audio?.close();
         void this.soundBank.dispose();
+        this.lootView?.dispose();
       });
       if (polishedHud && this.abilities)
         polishedHud.update(
@@ -972,6 +984,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
         this.syncResolution();
       }
       const player = this.world.actors[0]!;
+      this.lootView?.setPlayer(
+        player.controller.walker.position,
+        player.hp > 0,
+      );
       if (player.controller.timeline.phase === "idle") {
         player.weapon = weapon.value as Weapon;
         player.range = player.weapon === "melee" ? 1.05 : 6;
@@ -1059,7 +1075,12 @@ export function startCombatArena(monsters = false): Phaser.Game {
             this.selectedSkill = cycleSkill(this.selectedSkill, -1);
           if (controllerInput.take("right"))
             this.selectedSkill = cycleSkill(this.selectedSkill, 1);
-          if (controllerInput.take("interact"))
+          if (this.lootView) {
+            if (controllerInput.take("up")) this.lootView.cycle(-1);
+            if (controllerInput.take("down")) this.lootView.cycle(1);
+            if (controllerInput.take("pickup")) this.lootView.interact(true);
+          }
+          if (controllerInput.take("interact") && !this.lootView?.interact())
             this.castSkill(this.selectedSkill);
           for (const [i, action] of SKILL_ACTIONS.entries())
             if (controllerInput.take(action)) this.castSkill(i);
@@ -1158,6 +1179,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
                 `${SKILLS.find((s) => s.id === event.skill)?.name}: ${event.reason ?? event.kind}`;
             }
           }
+          this.lootView?.advance(this.world);
           if (this.encounter) finishEncounter(this.encounter, nav);
           const aim = controllerInput.frame.aim;
           if (
@@ -1209,6 +1231,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
       }
       const updateAt = performance.now();
       this.ink.clear();
+      for (const d of this.lootView?.world.drops ?? []) {
+        const p = onGround(d.position);
+        this.ink.fillStyle(
+          Number.parseInt(LOOT_COLORS[d.item.quality].slice(1), 16),
+          0.9,
+        );
+        this.ink.fillTriangle(p.x, p.y - 5, p.x - 4, p.y + 2, p.x + 4, p.y + 2);
+      }
       this.effect.clear();
       this.syncActors();
       if (monsters && !polish)
@@ -1361,6 +1391,19 @@ export function startCombatArena(monsters = false): Phaser.Game {
       }
       this.record(this.updates, performance.now() - updateAt);
       const camera = this.cameras.main.worldView;
+      if (this.lootView && this.game.loop.frame % 6 === 0)
+        this.lootView.update(
+          player.controller.walker.position,
+          camera,
+          player.hp > 0,
+          controllerInput.frame.device === "gamepad"
+            ? actionPrompt(
+                "interact",
+                controllerInput.family,
+                controllerInput.settings.bindings,
+              )
+            : "Enter",
+        );
       const metrics = {
         frameP50: percentile(this.frames, 0.5),
         frameP95: percentile(this.frames, 0.95),

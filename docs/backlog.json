@@ -3414,8 +3414,9 @@
     "deliveryPhase": "loot-l1",
     "priority": "p0",
     "dependencies": ["DBL-313"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nPlayable loot labels inspection and semantic controller selection. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nPlayable loot labels inspection and semantic controller selection. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review.",
+    "evidence": "Playable ?loot=1 death adapter; 32 bounded overlap-spaced labels/128 world items; proximity inspection, immutable identification, semantic Xbox/PS selection, original tier cues and atomic local item archive. Full check189; five Chromium cases/golden reviewed. Final cross-browser follows316."
   },
   {
     "id": "DBL-315",

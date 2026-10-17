@@ -1,7 +1,9 @@
-export type SoundKind = "attack" | "impact" | "death" | "cast" | "spell";
+export type SoundKind =
+  "attack" | "impact" | "death" | "cast" | "spell" | "loot";
 export interface SoundCue {
   kind: SoundKind;
   skill?: string;
+  quality?: "normal" | "magic" | "rare" | "unique";
 }
 export interface SoundRecipe {
   wave: OscillatorType;
@@ -11,6 +13,18 @@ export interface SoundRecipe {
   gain: number;
 }
 export function soundRecipe(c: SoundCue): SoundRecipe {
+  if (c.kind === "loot") {
+    const rank = ["normal", "magic", "rare", "unique"].indexOf(
+      c.quality ?? "normal",
+    );
+    return {
+      wave: "sine",
+      from: 440 + rank * 180,
+      to: 520 + rank * 260,
+      duration: 0.09 + rank * 0.055,
+      gain: 0.025 + rank * 0.006,
+    };
+  }
   if (c.kind === "death")
     return { wave: "sine", from: 110, to: 34, duration: 0.3, gain: 0.055 };
   if (c.kind === "impact")

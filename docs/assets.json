@@ -107,5 +107,13 @@
     "placeholder": false,
     "type": "geometry",
     "provenance": "docs/polish/milestone.md"
+  },
+  {
+    "id": "l1-loot-presentation",
+    "source": "src/rendering/loot-view.ts",
+    "rights": "Original Hollowbane names, text layout, ground triangle markers, quality colors and synthesized tier cues; no external artwork or samples",
+    "placeholder": false,
+    "type": "geometry",
+    "provenance": "docs/loot/l1.md"
   }
 ]

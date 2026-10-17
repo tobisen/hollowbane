@@ -416,3 +416,88 @@
   cursor: pointer;
   padding: 4px 8px;
 }
+
+/* L1: original, text-first ground item presentation. No inventory UI. */
+.loot-panel {
+  position: fixed;
+  left: 16px;
+  top: 150px;
+  width: 280px;
+  max-height: 45vh;
+  overflow: auto;
+  background: #14151aee;
+  border: 1px solid #82725a;
+  padding: 12px;
+  color: #eee8d9;
+  font: 12px/1.5 system-ui;
+  z-index: 20;
+  contain: layout paint;
+}
+.loot-panel h2 {
+  font-size: 15px;
+  margin: 0 0 6px;
+  color: #edcfa0;
+}
+.loot-panel output {
+  display: block;
+  white-space: pre-line;
+}
+.loot-panel button,
+.loot-panel input {
+  font: inherit;
+  max-width: 100%;
+}
+.loot-panel label {
+  display: block;
+}
+.loot-panel input {
+  width: 110px;
+}
+.loot-panel button {
+  margin: 4px 2px;
+  padding: 5px;
+  background: #27262b;
+  color: #eee8d9;
+  border: 1px solid #82725a;
+}
+.loot-panel button:disabled {
+  opacity: 0.5;
+}
+.loot-labels {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+}
+.loot-label {
+  position: fixed;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: #121318ed;
+  border: 1px solid #80776b;
+  border-radius: 2px;
+  padding: 3px 5px;
+  font: 11px/16px system-ui;
+  box-shadow: 0 1px 3px #000;
+}
+.loot-label[aria-pressed="true"] {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.loot-label:hover,
+.loot-label:focus-visible {
+  background: #30313d;
+  outline: 2px solid #fff;
+}
+@media (max-width: 800px) {
+  .loot-panel {
+    top: 190px;
+    left: 8px;
+    width: 220px;
+    font-size: 11px;
+    max-height: 35vh;
+  }
+}

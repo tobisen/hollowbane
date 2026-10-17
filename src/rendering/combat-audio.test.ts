@@ -61,3 +61,10 @@ it("voice budget is bounded and mute stops all voices", async () => {
   expect(bank.status().active).toBe(0);
   expect(stopped).toBeGreaterThanOrEqual(8);
 });
+it("loot quality cues are distinct and remain within the shared audio budget", () => {
+  const recipes = (["normal", "magic", "rare", "unique"] as const).map(
+    (quality) => soundRecipe({ kind: "loot", quality }),
+  );
+  expect(new Set(recipes.map((r) => r.from))).toHaveLength(4);
+  expect(recipes.every((r) => r.gain <= 0.055 && r.duration < 0.4)).toBe(true);
+});

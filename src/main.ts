@@ -9,12 +9,14 @@ if (query.has("controller")) {
   query.has("combat") ||
   query.has("monsters") ||
   query.has("skills") ||
-  query.has("polish")
+  query.has("polish") ||
+  query.has("loot")
 ) {
   await import("./rendering/combat.css");
   const { startCombatArena } = await import("./rendering/combat-arena");
   startCombatArena(
     query.has("monsters") ||
+      (query.has("loot") && !query.has("training")) ||
       (query.has("polish") && !query.has("training") && !query.has("showcase")),
   );
 } else if (query.has("gallery")) {
