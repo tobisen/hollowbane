@@ -2840,9 +2840,10 @@
     "priority": "p0",
     "parent": "DBL-009",
     "dependencies": ["DBL-270"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nPersistent remapping and conflict handling\n\n## Scope\nAuthorized Phase 2.5 gamepad support. Stable numeric ID DBL-271; requested alias DBL-GP09. Preserve Phaser 4.2.1 and existing keyboard/mouse and completed combat.\n\n## Non-goals\nNew combat mechanics, loot, inventory or resuming Phase 3 before G2.5 user approval.\n\n## Acceptance criteria\nPersistent remapping and conflict handling; deterministic device-independent intents; safe boundaries and documented fallback behavior.\n\n## Test requirements\nTargeted unit/browser coverage, check at milestones, full regression before G2.5; distinguish emulation from physical verification.\n\n## Definition of done\nVerified scoped increment committed with evidence in docs/gamepad/phase2.5.md; stop for G2.5 review after DBL-274.",
-    "deliveryPhase": "2.5"
+    "deliveryPhase": "2.5",
+    "evidence": "Versioned atomic settings persist custom button bindings, selected controller, profile override, axis assignment, independent move/aim deadzones/curves/sensitivity and vibration preference. Duplicate/invalid bindings rejected; interact/cancel/pause remain remappable but cannot all be unbound, preserving menu recovery. Four persistence tests; full check 110 tests; browser reload/conflict/custom-button and menu checks pass. Settings screenshot inspected. Missing/denied storage has a usable session-only fallback."
   },
   {
     "id": "DBL-272",

@@ -266,3 +266,36 @@ test("prompts switch between PlayStation, generic and keyboard/mouse", async ({
     "Button 1: Choose",
   );
 });
+test("custom button mappings and stick settings persist; conflicts are rejected", async ({
+  page,
+}) => {
+  await ready(page, "./?controller=1");
+  await page.locator("#pad-bind-primary").selectOption("0");
+  await page.locator("#pad-save").click();
+  await expect(page.locator("#pad-error")).toContainText("conflict");
+  await page.locator("#pad-bind-primary").selectOption("16");
+  await page.locator("#pad-move-deadzone").fill("0.28");
+  await page.locator("#pad-aim-curve").fill("2");
+  await page.locator("#pad-profile").selectOption("playstation");
+  await page.locator("#pad-save").click();
+  await expect(page.locator("#pad-error")).toHaveText(
+    "Controller settings saved.",
+  );
+  await page.reload();
+  await expect(page.locator("#pad-bind-primary")).toHaveValue("16");
+  await expect(page.locator("#pad-move-deadzone")).toHaveValue("0.28");
+  await expect(page.locator("#pad-aim-curve")).toHaveValue("2");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+    .toBe(true);
+  await page.screenshot({
+    path: ".local/controller-settings.png",
+    fullPage: true,
+  });
+  await button(page, 16, true);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.hollowbaneInput!.actions.primary.held),
+    )
+    .toBe(true);
+});

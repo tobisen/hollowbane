@@ -1,3 +1,4 @@
+import { installControllerSettings } from "./controller-settings";
 import { contextPrompt } from "../simulation/prompts";
 import "./controller.css";
 import { controllerInput as hub } from "./controller-input";
@@ -6,6 +7,7 @@ export function controllerPage(): void {
   const root = document.querySelector("main")!;
   root.className = "controller-page";
   root.innerHTML = `<header><p class="eyebrow">HOLLOWBANE / INPUT LABORATORY</p><h1>Controller settings</h1><p>Standard-compatible Xbox, PlayStation and generic controllers. Virtual tests do not verify physical hardware.</p></header><nav><a href="./">Cloister</a><a href="?gallery=1">Art atelier</a><a href="?combat=1">Combat arena</a><a href="?engine=4">Phaser 4 observatory</a><a href="?engine=3">Phaser 3 observatory</a></nav><section id="controller-settings-host"><p>Controller configuration is being prepared.</p></section><section><h2>Live controller state</h2><pre id="controller-live" aria-live="off">Waiting for browser polling…</pre></section><p id="controller-notice" role="status"></p>`;
+  installControllerSettings();
   document.title = "Hollowbane · Controller laboratory";
   document.documentElement.dataset.controllerReady = "true";
 }

@@ -39,3 +39,7 @@ Shared controller pause/menu and focus navigation cover cloister, movement dialo
 ## DBL-270 / DBL-GP08
 
 Context prompts use active-device ownership, Xbox/PlayStation/generic text glyphs and actual remapped buttons. Movement avoids advertising unavailable attacks; menu/combat contexts differ. Unit prompt test and PlayStation/generic/mouse switching browser case pass. First pointer movement now switches correctly even when movementX/Y are zero. No copied graphical glyph assets.
+
+## DBL-271 / DBL-GP09
+
+Versioned atomic settings persist custom button bindings, selected controller, profile override, axis assignment, independent move/aim deadzones/curves/sensitivity and vibration preference. Duplicate/invalid bindings rejected; interact/cancel/pause remain remappable but cannot all be unbound, preserving menu recovery. Four persistence tests; full check 110 tests; browser reload/conflict/custom-button and menu checks pass. Settings screenshot inspected. Missing/denied storage has a usable session-only fallback.

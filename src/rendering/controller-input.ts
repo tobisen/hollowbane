@@ -13,42 +13,23 @@ import {
 import {
   standardProfile,
   padActions,
-  defaultPadBindings,
-  type PadBindings,
   type GlyphFamily,
 } from "../simulation/gamepad-profile";
-import {
-  DEFAULT_STICK,
-  processStick,
-  type StickSettings,
-} from "../simulation/analog";
+import { processStick } from "../simulation/analog";
 import type { Point } from "../world/isometric";
-export interface ControllerSettings {
-  version: 1;
-  selected: number | null;
-  profile: "auto" | GlyphFamily;
-  bindings: PadBindings;
-  move: StickSettings;
-  aim: StickSettings;
-  centers: number[];
-  axes: [number, number, number, number];
-  vibration: boolean;
-}
-export function defaultControllerSettings(): ControllerSettings {
-  return {
-    version: 1,
-    selected: null,
-    profile: "auto",
-    bindings: defaultPadBindings(),
-    move: { ...DEFAULT_STICK },
-    aim: { ...DEFAULT_STICK },
-    centers: [0, 0, 0, 0],
-    axes: [0, 1, 2, 3],
-    vibration: false,
-  };
+import {
+  CONTROLLER_STORAGE,
+  readControllerSettings,
+} from "../simulation/controller-settings";
+function loadSettings() {
+  try {
+    return readControllerSettings(localStorage.getItem(CONTROLLER_STORAGE));
+  } catch {
+    return readControllerSettings(null);
+  }
 }
 export class ControllerInput {
-  settings = defaultControllerSettings();
+  settings = loadSettings();
   state = createDeviceState();
   pads: PadSnapshot[] = [];
   frame: ActionFrame = actionFrame("keyboard", new Set(), new Set());
