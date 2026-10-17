@@ -2770,9 +2770,10 @@
     "priority": "p0",
     "parent": "DBL-009",
     "dependencies": ["DBL-265"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nRadial analog processing and speed curves\n\n## Scope\nAuthorized Phase 2.5 gamepad support. Stable numeric ID DBL-266; requested alias DBL-GP04. Preserve Phaser 4.2.1 and existing keyboard/mouse and completed combat.\n\n## Non-goals\nNew combat mechanics, loot, inventory or resuming Phase 3 before G2.5 user approval.\n\n## Acceptance criteria\nRadial analog processing and speed curves; deterministic device-independent intents; safe boundaries and documented fallback behavior.\n\n## Test requirements\nTargeted unit/browser coverage, check at milestones, full regression before G2.5; distinguish emulation from physical verification.\n\n## Definition of done\nVerified scoped increment committed with evidence in docs/gamepad/phase2.5.md; stop for G2.5 review after DBL-274.",
-    "deliveryPhase": "2.5"
+    "deliveryPhase": "2.5",
+    "evidence": "Radial deadzone, outer saturation, sensitivity and configurable power curve preserve 360-degree heading and bounded magnitude. Three analog tests cover drift, diagonals, monotonic response and invalid configuration; typecheck/lint pass."
   },
   {
     "id": "DBL-267",

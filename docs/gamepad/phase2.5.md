@@ -19,3 +19,7 @@ Pure lifecycle ownership and explicit active-controller selection implemented. N
 ## DBL-265 / DBL-GP03
 
 Xbox, PlayStation and generic standard-compatible layouts map to identical semantics. Extensible typed vendor profiles can override axes/buttons; unknown nonstandard devices require explicit override. Conflict validation and text glyph fallback covered by four tests; typecheck/lint pass.
+
+## DBL-266 / DBL-GP04
+
+Radial deadzone, outer saturation, sensitivity and configurable power curve preserve 360-degree heading and bounded magnitude. Three analog tests cover drift, diagonals, monotonic response and invalid configuration; typecheck/lint pass.
