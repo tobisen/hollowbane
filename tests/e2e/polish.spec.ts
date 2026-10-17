@@ -66,3 +66,34 @@ test("polish motion follows deterministic strike and death without moving collid
   ).toBeCloseTo(0.45);
   await page.screenshot({ path: ".local/polish-motion.png" });
 });
+
+test("showcase executes all six real skills with bounded distinct visuals", async ({
+  page,
+}) => {
+  await page.goto("./?polish=1&showcase=1");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          () =>
+            new Set(
+              window
+                .hollowbaneSkills!.events.filter(
+                  (e) => e.actor === 0 && e.kind === "effect",
+                )
+                .map((e) => e.skill),
+            ).size,
+        ),
+      { timeout: 23000 },
+    )
+    .toBe(6);
+  const visuals = await page.evaluate(() => window.hollowbanePolish!.visuals!);
+  expect(visuals.events).toBeLessThanOrEqual(48);
+  expect(visuals.bolts).toBeLessThanOrEqual(96);
+  expect(visuals.statuses).toBeLessThanOrEqual(64);
+  await page.screenshot({ path: ".local/polish-skills.png" });
+});

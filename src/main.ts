@@ -14,7 +14,8 @@ if (query.has("controller")) {
   await import("./rendering/combat.css");
   const { startCombatArena } = await import("./rendering/combat-arena");
   startCombatArena(
-    query.has("monsters") || (query.has("polish") && !query.has("training")),
+    query.has("monsters") ||
+      (query.has("polish") && !query.has("training") && !query.has("showcase")),
   );
 } else if (query.has("gallery")) {
   const { startGallery } = await import("./rendering/gallery");

@@ -75,5 +75,13 @@
     "placeholder": false,
     "type": "geometry",
     "provenance": "docs/gamepad/phase2.5.md"
+  },
+  {
+    "id": "sable-spell-geometry",
+    "source": "src/rendering/skill-visuals.ts",
+    "rights": "Original project procedural vector design; no external artwork, textures or shaders",
+    "placeholder": false,
+    "type": "geometry",
+    "provenance": "docs/polish/milestone.md"
   }
 ]

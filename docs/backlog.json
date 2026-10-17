@@ -3245,8 +3245,9 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p0",
     "dependencies": ["DBL-300"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nSix distinct bounded skill visual presentations. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+    "status": "completed",
+    "body": "## Acceptance criteria\nSix distinct bounded skill visual presentations. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review.",
+    "evidence": "Six distinct original bounded visual designs with actual range/cone targeting, windup/recovery emitters, release/impact/status feedback. Live ?polish=1&showcase=1 cycles real existing skills with real mana/cooldowns and explicit durable targets. Full check 169 tests, two Chromium polish cases, all six effects verified; screenshot reviewed; provenance recorded."
   },
   {
     "id": "DBL-302",
@@ -3257,7 +3258,7 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p0",
     "dependencies": ["DBL-301"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Acceptance criteria\nReadable resource HUD and contextual ability slots. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
   },
   {

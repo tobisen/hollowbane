@@ -1,3 +1,4 @@
+import { drawSkillVisuals, type SpellVisualStats } from "./skill-visuals";
 import { combatPose, recordMotion, type MotionCues } from "./combat-motion";
 import { queueMonsterSkills } from "../simulation/monster-skills";
 import { actionPrompt } from "../simulation/prompts";
@@ -87,6 +88,7 @@ declare global {
   interface Window {
     hollowbanePolish?: {
       tick: number;
+      visuals: SpellVisualStats | null;
       poses: {
         id: number;
         pose: ReturnType<typeof combatPose>;
@@ -186,6 +188,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private skillLatencies: number[] = [];
     private skillInputAt: number | null = null;
     private motion: MotionCues = {};
+    private visualStats: SpellVisualStats | null = null;
+    private nextShowcase = 0;
+    private showcaseSlot = 0;
     private aiCosts: number[] = [];
     private accumulator = 0;
     private paused = monsters && query.has("paused");
@@ -262,6 +267,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       floor.lineStyle(2, 0xb19a62, 0.6).strokeRect(230, 260, 1070, 570);
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
+      this.prepareShowcase();
       this.prepareBenchmark();
       this.syncActors();
       this.startedAt = performance.now();
@@ -406,6 +412,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               )
             : null;
           this.world = this.encounter?.combat ?? createCombat();
+          this.prepareShowcase();
           this.prepareBenchmark();
           this.abilities = skills ? createSkills(this.world) : null;
           this.skillCosts = [];
@@ -465,8 +472,27 @@ export function startCombatArena(monsters = false): Phaser.Game {
       });
       document.documentElement.dataset.combatReady = "true";
     }
+    private prepareShowcase(): void {
+      if (!polish || !query.has("showcase")) return;
+      hostile.checked = false;
+      this.world.actors[0]!.controller.walker.position = fromGround({
+        x: 750,
+        y: 560,
+      });
+      this.world.actors[0]!.controller.selected = 1;
+      for (const [i, a] of this.world.actors.slice(1).entries()) {
+        a.controller.walker.position = fromGround({
+          x: 790 + i * 50,
+          y: 540 + (i % 2) * 30,
+        });
+        if (a.kind === "moving") a.kind = "dummy";
+      }
+      this.nextShowcase = 30;
+      this.showcaseSlot = 0;
+      field.focus();
+    }
     private prepareBenchmark(): void {
-      if (!query.has("durable")) return;
+      if (!query.has("durable") && !(polish && query.has("showcase"))) return;
       for (const a of this.world.actors)
         if (a.kind !== "player") a.hp = a.maxHp = 100000;
       document.querySelector(".arena-header p")!.textContent =
@@ -968,6 +994,31 @@ export function startCombatArena(monsters = false): Phaser.Game {
           }
           if (this.abilities && this.encounter && hostile.checked)
             queueMonsterSkills(this.abilities, this.encounter.brains, nav);
+          if (
+            polish &&
+            query.has("showcase") &&
+            this.abilities &&
+            player.controller.timeline.phase === "idle" &&
+            this.world.tick >= this.nextShowcase
+          ) {
+            const target = this.world.actors[1]!;
+            this.selectedSkill = this.showcaseSlot % 6;
+            requestSkill(this.abilities, {
+              actor: 0,
+              skill: SKILL_SLOTS[this.selectedSkill]!,
+              target: target.id,
+              direction: {
+                x:
+                  target.controller.walker.position.x -
+                  player.controller.walker.position.x,
+                y:
+                  target.controller.walker.position.y -
+                  player.controller.walker.position.y,
+              },
+            });
+            this.showcaseSlot++;
+            this.nextShowcase = this.world.tick + 180;
+          }
           const skillStart = performance.now();
           stepCombat(
             this.world,
@@ -1049,6 +1100,31 @@ export function startCombatArena(monsters = false): Phaser.Game {
         const p = onGround(projectile.position);
         this.effect.fillStyle(0xf2ce85, 1).fillCircle(p.x, p.y - 28, 4);
       }
+      if (this.abilities && polish) {
+        const aim = controllerInput.frame.aim,
+          selected = this.world.actors.find(
+            (a) => a.id === player.controller.selected && a.hp > 0,
+          ),
+          direction =
+            Math.hypot(aim.x, aim.y) > 0.01
+              ? worldAim(aim)
+              : selected
+                ? groundAim(
+                    player.controller.walker.position,
+                    selected.controller.walker.position,
+                  )
+                : groundAim(
+                    player.controller.walker.position,
+                    fromGround(this.mouseGround),
+                  );
+        this.visualStats = drawSkillVisuals(
+          this.effect,
+          this.abilities,
+          SKILL_SLOTS[this.selectedSkill]!,
+          direction,
+          nav,
+        );
+      }
       if (this.abilities) {
         const colors = {
           physical: 0xe6c48a,
@@ -1058,13 +1134,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
           poison: 0x9fcd71,
           arcane: 0xe3ca89,
         };
-        for (const bolt of this.abilities.effects.bolts) {
+        for (const bolt of polish ? [] : this.abilities.effects.bolts) {
           const p = onGround(bolt.position);
           this.effect
             .fillStyle(colors[bolt.element], 1)
             .fillCircle(p.x, p.y - 24, 5);
         }
-        for (const e of this.abilities.effects.events) {
+        for (const e of polish ? [] : this.abilities.effects.events) {
           const age = this.world.tick - e.tick;
           if (age > 18 || e.kind !== "release") continue;
           const p = onGround(e.from),
@@ -1179,6 +1255,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       if (polish)
         window.hollowbanePolish = {
           tick: this.world.tick,
+          visuals: this.visualStats,
           poses: this.world.actors.map((a) => ({
             id: a.id,
             pose: combatPose(a, this.motion[a.id], this.world.tick),

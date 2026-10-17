@@ -36,3 +36,7 @@ Phase 4 AI arena uses the existing original wanderer atlas as explicitly provisi
 ## Skills & Spell Systems prototypes
 
 Ember Lance, Rime Ring, Storm Thread, Iron Fan, Oath Echo and Briar Edge are original Hollowbane prototype names. Spell feedback is original procedural Graphics geometry: tinted bolt circles, expanding rings, connecting line segments and short impact ellipses in combat-arena.ts. It consumes deterministic skill effect events; no new raster, vendor glyph, shader, font or audio assets were imported. Casting provisionally reuses the original wanderer timeline transforms. Existing monster and spell production-art/audio follow-ups remain open; these mechanical proxies do not complete DBL-057 production polish.
+
+## Gameplay and Visual Polish
+
+The Sable Court uses original bounded procedural vector spell designs in src/rendering/skill-visuals.ts: fire lance/core/tail, cold shards/range ring, segmented lightning, swept blade cone, oath runes/halo and poison thorns/bubbles. Each has a separate silhouette and authored palette; no third-party particles, textures, sprites, shaders or glyph artwork. Combat motion remains enhanced transforms of the existing original wanderer atlas, not newly painted attack/death sheets. Showcase uses the real simulation with explicit durable training targets, real costs/cooldowns and ordinary cast timing; no production balance claim. Provenance: docs/polish/milestone.md.
