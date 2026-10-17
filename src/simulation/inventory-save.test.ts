@@ -21,7 +21,7 @@ function fixture() {
     item: inventoryItem("copper-band"),
     position: fromGround({ x: 750, y: 560 }),
     tick: 20,
-    source: 3,
+    source: -1,
   });
   s.loot.sequence = 123;
   s.loot.deaths.add(3);

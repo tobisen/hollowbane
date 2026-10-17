@@ -131,7 +131,7 @@ function validateBody(value: unknown, nav?: Navigation): InventorySession {
           item: validateGeneratedItem(d.item),
           position: { x: coordinate(p.x), y: coordinate(p.y) },
           tick: integer(d.tick),
-          source: integer(d.source),
+          source: integer(d.source, -2),
         };
       }),
     },

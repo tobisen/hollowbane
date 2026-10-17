@@ -3651,7 +3651,8 @@
     "deliveryPhase": "inventory-l2",
     "priority": "p0",
     "dependencies": ["DBL-325"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nAsynchronous atomic character snapshots in IndexedDB with previous checkpoint, corruption detection, explicit recovery and failed-write preservation; no combat-loop serialization.\n\n## Non-goals\nL3, progression, cloud saves or pretending unsupported prototypes are migrated.\n\n## Test requirements\nVersioned snapshot unit tests and real cross-browser persistence/failed-load/recovery scenarios.\n\n## Definition of done\nVerified committed storage adapter used by326; no silent replacement or item loss."
+    "status": "complete",
+    "body": "## Acceptance criteria\nAsynchronous atomic character snapshots in IndexedDB with previous checkpoint, corruption detection, explicit recovery and failed-write preservation; no combat-loop serialization.\n\n## Non-goals\nL3, progression, cloud saves or pretending unsupported prototypes are migrated.\n\n## Test requirements\nVersioned snapshot unit tests and real cross-browser persistence/failed-load/recovery scenarios.\n\n## Definition of done\nVerified committed storage adapter used by326; no silent replacement or item loss.",
+    "evidence": "IndexedDB current/previous atomic transaction, stale-tab CAS and explicit quarantine recovery. Real Chromium/Firefox/WebKit storage E2E all3 pass; full check212. UI autosave integration belongs326."
   }
 ]
