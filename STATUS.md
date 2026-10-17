@@ -1,6 +1,6 @@
 # Status
 
-- Controller quality fixes: DBL-289 published as 87d9342, CI/Pages 39032057748 succeeded. D-pad no longer steals game focus. DBL-290 generic layout/identity/readiness fixes locally complete; publication pending. Full check 135 tests; Chromium controller 25 and Firefox/WebKit 48 pass. User's friend reports Unknown layout and saved #0 not connected; exact native metadata is requested, so physical Xbox/handheld mapping is not claimed fixed. Details: docs/gamepad/DBL-289.md and DBL-290.md.
+- Controller quality fixes: DBL-289 published as 87d9342, CI/Pages 39032057748 succeeded. D-pad no longer steals game focus. DBL-290 generic layout/identity/readiness fixes published as b6497ac; CI/Pages 39032749390 succeeded and all 25 hosted controller scenarios pass. Full check 135 tests; Chromium controller 25 and Firefox/WebKit 48 pass. User's friend reports Unknown layout and saved #0 not connected; exact native metadata is requested, so physical Xbox/handheld mapping is not claimed fixed. Details: docs/gamepad/DBL-289.md and DBL-290.md.
 
 - G2.5 explicitly approved. **Phase 4 Monster AI candidate delivered; stop for user quality review.** Phase 4 quality approval remains false. No loot, inventory, skill trees, campaign or later phase work. Preserve Phaser 4.2.1 and completed movement/combat/controller systems.
 - Completed scoped DBL-275–281 and dependency corrections DBL-287–288. Original 36-phase roadmap/IDs/dependencies preserved; DBL-036 and DBL-058–065 remain partial. No completed combat/controller architecture was reimplemented.

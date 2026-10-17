@@ -34,6 +34,14 @@
       "DBL-287",
       "DBL-288"
     ],
-    "physicalControllerVerified": false
+    "physicalControllerVerified": false,
+    "controllerQualityFixes": {
+      "issues": ["DBL-289", "DBL-290"],
+      "runtimeCommit": "b6497ac",
+      "ciRun": "39032749390",
+      "physicalControllerVerified": false,
+      "nativeMetadataPending": true,
+      "hostedControllerCases": 25
+    }
   }
 }
