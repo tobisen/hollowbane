@@ -59,6 +59,11 @@ try {
         await page.addStyleTag({
           content: ".skill-bar {background:#0c1319!important}",
         });
+      if (process.argv[4] === "isolate-ui")
+        await page.addStyleTag({
+          content:
+            ".arena-panel,.skill-bar,.arena-footer {contain:layout paint style;transform:translateZ(0)}",
+        });
       const result = await page.evaluate(
         async ({ skills, count }) => {
           const q = (a, p) => {

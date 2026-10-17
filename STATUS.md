@@ -1,3 +1,5 @@
+- Skills quality technically approved by user. Gameplay & Visual Polish authorized through its review gate; start DBL-299, then DBL-300 through 305 sequentially. Existing gameplay and all open hardware/asset/performance follow-ups preserved.
+
 # Status
 
 - **Skills & Spell Systems technical candidate delivered. Stop for user quality review.** User G4 Monster AI approval is recorded; Skills quality approval remains false. No inventory, loot, itemization, character skill trees or campaign work. Preserve Phaser 4.2.1 and all completed systems.
@@ -13,3 +15,5 @@
 - Phase 4 preserved: scoped DBL-275 through 281 and 287/288 completed, approved by user G4; evidence docs/ai/phase4.md. Existing public ?monsters=1, ?combat=1, controller settings ?controller=1 and cloister remain available. Phase 4 performance data remains tied to ab46984.
 - GitHub synchronization remains open: 299-record importer dry-run inspected; GITHUB_TOKEN absent, no new import success claimed. Authorized SSH pushes, CI and Pages succeeded. No secrets or transient test artifacts committed. Final gate evidence updates do not change runtime.
 - Resume only after explicit Skills & Spell Systems quality approval. Structured gate record: docs/gamepad/gates.json.
+
+- DBL-299 scoped software HUD fix complete: full check 161 tests, 33 Chromium controller/skill cases pass with original visual. 10-enemy p95 16.8ms with isolated HUD, no cadence/info loss. Trace summary docs/polish/hud-profile.json. DBL-300 motion next; all-count repeated verification at DBL-305.

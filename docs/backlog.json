@@ -3219,8 +3219,80 @@
     "deliveryPhase": "skills-followup",
     "priority": "p1",
     "dependencies": ["DBL-297"],
+    "status": "completed",
+    "body": "## Acceptance criteria\nExplain and reduce the Chromium/SwiftShader 10-enemy skills HUD frame-p95 jump with trace evidence while preserving visible diagnostics, input timing and readable feedback. Native GPU/full-detail reference work remains in existing DBL-245/246/074; retain separate Firefox evidence at the polish milestone.\n\n## Non-goals\nHiding normal UI, weakening timing or claiming physical hardware testing from automation.\n\n## Test requirements\nPaired 5/10/20/30 enemy benchmarks with constant counts, CPU versus compositor/GPU trace attribution, unchanged behavior/visual checks.\n\n## Definition of done\nMeasured improvement on the explicitly stated software renderer, evidence retained and regressions pass; broader reference-hardware parents remain open.",
+    "evidence": "Scoped software HUD threshold fixed with layout/paint/style containment and isolated compositor surfaces, preserving visible information/cadence. Targeted 10-enemy SwiftShader p95 16.8ms vs prior 33.3, 15/15 input samples, zero drift/errors. CDP summaries retained without GPU completion claims. Full check 161 and all 33 Chromium controller/skill cases, existing visual unchanged. Repeated reference profiling follows DBL-305; existing native/full-detail parents remain open."
+  },
+  {
+    "id": "DBL-300",
+    "title": "Event-synchronized combat motion and directional reactions",
+    "parent": "DBL-260",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p0",
+    "dependencies": ["DBL-299"],
+    "status": "in-progress",
+    "body": "## Acceptance criteria\nEvent-synchronized combat motion and directional reactions. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+  },
+  {
+    "id": "DBL-301",
+    "title": "Six distinct bounded skill visual presentations",
+    "parent": "DBL-057",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p0",
+    "dependencies": ["DBL-300"],
     "status": "planned",
-    "body": "## Acceptance criteria\nExplain and reduce the Chromium/SwiftShader 10-enemy skills HUD frame-p95 jump with trace evidence while preserving visible diagnostics, input timing and readable feedback. Compare native GPU and full-detail reference workloads; retain separate Firefox evidence.\n\n## Non-goals\nHiding normal UI, weakening timing or claiming physical hardware testing from automation.\n\n## Test requirements\nPaired 5/10/20/30 enemy benchmarks with constant counts, CPU versus compositor/GPU trace attribution, unchanged behavior/visual checks.\n\n## Definition of done\nMeasured improvement on stated renderer/reference hardware, evidence retained and regressions pass.",
-    "evidence": "Initial investigation: 10-enemy skill p95 ~33.3 ms versus legacy ~16.7; hiding diagnostic panels restores ~16.7, opaque background alone and redundant DOM-write avoidance do not resolve the p95. Simulation ~0.1ms. Not a confirmed GPU root cause; reference GPU/full-detail budget remains unverified."
+    "body": "## Acceptance criteria\nSix distinct bounded skill visual presentations. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+  },
+  {
+    "id": "DBL-302",
+    "title": "Readable resource HUD and contextual ability slots",
+    "parent": "DBL-050",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p0",
+    "dependencies": ["DBL-301"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nReadable resource HUD and contextual ability slots. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+  },
+  {
+    "id": "DBL-303",
+    "title": "Original bounded combat and spell audio with safe fallback",
+    "parent": "DBL-260",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p1",
+    "dependencies": ["DBL-302"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nOriginal bounded combat and spell audio with safe fallback. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+  },
+  {
+    "id": "DBL-304",
+    "title": "Consistent monster contact shadows and restrained arena lighting",
+    "parent": "DBL-063",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p1",
+    "dependencies": ["DBL-303"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nConsistent monster contact shadows and restrained arena lighting. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+  },
+  {
+    "id": "DBL-305",
+    "title": "Repeated polish performance, cross-browser regression and quality gate",
+    "parent": "DBL-074",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p1",
+    "dependencies": ["DBL-304"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nRepeated polish performance, cross-browser regression and quality gate. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
   }
 ]

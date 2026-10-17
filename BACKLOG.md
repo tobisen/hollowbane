@@ -285,3 +285,7 @@ DBL-291 validated content; DBL-292 shared timing/resources; DBL-293 elements/sta
 Quality work split: DBL-296 browser regression → DBL-297 performance/investigation → DBL-298 publication/gate evidence. This keeps measurement and final review independently verifiable.
 
 DBL-299 remains open for the measured skill-HUD software rendering threshold; it does not claim a native GPU performance result or replace existing full-detail/Firefox/hardware follow-ups.
+
+## Intermediate Gameplay & Visual Polish
+
+Skills technically approved. DBL-299 HUD performance, then scoped DBL-300 motion, 301 skill effects, 302 HUD readability, 303 audio, 304 contact/lighting consistency, 305 repeated performance/regression/gate. These refine existing DBL-260/042/050/057/063/074 slices, not duplicate full requirements. Preserve the original 36 phases and IDs; no gameplay expansion. Stop for polish review.

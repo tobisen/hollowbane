@@ -159,3 +159,11 @@
     overflow: auto;
   }
 }
+
+/* Bound HUD invalidation and retain independent compositor layers over WebGL. */
+.skill-arena .arena-panel,
+.skill-arena .skill-bar,
+.skill-arena .arena-footer {
+  contain: layout paint style;
+  transform: translateZ(0);
+}
