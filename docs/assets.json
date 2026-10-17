@@ -83,5 +83,13 @@
     "placeholder": false,
     "type": "geometry",
     "provenance": "docs/polish/milestone.md"
+  },
+  {
+    "id": "sable-ability-icons",
+    "source": "src/rendering/polish-hud.ts",
+    "rights": "Original project SVG paths; no vendor artwork or font assets",
+    "placeholder": false,
+    "type": "geometry",
+    "provenance": "docs/polish/milestone.md"
   }
 ]

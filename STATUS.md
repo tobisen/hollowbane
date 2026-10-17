@@ -21,3 +21,5 @@
 - DBL-300 complete: tick-synchronized directional motion in ?polish=1; six new unit tests, full check 167; browser strike/death/collider scenario and screenshot review pass. DBL-301 distinct skill visuals next.
 
 - DBL-301 complete: six distinct vector VFX, real targeting geometry, windup/recovery feedback and live actual-simulation showcase. Full check 169/two browser cases pass; screenshot/provenance reviewed. DBL-302 HUD next.
+
+- DBL-302 complete: accessible resource meters, original ability icons, actual costs/cooldowns, contextual prompts and collapsible diagnostics. Full check 169/five polish cases pass; screenshot reviewed. DBL-303 audio next.

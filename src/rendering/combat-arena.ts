@@ -1,3 +1,4 @@
+import { PolishHUD } from "./polish-hud";
 import { drawSkillVisuals, type SpellVisualStats } from "./skill-visuals";
 import { combatPose, recordMotion, type MotionCues } from "./combat-motion";
 import { queueMonsterSkills } from "../simulation/monster-skills";
@@ -169,6 +170,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     root.querySelector("h1")!.textContent = "The Sable Court";
     document.title = "Hollowbane · The Sable Court";
   }
+  const polishedHud = polish ? new PolishHUD(root) : null;
   const field = document.querySelector<HTMLElement>("#combat-world")!;
   const weapon = document.querySelector<HTMLSelectElement>("#combat-weapon")!;
   const speed = document.querySelector<HTMLSelectElement>("#combat-speed")!;
@@ -470,6 +472,15 @@ export function startCombatArena(monsters = false): Phaser.Game {
         field.removeEventListener("blur", stop);
         void this.audio?.close();
       });
+      if (polishedHud && this.abilities)
+        polishedHud.update(
+          this.abilities,
+          this.selectedSkill,
+          this.hovered,
+          controllerInput.family,
+          controllerInput.settings,
+          controllerInput.frame.device === "gamepad",
+        );
       document.documentElement.dataset.combatReady = "true";
     }
     private prepareShowcase(): void {
@@ -1153,7 +1164,16 @@ export function startCombatArena(monsters = false): Phaser.Game {
           else this.effect.strokeEllipse(p.x, p.y - 20, 25 + age * 2, 18 + age);
         }
         const u = this.abilities.users[0]!;
-        if (this.game.loop.frame % 6 === 0) {
+        if (this.game.loop.frame % 6 === 0 && polishedHud)
+          polishedHud.update(
+            this.abilities,
+            this.selectedSkill,
+            this.hovered,
+            controllerInput.family,
+            controllerInput.settings,
+            controllerInput.frame.device === "gamepad",
+          );
+        if (this.game.loop.frame % 6 === 0 && !polishedHud) {
           const resource = document.querySelector("#skill-resource")!;
           const resourceText = `MANA ${u.mana.toFixed(0)} / ${u.maxMana} · ${u.cast?.skill ?? "READY"} · skill+combat p95 ${percentile(this.skillCosts, 0.95).toFixed(2)} ms · request p95 ${percentile(this.skillLatencies, 0.95).toFixed(1)} ms`;
           if (resource.textContent !== resourceText)
@@ -1285,7 +1305,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
           },
         };
       }
-      if (this.game.loop.frame % 6 === 0) {
+      if (
+        this.game.loop.frame % 6 === 0 &&
+        (!polish || root.querySelector(".arena-panel details[open]"))
+      ) {
         const t = player.controller.timeline;
         document.querySelector("#combat-diagnostics")!.textContent =
           `${this.paused ? "PAUSED · " : ""}TICK ${this.world.tick} · ${metrics.activeEntities} ACTIVE\n${t.phase.toUpperCase()} · ${t.remaining} frames left\nWindup ${t.timing.windup} / active ${t.timing.active}\nRecovery ${t.timing.recovery} / hit ${player.recoveryBonus >= 60 ? 6 : player.recoveryBonus >= 25 ? 9 : 12}\nHP ${player.hp} / ${player.maxHp}\nFrame p50/p95 ${metrics.frameP50.toFixed(1)} / ${metrics.frameP95.toFixed(1)} ms\nSimulation p95 ${metrics.simulationP95.toFixed(2)} ms\nRender CPU p95 ${metrics.renderP95.toFixed(2)} ms\nView update p95 ${metrics.updateP95.toFixed(2)} ms\nAttack latency p95 ${metrics.attackLatencyP95.toFixed(1)} ms (${metrics.attackSamples})\nDropped ticks ${metrics.droppedTicks}${this.encounter ? `\nAI p95 ${percentile(this.aiCosts, 0.95).toFixed(2)} ms · ${this.encounter.brains.filter((b) => b.state !== "dead").length} enemies\nPaths/tick ${this.encounter.work.pathRequests} / 2 · ${this.encounter.despawned} despawned` : ""}`;

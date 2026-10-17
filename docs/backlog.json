@@ -2707,7 +2707,7 @@
     "priority": "p2",
     "parent": "DBL-042",
     "dependencies": ["DBL-257"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nReplace explicitly provisional transform animations, training geometry and synthesized audio with dedicated original authored assets after mechanical review.\n\n## Non-goals\nBlocking the mechanical quality candidate, copied assets or later gameplay systems.\n\n## Acceptance criteria\nOriginal eight-direction attack/hit/death art and impact audio preserve deterministic event synchronization; record provenance.\n\n## Test requirements\nAsset validation and inspected animation/visual regression evidence.\n\n## Definition of done\nDedicated assets verified and committed; do not claim current proxies are finished production artwork.",
     "resumeRequires": ["DBL-274", "G2.5-user-approval"]
   },
@@ -3258,8 +3258,9 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p0",
     "dependencies": ["DBL-301"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nReadable resource HUD and contextual ability slots. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+    "status": "completed",
+    "body": "## Acceptance criteria\nReadable resource HUD and contextual ability slots. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review.",
+    "evidence": "Fixed six-card HUD with original SVG icons, actual costs/cooldown overlays, cached text, transform-only resource fills and accessible health/mana meters. Saved semantic button prompts, target info and collapsible diagnostics. Full check 169; all five polish cases including virtual Xbox/PS movement/aim, focus, costs and meters pass. Screenshot reviewed."
   },
   {
     "id": "DBL-303",
@@ -3270,7 +3271,7 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p1",
     "dependencies": ["DBL-302"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Acceptance criteria\nOriginal bounded combat and spell audio with safe fallback. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
   },
   {
