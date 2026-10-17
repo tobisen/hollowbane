@@ -33,13 +33,16 @@ export function createDiagnostics(engine: string, renderer: string) {
       if (!Number.isFinite(delta) || delta <= 0) return;
       frames.push(delta);
       if (frames.length > 300) frames.shift();
-      const sorted = [...frames].sort((a, b) => a - b);
       state.samples++;
       state.fps = fps;
-      state.p95FrameMs =
-        sorted[
-          Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1)
-        ] ?? 0;
+      // The HUD refreshes every 30 frames; avoid sorting its window every frame.
+      if (state.samples === 1 || state.samples % 30 === 0) {
+        const sorted = [...frames].sort((a, b) => a - b);
+        state.p95FrameMs =
+          sorted[
+            Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1)
+          ] ?? 0;
+      }
       const memory = (
         performance as Performance & { memory?: { usedJSHeapSize: number } }
       ).memory;

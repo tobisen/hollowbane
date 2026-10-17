@@ -1,0 +1,82 @@
+[
+  {
+    "browser": "firefox",
+    "version": "157.0",
+    "status": 200,
+    "errors": [],
+    "state": {
+      "x": 807.1529003975634,
+      "y": 500,
+      "direction": 6,
+      "walking": false,
+      "frame": 48,
+      "zoom": 1.2226621539896139,
+      "tick": 45,
+      "routeLength": 0,
+      "destination": null,
+      "occluded": 0,
+      "decorationPaused": true,
+      "inputFeedbackMs": 6,
+      "inputSamples": 1,
+      "renderWidth": 1280,
+      "renderHeight": 800,
+      "balancedDetail": false,
+      "view": {
+        "x": 280.80725690295174,
+        "y": 172.39762821167562,
+        "width": 1048.327589722638,
+        "height": 655.2047435766488
+      }
+    },
+    "metrics": {
+      "engine": "4.2.1",
+      "renderer": "WebGL",
+      "samples": 46,
+      "fps": 60,
+      "p95FrameMs": 16.660666666666717,
+      "readyMs": 1161,
+      "heapBytes": null,
+      "drawCalls": 12
+    }
+  },
+  {
+    "browser": "webkit",
+    "version": "27.2",
+    "status": 200,
+    "errors": [],
+    "state": {
+      "x": 807.1529003975634,
+      "y": 500,
+      "direction": 6,
+      "walking": false,
+      "frame": 48,
+      "zoom": 1.2210720457357818,
+      "tick": 37,
+      "routeLength": 0,
+      "destination": null,
+      "occluded": 0,
+      "decorationPaused": true,
+      "inputFeedbackMs": 5,
+      "inputSamples": 1,
+      "renderWidth": 1280,
+      "renderHeight": 800,
+      "balancedDetail": false,
+      "view": {
+        "x": 280.92313812301404,
+        "y": 171.93596891679078,
+        "width": 1049.8048994662695,
+        "height": 656.1280621664184
+      }
+    },
+    "metrics": {
+      "engine": "4.2.1",
+      "renderer": "WebGL",
+      "samples": 41,
+      "fps": 60,
+      "p95FrameMs": 16.46666666666667,
+      "readyMs": 326,
+      "heapBytes": null,
+      "drawCalls": 12
+    }
+  }
+]

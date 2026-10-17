@@ -1,0 +1,29 @@
+{
+  "method": "Chromium SwiftShader full 1920x1080, sequential 1s warmup + 4s idle sample per layer exclusion; presentation timings, not GPU timestamps",
+  "results": [
+    {
+      "mode": "all",
+      "medianMs": 50,
+      "p95Ms": 66.70000000000027,
+      "samples": 84
+    },
+    {
+      "mode": "no-mist",
+      "medianMs": 33.30000000000109,
+      "p95Ms": 50,
+      "samples": 112
+    },
+    {
+      "mode": "no-background",
+      "medianMs": 33.30000000000109,
+      "p95Ms": 50,
+      "samples": 115
+    },
+    {
+      "mode": "no-actor-lighting",
+      "medianMs": 33.400000000001455,
+      "p95Ms": 50,
+      "samples": 101
+    }
+  ]
+}

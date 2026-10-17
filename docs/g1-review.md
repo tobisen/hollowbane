@@ -29,7 +29,7 @@ Keyboard controls are fixed for this prototype; remapping, audio, stamina/run mo
 
 ## Checks and gate
 
-The candidate must pass `npm run check`, `npm run format:check`, full Playwright regression, inspected screenshots and recorded production performance samples before review. The G0 documentation-only push 4e63a8e failed its Linux browser step; its exact original failure could not be read without authenticated log access. The local harness fix selects explicit software WebGL, uses a single worker and emits GitHub annotations; all local regression checks pass. Remote verification of subsequent commits is blocked until push approval.
+The candidate must pass `npm run check`, `npm run format:check`, full Playwright regression, inspected screenshots and recorded production performance samples before review. The G0 documentation-only push 4e63a8e failed its Linux browser step; its exact original failure could not be read without authenticated log access. The local harness fix selects explicit software WebGL, uses a single worker and emits GitHub annotations; all local regression checks pass. Subsequent publication verification succeeded; see the publication records below.
 
 G1 visual quality/playability and publication were approved by the user. Publication verification is complete; stop here; no later phase implementation is authorized.
 
@@ -59,3 +59,32 @@ Eight scoped issues DBL-232–239 separate delivered G1 sorting/atmosphere/packa
 User approved the G1 visual candidate and publishing its 18 commits. CI run 39006653964 passed static checks and most browser cases, but exposed platform-default caption line-height and a snapshot taken before player/camera settlement. Gallery captions now use explicit 14px line-height. The occlusion test waits for idle locomotion and correct clamped camera position before comparing, with sufficient capture time for software rendering. Image tolerances remain 1%; no product movement or camera behavior is weakened.
 
 Publication evidence: commit `7f06f65`, [successful CI and Pages deployment](https://github.com/tobisen/hollowbane/actions/runs/39006960568). All ten Chromium E2E tests passed against https://tobisen.github.io/hollowbane/ on 2026-10-17, covering runtime requests/errors, visual baselines, eight-direction animation, click/WASD movement, collision, camera/zoom, occlusion, viewport/focus and detail controls. G1 is approved, published and verified. No later phase is authorized or started.
+
+## Final publication audit — 2026-10-17
+
+Remote main was independently confirmed at `f2994d6`; successful CI/Pages run [39007269771](https://github.com/tobisen/hollowbane/actions/runs/39007269771) includes all 18 approved commits and publication fixes. The tree was clean before this audit. Credential-pattern scans across all 20 post-G0 commits found no private keys or recognizable GitHub/AWS credentials; this is a pattern audit, not proof against arbitrary secrets. `gh auth status` remains unauthenticated. Required login: `gh auth login --hostname github.com --git-protocol ssh --web`. Issue import is independent of publication and was not attempted.
+
+Hosted Firefox 157 and WebKit 27.2 passed HTTP/WebGL/movement/zoom/error smoke checks again; see [hosted evidence](performance/g1-hosted-browser-smoke.json). Chromium regression remains 10/10; unit tests now pass 41/41 (including diagnostic-cadence coverage). Phaser stays 4.2.1. No Phase 2 work was started.
+
+Interactive review: [public game](https://tobisen.github.io/hollowbane/?quality=full) demonstrates illumination, contact shadows, mist and occlusion while walking; [animation atelier](https://tobisen.github.io/hollowbane/?gallery=1) has a **Play walk cycle** control for all eight directions. Use Still/Wake the mist to compare decorative motion. The full-detail screenshot above demonstrates warm lantern pools, cool ambient illumination and actor/prop contact shadows. No physical moving cast-shadow system is claimed.
+
+Safe optimization (DBL-020): compute diagnostic p95 once every 30 samples instead of sorting 300 values every frame. The HUD already refreshes every 30 frames. This removes 29 of 30 diagnostic sorts without changing simulation, rendering assets, lighting or input. All static, unit and Chromium regression checks pass after the change. Presentation p95 values near 33.4 ms are consistent with missed 16.7 ms presentation intervals; they do not identify a JavaScript pause or prove a particular GPU bottleneck. Firefox full detail remains constrained; balanced mode and explicit detail choice remain the supported mitigation.
+
+The three principal rendering cost candidates from scene inspection are (1) full-viewport background texture fill/resolution, (2) twelve overlapping translucent mist quads plus additive lantern glow, and (3) the actor's dynamic-lighting pipeline and associated pipeline changes. These are **cost candidates, not a proven GPU-time ranking**: submission count is 12, not twelve equally expensive operations. Controlled layer-exclusion presentation samples are recorded separately; GPU timestamp attribution is still a limitation. The 300-value diagnostic sort was avoidable CPU overhead, not demonstrated to be the main rendering cost.
+
+Remaining provisional/reference assets: one generated background plate, one generated 64-frame wanderer atlas and four generated prop frames (six provenance records in total). Contact-shadow ellipses and procedural glow/mist textures are intentional prototype effects. Production normal maps, physically cast shadows, sprite consistency cleanup, authored geometry beyond this plate and final art/rights review remain outstanding. Existing source prompts and provenance remain in docs/art/prompts.md and the asset manifest.
+
+Fresh profile audit (1920×1080 Apple M4, short 15-second samples after 5-second warmup):
+
+| Browser/profile                     | Median FPS | Frame p95 |
+| ----------------------------------- | ---------: | --------: |
+| Chromium balanced, isolated browser |       59.9 |   33.4 ms |
+| Chromium full, SwiftShader          |       20.0 |   66.6 ms |
+| Firefox balanced                    |       30.0 |   33.7 ms |
+| Firefox full                        |       30.0 |   34.0 ms |
+
+[Profile evidence](performance/g1-final-profiles.json), [isolated balanced repeat](performance/g1-isolated-balanced.json). The first balanced sample overlapped browser regressions and measured 30 FPS; it is retained honestly rather than presented as an optimization win. The isolated repeat confirms the previous balanced reference. The final Firefox full sample overlapped attribution setup. Short samples and default Firefox backend prevent native-hardware or causal GPU claims. Holding D eventually reaches an obstacle; these short samples are less representative than the original sustained traversal benchmark. No exceptions occurred.
+
+New inspected review captures: [full-detail environment, lighting and shadows](review/g1-final-full-detail.png), [eight directions](review/g1-final-directions.png). The live atelier supplies the interactive animation demonstration instead of a video.
+
+[Layer-exclusion evidence](performance/g1-render-ablation.json): full-scene median 50.0 ms / p95 66.7 ms; excluding mist 33.3 / 50.0 ms; excluding background 33.3 / 50.0 ms; disabling actor lighting 33.4 / 50.0 ms. Each exclusion restores the other layers, using 1-second warmup and 4-second idle presentation samples. These three operations materially affect full-detail presentation, but quantized timings, short samples and non-additive pipeline changes cannot establish their precise order or individual GPU milliseconds. Background and mist tie at this resolution. No visual feature was removed to improve the score.
