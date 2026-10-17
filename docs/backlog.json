@@ -3427,8 +3427,9 @@
     "deliveryPhase": "loot-l1",
     "priority": "p0",
     "dependencies": ["DBL-314"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nLoot diagnostics replay and statistical distribution evidence. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nLoot diagnostics replay and statistical distribution evidence. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review.",
+    "evidence": "Table inspection/seed+sequence replay and four reproducible examples; 1.2million rolls (3seeds \u00d74levels \u00d7100k), all items/affixes replay validated and base/drop/quality distributions pass 6sigma+5 bands. Full check191, targeted diagnostics tests."
   },
   {
     "id": "DBL-316",

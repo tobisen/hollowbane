@@ -1,3 +1,4 @@
+import { inspectDropTable } from "../simulation/loot-diagnostics";
 import {
   consumeLootDeaths,
   createLootWorld,
@@ -67,10 +68,23 @@ export class LootView {
     this.world = createLootWorld(seed);
     root.insertAdjacentHTML(
       "beforeend",
-      `<section class="loot-panel" aria-label="Loot inspection"><h2>World loot · L1</h2><p id="loot-help">D-pad ↑↓: select · Enter / Interact: inspect · F: inspect nearest. Items remain on the ground.</p><p id="loot-message" role="status">Defeat monsters to discover items.</p><output id="loot-info">No item selected.</output><button id="loot-identify" disabled>Identify selected</button><details><summary>Loot diagnostics & item archive</summary><label>Seed <input id="loot-seed" type="number" min="0" max="4294967295" value="${seed}"></label><label>Roll sequence <input id="loot-sequence" type="number" min="0" max="4294967295" value="0"></label><button id="loot-test">Replay test drop near player</button><button id="loot-save">Save item archive locally</button><button id="loot-load">Load item archive near player</button><output id="loot-diagnostics"></output></details></section><div class="loot-labels" aria-label="Ground item labels"></div>`,
+      `<section class="loot-panel" aria-label="Loot inspection"><h2>World loot · L1</h2><p id="loot-help">D-pad ↑↓: select · Enter / Interact: inspect · F: inspect nearest. Items remain on the ground.</p><p id="loot-message" role="status">Defeat monsters to discover items.</p><output id="loot-info">No item selected.</output><button id="loot-identify" disabled>Identify selected</button><details><summary>Loot diagnostics & item archive</summary><label>Seed <input id="loot-seed" type="number" min="0" max="4294967295" value="${seed}"></label><label>Roll sequence <input id="loot-sequence" type="number" min="0" max="4294967295" value="0"></label><label>Example roll <select id="loot-example"><option value="0">Normal · 0</option><option value="1">Magic · 1</option><option value="37">Rare · 37</option><option value="35078">Unique · 35078</option></select></label><button id="loot-test">Replay test drop near player</button><button id="loot-save">Save item archive locally</button><button id="loot-load">Load item archive near player</button><output id="loot-diagnostics"></output><details><summary>Drop table at level 12</summary><pre id="loot-table"></pre></details></details></section><div class="loot-labels" aria-label="Ground item labels"></div>`,
     );
     this.panel = root.querySelector(".loot-panel")!;
     this.layer = root.querySelector(".loot-labels")!;
+    this.panel.querySelector("#loot-table")!.textContent = JSON.stringify(
+      inspectDropTable(12),
+      null,
+      2,
+    );
+    this.panel.querySelector<HTMLSelectElement>("#loot-example")!.onchange = (
+      e,
+    ) => {
+      this.panel.querySelector<HTMLInputElement>("#loot-seed")!.value = "42";
+      this.panel.querySelector<HTMLInputElement>("#loot-sequence")!.value = (
+        e.target as HTMLSelectElement
+      ).value;
+    };
     this.panel.querySelector<HTMLButtonElement>("#loot-identify")!.onclick =
       () => {
         const d = this.world.drops.find((d) => d.item.id === this.selected);
