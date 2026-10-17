@@ -7,3 +7,7 @@ Sequential scope: DBL-275 model, 276 perception/navigation, 277 behaviors/archet
 ## DBL-275
 
 Deterministic serializable monster/brain models and six role profiles, seeded staggered think schedules, champion stat foundation and existing movement configuration extension. No default combat behavior changed. Full check/format passes: 117 tests. G2.5 approval recorded; twelve scoped and hardware-follow-up records preserve all original IDs/dependencies.
+
+## DBL-276
+
+Perception uses resolved positions/damage with conservative obstacle line of sight, last-seen threat memory, dead-target clearing and home leash. Shared per-tick path budget, cached goals and 30+ tick retry cooldown bound navigation requests. Three targeted tests and full check pass: 120 tests.

@@ -2909,8 +2909,9 @@
     "priority": "p0",
     "parent": "DBL-059",
     "dependencies": ["DBL-275"],
-    "status": "in-progress",
-    "body": "## Purpose\nPerception, threat memory and navigation budgets\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review."
+    "status": "completed",
+    "body": "## Purpose\nPerception, threat memory and navigation budgets\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review.",
+    "evidence": "Perception uses resolved positions/damage with conservative obstacle line of sight, last-seen threat memory, dead-target clearing and home leash. Shared per-tick path budget, cached goals and 30+ tick retry cooldown bound navigation requests. Three targeted tests and full check pass: 120 tests."
   },
   {
     "id": "DBL-277",
@@ -2921,7 +2922,7 @@
     "priority": "p0",
     "parent": "DBL-060",
     "dependencies": ["DBL-276"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Purpose\nBehavior states and melee/ranged/caster/support rhythms\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review."
   },
   {
