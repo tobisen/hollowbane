@@ -1,3 +1,11 @@
+import {
+  createEncounter,
+  ENCOUNTER_NAV,
+  finishEncounter,
+  type Encounter,
+} from "../simulation/encounter";
+import { stepMonsterAI } from "../simulation/monster-ai";
+import { MONSTER_PROFILES, type MonsterRole } from "../simulation/monsters";
 import { controllerInput } from "./controller-input";
 import { directionFor } from "../simulation/locomotion";
 import { renderSize, shouldBalanceDetail } from "../world/render-size";
@@ -61,13 +69,48 @@ export interface CombatPresentation {
 declare global {
   interface Window {
     hollowbaneCombat?: CombatPresentation;
+    hollowbaneAI?: {
+      tick: number;
+      enemies: (import("../simulation/monsters").MonsterBrain & {
+        position: Point;
+      })[];
+      metrics: {
+        aiP95: number;
+        alive: number;
+        corpses: number;
+        pathRequests: number;
+        decisions: number;
+        spawned: number;
+        despawned: number;
+      };
+    };
   }
 }
-export function startCombatArena(): Phaser.Game {
+export function startCombatArena(monsters = false): Phaser.Game {
+  const query = new URLSearchParams(location.search);
+  const requested = Number(query.get("count") ?? 5);
+  const initialCount = [5, 10, 20, 30].includes(requested) ? requested : 5;
+  const nav = monsters ? ENCOUNTER_NAV : ARENA_NAV;
   const root = document.querySelector("main")!;
   root.className = "combat-arena";
   root.innerHTML = `<div id="combat-world" tabindex="0" role="application" aria-label="Combat arena. Click targets to attack, hold to repeat. Click ground or WASD to move. Space stops queued actions."></div><header class="arena-header"><p>HOLLOWBANE / PHASE III</p><h1>The Ashwood Trial</h1><a href="./">Return to the cloister</a></header><aside class="arena-panel"><h2>Combat laboratory</h2><label>Weapon <select id="combat-weapon"><option value="melee">Melee blade</option><option value="projectile">Training bolt</option></select></label><label>Attack speed <select id="combat-speed"><option value="0">+0</option><option value="20">+20</option><option value="50">+50</option><option value="90">+90</option></select></label><label>Hit recovery <select id="combat-recovery"><option value="0">+0</option><option value="25">+25</option><option value="60">+60</option></select></label><label>Hostile sentinel <input id="combat-hostile" type="checkbox" checked></label><label>Impact sound <input id="combat-sound" type="checkbox" checked></label><button id="combat-reset">Reset trial</button><button id="combat-pause" aria-pressed="false">Pause</button><output id="combat-diagnostics" aria-live="off">Preparing trial…</output></aside><footer class="arena-footer"><strong>CLICK TARGET · HOLD TO REPEAT</strong> / CLICK GROUND OR WASD TO MOVE / SPACE TO STOP<br>Movement waits for attack recovery. Bolts can miss moving targets. Reset restores the same seed.<div id="combat-log" role="status">Select a target to begin.</div></footer>`;
   document.title = "Hollowbane · The Ashwood Trial";
+  if (monsters) {
+    root.classList.add("monster-arena");
+    document.title = "Hollowbane · The Cinder Watch";
+    root.querySelector(".arena-header p")!.textContent =
+      "HOLLOWBANE / PHASE IV";
+    root.querySelector("h1")!.textContent = "The Cinder Watch";
+    root.querySelector(".arena-panel h2")!.textContent = "Monster encounters";
+    root.querySelector("label:has(#combat-hostile)")!.firstChild!.textContent =
+      "Monster AI ";
+    root
+      .querySelector(".arena-panel h2")!
+      .insertAdjacentHTML(
+        "afterend",
+        `<label>Enemies <select id="ai-count">${[5, 10, 20, 30].map((n) => `<option ${n === initialCount ? "selected" : ""}>${n}</option>`).join("")}</select></label><label>AI navigation overlay <input id="ai-debug" type="checkbox"></label><label>Immortal test player <input id="ai-practice" type="checkbox"></label>`,
+      );
+  }
   const field = document.querySelector<HTMLElement>("#combat-world")!;
   const weapon = document.querySelector<HTMLSelectElement>("#combat-weapon")!;
   const speed = document.querySelector<HTMLSelectElement>("#combat-speed")!;
@@ -76,9 +119,13 @@ export function startCombatArena(): Phaser.Game {
   const hostile = document.querySelector<HTMLInputElement>("#combat-hostile")!;
   const sound = document.querySelector<HTMLInputElement>("#combat-sound")!;
   class Arena extends Phaser.Scene {
-    private world = createCombat();
+    private encounter: Encounter | null = monsters
+      ? createEncounter(initialCount)
+      : null;
+    private world = this.encounter?.combat ?? createCombat();
+    private aiCosts: number[] = [];
     private accumulator = 0;
-    private paused = false;
+    private paused = monsters && query.has("paused");
     private sprites = new Map<number, Phaser.GameObjects.Sprite>();
     private labels = new Map<number, Phaser.GameObjects.Text>();
     private ink!: Phaser.GameObjects.Graphics;
@@ -152,28 +199,7 @@ export function startCombatArena(): Phaser.Game {
       floor.lineStyle(2, 0xb19a62, 0.6).strokeRect(230, 260, 1070, 570);
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
-      for (const actor of this.world.actors) {
-        const sprite = this.add
-          .sprite(0, 0, "arena-wanderer", 0)
-          .setOrigin(0.5, 112 / 128)
-          .setScale(0.93);
-        if (actor.kind === "hostile") sprite.setTint(0xd9a484);
-        if (actor.kind === "dummy" || actor.kind === "moving")
-          sprite.setVisible(false);
-        this.sprites.set(actor.id, sprite);
-        this.labels.set(
-          actor.id,
-          this.add
-            .text(0, 0, "", {
-              fontFamily: "Georgia",
-              fontSize: "12px",
-              color: "#d3c7ac",
-              align: "center",
-            })
-            .setOrigin(0.5, 0)
-            .setDepth(2002),
-        );
-      }
+      this.syncActors();
       this.startedAt = performance.now();
       if (this.game.renderer.type === Phaser.WEBGL) {
         const gl = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)
@@ -285,7 +311,14 @@ export function startCombatArena(): Phaser.Game {
       document.querySelector<HTMLButtonElement>("#combat-reset")!.onclick =
         () => {
           stop();
-          this.world = createCombat();
+          this.encounter = monsters
+            ? createEncounter(
+                Number(
+                  document.querySelector<HTMLSelectElement>("#ai-count")!.value,
+                ),
+              )
+            : null;
+          this.world = this.encounter?.combat ?? createCombat();
           this.impactUntil.clear();
           this.numberUntil.clear();
           this.deathAt.clear();
@@ -293,7 +326,13 @@ export function startCombatArena(): Phaser.Game {
           document.querySelector("#combat-log")!.textContent =
             "Select a target to begin.";
         };
+      const count = document.querySelector<HTMLSelectElement>("#ai-count");
+      if (count)
+        count.onchange = () =>
+          document.querySelector<HTMLButtonElement>("#combat-reset")!.click();
       const pause = document.querySelector<HTMLButtonElement>("#combat-pause")!;
+      pause.textContent = this.paused ? "Resume" : "Pause";
+      pause.setAttribute("aria-pressed", String(this.paused));
       pause.onclick = () => {
         stop();
         this.paused = !this.paused;
@@ -301,7 +340,7 @@ export function startCombatArena(): Phaser.Game {
         pause.setAttribute("aria-pressed", String(this.paused));
       };
       hostile.onchange = () => {
-        this.world.hostilesActive = hostile.checked;
+        this.world.hostilesActive = !monsters && hostile.checked;
         if (!hostile.checked)
           for (const a of this.world.actors.filter((a) => a.kind === "hostile"))
             a.controller = commandCombat(a.controller, { kind: "stop" });
@@ -333,6 +372,42 @@ export function startCombatArena(): Phaser.Game {
       });
       document.documentElement.dataset.combatReady = "true";
     }
+    private syncActors(): void {
+      const ids = new Set(this.world.actors.map((a) => a.id));
+      for (const [id, sprite] of this.sprites)
+        if (!ids.has(id)) {
+          sprite.destroy();
+          this.sprites.delete(id);
+          this.labels.get(id)?.destroy();
+          this.labels.delete(id);
+          this.impactUntil.delete(id);
+          this.numberUntil.delete(id);
+          this.deathAt.delete(id);
+        }
+      for (const actor of this.world.actors) {
+        if (this.sprites.has(actor.id)) continue;
+        const sprite = this.add
+          .sprite(0, 0, "arena-wanderer", 0)
+          .setOrigin(0.5, 112 / 128)
+          .setScale(0.93);
+        if (actor.kind === "hostile") sprite.setTint(0xd9a484);
+        if (actor.kind === "dummy" || actor.kind === "moving")
+          sprite.setVisible(false);
+        this.sprites.set(actor.id, sprite);
+        this.labels.set(
+          actor.id,
+          this.add
+            .text(0, 0, "", {
+              fontFamily: "Georgia",
+              fontSize: "12px",
+              color: "#d3c7ac",
+              align: "center",
+            })
+            .setOrigin(0.5, 0)
+            .setDepth(2002),
+        );
+      }
+    }
     private feedback(event: CombatEvent): void {
       if (event.kind === "damage") {
         const text =
@@ -349,11 +424,11 @@ export function startCombatArena(): Phaser.Game {
           this.tone();
         }
         document.querySelector("#combat-log")!.textContent =
-          `${this.world.actors[event.actor]!.name} → ${this.world.actors[event.target]!.name}: ${text}`;
+          `${this.world.actors.find((a) => a.id === event.actor)?.name ?? "Departed actor"} → ${this.world.actors.find((a) => a.id === event.target)?.name ?? "Departed target"}: ${text}`;
       } else if (event.kind === "death") {
         this.deathAt.set(event.target, this.world.tick);
         document.querySelector("#combat-log")!.textContent =
-          `${this.world.actors[event.target]!.name} has fallen. Reset the trial to restore all targets.`;
+          `${this.world.actors.find((a) => a.id === event.target)?.name ?? "Departed target"} has fallen. Reset the trial to restore all targets.`;
       }
     }
     private tone(): void {
@@ -409,10 +484,41 @@ export function startCombatArena(): Phaser.Game {
                 : -progress * 9,
         )
         .setScale(0.93, dead ? 0.93 - fall * 0.43 : 0.93);
+      const brain = this.encounter?.brains.find((b) => b.id === a.id);
+      if (brain && !flash)
+        sprite.setTint(
+          brain.champion
+            ? 0xf3cd73
+            : (
+                {
+                  melee: 0xd9a484,
+                  ranged: 0xa8bf9c,
+                  caster: 0xb1a1d1,
+                  support: 0x83b9c1,
+                  flanker: 0xcc9ab5,
+                  tank: 0xa9adb5,
+                } satisfies Record<MonsterRole, number>
+              )[brain.role],
+        );
       if (flash) sprite.setTint(0xffd7a0);
       else {
         sprite.clearTint();
-        if (a.kind === "hostile") sprite.setTint(0xd9a484);
+        if (a.kind === "hostile" && !brain) sprite.setTint(0xd9a484);
+        if (brain)
+          sprite.setTint(
+            brain.champion
+              ? 0xf3cd73
+              : (
+                  {
+                    melee: 0xd9a484,
+                    ranged: 0xa8bf9c,
+                    caster: 0xb1a1d1,
+                    support: 0x83b9c1,
+                    flanker: 0xcc9ab5,
+                    tank: 0xa9adb5,
+                  } satisfies Record<MonsterRole, number>
+                )[brain.role],
+          );
       }
       this.ink.fillStyle(0x03070a, 0.5).fillEllipse(p.x, p.y + 3, 34, 12);
       const selected = this.world.actors[0]!.controller.selected === a.id;
@@ -443,12 +549,44 @@ export function startCombatArena(): Phaser.Game {
           .fillStyle(a.id === 0 ? 0x99bb9b : 0xbf785e, 1)
           .fillRect(p.x - 24, p.y - 80, (48 * a.hp) / a.maxHp, 5);
       }
+      const debug = Boolean(
+        document.querySelector<HTMLInputElement>("#ai-debug")?.checked,
+      );
+      if (brain && debug && !dead) {
+        const home = onGround(brain.home);
+        this.ink
+          .lineStyle(1, 0x8bb9ba, 0.22)
+          .lineBetween(p.x, p.y, home.x, home.y)
+          .strokeCircle(home.x, home.y, 4);
+        let previous = p;
+        for (const point of a.controller.walker.route) {
+          const q = onGround(point);
+          this.ink
+            .lineStyle(1, 0xe8bc73, 0.6)
+            .lineBetween(previous.x, previous.y, q.x, q.y);
+          previous = q;
+        }
+        if (this.hovered === a.id || selected) {
+          const radius = MONSTER_PROFILES[brain.role].detection;
+          this.ink
+            .lineStyle(1, 0x8bd0bf, 0.5)
+            .strokeEllipse(p.x, p.y, 181 * radius, 90.5 * radius);
+          if (brain.lastSeen) {
+            const q = onGround(brain.lastSeen);
+            this.ink
+              .lineStyle(2, 0xd6a37b, 0.7)
+              .lineBetween(p.x, p.y, q.x, q.y);
+          }
+        }
+      }
       const number = this.numberUntil.get(a.id),
         numberText =
           number && number.until > this.world.tick ? `\n${number.text}` : "";
       label
         .setPosition(p.x, p.y + (a.id === 0 ? 34 : 14))
-        .setText(`${a.name}${dead ? " · fallen" : ""}${numberText}`)
+        .setText(
+          `${brain ? `${brain.champion ? "★ " : ""}${brain.role}${debug && !dead ? `\n${brain.state}` : ""}` : a.name}${dead ? " · fallen" : ""}${numberText}`,
+        )
         .setColor(numberText ? number!.color : "#c7bc9e");
       if (["windup", "active", "recovery"].includes(phase) && !dead) {
         const target = this.world.actors.find(
@@ -507,7 +645,7 @@ export function startCombatArena(): Phaser.Game {
         player.attackSpeed = Number(speed.value);
         player.recoveryBonus = Number(recovery.value);
       }
-      this.world.hostilesActive = hostile.checked;
+      this.world.hostilesActive = !monsters && hostile.checked;
       const keys = {
         x:
           Number(this.keys.has("d") || this.keys.has("arrowright")) -
@@ -610,7 +748,22 @@ export function startCombatArena(): Phaser.Game {
         while (this.accumulator >= 1000 / 60) {
           const tickStart = performance.now(),
             oldSequence = player.controller.timeline.sequence;
-          stepCombat(this.world, ARENA_NAV, direct.vector, direct.scale);
+          if (this.encounter) {
+            const aiStart = performance.now();
+            this.encounter.work = {
+              ...(hostile.checked
+                ? stepMonsterAI(this.world, this.encounter.brains, nav)
+                : { decisions: 0, pathRequests: 0 }),
+              separationCorrections: 0,
+            };
+            this.record(this.aiCosts, performance.now() - aiStart);
+            if (
+              document.querySelector<HTMLInputElement>("#ai-practice")!.checked
+            )
+              player.invulnerableUntil = this.world.tick + 2;
+          }
+          stepCombat(this.world, nav, direct.vector, direct.scale);
+          if (this.encounter) finishEncounter(this.encounter, nav);
           const aim = controllerInput.frame.aim;
           if (
             player.controller.timeline.phase === "idle" &&
@@ -633,6 +786,26 @@ export function startCombatArena(): Phaser.Game {
       const updateAt = performance.now();
       this.ink.clear();
       this.effect.clear();
+      this.syncActors();
+      if (monsters)
+        for (const obstacle of nav.obstacles) {
+          this.ink
+            .fillStyle(0x19252d, 1)
+            .fillEllipse(
+              obstacle.x,
+              obstacle.y,
+              obstacle.rx * 2,
+              obstacle.ry * 2,
+            );
+          this.ink
+            .lineStyle(2, 0x7a8176, 0.8)
+            .strokeEllipse(
+              obstacle.x,
+              obstacle.y,
+              obstacle.rx * 2,
+              obstacle.ry * 2,
+            );
+        }
       for (const actor of this.world.actors) this.drawActor(actor);
       for (const projectile of this.world.projectiles) {
         const p = onGround(projectile.position);
@@ -688,10 +861,33 @@ export function startCombatArena(): Phaser.Game {
         },
         metrics,
       };
+      if (this.encounter) {
+        window.hollowbaneAI = {
+          tick: this.world.tick,
+          enemies: this.encounter.brains.map((b) => ({
+            ...b,
+            position: {
+              ...this.world.actors.find((a) => a.id === b.id)!.controller.walker
+                .position,
+            },
+          })),
+          metrics: {
+            aiP95: percentile(this.aiCosts, 0.95),
+            alive: this.encounter.brains.filter((b) => b.state !== "dead")
+              .length,
+            corpses: this.encounter.brains.filter((b) => b.state === "dead")
+              .length,
+            pathRequests: this.encounter.work.pathRequests,
+            decisions: this.encounter.work.decisions,
+            spawned: this.encounter.spawned,
+            despawned: this.encounter.despawned,
+          },
+        };
+      }
       if (this.game.loop.frame % 6 === 0) {
         const t = player.controller.timeline;
         document.querySelector("#combat-diagnostics")!.textContent =
-          `${this.paused ? "PAUSED · " : ""}TICK ${this.world.tick} · ${metrics.activeEntities} ACTIVE\n${t.phase.toUpperCase()} · ${t.remaining} frames left\nWindup ${t.timing.windup} / active ${t.timing.active}\nRecovery ${t.timing.recovery} / hit ${player.recoveryBonus >= 60 ? 6 : player.recoveryBonus >= 25 ? 9 : 12}\nHP ${player.hp} / ${player.maxHp}\nFrame p50/p95 ${metrics.frameP50.toFixed(1)} / ${metrics.frameP95.toFixed(1)} ms\nSimulation p95 ${metrics.simulationP95.toFixed(2)} ms\nRender CPU p95 ${metrics.renderP95.toFixed(2)} ms\nView update p95 ${metrics.updateP95.toFixed(2)} ms\nAttack latency p95 ${metrics.attackLatencyP95.toFixed(1)} ms (${metrics.attackSamples})\nDropped ticks ${metrics.droppedTicks}`;
+          `${this.paused ? "PAUSED · " : ""}TICK ${this.world.tick} · ${metrics.activeEntities} ACTIVE\n${t.phase.toUpperCase()} · ${t.remaining} frames left\nWindup ${t.timing.windup} / active ${t.timing.active}\nRecovery ${t.timing.recovery} / hit ${player.recoveryBonus >= 60 ? 6 : player.recoveryBonus >= 25 ? 9 : 12}\nHP ${player.hp} / ${player.maxHp}\nFrame p50/p95 ${metrics.frameP50.toFixed(1)} / ${metrics.frameP95.toFixed(1)} ms\nSimulation p95 ${metrics.simulationP95.toFixed(2)} ms\nRender CPU p95 ${metrics.renderP95.toFixed(2)} ms\nView update p95 ${metrics.updateP95.toFixed(2)} ms\nAttack latency p95 ${metrics.attackLatencyP95.toFixed(1)} ms (${metrics.attackSamples})\nDropped ticks ${metrics.droppedTicks}${this.encounter ? `\nAI p95 ${percentile(this.aiCosts, 0.95).toFixed(2)} ms · ${this.encounter.brains.filter((b) => b.state !== "dead").length} enemies\nPaths/tick ${this.encounter.work.pathRequests} / 2 · ${this.encounter.despawned} despawned` : ""}`;
       }
     }
   }

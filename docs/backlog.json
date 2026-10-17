@@ -620,9 +620,10 @@
     "phase": 8,
     "priority": "p0",
     "dependencies": ["DBL-057"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nMonster data models, faction, family, role, abilities, stats.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 08; P0. Target roadmap phase 08; source phase metadata retained.\n\n## Dependencies\nDBL-057\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Monster data models, faction, family, role, abilities, stats.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-058; no known critical regression.\n",
-    "targetPhase": 8
+    "targetPhase": 8,
+    "evidence": "Phase 4 scoped DBL-275–281 cover authorized foundations only. Original dependencies and broader acceptance remain incomplete, including full content/monster art/corpse gameplay/unique elites. See docs/ai/phase4.md."
   },
   {
     "id": "DBL-059",
@@ -630,9 +631,10 @@
     "phase": 8,
     "priority": "p0",
     "dependencies": ["DBL-058"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nAwareness/aggro, pursuit/leash, perception och pathfinding.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 08; P0. Target roadmap phase 08; source phase metadata retained.\n\n## Dependencies\nDBL-058\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Awareness/aggro, pursuit/leash, perception och pathfinding.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-059; no known critical regression.\n",
-    "targetPhase": 8
+    "targetPhase": 8,
+    "evidence": "Phase 4 scoped DBL-275–281 cover authorized foundations only. Original dependencies and broader acceptance remain incomplete, including full content/monster art/corpse gameplay/unique elites. See docs/ai/phase4.md."
   },
   {
     "id": "DBL-060",
@@ -640,9 +642,10 @@
     "phase": 8,
     "priority": "p0",
     "dependencies": ["DBL-059"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nIdle/patrol/approach/attack/retreat/flee states.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 08; P0. Target roadmap phase 08; source phase metadata retained.\n\n## Dependencies\nDBL-059\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Idle/patrol/approach/attack/retreat/flee states.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-060; no known critical regression.\n",
-    "targetPhase": 8
+    "targetPhase": 8,
+    "evidence": "Phase 4 scoped DBL-275–281 cover authorized foundations only. Original dependencies and broader acceptance remain incomplete, including full content/monster art/corpse gameplay/unique elites. See docs/ai/phase4.md."
   },
   {
     "id": "DBL-061",
@@ -650,9 +653,10 @@
     "phase": 8,
     "priority": "p0",
     "dependencies": ["DBL-060"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nGroup steering och crowd management i trånga korridorer.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 08; P0. Target roadmap phase 08; source phase metadata retained.\n\n## Dependencies\nDBL-060\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Group steering och crowd management i trånga korridorer.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-061; no known critical regression.\n",
-    "targetPhase": 8
+    "targetPhase": 8,
+    "evidence": "Phase 4 scoped DBL-275–281 cover authorized foundations only. Original dependencies and broader acceptance remain incomplete, including full content/monster art/corpse gameplay/unique elites. See docs/ai/phase4.md."
   },
   {
     "id": "DBL-062",
@@ -660,9 +664,10 @@
     "phase": 8,
     "priority": "p0",
     "dependencies": ["DBL-061"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nArchetypes: melee, ranged, caster, summoner, fast flanker, tank.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 08; P0. Target roadmap phase 08; source phase metadata retained.\n\n## Dependencies\nDBL-061\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Archetypes: melee, ranged, caster, summoner, fast flanker, tank.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-062; no known critical regression.\n",
-    "targetPhase": 8
+    "targetPhase": 8,
+    "evidence": "Phase 4 scoped DBL-275–281 cover authorized foundations only. Original dependencies and broader acceptance remain incomplete, including full content/monster art/corpse gameplay/unique elites. See docs/ai/phase4.md."
   },
   {
     "id": "DBL-063",
@@ -670,9 +675,10 @@
     "phase": 8,
     "priority": "p0",
     "dependencies": ["DBL-062"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nMonster animation, death, corpse persistence och corpses as gameplay.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 08; P0. Target roadmap phase 08; source phase metadata retained.\n\n## Dependencies\nDBL-062\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Monster animation, death, corpse persistence och corpses as gameplay.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-063; no known critical regression.\n",
-    "targetPhase": 8
+    "targetPhase": 8,
+    "evidence": "Phase 4 scoped DBL-275–281 cover authorized foundations only. Original dependencies and broader acceptance remain incomplete, including full content/monster art/corpse gameplay/unique elites. See docs/ai/phase4.md."
   },
   {
     "id": "DBL-064",
@@ -690,9 +696,10 @@
     "phase": 9,
     "priority": "p1",
     "dependencies": ["DBL-064"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nNormal/champion/unique elites inklusive skyltfärg och namngivning.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 09; P1. Target roadmap phase 09; source phase metadata retained.\n\n## Dependencies\nDBL-064\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Normal/champion/unique elites inklusive skyltfärg och namngivning.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-065; no known critical regression.\n",
-    "targetPhase": 9
+    "targetPhase": 9,
+    "evidence": "Phase 4 scoped DBL-275–281 cover authorized foundations only. Original dependencies and broader acceptance remain incomplete, including full content/monster art/corpse gameplay/unique elites. See docs/ai/phase4.md."
   },
   {
     "id": "DBL-066",
@@ -2961,8 +2968,9 @@
     "priority": "p0",
     "parent": "DBL-062",
     "dependencies": ["DBL-279"],
-    "status": "in-progress",
-    "body": "## Purpose\nPlayable monster encounter and AI diagnostics\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review."
+    "status": "completed",
+    "body": "## Purpose\nPlayable monster encounter and AI diagnostics\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review.",
+    "evidence": "Dedicated ?monsters=1 Cinder Watch arena reuses the combat renderer, targeting, keyboard/mouse and semantic controller adapters. Count/AI/practice/pause controls, role/champion tints, health/death transforms, obstacle silhouettes, optional state/home/path/perception overlay and AI CPU diagnostics. Two new browser cases and all five original combat cases pass; original screenshots unchanged and new arena screenshot reviewed. Repeated patrol-leg test repairs a reached-goal cache bug. Full check: 130 tests. Original monster parents remain partial; original atlas reuse/proxy provenance recorded."
   },
   {
     "id": "DBL-281",
@@ -2973,7 +2981,7 @@
     "priority": "p0",
     "parent": "DBL-064",
     "dependencies": ["DBL-280"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Purpose\nMonster quality gate: browser regression and 5–30 enemy performance\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review."
   },
   {

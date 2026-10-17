@@ -53,3 +53,10 @@ it("hitstun and recovery cannot be cancelled by AI decisions", () => {
   expect(f.actor.controller.timeline.remaining).toBe(20);
   expect(f.actor.controller.attacking).toBe(false);
 });
+
+it("patrol completes multiple legs instead of retaining an already-reached cached goal", () => {
+  const f = fixture();
+  f.world.actors[0]!.hp = 0;
+  tick(f, 700);
+  expect(f.brain.patrolIndex).toBeGreaterThan(2);
+});

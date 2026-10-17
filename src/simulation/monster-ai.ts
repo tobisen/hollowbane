@@ -91,6 +91,7 @@ export function stepMonsterAI(
       brain.lastSeen = null;
       if (distance(p, brain.home) < 0.3) {
         stop(actor);
+        brain.goal = null;
         transitionMonster(brain, "idle", world.tick);
       } else planMonsterPath(actor, brain, nav, brain.home, world.tick, budget);
       continue;
@@ -104,6 +105,7 @@ export function stepMonsterAI(
       if (brain.state === "patrol") {
         if (brain.goal && distance(p, brain.goal) < 0.25) {
           brain.patrolIndex++;
+          brain.goal = null;
           transitionMonster(brain, "idle", world.tick);
           stop(actor);
         } else {

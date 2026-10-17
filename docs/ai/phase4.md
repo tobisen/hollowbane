@@ -23,3 +23,7 @@ Pack alerts require an actually visible live threat and a same-pack neighbor wit
 ## DBL-279
 
 Seeded encounter composition supports 1–50 monsters with bounded safe-spawn searches, monotonically increasing IDs, champion stat/label foundation and obstacle geometry. Death/corpse expiry uses simulation ticks; despawn clears stale selection/projectiles without cancelling committed attack timing. Deterministic 5/10/20/30/50-enemy replay/obstacle tests, corpse/identity and invalid spawn tests pass. Full check/format: 129 tests. Corpses have no loot, resurrection or inventory behavior.
+
+## DBL-280
+
+Dedicated ?monsters=1 Cinder Watch arena reuses the combat renderer, targeting, keyboard/mouse and semantic controller adapters. Count/AI/practice/pause controls, role/champion tints, health/death transforms, obstacle silhouettes, optional state/home/path/perception overlay and AI CPU diagnostics. Two new browser cases and all five original combat cases pass; original screenshots unchanged and new arena screenshot reviewed. Repeated patrol-leg test repairs a reached-goal cache bug. Full check: 130 tests. Original monster parents remain partial; original atlas reuse/proxy provenance recorded.

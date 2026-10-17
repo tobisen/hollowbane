@@ -30,3 +30,5 @@ The existing original wanderer atlas remains unchanged (eight directions, two id
 ## Phase 2.5 input diagnostics
 
 Controller prompts use original text labels for standard button names, with generic numbered fallbacks; no vendor icon artwork or font assets are copied. Stick diagnostics are original SVG circles/axes/dots in src/rendering/controller-calibration.ts. These are utility UI geometry, not production character art. No external image, audio or font assets were added.
+
+Phase 4 AI arena uses the existing original wanderer atlas as explicitly provisional monster silhouettes, with role/champion tints, existing attack/hit/death transforms, original geometry for obstacles and optional navigation lines. These are developer behavior proxies, not final monster-family art or new vendor assets. No copied creature names, sprites, audio or protected content. Production family silhouettes/animation/audio remain in original DBL-063/190 scope; corpse gameplay remains outside this phase.

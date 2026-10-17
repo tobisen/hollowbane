@@ -5,10 +5,10 @@ import "./style.css";
 const query = new URLSearchParams(location.search);
 if (query.has("controller")) {
   controllerPage();
-} else if (query.has("combat")) {
+} else if (query.has("combat") || query.has("monsters")) {
   await import("./rendering/combat.css");
   const { startCombatArena } = await import("./rendering/combat-arena");
-  startCombatArena();
+  startCombatArena(query.has("monsters"));
 } else if (query.has("gallery")) {
   const { startGallery } = await import("./rendering/gallery");
   await startGallery();

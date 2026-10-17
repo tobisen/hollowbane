@@ -7,7 +7,7 @@ import type { Action } from "../simulation/actions";
 export function controllerPage(): void {
   const root = document.querySelector("main")!;
   root.className = "controller-page";
-  root.innerHTML = `<header><p class="eyebrow">HOLLOWBANE / INPUT LABORATORY</p><h1>Controller settings</h1><p>Standard-compatible Xbox, PlayStation and generic controllers. Virtual tests do not verify physical hardware.</p></header><nav><a href="./">Cloister</a><a href="?gallery=1">Art atelier</a><a href="?combat=1">Combat arena</a><a href="?engine=4">Phaser 4 observatory</a><a href="?engine=3">Phaser 3 observatory</a></nav><section id="controller-settings-host"><p>Controller configuration is being prepared.</p></section><section><h2>Live controller state</h2><pre id="controller-live" aria-live="off">Waiting for browser polling…</pre></section><p id="controller-notice" role="status"></p>`;
+  root.innerHTML = `<header><p class="eyebrow">HOLLOWBANE / INPUT LABORATORY</p><h1>Controller settings</h1><p>Standard-compatible Xbox, PlayStation and generic controllers. Virtual tests do not verify physical hardware.</p></header><nav><a href="./">Cloister</a><a href="?gallery=1">Art atelier</a><a href="?combat=1">Combat arena</a><a href="?engine=4">Phaser 4 observatory</a><a href="?engine=3">Phaser 3 observatory</a><a href="?monsters=1">Monster encounters</a></nav><section id="controller-settings-host"><p>Controller configuration is being prepared.</p></section><section><h2>Live controller state</h2><pre id="controller-live" aria-live="off">Waiting for browser polling…</pre></section><p id="controller-notice" role="status"></p>`;
   installControllerSettings();
   installCalibration();
   document.title = "Hollowbane · Controller laboratory";
@@ -23,7 +23,7 @@ export function installControllerUI(): void {
   const menu = document.createElement("dialog");
   menu.id = "controller-menu";
   menu.setAttribute("aria-labelledby", "controller-menu-title");
-  menu.innerHTML = `<h2 id="controller-menu-title">Paused · Controller menu</h2><p id="controller-context">Choose a screen or resume gameplay.</p><div class="controller-menu-list"><button id="controller-resume">Resume</button><a href="?controller=1">Controller settings & calibration</a><button id="controller-movement">Movement controls</button><a href="./">Cloister</a><a href="?gallery=1">Art atelier</a><a href="?combat=1">Combat arena</a><a href="?engine=4">Phaser 4 observatory</a><a href="?engine=3">Phaser 3 observatory</a></div><p id="controller-prompts">A / Cross: choose · B / Circle: back · D-pad: navigate</p>`;
+  menu.innerHTML = `<h2 id="controller-menu-title">Paused · Controller menu</h2><p id="controller-context">Choose a screen or resume gameplay.</p><div class="controller-menu-list"><button id="controller-resume">Resume</button><a href="?controller=1">Controller settings & calibration</a><button id="controller-movement">Movement controls</button><a href="./">Cloister</a><a href="?gallery=1">Art atelier</a><a href="?combat=1">Combat arena</a><a href="?engine=4">Phaser 4 observatory</a><a href="?engine=3">Phaser 3 observatory</a><a href="?monsters=1">Monster encounters</a></div><p id="controller-prompts">A / Cross: choose · B / Circle: back · D-pad: navigate</p>`;
   document.body.append(menu);
   const world = () =>
     document.querySelector<HTMLElement>("#world,#combat-world");
@@ -207,7 +207,10 @@ export function installControllerUI(): void {
         hub.frame.device === "gamepad"
           ? hub.supported
             ? contextPrompt(
-                location.search.includes("combat") ? "combat" : "movement",
+                location.search.includes("combat") ||
+                  location.search.includes("monsters")
+                  ? "combat"
+                  : "movement",
                 hub.family,
                 hub.settings.bindings,
               )
