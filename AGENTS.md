@@ -19,3 +19,5 @@ G2.5 checkpoint (2026-10-17): DBL-263–274 / DBL-GP01–12 technical candidate 
 Phase 4 authorization: user approved G2.5 and authorized Monster AI through its quality gate. This supersedes the G2.5 stop for scoped DBL-275–281 only; preserve completed combat/controllers. Follow dependency-aware scoped slices of original DBL-058–065, leaving broader parents partial. Hardware follow-ups DBL-282–286 require physical evidence. Continue sequentially; stop at Phase 4 Monster AI review. No loot/inventory/skill trees/campaign.
 
 Phase 4 gate checkpoint: DBL-275–281 and DBL-287–288 technically delivered. Runtime ab46984 passed CI/Pages and 29 hosted scenarios. Stop at Monster AI quality review; quality approval remains false. Physical DBL-282–286, reference-hardware performance and broader original parents remain open. Do not begin loot/inventory/skill trees/campaign or new phase work without user approval. Evidence: docs/ai/phase4.md.
+
+User quality feedback authorizes DBL-289 controller gameplay-focus repair within the delivered candidate. Preserve gate stop for new phase work; record browser versus physical evidence separately.

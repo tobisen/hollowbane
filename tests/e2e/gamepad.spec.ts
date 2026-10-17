@@ -584,3 +584,75 @@ test("brief keyboard attack taps survive between input polls", async ({
     )
     .toBeGreaterThan(0);
 });
+
+for (const url of ["./", "./?combat=1", "./?monsters=1"]) {
+  test(`gameplay D-pad preserves focus and movement in ${url}`, async ({
+    page,
+  }) => {
+    await ready(page, url);
+    const combat = url !== "./";
+    if (combat) {
+      await expect(page.locator("html")).toHaveAttribute(
+        "data-combat-ready",
+        "true",
+      );
+      await page.locator("#combat-hostile").uncheck();
+    }
+    const field = page.locator(combat ? "#combat-world" : "#world");
+    await field.focus();
+    for (const button of [12, 13, 14, 15]) {
+      await tap(page, button);
+      await expect(field).toBeFocused();
+    }
+    const x = await page.evaluate(
+      (combat) =>
+        combat
+          ? window.hollowbaneCombat!.actors[0]!.x
+          : window.hollowbanePrototype!.x,
+      combat,
+    );
+    await axes(page, [0.8, 0, 0, 0]);
+    await expect
+      .poll(() =>
+        page.evaluate(
+          (combat) =>
+            combat
+              ? window.hollowbaneCombat!.actors[0]!.x
+              : window.hollowbanePrototype!.x,
+          combat,
+        ),
+      )
+      .toBeGreaterThan(x + 5);
+  });
+}
+
+test("controller returns from diagnostics to gameplay without a mouse focus click", async ({
+  page,
+}) => {
+  await ready(page, "./?controller=1");
+  const cloister = page.locator('a[href="./"]').first();
+  for (
+    let i = 0;
+    i < 64 && !(await cloister.evaluate((e) => e === document.activeElement));
+    i++
+  )
+    await tap(page, 13);
+  await expect(cloister).toBeFocused();
+  await button(page, 0, true);
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-prototype-ready",
+    "true",
+  );
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype?.tick ?? 0))
+    .toBeGreaterThan(2);
+  await button(page, 0, false);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+    .toBe(true);
+  const x = await page.evaluate(() => window.hollowbanePrototype!.x);
+  await axes(page, [0.8, 0, 0, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.x))
+    .toBeGreaterThan(x + 5);
+});

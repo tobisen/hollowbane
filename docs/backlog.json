@@ -3071,5 +3071,18 @@
     "status": "completed",
     "body": "## Acceptance criteria\nLow-health retreat intent survives hitstun and activates after recovery without cancelling commitment.\n\n## Non-goals\nNew damage/reaction systems.\n\n## Test requirements\nRegression exercises an actual scheduled AI decision during hitstun, then verifies retreat after recovery; run behavior and encounter checks.\n\n## Definition of done\nVerified isolated fix committed; final quality gate remains pending.",
     "evidence": "Latch low-health retreat deadline before checking combat phase, then honor it only after idle. Corrected hitstun regression executes a scheduled decision and verifies remaining recovery is unchanged, followed by actual retreat movement. Full check/format 133 tests; all five Chromium and eight Firefox/WebKit monster cases pass."
+  },
+  {
+    "id": "DBL-289",
+    "title": "Keep gameplay controller focus when D-pad actions are sampled",
+    "phase": 4,
+    "targetPhase": 5,
+    "deliveryPhase": "4-quality-fix",
+    "parent": "DBL-009",
+    "priority": "p0",
+    "dependencies": ["DBL-274", "DBL-288"],
+    "status": "completed",
+    "body": "## Acceptance criteria\nD-pad actions during gameplay cannot focus page controls or block analog movement. Controller navigation remains available in menus and settings.\n\n## Non-goals\nNew gameplay systems or claiming physical hardware verification.\n\n## Test requirements\nReproduce failure before fix; exercise all four D-pad directions then analog movement in cloister, combat and monster scenes across browsers; preserve existing menu/navigation coverage.\n\n## Definition of done\nVerified fix committed/published with evidence; Monster AI review remains pending.",
+    "evidence": "Confirmed D-pad focus-stealing regression fails before repair. UI navigation now respects gameplay ownership. Full check/format 133 tests; all 22 Chromium controller cases and 42 Firefox/WebKit controller behaviors pass across full suite plus new diagnostics-return fixture. All four D-pad directions and subsequent actual movement verified in three scenes. User follow-up reports unknown layout and missing saved index: that is separate unresolved compatibility/lifecycle scope, not claimed fixed by this patch."
   }
 ]

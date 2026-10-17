@@ -169,7 +169,11 @@ export function installControllerUI(): void {
                 ? "down"
                 : "up";
       }
-      if (direction && (direction !== lastDirection || now >= repeatAt)) {
+      if (
+        (modal || !gameFocus) &&
+        direction &&
+        (direction !== lastDirection || now >= repeatAt)
+      ) {
         const list = elements(),
           sign = direction === "up" || direction === "left" ? -1 : 1,
           index = list.indexOf(document.activeElement as HTMLElement);
