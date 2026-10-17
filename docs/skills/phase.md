@@ -31,3 +31,7 @@ Final full check: 161 tests, strict typecheck/lint/assets/backlog/build and form
 ## DBL-297 measurement checkpoint
 
 Benchmark scripts separate pure simulation, request-to-start HUD timing and injected button-to-observed-start timing. Initial 30-enemy sample lost one target to real player fire and is preliminary, not constant-count evidence. Explicit `?durable=1` sets enemy HP/maxHP to 100000 for measurements and labels the header DURABLE TARGET BENCHMARK; it does not grant immunity or change damage/resistances. Both baseline and skills use the same fixture. Player uses existing immortal option; high target HP reduces proportional stagger/retreat, an explicit workload limit. Full check 161 tests; dedicated fixture and unchanged normal visual baseline pass. No normal-play stats changed.
+
+### DBL-296 CI platform correction
+
+CI runs 39034032926 and 39034430507 passed all 56/57 behavioral scenarios respectively but failed the new full-page skill screenshot by ~25000 pixels. Public actual/expected/diff were downloaded read-only via nightly.link and visually inspected: differences are system-font metrics in title, labels, buttons and panel text; world geometry matches. The existing combat snapshot already separates Darwin/Linux. Apply the same pattern only to the new skill reference, using the inspected CI actual as Linux baseline and retained local reference as Darwin. Keep the 2% tolerance, masks and all pre-existing baselines unchanged. No functional or visual product change. Windows screenshot remains unverified.

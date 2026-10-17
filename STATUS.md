@@ -29,3 +29,5 @@
 - DBL-296 complete: 161 unit/full check, full Chromium 58/58 and final Firefox/WebKit skill behavior 12/12; existing screenshot tolerances preserved. Initial local build/navigation race caused one blank reload; stable-build complete rerun passed. DBL-297 paired performance measurements next.
 
 - DBL-297 measurement checkpoint: full check 161 tests; explicit ?durable=1 high-HP target fixture and unchanged normal visual baseline pass. Skill HUD request latency labeled separately from injected-input measurement. Initial 30-enemy run drifted to 29; retained as preliminary and will not be used as constant-count evidence. Final paired profiling underway.
+
+- CI follow-up DBL-296: behavioral suites pass, new skill snapshot differs by system fonts on Linux. Actual/diff inspected; use Darwin/Linux baselines as existing combat suite does, preserving masks/2% tolerance. Publication not yet claimed until corrected CI passes.

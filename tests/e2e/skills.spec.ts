@@ -291,7 +291,7 @@ test("skills retain their visual reference", async ({ page }) => {
   await ready(page);
   await page.locator("#combat-pause").click();
   await expect(page.locator(".skill-bar")).toBeVisible();
-  await expect(page).toHaveScreenshot("skills.png", {
+  await expect(page).toHaveScreenshot(`skills-${process.platform}.png`, {
     maxDiffPixelRatio: 0.02,
     mask: [
       page.locator("#combat-diagnostics"),
