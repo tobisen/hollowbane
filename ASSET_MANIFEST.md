@@ -22,3 +22,7 @@ Final prompts/method and extraction details: docs/art/prompts.md. Regenerate run
 ## Phase 2 movement reuse
 
 The existing original wanderer atlas remains unchanged (eight directions, two idle and six walk frames). Running provisionally reuses the walk artwork with distance-driven run cadence; no independent run cycle is claimed. Replacement/consistency work is tracked by DBL-250. Baked lighting/contact shadows and procedural mist/glow remain prototype effects, tracked separately in DBL-247–251. No new generated or third-party assets were added for movement.
+
+## Phase 3 combat training assets
+
+`src/rendering/combat-arena.ts` contains original procedural floor/grid, practice posts, sword gestures, bolt dots, hit rings, health bars and synthesized triangle-wave impact tones. Attack windup/strike/recovery, hit recoil and a 20-frame death fall animate the original wanderer via transforms; the tinted training sentinel reuses that atlas. These are explicitly provisional animation/art/audio proxies for the combat gate, not independent hand-authored attack/death sprite sheets. No third-party assets were added. Records: `combat-training-geometry`, `combat-motion-proxies`, `combat-impact-tone` in docs/assets.json. Dedicated animation artwork and audio polish remain a documented limitation after mechanical validation.

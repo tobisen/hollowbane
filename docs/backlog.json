@@ -2644,8 +2644,9 @@
     "priority": "p0",
     "parent": "DBL-042",
     "dependencies": ["DBL-256"],
-    "status": "planned",
-    "body": "## Purpose\nCombat arena, feedback and diagnostics\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nStationary/moving dummies, minimal hostile melee, multiple targets, configurable speed, original attack/hit feedback, impact audio, health/target displays; inspect screenshots and record provenance.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+    "status": "completed",
+    "body": "## Purpose\nCombat arena, feedback and diagnostics\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nStationary/moving dummies, minimal hostile melee, multiple targets, configurable speed, original attack/hit feedback, impact audio, health/target displays; inspect screenshots and record provenance.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n",
+    "evidence": "Playable Phaser 4.2.1 arena; five combat E2E scenarios and all 15 existing cases pass; inspected arena visual baseline. 87 unit tests. Procedural art/audio proxies explicitly tracked. docs/combat/phase3.md."
   },
   {
     "id": "DBL-258",
@@ -2669,5 +2670,16 @@
     "status": "completed",
     "body": "## Purpose\nIndependent damage prerequisite split from DBL-255 to satisfy damage-first priority without changing existing dependencies.\n\n## Non-goals\nScene integration, block, reactions or broader parents.\n\n## Acceptance criteria\nSeeded accuracy, defense, armor, resistance caps, criticals, configurable formulas and typed results.\n\n## Test requirements\nDeterministic boundary/replay tests and npm run check.\n\n## Definition of done\nVerified and committed; original parents remain partial.",
     "evidence": "Four targeted damage tests plus milestone checks; details docs/combat/phase3.md."
+  },
+  {
+    "id": "DBL-260",
+    "title": "Dedicated combat animation and impact audio art polish",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p2",
+    "parent": "DBL-042",
+    "dependencies": ["DBL-257"],
+    "status": "planned",
+    "body": "## Purpose\nReplace explicitly provisional transform animations, training geometry and synthesized audio with dedicated original authored assets after mechanical review.\n\n## Non-goals\nBlocking the mechanical quality candidate, copied assets or later gameplay systems.\n\n## Acceptance criteria\nOriginal eight-direction attack/hit/death art and impact audio preserve deterministic event synchronization; record provenance.\n\n## Test requirements\nAsset validation and inspected animation/visual regression evidence.\n\n## Definition of done\nDedicated assets verified and committed; do not claim current proxies are finished production artwork."
   }
 ]

@@ -43,5 +43,29 @@
     "placeholder": false,
     "type": "prop-atlas",
     "provenance": "docs/art/prompts.md"
+  },
+  {
+    "id": "combat-training-geometry",
+    "source": "src/rendering/combat-arena.ts",
+    "rights": "Original project procedural code; no external assets",
+    "placeholder": true,
+    "type": "geometry",
+    "provenance": "docs/combat/phase3.md"
+  },
+  {
+    "id": "combat-motion-proxies",
+    "source": "src/rendering/combat-arena.ts",
+    "rights": "Original project procedural code; no external assets",
+    "placeholder": true,
+    "type": "animation",
+    "provenance": "docs/combat/phase3.md"
+  },
+  {
+    "id": "combat-impact-tone",
+    "source": "src/rendering/combat-arena.ts",
+    "rights": "Original project procedural code; no external assets",
+    "placeholder": true,
+    "type": "audio",
+    "provenance": "docs/combat/phase3.md"
   }
 ]

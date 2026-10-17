@@ -1,6 +1,10 @@
 import "./style.css";
 const query = new URLSearchParams(location.search);
-if (query.has("gallery")) {
+if (query.has("combat")) {
+  await import("./rendering/combat.css");
+  const { startCombatArena } = await import("./rendering/combat-arena");
+  startCombatArena();
+} else if (query.has("gallery")) {
   const { startGallery } = await import("./rendering/gallery");
   await startGallery();
 } else if (query.has("engine")) {

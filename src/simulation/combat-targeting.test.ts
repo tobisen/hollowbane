@@ -105,4 +105,18 @@ describe("targeting and commitment", () => {
     }
     expect(strikes).toBe(1);
   });
+  it("retains one newly queued attack through release during recovery", () => {
+    let c = commandCombat(createController(createWalker({ x: 2.2, y: 0 })), {
+      kind: "attack",
+      target: 1,
+      repeat: false,
+    });
+    for (let i = 0; i < 15; i++)
+      c = stepController(c, [target], nav, 1).controller;
+    c = commandCombat(c, { kind: "attack", target: 1, repeat: true });
+    c = commandCombat(c, { kind: "release" });
+    for (let i = 0; i < 100; i++)
+      c = stepController(c, [target], nav, 1).controller;
+    expect(c.timeline.sequence).toBe(2);
+  });
 });

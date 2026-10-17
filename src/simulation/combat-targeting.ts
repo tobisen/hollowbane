@@ -28,6 +28,7 @@ export interface CombatController {
   locked: number | null;
   attacking: boolean;
   repeat: boolean;
+  queuedAttack: boolean;
   approaching: boolean;
   pendingMove: Point | null;
 }
@@ -39,6 +40,7 @@ export function createController(walker: Walker): CombatController {
     locked: null,
     attacking: false,
     repeat: false,
+    queuedAttack: false,
     approaching: false,
     pendingMove: null,
   };
@@ -59,6 +61,7 @@ export function commandCombat(
         ...state,
         selected: command.target,
         attacking: true,
+        queuedAttack: true,
         repeat: command.repeat,
         pendingMove: null,
       };
@@ -66,12 +69,13 @@ export function commandCombat(
       return {
         ...state,
         repeat: false,
-        attacking: state.timeline.phase === "idle" && state.attacking,
+        attacking: state.queuedAttack && state.attacking,
       };
     case "stop":
       return {
         ...state,
         attacking: false,
+        queuedAttack: false,
         repeat: false,
         pendingMove: null,
         walker: stopWalker(state.walker),
@@ -80,6 +84,7 @@ export function commandCombat(
       return {
         ...state,
         attacking: false,
+        queuedAttack: false,
         repeat: false,
         pendingMove: { ...command.target },
       };
@@ -147,6 +152,7 @@ export function stepController(
     }
     if (keyboard.x || keyboard.y) {
       next.attacking = false;
+      next.queuedAttack = false;
       next.repeat = false;
       next.approaching = false;
     }
@@ -172,6 +178,7 @@ export function stepController(
         next.locked = target.id;
         next.approaching = false;
         next.attacking = next.repeat;
+        next.queuedAttack = false;
         command = "attack";
       } else {
         next.approaching = true;

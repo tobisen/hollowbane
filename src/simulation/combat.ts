@@ -74,6 +74,7 @@ export type CombatEvent =
       kind: "whiff" | "death" | "stagger" | "immune" | "launch" | "impact";
     };
 export interface CombatWorld {
+  hostilesActive: boolean;
   projectiles: Projectile[];
   nextProjectile: number;
   tick: number;
@@ -112,7 +113,11 @@ export function createCombat(seed = 42): CombatWorld {
       criticalChance: 0.15,
       criticalMultiplier: 1.75,
     },
-    defense: { defense: 8, armor: 15, physicalResistance: 0 },
+    defense: {
+      defense: id === 4 ? 35 : 8,
+      armor: id === 4 ? 120 : 15,
+      physicalResistance: id === 4 ? 0.35 : 0,
+    },
     weapon: "melee",
     range: 1.05,
     attackSpeed: 0,
@@ -124,6 +129,7 @@ export function createCombat(seed = 42): CombatWorld {
   });
   return {
     tick: 0,
+    hostilesActive: true,
     projectiles: [],
     nextProjectile: 0,
     seed: seed >>> 0,
@@ -273,7 +279,11 @@ export function stepCombat(
   world.tick++;
   for (const actor of world.actors) {
     if (actor.hp <= 0) continue;
-    if (actor.kind === "hostile" && !actor.controller.attacking)
+    if (
+      actor.kind === "hostile" &&
+      world.hostilesActive &&
+      !actor.controller.attacking
+    )
       actor.controller = commandCombat(actor.controller, {
         kind: "attack",
         target: 0,
