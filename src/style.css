@@ -97,7 +97,7 @@ output {
   margin: auto;
 }
 .direction-gallery figcaption {
-  font: 10px system-ui;
+  font: 10px/14px system-ui;
   letter-spacing: 0.18em;
   color: #b8ac8f;
   margin-top: 16px;

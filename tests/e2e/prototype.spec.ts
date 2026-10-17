@@ -158,7 +158,30 @@ test("player sorts behind and in front of a tall prop with readable occlusion", 
   await expect
     .poll(() => page.evaluate(() => window.hollowbanePrototype!.occluded))
     .toBeGreaterThan(0);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(false);
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() => {
+          const state = window.hollowbanePrototype!,
+            v = state.view;
+          const left = Math.max(
+            0,
+            Math.min(1536 - v.width, state.x - v.width / 2),
+          );
+          const top = Math.max(
+            0,
+            Math.min(1024 - v.height, state.y - v.height / 2),
+          );
+          return Math.max(Math.abs(v.x - left), Math.abs(v.y - top));
+        }),
+      { timeout: 10000 },
+    )
+    .toBeLessThan(0.05);
   await expect(page.locator("main")).toHaveScreenshot("behind-cenotaph.png", {
+    timeout: 15000,
     mask: [page.locator("#world-metrics")],
     maxDiffPixelRatio: 0.01,
   });

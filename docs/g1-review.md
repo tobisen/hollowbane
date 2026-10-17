@@ -6,7 +6,7 @@ Review checkpoint date: 2026-10-17 (Europe/Stockholm).
 
 ## Review the candidate
 
-Run `npm ci`, `npm run dev`, then open http://localhost:5173/hollowbane/ . The root route runs Phaser 4.2.1. `?gallery=1` opens the eight-direction animation atelier; `?engine=3` and `?engine=4` retain the G0 observatory. The new prototype has not been published: automatic approval review restricted pushes to the explicitly named G0 commits.
+Run `npm ci`, `npm run dev`, then open http://localhost:5173/hollowbane/ . The root route runs Phaser 4.2.1. `?gallery=1` opens the eight-direction animation atelier; `?engine=3` and `?engine=4` retain the G0 observatory. The user approved G1 and publication; the 18 commits through 2e3bf19 are on main. Hosted rollout awaits successful CI.
 
 - Click reachable flagstones to walk. A second click immediately replaces the route.
 - Click the world or focus it with Tab, then use WASD/arrows. Keyboard input overrides a click route.
@@ -31,7 +31,7 @@ Keyboard controls are fixed for this prototype; remapping, audio, stamina/run mo
 
 The candidate must pass `npm run check`, `npm run format:check`, full Playwright regression, inspected screenshots and recorded production performance samples before review. The G0 documentation-only push 4e63a8e failed its Linux browser step; its exact original failure could not be read without authenticated log access. The local harness fix selects explicit software WebGL, uses a single worker and emits GitHub annotations; all local regression checks pass. Remote verification of subsequent commits is blocked until push approval.
 
-Stop at G1. User approval of visual quality/playability and publication is required before continuing; no later phase work is authorized by this candidate.
+G1 visual quality/playability and publication were approved by the user. Complete publication verification, then stop; no later phase implementation is authorized.
 
 Some source issues are broader than this approved prototype. DBL-015 (bridges/general layer rules), DBL-018 (production normals/physical shadows), DBL-019 (general streaming), DBL-023 (normal-map/full action export), and DBL-029 (moving-obstacle replanning) remain partial rather than falsely closed. Their G1 components are implemented and tested. Audio DBL-027, stamina DBL-030, crowd steering DBL-033 and later gameplay are deferred.
 
@@ -48,8 +48,12 @@ On this Apple M4 / macOS arm64 production preview at 1920×1080, the 60-second C
 - Firefox full-detail reference: [g1-firefox-full.json](performance/g1-firefox-full.json).
 - Browser compatibility checks: [g1-browser-smoke.json](performance/g1-browser-smoke.json).
 
-Final checks: 40 unit tests and 10 Chromium E2E checks pass, plus Firefox/WebKit smoke checks. Runtime assets regenerate byte-for-byte; source/provenance/alpha/pivot/budget validation, typecheck, lint, format and production build pass. GitHub CLI was installed via Homebrew but has no authenticated hosts; live import remains blocked. This candidate has not been published, and remote CI for the local harness/prototype commits remains unverified because approval review restricted main pushes to the named G0 commits.
+Final checks: 40 unit tests and 10 Chromium E2E checks pass, plus Firefox/WebKit smoke checks. Runtime assets regenerate byte-for-byte; source/provenance/alpha/pivot/budget validation, typecheck, lint, format and production build pass. GitHub CLI was installed via Homebrew but has no authenticated hosts; live import remains blocked. G1 and publication were approved by the user. The initial main push failed two Linux visual tests; the narrow cross-platform line-height and explicit camera-settle fixes retain the existing image tolerances. CI and hosted verification are in progress.
 
 ## Granular completion records
 
 Eight scoped issues DBL-232–239 separate delivered G1 sorting/atmosphere/packaging/export/traversal/router/input/cursor increments from broad original parents. Original DBL-015/018/019/023/028/029/031/034 remain partial for their unimplemented later requirements. All 231 source requirements are retained unchanged; the import now contains 239 unique records and still has 36 milestones.
+
+## Approved publication follow-up — 2026-10-17
+
+User approved the G1 visual candidate and publishing its 18 commits. CI run 39006653964 passed static checks and most browser cases, but exposed platform-default caption line-height and a snapshot taken before player/camera settlement. Gallery captions now use explicit 14px line-height. The occlusion test waits for idle locomotion and correct clamped camera position before comparing, with sufficient capture time for software rendering. Image tolerances remain 1%; no product movement or camera behavior is weakened.
