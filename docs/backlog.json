@@ -3043,5 +3043,18 @@
     "dependencies": ["DBL-274"],
     "status": "planned",
     "body": "## Acceptance criteria\nTest real-world controller input latency on real hardware and record device, OS, browser and results.\n\n## Non-goals\nClaiming hardware success from emulation.\n\n## Test requirements\nActual physical device, reproducible observations and latency method where applicable.\n\n## Definition of done\nPhysical evidence retained; otherwise remain planned."
+  },
+  {
+    "id": "DBL-287",
+    "parent": "DBL-009",
+    "title": "Preserve brief input and reserve pending monster combat commands",
+    "phase": 4,
+    "targetPhase": 5,
+    "deliveryPhase": "4-dependency",
+    "priority": "p0",
+    "dependencies": ["DBL-274", "DBL-280"],
+    "status": "completed",
+    "body": "## Acceptance criteria\nBrief trusted key presses reach semantic consumers even if released before the next poll; editable controls and focus reset remain safe. Pending melee commands reserve pack slots before the combat tick begins.\n\n## Non-goals\nReimplementing input or changing mappings.\n\n## Test requirements\nBrowser quick-tap attack regression plus existing input/check suite.\n\n## Definition of done\nVerified isolated correction committed before Monster AI gate.",
+    "evidence": "Command-boundary corrections: short trusted keyboard taps are latched until a poll, cleared on focus/reset and excluded in editable fields. Pending same-tick AI melee commands reserve slots before timeline advancement. Regression fails with eight simultaneous commits before fix and passes with maximum three. Full check 131 tests; nine Chromium/Firefox/WebKit quick-tap, handoff and remap-field cases pass."
   }
 ]

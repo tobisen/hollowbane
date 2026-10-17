@@ -66,6 +66,7 @@ export class ControllerInput {
   samples = 0;
   private cachedPollP95 = 0;
   private keys = new Set<string>();
+  private keyPulses = new Set<string>();
   private mouse = new Set<Action>();
   private pointer: Point | null = null;
   private actuator: unknown = null;
@@ -85,6 +86,7 @@ export class ControllerInput {
       )
         return;
       this.keys.add(e.code);
+      this.keyPulses.add(e.code);
     });
     window.addEventListener("keyup", (e) => this.keys.delete(e.code));
     window.addEventListener("pointerdown", (e) => {
@@ -131,6 +133,7 @@ export class ControllerInput {
     stopHaptics(this.actuator);
     window.dispatchEvent(new Event("hollowbane-input-reset"));
     this.keys.clear();
+    this.keyPulses.clear();
     this.mouse.clear();
     this.previous.clear();
     this.presses.clear();
@@ -255,7 +258,7 @@ export class ControllerInput {
           : this.state.source === "keyboard" && !this.suspended && this.focused
             ? keyActions(
                 new Set(
-                  [...this.keys].filter(
+                  [...new Set([...this.keys, ...this.keyPulses])].filter(
                     (code) =>
                       !this.movementKeys.has(code) ||
                       !document.activeElement?.matches("#world,#combat-world"),
@@ -265,6 +268,7 @@ export class ControllerInput {
             : this.state.source === "mouse" && !this.suspended && this.focused
               ? new Set(this.mouse)
               : new Set<Action>();
+    this.keyPulses.clear();
     const axes =
       p && profile
         ? this.settings.axes.map(

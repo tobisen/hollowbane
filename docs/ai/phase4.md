@@ -27,3 +27,7 @@ Seeded encounter composition supports 1–50 monsters with bounded safe-spawn se
 ## DBL-280
 
 Dedicated ?monsters=1 Cinder Watch arena reuses the combat renderer, targeting, keyboard/mouse and semantic controller adapters. Count/AI/practice/pause controls, role/champion tints, health/death transforms, obstacle silhouettes, optional state/home/path/perception overlay and AI CPU diagnostics. Two new browser cases and all five original combat cases pass; original screenshots unchanged and new arena screenshot reviewed. Repeated patrol-leg test repairs a reached-goal cache bug. Full check: 130 tests. Original monster parents remain partial; original atlas reuse/proxy provenance recorded.
+
+## DBL-287 dependency split
+
+Short keyboard taps could be released between browser polls; trusted key pulses now latch for one semantic sample and reset with focus/device safety. Same-tick melee reservations now include queued commands, preventing eight attackers from all claiming three slots before combat advanced. Regression reproduces the overbooking before repair. Full check: 131 tests; nine quick-tap/handoff/editable-field cases across Chromium/Firefox/WebKit pass. No attack cancellation or physical mapping change. Resume DBL-281 quality verification.

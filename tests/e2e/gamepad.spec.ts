@@ -564,3 +564,23 @@ test("native Tab navigation and custom keyboard movement bindings retain priorit
   await expect(page.locator("#controller-menu")).not.toBeVisible();
   await page.keyboard.up("p");
 });
+
+test("brief keyboard attack taps survive between input polls", async ({
+  page,
+}) => {
+  await ready(page, "./?combat=1");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await page.locator("#combat-hostile").uncheck();
+  await page.locator("#combat-world").focus();
+  await page.keyboard.press("x");
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() => window.hollowbaneCombat?.actors[0]?.sequence ?? 0),
+      { timeout: 8000 },
+    )
+    .toBeGreaterThan(0);
+});

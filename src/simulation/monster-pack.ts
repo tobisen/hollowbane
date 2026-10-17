@@ -68,8 +68,11 @@ export function meleeSlots(
       a.hp > 0 &&
       a.kind !== "player" &&
       a.weapon === "melee" &&
-      a.controller.locked === target &&
-      ["windup", "active", "recovery"].includes(a.controller.timeline.phase),
+      ((a.controller.locked === target &&
+        ["windup", "active", "recovery"].includes(
+          a.controller.timeline.phase,
+        )) ||
+        (a.controller.selected === target && a.controller.attacking)),
   ).length;
 }
 /** Bounded two-pass crowd solver; player and committed/dead actors are never displaced. */
