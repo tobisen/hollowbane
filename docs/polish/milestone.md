@@ -81,3 +81,7 @@ Mist-only idle-cloister comparisons (two repeats, not combat):
 - full, mist False: 33.4, 33.4 ms p95.
 
 RAF callback intervals measure browser pacing, not GPU completion/scanout. No stable 60 FPS or native-GPU performance claim. Short samples and repeat variance prohibit precise attribution to thermal/load conditions. No additional dynamic particle/lighting pass was introduced. Original cloister mist/full-detail and native/Firefox reference requirements remain open under DBL-245/246/074; existing DBL-299 scope is HUD isolation and measured investigation, not blanket performance acceptance. Pre-camera b8f973d data is explicitly retained separately; final tables use corrected camera runtime.
+
+## DBL-307 hosted verification
+
+Runtime `2ea9256` passed CI/Pages run [39041156725](https://github.com/tobisen/hollowbane/actions/runs/39041156725), verify and deploy both success; actual CI annotation confirms **68 passed** Chromium. Against public https://tobisen.github.io/hollowbane/ the controller (25), skill (8), polish (9) set passed **42/42 in 1.3 minutes**, including visual references, keyboard/mouse, virtual Xbox/PS, timing, live monster skills, audio gesture/mute and unavailable-API fallback. Command: `PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/ npx playwright test tests/e2e/gamepad.spec.ts tests/e2e/skills.spec.ts tests/e2e/polish.spec.ts`. No physical controller/audio verification inferred.

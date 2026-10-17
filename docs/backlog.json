@@ -3323,8 +3323,9 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p1",
     "dependencies": ["DBL-306"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nPolish hosted publication verification. Preserve all existing mechanics and open reference-hardware requirements.\n\n## Non-goals\nNew gameplay, loot, inventory, crafting, classes or campaign. No false hardware claims.\n\n## Test requirements\nRelevant checks and retained repeatable evidence; distinguish simulation CPU, render CPU and presentation timing.\n\n## Definition of done\nVerified scoped increment committed; final polish approval remains user-owned."
+    "status": "complete",
+    "body": "## Acceptance criteria\nPolish hosted publication verification. Preserve all existing mechanics and open reference-hardware requirements.\n\n## Non-goals\nNew gameplay, loot, inventory, crafting, classes or campaign. No false hardware claims.\n\n## Test requirements\nRelevant checks and retained repeatable evidence; distinguish simulation CPU, render CPU and presentation timing.\n\n## Definition of done\nVerified scoped increment committed; final polish approval remains user-owned.",
+    "evidence": "Runtime 2ea9256 CI/Pages 39041156725 verify/deploy success (68 Chromium); all 42 hosted controller/skill/polish scenarios pass, including visual references. docs/polish/milestone.md."
   },
   {
     "id": "DBL-308",
