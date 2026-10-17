@@ -472,6 +472,11 @@ test("one explicitly selected controller owns movement and selection persists", 
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput?.selected))
     .toBe(1);
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-prototype-ready",
+    "true",
+  );
+  await page.waitForFunction(() => Boolean(window.hollowbanePrototype));
   await axes(page, [1, 0, 0, 0]);
   const tick = await page.evaluate(() => window.hollowbanePrototype!.tick);
   await page.waitForFunction(
@@ -534,7 +539,14 @@ test("native Tab navigation and custom keyboard movement bindings retain priorit
   );
   await page.getByRole("button", { name: "Controls", exact: true }).click();
   await page.getByLabel("Move up key").focus();
-  await page.keyboard.press("p");
+  const samples = await page.evaluate(() => window.hollowbaneInput!.samples);
+  await page.keyboard.down("p");
+  await page.waitForFunction(
+    (n) => window.hollowbaneInput!.samples > n + 2,
+    samples,
+  );
+  await expect(page.locator("#controller-menu")).not.toBeVisible();
+  await page.keyboard.up("p");
   await page.getByRole("button", { name: "Save controls" }).click();
   await page.keyboard.down("p");
   await expect

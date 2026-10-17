@@ -76,9 +76,15 @@ export class ControllerInput {
   private focused = true;
   start(): void {
     window.addEventListener("keydown", (e) => {
-      if (e.repeat) return;
-      this.keys.add(e.code);
+      if (e.repeat || !e.isTrusted) return;
       this.activity = "keyboard";
+      const target = e.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable || target.matches("input,select,textarea"))
+      )
+        return;
+      this.keys.add(e.code);
     });
     window.addEventListener("keyup", (e) => this.keys.delete(e.code));
     window.addEventListener("pointerdown", (e) => {

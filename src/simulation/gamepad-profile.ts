@@ -102,10 +102,10 @@ const XBOX = [
   "Home",
 ];
 const PS = [
-  "Cross",
-  "Circle",
-  "Square",
-  "Triangle",
+  "✕ Cross",
+  "○ Circle",
+  "□ Square",
+  "△ Triangle",
   "L1",
   "R1",
   "L2",

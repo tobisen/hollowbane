@@ -48,7 +48,7 @@ describe("controller profiles", () => {
     expect(() => validatePadBindings(b)).toThrow();
   });
   it("provides original text glyphs with generic fallbacks", () => {
-    expect(buttonGlyph(0, "playstation")).toBe("Cross");
+    expect(buttonGlyph(0, "playstation")).toBe("✕ Cross");
     expect(buttonGlyph(5, "xbox")).toBe("RB");
     expect(buttonGlyph(22, "generic")).toBe("Button 23");
   });
