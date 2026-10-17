@@ -23,3 +23,7 @@ Milestone result: `npm run check` passes (68 tests across 16 files, strict typec
 ## DBL-259 damage prerequisite
 
 Split the pure calculation from DBL-255 to implement damage first without modifying existing dependencies. `damage.ts` uses injected seeded RNG (two draws per resolution), accuracy/(accuracy+defense) with configurable caps, multiplicative armor and physical resistance, capped vulnerabilities, critical multiplier and floor rounding. Invalid configurations fail explicitly. Four tests cover exact formulas, boundaries, seeded replay and invalid inputs. No production import or visible change yet. Full check: 72 unit tests plus typecheck/lint/build/asset/backlog validation pass. Previous 15 browser regressions from DBL-253 remain the scene baseline.
+
+## DBL-254 targeting controller
+
+Pure controller composes the existing Walker and combat timeline: stable screen-space hover picking, selected versus committed target, range/line-of-sight validation, approach inset/hysteresis, bounded route refresh for moving targets, facing on commitment, deferred ground movement through recovery, single-click/held/release behavior and dead-target cancellation. Five tests cover stationary/moving/dead targets, range/obstacles, exact recovery movement boundary and held-release commitment. Scene adapter is grouped with DBL-257 to avoid half-integrated controls. Full check: 77 unit tests; existing scene remains unchanged. Test development caught and corrected an extra attack after releasing held input.

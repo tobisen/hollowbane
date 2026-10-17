@@ -2608,8 +2608,9 @@
     "priority": "p0",
     "parent": "DBL-038",
     "dependencies": ["DBL-253"],
-    "status": "planned",
-    "body": "## Purpose\nCombat targeting and movement integration\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nHover/select, facing, held attack, range hysteresis, auto-approach, moving/dead target handling; preserve movement.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+    "status": "completed",
+    "body": "## Purpose\nCombat targeting and movement integration\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nHover/select, facing, held attack, range hysteresis, auto-approach, moving/dead target handling; preserve movement.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n",
+    "evidence": "Pure targeting/auto-approach and movement commitment verified with five tests; scene hover adapter follows in DBL-257. Details docs/combat/phase3.md."
   },
   {
     "id": "DBL-255",
