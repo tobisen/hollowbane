@@ -4,7 +4,12 @@ import { createAtmosphereTextures, addLanternGlow } from "./atmosphere";
 import { clampZoom, followAlpha, minimumZoom } from "../world/camera";
 import { footDepth, isOccluding } from "../world/depth";
 import { canWalk, fromGround, onGround } from "../world/navigation";
-import { moveTick, retarget, type Walker } from "../simulation/locomotion";
+import {
+  createWalker,
+  moveTick,
+  retarget,
+  type Walker,
+} from "../simulation/locomotion";
 import { CLOISTER_NAV, CLOISTER_PROPS, LANTERNS } from "../content/cloister";
 import type { Point } from "../world/isometric";
 import { renderSize, shouldBalanceDetail } from "../world/render-size";
@@ -39,13 +44,7 @@ export function startPrototype(): Phaser.Game {
   document.title = "Hollowbane · The Veiled Cloister";
   const query = new URLSearchParams(location.search);
   class Cloister extends Phaser.Scene {
-    private walker: Walker = {
-      position: fromGround({ x: 780, y: 500 }),
-      route: [],
-      direction: 0,
-      walking: false,
-      tick: 0,
-    };
+    private walker: Walker = createWalker(fromGround({ x: 780, y: 500 }));
     private actor!: Phaser.GameObjects.Sprite;
     private shadow!: Phaser.GameObjects.Ellipse;
     private marker!: Phaser.GameObjects.Ellipse;
@@ -262,13 +261,7 @@ export function startPrototype(): Phaser.Game {
       };
       document.querySelector<HTMLButtonElement>("#reset-view")!.onclick =
         () => {
-          this.walker = {
-            position: fromGround({ x: 780, y: 500 }),
-            route: [],
-            direction: 0,
-            walking: false,
-            tick: 0,
-          };
+          this.walker = createWalker(fromGround({ x: 780, y: 500 }));
           this.desiredZoom = 1.12;
           this.marker.setVisible(false);
           this.cameras.main.centerOn(780, 500);

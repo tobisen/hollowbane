@@ -1,11 +1,67 @@
 import { screenToWorld, worldToScreen, type Point } from "../world/isometric";
-import { canWalk, findPath, type Navigation } from "../world/navigation";
+import {
+  findPath,
+  segmentWalkable,
+  type Navigation,
+} from "../world/navigation";
+export type Gait = "walk" | "run";
+export interface MovementConfig {
+  walkSpeed: number;
+  runSpeed: number;
+  acceleration: number;
+  deceleration: number;
+  walkStride: number;
+  runStride: number;
+}
+export const MOVEMENT: Readonly<MovementConfig> = Object.freeze({
+  walkSpeed: 3,
+  runSpeed: 5.4,
+  acceleration: 180,
+  deceleration: 240,
+  walkStride: 2.1,
+  runStride: 2.5,
+});
+/** Speeds are world units/second, acceleration world units/second², stride units/cycle. */
+export function movementConfig(
+  value: Partial<MovementConfig> = {},
+): MovementConfig {
+  const result = { ...MOVEMENT, ...value };
+  for (const [key, v] of Object.entries(result)) {
+    const limit = key.endsWith("Speed")
+      ? 12
+      : key.endsWith("Stride")
+        ? 10
+        : 1200;
+    if (!Number.isFinite(v) || v <= 0 || v > limit)
+      throw new RangeError(`Invalid movement setting: ${key}`);
+  }
+  return result;
+}
 export interface Walker {
   position: Point;
   route: Point[];
   direction: number;
   walking: boolean;
   tick: number;
+  gait: Gait;
+  speed: number;
+  velocity: Point;
+  distance: number;
+  motion: "idle" | "move";
+}
+export function createWalker(position: Point): Walker {
+  return {
+    position: { ...position },
+    route: [],
+    direction: 0,
+    walking: false,
+    tick: 0,
+    gait: "walk",
+    speed: 0,
+    velocity: { x: 0, y: 0 },
+    distance: 0,
+    motion: "idle",
+  };
 }
 export function directionFor(vector: Point): number {
   return (
@@ -21,40 +77,112 @@ export function retarget(
   nav: Navigation,
   target: Point,
 ): Walker {
-  return { ...walker, route: findPath(nav, walker.position, target) };
+  const route = findPath(nav, walker.position, target);
+  // Rejected commands cannot silently cancel an already accepted route.
+  return route.length ? { ...walker, route } : walker;
 }
+export function stopWalker(walker: Walker): Walker {
+  return {
+    ...walker,
+    route: [],
+    walking: false,
+    motion: "idle",
+    speed: 0,
+    velocity: { x: 0, y: 0 },
+  };
+}
+export function movementFrame(
+  walker: Walker,
+  paused: boolean,
+  config: MovementConfig = MOVEMENT,
+): number {
+  const col = walker.walking
+    ? 2 +
+      Math.floor(
+        ((walker.distance /
+          (walker.gait === "run" ? config.runStride : config.walkStride)) *
+          6) %
+          6,
+      )
+    : paused
+      ? 0
+      : Math.floor(walker.tick / 60) % 2;
+  return walker.direction * 8 + col;
+}
+/** One deterministic 60 Hz tick. No wall clock or render state enters this function. */
 export function moveTick(
   walker: Walker,
   nav: Navigation,
   keyboard: Point = { x: 0, y: 0 },
+  config: MovementConfig = MOVEMENT,
 ): Walker {
-  const result = { ...walker, tick: walker.tick + 1, walking: false };
-  let vector: Point | null = null;
-  if (keyboard.x || keyboard.y) {
-    vector = screenToWorld({ x: keyboard.x * 64, y: keyboard.y * 64 });
-    result.route = [];
-  } else if (walker.route.length) {
-    const goal = walker.route[0]!;
-    vector = { x: goal.x - walker.position.x, y: goal.y - walker.position.y };
-  }
-  if (!vector) return result;
-  const distance = Math.hypot(vector.x, vector.y),
-    step = 3 / 60;
-  if (distance < 0.00001) {
-    result.route = walker.route.slice(1);
-    return result;
-  }
-  const amount = Math.min(distance, step);
-  const next = {
-    x: walker.position.x + (vector.x / distance) * amount,
-    y: walker.position.y + (vector.y / distance) * amount,
+  let result: Walker = {
+    ...walker,
+    tick: walker.tick + 1,
+    route: [...walker.route],
   };
-  if (canWalk(nav, next)) {
+  const key = Boolean(keyboard.x || keyboard.y);
+  const desired =
+    key || result.route.length
+      ? walker.gait === "run"
+        ? config.runSpeed
+        : config.walkSpeed
+      : 0;
+  const change =
+    (desired > walker.speed ? config.acceleration : config.deceleration) / 60;
+  result.speed =
+    walker.speed +
+    Math.sign(desired - walker.speed) *
+      Math.min(Math.abs(desired - walker.speed), change);
+  if (key) result.route = [];
+  let budget = result.speed / 60,
+    moved = 0;
+  // Consume zero-length and short waypoints in this tick rather than pausing at grid nodes.
+  for (let i = 0; i < 128 && budget > 1e-9; i++) {
+    const goal = result.route[0];
+    const vector = key
+      ? screenToWorld({ x: keyboard.x * 64, y: keyboard.y * 64 })
+      : goal
+        ? { x: goal.x - result.position.x, y: goal.y - result.position.y }
+        : walker.velocity;
+    const length = Math.hypot(vector.x, vector.y);
+    if (length < 1e-9) {
+      if (goal) {
+        result.route.shift();
+        continue;
+      }
+      break;
+    }
+    const unit = { x: vector.x / length, y: vector.y / length };
+    const amount = goal && !key ? Math.min(length, budget) : budget;
+    const next = {
+      x: result.position.x + unit.x * amount,
+      y: result.position.y + unit.y * amount,
+    };
+    if (!segmentWalkable(nav, result.position, next)) {
+      result = stopWalker(result);
+      break;
+    }
     result.position = next;
-    result.walking = true;
     result.direction = directionFor(worldToScreen(vector));
-    if (!keyboard.x && !keyboard.y && distance <= step)
-      result.route = walker.route.slice(1);
-  } else result.route = [];
+    result.velocity = { x: unit.x * result.speed, y: unit.y * result.speed };
+    moved += amount;
+    budget -= amount;
+    if (goal && !key && length <= amount + 1e-9) {
+      result.route.shift();
+      if (!result.route.length) {
+        result.speed = 0;
+        result.velocity = { x: 0, y: 0 };
+        break;
+      }
+    } else break;
+  }
+  result.walking = moved > 1e-9;
+  result.motion = result.walking ? "move" : "idle";
+  result.distance += moved;
+  if (!result.walking) {
+    result.speed = 0;
+    result.velocity = { x: 0, y: 0 };
+  }
   return result;
 }

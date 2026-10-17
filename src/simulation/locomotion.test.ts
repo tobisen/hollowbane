@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { directionFor, moveTick, retarget, type Walker } from "./locomotion";
+import { createWalker, directionFor, moveTick, retarget } from "./locomotion";
 import { fromGround, canWalk, type Navigation } from "../world/navigation";
 const nav: Navigation = {
   boundary: [
@@ -10,13 +10,7 @@ const nav: Navigation = {
   ],
   obstacles: [],
 };
-const initial: Walker = {
-  position: fromGround({ x: 768, y: 512 }),
-  route: [],
-  direction: 0,
-  walking: false,
-  tick: 0,
-};
+const initial = createWalker(fromGround({ x: 768, y: 512 }));
 it("maps eight screen directions onto eight animation rows", () => {
   const vectors = [
     { x: 0, y: 1 },

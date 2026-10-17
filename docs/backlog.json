@@ -2436,5 +2436,138 @@
     "status": "completed",
     "body": "## Purpose\nG1 reachable-ground cursor and destination feedback\n\n## Scope\nA focused G1 slice of DBL-034.\n\n## Non-goals\nBroader parent requirements, combat, loot and later phase gameplay.\n\n## Phase and priority\nSource phase 04; target phase 05; P0. Authorized delivery: Phase 1 visual prototype.\n\n## Dependencies\nDBL-236\n\n## Acceptance criteria\nReachable ground shows crosshair and destination marker; blocked ground shows default cursor and accessible status; UI focus prevents keyboard motion. Interactable-specific highlighting remains in parent.\n\n## Test requirements\nprototype cursor/status adapter and E2E blocked-ground/focus assertions; typecheck, lint, unit tests, relevant E2E, format, asset/backlog validation and production build.\n\n## Assets and licensing\nOriginal G1 reference kit; sources and built-in generation prompts retained in assets/source and docs/art/prompts.md.\n\n## Definition of done\nImplemented, independently verified, evidence inspected, docs/status updated, committed. G1 visual approval remains a separate user gate.\n",
     "evidence": "prototype cursor/status adapter and E2E blocked-ground/focus assertions"
+  },
+  {
+    "id": "DBL-240",
+    "title": "Phase 2 idle/move foundation, configurable walk/run kinematics and animation timing",
+    "phase": 4,
+    "targetPhase": 5,
+    "priority": "p0",
+    "parent": "DBL-036",
+    "dependencies": ["DBL-035", "DBL-237"],
+    "status": "completed",
+    "body": "## Purpose\nPhase 2 idle/move foundation, configurable walk/run kinematics and animation timing\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nPure fixed-tick idle/move states; bounded validated walk/run speeds, acceleration/deceleration; immediate heading reversal; distance-driven eight-direction frames. No combat states.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n",
+    "evidence": "45 unit tests, npm run check and format:check pass; all 10 original Chromium regressions pass. Pure gait/speed/animation contracts are covered in src/simulation/movement.test.ts; rendered gait control follows in DBL-243."
+  },
+  {
+    "id": "DBL-241",
+    "title": "Phase 2 precise swept collision and stable obstacle routes",
+    "phase": 4,
+    "targetPhase": 5,
+    "priority": "p0",
+    "parent": "DBL-029",
+    "dependencies": ["DBL-240"],
+    "status": "planned",
+    "body": "## Purpose\nPhase 2 precise swept collision and stable obstacle routes\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nExact click endpoints; deterministic direct/smoothed routes; continuous collision, wall and prop clearance; safe replan on blocked route; no waypoint stalls or corner tunnelling.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-242",
+    "title": "Phase 2 movement commands, facing and configurable persistent input",
+    "phase": 4,
+    "targetPhase": 5,
+    "priority": "p0",
+    "parent": "DBL-031",
+    "dependencies": ["DBL-241", "DBL-238"],
+    "status": "planned",
+    "body": "## Purpose\nPhase 2 movement commands, facing and configurable persistent input\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nLatest move replaces previous command; bounded explicit movement queue; stop/face commands; versioned validated preferences and remappable movement actions; no combat implementation.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-243",
+    "title": "Phase 2 walk/run controls, targeting feedback and camera integration",
+    "phase": 4,
+    "targetPhase": 5,
+    "priority": "p0",
+    "parent": "DBL-030",
+    "dependencies": ["DBL-242", "DBL-032", "DBL-239"],
+    "status": "planned",
+    "body": "## Purpose\nPhase 2 walk/run controls, targeting feedback and camera integration\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nRender pure movement state; walk/run and speed controls; keyboard/held-click control, hover feedback, persistent preferences, exact coordinate conversion, smooth camera and interrupt cleanup. Stamina omitted.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-244",
+    "title": "Phase 2 movement quality gate, browser interactions and latency evidence",
+    "phase": 4,
+    "targetPhase": 5,
+    "priority": "p0",
+    "parent": "DBL-035",
+    "dependencies": ["DBL-243"],
+    "status": "planned",
+    "body": "## Purpose\nPhase 2 movement quality gate, browser interactions and latency evidence\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nKeep existing checks green; deterministic replay/navigation/collision and browser scenarios; measure input latency/frame pacing; inspect visual evidence; document remaining limits; stop for user movement approval.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-245",
+    "title": "Chromium full-detail rendering performance",
+    "phase": 34,
+    "targetPhase": 34,
+    "priority": "p1",
+    "parent": "DBL-020",
+    "dependencies": ["DBL-035"],
+    "status": "planned",
+    "body": "## Purpose\nChromium full-detail rendering performance\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nProfile native and software GPUs separately; retain visual quality; measure sustained full-detail p95 and median FPS against G1 baseline.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-246",
+    "title": "Firefox visible-canvas frame pacing",
+    "phase": 34,
+    "targetPhase": 34,
+    "priority": "p1",
+    "parent": "DBL-020",
+    "dependencies": ["DBL-035"],
+    "status": "planned",
+    "body": "## Purpose\nFirefox visible-canvas frame pacing\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nReproduce visible/hidden-canvas discrepancy; distinguish WebGL submission and compositor cost; test default and balanced profiles.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-247",
+    "title": "Mist overdraw profiling and reduction",
+    "phase": 34,
+    "targetPhase": 34,
+    "priority": "p1",
+    "parent": "DBL-018",
+    "dependencies": ["DBL-035"],
+    "status": "planned",
+    "body": "## Purpose\nMist overdraw profiling and reduction\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nAttribute translucent mist fill cost with GPU timing or repeated controlled ablations; retain approved atmosphere.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-248",
+    "title": "Actor lighting pipeline overhead",
+    "phase": 34,
+    "targetPhase": 34,
+    "priority": "p1",
+    "parent": "DBL-018",
+    "dependencies": ["DBL-035"],
+    "status": "planned",
+    "body": "## Purpose\nActor lighting pipeline overhead\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nMeasure light and pipeline-switch costs; preserve character readability and original visual direction.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-249",
+    "title": "Background rendering fill and sampling cost",
+    "phase": 34,
+    "targetPhase": 34,
+    "priority": "p1",
+    "parent": "DBL-019",
+    "dependencies": ["DBL-035"],
+    "status": "planned",
+    "body": "## Purpose\nBackground rendering fill and sampling cost\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nMeasure viewport resolution and background texture sampling separately; preserve composition and projection.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-250",
+    "title": "Generated wanderer sprite consistency cleanup",
+    "phase": 34,
+    "targetPhase": 34,
+    "priority": "p1",
+    "parent": "DBL-023",
+    "dependencies": ["DBL-035"],
+    "status": "planned",
+    "body": "## Purpose\nGenerated wanderer sprite consistency cleanup\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nReview all directions and frame pivots; author original consistent walk/run cycles with provenance; remove foot and silhouette discontinuities.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
+  },
+  {
+    "id": "DBL-251",
+    "title": "Baked-lighting and contact-shadow quality",
+    "phase": 34,
+    "targetPhase": 34,
+    "priority": "p1",
+    "parent": "DBL-018",
+    "dependencies": ["DBL-035"],
+    "status": "planned",
+    "body": "## Purpose\nBaked-lighting and contact-shadow quality\n\n## Scope\nAuthorized Phase 2 movement slice; existing source parents remain unchanged.\n\n## Non-goals\nCombat, monster AI, loot and crossing the movement quality gate.\n\n## Acceptance criteria\nDocument baked illumination limits; investigate coherent moving shadows and normals as separately approved visual work.\n\n## Test requirements\nDeterministic targeted coverage, npm run check, format check, relevant browser interaction checks and inspected screenshots for visible changes.\n\n## Assets and licensing\nPreserve original Hollowbane artwork and Phaser 4.2.1; document any reused animation limitations.\n\n## Definition of done\nVerified independently, evidence recorded in docs/movement/phase2.md, STATUS.md updated and committed with stable DBL ID.\n"
   }
 ]
