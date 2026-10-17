@@ -3559,15 +3559,16 @@
   },
   {
     "id": "DBL-325",
-    "title": "Versioned atomic local character persistence",
+    "title": "Versioned character snapshot validation and migration infrastructure",
     "parent": "DBL-081",
     "phase": 12,
     "targetPhase": 12,
     "deliveryPhase": "inventory-l2",
     "priority": "p0",
     "dependencies": ["DBL-324"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nVersioned atomic local character persistence. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nVersioned atomic local character persistence. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review.",
+    "evidence": "Strict schema1 character snapshot, mixed content2/3, grid/gear/world stream, checksum, explicit migrations and nonautomatic backup inspection. Three targeted tests; full check212. IndexedDB/recovery remains DBL-332."
   },
   {
     "id": "DBL-326",
@@ -3577,7 +3578,7 @@
     "targetPhase": 12,
     "deliveryPhase": "inventory-l2",
     "priority": "p0",
-    "dependencies": ["DBL-325"],
+    "dependencies": ["DBL-332"],
     "status": "planned",
     "body": "## Acceptance criteria\nGothic inventory equipment and comparison interface. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review."
   },
@@ -3640,5 +3641,17 @@
     "dependencies": ["DBL-330"],
     "status": "planned",
     "body": "## Acceptance criteria\nL2 final quality gate evidence. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review."
+  },
+  {
+    "id": "DBL-332",
+    "title": "Atomic IndexedDB character persistence and recovery",
+    "parent": "DBL-081",
+    "phase": 12,
+    "targetPhase": 12,
+    "deliveryPhase": "inventory-l2",
+    "priority": "p0",
+    "dependencies": ["DBL-325"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nAsynchronous atomic character snapshots in IndexedDB with previous checkpoint, corruption detection, explicit recovery and failed-write preservation; no combat-loop serialization.\n\n## Non-goals\nL3, progression, cloud saves or pretending unsupported prototypes are migrated.\n\n## Test requirements\nVersioned snapshot unit tests and real cross-browser persistence/failed-load/recovery scenarios.\n\n## Definition of done\nVerified committed storage adapter used by326; no silent replacement or item loss."
   }
 ]

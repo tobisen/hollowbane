@@ -41,3 +41,5 @@ DBL-319 is a required L1 dependency discovered by burst profiling: early-seed RN
 L1 checkpoint: DBL-310–319 technically delivered; runtimeb565a1e, CI/Pages39067012054,194 unit/74 Chromium/10 FF-WebKit/48 hosted scenarios. Stop for user L1 quality review; approval false. Preserve broad partial parents and hardware/performance/art follow-ups. No L2 without explicit approval. Evidence docs/loot/l1.md.
 
 L1 approved; L2 Inventory & Equipment authorized through DBL-320–331 and L2 gate, superseding the earlier inventory prohibition for this scope. Sequential footprints/grid/equipment/world transactions/stats/persistence/UI/controller/regression/performance/publication/gate. Original36 topics and IDs preserved; no L3/progression/crafting/vendors/sockets/runewords.
+
+Persistence split: DBL-325 pure snapshot validation/migration infrastructure, then required DBL-332 atomic IndexedDB/recovery before326 UI. Existing IDs preserved; L2 scope320–332.
