@@ -15,3 +15,7 @@ Semantic actions and device-independent edge frames implemented; keyboard defaul
 ## DBL-264 / DBL-GP02
 
 Pure lifecycle ownership and explicit active-controller selection implemented. Neutral-on-rearm protects focus/disconnect/reconnect; idle pads do not steal keyboard/mouse input. Three lifecycle tests plus semantic tests, typecheck and lint pass.
+
+## DBL-265 / DBL-GP03
+
+Xbox, PlayStation and generic standard-compatible layouts map to identical semantics. Extensible typed vendor profiles can override axes/buttons; unknown nonstandard devices require explicit override. Conflict validation and text glyph fallback covered by four tests; typecheck/lint pass.
