@@ -1020,8 +1020,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
         const u = this.abilities.users[0]!;
         if (this.game.loop.frame % 6 === 0) {
-          document.querySelector("#skill-resource")!.textContent =
-            `MANA ${u.mana.toFixed(0)} / ${u.maxMana} · ${u.cast?.skill ?? "READY"} · skill+combat p95 ${percentile(this.skillCosts, 0.95).toFixed(2)} ms · request p95 ${percentile(this.skillLatencies, 0.95).toFixed(1)} ms`;
+          const resource = document.querySelector("#skill-resource")!;
+          const resourceText = `MANA ${u.mana.toFixed(0)} / ${u.maxMana} · ${u.cast?.skill ?? "READY"} · skill+combat p95 ${percentile(this.skillCosts, 0.95).toFixed(2)} ms · request p95 ${percentile(this.skillLatencies, 0.95).toFixed(1)} ms`;
+          if (resource.textContent !== resourceText)
+            resource.textContent = resourceText;
           const buttons = Array.from(
             root.querySelectorAll<HTMLButtonElement>("[data-skill]"),
           );
@@ -1029,8 +1031,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
             const s = SKILLS.find((s) => s.id === SKILL_SLOTS[i])!;
             if (s.kind !== "active") continue;
             const cd = Math.max(0, (u.cooldowns[s.id] ?? 0) - this.world.tick);
-            b.textContent = `${s.name} · ${s.mana} MP${cd ? ` · ${(cd / 60).toFixed(1)}s` : ""}`;
-            b.setAttribute("aria-pressed", String(i === this.selectedSkill));
+            const label = `${s.name} · ${s.mana} MP${cd ? ` · ${(cd / 60).toFixed(1)}s` : ""}`;
+            if (b.textContent !== label) b.textContent = label;
+            const selected = String(i === this.selectedSkill);
+            if (b.getAttribute("aria-pressed") !== selected)
+              b.setAttribute("aria-pressed", selected);
           }
           const prompts =
             controllerInput.frame.device === "gamepad"
@@ -1042,8 +1047,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
                   ),
                 ).join(" / ")
               : "X / Q / 1 / 2 / 3 / 4";
-          document.querySelector("#skill-prompts")!.textContent =
-            `${prompts}: cast slots · D-pad ←/→: select · A/Cross/Enter: cast selected · R3/T: target · Right stick: aim · Right click: cast selected`;
+          const prompt = document.querySelector("#skill-prompts")!;
+          const promptText = `${prompts}: cast slots · D-pad ←/→: select · A/Cross/Enter: cast selected · R3/T: target · Right stick: aim · Right click: cast selected`;
+          if (prompt.textContent !== promptText)
+            prompt.textContent = promptText;
         }
         window.hollowbaneSkills = {
           tick: this.world.tick,

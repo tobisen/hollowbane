@@ -35,3 +35,9 @@ Benchmark scripts separate pure simulation, request-to-start HUD timing and inje
 ### DBL-296 CI platform correction
 
 CI runs 39034032926 and 39034430507 passed all 56/57 behavioral scenarios respectively but failed the new full-page skill screenshot by ~25000 pixels. Public actual/expected/diff were downloaded read-only via nightly.link and visually inspected: differences are system-font metrics in title, labels, buttons and panel text; world geometry matches. The existing combat snapshot already separates Darwin/Linux. Apply the same pattern only to the new skill reference, using the inspected CI actual as Linux baseline and retained local reference as Darwin. Keep the 2% tolerance, masks and all pre-existing baselines unchanged. No functional or visual product change. Windows screenshot remains unverified.
+
+### DBL-297 HUD investigation checkpoint
+
+Constant-count pre-optimization runtime 957b219: Chromium/SwiftShader frame p95 baseline 16.8/16.7/33.3/33.3 ms versus skills 16.8/33.3/33.3/33.4 (5/10/20/30). Skill+combat CPU p95 0.1/0.1/0.2/0.3 ms, AI ~0.1 ms; 15/15 injected cast-start samples and zero errors at every count. At 10 enemies, hiding both diagnostic panels restored 16.7 ms; opaque skill background alone did not (33.4 ms). This implicates UI rendering/update/composition, not proof of a particular GPU bottleneck. Firefox default headless is ~17 ms but uses a different backend/timer resolution and is not a matched-GPU comparison.
+
+HUD now avoids assigning identical resource/button/prompt text and selected attributes. It keeps the same six-frame refresh cadence, information, snapshots and effects. Full check 161 tests and all eight Chromium skills cases pass, including unchanged Darwin visual. Final paired measurements follow; no gain is assumed before measuring.

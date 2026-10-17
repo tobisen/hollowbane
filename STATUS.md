@@ -31,3 +31,5 @@
 - DBL-297 measurement checkpoint: full check 161 tests; explicit ?durable=1 high-HP target fixture and unchanged normal visual baseline pass. Skill HUD request latency labeled separately from injected-input measurement. Initial 30-enemy run drifted to 29; retained as preliminary and will not be used as constant-count evidence. Final paired profiling underway.
 
 - CI follow-up DBL-296: behavioral suites pass, new skill snapshot differs by system fonts on Linux. Actual/diff inspected; use Darwin/Linux baselines as existing combat suite does, preserving masks/2% tolerance. Publication not yet claimed until corrected CI passes.
+
+- DBL-297 HUD checkpoint: constant-count baseline and skill CPU measured; diagnostic-panel A/B implicates UI cost in Chromium 10-enemy p95 jump. Avoid redundant unchanged DOM text/attribute writes, retaining refresh cadence. Full check 161 tests and all eight Chromium skill scenarios pass. Final profiling follows.

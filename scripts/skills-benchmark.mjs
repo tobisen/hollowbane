@@ -11,7 +11,7 @@ const browser = await (engine === "firefox" ? firefox : chromium).launch(
 );
 const results = [];
 try {
-  for (const count of process.argv[4] === "hide-ui" ? [10] : [5, 10, 20, 30])
+  for (const count of process.argv[4] ? [10] : [5, 10, 20, 30])
     for (const skills of [false, true]) {
       const page = await browser.newPage({
           viewport: { width: 1920, height: 1080 },
@@ -54,6 +54,10 @@ try {
       if (process.argv[4] === "hide-ui")
         await page.addStyleTag({
           content: ".arena-panel,.skill-bar {visibility:hidden!important}",
+        });
+      if (process.argv[4] === "opaque-ui")
+        await page.addStyleTag({
+          content: ".skill-bar {background:#0c1319!important}",
         });
       const result = await page.evaluate(
         async ({ skills, count }) => {
@@ -176,7 +180,7 @@ try {
       await page.close();
     }
   await writeFile(
-    `.local/skills-performance-${engine}${process.argv[4] === "hide-ui" ? "-hidden-ui" : ""}.json`,
+    `.local/skills-performance-${engine}${process.argv[4] ? `-${process.argv[4]}` : ""}.json`,
     JSON.stringify(
       {
         measuredAt: new Date().toISOString(),
