@@ -71,3 +71,14 @@ it("normalizes vendor controls before applying persistent logical remaps", () =>
     new Set(["primary"]),
   );
 });
+it("does not mislabel Xbox or generic wireless devices as PlayStation", () => {
+  expect(
+    standardProfile({ ...pad, id: "Xbox Wireless Controller (045e)" })!.family,
+  ).toBe("xbox");
+  expect(
+    standardProfile({ ...pad, id: "8BitDo Wireless Controller" })!.family,
+  ).toBe("generic");
+  expect(standardProfile({ ...pad, id: "Wireless Controller" })!.family).toBe(
+    "playstation",
+  );
+});

@@ -57,10 +57,12 @@ export function standardProfile(
   const family =
     override !== "auto"
       ? override
-      : /playstation|dualsense|dualshock|054c|wireless controller/i.test(pad.id)
-        ? "playstation"
-        : /xbox|xinput|045e/i.test(pad.id)
-          ? "xbox"
+      : /xbox|xinput|045e/i.test(pad.id)
+        ? "xbox"
+        : /playstation|dualsense|dualshock|054c|^wireless controller(?:\s*\(|$)/i.test(
+              pad.id,
+            )
+          ? "playstation"
           : "generic";
   return {
     id: `standard-${family}`,

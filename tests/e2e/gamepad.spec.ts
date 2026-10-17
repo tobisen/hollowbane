@@ -240,6 +240,16 @@ test("prompts switch between PlayStation, generic and keyboard/mouse", async ({
 }) => {
   await ready(page);
   await page.evaluate(() => {
+    window.virtualPads[0]!.id = "Xbox Wireless Controller (045e)";
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.family))
+    .toBe("xbox");
+  await tap(page, 9);
+  await expect(page.locator("#controller-prompts")).toContainText("A: Choose");
+  await tap(page, 1);
+
+  await page.evaluate(() => {
     window.virtualPads[0]!.id = "DualSense 054c virtual";
   });
   await expect
