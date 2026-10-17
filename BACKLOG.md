@@ -283,3 +283,5 @@ Phase 4 technical candidate delivered: DBL-275–281 plus dependency fixes DBL-2
 DBL-291 validated content; DBL-292 shared timing/resources; DBL-293 elements/status/geometry; DBL-294 playable inputs/feedback; DBL-295 monster skills; DBL-296 browser/performance quality gate. Original parents remain partial. Physical DBL-282–286, provisional art, full-detail/Firefox performance and GitHub synchronization remain open.
 
 Quality work split: DBL-296 browser regression → DBL-297 performance/investigation → DBL-298 publication/gate evidence. This keeps measurement and final review independently verifiable.
+
+DBL-299 remains open for the measured skill-HUD software rendering threshold; it does not claim a native GPU performance result or replace existing full-detail/Firefox/hardware follow-ups.

@@ -3193,8 +3193,9 @@
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-296"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nSkill performance and 10-to-20 enemy frame investigation. Preserve deterministic skills and all existing systems.\n\n## Non-goals\nItems, inventory, loot, character skill trees or campaign; hardware verification from emulation.\n\n## Test requirements\nRetain measured evidence and relevant automated checks; no invented latency or hardware claims.\n\n## Definition of done\nVerified scoped increment committed; quality approval remains user-owned."
+    "status": "completed",
+    "body": "## Acceptance criteria\nSkill performance and 10-to-20 enemy frame investigation. Preserve deterministic skills and all existing systems.\n\n## Non-goals\nItems, inventory, loot, character skill trees or campaign; hardware verification from emulation.\n\n## Test requirements\nRetain measured evidence and relevant automated checks; no invented latency or hardware claims.\n\n## Definition of done\nVerified scoped increment committed; quality approval remains user-owned.",
+    "evidence": "Runtime 5e09b03 paired constant-count 5/10/20/30 enemies, Chromium skills frame p95 16.8/33.2/33.3/33.3ms, simulation 0.1/0.1/0.2/0.2ms, injected start 16.8/16.7/16.8/33.4ms. Firefox default-headless frame p95 17.7/17.9/18.0/18.1ms. Each has 15/15 input samples, zero drift/errors. Node 30 concurrent casts mean tick .060ms. Panel A/B documented; unresolved software HUD threshold in DBL-299. Raw before/after retained."
   },
   {
     "id": "DBL-298",
@@ -3205,7 +3206,20 @@
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-297"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Acceptance criteria\nSkills quality gate publication and retained evidence. Preserve deterministic skills and all existing systems.\n\n## Non-goals\nItems, inventory, loot, character skill trees or campaign; hardware verification from emulation.\n\n## Test requirements\nRetain measured evidence and relevant automated checks; no invented latency or hardware claims.\n\n## Definition of done\nVerified scoped increment committed; quality approval remains user-owned."
+  },
+  {
+    "id": "DBL-299",
+    "title": "Profile skill HUD raster and compositing at the software-renderer threshold",
+    "parent": "DBL-074",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "skills-followup",
+    "priority": "p1",
+    "dependencies": ["DBL-297"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nExplain and reduce the Chromium/SwiftShader 10-enemy skills HUD frame-p95 jump with trace evidence while preserving visible diagnostics, input timing and readable feedback. Compare native GPU and full-detail reference workloads; retain separate Firefox evidence.\n\n## Non-goals\nHiding normal UI, weakening timing or claiming physical hardware testing from automation.\n\n## Test requirements\nPaired 5/10/20/30 enemy benchmarks with constant counts, CPU versus compositor/GPU trace attribution, unchanged behavior/visual checks.\n\n## Definition of done\nMeasured improvement on stated renderer/reference hardware, evidence retained and regressions pass.",
+    "evidence": "Initial investigation: 10-enemy skill p95 ~33.3 ms versus legacy ~16.7; hiding diagnostic panels restores ~16.7, opaque background alone and redundant DOM-write avoidance do not resolve the p95. Simulation ~0.1ms. Not a confirmed GPU root cause; reference GPU/full-detail budget remains unverified."
   }
 ]

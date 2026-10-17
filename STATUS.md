@@ -33,3 +33,5 @@
 - CI follow-up DBL-296: behavioral suites pass, new skill snapshot differs by system fonts on Linux. Actual/diff inspected; use Darwin/Linux baselines as existing combat suite does, preserving masks/2% tolerance. Publication not yet claimed until corrected CI passes.
 
 - DBL-297 HUD checkpoint: constant-count baseline and skill CPU measured; diagnostic-panel A/B implicates UI cost in Chromium 10-enemy p95 jump. Avoid redundant unchanged DOM text/attribute writes, retaining refresh cadence. Full check 161 tests and all eight Chromium skill scenarios pass. Final profiling follows.
+
+- DBL-297 complete: constant 5/10/20/30 enemy paired profiles, 15/15 injected-start samples per case/no errors or drift; Chromium skills p95 16.8/33.2/33.3/33.3 ms, sim .1/.1/.2/.2 ms; Firefox default headless p95 17.7/17.9/18.0/18.1 ms. Hardware/backends differ. Detailed before/after and failed initial drift sample retained in docs/skills/performance.json. DBL-299 HUD renderer investigation remains open; DBL-298 CI/hosted gate evidence next.

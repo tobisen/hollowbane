@@ -28,7 +28,7 @@ Start at [STATUS.md](STATUS.md). See [ROADMAP.md](ROADMAP.md), [BACKLOG.md](BACK
 
 ## GitHub and deployment
 
-Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 298 issues (231 source requirements plus scoped increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.
+Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 299 issues (231 source requirements plus scoped increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.
 
 ## Skill laboratory
 
