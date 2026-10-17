@@ -3375,8 +3375,9 @@
     "deliveryPhase": "loot-l1",
     "priority": "p0",
     "dependencies": ["DBL-310"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nSeeded loot quality and constrained affix generation. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nSeeded loot quality and constrained affix generation. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review.",
+    "evidence": "Independent per-roll seeded generation, weighted bases/quality, level gates, affix groups/exclusions, unique fallback; 10k invariant rolls/full check182."
   },
   {
     "id": "DBL-312",
