@@ -72,7 +72,7 @@ try {
     JSON.stringify(
       {
         method:
-          "Actual live showcase; pause at Ember release or four ticks after other deterministic effect events; wait for HUD phase to reflect frozen simulation, capture without injected visual state. Original scene/UI, no external image assets. Images resized to 960x600 WebP for review.",
+          "Actual live showcase; pause at Ember release or at least four ticks after other deterministic effect events; wait for HUD phase to reflect frozen simulation, capture without injected visual state. Original scene/UI, no external image assets. Images resized to 960x600 WebP for review.",
         frames,
       },
       null,

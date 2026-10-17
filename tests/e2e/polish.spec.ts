@@ -294,3 +294,38 @@ test("polish world and HUD retain their visual reference", async ({ page }) => {
   });
   await page.screenshot({ path: ".local/polish-review.png" });
 });
+
+test("lower walkable ground remains visible and clickable above HUD after resize", async ({
+  page,
+}) => {
+  await ready(page);
+  const hud = await page.locator(".skill-bar").boundingBox();
+  const p = await point(page, 1250, 790);
+  expect(p.y).toBeLessThan(hud!.y - 16);
+  await page.mouse.click(p.x, p.y);
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          Math.abs(window.hollowbaneCombat!.actors[0]!.x - 1250),
+        ),
+      { timeout: 8000 },
+    )
+    .toBeLessThan(3);
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        Math.abs(window.hollowbaneCombat!.actors[0]!.y - 790),
+      ),
+    )
+    .toBeLessThan(3);
+  const width = await page.evaluate(() => window.hollowbaneCombat!.view.width);
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat!.view.width))
+    .not.toBe(width);
+  const q = await point(page, 1250, 790),
+    newHud = await page.locator(".skill-bar").boundingBox();
+  expect(q.y).toBeLessThan(newHud!.y - 16);
+  expect(q.x).toBeLessThan(1024);
+});

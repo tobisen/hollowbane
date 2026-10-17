@@ -11,12 +11,17 @@ const browser = await (engine === "firefox" ? firefox : chromium).launch(
 );
 const sweep = process.argv[4] === "effects";
 const scenarios = [];
-for (let repeat = 0; repeat < (sweep ? 2 : 3); repeat++)
-  for (const count of sweep ? [30] : [5, 10, 20, 30])
-    for (const variant of sweep
-      ? ["after", "flat", "noBackdrop", "noSkillFx"]
-      : ["before", "after"])
-      scenarios.push({ repeat, count, variant });
+for (let repeat = 0; repeat < (sweep ? 2 : 3); repeat++) {
+  if (sweep) {
+    for (const variant of ["after", "flat", "noBackdrop", "noSkillFx"])
+      scenarios.push({ repeat, count: 30, variant });
+    for (const variant of ["hudBefore", "hudAfter"])
+      scenarios.push({ repeat, count: 10, variant });
+  } else
+    for (const count of [5, 10, 20, 30])
+      for (const variant of ["before", "after"])
+        scenarios.push({ repeat, count, variant });
+}
 const results = [];
 try {
   for (const { count, variant, repeat } of scenarios) {
@@ -47,7 +52,7 @@ try {
     });
     await page.goto(
       new URL(
-        `?monsters=1&durable=1&count=${count}${variant === "before" ? "&skills=1" : "&polish=1"}${variant === "flat" ? "&flat=1" : variant === "noBackdrop" ? "&noBackdrop=1" : variant === "noSkillFx" ? "&simplefx=1" : ""}`,
+        `?monsters=1&durable=1&count=${count}${["before", "hudBefore", "hudAfter"].includes(variant) ? "&skills=1" : "&polish=1"}${variant === "flat" ? "&flat=1" : variant === "noBackdrop" ? "&noBackdrop=1" : variant === "noSkillFx" ? "&simplefx=1" : ""}`,
         base,
       ).href,
     );
@@ -65,7 +70,7 @@ try {
       window.skillBenchPad.axes = [0, 0, 0, 0];
     });
     await page.waitForFunction(() => window.hollowbaneInput?.armed);
-    if (variant === "before")
+    if (variant === "before" || variant === "hudBefore")
       await page.addStyleTag({
         content:
           ".skill-arena .arena-panel,.skill-arena .skill-bar,.skill-arena .arena-footer{contain:none;transform:none}",

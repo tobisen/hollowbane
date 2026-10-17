@@ -1,5 +1,5 @@
 {
-  "method": "Actual live showcase; pause at Ember release or four ticks after other deterministic effect events; wait for HUD phase to reflect frozen simulation, capture without injected visual state. Original scene/UI, no external image assets. Images resized to 960x600 WebP for review.",
+  "method": "Actual live showcase; pause at Ember release or at least four ticks after other deterministic effect events; wait for HUD phase to reflect frozen simulation, capture without injected visual state. Original scene/UI, no external image assets. Images resized to 960x600 WebP for review.",
   "frames": [
     {
       "skill": "ember-lance",
@@ -10,10 +10,10 @@
     },
     {
       "skill": "rime-ring",
-      "tick": 226,
+      "tick": 229,
       "effectTick": 222,
       "phase": "recovery",
-      "mana": 82.99999999999994
+      "mana": 83.19999999999993
     },
     {
       "skill": "storm-thread",
@@ -24,10 +24,10 @@
     },
     {
       "skill": "iron-fan",
-      "tick": 586,
+      "tick": 587,
       "effectTick": 582,
       "phase": "recovery",
-      "mana": 83.99999999999858
+      "mana": 84.06666666666524
     },
     {
       "skill": "oath-echo",

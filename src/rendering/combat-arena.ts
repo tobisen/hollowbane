@@ -1,3 +1,4 @@
+import { arenaView } from "../world/arena-view";
 import { createPolishGround } from "./polish-ground";
 import { CombatAudio } from "./combat-audio";
 import { PolishHUD } from "./polish-hud";
@@ -220,10 +221,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
         this.balancedDetail,
       );
       this.scale.resize(size.x, size.y);
-      this.cameras.main.setZoom(
-        Math.min(innerWidth / 1280, innerHeight / 800) * size.ratio,
+      const framing = arenaView(
+        { x: innerWidth, y: innerHeight },
+        polish
+          ? root.querySelector(".skill-bar")!.getBoundingClientRect().top
+          : null,
       );
-      this.cameras.main.centerOn(768, 512);
+      this.cameras.main.setZoom(framing.scale * size.ratio);
+      this.cameras.main.centerOn(framing.center.x, framing.center.y);
     };
     private renderAt = 0;
     private inputAt: number | null = null;

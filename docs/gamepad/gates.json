@@ -73,6 +73,6 @@
   "polish": {
     "authorized": true,
     "qualityGateApproved": false,
-    "scope": ["DBL-299", "DBL-307"]
+    "scope": ["DBL-299", "DBL-309"]
   }
 }

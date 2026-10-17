@@ -47,3 +47,9 @@ Six intentional actual-simulation review frames, including Ember in flight, are 
 Benchmark compares three interleaved repeats of pre-299 HUD containment versus full polish (5/10/20/30 enemies), same 1920x1080 balanced setting, durable targets, immortal player, muted audio, live AI, virtual fire pulses. Full polish keeps developer diagnostics open for comparison. Six-second windows after two-second warmup; CPU and RAF callback pacing separate, no native GPU/display scanout claim. Additional two-repeat cosmetic sweeps at 30 enemies isolate skill FX, baked floor detail and backdrop, without changing simulation. Separate two-repeat cloister full/balanced mist A/B uses optional `noMist=1`; normal visuals unchanged. Scripts preserve partial data; no performance gain is assumed before results.
 
 Full check remains 172 tests. Normal cloister visual passes after the measurement-only mist flag; core/full polish regression remains the verified 67 Chromium and 28 Firefox-WebKit milestone.
+
+## DBL-308 readability correction
+
+Review found that the larger fixed HUD covered lower walkable ground. A pure arena-view helper now frames only the polish camera above the actual HUD top, preserving a full-canvas viewport/inverse pointer mapping. Legacy framing is identical. Four viewport tests cover all ground corners and legacy behavior; full check 176. All nine polish browser scenarios pass, including clicking/moving to ground (1250,790) and resizing to 1024x768 while keeping the foot point clear of the HUD. New Sable reference/captures refreshed for this intentional composition change; no prior reference/tolerance changed.
+
+Pre-camera b8f973d repeated measurements are retained separately. Final runtime profiling is repeated after this correction, since the new safe camera framing changes rendered composition. DBL-307 handles hosted publication; DBL-309 is final review evidence, after both 307 and 308. Original broader camera/performance parents remain partial.

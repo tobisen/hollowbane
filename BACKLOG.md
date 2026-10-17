@@ -291,3 +291,5 @@ DBL-299 remains open for the measured skill-HUD software rendering threshold; it
 Skills technically approved. DBL-299 HUD performance, then scoped DBL-300 motion, 301 skill effects, 302 HUD readability, 303 audio, 304 contact/lighting consistency, 305 repeated performance/regression/gate. These refine existing DBL-260/042/050/057/063/074 slices, not duplicate full requirements. Preserve the original 36 phases and IDs; no gameplay expansion. Stop for polish review.
 
 Polish quality work split: DBL-305 regression/showcase, DBL-306 repeated performance, DBL-307 publication/review. No duplicate broad requirements are completed by these slices.
+
+Readability follow-up DBL-308 fits playable ground above the larger HUD, preserving pointer projection/legacy views. DBL-309 is final review evidence after publication (307) and this correction; no original IDs renumbered.

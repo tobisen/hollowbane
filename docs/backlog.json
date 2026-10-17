@@ -3311,11 +3311,12 @@
     "priority": "p1",
     "dependencies": ["DBL-305"],
     "status": "in-progress",
-    "body": "## Acceptance criteria\nRepeated polish rendering and presentation performance. Preserve all existing mechanics and open reference-hardware requirements.\n\n## Non-goals\nNew gameplay, loot, inventory, crafting, classes or campaign. No false hardware claims.\n\n## Test requirements\nRelevant checks and retained repeatable evidence; distinguish simulation CPU, render CPU and presentation timing.\n\n## Definition of done\nVerified scoped increment committed; final polish approval remains user-owned."
+    "body": "## Acceptance criteria\nRepeated polish rendering and presentation performance. Preserve all existing mechanics and open reference-hardware requirements.\n\n## Non-goals\nNew gameplay, loot, inventory, crafting, classes or campaign. No false hardware claims.\n\n## Test requirements\nRelevant checks and retained repeatable evidence; distinguish simulation CPU, render CPU and presentation timing.\n\n## Definition of done\nVerified scoped increment committed; final polish approval remains user-owned.",
+    "evidence": "Initial repeated runtime b8f973d data retained; pause final profiling for scoped DBL-308 playable-area/HUD correction, then repeat final after comparison."
   },
   {
     "id": "DBL-307",
-    "title": "Gameplay and Visual Polish publication quality gate",
+    "title": "Polish hosted publication verification",
     "parent": "DBL-074",
     "phase": 7,
     "targetPhase": 10,
@@ -3323,6 +3324,31 @@
     "priority": "p1",
     "dependencies": ["DBL-306"],
     "status": "planned",
-    "body": "## Acceptance criteria\nGameplay and Visual Polish publication quality gate. Preserve all existing mechanics and open reference-hardware requirements.\n\n## Non-goals\nNew gameplay, loot, inventory, crafting, classes or campaign. No false hardware claims.\n\n## Test requirements\nRelevant checks and retained repeatable evidence; distinguish simulation CPU, render CPU and presentation timing.\n\n## Definition of done\nVerified scoped increment committed; final polish approval remains user-owned."
+    "body": "## Acceptance criteria\nPolish hosted publication verification. Preserve all existing mechanics and open reference-hardware requirements.\n\n## Non-goals\nNew gameplay, loot, inventory, crafting, classes or campaign. No false hardware claims.\n\n## Test requirements\nRelevant checks and retained repeatable evidence; distinguish simulation CPU, render CPU and presentation timing.\n\n## Definition of done\nVerified scoped increment committed; final polish approval remains user-owned."
+  },
+  {
+    "id": "DBL-308",
+    "title": "Keep playable ground and pointer projection clear of polish HUD",
+    "parent": "DBL-016",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p0",
+    "dependencies": ["DBL-302", "DBL-304"],
+    "status": "completed",
+    "body": "## Acceptance criteria\nFit the existing arena camera above the polish HUD so lower walkable ground and characters stay visible. Preserve inverse pointer projection, simulation, collision and all legacy views; handle resize.\n\n## Non-goals\nMovement reimplementation, new mechanics or changing legacy camera behavior.\n\n## Test requirements\nProjection/visible-bounds unit tests across viewports and browser movement near lower edge plus resize, visual reference review.\n\n## Definition of done\nVerified scoped correction committed before final polish review.",
+    "evidence": "HUD-safe camera framing keeps full walkable court above HUD without changing full-canvas inverse pointer projection or legacy view. Four view unit tests/full check 176; all nine polish browser scenarios including lower-edge click movement and resize pass. Updated intentional visual reference and actual showcase captures reviewed; no simulation changes."
+  },
+  {
+    "id": "DBL-309",
+    "title": "Gameplay and Visual Polish final review evidence",
+    "parent": "DBL-074",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p1",
+    "dependencies": ["DBL-307", "DBL-308"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nCollect final verified gameplay/visual/audio/performance and public evidence, then stop for user review.\n\n## Non-goals\nNew gameplay or claiming physical hardware results from emulation.\n\n## Test requirements\nRecord CI, hosted verification and scoped camera correction evidence; all existing regression checks stay green.\n\n## Definition of done\nReview candidate delivered; user approval remains false and no next phase begins."
   }
 ]

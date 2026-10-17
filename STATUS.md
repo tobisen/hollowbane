@@ -1,4 +1,4 @@
-- Skills quality technically approved by user. Gameplay & Visual Polish authorized through its review gate; start DBL-299, then DBL-300 through 307 sequentially. Existing gameplay and all open hardware/asset/performance follow-ups preserved.
+- Skills quality technically approved by user. Gameplay & Visual Polish authorized through its review gate; start DBL-299, then DBL-300 through 309 sequentially. Existing gameplay and all open hardware/asset/performance follow-ups preserved.
 
 # Status
 
@@ -31,3 +31,5 @@
 - DBL-305 complete: full check 172, Chromium 67/67, combined skill/polish Firefox-WebKit 28/28. Existing golden baselines preserved, new polish reference and six actual-simulation captures reviewed. DBL-306 repeated performance next.
 
 - DBL-306 checkpoint: repeated benchmark scripts ready; optional noMist flag only for rendering A/B. Full check 172 and unchanged normal cloister visual pass. Final measured runtime checkpoint follows.
+
+- DBL-308 complete: HUD-safe camera/inverse projection; full check 176, nine polish scenarios pass including edge movement/resize. Final captures/reference updated. Resume DBL-306 profiling; DBL-307 publication and 309 final review follow.
