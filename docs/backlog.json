@@ -3232,8 +3232,9 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p0",
     "dependencies": ["DBL-299"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nEvent-synchronized combat motion and directional reactions. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+    "status": "completed",
+    "body": "## Acceptance criteria\nEvent-synchronized combat motion and directional reactions. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review.",
+    "evidence": "Pure tick/event presentation model: phase-active strike envelopes at each existing speed breakpoint, directional damage recoil, eased directional death. New ?polish=1 preserves legacy arenas. Six motion unit tests/full check 167; browser strike/death/collider test passes; screenshot reviewed. Existing wanderer art remains provisional, no simulation timing changed."
   },
   {
     "id": "DBL-301",
@@ -3244,7 +3245,7 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p0",
     "dependencies": ["DBL-300"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Acceptance criteria\nSix distinct bounded skill visual presentations. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
   },
   {

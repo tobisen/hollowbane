@@ -1,3 +1,4 @@
+import { combatPose, recordMotion, type MotionCues } from "./combat-motion";
 import { queueMonsterSkills } from "../simulation/monster-skills";
 import { actionPrompt } from "../simulation/prompts";
 import {
@@ -84,6 +85,14 @@ export interface CombatPresentation {
 }
 declare global {
   interface Window {
+    hollowbanePolish?: {
+      tick: number;
+      poses: {
+        id: number;
+        pose: ReturnType<typeof combatPose>;
+        strikeAt: number | null;
+      }[];
+    };
     hollowbaneSkills?: {
       tick: number;
       users: import("../simulation/skills").SkillUser[];
@@ -118,7 +127,8 @@ declare global {
 }
 export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
-  const skills = query.has("skills");
+  const polish = query.has("polish");
+  const skills = query.has("skills") || polish;
   const requested = Number(query.get("count") ?? 5);
   const initialCount = [5, 10, 20, 30].includes(requested) ? requested : 5;
   const nav = monsters ? ENCOUNTER_NAV : ARENA_NAV;
@@ -152,6 +162,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
       `<section class="skill-bar" aria-label="Abilities"><p id="skill-resource">Mana 100 / 100</p><div>${SKILL_SLOTS.map((id, i) => `<button type="button" data-skill="${i}" aria-pressed="${i === 0}">${SKILLS.find((s) => s.id === id)!.name}</button>`).join("")}</div><p id="skill-prompts">X / Q / 1–4: cast · Right click: selected skill · Left click: attack / move</p><p id="skill-status" role="status">Select a skill. Aim with mouse or right stick.</p></section>`,
     );
   }
+  if (polish) {
+    root.classList.add("polish-arena");
+    root.querySelector("h1")!.textContent = "The Sable Court";
+    document.title = "Hollowbane · The Sable Court";
+  }
   const field = document.querySelector<HTMLElement>("#combat-world")!;
   const weapon = document.querySelector<HTMLSelectElement>("#combat-weapon")!;
   const speed = document.querySelector<HTMLSelectElement>("#combat-speed")!;
@@ -170,6 +185,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private skillCosts: number[] = [];
     private skillLatencies: number[] = [];
     private skillInputAt: number | null = null;
+    private motion: MotionCues = {};
     private aiCosts: number[] = [];
     private accumulator = 0;
     private paused = monsters && query.has("paused");
@@ -394,6 +410,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.abilities = skills ? createSkills(this.world) : null;
           this.skillCosts = [];
           this.skillLatencies = [];
+          this.motion = {};
           this.impactUntil.clear();
           this.numberUntil.clear();
           this.deathAt.clear();
@@ -627,6 +644,40 @@ export function startCombatArena(monsters = false): Phaser.Game {
                 : -progress * 9,
         )
         .setScale(0.93, dead ? 0.93 - fall * 0.43 : 0.93);
+      if (polish) {
+        const pose = combatPose(a, this.motion[a.id], this.world.tick);
+        sprite
+          .setPosition(p.x + pose.x, p.y + pose.y)
+          .setAngle(pose.angle)
+          .setScale(0.93, 0.93 * pose.scaleY)
+          .setAlpha(pose.alpha);
+        const cast = this.abilities?.users.find((u) => u.actor === a.id)?.cast
+          ?.skill;
+        if (
+          pose.impact > 0 &&
+          a.weapon === "melee" &&
+          (!cast || cast === "iron-fan" || cast === "briar-edge")
+        ) {
+          const theta = ((a.controller.walker.direction + 2) * Math.PI) / 4,
+            fx = Math.cos(theta),
+            fy = Math.sin(theta);
+          this.effect
+            .lineStyle(3, 0xf5d39a, pose.impact * 0.9)
+            .lineBetween(
+              p.x - fy * 19,
+              p.y - 32 + fx * 12,
+              p.x + fx * 26,
+              p.y - 32 + fy * 17,
+            )
+            .lineStyle(1, 0xfff5d1, pose.impact)
+            .lineBetween(
+              p.x + fx * 26,
+              p.y - 32 + fy * 17,
+              p.x + fy * 21,
+              p.y - 32 - fx * 10,
+            );
+        }
+      }
       const brain = this.encounter?.brains.find((b) => b.id === a.id);
       if (brain && !flash)
         sprite.setTint(
@@ -958,6 +1009,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
             this.record(this.latencies, performance.now() - this.inputAt);
             this.inputAt = null;
           }
+          if (polish)
+            recordMotion(
+              this.motion,
+              this.world.actors,
+              this.world.events,
+              this.world.tick,
+            );
           for (const event of this.world.events)
             if (event.tick === this.world.tick) this.feedback(event);
           this.accumulator -= 1000 / 60;
@@ -1118,6 +1176,15 @@ export function startCombatArena(monsters = false): Phaser.Game {
         },
         metrics,
       };
+      if (polish)
+        window.hollowbanePolish = {
+          tick: this.world.tick,
+          poses: this.world.actors.map((a) => ({
+            id: a.id,
+            pose: combatPose(a, this.motion[a.id], this.world.tick),
+            strikeAt: this.motion[a.id]?.strikeAt ?? null,
+          })),
+        };
       if (this.encounter) {
         window.hollowbaneAI = {
           tick: this.world.tick,

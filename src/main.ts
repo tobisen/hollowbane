@@ -8,11 +8,14 @@ if (query.has("controller")) {
 } else if (
   query.has("combat") ||
   query.has("monsters") ||
-  query.has("skills")
+  query.has("skills") ||
+  query.has("polish")
 ) {
   await import("./rendering/combat.css");
   const { startCombatArena } = await import("./rendering/combat-arena");
-  startCombatArena(query.has("monsters"));
+  startCombatArena(
+    query.has("monsters") || (query.has("polish") && !query.has("training")),
+  );
 } else if (query.has("gallery")) {
   const { startGallery } = await import("./rendering/gallery");
   await startGallery();

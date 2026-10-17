@@ -17,3 +17,5 @@
 - Resume only after explicit Skills & Spell Systems quality approval. Structured gate record: docs/gamepad/gates.json.
 
 - DBL-299 scoped software HUD fix complete: full check 161 tests, 33 Chromium controller/skill cases pass with original visual. 10-enemy p95 16.8ms with isolated HUD, no cadence/info loss. Trace summary docs/polish/hud-profile.json. DBL-300 motion next; all-count repeated verification at DBL-305.
+
+- DBL-300 complete: tick-synchronized directional motion in ?polish=1; six new unit tests, full check 167; browser strike/death/collider scenario and screenshot review pass. DBL-301 distinct skill visuals next.
