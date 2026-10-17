@@ -101,6 +101,10 @@ export function consumeLootDeaths(
       continue;
     loot.deaths.add(actor.id);
     loot.attempts++;
+    if (loot.sequence > 0xffffffff) {
+      loot.seed = (loot.seed + 1) >>> 0;
+      loot.sequence = 0;
+    }
     const item = generateLoot({
       seed: loot.seed,
       sequence: loot.sequence++,

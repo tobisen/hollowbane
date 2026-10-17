@@ -40,6 +40,7 @@ await writeFile(
   "docs/loot/distributions.json",
   JSON.stringify(
     {
+      contentVersion: inspectDropTable(12).contentVersion,
       cpu: os.cpus()[0]?.model,
       method:
         "12 seeded 100000-roll runs (same seeds paired across levels), seeds42/7331/2026 × levels1/12/30/99. Binomial 6-sigma+5-count diagnostic bands, conditional qualities account for ineligible unique fallback. Every item replay-validates and affix invariants are checked. Elapsed CPU includes validation/report work, not per-frame gameplay.",

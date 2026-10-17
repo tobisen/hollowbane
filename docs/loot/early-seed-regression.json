@@ -1,0 +1,17 @@
+{
+  "method": "1000 adjacent seeds0–999 ×first30 rolls, level12. Pre-correction bundled model versus avalanche-mixed content2. Regression test enforces9900–11100 drops and >900 distinct patterns. Data captures an identified and fixed flaw; current long-run distributions are separately rerun.",
+  "results": [
+    {
+      "version": 1,
+      "attempts": 30000,
+      "drops": 6858,
+      "patterns": 29
+    },
+    {
+      "version": 2,
+      "attempts": 30000,
+      "drops": 10488,
+      "patterns": 1000
+    }
+  ]
+}

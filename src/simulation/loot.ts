@@ -76,9 +76,13 @@ export function generateLoot(
   validateLootContext(context);
   const table = content.tables.find((t) => t.id === context.table);
   if (!table) throw Error("Unknown drop table");
-  const random = createRng(
-    (context.seed ^ Math.imul(context.sequence + 1, 0x9e3779b1)) >>> 0,
-  );
+  // Avalanche the counter/seed before LCG expansion; nearby seeds must not share
+  // the same first encounter outcomes. Content v2 records this algorithm change.
+  let mixed =
+    (context.seed ^ Math.imul(context.sequence + 1, 0x9e3779b1)) >>> 0;
+  mixed = Math.imul(mixed ^ (mixed >>> 16), 0x85ebca6b);
+  mixed = Math.imul(mixed ^ (mixed >>> 13), 0xc2b2ae35);
+  const random = createRng((mixed ^ (mixed >>> 16)) >>> 0);
   if (random() * 10000 >= table.chance) return null;
   const level = Math.max(
     1,
@@ -154,7 +158,7 @@ export function generateLoot(
   return {
     schema: 1,
     contentVersion: content.version,
-    id: `l1-${context.seed.toString(16)}-${context.sequence.toString(16)}`,
+    id: `l${content.version}-${context.seed.toString(16)}-${context.sequence.toString(16)}`,
     origin: { ...context },
     base: base.id,
     level,

@@ -3452,9 +3452,10 @@
     "targetPhase": 11,
     "deliveryPhase": "loot-l1",
     "priority": "p0",
-    "dependencies": ["DBL-316"],
+    "dependencies": ["DBL-316", "DBL-319"],
     "status": "planned",
-    "body": "## Acceptance criteria\nL1 repeated performance and hosted verification. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review."
+    "body": "## Acceptance criteria\nL1 repeated performance and hosted verification. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review.",
+    "evidence": "Initial timing retained locally; burst test exposed correlated first30 rolls across nearby seeds. Pause publication/final timing until scoped DBL-319 correction."
   },
   {
     "id": "DBL-318",
@@ -3467,5 +3468,18 @@
     "dependencies": ["DBL-317"],
     "status": "planned",
     "body": "## Acceptance criteria\nCollect verified L1 item, loot, browser, performance, public and remaining-scope evidence. Stop for user L1 review.\n\n## Non-goals\nL2, inventory/equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nReference verified L1 regression/performance/publication evidence.\n\n## Definition of done\nL1 technical candidate delivered; user approval remains false."
+  },
+  {
+    "id": "DBL-319",
+    "title": "Decorrelate early loot rolls and version the generator content",
+    "parent": "DBL-090",
+    "phase": 13,
+    "targetPhase": 13,
+    "deliveryPhase": "loot-l1",
+    "priority": "p0",
+    "dependencies": ["DBL-315", "DBL-316"],
+    "status": "complete",
+    "body": "## Acceptance criteria\nFix short-encounter correlation across nearby seeds; add avalanche mixing, version content to reject old-roll archives safely, and regenerate examples/statistics. Preserve existing gameplay.\n\n## Non-goals\nNew gameplay or L2; no silent rerolling of saved items.\n\n## Test requirements\nEarly30-death encounters across1000 seeds, deterministic replay, all existing item tests and refreshed browser fixtures. Backlog graph validates true acyclicity when dependencies are added after an existing ID.\n\n## Definition of done\nVerified correction; final317 performance/publication resumes only after this dependency.",
+    "evidence": "Content2 avalanche-mixed per-roll seeds; pre/post early-seed-regression.json (6858/30000 and29patterns \u219210488/30000 and1000patterns); 1.2million current rolls pass; old content1 archives rejected; max-counter rollover safe. Full check194, six Chromium/ten FF-WebKit V2 checks. True acyclic graph/cycle rejection checked. Resume317."
   }
 ]

@@ -73,3 +73,19 @@ it("uses monster, area and table levels and configurable quality without rarity 
   ).toBe("last-coal");
   expect(generateLoot({ ...context, monsterLevel: 99 }, d)?.level).toBe(99);
 });
+it("nearby seeds produce distinct early encounters with expected drop rate", () => {
+  let count = 0;
+  const patterns = new Set<string>();
+  for (let seed = 0; seed < 1000; seed++) {
+    let pattern = "";
+    for (let sequence = 0; sequence < 30; sequence++) {
+      const i = generateLoot({ ...context, seed, sequence });
+      if (i) count++;
+      pattern += i ? "1" : "0";
+    }
+    patterns.add(pattern);
+  }
+  expect(count).toBeGreaterThan(9900);
+  expect(count).toBeLessThan(11100);
+  expect(patterns.size).toBeGreaterThan(900);
+});

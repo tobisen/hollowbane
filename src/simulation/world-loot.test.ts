@@ -81,3 +81,16 @@ it("inspection and identification require reachable proximity; selection wraps",
     }),
   ).toBe(false);
 });
+it("advances the seeded stream safely after a loaded maximum counter", () => {
+  const l = createLootWorld(42),
+    c = createCombat();
+  l.sequence = 0x100000000;
+  c.actors[1]!.hp = 0;
+  expect(() =>
+    consumeLootDeaths(l, c, ARENA_NAV, [
+      { kind: "death", actor: 0, target: 1, tick: 1 },
+    ]),
+  ).not.toThrow();
+  expect(l.seed).toBe(43);
+  expect(l.sequence).toBe(1);
+});

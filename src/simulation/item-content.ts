@@ -1,5 +1,5 @@
 /** Original, versioned item content. Independent of engine, input and clock. */
-export const ITEM_VERSION = 1;
+export const ITEM_VERSION = 2;
 export const QUALITIES = ["normal", "magic", "rare", "unique"] as const;
 export type Quality = (typeof QUALITIES)[number];
 export const CATEGORIES = [
@@ -163,7 +163,7 @@ export function validateItemContent(value: unknown): ItemContent {
   return structuredClone(d);
 }
 export const ITEM_CONTENT = validateItemContent({
-  version: 1,
+  version: 2,
   bases: [
     {
       id: "ash-blade",

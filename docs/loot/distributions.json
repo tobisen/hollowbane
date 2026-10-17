@@ -1,8 +1,10 @@
 {
+  "contentVersion": 2,
   "cpu": "Apple M4",
   "method": "12 seeded 100000-roll runs (same seeds paired across levels), seeds42/7331/2026 × levels1/12/30/99. Binomial 6-sigma+5-count diagnostic bands, conditional qualities account for ineligible unique fallback. Every item replay-validates and affix invariants are checked. Elapsed CPU includes validation/report work, not per-frame gameplay.",
   "tables": [
     {
+      "contentVersion": 2,
       "table": "court",
       "chance": 0.35,
       "level": 1,
@@ -130,6 +132,7 @@
       ]
     },
     {
+      "contentVersion": 2,
       "table": "court",
       "chance": 0.35,
       "level": 12,
@@ -281,6 +284,7 @@
       ]
     },
     {
+      "contentVersion": 2,
       "table": "court",
       "chance": 0.35,
       "level": 30,
@@ -432,6 +436,7 @@
       ]
     },
     {
+      "contentVersion": 2,
       "table": "court",
       "chance": 0.35,
       "level": 99,
@@ -592,19 +597,19 @@
         "table": "court"
       },
       "rolls": 100000,
-      "drops": 34999,
-      "empty": 65001,
+      "drops": 34894,
+      "empty": 65106,
       "quality": {
-        "normal": 27993,
-        "magic": 5953,
-        "rare": 1053,
+        "normal": 27864,
+        "magic": 5946,
+        "rare": 1084,
         "unique": 0
       },
       "bases": {
-        "ash-blade": 12100,
-        "woven-coat": 12106,
-        "reed-bow": 5407,
-        "trail-boots": 5386
+        "woven-coat": 12204,
+        "ash-blade": 12052,
+        "trail-boots": 5273,
+        "reed-bow": 5365
       },
       "expectedDrops": 35000,
       "expectedBases": {
@@ -628,52 +633,85 @@
       "examples": {
         "normal": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-0",
+          "contentVersion": 2,
+          "id": "l2-2a-3",
           "origin": {
             "seed": 42,
             "monsterLevel": 1,
             "areaLevel": 1,
             "table": "court",
-            "sequence": 0
+            "sequence": 3
           },
-          "base": "ash-blade",
+          "base": "woven-coat",
           "level": 1,
           "requirement": 1,
           "quality": "normal",
           "identified": true,
-          "name": "Ash Blade",
+          "name": "Woven Coat",
           "stats": {
-            "damage": 6
+            "armor": 8
           },
           "affixes": [],
           "unique": null
         },
         "magic": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-1",
+          "contentVersion": 2,
+          "id": "l2-2a-1e",
           "origin": {
             "seed": 42,
             "monsterLevel": 1,
             "areaLevel": 1,
             "table": "court",
-            "sequence": 1
+            "sequence": 30
           },
           "base": "woven-coat",
           "level": 1,
           "requirement": 1,
           "quality": "magic",
           "identified": false,
-          "name": "Warded Woven Coat of Clarity",
+          "name": "Warded Woven Coat",
           "stats": {
-            "armor": 10,
+            "armor": 12
+          },
+          "affixes": [
+            {
+              "id": "warded",
+              "value": 4
+            }
+          ],
+          "unique": null
+        },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-2a-2f",
+          "origin": {
+            "seed": 42,
+            "monsterLevel": 1,
+            "areaLevel": 1,
+            "table": "court",
+            "sequence": 47
+          },
+          "base": "trail-boots",
+          "level": 1,
+          "requirement": 1,
+          "quality": "rare",
+          "identified": false,
+          "name": "Warded Trail Boots of Vigor of Clarity",
+          "stats": {
+            "armor": 9,
+            "life": 3,
             "mana": 5
           },
           "affixes": [
             {
               "id": "warded",
-              "value": 2
+              "value": 7
+            },
+            {
+              "id": "vigor",
+              "value": 3
             },
             {
               "id": "clarity",
@@ -681,47 +719,9 @@
             }
           ],
           "unique": null
-        },
-        "rare": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-25",
-          "origin": {
-            "seed": 42,
-            "monsterLevel": 1,
-            "areaLevel": 1,
-            "table": "court",
-            "sequence": 37
-          },
-          "base": "ash-blade",
-          "level": 1,
-          "requirement": 1,
-          "quality": "rare",
-          "identified": false,
-          "name": "Keen Ash Blade of Clarity of Vigor",
-          "stats": {
-            "damage": 8,
-            "mana": 3,
-            "life": 4
-          },
-          "affixes": [
-            {
-              "id": "keen",
-              "value": 2
-            },
-            {
-              "id": "clarity",
-              "value": 3
-            },
-            {
-              "id": "vigor",
-              "value": 4
-            }
-          ],
-          "unique": null
         }
       },
-      "generationAndReplayValidationMs": 344.47858299999996
+      "generationAndReplayValidationMs": 335.188625
     },
     {
       "context": {
@@ -731,23 +731,23 @@
         "table": "court"
       },
       "rolls": 100000,
-      "drops": 34999,
-      "empty": 65001,
+      "drops": 34894,
+      "empty": 65106,
       "quality": {
-        "normal": 27993,
-        "magic": 5953,
-        "rare": 1043,
-        "unique": 10
+        "normal": 27864,
+        "magic": 5946,
+        "rare": 1077,
+        "unique": 7
       },
       "bases": {
-        "ash-blade": 8963,
-        "iron-cap": 3977,
-        "woven-coat": 8972,
-        "bark-guard": 2259,
-        "trail-boots": 3987,
-        "reed-bow": 3990,
-        "cinder-staff": 2213,
-        "copper-band": 638
+        "woven-coat": 9057,
+        "ash-blade": 8943,
+        "trail-boots": 3947,
+        "bark-guard": 2177,
+        "reed-bow": 3937,
+        "cinder-staff": 2219,
+        "iron-cap": 3993,
+        "copper-band": 621
       },
       "expectedDrops": 35000,
       "expectedBases": {
@@ -771,53 +771,86 @@
       "examples": {
         "normal": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-0",
+          "contentVersion": 2,
+          "id": "l2-2a-3",
           "origin": {
             "seed": 42,
             "monsterLevel": 12,
             "areaLevel": 12,
             "table": "court",
-            "sequence": 0
+            "sequence": 3
           },
-          "base": "ash-blade",
+          "base": "woven-coat",
           "level": 12,
           "requirement": 1,
           "quality": "normal",
           "identified": true,
-          "name": "Ash Blade",
+          "name": "Woven Coat",
           "stats": {
-            "damage": 6
+            "armor": 8
           },
           "affixes": [],
           "unique": null
         },
         "magic": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-1",
+          "contentVersion": 2,
+          "id": "l2-2a-1e",
           "origin": {
             "seed": 42,
             "monsterLevel": 12,
             "areaLevel": 12,
             "table": "court",
-            "sequence": 1
+            "sequence": 30
           },
-          "base": "iron-cap",
+          "base": "woven-coat",
           "level": 12,
-          "requirement": 2,
+          "requirement": 1,
           "quality": "magic",
           "identified": false,
-          "name": "Emberward Iron Cap of Clarity",
+          "name": "Warded Woven Coat",
           "stats": {
-            "armor": 4,
-            "fireResistance": 4,
+            "armor": 12
+          },
+          "affixes": [
+            {
+              "id": "warded",
+              "value": 4
+            }
+          ],
+          "unique": null
+        },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-2a-2f",
+          "origin": {
+            "seed": 42,
+            "monsterLevel": 12,
+            "areaLevel": 12,
+            "table": "court",
+            "sequence": 47
+          },
+          "base": "trail-boots",
+          "level": 12,
+          "requirement": 2,
+          "quality": "rare",
+          "identified": false,
+          "name": "Emberward Trail Boots of Vigor of Clarity",
+          "stats": {
+            "armor": 2,
+            "fireResistance": 12,
+            "life": 3,
             "mana": 5
           },
           "affixes": [
             {
               "id": "emberward",
-              "value": 4
+              "value": 12
+            },
+            {
+              "id": "vigor",
+              "value": 3
             },
             {
               "id": "clarity",
@@ -826,54 +859,16 @@
           ],
           "unique": null
         },
-        "rare": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-25",
-          "origin": {
-            "seed": 42,
-            "monsterLevel": 12,
-            "areaLevel": 12,
-            "table": "court",
-            "sequence": 37
-          },
-          "base": "ash-blade",
-          "level": 12,
-          "requirement": 6,
-          "quality": "rare",
-          "identified": false,
-          "name": "Keen Ash Blade of Haste of Vigor",
-          "stats": {
-            "damage": 8,
-            "speed": 1,
-            "life": 4
-          },
-          "affixes": [
-            {
-              "id": "keen",
-              "value": 2
-            },
-            {
-              "id": "haste",
-              "value": 1
-            },
-            {
-              "id": "vigor",
-              "value": 4
-            }
-          ],
-          "unique": null
-        },
         "unique": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-8906",
+          "contentVersion": 2,
+          "id": "l2-2a-1602",
           "origin": {
             "seed": 42,
             "monsterLevel": 12,
             "areaLevel": 12,
             "table": "court",
-            "sequence": 35078
+            "sequence": 5634
           },
           "base": "ash-blade",
           "level": 12,
@@ -889,7 +884,7 @@
           "unique": "last-coal"
         }
       },
-      "generationAndReplayValidationMs": 316.037583
+      "generationAndReplayValidationMs": 312.83370799999994
     },
     {
       "context": {
@@ -899,23 +894,23 @@
         "table": "court"
       },
       "rolls": 100000,
-      "drops": 34999,
-      "empty": 65001,
+      "drops": 34894,
+      "empty": 65106,
       "quality": {
-        "normal": 27993,
-        "magic": 5953,
-        "rare": 1043,
-        "unique": 10
+        "normal": 27864,
+        "magic": 5946,
+        "rare": 1077,
+        "unique": 7
       },
       "bases": {
-        "ash-blade": 8963,
-        "iron-cap": 3977,
-        "woven-coat": 8972,
-        "bark-guard": 2259,
-        "trail-boots": 3987,
-        "reed-bow": 3990,
-        "cinder-staff": 2213,
-        "copper-band": 638
+        "woven-coat": 9057,
+        "ash-blade": 8943,
+        "trail-boots": 3947,
+        "bark-guard": 2177,
+        "reed-bow": 3937,
+        "cinder-staff": 2219,
+        "iron-cap": 3993,
+        "copper-band": 621
       },
       "expectedDrops": 35000,
       "expectedBases": {
@@ -939,53 +934,86 @@
       "examples": {
         "normal": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-0",
+          "contentVersion": 2,
+          "id": "l2-2a-3",
           "origin": {
             "seed": 42,
             "monsterLevel": 30,
             "areaLevel": 30,
             "table": "court",
-            "sequence": 0
+            "sequence": 3
           },
-          "base": "ash-blade",
+          "base": "woven-coat",
           "level": 30,
           "requirement": 1,
           "quality": "normal",
           "identified": true,
-          "name": "Ash Blade",
+          "name": "Woven Coat",
           "stats": {
-            "damage": 6
+            "armor": 8
           },
           "affixes": [],
           "unique": null
         },
         "magic": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-1",
+          "contentVersion": 2,
+          "id": "l2-2a-1e",
           "origin": {
             "seed": 42,
             "monsterLevel": 30,
             "areaLevel": 30,
             "table": "court",
-            "sequence": 1
+            "sequence": 30
           },
-          "base": "iron-cap",
+          "base": "woven-coat",
           "level": 30,
-          "requirement": 2,
+          "requirement": 1,
           "quality": "magic",
           "identified": false,
-          "name": "Emberward Iron Cap of Clarity",
+          "name": "Warded Woven Coat",
           "stats": {
-            "armor": 4,
-            "fireResistance": 4,
+            "armor": 12
+          },
+          "affixes": [
+            {
+              "id": "warded",
+              "value": 4
+            }
+          ],
+          "unique": null
+        },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-2a-2f",
+          "origin": {
+            "seed": 42,
+            "monsterLevel": 30,
+            "areaLevel": 30,
+            "table": "court",
+            "sequence": 47
+          },
+          "base": "trail-boots",
+          "level": 30,
+          "requirement": 2,
+          "quality": "rare",
+          "identified": false,
+          "name": "Emberward Trail Boots of Vigor of Clarity",
+          "stats": {
+            "armor": 2,
+            "fireResistance": 12,
+            "life": 3,
             "mana": 5
           },
           "affixes": [
             {
               "id": "emberward",
-              "value": 4
+              "value": 12
+            },
+            {
+              "id": "vigor",
+              "value": 3
             },
             {
               "id": "clarity",
@@ -994,54 +1022,16 @@
           ],
           "unique": null
         },
-        "rare": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-25",
-          "origin": {
-            "seed": 42,
-            "monsterLevel": 30,
-            "areaLevel": 30,
-            "table": "court",
-            "sequence": 37
-          },
-          "base": "ash-blade",
-          "level": 30,
-          "requirement": 13,
-          "quality": "rare",
-          "identified": false,
-          "name": "Razored Ash Blade of Vigor of Haste",
-          "stats": {
-            "damage": 11,
-            "life": 6,
-            "speed": 1
-          },
-          "affixes": [
-            {
-              "id": "vigor",
-              "value": 6
-            },
-            {
-              "id": "haste",
-              "value": 1
-            },
-            {
-              "id": "razored",
-              "value": 5
-            }
-          ],
-          "unique": null
-        },
         "unique": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-8906",
+          "contentVersion": 2,
+          "id": "l2-2a-1602",
           "origin": {
             "seed": 42,
             "monsterLevel": 30,
             "areaLevel": 30,
             "table": "court",
-            "sequence": 35078
+            "sequence": 5634
           },
           "base": "ash-blade",
           "level": 30,
@@ -1057,7 +1047,7 @@
           "unique": "last-coal"
         }
       },
-      "generationAndReplayValidationMs": 304.685375
+      "generationAndReplayValidationMs": 305.9670420000001
     },
     {
       "context": {
@@ -1067,23 +1057,23 @@
         "table": "court"
       },
       "rolls": 100000,
-      "drops": 34999,
-      "empty": 65001,
+      "drops": 34894,
+      "empty": 65106,
       "quality": {
-        "normal": 27993,
-        "magic": 5953,
-        "rare": 1043,
-        "unique": 10
+        "normal": 27864,
+        "magic": 5946,
+        "rare": 1077,
+        "unique": 7
       },
       "bases": {
-        "ash-blade": 8963,
-        "iron-cap": 3977,
-        "woven-coat": 8972,
-        "bark-guard": 2259,
-        "trail-boots": 3987,
-        "reed-bow": 3990,
-        "cinder-staff": 2213,
-        "copper-band": 638
+        "woven-coat": 9057,
+        "ash-blade": 8943,
+        "trail-boots": 3947,
+        "bark-guard": 2177,
+        "reed-bow": 3937,
+        "cinder-staff": 2219,
+        "iron-cap": 3993,
+        "copper-band": 621
       },
       "expectedDrops": 35000,
       "expectedBases": {
@@ -1107,53 +1097,86 @@
       "examples": {
         "normal": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-0",
+          "contentVersion": 2,
+          "id": "l2-2a-3",
           "origin": {
             "seed": 42,
             "monsterLevel": 99,
             "areaLevel": 99,
             "table": "court",
-            "sequence": 0
+            "sequence": 3
           },
-          "base": "ash-blade",
+          "base": "woven-coat",
           "level": 99,
           "requirement": 1,
           "quality": "normal",
           "identified": true,
-          "name": "Ash Blade",
+          "name": "Woven Coat",
           "stats": {
-            "damage": 6
+            "armor": 8
           },
           "affixes": [],
           "unique": null
         },
         "magic": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-1",
+          "contentVersion": 2,
+          "id": "l2-2a-1e",
           "origin": {
             "seed": 42,
             "monsterLevel": 99,
             "areaLevel": 99,
             "table": "court",
-            "sequence": 1
+            "sequence": 30
           },
-          "base": "iron-cap",
+          "base": "woven-coat",
           "level": 99,
-          "requirement": 2,
+          "requirement": 1,
           "quality": "magic",
           "identified": false,
-          "name": "Emberward Iron Cap of Clarity",
+          "name": "Warded Woven Coat",
           "stats": {
-            "armor": 4,
-            "fireResistance": 4,
+            "armor": 12
+          },
+          "affixes": [
+            {
+              "id": "warded",
+              "value": 4
+            }
+          ],
+          "unique": null
+        },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-2a-2f",
+          "origin": {
+            "seed": 42,
+            "monsterLevel": 99,
+            "areaLevel": 99,
+            "table": "court",
+            "sequence": 47
+          },
+          "base": "trail-boots",
+          "level": 99,
+          "requirement": 2,
+          "quality": "rare",
+          "identified": false,
+          "name": "Emberward Trail Boots of Vigor of Clarity",
+          "stats": {
+            "armor": 2,
+            "fireResistance": 12,
+            "life": 3,
             "mana": 5
           },
           "affixes": [
             {
               "id": "emberward",
-              "value": 4
+              "value": 12
+            },
+            {
+              "id": "vigor",
+              "value": 3
             },
             {
               "id": "clarity",
@@ -1162,54 +1185,16 @@
           ],
           "unique": null
         },
-        "rare": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-25",
-          "origin": {
-            "seed": 42,
-            "monsterLevel": 99,
-            "areaLevel": 99,
-            "table": "court",
-            "sequence": 37
-          },
-          "base": "ash-blade",
-          "level": 99,
-          "requirement": 13,
-          "quality": "rare",
-          "identified": false,
-          "name": "Razored Ash Blade of Vigor of Haste",
-          "stats": {
-            "damage": 11,
-            "life": 6,
-            "speed": 1
-          },
-          "affixes": [
-            {
-              "id": "vigor",
-              "value": 6
-            },
-            {
-              "id": "haste",
-              "value": 1
-            },
-            {
-              "id": "razored",
-              "value": 5
-            }
-          ],
-          "unique": null
-        },
         "unique": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-2a-8906",
+          "contentVersion": 2,
+          "id": "l2-2a-1602",
           "origin": {
             "seed": 42,
             "monsterLevel": 99,
             "areaLevel": 99,
             "table": "court",
-            "sequence": 35078
+            "sequence": 5634
           },
           "base": "ash-blade",
           "level": 99,
@@ -1225,7 +1210,7 @@
           "unique": "last-coal"
         }
       },
-      "generationAndReplayValidationMs": 299.75699999999983
+      "generationAndReplayValidationMs": 306.935334
     },
     {
       "context": {
@@ -1235,19 +1220,19 @@
         "table": "court"
       },
       "rolls": 100000,
-      "drops": 34990,
-      "empty": 65010,
+      "drops": 35094,
+      "empty": 64906,
       "quality": {
-        "normal": 28059,
-        "magic": 5895,
-        "rare": 1036,
+        "normal": 28125,
+        "magic": 5960,
+        "rare": 1009,
         "unique": 0
       },
       "bases": {
-        "reed-bow": 5362,
-        "trail-boots": 5339,
-        "woven-coat": 12149,
-        "ash-blade": 12140
+        "woven-coat": 12274,
+        "reed-bow": 5354,
+        "ash-blade": 12162,
+        "trail-boots": 5304
       },
       "expectedDrops": 35000,
       "expectedBases": {
@@ -1271,8 +1256,8 @@
       "examples": {
         "normal": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-0",
+          "contentVersion": 2,
+          "id": "l2-1ca3-0",
           "origin": {
             "seed": 7331,
             "monsterLevel": 1,
@@ -1280,88 +1265,87 @@
             "table": "court",
             "sequence": 0
           },
-          "base": "reed-bow",
+          "base": "woven-coat",
           "level": 1,
           "requirement": 1,
           "quality": "normal",
           "identified": true,
-          "name": "Reed Bow",
+          "name": "Woven Coat",
           "stats": {
-            "damage": 5,
-            "accuracy": 4
+            "armor": 8
           },
           "affixes": [],
           "unique": null
         },
-        "rare": {
+        "magic": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-4",
+          "contentVersion": 2,
+          "id": "l2-1ca3-7",
           "origin": {
             "seed": 7331,
             "monsterLevel": 1,
             "areaLevel": 1,
             "table": "court",
-            "sequence": 4
+            "sequence": 7
+          },
+          "base": "reed-bow",
+          "level": 1,
+          "requirement": 1,
+          "quality": "magic",
+          "identified": false,
+          "name": "Keen Reed Bow",
+          "stats": {
+            "damage": 6,
+            "accuracy": 4
+          },
+          "affixes": [
+            {
+              "id": "keen",
+              "value": 1
+            }
+          ],
+          "unique": null
+        },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-8b",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 1,
+            "areaLevel": 1,
+            "table": "court",
+            "sequence": 139
           },
           "base": "woven-coat",
           "level": 1,
           "requirement": 1,
           "quality": "rare",
           "identified": false,
-          "name": "Warded Woven Coat of Clarity of Vigor",
+          "name": "Warded Woven Coat of Vigor of Clarity",
           "stats": {
-            "armor": 12,
-            "mana": 3,
-            "life": 3
+            "armor": 15,
+            "life": 12,
+            "mana": 6
           },
           "affixes": [
             {
-              "id": "clarity",
-              "value": 3
-            },
-            {
               "id": "vigor",
-              "value": 3
+              "value": 12
             },
             {
               "id": "warded",
-              "value": 4
-            }
-          ],
-          "unique": null
-        },
-        "magic": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-3e",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 1,
-            "areaLevel": 1,
-            "table": "court",
-            "sequence": 62
-          },
-          "base": "woven-coat",
-          "level": 1,
-          "requirement": 1,
-          "quality": "magic",
-          "identified": false,
-          "name": "Woven Coat of Vigor",
-          "stats": {
-            "armor": 8,
-            "life": 6
-          },
-          "affixes": [
+              "value": 7
+            },
             {
-              "id": "vigor",
+              "id": "clarity",
               "value": 6
             }
           ],
           "unique": null
         }
       },
-      "generationAndReplayValidationMs": 282.763375
+      "generationAndReplayValidationMs": 287.1619579999999
     },
     {
       "context": {
@@ -1371,23 +1355,23 @@
         "table": "court"
       },
       "rolls": 100000,
-      "drops": 34990,
-      "empty": 65010,
+      "drops": 35094,
+      "empty": 64906,
       "quality": {
-        "normal": 28059,
-        "magic": 5895,
-        "rare": 1026,
-        "unique": 10
+        "normal": 28125,
+        "magic": 5960,
+        "rare": 1000,
+        "unique": 9
       },
       "bases": {
-        "reed-bow": 3969,
+        "iron-cap": 3892,
+        "woven-coat": 9074,
+        "cinder-staff": 2240,
+        "bark-guard": 2311,
+        "reed-bow": 3958,
+        "ash-blade": 9030,
         "trail-boots": 3972,
-        "iron-cap": 3960,
-        "ash-blade": 8968,
-        "bark-guard": 2242,
-        "woven-coat": 8972,
-        "cinder-staff": 2282,
-        "copper-band": 625
+        "copper-band": 617
       },
       "expectedDrops": 35000,
       "expectedBases": {
@@ -1411,8 +1395,8 @@
       "examples": {
         "normal": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-0",
+          "contentVersion": 2,
+          "id": "l2-1ca3-0",
           "origin": {
             "seed": 7331,
             "monsterLevel": 12,
@@ -1420,590 +1404,593 @@
             "table": "court",
             "sequence": 0
           },
-          "base": "reed-bow",
+          "base": "iron-cap",
           "level": 12,
           "requirement": 1,
           "quality": "normal",
           "identified": true,
-          "name": "Reed Bow",
+          "name": "Iron Cap",
           "stats": {
-            "damage": 5,
-            "accuracy": 4
+            "armor": 4
           },
           "affixes": [],
           "unique": null
         },
-        "rare": {
+        "magic": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-4",
+          "contentVersion": 2,
+          "id": "l2-1ca3-7",
           "origin": {
             "seed": 7331,
             "monsterLevel": 12,
             "areaLevel": 12,
             "table": "court",
-            "sequence": 4
+            "sequence": 7
           },
-          "base": "iron-cap",
-          "level": 12,
-          "requirement": 2,
-          "quality": "rare",
-          "identified": false,
-          "name": "Rimeward Warded Iron Cap of Clarity of Vigor",
-          "stats": {
-            "armor": 10,
-            "mana": 3,
-            "life": 3,
-            "coldResistance": 7
-          },
-          "affixes": [
-            {
-              "id": "clarity",
-              "value": 3
-            },
-            {
-              "id": "vigor",
-              "value": 3
-            },
-            {
-              "id": "rimeward",
-              "value": 7
-            },
-            {
-              "id": "warded",
-              "value": 6
-            }
-          ],
-          "unique": null
-        },
-        "magic": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-3e",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 12,
-            "areaLevel": 12,
-            "table": "court",
-            "sequence": 62
-          },
-          "base": "woven-coat",
+          "base": "cinder-staff",
           "level": 12,
           "requirement": 2,
           "quality": "magic",
           "identified": false,
-          "name": "Rimeward Woven Coat",
-          "stats": {
-            "armor": 8,
-            "coldResistance": 6
-          },
-          "affixes": [
-            {
-              "id": "rimeward",
-              "value": 6
-            }
-          ],
-          "unique": null
-        },
-        "unique": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-f88",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 12,
-            "areaLevel": 12,
-            "table": "court",
-            "sequence": 3976
-          },
-          "base": "copper-band",
-          "level": 12,
-          "requirement": 4,
-          "quality": "unique",
-          "identified": false,
-          "name": "Stillwater",
-          "stats": {
-            "mana": 27,
-            "coldResistance": 12
-          },
-          "affixes": [],
-          "unique": "stillwater"
-        }
-      },
-      "generationAndReplayValidationMs": 303.86920899999996
-    },
-    {
-      "context": {
-        "seed": 7331,
-        "monsterLevel": 30,
-        "areaLevel": 30,
-        "table": "court"
-      },
-      "rolls": 100000,
-      "drops": 34990,
-      "empty": 65010,
-      "quality": {
-        "normal": 28059,
-        "magic": 5895,
-        "rare": 1026,
-        "unique": 10
-      },
-      "bases": {
-        "reed-bow": 3969,
-        "trail-boots": 3972,
-        "iron-cap": 3960,
-        "ash-blade": 8968,
-        "bark-guard": 2242,
-        "woven-coat": 8972,
-        "cinder-staff": 2282,
-        "copper-band": 625
-      },
-      "expectedDrops": 35000,
-      "expectedBases": {
-        "ash-blade": 0.25611838360842343,
-        "reed-bow": 0.11383039271485487,
-        "cinder-staff": 0.06402959590210586,
-        "woven-coat": 0.25611838360842343,
-        "iron-cap": 0.11383039271485487,
-        "bark-guard": 0.06402959590210586,
-        "trail-boots": 0.11383039271485487,
-        "copper-band": 0.01821286283437678
-      },
-      "expectedConditionalQuality": {
-        "normal": 0.8,
-        "magic": 0.17,
-        "rare": 0.0297256687535572,
-        "unique": 0.0002743312464428002
-      },
-      "distributionValid": true,
-      "invalidItems": 0,
-      "examples": {
-        "normal": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-0",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 30,
-            "areaLevel": 30,
-            "table": "court",
-            "sequence": 0
-          },
-          "base": "reed-bow",
-          "level": 30,
-          "requirement": 1,
-          "quality": "normal",
-          "identified": true,
-          "name": "Reed Bow",
+          "name": "Keen Cinder Staff",
           "stats": {
             "damage": 5,
-            "accuracy": 4
-          },
-          "affixes": [],
-          "unique": null
-        },
-        "rare": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-4",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 30,
-            "areaLevel": 30,
-            "table": "court",
-            "sequence": 4
-          },
-          "base": "iron-cap",
-          "level": 30,
-          "requirement": 2,
-          "quality": "rare",
-          "identified": false,
-          "name": "Rimeward Warded Iron Cap of Clarity of Vigor",
-          "stats": {
-            "armor": 10,
-            "mana": 3,
-            "life": 3,
-            "coldResistance": 7
-          },
-          "affixes": [
-            {
-              "id": "clarity",
-              "value": 3
-            },
-            {
-              "id": "vigor",
-              "value": 3
-            },
-            {
-              "id": "rimeward",
-              "value": 7
-            },
-            {
-              "id": "warded",
-              "value": 6
-            }
-          ],
-          "unique": null
-        },
-        "magic": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-3e",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 30,
-            "areaLevel": 30,
-            "table": "court",
-            "sequence": 62
-          },
-          "base": "woven-coat",
-          "level": 30,
-          "requirement": 2,
-          "quality": "magic",
-          "identified": false,
-          "name": "Rimeward Woven Coat",
-          "stats": {
-            "armor": 8,
-            "coldResistance": 6
-          },
-          "affixes": [
-            {
-              "id": "rimeward",
-              "value": 6
-            }
-          ],
-          "unique": null
-        },
-        "unique": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-f88",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 30,
-            "areaLevel": 30,
-            "table": "court",
-            "sequence": 3976
-          },
-          "base": "copper-band",
-          "level": 30,
-          "requirement": 4,
-          "quality": "unique",
-          "identified": false,
-          "name": "Stillwater",
-          "stats": {
-            "mana": 27,
-            "coldResistance": 12
-          },
-          "affixes": [],
-          "unique": "stillwater"
-        }
-      },
-      "generationAndReplayValidationMs": 301.49800000000005
-    },
-    {
-      "context": {
-        "seed": 7331,
-        "monsterLevel": 99,
-        "areaLevel": 99,
-        "table": "court"
-      },
-      "rolls": 100000,
-      "drops": 34990,
-      "empty": 65010,
-      "quality": {
-        "normal": 28059,
-        "magic": 5895,
-        "rare": 1026,
-        "unique": 10
-      },
-      "bases": {
-        "reed-bow": 3969,
-        "trail-boots": 3972,
-        "iron-cap": 3960,
-        "ash-blade": 8968,
-        "bark-guard": 2242,
-        "woven-coat": 8972,
-        "cinder-staff": 2282,
-        "copper-band": 625
-      },
-      "expectedDrops": 35000,
-      "expectedBases": {
-        "ash-blade": 0.25611838360842343,
-        "reed-bow": 0.11383039271485487,
-        "cinder-staff": 0.06402959590210586,
-        "woven-coat": 0.25611838360842343,
-        "iron-cap": 0.11383039271485487,
-        "bark-guard": 0.06402959590210586,
-        "trail-boots": 0.11383039271485487,
-        "copper-band": 0.01821286283437678
-      },
-      "expectedConditionalQuality": {
-        "normal": 0.8,
-        "magic": 0.17,
-        "rare": 0.0297256687535572,
-        "unique": 0.0002743312464428002
-      },
-      "distributionValid": true,
-      "invalidItems": 0,
-      "examples": {
-        "normal": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-0",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 99,
-            "areaLevel": 99,
-            "table": "court",
-            "sequence": 0
-          },
-          "base": "reed-bow",
-          "level": 99,
-          "requirement": 1,
-          "quality": "normal",
-          "identified": true,
-          "name": "Reed Bow",
-          "stats": {
-            "damage": 5,
-            "accuracy": 4
-          },
-          "affixes": [],
-          "unique": null
-        },
-        "rare": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-4",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 99,
-            "areaLevel": 99,
-            "table": "court",
-            "sequence": 4
-          },
-          "base": "iron-cap",
-          "level": 99,
-          "requirement": 2,
-          "quality": "rare",
-          "identified": false,
-          "name": "Rimeward Warded Iron Cap of Clarity of Vigor",
-          "stats": {
-            "armor": 10,
-            "mana": 3,
-            "life": 3,
-            "coldResistance": 7
-          },
-          "affixes": [
-            {
-              "id": "clarity",
-              "value": 3
-            },
-            {
-              "id": "vigor",
-              "value": 3
-            },
-            {
-              "id": "rimeward",
-              "value": 7
-            },
-            {
-              "id": "warded",
-              "value": 6
-            }
-          ],
-          "unique": null
-        },
-        "magic": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-3e",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 99,
-            "areaLevel": 99,
-            "table": "court",
-            "sequence": 62
-          },
-          "base": "woven-coat",
-          "level": 99,
-          "requirement": 2,
-          "quality": "magic",
-          "identified": false,
-          "name": "Rimeward Woven Coat",
-          "stats": {
-            "armor": 8,
-            "coldResistance": 6
-          },
-          "affixes": [
-            {
-              "id": "rimeward",
-              "value": 6
-            }
-          ],
-          "unique": null
-        },
-        "unique": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-1ca3-f88",
-          "origin": {
-            "seed": 7331,
-            "monsterLevel": 99,
-            "areaLevel": 99,
-            "table": "court",
-            "sequence": 3976
-          },
-          "base": "copper-band",
-          "level": 99,
-          "requirement": 4,
-          "quality": "unique",
-          "identified": false,
-          "name": "Stillwater",
-          "stats": {
-            "mana": 27,
-            "coldResistance": 12
-          },
-          "affixes": [],
-          "unique": "stillwater"
-        }
-      },
-      "generationAndReplayValidationMs": 302.8694580000001
-    },
-    {
-      "context": {
-        "seed": 2026,
-        "monsterLevel": 1,
-        "areaLevel": 1,
-        "table": "court"
-      },
-      "rolls": 100000,
-      "drops": 35007,
-      "empty": 64993,
-      "quality": {
-        "normal": 27913,
-        "magic": 5965,
-        "rare": 1129,
-        "unique": 0
-      },
-      "bases": {
-        "ash-blade": 12128,
-        "reed-bow": 5396,
-        "woven-coat": 12102,
-        "trail-boots": 5381
-      },
-      "expectedDrops": 35000,
-      "expectedBases": {
-        "ash-blade": 0.34615384615384615,
-        "reed-bow": 0.15384615384615385,
-        "cinder-staff": 0,
-        "woven-coat": 0.34615384615384615,
-        "iron-cap": 0,
-        "bark-guard": 0,
-        "trail-boots": 0.15384615384615385,
-        "copper-band": 0
-      },
-      "expectedConditionalQuality": {
-        "normal": 0.8,
-        "magic": 0.17,
-        "rare": 0.030000000000000002,
-        "unique": 0
-      },
-      "distributionValid": true,
-      "invalidItems": 0,
-      "examples": {
-        "normal": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-2",
-          "origin": {
-            "seed": 2026,
-            "monsterLevel": 1,
-            "areaLevel": 1,
-            "table": "court",
-            "sequence": 2
-          },
-          "base": "ash-blade",
-          "level": 1,
-          "requirement": 1,
-          "quality": "normal",
-          "identified": true,
-          "name": "Ash Blade",
-          "stats": {
-            "damage": 6
-          },
-          "affixes": [],
-          "unique": null
-        },
-        "magic": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-c",
-          "origin": {
-            "seed": 2026,
-            "monsterLevel": 1,
-            "areaLevel": 1,
-            "table": "court",
-            "sequence": 12
-          },
-          "base": "woven-coat",
-          "level": 1,
-          "requirement": 1,
-          "quality": "magic",
-          "identified": false,
-          "name": "Woven Coat of Clarity",
-          "stats": {
-            "armor": 8,
             "mana": 8
           },
           "affixes": [
             {
-              "id": "clarity",
-              "value": 8
+              "id": "keen",
+              "value": 1
             }
           ],
           "unique": null
         },
         "rare": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-45",
+          "contentVersion": 2,
+          "id": "l2-1ca3-8b",
           "origin": {
-            "seed": 2026,
-            "monsterLevel": 1,
-            "areaLevel": 1,
+            "seed": 7331,
+            "monsterLevel": 12,
+            "areaLevel": 12,
             "table": "court",
-            "sequence": 69
+            "sequence": 139
           },
-          "base": "ash-blade",
-          "level": 1,
-          "requirement": 1,
+          "base": "woven-coat",
+          "level": 12,
+          "requirement": 2,
           "quality": "rare",
           "identified": false,
-          "name": "Keen Ash Blade of Clarity of Vigor",
+          "name": "Rimeward Warded Woven Coat of Vigor of Clarity",
           "stats": {
-            "damage": 10,
+            "armor": 15,
+            "coldResistance": 12,
+            "life": 7,
+            "mana": 7
+          },
+          "affixes": [
+            {
+              "id": "rimeward",
+              "value": 12
+            },
+            {
+              "id": "warded",
+              "value": 7
+            },
+            {
+              "id": "vigor",
+              "value": 7
+            },
+            {
+              "id": "clarity",
+              "value": 7
+            }
+          ],
+          "unique": null
+        },
+        "unique": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-10e0",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 12,
+            "areaLevel": 12,
+            "table": "court",
+            "sequence": 4320
+          },
+          "base": "ash-blade",
+          "level": 12,
+          "requirement": 1,
+          "quality": "unique",
+          "identified": false,
+          "name": "Last Coal",
+          "stats": {
+            "damage": 16,
+            "fireResistance": 15
+          },
+          "affixes": [],
+          "unique": "last-coal"
+        }
+      },
+      "generationAndReplayValidationMs": 306.32825
+    },
+    {
+      "context": {
+        "seed": 7331,
+        "monsterLevel": 30,
+        "areaLevel": 30,
+        "table": "court"
+      },
+      "rolls": 100000,
+      "drops": 35094,
+      "empty": 64906,
+      "quality": {
+        "normal": 28125,
+        "magic": 5960,
+        "rare": 1000,
+        "unique": 9
+      },
+      "bases": {
+        "iron-cap": 3892,
+        "woven-coat": 9074,
+        "cinder-staff": 2240,
+        "bark-guard": 2311,
+        "reed-bow": 3958,
+        "ash-blade": 9030,
+        "trail-boots": 3972,
+        "copper-band": 617
+      },
+      "expectedDrops": 35000,
+      "expectedBases": {
+        "ash-blade": 0.25611838360842343,
+        "reed-bow": 0.11383039271485487,
+        "cinder-staff": 0.06402959590210586,
+        "woven-coat": 0.25611838360842343,
+        "iron-cap": 0.11383039271485487,
+        "bark-guard": 0.06402959590210586,
+        "trail-boots": 0.11383039271485487,
+        "copper-band": 0.01821286283437678
+      },
+      "expectedConditionalQuality": {
+        "normal": 0.8,
+        "magic": 0.17,
+        "rare": 0.0297256687535572,
+        "unique": 0.0002743312464428002
+      },
+      "distributionValid": true,
+      "invalidItems": 0,
+      "examples": {
+        "normal": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-0",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 30,
+            "areaLevel": 30,
+            "table": "court",
+            "sequence": 0
+          },
+          "base": "iron-cap",
+          "level": 30,
+          "requirement": 1,
+          "quality": "normal",
+          "identified": true,
+          "name": "Iron Cap",
+          "stats": {
+            "armor": 4
+          },
+          "affixes": [],
+          "unique": null
+        },
+        "magic": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-7",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 30,
+            "areaLevel": 30,
+            "table": "court",
+            "sequence": 7
+          },
+          "base": "cinder-staff",
+          "level": 30,
+          "requirement": 2,
+          "quality": "magic",
+          "identified": false,
+          "name": "Cinder Staff of Vigor",
+          "stats": {
+            "damage": 4,
             "mana": 8,
+            "life": 5
+          },
+          "affixes": [
+            {
+              "id": "vigor",
+              "value": 5
+            }
+          ],
+          "unique": null
+        },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-8b",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 30,
+            "areaLevel": 30,
+            "table": "court",
+            "sequence": 139
+          },
+          "base": "woven-coat",
+          "level": 30,
+          "requirement": 2,
+          "quality": "rare",
+          "identified": false,
+          "name": "Rimeward Warded Woven Coat of Vigor of Clarity",
+          "stats": {
+            "armor": 15,
+            "coldResistance": 12,
+            "life": 7,
+            "mana": 7
+          },
+          "affixes": [
+            {
+              "id": "rimeward",
+              "value": 12
+            },
+            {
+              "id": "warded",
+              "value": 7
+            },
+            {
+              "id": "vigor",
+              "value": 7
+            },
+            {
+              "id": "clarity",
+              "value": 7
+            }
+          ],
+          "unique": null
+        },
+        "unique": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-10e0",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 30,
+            "areaLevel": 30,
+            "table": "court",
+            "sequence": 4320
+          },
+          "base": "ash-blade",
+          "level": 30,
+          "requirement": 1,
+          "quality": "unique",
+          "identified": false,
+          "name": "Last Coal",
+          "stats": {
+            "damage": 16,
+            "fireResistance": 15
+          },
+          "affixes": [],
+          "unique": "last-coal"
+        }
+      },
+      "generationAndReplayValidationMs": 307.00441599999976
+    },
+    {
+      "context": {
+        "seed": 7331,
+        "monsterLevel": 99,
+        "areaLevel": 99,
+        "table": "court"
+      },
+      "rolls": 100000,
+      "drops": 35094,
+      "empty": 64906,
+      "quality": {
+        "normal": 28125,
+        "magic": 5960,
+        "rare": 1000,
+        "unique": 9
+      },
+      "bases": {
+        "iron-cap": 3892,
+        "woven-coat": 9074,
+        "cinder-staff": 2240,
+        "bark-guard": 2311,
+        "reed-bow": 3958,
+        "ash-blade": 9030,
+        "trail-boots": 3972,
+        "copper-band": 617
+      },
+      "expectedDrops": 35000,
+      "expectedBases": {
+        "ash-blade": 0.25611838360842343,
+        "reed-bow": 0.11383039271485487,
+        "cinder-staff": 0.06402959590210586,
+        "woven-coat": 0.25611838360842343,
+        "iron-cap": 0.11383039271485487,
+        "bark-guard": 0.06402959590210586,
+        "trail-boots": 0.11383039271485487,
+        "copper-band": 0.01821286283437678
+      },
+      "expectedConditionalQuality": {
+        "normal": 0.8,
+        "magic": 0.17,
+        "rare": 0.0297256687535572,
+        "unique": 0.0002743312464428002
+      },
+      "distributionValid": true,
+      "invalidItems": 0,
+      "examples": {
+        "normal": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-0",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 99,
+            "areaLevel": 99,
+            "table": "court",
+            "sequence": 0
+          },
+          "base": "iron-cap",
+          "level": 99,
+          "requirement": 1,
+          "quality": "normal",
+          "identified": true,
+          "name": "Iron Cap",
+          "stats": {
+            "armor": 4
+          },
+          "affixes": [],
+          "unique": null
+        },
+        "magic": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-7",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 99,
+            "areaLevel": 99,
+            "table": "court",
+            "sequence": 7
+          },
+          "base": "cinder-staff",
+          "level": 99,
+          "requirement": 2,
+          "quality": "magic",
+          "identified": false,
+          "name": "Cinder Staff of Vigor",
+          "stats": {
+            "damage": 4,
+            "mana": 8,
+            "life": 5
+          },
+          "affixes": [
+            {
+              "id": "vigor",
+              "value": 5
+            }
+          ],
+          "unique": null
+        },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-8b",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 99,
+            "areaLevel": 99,
+            "table": "court",
+            "sequence": 139
+          },
+          "base": "woven-coat",
+          "level": 99,
+          "requirement": 2,
+          "quality": "rare",
+          "identified": false,
+          "name": "Rimeward Warded Woven Coat of Vigor of Clarity",
+          "stats": {
+            "armor": 15,
+            "coldResistance": 12,
+            "life": 7,
+            "mana": 7
+          },
+          "affixes": [
+            {
+              "id": "rimeward",
+              "value": 12
+            },
+            {
+              "id": "warded",
+              "value": 7
+            },
+            {
+              "id": "vigor",
+              "value": 7
+            },
+            {
+              "id": "clarity",
+              "value": 7
+            }
+          ],
+          "unique": null
+        },
+        "unique": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-1ca3-10e0",
+          "origin": {
+            "seed": 7331,
+            "monsterLevel": 99,
+            "areaLevel": 99,
+            "table": "court",
+            "sequence": 4320
+          },
+          "base": "ash-blade",
+          "level": 99,
+          "requirement": 1,
+          "quality": "unique",
+          "identified": false,
+          "name": "Last Coal",
+          "stats": {
+            "damage": 16,
+            "fireResistance": 15
+          },
+          "affixes": [],
+          "unique": "last-coal"
+        }
+      },
+      "generationAndReplayValidationMs": 304.237666
+    },
+    {
+      "context": {
+        "seed": 2026,
+        "monsterLevel": 1,
+        "areaLevel": 1,
+        "table": "court"
+      },
+      "rolls": 100000,
+      "drops": 35132,
+      "empty": 64868,
+      "quality": {
+        "normal": 28069,
+        "magic": 5976,
+        "rare": 1087,
+        "unique": 0
+      },
+      "bases": {
+        "woven-coat": 12114,
+        "trail-boots": 5412,
+        "ash-blade": 12236,
+        "reed-bow": 5370
+      },
+      "expectedDrops": 35000,
+      "expectedBases": {
+        "ash-blade": 0.34615384615384615,
+        "reed-bow": 0.15384615384615385,
+        "cinder-staff": 0,
+        "woven-coat": 0.34615384615384615,
+        "iron-cap": 0,
+        "bark-guard": 0,
+        "trail-boots": 0.15384615384615385,
+        "copper-band": 0
+      },
+      "expectedConditionalQuality": {
+        "normal": 0.8,
+        "magic": 0.17,
+        "rare": 0.030000000000000002,
+        "unique": 0
+      },
+      "distributionValid": true,
+      "invalidItems": 0,
+      "examples": {
+        "normal": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-7ea-3",
+          "origin": {
+            "seed": 2026,
+            "monsterLevel": 1,
+            "areaLevel": 1,
+            "table": "court",
+            "sequence": 3
+          },
+          "base": "woven-coat",
+          "level": 1,
+          "requirement": 1,
+          "quality": "normal",
+          "identified": true,
+          "name": "Woven Coat",
+          "stats": {
+            "armor": 8
+          },
+          "affixes": [],
+          "unique": null
+        },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-7ea-8",
+          "origin": {
+            "seed": 2026,
+            "monsterLevel": 1,
+            "areaLevel": 1,
+            "table": "court",
+            "sequence": 8
+          },
+          "base": "ash-blade",
+          "level": 1,
+          "requirement": 1,
+          "quality": "rare",
+          "identified": false,
+          "name": "Keen Ash Blade of Clarity of Vigor",
+          "stats": {
+            "damage": 10,
+            "mana": 10,
             "life": 6
           },
           "affixes": [
             {
+              "id": "keen",
+              "value": 4
+            },
+            {
               "id": "clarity",
-              "value": 8
+              "value": 10
             },
             {
               "id": "vigor",
               "value": 6
+            }
+          ],
+          "unique": null
+        },
+        "magic": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-7ea-c",
+          "origin": {
+            "seed": 2026,
+            "monsterLevel": 1,
+            "areaLevel": 1,
+            "table": "court",
+            "sequence": 12
+          },
+          "base": "woven-coat",
+          "level": 1,
+          "requirement": 1,
+          "quality": "magic",
+          "identified": false,
+          "name": "Warded Woven Coat of Vigor",
+          "stats": {
+            "armor": 13,
+            "life": 4
+          },
+          "affixes": [
+            {
+              "id": "warded",
+              "value": 5
             },
             {
-              "id": "keen",
+              "id": "vigor",
               "value": 4
             }
           ],
           "unique": null
         }
       },
-      "generationAndReplayValidationMs": 299.514083
+      "generationAndReplayValidationMs": 288.24979099999973
     },
     {
       "context": {
@@ -2013,23 +2000,23 @@
         "table": "court"
       },
       "rolls": 100000,
-      "drops": 35007,
-      "empty": 64993,
+      "drops": 35132,
+      "empty": 64868,
       "quality": {
-        "normal": 27913,
-        "magic": 5965,
-        "rare": 1119,
-        "unique": 10
+        "normal": 28069,
+        "magic": 5976,
+        "rare": 1076,
+        "unique": 11
       },
       "bases": {
-        "ash-blade": 8959,
-        "cinder-staff": 2257,
-        "woven-coat": 8977,
-        "iron-cap": 3957,
-        "trail-boots": 3986,
-        "reed-bow": 3989,
-        "bark-guard": 2256,
-        "copper-band": 626
+        "bark-guard": 2266,
+        "trail-boots": 4001,
+        "ash-blade": 9078,
+        "woven-coat": 8982,
+        "iron-cap": 3924,
+        "cinder-staff": 2246,
+        "reed-bow": 3988,
+        "copper-band": 647
       },
       "expectedDrops": 35000,
       "expectedBases": {
@@ -2053,31 +2040,69 @@
       "examples": {
         "normal": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-2",
+          "contentVersion": 2,
+          "id": "l2-7ea-3",
           "origin": {
             "seed": 2026,
             "monsterLevel": 12,
             "areaLevel": 12,
             "table": "court",
-            "sequence": 2
+            "sequence": 3
           },
-          "base": "ash-blade",
+          "base": "bark-guard",
           "level": 12,
-          "requirement": 1,
+          "requirement": 2,
           "quality": "normal",
           "identified": true,
-          "name": "Ash Blade",
+          "name": "Bark Guard",
           "stats": {
-            "damage": 6
+            "armor": 6
           },
           "affixes": [],
           "unique": null
         },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-7ea-8",
+          "origin": {
+            "seed": 2026,
+            "monsterLevel": 12,
+            "areaLevel": 12,
+            "table": "court",
+            "sequence": 8
+          },
+          "base": "ash-blade",
+          "level": 12,
+          "requirement": 1,
+          "quality": "rare",
+          "identified": false,
+          "name": "Keen Ash Blade of Clarity of Vigor",
+          "stats": {
+            "damage": 10,
+            "mana": 10,
+            "life": 6
+          },
+          "affixes": [
+            {
+              "id": "keen",
+              "value": 4
+            },
+            {
+              "id": "clarity",
+              "value": 10
+            },
+            {
+              "id": "vigor",
+              "value": 6
+            }
+          ],
+          "unique": null
+        },
         "magic": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-c",
+          "contentVersion": 2,
+          "id": "l2-7ea-c",
           "origin": {
             "seed": 2026,
             "monsterLevel": 12,
@@ -2090,52 +2115,18 @@
           "requirement": 1,
           "quality": "magic",
           "identified": false,
-          "name": "Woven Coat of Clarity",
+          "name": "Warded Woven Coat of Vigor",
           "stats": {
-            "armor": 8,
-            "mana": 8
+            "armor": 13,
+            "life": 4
           },
           "affixes": [
             {
-              "id": "clarity",
-              "value": 8
-            }
-          ],
-          "unique": null
-        },
-        "rare": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-45",
-          "origin": {
-            "seed": 2026,
-            "monsterLevel": 12,
-            "areaLevel": 12,
-            "table": "court",
-            "sequence": 69
-          },
-          "base": "ash-blade",
-          "level": 12,
-          "requirement": 6,
-          "quality": "rare",
-          "identified": false,
-          "name": "Keen Ash Blade of Haste of Vigor",
-          "stats": {
-            "damage": 10,
-            "speed": 3,
-            "life": 6
-          },
-          "affixes": [
-            {
-              "id": "haste",
-              "value": 3
+              "id": "warded",
+              "value": 5
             },
             {
               "id": "vigor",
-              "value": 6
-            },
-            {
-              "id": "keen",
               "value": 4
             }
           ],
@@ -2143,14 +2134,14 @@
         },
         "unique": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-c68",
+          "contentVersion": 2,
+          "id": "l2-7ea-5f5",
           "origin": {
             "seed": 2026,
             "monsterLevel": 12,
             "areaLevel": 12,
             "table": "court",
-            "sequence": 3176
+            "sequence": 1525
           },
           "base": "ash-blade",
           "level": 12,
@@ -2166,7 +2157,7 @@
           "unique": "last-coal"
         }
       },
-      "generationAndReplayValidationMs": 374.232833
+      "generationAndReplayValidationMs": 305.57337499999994
     },
     {
       "context": {
@@ -2176,23 +2167,23 @@
         "table": "court"
       },
       "rolls": 100000,
-      "drops": 35007,
-      "empty": 64993,
+      "drops": 35132,
+      "empty": 64868,
       "quality": {
-        "normal": 27913,
-        "magic": 5965,
-        "rare": 1119,
-        "unique": 10
+        "normal": 28069,
+        "magic": 5976,
+        "rare": 1076,
+        "unique": 11
       },
       "bases": {
-        "ash-blade": 8959,
-        "cinder-staff": 2257,
-        "woven-coat": 8977,
-        "iron-cap": 3957,
-        "trail-boots": 3986,
-        "reed-bow": 3989,
-        "bark-guard": 2256,
-        "copper-band": 626
+        "bark-guard": 2266,
+        "trail-boots": 4001,
+        "ash-blade": 9078,
+        "woven-coat": 8982,
+        "iron-cap": 3924,
+        "cinder-staff": 2246,
+        "reed-bow": 3988,
+        "copper-band": 647
       },
       "expectedDrops": 35000,
       "expectedBases": {
@@ -2216,31 +2207,69 @@
       "examples": {
         "normal": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-2",
+          "contentVersion": 2,
+          "id": "l2-7ea-3",
           "origin": {
             "seed": 2026,
             "monsterLevel": 30,
             "areaLevel": 30,
             "table": "court",
-            "sequence": 2
+            "sequence": 3
           },
-          "base": "ash-blade",
+          "base": "bark-guard",
           "level": 30,
-          "requirement": 1,
+          "requirement": 2,
           "quality": "normal",
           "identified": true,
-          "name": "Ash Blade",
+          "name": "Bark Guard",
           "stats": {
-            "damage": 6
+            "armor": 6
           },
           "affixes": [],
           "unique": null
         },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-7ea-8",
+          "origin": {
+            "seed": 2026,
+            "monsterLevel": 30,
+            "areaLevel": 30,
+            "table": "court",
+            "sequence": 8
+          },
+          "base": "ash-blade",
+          "level": 30,
+          "requirement": 13,
+          "quality": "rare",
+          "identified": false,
+          "name": "Razored Ash Blade of Clarity of Vigor",
+          "stats": {
+            "damage": 15,
+            "mana": 10,
+            "life": 6
+          },
+          "affixes": [
+            {
+              "id": "razored",
+              "value": 9
+            },
+            {
+              "id": "clarity",
+              "value": 10
+            },
+            {
+              "id": "vigor",
+              "value": 6
+            }
+          ],
+          "unique": null
+        },
         "magic": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-c",
+          "contentVersion": 2,
+          "id": "l2-7ea-c",
           "origin": {
             "seed": 2026,
             "monsterLevel": 30,
@@ -2253,67 +2282,33 @@
           "requirement": 1,
           "quality": "magic",
           "identified": false,
-          "name": "Woven Coat of Clarity",
+          "name": "Warded Woven Coat of Vigor",
           "stats": {
-            "armor": 8,
-            "mana": 8
+            "armor": 13,
+            "life": 4
           },
           "affixes": [
             {
-              "id": "clarity",
-              "value": 8
-            }
-          ],
-          "unique": null
-        },
-        "rare": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-45",
-          "origin": {
-            "seed": 2026,
-            "monsterLevel": 30,
-            "areaLevel": 30,
-            "table": "court",
-            "sequence": 69
-          },
-          "base": "ash-blade",
-          "level": 30,
-          "requirement": 13,
-          "quality": "rare",
-          "identified": false,
-          "name": "Razored Ash Blade of Haste of Vigor",
-          "stats": {
-            "damage": 14,
-            "speed": 3,
-            "life": 6
-          },
-          "affixes": [
-            {
-              "id": "haste",
-              "value": 3
+              "id": "warded",
+              "value": 5
             },
             {
               "id": "vigor",
-              "value": 6
-            },
-            {
-              "id": "razored",
-              "value": 8
+              "value": 4
             }
           ],
           "unique": null
         },
         "unique": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-c68",
+          "contentVersion": 2,
+          "id": "l2-7ea-5f5",
           "origin": {
             "seed": 2026,
             "monsterLevel": 30,
             "areaLevel": 30,
             "table": "court",
-            "sequence": 3176
+            "sequence": 1525
           },
           "base": "ash-blade",
           "level": 30,
@@ -2329,7 +2324,7 @@
           "unique": "last-coal"
         }
       },
-      "generationAndReplayValidationMs": 341.63470800000005
+      "generationAndReplayValidationMs": 305.63216699999975
     },
     {
       "context": {
@@ -2339,23 +2334,23 @@
         "table": "court"
       },
       "rolls": 100000,
-      "drops": 35007,
-      "empty": 64993,
+      "drops": 35132,
+      "empty": 64868,
       "quality": {
-        "normal": 27913,
-        "magic": 5965,
-        "rare": 1119,
-        "unique": 10
+        "normal": 28069,
+        "magic": 5976,
+        "rare": 1076,
+        "unique": 11
       },
       "bases": {
-        "ash-blade": 8959,
-        "cinder-staff": 2257,
-        "woven-coat": 8977,
-        "iron-cap": 3957,
-        "trail-boots": 3986,
-        "reed-bow": 3989,
-        "bark-guard": 2256,
-        "copper-band": 626
+        "bark-guard": 2266,
+        "trail-boots": 4001,
+        "ash-blade": 9078,
+        "woven-coat": 8982,
+        "iron-cap": 3924,
+        "cinder-staff": 2246,
+        "reed-bow": 3988,
+        "copper-band": 647
       },
       "expectedDrops": 35000,
       "expectedBases": {
@@ -2379,31 +2374,69 @@
       "examples": {
         "normal": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-2",
+          "contentVersion": 2,
+          "id": "l2-7ea-3",
           "origin": {
             "seed": 2026,
             "monsterLevel": 99,
             "areaLevel": 99,
             "table": "court",
-            "sequence": 2
+            "sequence": 3
           },
-          "base": "ash-blade",
+          "base": "bark-guard",
           "level": 99,
-          "requirement": 1,
+          "requirement": 2,
           "quality": "normal",
           "identified": true,
-          "name": "Ash Blade",
+          "name": "Bark Guard",
           "stats": {
-            "damage": 6
+            "armor": 6
           },
           "affixes": [],
           "unique": null
         },
+        "rare": {
+          "schema": 1,
+          "contentVersion": 2,
+          "id": "l2-7ea-8",
+          "origin": {
+            "seed": 2026,
+            "monsterLevel": 99,
+            "areaLevel": 99,
+            "table": "court",
+            "sequence": 8
+          },
+          "base": "ash-blade",
+          "level": 99,
+          "requirement": 13,
+          "quality": "rare",
+          "identified": false,
+          "name": "Razored Ash Blade of Clarity of Vigor",
+          "stats": {
+            "damage": 15,
+            "mana": 10,
+            "life": 6
+          },
+          "affixes": [
+            {
+              "id": "razored",
+              "value": 9
+            },
+            {
+              "id": "clarity",
+              "value": 10
+            },
+            {
+              "id": "vigor",
+              "value": 6
+            }
+          ],
+          "unique": null
+        },
         "magic": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-c",
+          "contentVersion": 2,
+          "id": "l2-7ea-c",
           "origin": {
             "seed": 2026,
             "monsterLevel": 99,
@@ -2416,67 +2449,33 @@
           "requirement": 1,
           "quality": "magic",
           "identified": false,
-          "name": "Woven Coat of Clarity",
+          "name": "Warded Woven Coat of Vigor",
           "stats": {
-            "armor": 8,
-            "mana": 8
+            "armor": 13,
+            "life": 4
           },
           "affixes": [
             {
-              "id": "clarity",
-              "value": 8
-            }
-          ],
-          "unique": null
-        },
-        "rare": {
-          "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-45",
-          "origin": {
-            "seed": 2026,
-            "monsterLevel": 99,
-            "areaLevel": 99,
-            "table": "court",
-            "sequence": 69
-          },
-          "base": "ash-blade",
-          "level": 99,
-          "requirement": 13,
-          "quality": "rare",
-          "identified": false,
-          "name": "Razored Ash Blade of Haste of Vigor",
-          "stats": {
-            "damage": 14,
-            "speed": 3,
-            "life": 6
-          },
-          "affixes": [
-            {
-              "id": "haste",
-              "value": 3
+              "id": "warded",
+              "value": 5
             },
             {
               "id": "vigor",
-              "value": 6
-            },
-            {
-              "id": "razored",
-              "value": 8
+              "value": 4
             }
           ],
           "unique": null
         },
         "unique": {
           "schema": 1,
-          "contentVersion": 1,
-          "id": "l1-7ea-c68",
+          "contentVersion": 2,
+          "id": "l2-7ea-5f5",
           "origin": {
             "seed": 2026,
             "monsterLevel": 99,
             "areaLevel": 99,
             "table": "court",
-            "sequence": 3176
+            "sequence": 1525
           },
           "base": "ash-blade",
           "level": 99,
@@ -2492,7 +2491,7 @@
           "unique": "last-coal"
         }
       },
-      "generationAndReplayValidationMs": 321.96775000000025
+      "generationAndReplayValidationMs": 306.22350000000006
     }
   ]
 }

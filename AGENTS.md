@@ -35,3 +35,5 @@ Polish quality checkpoint (2026-10-17): DBL-299–309 technically delivered. Run
 User approval / L1 authorization: polish DBL-299–309 approved. L1 Item Architecture & Loot authorized through scoped DBL-310–317 and L1 quality gate, superseding earlier loot prohibition only for this scope. No full inventory, equipment UI, crafting, vendors, sockets, runewords or progression. Stop before L2.
 
 L1 quality work split before completion: DBL-316 regression/visual, DBL-317 repeated performance/hosted verification, DBL-318 final review evidence. Scope is now310–318; stable original IDs/topics preserved, no duplicate acceptance.
+
+DBL-319 is a required L1 dependency discovered by burst profiling: early-seed RNG correlation fix/content version2. DBL-317 depends on319 before final performance/publication;318 remains final gate. Graph validation now supports later-added dependencies without renumbering IDs and detects actual cycles.

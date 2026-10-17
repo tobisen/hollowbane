@@ -19,7 +19,7 @@ try {
   await page.locator("#combat-hostile").uncheck();
   await page.locator("#combat-sound").uncheck();
   await page.locator(".loot-panel > details > summary").click();
-  await page.locator("#loot-sequence").fill("35078");
+  await page.locator("#loot-sequence").fill("5634");
   await page.locator("#loot-test").click();
   await page.locator("#loot-identify").click();
   await page.waitForFunction(() => window.hollowbaneLoot?.drops[0]?.identified);
@@ -31,7 +31,7 @@ try {
     .webp({ quality: 88 })
     .toFile("docs/loot/showcase.webp");
   console.log(
-    "Original scene, explicit seed42 sequence35078 level12 replay; actual Last Coal identification, no injected visuals.",
+    "Original scene, explicit seed42 sequence5634 level12 replay; actual Last Coal identification, no injected visuals.",
   );
 } finally {
   await browser.close();

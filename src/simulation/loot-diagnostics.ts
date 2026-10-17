@@ -41,6 +41,7 @@ export function inspectDropTable(
   expected.rare += expected.unique * (1 - uniqueShare);
   expected.unique *= uniqueShare;
   return {
+    contentVersion: content.version,
     table: table.id,
     chance: table.chance / 10000,
     level,

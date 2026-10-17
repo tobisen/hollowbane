@@ -10,7 +10,7 @@ const original = new Map(
     match[2],
   ]),
 );
-const done = new Set();
+
 for (const [index, issue] of issues.entries()) {
   if (issue.id !== `DBL-${String(index + 1).padStart(3, "0")}`)
     throw new Error("Missing stable ID");
@@ -25,7 +25,7 @@ for (const [index, issue] of issues.entries()) {
   if (index >= 231 && (!issue.parent || !ids.has(issue.parent)))
     throw new Error(`Missing scoped parent: ${issue.id}`);
   for (const dep of issue.dependencies)
-    if (!done.has(dep)) throw new Error(`Missing/cyclic dependency ${dep}`);
+    if (!ids.has(dep)) throw new Error(`Missing dependency ${dep}`);
   for (const heading of [
     "Acceptance criteria",
     "Test requirements",
@@ -34,8 +34,20 @@ for (const [index, issue] of issues.entries()) {
   ])
     if (!issue.body.includes(`## ${heading}`))
       throw new Error(`${issue.id} lacks ${heading}`);
-  done.add(issue.id);
 }
+// Later scoped dependency issues need not renumber stable IDs. Validate the graph itself.
+const visiting = new Set(),
+  visited = new Set(),
+  byId = new Map(issues.map((i) => [i.id, i]));
+function visit(id) {
+  if (visiting.has(id)) throw new Error(`Cyclic dependency ${id}`);
+  if (visited.has(id)) return;
+  visiting.add(id);
+  for (const dep of byId.get(id).dependencies) visit(dep);
+  visiting.delete(id);
+  visited.add(id);
+}
+for (const issue of issues) visit(issue.id);
 console.log(
   `Validated ${issues.length} issues, all 231 original requirements, scoped parents and acyclic dependencies.`,
 );

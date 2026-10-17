@@ -61,3 +61,12 @@ it("fails atomically for unsupported malformed oversized duplicate archives", ()
     deserializeItems(serializeItems([identifyItem(i)]))[0]?.identified,
   ).toBe(true);
 });
+it("rejects pre-correction content versions instead of silently rerolling saved stats", () => {
+  const item = fixture();
+  expect(() => validateGeneratedItem({ ...item, contentVersion: 1 })).toThrow();
+  expect(() =>
+    deserializeItems(
+      JSON.stringify({ schema: 1, contentVersion: 1, items: [item] }),
+    ),
+  ).toThrow();
+});

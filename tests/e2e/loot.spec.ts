@@ -7,7 +7,7 @@ async function ready(page: Page, query = "&training=1") {
   );
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneLoot?.seed))
-    .toBe(42);
+    .toBe(query.includes("lootSeed=0") ? 0 : 42);
   await page.locator(".arena-panel summary").click();
   await page.locator("#combat-hostile").uncheck();
   await page.locator("#combat-sound").uncheck();
@@ -41,7 +41,7 @@ async function point(page: Page, x: number, y: number) {
 test("monster death produces exactly one deterministic natural drop", async ({
   page,
 }) => {
-  await ready(page, "");
+  await ready(page, "&lootSeed=0");
   const a = await page.evaluate(() => window.hollowbaneCombat!.actors[1]!);
   const p = await point(page, a.x, a.y - 28);
   await page.mouse.move(p.x, p.y);
@@ -66,11 +66,11 @@ test("inspection identification archive and corrupted load preserve generated it
   page,
 }) => {
   await ready(page);
-  await replay(page, 1);
+  await replay(page, 30);
   await expect(page.locator("#loot-info")).toContainText("Unidentified");
   await page.locator("#loot-identify").click();
-  await expect(page.locator("#loot-info")).toContainText("Emberward Iron Cap");
-  await expect(page.locator("#loot-info")).toContainText("fireResistance");
+  await expect(page.locator("#loot-info")).toContainText("Warded Woven Coat");
+  await expect(page.locator("#loot-info")).toContainText("armor");
   await page.locator("#loot-save").click();
   const saved = await page.evaluate(() =>
     localStorage.getItem("hollowbane.l1.items"),
@@ -94,7 +94,7 @@ test("inspection identification archive and corrupted load preserve generated it
   expect(await page.evaluate(() => window.hollowbaneLoot!.drops.length)).toBe(
     1,
   );
-  expect(saved).toContain("emberward");
+  expect(saved).toContain("warded");
 });
 for (const id of ["Xbox virtual standard", "Wireless Controller"])
   test(`${id} selects and inspects ground loot through semantic controls`, async ({
@@ -121,8 +121,8 @@ for (const id of ["Xbox virtual standard", "Wireless Controller"])
       (window as unknown as { lootPad: typeof pad }).lootPad = pad;
     }, id);
     await ready(page);
-    await replay(page, 1);
-    await replay(page, 37);
+    await replay(page, 30);
+    await replay(page, 47);
     const selected = await page.evaluate(() => window.hollowbaneLoot!.selected);
     await page.locator("#combat-world").focus();
     await expect
@@ -180,7 +180,7 @@ test("loot labels and inspection retain their visual reference", async ({
   page,
 }) => {
   await ready(page);
-  await replay(page, 35078);
+  await replay(page, 5634);
   await page.locator("#loot-identify").click();
   await page.locator(".loot-panel > details > summary").click();
   await page.locator("#combat-pause").click();
@@ -199,7 +199,7 @@ test("multiple labels avoid overlap and duplicate replay preserves identities", 
   page,
 }) => {
   await ready(page);
-  for (const seq of [0, 1, 37, 35078]) await replay(page, seq);
+  for (const seq of [3, 30, 47, 5634]) await replay(page, seq);
   const boxes = await page.locator(".loot-label").evaluateAll((nodes) =>
     nodes.map((n) => {
       const r = n.getBoundingClientRect();

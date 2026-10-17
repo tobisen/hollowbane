@@ -6,3 +6,5 @@
 - DBL-310–314 complete: item content/generation/identification/save/world adapter and playable L1 slice; full check189, five Chromium checks. DBL-315 diagnostics/statistical report next, then316 final regression/performance/publication and317 review stop.
 
 L1 quality work split before completion: DBL-316 regression/visual, DBL-317 repeated performance/hosted verification, DBL-318 final review evidence. Scope is now310–318; stable original IDs/topics preserved, no duplicate acceptance.
+
+DBL-319 is a required L1 dependency discovered by burst profiling: early-seed RNG correlation fix/content version2. DBL-317 depends on319 before final performance/publication;318 remains final gate. Graph validation now supports later-added dependencies without renumbering IDs and detects actual cycles.
