@@ -78,6 +78,8 @@ export function stepMonsterAI(
     decisions++;
     const profile = MONSTER_PROFILES[brain.role];
     const sensed = perceive(world, actor, brain, nav);
+    if (sensed.damaged && actor.hp / actor.maxHp <= profile.retreatAt)
+      brain.retreatUntil = world.tick + 90;
     // Windup, active, recovery and hitstun remain owned by the combat timeline.
     if (actor.controller.timeline.phase !== "idle") continue;
     const p = actor.controller.walker.position;
@@ -134,7 +136,7 @@ export function stepMonsterAI(
     const retreat =
       sensed.visible &&
       ((profile.projectile && d < profile.preferred - 0.7) ||
-        (sensed.damaged && actor.hp / actor.maxHp <= profile.retreatAt));
+        world.tick < brain.retreatUntil);
     if (
       retreat ||
       (brain.state === "retreat" && world.tick - brain.since < 45)

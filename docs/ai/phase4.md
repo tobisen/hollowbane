@@ -53,3 +53,7 @@ GitHub import dry-run inspected for 287 unique records; apply stopped before req
 ## DBL-281 verification checkpoint
 
 Full check/format: 132 tests; complete Chromium suite 43 cases passes, including all original screenshots and the strengthened blocked-point fixture. Eight Firefox/WebKit encounter behaviors and nine targeted input-boundary cases pass. Complete legacy cross-browser, final CI/Pages and hosted verification remain in progress. This checkpoint preserves reviewable implementation, benchmark runner/raw data and reproducible fixtures without marking the gate approved.
+
+## DBL-288 reaction dependency
+
+Final audit found one-shot damage awareness was consumed during hitstun before low-health retreat could execute. Brain now latches a 90-tick retreat deadline on resolved health loss, while leaving the entire combat recovery timeline untouched. Regression explicitly schedules the AI during hitstun, checks unchanged recovery frames, then verifies retreat movement. Full check/format: 133 tests; all five Chromium and eight Firefox/WebKit monster cases pass. Complete legacy cross-browser controller 34, movement 15, combat eight and Firefox/WebKit smoke passed at preceding checkpoint; this correction only changes monster low-health decisions. Final profiles will be repeated on this runtime.

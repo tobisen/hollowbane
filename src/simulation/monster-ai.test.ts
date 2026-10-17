@@ -47,6 +47,7 @@ it("return leash clears threat, target death stops attacks and dead is terminal"
 });
 it("hitstun and recovery cannot be cancelled by AI decisions", () => {
   const f = fixture();
+  f.brain.nextThink = 0;
   f.actor.controller.timeline.phase = "hitstun";
   f.actor.controller.timeline.remaining = 20;
   stepMonsterAI(f.world, [f.brain], ARENA_NAV);
@@ -59,4 +60,18 @@ it("patrol completes multiple legs instead of retaining an already-reached cache
   f.world.actors[0]!.hp = 0;
   tick(f, 700);
   expect(f.brain.patrolIndex).toBeGreaterThan(2);
+});
+
+it("retains low-health retreat intent through hit recovery without cancelling commitment", () => {
+  const f = fixture();
+  f.brain.nextThink = 0;
+  f.actor.hp = 10;
+  f.actor.controller.timeline.phase = "hitstun";
+  f.actor.controller.timeline.remaining = 20;
+  stepMonsterAI(f.world, [f.brain], ARENA_NAV);
+  expect(f.actor.controller.timeline.remaining).toBe(20);
+  expect(f.brain.retreatUntil).toBe(90);
+  tick(f, 60);
+  expect(f.brain.state).toBe("retreat");
+  expect(f.actor.controller.walker.walking).toBe(true);
 });

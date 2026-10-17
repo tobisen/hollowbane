@@ -143,6 +143,7 @@ export interface MonsterBrain {
   nextThink: number;
   nextPath: number;
   nextAttack: number;
+  retreatUntil: number;
   patrolIndex: number;
   previousHp: number;
   deathAt: number | null;
@@ -201,6 +202,7 @@ export function createMonster(
       nextThink: ((Math.imul(id, 17) ^ seed) >>> 0) & 7,
       nextPath: 0,
       nextAttack: 0,
+      retreatUntil: 0,
       patrolIndex: 0,
       previousHp: actor.hp,
       deathAt: null,
