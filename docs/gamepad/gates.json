@@ -19,7 +19,7 @@
     "scope": ["DBL-275", "DBL-281"],
     "excludes": ["loot", "inventory", "skill trees", "campaign"],
     "technicalCandidateDelivered": true,
-    "stoppedForReview": true,
+    "stoppedForReview": false,
     "runtimeCommit": "ab46984",
     "ciRun": "39027371132",
     "hostedCases": 29,
@@ -48,6 +48,26 @@
   "skills": {
     "authorized": true,
     "qualityGateApproved": false,
-    "scope": ["DBL-291", "DBL-298"]
+    "scope": ["DBL-291", "DBL-298"],
+    "technicalCandidateDelivered": true,
+    "stoppedForReview": true,
+    "runtimeCommit": "5e09b03",
+    "ciRun": "39035255672",
+    "unitTests": 161,
+    "chromiumCases": 59,
+    "firefoxWebkitSkillCases": 14,
+    "hostedControllerSkillCases": 33,
+    "physicalControllerVerified": false,
+    "completedIssues": [
+      "DBL-291",
+      "DBL-292",
+      "DBL-293",
+      "DBL-294",
+      "DBL-295",
+      "DBL-296",
+      "DBL-297",
+      "DBL-298"
+    ],
+    "openPerformanceFollowup": "DBL-299"
   }
 }

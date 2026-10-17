@@ -60,3 +60,17 @@ Chromium skill+combat CPU p95: 0.1/0.1/0.2/0.2 ms; AI ~0.1 ms. Rendering CPU sub
 Simulation-only benchmark: 31 actors, 100 fresh windows of 40 ticks; mean tick cost ~0.047 ms with no casts and ~0.060 ms with 30 simultaneous buff casts. Incremental window-mean cost per concurrent cast ~0.0004–0.0016 ms across 5/10/20/30; JIT/order/allocation noise dominates tiny differences, so this is not isolated instruction cost. Its reported p95 is a percentile of window means, not raw individual ticks. Simulation sources were unchanged from measured 3fd059a through final runtime.
 
 Investigation: pre-optimization Chromium skills p95 was 16.8/33.3/33.3/33.4 ms, versus final 16.8/33.2/33.3/33.3. No meaningful p95 improvement is claimed from avoiding redundant DOM writes. At ten enemies, hiding both diagnostic panels restored ~16.7 ms; making only the skill background opaque did not (~33.4 ms). This narrows investigation toward UI paint/layout/composition, without a proven GPU/root-cause trace. DBL-299 remains planned; native/full-detail and broader Firefox reference-machine work stay open. The initial nonconstant 30→29 run is retained separately as preliminary evidence, excluded from the constant-count table.
+
+## DBL-298 publication and quality gate
+
+Verified runtime **5e09b03** passed CI/Pages [39035255672](https://github.com/tobisen/hollowbane/actions/runs/39035255672): full check (161 unit tests, strict TypeScript/lint/asset/backlog/build), format, all **59 Chromium cases**, including the reviewed Linux skill reference. Latest final Firefox/WebKit skill suite: **14/14**. Local complete Chromium 58/58 preceded the added durable fixture; final eight skill cases and CI cover that fixture and unchanged visual. All **33 hosted controller/skill cases pass** against https://tobisen.github.io/hollowbane/ after deployment.
+
+Playable laboratory: https://tobisen.github.io/hollowbane/?skills=1 ; shared live encounters: https://tobisen.github.io/hollowbane/?skills=1&monsters=1 . No runtime changes follow the verified candidate.
+
+Commits: DBL-291 0400589; DBL-292 31f7bab; DBL-293 f943a57; DBL-294 383b5cf; DBL-295 1b8d65c; DBL-296 3fd059a and platform correction ca12728; DBL-297 fixture 957b219, final runtime/HUD 5e09b03, retained data a397f23. Closing gate/evidence commits contain no runtime changes.
+
+No physical Xbox/PlayStation/vibration/disconnect/radio or real-world latency verification is claimed. DBL-282 through 286 stay planned; friend native id/mapping/axes/buttons remain pending. DBL-299 software skill-HUD profile stays open. Provisional monster/cast art, production FX/audio, native/full-detail/long-duration and broader Firefox reference performance, original DBL-036 and other partial parents remain open. No inventory, loot, itemization, character skill trees, summons, campaign expansion or broad status cleanse/absorb/immunity library was implemented. The six prototypes implement the specified mechanical slices; release balancing/polish is not claimed complete.
+
+Final 299-issue importer dry-run inspected; apply not repeated because GITHUB_TOKEN is absent (earlier failure preserved). Authorized SSH pushes, CI and Pages work; GitHub issue synchronization remains open.
+
+DBL-291 through 298 technically complete. **Stop at Skills & Spell Systems quality review. User quality approval remains false.** No next phase starts without explicit approval. G4 Monster AI approval and G2.5 approval remain recorded; original roadmap phase/gate definitions are preserved.

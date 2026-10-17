@@ -3206,8 +3206,9 @@
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-297"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nSkills quality gate publication and retained evidence. Preserve deterministic skills and all existing systems.\n\n## Non-goals\nItems, inventory, loot, character skill trees or campaign; hardware verification from emulation.\n\n## Test requirements\nRetain measured evidence and relevant automated checks; no invented latency or hardware claims.\n\n## Definition of done\nVerified scoped increment committed; quality approval remains user-owned."
+    "status": "completed",
+    "body": "## Acceptance criteria\nSkills quality gate publication and retained evidence. Preserve deterministic skills and all existing systems.\n\n## Non-goals\nItems, inventory, loot, character skill trees or campaign; hardware verification from emulation.\n\n## Test requirements\nRetain measured evidence and relevant automated checks; no invented latency or hardware claims.\n\n## Definition of done\nVerified scoped increment committed; quality approval remains user-owned.",
+    "evidence": "Runtime 5e09b03 CI/Pages 39035255672 passed full check/format, 161 unit and 59 Chromium cases. Final skill Firefox/WebKit 14/14, all 33 hosted controller/skill cases pass. Playable six original abilities/shared monster skills. Raw before/after and limitations retained. Stop for user quality review; approval false, DBL-299 and physical follow-ups open."
   },
   {
     "id": "DBL-299",
