@@ -189,3 +189,61 @@ test("keyboard and mouse retain targeting and queued movement commitment in enco
     )
     .toBe(data.a.id);
 });
+
+test("monster death leaves a temporary corpse then despawns without stale selection or view errors", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await ready(page);
+  await page.locator("#combat-hostile").uncheck();
+  await page.locator("#combat-world").focus();
+  await page.keyboard.down("x");
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          window.hollowbaneCombat!.events.some(
+            (e) => e.kind === "death" && e.actor === 0,
+          ),
+        ),
+      { timeout: 12000 },
+    )
+    .toBe(true);
+  await page.keyboard.up("x");
+  const id = await page.evaluate(() => {
+    const e = window.hollowbaneCombat!.events.find(
+      (e) => e.kind === "death" && e.actor === 0,
+    );
+    return e && "target" in e ? e.target : null;
+  });
+  expect(id).not.toBeNull();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        (id) => window.hollowbaneAI!.enemies.find((b) => b.id === id)?.state,
+        id,
+      ),
+    )
+    .toBe("dead");
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          (id) => window.hollowbaneAI!.enemies.some((b) => b.id === id),
+          id,
+        ),
+      { timeout: 12000 },
+    )
+    .toBe(false);
+  expect(
+    await page.evaluate(() => window.hollowbaneCombat!.actors[0]!.selected),
+  ).toBeNull();
+  expect(
+    await page.evaluate(
+      (id) => window.hollowbaneCombat!.actors.some((a) => a.id === id),
+      id,
+    ),
+  ).toBe(false);
+  expect(errors).toEqual([]);
+});

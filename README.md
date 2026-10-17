@@ -1,6 +1,6 @@
 # Hollowbane
 
-Original browser-first, singleplayer dark fantasy ARPG built with Phaser 4.2.1. The [playable demo](https://tobisen.github.io/hollowbane/) includes the gothic cloister, keyboard/mouse and analog controller movement; `?combat=1` opens the preserved combat test arena. G2.5 controller support is approved. Phase 4 Monster AI is under quality verification; `?monsters=1` opens the new encounter arena. Completed combat systems are preserved. See [STATUS.md](STATUS.md) for verified scope and limitations.
+Original browser-first, singleplayer dark fantasy ARPG built with Phaser 4.2.1. The [playable demo](https://tobisen.github.io/hollowbane/) includes the gothic cloister, keyboard/mouse and analog controller movement; `?combat=1` opens the preserved combat test arena. G2.5 controller support is approved. Phase 4 Monster AI is delivered for quality review; `?monsters=1` opens the new encounter arena. Completed combat systems are preserved. See [STATUS.md](STATUS.md) for verified scope and limitations.
 
 ## Development
 

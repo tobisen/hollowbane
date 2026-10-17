@@ -275,3 +275,5 @@ DBL-263–274 are technically complete for G2.5 review; user gate approval is pe
 ## Phase 4 delivery — Monster AI
 
 G2.5 approved. Sequential scoped chain DBL-275 model → 276 perception/navigation → 277 behavior/archetypes → 278 packs/separation → 279 lifecycle/champion → 280 playable diagnostics → 281 browser/performance gate. These map to original DBL-058–065, whose complete source scope and dependencies remain preserved. Physical follow-ups DBL-282–286 remain planned and do not claim emulation as hardware verification.
+
+Phase 4 technical candidate delivered: DBL-275–281 plus dependency fixes DBL-287–288. Stop at Monster AI review; quality approval pending. Hardware DBL-282–286 remain planned. Browser, hosted and enemy-count performance evidence: [docs/ai/phase4.md](docs/ai/phase4.md). Original monster/animation/performance/elite parents remain partial.

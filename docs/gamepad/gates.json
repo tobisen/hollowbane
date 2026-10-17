@@ -17,6 +17,23 @@
     "authorized": true,
     "qualityGateApproved": false,
     "scope": ["DBL-275", "DBL-281"],
-    "excludes": ["loot", "inventory", "skill trees", "campaign"]
+    "excludes": ["loot", "inventory", "skill trees", "campaign"],
+    "technicalCandidateDelivered": true,
+    "stoppedForReview": true,
+    "runtimeCommit": "ab46984",
+    "ciRun": "39027371132",
+    "hostedCases": 29,
+    "completedIssues": [
+      "DBL-275",
+      "DBL-276",
+      "DBL-277",
+      "DBL-278",
+      "DBL-279",
+      "DBL-280",
+      "DBL-281",
+      "DBL-287",
+      "DBL-288"
+    ],
+    "physicalControllerVerified": false
   }
 }

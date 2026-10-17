@@ -2982,9 +2982,9 @@
     "priority": "p0",
     "parent": "DBL-064",
     "dependencies": ["DBL-280"],
-    "status": "in-progress",
+    "status": "completed",
     "body": "## Purpose\nMonster quality gate: browser regression and 5–30 enemy performance\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review.",
-    "evidence": "Local quality checkpoint: full check/format 132 tests; complete Chromium 43 cases; eight Firefox/WebKit encounter cases and nine targeted input-boundary cases pass. 5/10/20/30 enemy twenty-second profiles retain all enemies, zero errors, twenty input samples each; raw data docs/ai/performance.json. CI/Pages/hosted and complete legacy cross-browser reruns pending. Gate approval remains false."
+    "evidence": "Phase 4 technical candidate delivered; quality approval remains false. Runtime ab46984 CI/Pages 39027371132 passed full check/format, 133 unit tests and 43 Chromium cases; added corpse fixture separately passes all three browsers. Final monster coverage six Chromium/ten Firefox-WebKit cases; complete legacy cross-browser controller 34, movement 15, combat eight and smoke pass. Hosted 29 monster/controller/movement cases pass. Final 5/10/20/30 profiles keep all enemies: AI CPU p95 ~0.10 ms each, software frame p95 16.8/16.7/33.2/33.3 ms; input p95 33.4/16.8/33.3/16.8 ms. Raw data docs/ai/performance.json. Physical DBL-282–286 remain planned; reference GPU/long-session budgets and art follow-ups remain open. Stop at Monster AI review."
   },
   {
     "id": "DBL-282",
