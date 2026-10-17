@@ -327,3 +327,101 @@ test("neutral stick diagnostics preserve their visual reference", async ({
     { maxDiffPixelRatio: 0.01 },
   );
 });
+test("focus loss and reconnect require neutral and cannot retain movement", async ({
+  page,
+}) => {
+  await ready(page);
+  await axes(page, [1, 0, 0, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+  await page.evaluate(() => window.dispatchEvent(new Event("blur")));
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(false);
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.armed))
+    .toBe(false);
+  expect(await page.evaluate(() => window.hollowbanePrototype!.walking)).toBe(
+    false,
+  );
+  await axes(page, [0, 0, 0, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.armed))
+    .toBe(true);
+  await axes(page, [0.8, 0, 0, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+  await page.evaluate(() => {
+    window.virtualPads[0]!.connected = false;
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(false);
+  await page.evaluate(() => {
+    window.virtualPads[0]!.connected = true;
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.armed))
+    .toBe(false);
+});
+test("disconnect cancels held combat pursuit/repetition", async ({ page }) => {
+  await ready(page, "./?combat=1");
+  await page.locator("#combat-hostile").uncheck();
+  await page.locator("#combat-world").focus();
+  await button(page, 2, true);
+  await page.waitForFunction(
+    () => window.hollowbaneCombat!.actors[0]!.phase === "windup",
+  );
+  await page.evaluate(() => {
+    window.virtualPads = [];
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase))
+    .toBe("idle");
+  const seq = await page.evaluate(
+      () => window.hollowbaneCombat!.actors[0]!.sequence,
+    ),
+    tick = await page.evaluate(() => window.hollowbaneCombat!.tick);
+  await page.waitForFunction(
+    (t) => window.hollowbaneCombat!.tick > t + 40,
+    tick,
+  );
+  expect(
+    await page.evaluate(() => window.hollowbaneCombat!.actors[0]!.sequence),
+  ).toBe(seq);
+});
+test("optional vibration is capability checked and disabled by default", async ({
+  page,
+}) => {
+  await ready(page, "./?controller=1");
+  await page.locator("#pad-test-vibration").click();
+  await expect(page.locator("#calibration-state")).toContainText("disabled");
+  await page.locator("#pad-vibration").check();
+  await page.locator("#pad-save").click();
+  await page.locator("#pad-test-vibration").click();
+  await expect(page.locator("#calibration-state")).toContainText("unsupported");
+});
+test("keyboard takes ownership without losing its first movement press", async ({
+  page,
+}) => {
+  await ready(page);
+  await page.locator("#world").focus();
+  await axes(page, [0.8, 0, 0, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+  await page.keyboard.down("w");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.device))
+    .toBe("keyboard");
+  expect(await page.evaluate(() => window.hollowbanePrototype!.walking)).toBe(
+    true,
+  );
+  await page.keyboard.up("w");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(false);
+});

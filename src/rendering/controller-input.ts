@@ -1,4 +1,10 @@
 import {
+  actuatorFor,
+  pulseHaptics,
+  stopHaptics,
+  type HapticResult,
+} from "./haptics";
+import {
   actionFrame,
   keyActions,
   type Action,
@@ -44,6 +50,7 @@ export class ControllerInput {
   private keys = new Set<string>();
   private mouse = new Set<Action>();
   private pointer: Point | null = null;
+  private actuator: unknown = null;
   private previous = new Set<Action>();
   private presses = new Set<Action>();
   private releases = new Set<Action>();
@@ -90,7 +97,15 @@ export class ControllerInput {
     };
     requestAnimationFrame(poll);
   }
+  vibrate(): Promise<HapticResult> {
+    return pulseHaptics(
+      this.actuator,
+      this.settings.vibration && this.focused && !this.suspended,
+    );
+  }
   clear(): void {
+    stopHaptics(this.actuator);
+    window.dispatchEvent(new Event("hollowbane-input-reset"));
     this.keys.clear();
     this.mouse.clear();
     this.previous.clear();
@@ -147,6 +162,9 @@ export class ControllerInput {
           ]
         : [],
     );
+    const oldId = this.state.previous.find(
+      (p) => p.index === this.state.selected,
+    )?.id;
     const oldSource = this.state.source,
       oldPad = this.state.selected;
     const result = stepDevices(
@@ -158,6 +176,18 @@ export class ControllerInput {
     );
     this.state = result.state;
     this.activity = null;
+    const changed =
+      oldPad !== null &&
+      (oldPad !== this.state.selected ||
+        oldId !== this.pads.find((p) => p.index === this.state.selected)?.id);
+    if (result.disconnected || changed) this.clear();
+    if (oldSource === "gamepad" && this.state.source !== "gamepad") {
+      stopHaptics(this.actuator);
+      this.state = { ...this.state, armed: false };
+    }
+    this.actuator = actuatorFor(
+      native.find((p) => p?.index === this.state.selected),
+    );
     const snapshot = this.pads.find((p) => p.index === this.state.selected),
       profile = snapshot
         ? standardProfile(snapshot, this.settings.profile)

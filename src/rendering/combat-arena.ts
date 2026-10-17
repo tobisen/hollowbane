@@ -106,6 +106,7 @@ export function startCombatArena(): Phaser.Game {
     };
     private renderAt = 0;
     private inputAt: number | null = null;
+    private padAttack = false;
     private droppedTicks = 0;
     private audio: AudioContext | null = null;
     private impactUntil = new Map<number, number>();
@@ -198,6 +199,7 @@ export function startCombatArena(): Phaser.Game {
         if (event.button !== 0 || this.paused) return;
         event.preventDefault();
         field.focus();
+        this.padAttack = false;
         const p = point(event),
           target = pick(p);
         this.inputAt = performance.now();
@@ -264,6 +266,7 @@ export function startCombatArena(): Phaser.Game {
       window.addEventListener("keydown", keydown);
       window.addEventListener("keyup", keyup);
       window.addEventListener("blur", stop);
+      window.addEventListener("hollowbane-input-reset", stop);
       const visibility = () => {
         if (document.hidden) stop();
       };
@@ -305,6 +308,7 @@ export function startCombatArena(): Phaser.Game {
         window.removeEventListener("keydown", keydown);
         window.removeEventListener("keyup", keyup);
         window.removeEventListener("blur", stop);
+        window.removeEventListener("hollowbane-input-reset", stop);
         document.removeEventListener("visibilitychange", visibility);
         this.game.events.off(Phaser.Core.Events.PRE_RENDER, preRender);
         this.game.events.off(Phaser.Core.Events.POST_RENDER, postRender);
@@ -502,6 +506,10 @@ export function startCombatArena(): Phaser.Game {
           Number(this.keys.has("w") || this.keys.has("arrowup")),
       };
       const direct = controllerInput.movement(keys);
+      if (controllerInput.frame.device !== "gamepad" && this.padAttack) {
+        player.controller = commandCombat(player.controller, { kind: "stop" });
+        this.padAttack = false;
+      }
       if (
         controllerInput.frame.device === "gamepad" &&
         !controllerInput.blockGameplay
@@ -523,6 +531,7 @@ export function startCombatArena(): Phaser.Game {
           player.controller.walker.gait =
             player.controller.walker.gait === "walk" ? "run" : "walk";
         if (controllerInput.take("primary")) {
+          void controllerInput.vibrate();
           const aim = controllerInput.frame.aim,
             p = onGround(player.controller.walker.position);
           const chosen =
@@ -546,6 +555,7 @@ export function startCombatArena(): Phaser.Game {
               return score(a) - score(b) || a.id - b.id;
             })[0];
           if (chosen) {
+            this.padAttack = true;
             player.controller = commandCombat(player.controller, {
               kind: "attack",
               target: chosen.id,

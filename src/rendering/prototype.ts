@@ -267,10 +267,12 @@ export function startPrototype(): Phaser.Game {
         if (document.hidden) interrupt();
       };
       window.addEventListener("blur", interrupt);
+      window.addEventListener("hollowbane-input-reset", interrupt);
       document.addEventListener("visibilitychange", hidden);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
         this.controls.dispose();
         window.removeEventListener("blur", interrupt);
+        window.removeEventListener("hollowbane-input-reset", interrupt);
         document.removeEventListener("visibilitychange", hidden);
         world.removeEventListener("pointerdown", down);
         world.removeEventListener("pointermove", move);

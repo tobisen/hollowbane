@@ -182,6 +182,7 @@ export function installControllerUI(): void {
       }
       lastDirection = direction ?? "";
       if ((modal || !gameFocus) && hub.take("interact")) {
+        void hub.vibrate();
         const target = document.activeElement;
         if (target instanceof HTMLElement) {
           if (target instanceof HTMLSelectElement) adjust(target, 1);

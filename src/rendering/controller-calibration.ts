@@ -9,8 +9,15 @@ export function installCalibration(): void {
   if (!live) return;
   const section = document.createElement("section");
   section.id = "controller-calibration";
-  section.innerHTML = `<h2>Stick diagnostics & calibration</h2><p>Left: movement · Right: aim. Gold dots show processed vectors; muted dots show raw axes. Keep sticks centered and release buttons for twenty sampled frames.</p><div class="controller-sticks">${["move", "aim"].map((name) => `<svg width="180" height="180" viewBox="0 0 180 180" role="img" aria-label="${name} stick input"><circle cx="90" cy="90" r="75" fill="#10191f" stroke="#6d7a78"/><path d="M15 90H165M90 15V165" stroke="#38494f"/><circle id="${name}-raw" cx="90" cy="90" r="4" fill="#7f999f"/><circle id="${name}-processed" cx="90" cy="90" r="6" fill="#e4c58a"/></svg>`).join("")}</div><output id="calibration-values">Centers: 0, 0, 0, 0</output><p><button id="pad-calibrate" type="button">Calibrate centered sticks</button><button id="pad-clear-calibration" type="button">Clear center calibration</button></p><p id="calibration-state" role="status">Ready. Physical controller verification has not been performed.</p>`;
+  section.innerHTML = `<h2>Stick diagnostics & calibration</h2><p>Left: movement · Right: aim. Gold dots show processed vectors; muted dots show raw axes. Keep sticks centered and release buttons for twenty sampled frames.</p><div class="controller-sticks">${["move", "aim"].map((name) => `<svg width="180" height="180" viewBox="0 0 180 180" role="img" aria-label="${name} stick input"><circle cx="90" cy="90" r="75" fill="#10191f" stroke="#6d7a78"/><path d="M15 90H165M90 15V165" stroke="#38494f"/><circle id="${name}-raw" cx="90" cy="90" r="4" fill="#7f999f"/><circle id="${name}-processed" cx="90" cy="90" r="6" fill="#e4c58a"/></svg>`).join("")}</div><output id="calibration-values">Centers: 0, 0, 0, 0</output><p><button id="pad-calibrate" type="button">Calibrate centered sticks</button><button id="pad-clear-calibration" type="button">Clear center calibration</button><button id="pad-test-vibration" type="button">Test optional vibration</button></p><p id="calibration-state" role="status">Ready. Physical controller verification has not been performed.</p>`;
   live.closest("section")!.before(section);
+  section.querySelector<HTMLButtonElement>("#pad-test-vibration")!.onclick =
+    () => {
+      void hub.vibrate().then((result) => {
+        section.querySelector("#calibration-state")!.textContent =
+          `Vibration: ${result}. Browser support does not verify physical output.`;
+      });
+    };
   let capturing = false,
     waiting = false,
     samples: number[][] = [],

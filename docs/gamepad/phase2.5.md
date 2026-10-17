@@ -47,3 +47,7 @@ Versioned atomic settings persist custom button bindings, selected controller, p
 ## DBL-272 / DBL-GP10
 
 Controller laboratory exposes raw/processed separate stick vectors, buttons, profile/ownership/connection/rearm status and polling cost. Stable twenty-frame center calibration persists and rejects held/moving sticks; disconnect/change cancels capture. Pure calibration test plus two browser calibration/visual cases pass; full check 111 unit tests. Original SVG stick visual baseline inspected; no vendor graphical assets copied. Physical-controller verification remains unperformed.
+
+## DBL-273 / DBL-GP11
+
+Optional short modern/legacy haptics are capability-checked, disabled by default, rejection-safe and stopped on reset. Input reset signals stop movement and held combat pursuit on disconnect/focus/menu/settings changes without cancelling attack commitment. Rearm requires neutral; keyboard handoff preserves its first key press. Haptics unit test, full check 112 tests and all 14 virtual-pad browser cases pass. Vibration fallback tested; physical vibration/controller hardware not verified.
