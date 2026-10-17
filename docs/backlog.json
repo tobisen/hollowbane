@@ -2826,9 +2826,10 @@
     "priority": "p0",
     "parent": "DBL-009",
     "dependencies": ["DBL-269"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nContext prompts and Xbox/PlayStation/generic glyphs\n\n## Scope\nAuthorized Phase 2.5 gamepad support. Stable numeric ID DBL-270; requested alias DBL-GP08. Preserve Phaser 4.2.1 and existing keyboard/mouse and completed combat.\n\n## Non-goals\nNew combat mechanics, loot, inventory or resuming Phase 3 before G2.5 user approval.\n\n## Acceptance criteria\nContext prompts and Xbox/PlayStation/generic glyphs; deterministic device-independent intents; safe boundaries and documented fallback behavior.\n\n## Test requirements\nTargeted unit/browser coverage, check at milestones, full regression before G2.5; distinguish emulation from physical verification.\n\n## Definition of done\nVerified scoped increment committed with evidence in docs/gamepad/phase2.5.md; stop for G2.5 review after DBL-274.",
-    "deliveryPhase": "2.5"
+    "deliveryPhase": "2.5",
+    "evidence": "Context prompts use active-device ownership, Xbox/PlayStation/generic text glyphs and actual remapped buttons. Movement avoids advertising unavailable attacks; menu/combat contexts differ. Unit prompt test and PlayStation/generic/mouse switching browser case pass. First pointer movement now switches correctly even when movementX/Y are zero. No copied graphical glyph assets."
   },
   {
     "id": "DBL-271",

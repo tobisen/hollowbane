@@ -62,6 +62,7 @@ export class ControllerInput {
   samples = 0;
   private keys = new Set<string>();
   private mouse = new Set<Action>();
+  private pointer: Point | null = null;
   private previous = new Set<Action>();
   private presses = new Set<Action>();
   private releases = new Set<Action>();
@@ -83,7 +84,12 @@ export class ControllerInput {
       this.mouse.delete(e.button === 0 ? "primary" : "secondary"),
     );
     window.addEventListener("pointermove", (e) => {
-      if (e.movementX || e.movementY) this.activity = "mouse";
+      if (
+        !this.pointer ||
+        Math.hypot(e.clientX - this.pointer.x, e.clientY - this.pointer.y) > 0.5
+      )
+        this.activity = "mouse";
+      this.pointer = { x: e.clientX, y: e.clientY };
     });
     window.addEventListener("blur", () => {
       this.focused = false;

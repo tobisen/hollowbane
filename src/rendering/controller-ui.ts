@@ -1,3 +1,4 @@
+import { contextPrompt } from "../simulation/prompts";
 import "./controller.css";
 import { controllerInput as hub } from "./controller-input";
 import type { Action } from "../simulation/actions";
@@ -18,7 +19,7 @@ export function installControllerUI(): void {
   const menu = document.createElement("dialog");
   menu.id = "controller-menu";
   menu.setAttribute("aria-labelledby", "controller-menu-title");
-  menu.innerHTML = `<h2 id="controller-menu-title">Paused · Controller menu</h2><p id="controller-context">Choose a screen or resume gameplay.</p><div class="controller-menu-list"><button id="controller-resume">Resume</button><a href="?controller=1">Controller settings & calibration</a><button id="controller-movement">Movement controls</button><a href="./">Cloister</a><a href="?gallery=1">Art atelier</a><a href="?combat=1">Combat arena</a><a href="?engine=4">Phaser 4 observatory</a><a href="?engine=3">Phaser 3 observatory</a></div><p>A / Cross: choose · B / Circle: back · D-pad: navigate</p>`;
+  menu.innerHTML = `<h2 id="controller-menu-title">Paused · Controller menu</h2><p id="controller-context">Choose a screen or resume gameplay.</p><div class="controller-menu-list"><button id="controller-resume">Resume</button><a href="?controller=1">Controller settings & calibration</a><button id="controller-movement">Movement controls</button><a href="./">Cloister</a><a href="?gallery=1">Art atelier</a><a href="?combat=1">Combat arena</a><a href="?engine=4">Phaser 4 observatory</a><a href="?engine=3">Phaser 3 observatory</a></div><p id="controller-prompts">A / Cross: choose · B / Circle: back · D-pad: navigate</p>`;
   document.body.append(menu);
   const world = () =>
     document.querySelector<HTMLElement>("#world,#combat-world");
@@ -59,9 +60,9 @@ export function installControllerUI(): void {
       else open();
     }
   });
-  let lastNav = 0,
-    lastDirection = "",
+  let lastDirection = "",
     repeatAt = 0,
+    refreshedAt = 0,
     wasBlocked = false;
   const elements = (): HTMLElement[] => {
     const scope = document.querySelector("dialog[open]") ?? document;
@@ -174,7 +175,6 @@ export function installControllerUI(): void {
             (index + sign + list.length) % Math.max(1, list.length)
           ]?.focus();
         repeatAt = now + (direction === lastDirection ? 150 : 400);
-        lastNav = now;
       }
       lastDirection = direction ?? "";
       if ((modal || !gameFocus) && hub.take("interact")) {
@@ -193,7 +193,22 @@ export function installControllerUI(): void {
         else location.href = "./";
       }
     }
-    if (Math.floor(now / 100) !== Math.floor(lastNav / 100)) {
+    if (now - refreshedAt > 100) {
+      refreshedAt = now;
+      widget.textContent =
+        hub.frame.device === "gamepad"
+          ? hub.supported
+            ? contextPrompt(
+                location.search.includes("combat") ? "combat" : "movement",
+                hub.family,
+                hub.settings.bindings,
+              )
+            : "Unknown layout · F2: choose mapping in controller settings"
+          : "Controller menu · F2";
+      menu.querySelector("#controller-prompts")!.textContent =
+        hub.frame.device === "gamepad"
+          ? contextPrompt("menu", hub.family, hub.settings.bindings)
+          : "Enter: Choose · Escape: Back · Tab: Navigate";
       const live = document.querySelector("#controller-live");
       if (live)
         live.textContent = JSON.stringify(window.hollowbaneInput, null, 2);

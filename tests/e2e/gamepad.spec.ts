@@ -235,3 +235,34 @@ test("controller activates existing atelier and both engine screens", async ({
     );
   }
 });
+test("prompts switch between PlayStation, generic and keyboard/mouse", async ({
+  page,
+}) => {
+  await ready(page);
+  await page.evaluate(() => {
+    window.virtualPads[0]!.id = "DualSense 054c virtual";
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.family))
+    .toBe("playstation");
+  await tap(page, 9);
+  await expect(page.locator("#controller-prompts")).toContainText(
+    "Cross: Choose",
+  );
+  await tap(page, 1);
+  await page.mouse.move(50, 50);
+  await expect(page.locator("#controller-open")).toContainText("F2");
+  await page.evaluate(() => {
+    window.virtualPads[0]!.id = "USB generic virtual";
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.family))
+    .toBe("generic");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.armed))
+    .toBe(true);
+  await tap(page, 9);
+  await expect(page.locator("#controller-prompts")).toContainText(
+    "Button 1: Choose",
+  );
+});

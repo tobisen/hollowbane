@@ -35,3 +35,7 @@ Independent right-stick facing preserves eight-direction visuals without alterin
 ## DBL-269 / DBL-GP07
 
 Shared controller pause/menu and focus navigation cover cloister, movement dialog, preserved combat, atelier, controller page and both engine screens. D-pad/stick focus, activate/back, select/number adjustment and keyboard-remap field cycling are supported. Gameplay pauses under controller UI focus. Targeted menu/atelier/engine browser checks and original movement checks pass; menu screenshot inspected. Full check 105 tests passes.
+
+## DBL-270 / DBL-GP08
+
+Context prompts use active-device ownership, Xbox/PlayStation/generic text glyphs and actual remapped buttons. Movement avoids advertising unavailable attacks; menu/combat contexts differ. Unit prompt test and PlayStation/generic/mouse switching browser case pass. First pointer movement now switches correctly even when movementX/Y are zero. No copied graphical glyph assets.
