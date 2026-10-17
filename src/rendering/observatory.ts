@@ -1,3 +1,4 @@
+import { controllerInput } from "./controller-input";
 import type Phaser from "phaser";
 import { project, createRng } from "../simulation/core";
 import { createDiagnostics, instrumentDrawCalls } from "./diagnostics";
@@ -111,7 +112,7 @@ export function startObservatory(P: typeof Phaser, version: string): void {
       document.documentElement.dataset.engineReady = version;
     }
     update(time: number, delta: number): void {
-      if (!paused)
+      if (!paused && !controllerInput.blockGameplay)
         for (const [i, sprite] of this.sentinels.entries())
           sprite.rotation = Math.sin(time / 800 + i) * 0.035;
       diagnostics.sample(delta, this.game.loop.actualFps);
@@ -130,5 +131,6 @@ export function startObservatory(P: typeof Phaser, version: string): void {
     scene: Observatory,
     scale: { mode: P.Scale.FIT, autoCenter: P.Scale.CENTER_BOTH },
     banner: false,
+    input: { gamepad: true },
   });
 }

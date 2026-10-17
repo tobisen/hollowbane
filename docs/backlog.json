@@ -2812,9 +2812,10 @@
     "priority": "p0",
     "parent": "DBL-009",
     "dependencies": ["DBL-268"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nController navigation across every existing screen\n\n## Scope\nAuthorized Phase 2.5 gamepad support. Stable numeric ID DBL-269; requested alias DBL-GP07. Preserve Phaser 4.2.1 and existing keyboard/mouse and completed combat.\n\n## Non-goals\nNew combat mechanics, loot, inventory or resuming Phase 3 before G2.5 user approval.\n\n## Acceptance criteria\nController navigation across every existing screen; deterministic device-independent intents; safe boundaries and documented fallback behavior.\n\n## Test requirements\nTargeted unit/browser coverage, check at milestones, full regression before G2.5; distinguish emulation from physical verification.\n\n## Definition of done\nVerified scoped increment committed with evidence in docs/gamepad/phase2.5.md; stop for G2.5 review after DBL-274.",
-    "deliveryPhase": "2.5"
+    "deliveryPhase": "2.5",
+    "evidence": "Shared controller pause/menu and focus navigation cover cloister, movement dialog, preserved combat, atelier, controller page and both engine screens. D-pad/stick focus, activate/back, select/number adjustment and keyboard-remap field cycling are supported. Gameplay pauses under controller UI focus. Targeted menu/atelier/engine browser checks and original movement checks pass; menu screenshot inspected. Full check 105 tests passes."
   },
   {
     "id": "DBL-270",

@@ -49,7 +49,7 @@ export function movementControls(
   const dialog = document.createElement("dialog");
   dialog.className = "movement-dialog";
   dialog.setAttribute("aria-labelledby", "movement-title");
-  dialog.innerHTML = `<form><h2 id="movement-title">Movement controls</h2><p>Choose a key, then press its replacement. Arrow keys remain available.</p><div class="movement-bindings">${actions.map(({ action, label }) => `<label>${label}<input data-action="${action}" aria-label="${label} key" readonly></label>`).join("")}</div><div class="movement-speeds"><label>Walk speed<input id="walk-speed" aria-label="Walk speed" type="number" min="0.5" max="12" step="0.1" required></label><label>Run speed<input id="run-speed" aria-label="Run speed" type="number" min="0.5" max="12" step="0.1" required></label></div><p class="movement-note">Shift-click queues a destination. Right-click faces a point. Run currently uses the original walk artwork at a faster cadence.</p><p id="movement-error" role="status"></p><div class="movement-dialog-actions"><button type="button" id="movement-defaults">Defaults</button><button type="button" id="movement-cancel">Cancel</button><button type="submit">Save controls</button></div></form>`;
+  dialog.innerHTML = `<form><h2 id="movement-title">Movement controls</h2><p>Choose a key, then press its replacement. Arrow keys remain available.</p><div class="movement-bindings">${actions.map(({ action, label }) => `<label>${label}<input data-action="${action}" aria-label="${label} key" readonly></label>`).join("")}</div><div class="movement-speeds"><label>Walk speed<input id="walk-speed" aria-label="Walk speed" type="number" min="0.5" max="12" step="0.1" required></label><label>Run speed<input id="run-speed" aria-label="Run speed" type="number" min="0.5" max="12" step="0.1" required></label></div><p class="movement-note">Shift-click queues a destination. Right-click faces a point. Run currently uses the original walk artwork at a faster cadence.</p><button type="button" id="movement-controller">Gamepad settings</button><p id="movement-error" role="status"></p><div class="movement-dialog-actions"><button type="button" id="movement-defaults">Defaults</button><button type="button" id="movement-cancel">Cancel</button><button type="submit">Save controls</button></div></form>`;
   document.querySelector("main")!.append(dialog);
   const gait = document.querySelector<HTMLButtonElement>("#movement-gait")!;
   const sync = () => {
@@ -126,6 +126,8 @@ export function movementControls(
           : [event.code];
       input.value = event.code;
     };
+  dialog.querySelector<HTMLButtonElement>("#movement-controller")!.onclick =
+    () => window.dispatchEvent(new Event("hollowbane-controller-menu"));
   const close = () => {
     dialog.close();
     world.focus();

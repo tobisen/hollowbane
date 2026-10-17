@@ -1,0 +1,79 @@
+#controller-open {
+  position: fixed;
+  right: 18px;
+  bottom: 10px;
+  z-index: 20000;
+  font: 11px system-ui;
+  padding: 8px 12px;
+}
+#controller-open[hidden] {
+  display: none;
+}
+#controller-menu {
+  background: #111c24;
+  color: #e6d3aa;
+  border: 1px solid #8f815e;
+  width: min(440px, 90vw);
+  max-height: 90dvh;
+  padding: 24px;
+}
+#controller-menu::backdrop {
+  background: #03070bbb;
+}
+#controller-menu h2 {
+  font-weight: normal;
+}
+.controller-menu-list {
+  display: grid;
+  gap: 8px;
+}
+.controller-menu-list a,
+.controller-menu-list button {
+  text-align: left;
+}
+.controller-page {
+  max-width: 1100px;
+}
+.controller-page section {
+  margin-top: 22px;
+  padding: 20px;
+  border: 1px solid #4a514d;
+  background: #15202a;
+}
+.controller-page pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    12px/1.6 ui-monospace,
+    monospace;
+  max-height: 320px;
+  overflow: auto;
+}
+.controller-page label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0;
+}
+.controller-page input,
+.controller-page select {
+  padding: 6px;
+  background: #202e37;
+  color: #f3dfb1;
+  border: 1px solid #71664f;
+  max-width: 170px;
+}
+.controller-page .settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+.controller-page button {
+  margin: 8px 6px 0 0;
+}
+.controller-page :focus-visible,
+#controller-menu :focus {
+  outline: 2px solid #ffcf88;
+  outline-offset: 3px;
+}

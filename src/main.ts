@@ -1,8 +1,11 @@
+import { controllerPage, installControllerUI } from "./rendering/controller-ui";
 import { controllerInput } from "./rendering/controller-input";
 controllerInput.start();
 import "./style.css";
 const query = new URLSearchParams(location.search);
-if (query.has("combat")) {
+if (query.has("controller")) {
+  controllerPage();
+} else if (query.has("combat")) {
   await import("./rendering/combat.css");
   const { startCombatArena } = await import("./rendering/combat-arena");
   startCombatArena();
@@ -22,3 +25,5 @@ if (query.has("combat")) {
   const { startPrototype } = await import("./rendering/prototype");
   startPrototype();
 }
+
+installControllerUI();

@@ -150,6 +150,7 @@ test("semantic primary drives existing timed combat without new mechanics", asyn
 }) => {
   await ready(page, "./?combat=1");
   await page.locator("#combat-hostile").uncheck();
+  await page.locator("#combat-world").focus();
   await axes(page, [0, 0, 0, 0]);
   await button(page, 2, true);
   await expect
@@ -162,4 +163,75 @@ test("semantic primary drives existing timed combat without new mechanics", asyn
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[1]!.hp))
     .toBeLessThan(160);
+});
+async function tap(page: Page, index: number) {
+  let samples = await page.evaluate(() => window.hollowbaneInput!.samples);
+  await button(page, index, true);
+  await page.waitForFunction(
+    (n) => window.hollowbaneInput!.samples > n + 2,
+    samples,
+  );
+  samples = await page.evaluate(() => window.hollowbaneInput!.samples);
+  await button(page, index, false);
+  await page.waitForFunction(
+    (n) => window.hollowbaneInput!.samples > n + 2,
+    samples,
+  );
+}
+
+test("controller pause/menu navigation opens settings and cancel returns safely", async ({
+  page,
+}) => {
+  await ready(page);
+  await tap(page, 9);
+  await expect(page.locator("#controller-menu")).toBeVisible();
+  await tap(page, 13);
+  await expect(page.locator('a[href="?controller=1"]').first()).toBeFocused();
+  await page.screenshot({ path: ".local/controller-menu.png" });
+  await button(page, 0, true);
+  await expect(page.locator("h1")).toHaveText("Controller settings");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+    .toBe(true);
+  await button(page, 0, false);
+  await tap(page, 9);
+  await expect(page.locator("#controller-menu")).toBeVisible();
+  await tap(page, 1);
+  await expect(page.locator("#controller-menu")).not.toBeVisible();
+});
+test("controller activates existing atelier and both engine screens", async ({
+  page,
+}) => {
+  await ready(page, "./?gallery=1");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-gallery-ready",
+    "true",
+  );
+  await tap(page, 13);
+  await tap(page, 13);
+  await expect(page.locator("#gallery-motion")).toBeFocused();
+  await tap(page, 0);
+  await expect(page.locator("#gallery-motion")).toHaveText("Pause walk cycle");
+  for (const engine of ["3", "4"]) {
+    await ready(page, `./?engine=${engine}`);
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-engine-ready",
+      engine,
+    );
+    for (
+      let i = 0;
+      i < 6 &&
+      !(await page
+        .locator("#pause")
+        .evaluate((e) => e === document.activeElement));
+      i++
+    )
+      await tap(page, 13);
+    await expect(page.locator("#pause")).toBeFocused();
+    await tap(page, 0);
+    await expect(page.locator("#pause")).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  }
 });
