@@ -1,3 +1,4 @@
+import { meleeSlots, rallyPacks } from "./monster-pack";
 import { segmentWalkable, type Navigation } from "../world/navigation";
 import { worldToScreen, type Point } from "../world/isometric";
 import {
@@ -64,6 +65,7 @@ export function stepMonsterAI(
 ): AIWork {
   const budget: PathBudget = { remaining: maxPaths, requests: 0 };
   let decisions = 0;
+  if (world.tick % 6 === 0) rallyPacks(world, brains, nav);
   for (const brain of brains) {
     const actor = world.actors.find((a) => a.id === brain.id);
     if (!actor) continue;
@@ -149,6 +151,7 @@ export function stepMonsterAI(
     }
     if (
       sensed.visible &&
+      (profile.projectile || meleeSlots(world, target.id, actor.id) < 3) &&
       inAttackRange(
         p,
         target.controller.walker.position,

@@ -15,3 +15,7 @@ Perception uses resolved positions/damage with conservative obstacle line of sig
 ## DBL-277
 
 Explicit validated idle/patrol/alert/chase/attack/retreat/return/dead transitions, staggered decisions, six distinct profiles, flanking approach and ranged retreat. Existing combat commands retain attack/recovery/hitstun commitment and projectile strike boundaries; caster/support currently use physical projectiles (no new spell system). Four behavior tests cover deterministic replay, actual projectile launches, return/death and interruption ownership. Full check/format: 124 tests.
+
+## DBL-278
+
+Pack alerts require an actually visible live threat and a same-pack neighbor with unobstructed communication; support heralds rally a wider radius. At most three committed melee attackers per target, with remaining actors approaching via existing navigation. Deterministic two-pass separation preserves player position and attack/hitstun commitment, checks swept obstacle clearance, and excludes corpses. Two pack/crowd tests plus behavior suite pass; full check: 126 tests.
