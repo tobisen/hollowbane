@@ -162,7 +162,7 @@ main.prototype {
 }
 .travel-hint {
   position: absolute;
-  bottom: 43px;
+  bottom: 19px;
   left: 38px;
   font: 8px system-ui;
   letter-spacing: 0.15em;
@@ -229,5 +229,91 @@ main.prototype {
   .prototype .atelier-link {
     font-size: 8px;
     padding: 9px;
+  }
+}
+
+.movement-feedback {
+  position: absolute;
+  bottom: 77px;
+  right: 36px;
+  z-index: 3;
+  color: #c6b58f;
+  font: 10px system-ui;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  text-shadow: 0 1px 4px #000;
+}
+.movement-dialog {
+  width: min(480px, calc(100vw - 48px));
+  color: #d2c6ad;
+  background: #101a20;
+  border: 1px solid #a98a5777;
+  padding: 28px;
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+}
+.movement-dialog::backdrop {
+  background: #03080bc9;
+}
+.movement-dialog h2 {
+  color: #e5d3b1;
+  font: 25px Georgia;
+  margin: 0 0 12px;
+}
+.movement-dialog p {
+  font: 12px/1.6 system-ui;
+}
+.movement-bindings,
+.movement-speeds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+  margin: 18px 0;
+}
+.movement-dialog label {
+  display: grid;
+  gap: 5px;
+  font: 11px system-ui;
+}
+.movement-dialog input {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px;
+  background: #081117;
+  border: 1px solid #a98a574d;
+  color: #e5d3b1;
+  font: 12px system-ui;
+}
+.movement-dialog input:focus {
+  outline: 1px solid #d0b37d;
+}
+.movement-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+#movement-error {
+  color: #e0a080;
+  min-height: 20px;
+}
+@media (max-width: 800px) {
+  .world-controls {
+    left: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .prototype .world-controls button {
+    padding: 9px;
+  }
+  .movement-feedback {
+    bottom: 112px;
+    right: 20px;
+  }
+  .travel-hint {
+    bottom: 144px;
+  }
+  .location-card {
+    bottom: 175px;
   }
 }
