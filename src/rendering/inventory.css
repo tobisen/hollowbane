@@ -1,8 +1,5 @@
 .inventory-open {
-  position: fixed;
-  right: 20px;
-  top: 110px;
-  z-index: 12;
+  position: static;
   padding: 10px 18px;
   border: 1px solid #af8b50;
   background: #191914;

@@ -92,6 +92,9 @@ export class InventoryView {
       "beforeend",
       '<button id="inventory-open" class="inventory-open">Inventory · V / View</button>',
     );
+    root
+      .querySelector(".polish-navigation")
+      ?.append(root.querySelector("#inventory-open")!);
     this.dialog = document.createElement("dialog");
     this.dialog.id = "inventory-dialog";
     this.dialog.setAttribute("aria-labelledby", "inventory-title");

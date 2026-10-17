@@ -3618,8 +3618,9 @@
     "deliveryPhase": "inventory-l2",
     "priority": "p0",
     "dependencies": ["DBL-328"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nL2 inventory and equipment performance evidence. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nL2 inventory and equipment performance evidence. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review.",
+    "evidence": "Repeated paired5/10/20/30 enemy benchmark and overlay ablations. Inline navigation removes fixed-overlay SwiftShader pacing increase; combat raw RAF p9516.7\u201316.8ms vs initial33.4ms, simulation0.2\u20130.5ms. Model/UI/save/load/drag evidence retained; full check213 +26 inventory browser cases pass."
   },
   {
     "id": "DBL-330",
