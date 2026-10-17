@@ -23,3 +23,5 @@
 - DBL-293 complete: elements, geometry, projectiles and statuses; full check 150 tests. DBL-294 playable skill arena next.
 
 - DBL-294 complete: ?skills=1 playable laboratory, semantic/controller/mouse activation, prompts/resources and procedural effects. 151 unit/full check; five Chromium/eight Firefox-WebKit skill scenarios pass, baseline/unmasked screenshots reviewed. DBL-295 monster integration next.
+
+- DBL-295 complete: shared caster/support/flanker skill decisions, lifecycle sync, 154 unit/full check; live monster skill browser scenario passes. DBL-296 regression/performance gate next.

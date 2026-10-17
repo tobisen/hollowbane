@@ -3159,8 +3159,9 @@
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-294"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nShared monster ability execution. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
+    "status": "completed",
+    "body": "## Acceptance criteria\nShared monster ability execution. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial.",
+    "evidence": "Caster/support/flanker replace authorized queued normal attacks with shared skills, respecting LOS, mana, cooldown, timeline commitment and deterministic AI state. Unit replay plus lifecycle tests; full check 154 tests; live browser shared-skill scenario passes."
   },
   {
     "id": "DBL-296",
@@ -3171,7 +3172,7 @@
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-295"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Acceptance criteria\nCross-browser skill quality and performance gate. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
   }
 ]

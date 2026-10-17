@@ -1,3 +1,4 @@
+import { queueMonsterSkills } from "../simulation/monster-skills";
 import { actionPrompt } from "../simulation/prompts";
 import {
   createSkills,
@@ -905,6 +906,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
             )
               player.invulnerableUntil = this.world.tick + 2;
           }
+          if (this.abilities && this.encounter && hostile.checked)
+            queueMonsterSkills(this.abilities, this.encounter.brains, nav);
           const skillStart = performance.now();
           stepCombat(
             this.world,

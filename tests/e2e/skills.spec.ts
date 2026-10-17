@@ -191,6 +191,43 @@ for (const id of [
       id.startsWith("Xbox") ? "RB" : "R1",
     );
   });
+test("monster caster and support use shared skills in a live encounter", async ({
+  page,
+}) => {
+  await page.goto("./?skills=1&monsters=1");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await page.locator("#ai-practice").check();
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          window.hollowbaneSkills?.events.some(
+            (e) =>
+              e.actor !== 0 && e.kind === "effect" && e.skill === "ember-lance",
+          ),
+        ),
+      { timeout: 15000 },
+    )
+    .toBe(true);
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          window.hollowbaneSkills?.events.some(
+            (e) =>
+              e.actor !== 0 && e.kind === "effect" && e.skill === "oath-echo",
+          ),
+        ),
+      { timeout: 15000 },
+    )
+    .toBe(true);
+  expect(
+    await page.evaluate(() => window.hollowbaneAI!.metrics.pathRequests),
+  ).toBeLessThanOrEqual(2);
+});
 test("skills retain their visual reference", async ({ page }) => {
   await ready(page);
   await page.locator("#combat-pause").click();

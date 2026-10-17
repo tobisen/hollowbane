@@ -90,6 +90,24 @@ export function createSkills(
     events: [],
   };
 }
+/** Follow existing encounter spawn/despawn without retaining removed actors. */
+export function syncSkillUsers(r: SkillRuntime): void {
+  const ids = new Set(r.combat.actors.map((a) => a.id));
+  r.users = r.users.filter((u) => ids.has(u.actor));
+  for (const a of r.combat.actors)
+    if (!r.users.some((u) => u.actor === a.id))
+      r.users.push({
+        actor: a.id,
+        mana: 100,
+        maxMana: 100,
+        castSpeed: 0,
+        cooldowns: {},
+        cast: null,
+        passives: [],
+      });
+  for (const id of Object.keys(r.effects.bases))
+    if (!ids.has(Number(id))) delete r.effects.bases[Number(id)];
+}
 export function requestSkill(runtime: SkillRuntime, intent: SkillIntent): void {
   if (
     !Number.isSafeInteger(intent.actor) ||
@@ -161,6 +179,7 @@ export function skillHooks(
     controlsActor: (a) => !!r.users.find((u) => u.actor === a.id)?.cast,
     afterTick: () => stepSkillBolts(r, nav),
     beforeTick: () => {
+      syncSkillUsers(r);
       stepStatuses(r, nav);
       for (const u of r.users) {
         const a = r.combat.actors.find((a) => a.id === u.actor);
