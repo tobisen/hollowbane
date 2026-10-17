@@ -2632,8 +2632,9 @@
     "priority": "p0",
     "parent": "DBL-037",
     "dependencies": ["DBL-255"],
-    "status": "planned",
-    "body": "## Purpose\nProjectile attack foundation\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nDeterministic projectile travel, collision and lifetime; windup/recovery and one impact; no advanced skills.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+    "status": "completed",
+    "body": "## Purpose\nProjectile attack foundation\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nDeterministic projectile travel, collision and lifetime; windup/recovery and one impact; no advanced skills.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n",
+    "evidence": "Four projectile tests, 86 unit tests and full check; swept first-hit collision, ballistic travel, lifetime and boundary expiry. docs/combat/phase3.md."
   },
   {
     "id": "DBL-257",

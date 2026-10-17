@@ -1,3 +1,8 @@
+import {
+  launchProjectile,
+  projectileContact,
+  type Projectile,
+} from "./projectiles";
 import type { Point } from "../world/isometric";
 import {
   fromGround,
@@ -66,9 +71,11 @@ export type CombatEvent =
       tick: number;
       actor: number;
       target: number;
-      kind: "whiff" | "death" | "stagger" | "immune";
+      kind: "whiff" | "death" | "stagger" | "immune" | "launch" | "impact";
     };
 export interface CombatWorld {
+  projectiles: Projectile[];
+  nextProjectile: number;
   tick: number;
   seed: number;
   actors: CombatActor[];
@@ -117,6 +124,8 @@ export function createCombat(seed = 42): CombatWorld {
   });
   return {
     tick: 0,
+    projectiles: [],
+    nextProjectile: 0,
     seed: seed >>> 0,
     actors: [
       make(0, "Wanderer", "player", 650, 560),
@@ -313,9 +322,24 @@ export function stepCombat(
           actor.range,
           nav,
         )
-      )
-        applyCombatHit(world, actor, target, nav);
-      else if (target)
+      ) {
+        if (actor.weapon === "projectile") {
+          world.projectiles.push(
+            launchProjectile(
+              world.nextProjectile++,
+              actor.id,
+              actor.controller.walker.position,
+              target.controller.walker.position,
+            ),
+          );
+          log(world, {
+            tick: world.tick,
+            actor: actor.id,
+            target: target.id,
+            kind: "launch",
+          });
+        } else applyCombatHit(world, actor, target, nav);
+      } else if (target)
         log(world, {
           tick: world.tick,
           actor: actor.id,
@@ -324,4 +348,45 @@ export function stepCombat(
         });
     }
   }
+  world.projectiles = world.projectiles.filter((projectile) => {
+    const source = world.actors.find((a) => a.id === projectile.source);
+    if (!source || source.hp <= 0 || --projectile.remaining <= 0) return false;
+    const start = projectile.position,
+      end = {
+        x: start.x + projectile.velocity.x,
+        y: start.y + projectile.velocity.y,
+      };
+    if (!segmentWalkable(nav, start, end)) return false;
+    let nearest = Infinity,
+      hit: CombatActor | undefined;
+    for (const target of world.actors) {
+      if (
+        target.hp <= 0 ||
+        target.id === source.id ||
+        (source.kind !== "player" && target.kind !== "player")
+      )
+        continue;
+      const t = projectileContact(
+        start,
+        end,
+        target.controller.walker.position,
+      );
+      if (t !== null && t < nearest) {
+        nearest = t;
+        hit = target;
+      }
+    }
+    if (hit) {
+      log(world, {
+        tick: world.tick,
+        actor: source.id,
+        target: hit.id,
+        kind: "impact",
+      });
+      applyCombatHit(world, source, hit, nav);
+      return false;
+    }
+    projectile.position = end;
+    return true;
+  });
 }
