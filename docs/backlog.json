@@ -2654,5 +2654,17 @@
     "dependencies": ["DBL-257"],
     "status": "planned",
     "body": "## Purpose\nCombat quality evidence and public demo\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nFull prior tests plus combat E2E/replays/visual regressions; matched before/after latency, frame p50/p95, simulation and rendering cost/entity counts; publish verified demo then stop for user combat quality review.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+  },
+  {
+    "id": "DBL-259",
+    "title": "Pure seeded physical damage prerequisite",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p0",
+    "parent": "DBL-040",
+    "dependencies": ["DBL-253"],
+    "status": "completed",
+    "body": "## Purpose\nIndependent damage prerequisite split from DBL-255 to satisfy damage-first priority without changing existing dependencies.\n\n## Non-goals\nScene integration, block, reactions or broader parents.\n\n## Acceptance criteria\nSeeded accuracy, defense, armor, resistance caps, criticals, configurable formulas and typed results.\n\n## Test requirements\nDeterministic boundary/replay tests and npm run check.\n\n## Definition of done\nVerified and committed; original parents remain partial.",
+    "evidence": "Four targeted damage tests plus milestone checks; details docs/combat/phase3.md."
   }
 ]
