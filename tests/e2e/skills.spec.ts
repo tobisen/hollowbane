@@ -83,7 +83,7 @@ test("mouse-selected fire bolt travels, hits and spends mana once", async ({
     .poll(() => page.evaluate(() => window.hollowbaneSkills!.users[0]!.mana))
     .toBeLessThan(100);
 });
-test("keyboard activates nova, chain, buff and poison with timing and status feedback", async ({
+test("keyboard activates nova, chain and buff with timing and status feedback", async ({
   page,
 }) => {
   await ready(page);
@@ -136,7 +136,7 @@ for (const id of [
   "Xbox standard virtual",
   "Wireless Controller PlayStation virtual",
 ])
-  test(`${id}: six slots, held safety, independent aim and selection`, async ({
+  test(`${id}: primary press safety, independent aim and selection`, async ({
     page,
   }) => {
     await pad(page, id);
@@ -227,6 +227,56 @@ test("monster caster and support use shared skills in a live encounter", async (
   expect(
     await page.evaluate(() => window.hollowbaneAI!.metrics.pathRequests),
   ).toBeLessThanOrEqual(2);
+});
+test("melee cone and poison strike use selected target after normal movement", async ({
+  page,
+}) => {
+  await ready(page);
+  const view = await page.evaluate(() => window.hollowbaneCombat!.view),
+    rect = await page.locator("canvas").boundingBox();
+  if (!rect) throw Error("canvas absent");
+  await page.mouse.click(
+    rect.x + ((750 - view.x) / view.width) * rect.width,
+    rect.y + ((560 - view.y) / view.height) * rect.height,
+  );
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        Math.abs(window.hollowbaneCombat!.actors[0]!.x - 750),
+      ),
+    )
+    .toBeLessThan(3);
+  await page.keyboard.press("t");
+  await page.keyboard.press("2");
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        window.hollowbaneSkills!.events.some(
+          (e) => e.skill === "iron-fan" && e.kind === "effect",
+        ),
+      ),
+    )
+    .toBe(true);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase))
+    .toBe("idle");
+  await page.keyboard.press("4");
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        window.hollowbaneSkills!.statuses.some((s) => s.kind === "poison"),
+      ),
+    )
+    .toBe(true);
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        window.hollowbaneCombat!.events.some(
+          (e) => e.kind === "damage" && e.result.type === "poison",
+        ),
+      ),
+    )
+    .toBe(true);
 });
 test("skills retain their visual reference", async ({ page }) => {
   await ready(page);

@@ -67,4 +67,4 @@ G2.5 is approved. User delivery Phase 4 maps to original roadmap topic 08 (Monst
 
 ## Authorized delivery: Skills & Spell Systems
 
-G4 Monster AI approved by user. Original topic 10 and scoped source DBL-044/046/047/051–057/062 slices execute as DBL-291–296. Preserve 36 topics and existing parent dependencies; no character skill trees, items or campaign. Stop at the skills quality gate.
+G4 Monster AI approved by user. Original topic 10 and scoped source DBL-044/046/047/051–057/062 slices execute as DBL-291–298. Preserve 36 topics and existing parent dependencies; no character skill trees, items or campaign. Stop at the skills quality gate.

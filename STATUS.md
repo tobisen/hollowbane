@@ -2,7 +2,7 @@
 
 - Controller quality fixes: DBL-289 published as 87d9342, CI/Pages 39032057748 succeeded. D-pad no longer steals game focus. DBL-290 generic layout/identity/readiness fixes published as b6497ac; CI/Pages 39032749390 succeeded and all 25 hosted controller scenarios pass. Full check 135 tests; Chromium controller 25 and Firefox/WebKit 48 pass. User's friend reports Unknown layout and saved #0 not connected; exact native metadata is requested, so physical Xbox/handheld mapping is not claimed fixed. Details: docs/gamepad/DBL-289.md and DBL-290.md.
 
-- G4 Monster AI explicitly approved by user. Skills & Spell Systems (original topic 10) authorized through its quality gate; DBL-291–296 execute sequentially. No loot/inventory/itemization/character skill trees/campaign. Native friend controller metadata remains pending.
+- G4 Monster AI explicitly approved by user. Skills & Spell Systems (original topic 10) authorized through its quality gate; DBL-291–298 execute sequentially. No loot/inventory/itemization/character skill trees/campaign. Native friend controller metadata remains pending.
 
 - G2.5 explicitly approved. **Phase 4 Monster AI approved.** Skills work now authorized. No loot, inventory, skill trees, campaign or later phase work. Preserve Phaser 4.2.1 and completed movement/combat/controller systems.
 - Completed scoped DBL-275–281 and dependency corrections DBL-287–288. Original 36-phase roadmap/IDs/dependencies preserved; DBL-036 and DBL-058–065 remain partial. No completed combat/controller architecture was reimplemented.
@@ -25,3 +25,5 @@
 - DBL-294 complete: ?skills=1 playable laboratory, semantic/controller/mouse activation, prompts/resources and procedural effects. 151 unit/full check; five Chromium/eight Firefox-WebKit skill scenarios pass, baseline/unmasked screenshots reviewed. DBL-295 monster integration next.
 
 - DBL-295 complete: shared caster/support/flanker skill decisions, lifecycle sync, 154 unit/full check; live monster skill browser scenario passes. DBL-296 regression/performance gate next.
+
+- DBL-296 complete: 161 unit/full check, full Chromium 58/58 and final Firefox/WebKit skill behavior 12/12; existing screenshot tolerances preserved. Initial local build/navigation race caused one blank reload; stable-build complete rerun passed. DBL-297 paired performance measurements next.

@@ -48,6 +48,6 @@
   "skills": {
     "authorized": true,
     "qualityGateApproved": false,
-    "scope": ["DBL-291", "DBL-296"]
+    "scope": ["DBL-291", "DBL-298"]
   }
 }

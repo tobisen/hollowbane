@@ -24,4 +24,4 @@ User quality feedback authorizes DBL-289 controller gameplay-focus repair within
 
 Controller follow-up DBL-290 addresses reported unknown-layout/index readiness with verified generic recovery only. Native friend device metadata is pending; do not infer a raw Xbox/handheld layout from its name or claim physical verification. Keep Monster AI review gate pending.
 
-G4 approval / Skills authorization (2026-10-17): user approves Monster AI and authorizes Skills & Spell Systems (original target topic 10), scoped DBL-291–296 sequentially through the skills quality gate. This supersedes the Monster AI stop. Preserve completed systems and all open hardware/art/performance/synchronization follow-ups. No loot, inventory, itemization, character skill trees or campaign.
+G4 approval / Skills authorization (2026-10-17): user approves Monster AI and authorizes Skills & Spell Systems (original target topic 10), scoped DBL-291–298 sequentially through the skills quality gate. This supersedes the Monster AI stop. Preserve completed systems and all open hardware/art/performance/synchronization follow-ups. No loot, inventory, itemization, character skill trees or campaign.

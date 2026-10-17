@@ -71,4 +71,29 @@ describe("shared skill execution", () => {
     expect(a.events.some((e) => e.kind === "effect")).toBe(true);
     expect(a).toEqual(b);
   });
+  it("physical abilities use attack speed while elemental casts use separate breakpoints", () => {
+    const r = setup();
+    r.combat.actors[1]!.controller.walker.position = {
+      ...r.combat.actors[0]!.controller.walker.position,
+      x: r.combat.actors[0]!.controller.walker.position.x + 0.5,
+    };
+    r.combat.actors[0]!.attackSpeed = 90;
+    cast(r, "briar-edge");
+    stepSkillCombat(r);
+    expect(r.combat.actors[0]!.controller.timeline.timing.windup).toBe(5);
+  });
+  it.each([
+    [24, 10],
+    [25, 9],
+    [59, 9],
+    [60, 7],
+    [99, 7],
+    [100, 6],
+  ])("cast speed %i has authored windup %i", (speed, frames) => {
+    const r = setup();
+    r.users[0]!.castSpeed = speed;
+    cast(r);
+    stepSkillCombat(r);
+    expect(r.combat.actors[0]!.controller.timeline.timing.windup).toBe(frames);
+  });
 });

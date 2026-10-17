@@ -15,6 +15,7 @@ import { breakpointFrames } from "./combat-timing";
 import { commandCombat, inAttackRange } from "./combat-targeting";
 import {
   ARENA_NAV,
+  ATTACK_BREAKPOINTS,
   stepCombat,
   type CombatActor,
   type CombatHooks,
@@ -230,7 +231,10 @@ export function skillHooks(
         }
         u.mana -= s.mana;
         u.cooldowns[s.id] = r.combat.tick + s.cooldown;
-        const scale = breakpointFrames(u.castSpeed, CAST_BREAKPOINTS) / 100;
+        const scale =
+          s.element === "physical"
+            ? breakpointFrames(a.attackSpeed, ATTACK_BREAKPOINTS) / 12
+            : breakpointFrames(u.castSpeed, CAST_BREAKPOINTS) / 100;
         a.controller = commandCombat(a.controller, { kind: "stop" });
         const sequence = a.controller.timeline.sequence + 1;
         a.controller.timeline = {

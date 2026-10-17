@@ -479,7 +479,7 @@
     "status": "partial",
     "body": "## Purpose\nHP, mana, regen, resource costs och thresholds.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 06; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-043\n\n## Acceptance criteria\n- Deliver the independently reviewable result: HP, mana, regen, resource costs och thresholds.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-044; no known critical regression.\n",
     "targetPhase": 6,
-    "evidence": "Health/death training slice delivered in DBL-255/257. Mana, regen and resource costs remain unimplemented."
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-045",
@@ -497,9 +497,10 @@
     "phase": 6,
     "priority": "p0",
     "dependencies": ["DBL-045"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nDoT/HoT och damage over time med korrekt stacking.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 06; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-045\n\n## Acceptance criteria\n- Deliver the independently reviewable result: DoT/HoT och damage over time med korrekt stacking.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-046; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-047",
@@ -510,7 +511,7 @@
     "status": "partial",
     "body": "## Purpose\nResistances/absorbs, immunities, vulnerabilities och max/min caps.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 06; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-046\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Resistances/absorbs, immunities, vulnerabilities och max/min caps.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-047; no known critical regression.\n",
     "targetPhase": 6,
-    "evidence": "Physical resistance caps and vulnerabilities delivered by DBL-259; other resistance/absorb/immunity systems remain outstanding."
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-048",
@@ -550,9 +551,10 @@
     "phase": 7,
     "priority": "p0",
     "dependencies": ["DBL-050"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nProjectile engine: aim, travel, collision, pierce, bounce, AoE.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 07; P0. Target roadmap phase 07; source phase metadata retained.\n\n## Dependencies\nDBL-050\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Projectile engine: aim, travel, collision, pierce, bounce, AoE.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-051; no known critical regression.\n",
-    "targetPhase": 7
+    "targetPhase": 7,
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-052",
@@ -560,9 +562,10 @@
     "phase": 7,
     "priority": "p0",
     "dependencies": ["DBL-051"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nCast speed breakpoints, casting animation, interruption.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 07; P0. Target roadmap phase 07; source phase metadata retained.\n\n## Dependencies\nDBL-051\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Cast speed breakpoints, casting animation, interruption.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-052; no known critical regression.\n",
-    "targetPhase": 7
+    "targetPhase": 7,
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-053",
@@ -570,9 +573,10 @@
     "phase": 7,
     "priority": "p0",
     "dependencies": ["DBL-052"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nElements: physical, fire, cold, lightning, poison, magic/arcane.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 07; P0. Target roadmap phase 07; source phase metadata retained.\n\n## Dependencies\nDBL-052\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Elements: physical, fire, cold, lightning, poison, magic/arcane.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-053; no known critical regression.\n",
-    "targetPhase": 7
+    "targetPhase": 7,
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-054",
@@ -580,9 +584,10 @@
     "phase": 7,
     "priority": "p0",
     "dependencies": ["DBL-053"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nFreeze/slow/burn/shock/poison med duration och cleanse.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 07; P0. Target roadmap phase 07; source phase metadata retained.\n\n## Dependencies\nDBL-053\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Freeze/slow/burn/shock/poison med duration och cleanse.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-054; no known critical regression.\n",
-    "targetPhase": 7
+    "targetPhase": 7,
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-055",
@@ -590,9 +595,10 @@
     "phase": 7,
     "priority": "p0",
     "dependencies": ["DBL-054"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nTargeted, self, aura, cone, beam, nova, summoned effects.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 07; P0. Target roadmap phase 07; source phase metadata retained.\n\n## Dependencies\nDBL-054\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Targeted, self, aura, cone, beam, nova, summoned effects.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-055; no known critical regression.\n",
-    "targetPhase": 7
+    "targetPhase": 7,
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-056",
@@ -600,9 +606,10 @@
     "phase": 7,
     "priority": "p0",
     "dependencies": ["DBL-055"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nResource & cooldown balancing integration.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 07; P0. Target roadmap phase 07; source phase metadata retained.\n\n## Dependencies\nDBL-055\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Resource & cooldown balancing integration.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-056; no known critical regression.\n",
-    "targetPhase": 7
+    "targetPhase": 7,
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-057",
@@ -610,9 +617,10 @@
     "phase": 7,
     "priority": "p0",
     "dependencies": ["DBL-056"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nVisual spell FX, readability och shader/fallback.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 07; P0. Target roadmap phase 07; source phase metadata retained.\n\n## Dependencies\nDBL-056\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Visual spell FX, readability och shader/fallback.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-057; no known critical regression.\n",
-    "targetPhase": 7
+    "targetPhase": 7,
+    "evidence": "Scoped skills prototypes delivered through DBL-291–296; broader original acceptance remains open. See docs/skills/phase.md for limits, including no absorb/immunity/cleanse library, production FX or broad balancing."
   },
   {
     "id": "DBL-058",
@@ -3165,14 +3173,39 @@
   },
   {
     "id": "DBL-296",
-    "title": "Cross-browser skill quality and performance gate",
+    "title": "Cross-browser skills regression",
     "parent": "DBL-057",
     "phase": 7,
     "targetPhase": 10,
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-295"],
+    "status": "completed",
+    "body": "## Acceptance criteria\nCross-browser skills regression, physical versus cast breakpoints and preserved visual baselines. Performance and final gate evidence split to DBL-297–298. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial.",
+    "evidence": "Final full check 161 tests, full Chromium 58/58 including legacy visuals, skill behavior Firefox/WebKit 12/12. Physical skill attack-speed and cast breakpoint edge tests. Reviewed skills baseline. Initial dist rebuild disrupted one reload; complete immutable-build rerun passed without weakening tests."
+  },
+  {
+    "id": "DBL-297",
+    "title": "Skill performance and 10-to-20 enemy frame investigation",
+    "parent": "DBL-064",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "skills",
+    "priority": "p0",
+    "dependencies": ["DBL-296"],
     "status": "in-progress",
-    "body": "## Acceptance criteria\nCross-browser skill quality and performance gate. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
+    "body": "## Acceptance criteria\nSkill performance and 10-to-20 enemy frame investigation. Preserve deterministic skills and all existing systems.\n\n## Non-goals\nItems, inventory, loot, character skill trees or campaign; hardware verification from emulation.\n\n## Test requirements\nRetain measured evidence and relevant automated checks; no invented latency or hardware claims.\n\n## Definition of done\nVerified scoped increment committed; quality approval remains user-owned."
+  },
+  {
+    "id": "DBL-298",
+    "title": "Skills quality gate publication and retained evidence",
+    "parent": "DBL-057",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "skills",
+    "priority": "p0",
+    "dependencies": ["DBL-297"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nSkills quality gate publication and retained evidence. Preserve deterministic skills and all existing systems.\n\n## Non-goals\nItems, inventory, loot, character skill trees or campaign; hardware verification from emulation.\n\n## Test requirements\nRetain measured evidence and relevant automated checks; no invented latency or hardware claims.\n\n## Definition of done\nVerified scoped increment committed; quality approval remains user-owned."
   }
 ]

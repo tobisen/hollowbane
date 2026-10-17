@@ -1,6 +1,6 @@
 # Hollowbane
 
-Original browser-first, singleplayer dark fantasy ARPG built with Phaser 4.2.1. The [playable demo](https://tobisen.github.io/hollowbane/) includes the gothic cloister, keyboard/mouse and analog controller movement; `?combat=1` opens the preserved combat test arena. G2.5 controller support is approved. Phase 4 Monster AI is delivered for quality review; `?monsters=1` opens the new encounter arena. Completed combat systems are preserved. See [STATUS.md](STATUS.md) for verified scope and limitations.
+Original browser-first, singleplayer dark fantasy ARPG built with Phaser 4.2.1. The [playable demo](https://tobisen.github.io/hollowbane/) includes the gothic cloister, keyboard/mouse and analog controller movement; `?combat=1` opens the preserved combat test arena. G2.5 controller support is approved. G4 Monster AI is approved; Skills & Spell Systems is in development. `?monsters=1` opens the new encounter arena. Completed combat systems are preserved. See [STATUS.md](STATUS.md) for verified scope and limitations.
 
 ## Development
 
@@ -28,4 +28,8 @@ Start at [STATUS.md](STATUS.md). See [ROADMAP.md](ROADMAP.md), [BACKLOG.md](BACK
 
 ## GitHub and deployment
 
-Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 290 issues (231 source requirements plus scoped increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.
+Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 298 issues (231 source requirements plus scoped increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.
+
+## Skill laboratory
+
+`?skills=1` opens The Kindled Circle; add `&monsters=1&count=20` for shared monster abilities. Six original prototypes: Ember Lance, Rime Ring, Storm Thread, Iron Fan, Oath Echo and Briar Edge. X/Q/1–4 cast semantic slots; right click casts the selected skill; controller face/shoulder/trigger actions use saved remaps. D-pad left/right selects and interact casts selected. Target lock (T/R3) and independent right-stick aim are preserved. Mana regenerates through Still Well; costs/cooldowns start on acceptance, interruptions do not refund, movement waits for recovery. Full evidence: [Skills delivery](docs/skills/phase.md).
