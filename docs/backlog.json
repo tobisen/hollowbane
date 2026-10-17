@@ -2705,5 +2705,17 @@
     "status": "completed",
     "body": "## Purpose\nAddress measured full-resolution software renderer slowdown before quality gate publication.\n\n## Non-goals\nSimulation changes, reduced attack commitment or increased screenshot tolerance.\n\n## Acceptance criteria\nReuse existing renderSize and adaptive balance policy; preserve logical world/input projection and native GPU resolution. Record before/after measurements.\n\n## Test requirements\nExisting render-size tests, combat E2E, inspected refreshed arena screenshot, full check and measured workload.\n\n## Definition of done\nVerified increment and retained honest performance evidence before combat quality review.",
     "evidence": "Initial 1920x1080 SwiftShader combat median 33.3 ms; existing cloister median 16.7 ms. Applied existing 960x600 software cap and adaptive fallback; comparison evidence in docs/combat/phase3.md."
+  },
+  {
+    "id": "DBL-262",
+    "title": "Combat arena platform font visual baselines",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p0",
+    "parent": "DBL-258",
+    "dependencies": ["DBL-261"],
+    "status": "in-progress",
+    "body": "## Purpose\nRepair first combat Linux CI screenshot failure caused by system font differences.\n\n## Non-goals\nTolerance increases, expanding masks, changing existing baselines or gameplay.\n\n## Acceptance criteria\nInspect actual/expected/diff; separate only arena Darwin/Linux expectations at original 1% tolerance; all CI scenarios pass and Pages deploys.\n\n## Test requirements\nTargeted local screenshot, full check/format and CI browser suite.\n\n## Definition of done\nPlatform baseline evidence committed and passing Linux CI recorded before combat gate completion.",
+    "evidence": "First CI run 39015793783: 19 pass, arena font-only screenshot differs by 13,072 pixels. Actual/expected/diff inspected. Linux expectation sourced from that public CI artifact; Darwin refreshed locally."
   }
 ]

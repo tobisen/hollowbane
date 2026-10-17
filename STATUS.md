@@ -2,7 +2,7 @@
 
 - G0 and G1: approved. Phaser 4.2.1 and original visual foundation preserved. Historical evidence: docs/g1-review.md.
 - Phase 2 movement quality approved by user on 2026-10-17 based on movement tests and verified CI. Phase 3 Combat Fundamentals authorized through combat quality review only. No loot, inventory, advanced AI, skill trees or campaign.
-- Current increment: DBL-253–257 playable combat foundation and DBL-259 prerequisite complete; DBL-261 software-rendering parity verified; DBL-258 measured quality candidate pending CI font-baseline repair and publication; DBL-260 tracks provisional art/audio polish. Detailed scope and verification: docs/combat/phase3.md.
+- Current increment: DBL-253–257 playable combat foundation and DBL-259 prerequisite complete; DBL-261 software-rendering parity verified; DBL-258 measured quality candidate pending DBL-262 platform font-baseline repair and publication; DBL-260 tracks provisional art/audio polish. Detailed scope and verification: docs/combat/phase3.md.
 - Completed scoped issues: DBL-240–244; publication baseline follow-up DBL-252. Original DBL-036 is partial: idle/move and pure combat timeline delivered; combat integration and block remain incomplete. Broader original parents remain partial where their later requirements are unmet.
 - Movement: exact click targets, direct/smoothed routes, swept wall/prop collision and clearance, deterministic walk/run acceleration/deceleration, distance-driven eight-direction frames, immediate reversals, stop/facing/queue intents, held steering, persistent remappable inputs/speeds, CSS/camera projection and smooth following.
 - Phase 3 checks: 90 unit tests and npm run check pass; format check passes. 20 Chromium E2E cases pass. Browser regression outcome is retained in docs/combat/phase3.md.
@@ -12,6 +12,6 @@
 - Review, detailed logs, measurements and reproduction: docs/movement/phase2.md. Head: `git log -1`.
 - Combat publication: first CI 39015793783 failed only platform-font arena screenshot (19 other cases passed); deploy skipped. Combat is not hosted yet.
 - Public demo: https://tobisen.github.io/hollowbane/ . Phase 2 publication/hosted verification outcome is recorded in the final session report.
-- GitHub CLI remains unauthenticated; local backlog contains 261 stable records. Issue import does not block movement or publication.
+- GitHub CLI remains unauthenticated; local backlog contains 262 stable records. Issue import does not block movement or publication.
 
 - Publication baseline follow-up DBL-252: initial CI run 39010274698 failed two old G1 expectations (10,423/11,357 pixels) and skipped deployment. Reviewed Phase 2 baselines now pass 61 unit tests and 15 local Chromium cases with unchanged 1% tolerance. Subsequent Linux/Pages/hosted outcome is recorded in the final session report.

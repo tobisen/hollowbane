@@ -45,10 +45,13 @@ test("arena is inspectable and preserves its visual reference", async ({
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneCombat!.tick))
     .toBe(0);
-  await expect(page.locator("main")).toHaveScreenshot("ashwood-arena.png", {
-    mask: [page.locator("#combat-diagnostics")],
-    maxDiffPixelRatio: 0.01,
-  });
+  await expect(page.locator("main")).toHaveScreenshot(
+    `ashwood-arena-${process.platform}.png`,
+    {
+      mask: [page.locator("#combat-diagnostics")],
+      maxDiffPixelRatio: 0.01,
+    },
+  );
   expect(errors).toEqual([]);
 });
 test("melee approaches and respects windup, recovery, held attacks and death", async ({
