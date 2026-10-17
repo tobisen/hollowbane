@@ -29,26 +29,23 @@ export function createPolishGround(
   const floor = scene.add.graphics();
   floor.fillStyle(0x1b292d, 1).fillRect(0, 0, 1070, 570);
   if (!flat) {
-    for (let row = 0; row < 15; row++)
-      for (let col = 0; col < 14; col++) {
-        const x = col * 84 - (row % 2) * 42,
-          y = row * 40,
-          tone = (row * 7 + col * 13) % 4;
+    for (let row = 0; row < 29; row++)
+      for (let col = -1; col < 14; col++) {
+        const x = col * 84 + (row % 2) * 42,
+          y = row * 21,
+          tone = (row * 7 + col * 13 + 100) % 4;
         floor
-          .fillStyle([0x223238, 0x263439, 0x1e2d33, 0x29363a][tone]!, 1)
-          .fillRect(
-            Math.max(3, x + 2),
-            y + 2,
-            Math.min(80, 1067 - Math.max(3, x + 2)),
-            36,
-          )
-          .lineStyle(1, 0x8b9790, 0.12)
-          .lineBetween(
-            Math.max(3, x + 3),
-            y + 3,
-            Math.min(1066, x + 80),
-            y + 3,
-          );
+          .fillStyle([0x1e2d32, 0x243238, 0x1c2b30, 0x223137][tone]!, 1)
+          .beginPath()
+          .moveTo(x, y - 20)
+          .lineTo(x + 41, y)
+          .lineTo(x, y + 20)
+          .lineTo(x - 41, y)
+          .closePath()
+          .fillPath()
+          .lineStyle(0.7, 0x82938f, 0.12)
+          .lineBetween(x - 40, y, x, y - 20)
+          .lineBetween(x, y - 20, x + 40, y);
       }
     floor
       .lineStyle(2, 0xa18d60, 0.6)

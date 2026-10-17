@@ -27,3 +27,5 @@
 - DBL-303 complete: original bounded spell/combat synthesis, mute and API fallback; full check 172, three unit and two browser audio cases pass. DBL-304 contact/lighting consistency next.
 
 - DBL-304 complete: cached original floor/light/contact graphics, original backdrop cropping, depth-sorted obstacles and readable pack labels. Seven polish cases/full check 172 pass; screenshot reviewed. DBL-305 full regression and showcase captures next; 306 performance/307 publication gate.
+
+- DBL-305 complete: full check 172, Chromium 67/67, combined skill/polish Firefox-WebKit 28/28. Existing golden baselines preserved, new polish reference and six actual-simulation captures reviewed. DBL-306 repeated performance next.

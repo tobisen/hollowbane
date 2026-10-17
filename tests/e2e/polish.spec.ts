@@ -269,3 +269,28 @@ test("missing Web Audio keeps spells and muted gameplay usable", async ({
     .toBe(true);
   expect(errors).toEqual([]);
 });
+
+test("polish world and HUD retain their visual reference", async ({ page }) => {
+  await ready(page);
+  await page.locator("#combat-pause").click();
+  await page.locator("#combat-reset").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat!.tick))
+    .toBe(0);
+  await page.locator(".arena-panel summary").click();
+  await expect(page.locator("#polish-health")).toHaveAttribute(
+    "aria-valuenow",
+    "300",
+  );
+  await expect(page).toHaveScreenshot("sable-court.png", {
+    maxDiffPixelRatio: 0.01,
+    mask: [
+      page.locator(".arena-header"),
+      page.locator(".arena-panel"),
+      page.locator(
+        ".slot-name,.slot-meta,.slot-key,.vital-label,#polish-target,#skill-resource,#skill-prompts,#skill-status,#combat-log",
+      ),
+    ],
+  });
+  await page.screenshot({ path: ".local/polish-review.png" });
+});
