@@ -101,10 +101,10 @@
   },
   "lootL1": {
     "authorized": true,
-    "qualityGateApproved": false,
+    "qualityGateApproved": true,
     "scope": ["DBL-310", "DBL-319"],
     "technicalCandidateDelivered": true,
-    "stoppedForReview": true,
+    "stoppedForReview": false,
     "runtimeCommit": "b565a1e",
     "ciRun": "39067012054",
     "unitTests": 194,
@@ -127,6 +127,12 @@
       "DBL-318",
       "DBL-319"
     ],
-    "evidence": "docs/loot/l1.md, distributions.json, performance-chromium.json"
+    "evidence": "docs/loot/l1.md, distributions.json, performance-chromium.json",
+    "approval": "Explicit user L1 approval in attached L2 request"
+  },
+  "inventoryL2": {
+    "authorized": true,
+    "qualityGateApproved": false,
+    "scope": ["DBL-320", "DBL-331"]
   }
 }

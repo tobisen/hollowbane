@@ -11,6 +11,9 @@ export const CATEGORIES = [
   "shield",
   "boots",
   "ring",
+  "gloves",
+  "belt",
+  "amulet",
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 export const STATS = [
@@ -89,11 +92,19 @@ export function validItemStats(v: unknown): v is ItemStats {
   );
 }
 /** Atomic validation, detached copy; bounded registries and cross references. */
-export function validateItemContent(value: unknown): ItemContent {
+export function validateItemContent(
+  value: unknown,
+  expectedVersion = ITEM_VERSION,
+): ItemContent {
   const fail = (): never => {
     throw new Error("Invalid or unsupported item content");
   };
-  if (!record(value) || value.version !== ITEM_VERSION) return fail();
+  if (
+    ![2, 3].includes(expectedVersion) ||
+    !record(value) ||
+    value.version !== expectedVersion
+  )
+    return fail();
   for (const key of ["bases", "affixes", "uniques", "tables"]) {
     const list = value[key];
     if (!Array.isArray(list) || list.length === 0 || list.length > 256)
@@ -405,3 +416,66 @@ export const ITEM_CONTENT = validateItemContent({
     },
   ],
 });
+
+/** Explicit L2 extension. Legacy content2 and court weights are unchanged. */
+export const EQUIPMENT_CONTENT = validateItemContent(
+  {
+    ...structuredClone(ITEM_CONTENT),
+    version: 3,
+    bases: [
+      ...structuredClone(ITEM_CONTENT.bases),
+      {
+        id: "sootwrap-gloves",
+        name: "Sootwrap Gloves",
+        category: "gloves",
+        level: 1,
+        requirement: 1,
+        weight: 20,
+        stats: { armor: 3 },
+      },
+      {
+        id: "hemp-sash",
+        name: "Hemp Sash",
+        category: "belt",
+        level: 1,
+        requirement: 1,
+        weight: 15,
+        stats: { armor: 2 },
+      },
+      {
+        id: "slate-pendant",
+        name: "Slate Pendant",
+        category: "amulet",
+        level: 1,
+        requirement: 1,
+        weight: 8,
+        stats: { life: 5, mana: 2 },
+      },
+    ],
+    affixes: ITEM_CONTENT.affixes.map((a) => ({
+      ...structuredClone(a),
+      categories: a.categories.includes("chest")
+        ? [...a.categories, "gloves", "belt", "amulet"]
+        : a.categories,
+    })),
+    tables: [
+      ...structuredClone(ITEM_CONTENT.tables),
+      {
+        ...structuredClone(ITEM_CONTENT.tables[0]!),
+        id: "reliquary",
+        bases: [
+          ...structuredClone(ITEM_CONTENT.tables[0]!.bases),
+          { id: "sootwrap-gloves", weight: 20 },
+          { id: "hemp-sash", weight: 15 },
+          { id: "slate-pendant", weight: 8 },
+        ],
+      },
+    ],
+  },
+  3,
+);
+export function itemContentForVersion(version: number): ItemContent {
+  if (version === 2) return ITEM_CONTENT;
+  if (version === 3) return EQUIPMENT_CONTENT;
+  throw Error("Unsupported item content version");
+}

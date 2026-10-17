@@ -1,4 +1,8 @@
-import { ITEM_CONTENT, type ItemContent } from "./item-content";
+import {
+  ITEM_CONTENT,
+  itemContentForVersion,
+  type ItemContent,
+} from "./item-content";
 import { generateLoot, type GeneratedItem, type LootContext } from "./loot";
 const object = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null && !Array.isArray(v);
@@ -18,9 +22,12 @@ function canonical(v: unknown): string {
 /** Recompute every generated attribute; never trust saved stats or display text. */
 export function validateGeneratedItem(
   value: unknown,
-  content: ItemContent = ITEM_CONTENT,
+  content?: ItemContent,
 ): GeneratedItem {
+  if (object(value) && !content && typeof value.contentVersion === "number")
+    content = itemContentForVersion(value.contentVersion);
   if (
+    !content ||
     !object(value) ||
     value.schema !== 1 ||
     value.contentVersion !== content.version ||
@@ -52,7 +59,9 @@ export function inspectItem(item: GeneratedItem): {
   stats: GeneratedItem["stats"] | null;
   identified: boolean;
 } {
-  const base = ITEM_CONTENT.bases.find((b) => b.id === item.base)!;
+  const base = itemContentForVersion(item.contentVersion).bases.find(
+    (b) => b.id === item.base,
+  )!;
   return {
     name: item.identified ? item.name : `Unidentified ${base.name}`,
     quality: item.quality,

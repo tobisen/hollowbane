@@ -39,3 +39,5 @@ L1 quality work split before completion: DBL-316 regression/visual, DBL-317 repe
 DBL-319 is a required L1 dependency discovered by burst profiling: early-seed RNG correlation fix/content version2. DBL-317 depends on319 before final performance/publication;318 remains final gate. Graph validation now supports later-added dependencies without renumbering IDs and detects actual cycles.
 
 L1 checkpoint: DBL-310–319 technically delivered; runtimeb565a1e, CI/Pages39067012054,194 unit/74 Chromium/10 FF-WebKit/48 hosted scenarios. Stop for user L1 quality review; approval false. Preserve broad partial parents and hardware/performance/art follow-ups. No L2 without explicit approval. Evidence docs/loot/l1.md.
+
+L1 approved; L2 Inventory & Equipment authorized through DBL-320–331 and L2 gate, superseding the earlier inventory prohibition for this scope. Sequential footprints/grid/equipment/world transactions/stats/persistence/UI/controller/regression/performance/publication/gate. Original36 topics and IDs preserved; no L3/progression/crafting/vendors/sockets/runewords.

@@ -10,7 +10,7 @@ describe("versioned original item content", () => {
   it("rejects unsupported, malformed, duplicate and dangling content", () => {
     for (const change of [
       (d: typeof ITEM_CONTENT) => {
-        d.version = 3;
+        d.version = 4;
       },
       (d: typeof ITEM_CONTENT) => {
         d.bases.push(d.bases[0]!);
