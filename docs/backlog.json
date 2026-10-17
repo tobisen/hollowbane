@@ -2882,8 +2882,9 @@
     "priority": "p0",
     "parent": "DBL-009",
     "dependencies": ["DBL-273"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Purpose\nG2.5 browser regression, performance and review\n\n## Scope\nAuthorized Phase 2.5 gamepad support. Stable numeric ID DBL-274; requested alias DBL-GP12. Preserve Phaser 4.2.1 and existing keyboard/mouse and completed combat.\n\n## Non-goals\nNew combat mechanics, loot, inventory or resuming Phase 3 before G2.5 user approval.\n\n## Acceptance criteria\nG2.5 browser regression, performance and review; deterministic device-independent intents; safe boundaries and documented fallback behavior.\n\n## Test requirements\nTargeted unit/browser coverage, check at milestones, full regression before G2.5; distinguish emulation from physical verification.\n\n## Definition of done\nVerified scoped increment committed with evidence in docs/gamepad/phase2.5.md; stop for G2.5 review after DBL-274.",
-    "deliveryPhase": "2.5"
+    "deliveryPhase": "2.5",
+    "evidence": "Quality checkpoint: 114 unit tests and full check/format pass. Full Chromium 37 cases; final calibrated-ownership follow-up 17 Chromium controller cases and 32 Firefox/WebKit behaviors pass; 15 legacy movement cases plus smoke pass. Frame-aware speed observation preserves original speed/collision assertions (five repeats pass). Performance/publication pending; G2.5 approval false."
   }
 ]

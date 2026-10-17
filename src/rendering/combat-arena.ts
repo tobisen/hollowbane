@@ -128,6 +128,17 @@ export function startCombatArena(): Phaser.Game {
       });
     }
     create(): void {
+      controllerInput.movementKeys = new Set([
+        "KeyW",
+        "KeyA",
+        "KeyS",
+        "KeyD",
+        "Space",
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+      ]);
       this.add
         .image(0, 0, "arena-plate")
         .setOrigin(0)
@@ -511,7 +522,7 @@ export function startCombatArena(): Phaser.Game {
         this.padAttack = false;
       }
       if (
-        controllerInput.frame.device === "gamepad" &&
+        controllerInput.frame.device !== "mouse" &&
         !controllerInput.blockGameplay
       ) {
         const candidates = this.world.actors.filter(
@@ -555,7 +566,7 @@ export function startCombatArena(): Phaser.Game {
               return score(a) - score(b) || a.id - b.id;
             })[0];
           if (chosen) {
-            this.padAttack = true;
+            this.padAttack = controllerInput.frame.device === "gamepad";
             player.controller = commandCombat(player.controller, {
               kind: "attack",
               target: chosen.id,

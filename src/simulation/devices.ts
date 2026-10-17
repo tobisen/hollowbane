@@ -16,9 +16,9 @@ export interface DeviceState {
 export function createDeviceState(): DeviceState {
   return { source: "keyboard", selected: null, armed: false, previous: [] };
 }
-export function neutral(pad: PadSnapshot): boolean {
+export function neutral(pad: PadSnapshot, threshold = 0.18): boolean {
   return (
-    pad.axes.every((v) => Number.isFinite(v) && Math.abs(v) < 0.18) &&
+    pad.axes.every((v) => Number.isFinite(v) && Math.abs(v) <= threshold) &&
     pad.buttons.every((v) => Number.isFinite(v) && v < 0.4)
   );
 }
@@ -28,6 +28,7 @@ export function stepDevices(
   preferred: number | null = null,
   focused = true,
   activity: Device | null = null,
+  thresholds = { neutral: 0.18, active: 0.2, delta: 0.04 },
 ): { state: DeviceState; pad: PadSnapshot | null; disconnected: boolean } {
   const pads = snapshots.filter((p) => p.connected),
     disconnected =
@@ -49,7 +50,8 @@ export function stepDevices(
         (p.buttons.some((v, i) => v >= 0.5 && (old.buttons[i] ?? 0) < 0.5) ||
           p.axes.some(
             (v, i) =>
-              Math.abs(v) > 0.2 && Math.abs(v - (old.axes[i] ?? 0)) > 0.04,
+              Math.abs(v) > thresholds.active &&
+              Math.abs(v - (old.axes[i] ?? 0)) > thresholds.delta,
           ))
       ) {
         selected = p.index;
@@ -62,7 +64,9 @@ export function stepDevices(
     selected === state.selected &&
     pad?.id === state.previous.find((p) => p.index === selected)?.id;
   const armed =
-    focused && pad !== null && ((same && state.armed) || neutral(pad));
+    focused &&
+    pad !== null &&
+    ((same && state.armed) || neutral(pad, thresholds.neutral));
   if (!focused || disconnected) source = "keyboard";
   if (preferred !== null && focused && !activity && pad && same && armed) {
     const old = state.previous.find((p) => p.index === selected);
@@ -71,7 +75,8 @@ export function stepDevices(
       (pad.buttons.some((v, i) => v >= 0.5 && (old.buttons[i] ?? 0) < 0.5) ||
         pad.axes.some(
           (v, i) =>
-            Math.abs(v) > 0.2 && Math.abs(v - (old.axes[i] ?? 0)) > 0.04,
+            Math.abs(v) > thresholds.active &&
+            Math.abs(v - (old.axes[i] ?? 0)) > thresholds.delta,
         ))
     )
       source = "gamepad";

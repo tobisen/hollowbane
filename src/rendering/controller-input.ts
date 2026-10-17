@@ -18,6 +18,9 @@ import {
 } from "../simulation/devices";
 import {
   standardProfile,
+  normalizeVendorPad,
+  validatePadBindings,
+  type PadProfile,
   padActions,
   type GlyphFamily,
 } from "../simulation/gamepad-profile";
@@ -43,10 +46,25 @@ export class ControllerInput {
   supported = false;
   suspended = false;
   blockGameplay = false;
+  movementKeys = new Set<string>();
+  private vendorProfiles: PadProfile[] = [];
+  registerVendorProfile(profile: PadProfile): void {
+    if (
+      profile.axes.length !== 4 ||
+      !profile.axes.every((v) => Number.isInteger(v) && v >= 0 && v < 16)
+    )
+      throw new Error("Invalid vendor axes");
+    this.vendorProfiles.push({
+      ...profile,
+      bindings: validatePadBindings(profile.bindings),
+      axes: [...profile.axes],
+    });
+  }
   sequence = 0;
   activityAt = 0;
   pollTimes: number[] = [];
   samples = 0;
+  private cachedPollP95 = 0;
   private keys = new Set<string>();
   private mouse = new Set<Action>();
   private pointer: Point | null = null;
@@ -167,12 +185,36 @@ export class ControllerInput {
     )?.id;
     const oldSource = this.state.source,
       oldPad = this.state.selected;
+    // Arbitration uses calibrated, deadzoned logical axes, not raw drift.
+    const ownershipPads = this.pads.map((raw) => {
+      const profile = standardProfile(
+        raw,
+        this.settings.profile,
+        this.vendorProfiles,
+      );
+      const normalized =
+        profile && this.vendorProfiles.includes(profile)
+          ? normalizeVendorPad(raw, profile)
+          : raw;
+      const a = this.settings.axes.map(
+        (axis, i) =>
+          (normalized.axes[axis] ?? 0) - (this.settings.centers[i] ?? 0),
+      );
+      const move = profile
+          ? processStick(a[0]!, a[1]!, this.settings.move)
+          : { x: 0, y: 0 },
+        aim = profile
+          ? processStick(a[2]!, a[3]!, this.settings.aim)
+          : { x: 0, y: 0 };
+      return { ...normalized, axes: [move.x, move.y, aim.x, aim.y] };
+    });
     const result = stepDevices(
       this.state,
-      this.pads,
+      ownershipPads,
       this.settings.selected,
       this.focused && !this.suspended,
       this.activity,
+      { neutral: 0.001, active: 0.001, delta: 0.001 },
     );
     this.state = result.state;
     this.activity = null;
@@ -190,16 +232,30 @@ export class ControllerInput {
     );
     const snapshot = this.pads.find((p) => p.index === this.state.selected),
       profile = snapshot
-        ? standardProfile(snapshot, this.settings.profile)
+        ? standardProfile(snapshot, this.settings.profile, this.vendorProfiles)
         : null;
     this.supported = profile !== null;
     this.family = profile?.family ?? "generic";
-    const p = result.pad,
+    const rawSelected = result.pad
+      ? (this.pads.find((p) => p.index === result.pad!.index) ?? null)
+      : null;
+    const p =
+        rawSelected && profile && this.vendorProfiles.includes(profile)
+          ? normalizeVendorPad(rawSelected, profile)
+          : rawSelected,
       held =
         p && profile
           ? padActions(p, this.settings.bindings)
           : this.state.source === "keyboard" && !this.suspended && this.focused
-            ? keyActions(this.keys)
+            ? keyActions(
+                new Set(
+                  [...this.keys].filter(
+                    (code) =>
+                      !this.movementKeys.has(code) ||
+                      !document.activeElement?.matches("#world,#combat-world"),
+                  ),
+                ),
+              )
             : this.state.source === "mouse" && !this.suspended && this.focused
               ? new Set(this.mouse)
               : new Set<Action>();
@@ -233,8 +289,10 @@ export class ControllerInput {
     this.previous = held;
     this.frame = next;
     this.samples++;
-    this.pollTimes.push(performance.now() - start);
-    if (this.pollTimes.length > 300) this.pollTimes.shift();
+    if (this.samples % 30 === 0) {
+      const sorted = [...this.pollTimes].sort((a, b) => a - b);
+      this.cachedPollP95 = sorted[Math.floor(sorted.length * 0.95)] ?? 0;
+    }
     window.hollowbaneInput = {
       device: this.state.source,
       selected: this.state.selected,
@@ -246,11 +304,10 @@ export class ControllerInput {
       actions: next.actions,
       pads: this.pads,
       samples: this.samples,
-      pollP95:
-        [...this.pollTimes].sort((a, b) => a - b)[
-          Math.floor(this.pollTimes.length * 0.95)
-        ] ?? 0,
+      pollP95: this.cachedPollP95,
     };
+    this.pollTimes.push(performance.now() - start);
+    if (this.pollTimes.length > 300) this.pollTimes.shift();
   }
 }
 export const controllerInput = new ControllerInput();

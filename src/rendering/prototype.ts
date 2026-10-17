@@ -43,6 +43,7 @@ export interface PrototypeState {
   decorationPaused: boolean;
   inputFeedbackMs: number | null;
   inputSamples: number;
+  movementObservedAt: number | null;
   renderWidth: number;
   renderHeight: number;
   balancedDetail: boolean;
@@ -87,6 +88,7 @@ export function startPrototype(): Phaser.Game {
     private loaded = false;
     private inputAt: number | null = null;
     private lastInputMs: number | null = null;
+    private movementObservedAt: number | null = null;
     private inputSamples = 0;
     private resolutionRatio = 1;
     private balancedDetail = false;
@@ -192,6 +194,9 @@ export function startPrototype(): Phaser.Game {
         .centerOn(780, 500);
       const world = document.querySelector<HTMLElement>("#world")!;
       this.walker.gait = this.preferences.gait;
+      controllerInput.movementKeys = new Set(
+        Object.values(this.preferences.bindings).flat(),
+      );
       this.hover = this.add
         .ellipse(0, 0, 16, 8)
         .setStrokeStyle(1, 0xa6c7ce, 0.5)
@@ -210,6 +215,9 @@ export function startPrototype(): Phaser.Game {
         command: (command) => this.command(command),
         change: (preferences) => {
           this.preferences = preferences;
+          controllerInput.movementKeys = new Set(
+            Object.values(preferences.bindings).flat(),
+          );
         },
         interrupt,
         intent: () => {
@@ -406,6 +414,7 @@ export function startPrototype(): Phaser.Game {
         decorationPaused: this.paused,
         inputFeedbackMs: this.lastInputMs,
         inputSamples: this.inputSamples,
+        movementObservedAt: this.movementObservedAt,
         renderWidth: this.scale.width,
         renderHeight: this.scale.height,
         balancedDetail: this.balancedDetail,
@@ -494,7 +503,8 @@ export function startPrototype(): Phaser.Game {
         this.accumulator -= 1000 / 60;
       }
       if (this.walker.walking && this.inputAt !== null) {
-        this.lastInputMs = performance.now() - this.inputAt;
+        this.movementObservedAt = performance.now();
+        this.lastInputMs = this.movementObservedAt - this.inputAt;
         this.inputSamples++;
         this.inputAt = null;
       }

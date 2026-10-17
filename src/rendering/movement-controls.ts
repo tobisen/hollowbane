@@ -129,11 +129,17 @@ export function movementControls(
   dialog.querySelector<HTMLButtonElement>("#movement-controller")!.onclick =
     () => window.dispatchEvent(new Event("hollowbane-controller-menu"));
   const close = () => {
+    window.dispatchEvent(new Event("hollowbane-ui-dismiss"));
     dialog.close();
     world.focus();
   };
   dialog.querySelector<HTMLButtonElement>("#movement-cancel")!.onclick = close;
-  dialog.addEventListener("close", () => world.focus());
+  dialog.addEventListener("cancel", () =>
+    window.dispatchEvent(new Event("hollowbane-ui-dismiss")),
+  );
+  dialog.addEventListener("close", () => {
+    if (!document.querySelector("dialog[open]")) world.focus();
+  });
   dialog.querySelector<HTMLButtonElement>("#movement-defaults")!.onclick =
     () => {
       draft = defaultPreferences();

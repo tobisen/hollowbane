@@ -303,14 +303,17 @@ test("calibration captures stable centers, persists and rejects held sticks", as
   page,
 }) => {
   await ready(page, "./?controller=1");
-  await axes(page, [0.08, -0.03, 0.02, 0]);
+  await axes(page, [0.23, -0.03, 0.02, 0]);
   await page.locator("#pad-calibrate").click();
   await expect(page.locator("#calibration-state")).toHaveText(
     "Center calibration saved.",
   );
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.armed))
+    .toBe(true);
   await page.reload();
   await expect(page.locator("#calibration-values")).toContainText(
-    "0.080, -0.030, 0.020",
+    "0.230, -0.030, 0.020",
   );
   await axes(page, [1, 0, 0, 0]);
   await page.locator("#pad-calibrate").click();
@@ -424,4 +427,104 @@ test("keyboard takes ownership without losing its first movement press", async (
   await expect
     .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
     .toBe(false);
+});
+test("one explicitly selected controller owns movement and selection persists", async ({
+  page,
+}) => {
+  await ready(page, "./?controller=1");
+  await page.evaluate(() => {
+    window.virtualPads.push({
+      ...window.virtualPads[0]!,
+      index: 1,
+      id: "Second standard pad",
+      axes: [0, 0, 0, 0],
+      buttons: window.virtualPads[0]!.buttons.map((b) => ({ ...b })),
+    });
+  });
+  await expect(page.locator('#pad-selected option[value="1"]')).toHaveCount(1);
+  await page.locator("#pad-selected").selectOption("1");
+  await page.locator("#pad-save").click();
+  await page.goto("./");
+  await page.evaluate(() => {
+    window.virtualPads.push({
+      ...window.virtualPads[0]!,
+      index: 1,
+      id: "Second standard pad",
+      axes: [0, 0, 0, 0],
+      buttons: window.virtualPads[0]!.buttons.map((b) => ({ ...b })),
+    });
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.selected))
+    .toBe(1);
+  await axes(page, [1, 0, 0, 0]);
+  const tick = await page.evaluate(() => window.hollowbanePrototype!.tick);
+  await page.waitForFunction(
+    (t) => window.hollowbanePrototype!.tick > t + 8,
+    tick,
+  );
+  expect(await page.evaluate(() => window.hollowbanePrototype!.walking)).toBe(
+    false,
+  );
+  await page.evaluate(() => {
+    window.virtualPads[1]!.axes = [0.8, 0, 0, 0];
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+});
+test("pause blocks movement until resume and neutral rearm", async ({
+  page,
+}) => {
+  await ready(page);
+  await axes(page, [0.8, 0, 0, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+  await tap(page, 9);
+  await expect(page.locator("#controller-menu")).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(false);
+  expect(await page.evaluate(() => window.hollowbaneInput!.armed)).toBe(false);
+  await axes(page, [0, 0, 0, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.armed))
+    .toBe(true);
+  await tap(page, 0);
+  await expect(page.locator("#controller-menu")).not.toBeVisible();
+  expect(await page.evaluate(() => window.hollowbanePrototype!.walking)).toBe(
+    false,
+  );
+  await axes(page, [0.7, 0, 0, 0]);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+});
+test("native Tab navigation and custom keyboard movement bindings retain priority", async ({
+  page,
+}) => {
+  await ready(page, "./?controller=1");
+  await page.keyboard.press("Tab");
+  await expect(page.locator("#controller-menu")).not.toBeVisible();
+  expect(
+    await page.evaluate(() =>
+      document.activeElement?.matches("a,input,select,button"),
+    ),
+  ).toBe(true);
+  await page.goto("./");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-prototype-ready",
+    "true",
+  );
+  await page.getByRole("button", { name: "Controls", exact: true }).click();
+  await page.getByLabel("Move up key").focus();
+  await page.keyboard.press("p");
+  await page.getByRole("button", { name: "Save controls" }).click();
+  await page.keyboard.down("p");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePrototype!.walking))
+    .toBe(true);
+  await expect(page.locator("#controller-menu")).not.toBeVisible();
+  await page.keyboard.up("p");
 });

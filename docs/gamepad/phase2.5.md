@@ -51,3 +51,15 @@ Controller laboratory exposes raw/processed separate stick vectors, buttons, pro
 ## DBL-273 / DBL-GP11
 
 Optional short modern/legacy haptics are capability-checked, disabled by default, rejection-safe and stopped on reset. Input reset signals stop movement and held combat pursuit on disconnect/focus/menu/settings changes without cancelling attack commitment. Rearm requires neutral; keyboard handoff preserves its first key press. Haptics unit test, full check 112 tests and all 14 virtual-pad browser cases pass. Vibration fallback tested; physical vibration/controller hardware not verified.
+
+## DBL-274 / DBL-GP12 — verification checkpoint
+
+Full check/format: 114 unit tests, strict typecheck/lint/build, ten asset records, 274 backlog records. Complete Chromium suite passed 37 cases. Final calibrated-ownership follow-up passed all 17 Chromium controller scenarios; all 32 Firefox/WebKit controller behavioral cases pass (one native Tab assertion adjusted to accept each browser's native interactive focus policy). All 15 legacy movement cases and original Firefox/WebKit smoke checks pass.
+
+Quality findings corrected: DOM/gamepad same-poll arbitration; first mouse move with zero movement deltas; deferred close cleanup erasing a new key press (now synchronous pre-dismiss); native Tab preserved (map hotkey V); existing custom movement bindings outrank new keyboard semantic defaults in gameplay focus. Maximum speed's short pre-collision window is now observed on requestAnimationFrame, retaining exact speed 12, endpoint and swept collision assertions; five repeated cases pass. Failure traces confirmed the later intermittent zero-speed reading was a correctly stopped actor at x=1006.274, not lost input.
+
+Ownership/rearm now uses calibrated/deadzoned logical axes, so custom low deadzones and center offsets above the previous raw neutral threshold work. Calibration browser coverage captures a 0.23 center offset and verifies rearming. Bridge polling CPU includes full sampling/normalization/telemetry work; percentile sorting runs every thirty samples.
+
+Vendor extension contract: `controllerInput.registerVendorProfile(profile)` accepts typed matcher, physical axis indices, physical button mappings and glyph family. Normalization converts a vendor layout to standard logical controls before persistent user remaps apply. Unknown nonstandard devices stay inactive until a matching extension or explicit standard override is selected; no untested vendor-specific physical layout is claimed.
+
+Performance runner: scripts/gamepad-benchmark.mjs compares the published pre-2.5 keyboard build (asserts controller runtime absent), current keyboard and current virtual analog input on the same scene/machine/viewport/renderer. Loading is excluded by warmup. Virtual injection-to-movement timing is reported separately from poll-to-movement timing. No physical-controller, Bluetooth, OS-driver or physical vibration verification has been performed.

@@ -1,6 +1,6 @@
 # Roadmap
 
-The initialization directive supplies the following 36 target phases. The imported backlog has a different topic ordering; its phase metadata is deliberately retained rather than silently renumbered. Use requirements/DBL IDs to plan against this target roadmap. Current authorization: initialization tasks A–M and technical G0 only. No production gameplay beyond the foundation.
+The initialization directive supplies the following 36 target phases. The imported backlog has a different topic ordering; its phase metadata is deliberately retained rather than silently renumbered. Use requirements/DBL IDs to plan against this target roadmap. Current authorization: Phase 2.5 controller support through G2.5. Previously completed movement/combat work is preserved; further Phase 3 work is frozen pending G2.5 approval.
 
 - **00 — Project Foundation**
 - **01 — Engine Evaluation**

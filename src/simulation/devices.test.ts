@@ -47,3 +47,23 @@ describe("device lifecycle", () => {
     );
   });
 });
+it("supports neutral/ownership thresholds on already calibrated axes", () => {
+  const options = { neutral: 0.001, active: 0.001, delta: 0.001 };
+  let s = stepDevices(
+    createDeviceState(),
+    [pad()],
+    null,
+    true,
+    null,
+    options,
+  ).state;
+  s = stepDevices(
+    s,
+    [{ ...pad(), axes: [0.01, 0, 0, 0] }],
+    null,
+    true,
+    null,
+    options,
+  ).state;
+  expect(s.source).toBe("gamepad");
+});

@@ -52,9 +52,15 @@ export function installControllerUI(): void {
       else location.href = "./";
     };
   menu.addEventListener("close", () => {
+    if (!document.querySelector("dialog[open]")) world()?.focus();
+  });
+  menu.addEventListener("cancel", () => {
     hub.clear();
     hub.blockGameplay = false;
-    world()?.focus();
+  });
+  window.addEventListener("hollowbane-ui-dismiss", () => {
+    hub.clear();
+    hub.blockGameplay = false;
   });
   window.addEventListener("hollowbane-controller-menu", open);
   window.addEventListener("keydown", (e) => {
@@ -66,8 +72,7 @@ export function installControllerUI(): void {
   });
   let lastDirection = "",
     repeatAt = 0,
-    refreshedAt = 0,
-    wasBlocked = false;
+    refreshedAt = 0;
   const elements = (): HTMLElement[] => {
     const scope = document.querySelector("dialog[open]") ?? document;
     return Array.from(
@@ -139,8 +144,6 @@ export function installControllerUI(): void {
         !gameFocus &&
         active !== null &&
         active !== widget);
-    if (wasBlocked && !hub.blockGameplay) hub.clear();
-    wasBlocked = hub.blockGameplay;
     if (hub.take("pause") || hub.take("menu")) {
       if (menu.open) close();
       else open();

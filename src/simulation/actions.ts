@@ -70,7 +70,7 @@ export const ACTION_KEYS: Partial<Record<string, Action>> = {
   ArrowLeft: "left",
   ArrowRight: "right",
   KeyP: "pause",
-  Tab: "map",
+  KeyV: "map",
   KeyR: "toggleRun",
   KeyT: "targetLock",
   KeyF: "pickup",

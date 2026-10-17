@@ -53,3 +53,21 @@ describe("controller profiles", () => {
     expect(buttonGlyph(22, "generic")).toBe("Button 23");
   });
 });
+import { normalizeVendorPad } from "./gamepad-profile";
+it("normalizes vendor controls before applying persistent logical remaps", () => {
+  const profile = standardProfile(pad)!;
+  profile.axes = [1, 0, 3, 2];
+  profile.bindings.interact = [2];
+  profile.bindings.primary = [0];
+  const raw = {
+    ...pad,
+    mapping: "",
+    axes: [0.4, 0.8, 0, 0],
+    buttons: [1, 0, 0],
+  };
+  const normalized = normalizeVendorPad(raw, profile);
+  expect(normalized.axes.slice(0, 2)).toEqual([0.8, 0.4]);
+  expect(padActions(normalized, defaultPadBindings())).toEqual(
+    new Set(["primary"]),
+  );
+});

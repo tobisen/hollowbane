@@ -204,9 +204,12 @@ test("configured maximum running speed keeps wall and object collision intact", 
   await page.getByRole("button", { name: "Save controls" }).click();
   await page.keyboard.press("r");
   await page.keyboard.down("d");
-  await expect
-    .poll(() => page.evaluate(() => window.hollowbanePrototype!.speed))
-    .toBe(12);
+  // This maximum-speed window ends at the nearby obstacle; observe presented frames.
+  await page.waitForFunction(
+    () => window.hollowbanePrototype!.speed === 12,
+    undefined,
+    { polling: "raf", timeout: 5000 },
+  );
   await expect
     .poll(() => page.evaluate(() => window.hollowbanePrototype!.x), {
       timeout: 10000,

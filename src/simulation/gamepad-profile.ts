@@ -124,3 +124,26 @@ export function buttonGlyph(index: number, family: GlyphFamily): string {
     `Button ${index + 1}`
   );
 }
+
+/** Vendor profiles normalize physical controls into the standard logical layout.
+ * Persistent user remaps then apply to that same logical layout. */
+export function normalizeVendorPad(
+  pad: PadSnapshot,
+  profile: PadProfile,
+): PadSnapshot {
+  const buttons = [...pad.buttons],
+    axes = [...pad.axes],
+    defaults = defaultPadBindings();
+  for (const a of ACTIONS) {
+    const logical = defaults[a][0];
+    if (logical !== undefined)
+      buttons[logical] = Math.max(
+        0,
+        ...profile.bindings[a].map((i) => pad.buttons[i] ?? 0),
+      );
+  }
+  profile.axes.forEach((physical, logical) => {
+    axes[logical] = pad.axes[physical] ?? 0;
+  });
+  return { ...pad, buttons, axes };
+}
