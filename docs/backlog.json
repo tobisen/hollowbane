@@ -3527,8 +3527,9 @@
     "deliveryPhase": "inventory-l2",
     "priority": "p0",
     "dependencies": ["DBL-321"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nAtomic equipment compatibility and hand rules. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nAtomic equipment compatibility and hand rules. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review.",
+    "evidence": "Ten compatible slots, level/identified requirements, atomic replacement/stow/unequip/ring swaps; two-hand/off-hand safety and full-grid failure preserve instances. Targeted4/full check203/typecheck."
   },
   {
     "id": "DBL-323",
