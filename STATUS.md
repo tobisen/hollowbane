@@ -27,3 +27,5 @@
 - DBL-295 complete: shared caster/support/flanker skill decisions, lifecycle sync, 154 unit/full check; live monster skill browser scenario passes. DBL-296 regression/performance gate next.
 
 - DBL-296 complete: 161 unit/full check, full Chromium 58/58 and final Firefox/WebKit skill behavior 12/12; existing screenshot tolerances preserved. Initial local build/navigation race caused one blank reload; stable-build complete rerun passed. DBL-297 paired performance measurements next.
+
+- DBL-297 measurement checkpoint: full check 161 tests; explicit ?durable=1 high-HP target fixture and unchanged normal visual baseline pass. Skill HUD request latency labeled separately from injected-input measurement. Initial 30-enemy run drifted to 29; retained as preliminary and will not be used as constant-count evidence. Final paired profiling underway.

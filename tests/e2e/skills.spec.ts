@@ -278,6 +278,15 @@ test("melee cone and poison strike use selected target after normal movement", a
     )
     .toBe(true);
 });
+test("durable measurement fixture is explicit and holds target HP independently of normal play", async ({
+  page,
+}) => {
+  await ready(page, "./?skills=1&durable=1");
+  expect(
+    await page.evaluate(() => window.hollowbaneCombat!.actors[1]!.maxHp),
+  ).toBe(100000);
+  await expect(page.locator(".arena-header p")).toContainText("DURABLE");
+});
 test("skills retain their visual reference", async ({ page }) => {
   await ready(page);
   await page.locator("#combat-pause").click();

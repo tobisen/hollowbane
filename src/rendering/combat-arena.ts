@@ -246,6 +246,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       floor.lineStyle(2, 0xb19a62, 0.6).strokeRect(230, 260, 1070, 570);
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
+      this.prepareBenchmark();
       this.syncActors();
       this.startedAt = performance.now();
       if (this.game.renderer.type === Phaser.WEBGL) {
@@ -389,6 +390,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               )
             : null;
           this.world = this.encounter?.combat ?? createCombat();
+          this.prepareBenchmark();
           this.abilities = skills ? createSkills(this.world) : null;
           this.skillCosts = [];
           this.skillLatencies = [];
@@ -445,6 +447,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
         void this.audio?.close();
       });
       document.documentElement.dataset.combatReady = "true";
+    }
+    private prepareBenchmark(): void {
+      if (!query.has("durable")) return;
+      for (const a of this.world.actors)
+        if (a.kind !== "player") a.hp = a.maxHp = 100000;
+      document.querySelector(".arena-header p")!.textContent =
+        "HOLLOWBANE / DURABLE TARGET BENCHMARK";
     }
     private castSkill(slot: number): void {
       if (!this.abilities || this.paused || controllerInput.blockGameplay)
@@ -1012,7 +1021,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         const u = this.abilities.users[0]!;
         if (this.game.loop.frame % 6 === 0) {
           document.querySelector("#skill-resource")!.textContent =
-            `MANA ${u.mana.toFixed(0)} / ${u.maxMana} · ${u.cast?.skill ?? "READY"} · skill+combat p95 ${percentile(this.skillCosts, 0.95).toFixed(2)} ms · input p95 ${percentile(this.skillLatencies, 0.95).toFixed(1)} ms`;
+            `MANA ${u.mana.toFixed(0)} / ${u.maxMana} · ${u.cast?.skill ?? "READY"} · skill+combat p95 ${percentile(this.skillCosts, 0.95).toFixed(2)} ms · request p95 ${percentile(this.skillLatencies, 0.95).toFixed(1)} ms`;
           const buttons = Array.from(
             root.querySelectorAll<HTMLButtonElement>("[data-skill]"),
           );
