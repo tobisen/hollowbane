@@ -180,14 +180,15 @@ export function startPrototype(): Phaser.Game {
       }
       for (const light of LANTERNS)
         this.glows.push(addLanternGlow(this, light.x, light.y).setScale(1.2));
-      for (let i = 0; i < 12; i++)
-        this.fog.push(
-          this.add
-            .image(150 + i * 115, 700 + (i % 3) * 70, "mist")
-            .setScale(2.7, 1.2)
-            .setDepth(9000)
-            .setAlpha(0.22),
-        );
+      if (!query.has("noMist"))
+        for (let i = 0; i < 12; i++)
+          this.fog.push(
+            this.add
+              .image(150 + i * 115, 700 + (i % 3) * 70, "mist")
+              .setScale(2.7, 1.2)
+              .setDepth(9000)
+              .setAlpha(0.22),
+          );
       this.cameras.main
         .setBounds(0, 0, 1536, 1024)
         .setZoom(this.desiredZoom * this.resolutionRatio)
