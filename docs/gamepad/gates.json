@@ -15,7 +15,7 @@
   },
   "phase4": {
     "authorized": true,
-    "qualityGateApproved": false,
+    "qualityGateApproved": true,
     "scope": ["DBL-275", "DBL-281"],
     "excludes": ["loot", "inventory", "skill trees", "campaign"],
     "technicalCandidateDelivered": true,
@@ -42,6 +42,12 @@
       "physicalControllerVerified": false,
       "nativeMetadataPending": true,
       "hostedControllerCases": 25
-    }
+    },
+    "approval": "Explicit user G4 Monster AI approval"
+  },
+  "skills": {
+    "authorized": true,
+    "qualityGateApproved": false,
+    "scope": ["DBL-291", "DBL-296"]
   }
 }

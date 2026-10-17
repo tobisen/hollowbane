@@ -1,6 +1,6 @@
 # Roadmap
 
-The initialization directive supplies the following 36 target phases. The imported backlog has a different topic ordering; its phase metadata is deliberately retained rather than silently renumbered. Use requirements/DBL IDs to plan against this target roadmap. Current authorization: Phase 2.5 controller support through G2.5. Previously completed movement/combat work is preserved; further Phase 3 work is frozen pending G2.5 approval.
+The initialization directive supplies the following 36 target phases. The imported backlog has a different topic ordering; its phase metadata is deliberately retained rather than silently renumbered. Use requirements/DBL IDs to plan against this target roadmap. Current authorization: G4 Monster AI approved; Skills & Spell Systems (topic 10) through its quality gate. Delivery gate names do not rename the original G0–G6 definitions.
 
 - **00 — Project Foundation**
 - **01 — Engine Evaluation**
@@ -64,3 +64,7 @@ DBL-GP01–12 map uniquely to stable DBL-263–274 (see BACKLOG.md). Complete se
 ## Authorized delivery: Phase 4 — Monster AI
 
 G2.5 is approved. User delivery Phase 4 maps to original roadmap topic 08 (Monster AI) and foundations in 09; the original 36 phases and numeric source metadata remain unchanged. Scoped DBL-275–281 depend on completed combat/controller slices rather than marking the original spell-chain dependencies done. Implement through the Monster AI quality gate only; hardware follow-ups DBL-282–286 remain separate.
+
+## Authorized delivery: Skills & Spell Systems
+
+G4 Monster AI approved by user. Original topic 10 and scoped source DBL-044/046/047/051–057/062 slices execute as DBL-291–296. Preserve 36 topics and existing parent dependencies; no character skill trees, items or campaign. Stop at the skills quality gate.

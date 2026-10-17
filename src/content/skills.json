@@ -1,0 +1,122 @@
+[
+  {
+    "kind": "active",
+    "id": "ember-lance",
+    "name": "Ember Lance",
+    "shape": "projectile",
+    "element": "fire",
+    "damage": 42,
+    "mana": 8,
+    "cooldown": 18,
+    "windup": 10,
+    "recovery": 14,
+    "range": 8,
+    "radius": 0.25,
+    "maxTargets": 1,
+    "status": null
+  },
+  {
+    "kind": "active",
+    "id": "rime-ring",
+    "name": "Rime Ring",
+    "shape": "radial",
+    "element": "cold",
+    "damage": 24,
+    "mana": 18,
+    "cooldown": 120,
+    "windup": 12,
+    "recovery": 18,
+    "range": 3,
+    "radius": 3,
+    "maxTargets": 30,
+    "status": {
+      "kind": "slow",
+      "duration": 180,
+      "interval": 60,
+      "magnitude": 0.4,
+      "stacking": "strongest"
+    }
+  },
+  {
+    "kind": "active",
+    "id": "storm-thread",
+    "name": "Storm Thread",
+    "shape": "chain",
+    "element": "lightning",
+    "damage": 30,
+    "mana": 16,
+    "cooldown": 75,
+    "windup": 12,
+    "recovery": 16,
+    "range": 7,
+    "radius": 2.8,
+    "maxTargets": 4,
+    "status": null
+  },
+  {
+    "kind": "active",
+    "id": "iron-fan",
+    "name": "Iron Fan",
+    "shape": "cone",
+    "element": "physical",
+    "damage": 36,
+    "mana": 7,
+    "cooldown": 30,
+    "windup": 12,
+    "recovery": 18,
+    "range": 1.8,
+    "radius": 0.65,
+    "maxTargets": 8,
+    "status": null
+  },
+  {
+    "kind": "active",
+    "id": "oath-echo",
+    "name": "Oath Echo",
+    "shape": "self",
+    "element": "arcane",
+    "damage": 0,
+    "mana": 14,
+    "cooldown": 240,
+    "windup": 10,
+    "recovery": 16,
+    "range": 3,
+    "radius": 3,
+    "maxTargets": 12,
+    "status": {
+      "kind": "power",
+      "duration": 240,
+      "interval": 60,
+      "magnitude": 0.3,
+      "stacking": "refresh"
+    }
+  },
+  {
+    "kind": "active",
+    "id": "briar-edge",
+    "name": "Briar Edge",
+    "shape": "melee",
+    "element": "physical",
+    "damage": 18,
+    "mana": 9,
+    "cooldown": 45,
+    "windup": 10,
+    "recovery": 16,
+    "range": 1.3,
+    "radius": 0.3,
+    "maxTargets": 1,
+    "status": {
+      "kind": "poison",
+      "duration": 180,
+      "interval": 30,
+      "magnitude": 7,
+      "stacking": "refresh"
+    }
+  },
+  {
+    "kind": "passive",
+    "id": "still-well",
+    "name": "Still Well",
+    "manaPerSecond": 4
+  }
+]

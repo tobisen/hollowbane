@@ -3097,5 +3097,78 @@
     "status": "completed",
     "body": "## Acceptance criteria\nPersistent explicit controller choice follows its reported ID when its browser index changes; never select an unrelated device that reuses an index. Manual layout overrides survive absent API snapshots and reload. Explain waiting-for-activation versus unsupported mapping.\n\n## Non-goals\nGuessing an unknown vendor button layout or claiming physical hardware success.\n\n## Test requirements\nLegacy settings migration, index reuse/reconnect, unknown mapping override persistence and delayed per-document visibility tests.\n\n## Definition of done\nVerified scoped correction committed; native metadata still required for unrecognized physical layouts.",
     "evidence": "Verified generic compatibility/lifecycle correction; native physical layout remains unverified pending friend report. Persist explicit reported ID plus index hint, migrate v1 index-only settings, preserve overrides while API list is hidden, follow reindex without binding an unrelated replacement. Readiness separates activation, unsupported layout and API denial; raw configuration/error exposed. Safe capability guard prevents Phaser startup failure under API denial. Full check/format 135 tests; all 25 Chromium and 48 Firefox/WebKit controller cases pass; readiness screenshot reviewed. No arbitrary Xbox raw layout guessed. Runtime b6497ac CI/Pages 39032749390 succeeded; all 25 hosted controller cases pass. Physical layout metadata remains pending."
+  },
+  {
+    "id": "DBL-291",
+    "title": "Validated ability content and six original prototypes",
+    "parent": "DBL-055",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "skills",
+    "priority": "p0",
+    "dependencies": ["DBL-290"],
+    "status": "completed",
+    "body": "## Acceptance criteria\nValidated ability content and six original prototypes. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial.",
+    "evidence": "Validated six original active definitions and one passive, bounded data validation; 137 unit tests and full check pass. No runtime change yet."
+  },
+  {
+    "id": "DBL-292",
+    "title": "Shared timeline skill execution, mana and cooldowns",
+    "parent": "DBL-052",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "skills",
+    "priority": "p0",
+    "dependencies": ["DBL-291"],
+    "status": "in-progress",
+    "body": "## Acceptance criteria\nShared timeline skill execution, mana and cooldowns. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
+  },
+  {
+    "id": "DBL-293",
+    "title": "Elemental effects, geometry and deterministic statuses",
+    "parent": "DBL-054",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "skills",
+    "priority": "p0",
+    "dependencies": ["DBL-292"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nElemental effects, geometry and deterministic statuses. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
+  },
+  {
+    "id": "DBL-294",
+    "title": "Playable skill arena and semantic controller activation",
+    "parent": "DBL-055",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "skills",
+    "priority": "p0",
+    "dependencies": ["DBL-293"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nPlayable skill arena and semantic controller activation. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
+  },
+  {
+    "id": "DBL-295",
+    "title": "Shared monster ability execution",
+    "parent": "DBL-062",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "skills",
+    "priority": "p0",
+    "dependencies": ["DBL-294"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nShared monster ability execution. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
+  },
+  {
+    "id": "DBL-296",
+    "title": "Cross-browser skill quality and performance gate",
+    "parent": "DBL-057",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "skills",
+    "priority": "p0",
+    "dependencies": ["DBL-295"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nCross-browser skill quality and performance gate. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
   }
 ]
