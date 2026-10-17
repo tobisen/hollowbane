@@ -63,3 +63,33 @@ Ownership/rearm now uses calibrated/deadzoned logical axes, so custom low deadzo
 Vendor extension contract: `controllerInput.registerVendorProfile(profile)` accepts typed matcher, physical axis indices, physical button mappings and glyph family. Normalization converts a vendor layout to standard logical controls before persistent user remaps apply. Unknown nonstandard devices stay inactive until a matching extension or explicit standard override is selected; no untested vendor-specific physical layout is claimed.
 
 Performance runner: scripts/gamepad-benchmark.mjs compares the published pre-2.5 keyboard build (asserts controller runtime absent), current keyboard and current virtual analog input on the same scene/machine/viewport/renderer. Loading is excluded by warmup. Virtual injection-to-movement timing is reported separately from poll-to-movement timing. No physical-controller, Bluetooth, OS-driver or physical vibration verification has been performed.
+
+## Final local measurements
+
+Retained evidence: performance.json. Same Apple M4, Chromium 156, explicit SwiftShader software WebGL, 1920×1080 viewport, 960×540 balanced render buffer, twenty seconds per workload after two seconds warmup. Pre-2.5 published runtime (`4f68d1f`, controller runtime absence asserted) versus local candidate `bc1dae7`:
+
+| Workload              | Frame p50 | Frame p95 | Adapter feedback p95       | Controller bridge CPU p95 |
+| --------------------- | --------- | --------- | -------------------------- | ------------------------- |
+| Before: keyboard      | 16.7 ms   | 33.4 ms   | 19.4 ms                    | absent                    |
+| After: keyboard       | 16.7 ms   | 33.4 ms   | 20.3 ms                    | 0.10 ms                   |
+| After: virtual analog | 16.7 ms   | 33.4 ms   | 0.10 ms (poll-to-movement) | 0.10 ms                   |
+
+Virtual API injection-to-movement (includes waiting for next poll): twenty samples, p50 20.8 ms, p95 38.8 ms. This is separate from the shorter poll-to-movement metric and is not hardware latency. All three workloads had zero page errors. The short sample shows no major frame-pacing regression; it does not establish physical-device, OS, Bluetooth, GPU or long-session performance.
+
+Reproduction: `node scripts/gamepad-benchmark.mjs CURRENT_PREVIEW_URL BEFORE_PREVIEW_URL`. After publication the default public baseline is intentionally rejected because it now contains controller support. Recreate a baseline server from commit 4f68d1f in an isolated checkout/worktree, install/build it and preview on a different port; supply that URL explicitly. The original measurements used the pre-publication hosted baseline and local candidate, with asset loading excluded from samples.
+
+## Physical verification matrix
+
+| Device path                         | Browser/API emulation                                                  | Physical controller |
+| ----------------------------------- | ---------------------------------------------------------------------- | ------------------- |
+| Xbox standard                       | verified Chromium/Firefox/WebKit                                       | not performed       |
+| PlayStation standard mapping/glyphs | verified with standard API snapshots                                   | not performed       |
+| Generic standard-compatible         | verified with standard API snapshots                                   | not performed       |
+| Multiple pads/manual selection      | verified with virtual snapshots                                        | not performed       |
+| Vibration                           | mock modern/legacy API and disabled/unsupported browser paths verified | not performed       |
+
+Virtual tests replace navigator.getGamepads with deterministic snapshots consumed by the same browser adapter/Phaser-enabled scenes. They do not validate native device drivers or every vendor's nonstandard layout. Stock automatic support uses the browser standard mapping; manual overrides and registered vendor normalization are explicit fallbacks.
+
+Keyboard defaults preserve Tab navigation and existing remapped movement keys. New semantic defaults include X primary, Q secondary, P pause, M menu, V reserved map, Enter interact, Escape cancel, T target selection and F reserved pickup; available gameplay actions route to existing commands. Existing movement bindings take priority while the gameplay field is focused. Unfinished systems remain inactive with unavailable/reserved feedback.
+
+G2.5 remains a review gate: technical implementation is complete locally; CI/Pages and hosted verification are being finalized. Phase 3 stays frozen and no later gameplay systems are authorized.

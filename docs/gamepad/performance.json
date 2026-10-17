@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-17T09:56:23.066Z",
+  "environment": {
+    "cpu": "Apple M4",
+    "platform": "darwin",
+    "arch": "arm64",
+    "browser": "156.0.8078.4",
+    "renderer": "Explicit SwiftShader software WebGL",
+    "viewport": "1920x1080"
+  },
+  "baseline": "Published pre-2.5 movement implementation; assertion requires no controller runtime. Run before publishing the new controller build.",
+  "limitations": [
+    "API snapshot injection measures browser adaptation, not physical controller/OS/Bluetooth latency.",
+    "Published baseline and local build have different asset servers; loading is excluded by warmup.",
+    "Short software-rendering sample; no hardware controller verification.",
+    "Adapter feedback timing is keyboard event-to-movement or gamepad poll-to-movement; injectedLatency separately includes waiting for the next poll."
+  ],
+  "results": [
+    {
+      "mode": "before-keyboard",
+      "url": "https://tobisen.github.io/hollowbane/",
+      "seconds": 20,
+      "warmupSeconds": 2,
+      "frameP50Ms": 16.700000000000728,
+      "frameP95Ms": 33.399999999999636,
+      "frames": 1006,
+      "adapterFeedbackP95Ms": 19.400000005960464,
+      "adapterFeedbackSamples": 20,
+      "pollP95Ms": null,
+      "renderSize": {
+        "width": 960,
+        "height": 540
+      },
+      "injectedLatency": null,
+      "errors": []
+    },
+    {
+      "mode": "current-keyboard",
+      "url": "http://127.0.0.1:4174/hollowbane/",
+      "seconds": 20,
+      "warmupSeconds": 2,
+      "frameP50Ms": 16.699999999999818,
+      "frameP95Ms": 33.399999999999636,
+      "frames": 985,
+      "adapterFeedbackP95Ms": 20.299999997019768,
+      "adapterFeedbackSamples": 20,
+      "pollP95Ms": 0.10000000894069672,
+      "renderSize": {
+        "width": 960,
+        "height": 540
+      },
+      "injectedLatency": null,
+      "errors": []
+    },
+    {
+      "mode": "current-gamepad",
+      "url": "http://127.0.0.1:4174/hollowbane/",
+      "seconds": 20,
+      "warmupSeconds": 2,
+      "frameP50Ms": 16.700000000000728,
+      "frameP95Ms": 33.399999999999636,
+      "frames": 957,
+      "adapterFeedbackP95Ms": 0.10000000894069672,
+      "adapterFeedbackSamples": 20,
+      "pollP95Ms": 0.10000000894069672,
+      "renderSize": {
+        "width": 960,
+        "height": 540
+      },
+      "injectedLatency": {
+        "samples": 20,
+        "p50Ms": 20.799999997019768,
+        "p95Ms": 38.79999999701977,
+        "valuesMs": [
+          14.100000008940697, 15.5, 16.700000002980232, 16.899999991059303,
+          19.799999997019768, 20.299999997019768, 20.5, 20.5, 20.5,
+          20.700000002980232, 20.799999997019768, 20.900000005960464,
+          21.099999994039536, 21.099999994039536, 21.100000008940697,
+          21.299999997019768, 21.399999991059303, 21.600000008940697, 36.5,
+          38.79999999701977
+        ]
+      },
+      "errors": []
+    }
+  ],
+  "baselineCommit": "4f68d1f",
+  "candidateRuntimeCommit": "bc1dae7"
+}
