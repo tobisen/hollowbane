@@ -3120,8 +3120,9 @@
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-291"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nShared timeline skill execution, mana and cooldowns. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
+    "status": "completed",
+    "body": "## Acceptance criteria\nShared timeline skill execution, mana and cooldowns. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial.",
+    "evidence": "Shared combat timeline hooks, atomic mana/cooldown acceptance, once-per-tick commands, cast breakpoints and hitstun cancellation; full check 141 tests."
   },
   {
     "id": "DBL-293",
@@ -3132,7 +3133,7 @@
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-292"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Acceptance criteria\nElemental effects, geometry and deterministic statuses. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
   },
   {

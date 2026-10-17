@@ -74,6 +74,11 @@ export type CombatEvent =
       target: number;
       kind: "whiff" | "death" | "stagger" | "immune" | "launch" | "impact";
     };
+export interface CombatHooks {
+  beforeTick?: () => void;
+  strike?: (actor: CombatActor) => boolean;
+  controlsActor?: (actor: CombatActor) => boolean;
+}
 export interface CombatWorld {
   hostilesActive: boolean;
   projectiles: Projectile[];
@@ -277,11 +282,14 @@ export function stepCombat(
   nav: Navigation = ARENA_NAV,
   keyboard: Point = { x: 0, y: 0 },
   inputScale = 1,
+  hooks: CombatHooks = {},
 ): void {
   world.tick++;
+  hooks.beforeTick?.();
   for (const actor of world.actors) {
     if (actor.hp <= 0) continue;
     if (
+      !hooks.controlsActor?.(actor) &&
       actor.kind === "hostile" &&
       world.hostilesActive &&
       !actor.controller.attacking
@@ -291,7 +299,11 @@ export function stepCombat(
         target: 0,
         repeat: true,
       });
-    if (actor.kind === "moving" && actor.controller.timeline.phase === "idle") {
+    if (
+      !hooks.controlsActor?.(actor) &&
+      actor.kind === "moving" &&
+      actor.controller.timeline.phase === "idle"
+    ) {
       const goal = fromGround({
         x: 880 + Math.sin(world.tick / 120) * 80,
         y: 420,
@@ -301,7 +313,10 @@ export function stepCombat(
         target: goal,
       });
     }
-    if (actor.controller.timeline.phase === "idle") {
+    if (
+      !hooks.controlsActor?.(actor) &&
+      actor.controller.timeline.phase === "idle"
+    ) {
       const windup = breakpointFrames(actor.attackSpeed, ATTACK_BREAKPOINTS);
       actor.controller = {
         ...actor.controller,
@@ -324,7 +339,10 @@ export function stepCombat(
     );
     actor.controller = next.controller;
     logPhases(world, actor, next.events);
-    if (next.events.some((e) => e.kind === "strike")) {
+    if (
+      next.events.some((e) => e.kind === "strike") &&
+      !hooks.strike?.(actor)
+    ) {
       const target = world.actors.find(
         (t) => t.id === actor.controller.locked && t.hp > 0,
       );
