@@ -796,9 +796,10 @@
     "phase": 10,
     "priority": "p0",
     "dependencies": ["DBL-073"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nVisual/performance pass p\u00e5 tv\u00e5 referensmaskiner.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 10; P0. Target roadmap phase 10; source phase metadata retained.\n\n## Dependencies\nDBL-073\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Visual/performance pass p\u00e5 tv\u00e5 referensmaskiner.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-074; no known critical regression.\n",
-    "targetPhase": 10
+    "targetPhase": 10,
+    "evidence": "L2 SwiftShader/CPU measurements delivered in329; second reference machine/native GPU and modal follow-up333 remain open."
   },
   {
     "id": "DBL-075",
@@ -847,9 +848,10 @@
     "phase": 11,
     "priority": "p0",
     "dependencies": ["DBL-078"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nStats aggregation och buff calculation order; snapshot & dynamic re-evaluation.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 11; P0. Target roadmap phase 11; source phase metadata retained.\n\n## Dependencies\nDBL-078\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Stats aggregation och buff calculation order; snapshot & dynamic re-evaluation.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-079; no known critical regression.\n",
-    "targetPhase": 11
+    "targetPhase": 11,
+    "evidence": "L2 equipment-derived stat slice delivered in324; broader aggregation/buff snapshot requirement is not closed by this scoped milestone."
   },
   {
     "id": "DBL-080",
@@ -857,9 +859,10 @@
     "phase": 11,
     "priority": "p0",
     "dependencies": ["DBL-079"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nTwo-handed, dual-wield och off-hand rules.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 11; P0. Target roadmap phase 11; source phase metadata retained.\n\n## Dependencies\nDBL-079\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Two-handed, dual-wield och off-hand rules.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-080; no known critical regression.\n",
-    "targetPhase": 11
+    "targetPhase": 11,
+    "evidence": "L2 one/two-hand and shield restrictions delivered in322; dual wield remains outside L2."
   },
   {
     "id": "DBL-081",
@@ -878,9 +881,10 @@
     "phase": 11,
     "priority": "p0",
     "dependencies": ["DBL-081"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nTooltip compare, stat breakdown och requirements UX.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 11; P0. Target roadmap phase 11; source phase metadata retained.\n\n## Dependencies\nDBL-081\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Tooltip compare, stat breakdown och requirements UX.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-082; no known critical regression.\n",
-    "targetPhase": 11
+    "targetPhase": 11,
+    "evidence": "L2 detail/compare/requirements slice delivered in326\u2013328; parent closure awaits full requirement review."
   },
   {
     "id": "DBL-083",
@@ -888,9 +892,10 @@
     "phase": 12,
     "priority": "p0",
     "dependencies": ["DBL-082"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nGrid-based spatial inventory (Inventory Tetris) med rotation-policy.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 12; P0. Target roadmap phase 13; source phase metadata retained.\n\n## Dependencies\nDBL-082\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Grid-based spatial inventory (Inventory Tetris) med rotation-policy.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-083; no known critical regression.\n",
-    "targetPhase": 13
+    "targetPhase": 13,
+    "evidence": "L2 deterministic configurable grid and explicit no-rotation policy delivered in321/326/327; parent closure awaits L2 review."
   },
   {
     "id": "DBL-084",
@@ -898,9 +903,10 @@
     "phase": 12,
     "priority": "p0",
     "dependencies": ["DBL-083"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nDrag/drop, split, stack, swap, overflow och drop-to-ground.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 12; P0. Target roadmap phase 13; source phase metadata retained.\n\n## Dependencies\nDBL-083\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Drag/drop, split, stack, swap, overflow och drop-to-ground.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-084; no known critical regression.\n",
-    "targetPhase": 13
+    "targetPhase": 13,
+    "evidence": "L2 move/swap/overflow/drop slice delivered in321\u2013327; split and stack systems remain outside L2."
   },
   {
     "id": "DBL-085",
@@ -3658,5 +3664,17 @@
     "status": "complete",
     "body": "## Acceptance criteria\nAsynchronous atomic character snapshots in IndexedDB with previous checkpoint, corruption detection, explicit recovery and failed-write preservation; no combat-loop serialization.\n\n## Non-goals\nL3, progression, cloud saves or pretending unsupported prototypes are migrated.\n\n## Test requirements\nVersioned snapshot unit tests and real cross-browser persistence/failed-load/recovery scenarios.\n\n## Definition of done\nVerified committed storage adapter used by326; no silent replacement or item loss.",
     "evidence": "IndexedDB current/previous atomic transaction, stale-tab CAS and explicit quarantine recovery. Real Chromium/Firefox/WebKit storage E2E all3 pass; full check212. UI autosave integration belongs326."
+  },
+  {
+    "id": "DBL-333",
+    "title": "Inventory modal software compositing and native GPU follow-up",
+    "parent": "DBL-074",
+    "phase": 12,
+    "targetPhase": 12,
+    "deliveryPhase": "inventory-followup",
+    "priority": "p1",
+    "dependencies": ["DBL-329"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nProfile the open inventory dialog software-compositing cadence (SwiftShader RAF p95 approximately33.4ms), distinguish static canvas redraw/DOM compositing and verify native GPU performance on actual hardware. Retain keyboard/mouse/controller navigation, committed combat timing and original visual references.\n\n## Scope\nFollow-up after L2 review; no L3/itemization work. Do not treat virtual controllers or SwiftShader as hardware verification.\n\n## Evidence\ndocs/inventory/performance.json and l2.md. Closed-inventory combat pacing already restored by DBL-329. Existing broad performance requirements remain partial.\n\n## Non-goals\nNo L3, itemization expansion or physical verification claims without hardware.\n\n## Test requirements\nRepeated paired CPU/render/presentation measurements, native hardware provenance and cross-browser UI regression.\n\n## Definition of done\nDocument measured cause, verified improvement or bounded limitation, and retain original gate boundaries."
   }
 ]

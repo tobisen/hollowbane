@@ -309,3 +309,5 @@ L1 technical candidate delivered: DBL-310–319 complete; stop for user L1 revie
 L1 approved; L2 Inventory & Equipment authorized through DBL-320–331 and L2 gate, superseding the earlier inventory prohibition for this scope. Sequential footprints/grid/equipment/world transactions/stats/persistence/UI/controller/regression/performance/publication/gate. Original36 topics and IDs preserved; no L3/progression/crafting/vendors/sockets/runewords.
 
 Persistence split: DBL-325 pure snapshot validation/migration infrastructure, then required DBL-332 atomic IndexedDB/recovery before326 UI. Existing IDs preserved; L2 scope320–332.
+
+DBL-333 is a planned post-review inventory-modal compositing/native-GPU follow-up under partial DBL-074, based on DBL-329 measurements. It does not extend the L2 completion scope or authorize L3.

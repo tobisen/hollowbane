@@ -600,6 +600,9 @@ export class InventoryView {
   }
   private pointerDown = (e: PointerEvent) => {
     if (e.button !== 0 || !this.ready) return;
+    // Complete device handoff before starting the new mouse gesture.
+    if (this.lastDevice === "gamepad") this.resetSelection();
+    this.lastDevice = "mouse";
     const el = (e.target as Element).closest<HTMLElement>("button[data-item]");
     const id = el?.dataset.item;
     if (!id) return;

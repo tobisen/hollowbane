@@ -101,6 +101,8 @@ for (const id of [
   test(`${id}: controller-only inventory open, grid navigation, equip and cancel`, async ({
     page,
   }) => {
+    if (id.includes("PlayStation"))
+      await page.setViewportSize({ width: 1024, height: 800 });
     await page.addInitScript((id) => {
       window.virtualPads = [
         {
@@ -392,4 +394,77 @@ test("ring comparison uses the same free slot as the equip transaction", async (
     "data-item",
     incoming.id,
   );
+});
+
+test("gamepad to mouse handoff preserves the first drag without moving invalid items", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    window.virtualPads = [
+      {
+        id: "Xbox virtual standard",
+        index: 0,
+        mapping: "standard",
+        connected: true,
+        axes: [0, 0, 0, 0],
+        timestamp: 0,
+        buttons: Array.from({ length: 17 }, () => ({
+          pressed: false,
+          touched: false,
+          value: 0,
+        })),
+      },
+    ];
+    Object.defineProperty(navigator, "getGamepads", {
+      configurable: true,
+      value: () => window.virtualPads,
+    });
+  });
+  await page.goto("./?inventory=1&training=1");
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await page.locator(".loot-panel > details > summary").click();
+  await page.locator("#loot-sequence").fill("3");
+  await page.locator("#loot-test").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneLoot?.drops.length))
+    .toBe(1);
+  await page.locator("#combat-world").focus();
+  await page.keyboard.press("f");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneLoot?.drops.length))
+    .toBe(0);
+  await page.evaluate(() => {
+    window.virtualPads[0]!.buttons[8] = {
+      pressed: true,
+      touched: true,
+      value: 1,
+    };
+  });
+  await expect(page.locator("#inventory-dialog")).toBeVisible();
+  await page.evaluate(() => {
+    window.virtualPads[0]!.buttons[8] = {
+      pressed: false,
+      touched: false,
+      value: 0,
+    };
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.device))
+    .toBe("gamepad");
+  await expect(page.locator("#inventory-prompts")).toContainText("D-pad");
+  const item = page.locator("#inventory-grid .inventory-item"),
+    id = await item.getAttribute("data-item");
+  const a = await page.locator('[data-focus="cell-0-0"]').boundingBox(),
+    b = await page.locator('[data-focus="cell-9-3"]').boundingBox();
+  if (!a || !b) throw Error("Missing grid geometry");
+  await page.mouse.move(a.x + 10, a.y + 10);
+  await page.mouse.down();
+  await page.mouse.move(b.x + 10, b.y + 10, { steps: 4 });
+  await expect(page.locator("#inventory-prompts")).toContainText(
+    "Click / Enter",
+  );
+  await expect(page.locator('[data-placement="invalid"]')).toHaveCount(1);
+  await page.mouse.up();
+  await expect(item).toHaveAttribute("data-item", id!);
+  await expect(item).toHaveCSS("grid-column-start", "1");
 });

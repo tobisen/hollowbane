@@ -1,8 +1,8 @@
 # Status
 
-- L1 approved; **L2 active** through DBL-320–331, no L3/progression/crafting/vendors/sockets/runewords. Phaser4.2.1/current systems preserved.
-- DBL-320–328 and332 complete: content3 equipment extension alongside unchanged legacy2, deterministic grid/equipment/world transactions, single stat pipeline and optional inventory scene bridge. Full check213, Chromium83 and expanded cross-browser inventory scenarios pass; docs/inventory/l2.md.
-- DBL-332 storage complete (3 cross-browser transaction/recovery checks); DBL-326 UI complete; DBL-327 drag/controller complete; DBL-328 regression complete; DBL-329 performance complete; DBL-330 publication next,326 gothic UI,327 drag/controller,328 regression,329 performance,330 publication,331 review gate. Stop for L2 approval. Local ?inventory=1 supports pickup/grid/gear/inspection/save;15 inventory/storage/controller browser checks pass. Publication and full gate regression pending.
-- L1 verified runtime b565a1e/CI39067012054, prior gate3487d0c; docs/loot/l1.md. Original36 topics/231 IDs, broad partial parents and physical282–286/art/native/software/Firefox/issue-sync follow-ups remain open.
-
-Persistence split: DBL-325 pure snapshot validation/migration infrastructure, then required DBL-332 atomic IndexedDB/recovery before326 UI. Existing IDs preserved; L2 scope320–332.
+- L1 approved; L2 Inventory & Equipment authorized through DBL-320–332. No L3, progression, crafting, vendors, sockets or runewords. Phaser4.2.1 and original36 topics/231 requirements preserved.
+- DBL-320–329 and332 complete: versioned content3 alongside unchanged L1 content2; deterministic grid/gear/world transactions, shared stat pipeline, gothic inventory, mouse/controller lifecycle, versioned IndexedDB checkpoints and explicit recovery.
+- Verified: full check213; complete Chromium83 before final performance adjustment; latest inventory suite26 passes/4 intentional non-Chromium visual skips. All-system Firefox/WebKit132-case regression passes against final application build. Details/screenshots: docs/inventory/l2.md.
+- DBL-329 repeated SwiftShader measurements: closed-inventory combat RAF p9516.7–16.8ms at5/10/20/30 enemies after removing an extra fixed overlay; open modal remains33.4ms. Native GPU/physical latency unverified.
+- Latest application checkpoint cfd216d pushed. DBL-330 publication/Linux visual reference review active; DBL-331 final quality gate pending. Stop for L2 review, never resume L3 automatically.
+- Physical controller282–286, friend native-layout metadata, provisional art/audio, native/full-detail/software/Firefox performance and GitHub issue synchronization remain open. Import dry-run preserves332 IDs; token-dependent synchronization is not claimed. DBL-333 retains open-modal/native-GPU performance follow-up.
