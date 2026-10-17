@@ -74,3 +74,7 @@ G4 Monster AI approved by user. Original topic 10 and scoped source DBL-044/046/
 Skills technically approved. DBL-299 HUD performance, then scoped DBL-300 motion, 301 skill effects, 302 HUD readability, 303 audio, 304 contact/lighting consistency, 305 regression/showcase, 306 repeated performance, 307 hosted verification, 308 HUD-safe camera and 309 final gate evidence. These refine existing DBL-260/042/050/057/063/074 slices, not duplicate full requirements. Preserve the original 36 phases and IDs; no gameplay expansion. Stop for polish review.
 
 Polish technical candidate delivered: scoped DBL-299–309 complete; user quality approval pending. Original 36 phases, IDs and broader partial parents preserved. Stop before new gameplay. Evidence: docs/polish/milestone.md.
+
+## L1 – Item Architecture & Loot
+
+Polish technically approved. DBL-310 content, 311 generation, 312 inspection/save, 313 death drops, 314 playable interaction, 315 diagnostics/statistics, 316 regression/performance/publication, 317 quality evidence. Original topics11–13 and parent dependencies preserved; these scoped slices do not complete inventory/equipment or broader itemization. Stop at L1 review; no L2 without approval.

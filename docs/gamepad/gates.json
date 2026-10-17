@@ -72,10 +72,10 @@
   },
   "polish": {
     "authorized": true,
-    "qualityGateApproved": false,
+    "qualityGateApproved": true,
     "scope": ["DBL-299", "DBL-309"],
     "technicalCandidateDelivered": true,
-    "stoppedForReview": true,
+    "stoppedForReview": false,
     "runtimeCommit": "2ea9256",
     "ciRun": "39041156725",
     "unitTests": 176,
@@ -96,6 +96,12 @@
       "DBL-308",
       "DBL-309"
     ],
-    "evidence": "docs/polish/milestone.md and performance.json; user quality approval remains false"
+    "evidence": "docs/polish/milestone.md and performance.json; user quality approval remains false",
+    "approval": "Explicit user technical approval of Gameplay & Visual Polish"
+  },
+  "lootL1": {
+    "authorized": true,
+    "qualityGateApproved": false,
+    "scope": ["DBL-310", "DBL-317"]
   }
 }

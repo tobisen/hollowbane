@@ -295,3 +295,7 @@ Polish quality work split: DBL-305 regression/showcase, DBL-306 repeated perform
 Readability follow-up DBL-308 fits playable ground above the larger HUD, preserving pointer projection/legacy views. DBL-309 is final review evidence after publication (307) and this correction; no original IDs renumbered.
 
 Polish technical candidate delivered: scoped DBL-299–309 complete; user quality approval pending. Original 36 phases, IDs and broader partial parents preserved. Stop before new gameplay. Evidence: docs/polish/milestone.md.
+
+## L1 – Item Architecture & Loot
+
+Polish technically approved. DBL-310 content, 311 generation, 312 inspection/save, 313 death drops, 314 playable interaction, 315 diagnostics/statistics, 316 regression/performance/publication, 317 quality evidence. Original topics11–13 and parent dependencies preserved; these scoped slices do not complete inventory/equipment or broader itemization. Stop at L1 review; no L2 without approval.
