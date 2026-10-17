@@ -53,3 +53,31 @@ Full check remains 172 tests. Normal cloister visual passes after the measuremen
 Review found that the larger fixed HUD covered lower walkable ground. A pure arena-view helper now frames only the polish camera above the actual HUD top, preserving a full-canvas viewport/inverse pointer mapping. Legacy framing is identical. Four viewport tests cover all ground corners and legacy behavior; full check 176. All nine polish browser scenarios pass, including clicking/moving to ground (1250,790) and resizing to 1024x768 while keeping the foot point clear of the HUD. New Sable reference/captures refreshed for this intentional composition change; no prior reference/tolerance changed.
 
 Pre-camera b8f973d repeated measurements are retained separately. Final runtime profiling is repeated after this correction, since the new safe camera framing changes rendered composition. DBL-307 handles hosted publication; DBL-309 is final review evidence, after both 307 and 308. Original broader camera/performance parents remain partial.
+
+## DBL-306 final measurements
+
+Final runtime `2ea9256`, Apple M4; full data and method: performance.json. Three interleaved six-second repeats after two-second warmup per count/variant/browser. No concurrent test browser during sampling. Diagnostics open, audio muted, same balanced 960x540 rendering / 1920x1080 viewport, seed, input and durable population. Before is legacy skill encounter with pre-299 containment, after is full polish; camera/composition differs, so this is a product comparison, not an isolated HUD attribution.
+
+| Browser  | Enemies | Before p95 median | After p95 median | After run range (ms) |
+| -------- | ------: | ----------------: | ---------------: | -------------------: |
+| chromium |       5 |             16.70 |            16.70 |          16.70–16.80 |
+| chromium |      10 |             16.80 |            16.80 |          16.70–16.80 |
+| chromium |      20 |             33.30 |            33.20 |          16.80–33.30 |
+| chromium |      30 |             33.40 |            33.30 |          33.30–33.40 |
+| firefox  |       5 |             17.28 |            17.40 |          17.30–17.42 |
+| firefox  |      10 |             17.20 |            17.14 |          17.00–17.18 |
+| firefox  |      20 |             17.12 |            17.02 |          16.88–17.16 |
+| firefox  |      30 |             16.94 |            16.72 |          16.70–17.02 |
+
+All 432/432 central virtual inputs activated, no page errors or entity-count drift. Chromium after pooled input-to-start p95 by count: 16.8/16.8/16.8/33.3 ms; maximum 50.1 ms at 30. These are virtual start measurements, not physical controller, damage or display latency. Simulation p95 remains sub-millisecond in Chromium; rolling CPU buckets separate simulation/AI, view update and render command submission but are not an exhaustive main-thread/GPU breakdown. Firefox timers are coarser; its default headless backend is not matched to Chromium SwiftShader.
+
+Two-repeat 30-enemy component p95: full polish 16.8/33.3, flat floor 16.8/33.3, no skill cosmetics 16.8/33.3, no backdrop 16.7/16.7 ms. Backdrop omission is a promising diagnostic, not proof of a general fix; it removes intended architecture. Keep normal art. At 10 enemies the isolated legacy HUD containment comparison gives the same 16.8/33.3 ms in both variants. Thus the initial DBL-299 single-run improvement is not a reproducible universal gain: retain containment/invalidation isolation but broader software rendering threshold remains open.
+
+Mist-only idle-cloister comparisons (two repeats, not combat):
+
+- balanced, mist True: 33.4, 33.4 ms p95.
+- balanced, mist False: 33.3, 33.4 ms p95.
+- full, mist True: 50.0, 50.0 ms p95.
+- full, mist False: 33.4, 33.4 ms p95.
+
+RAF callback intervals measure browser pacing, not GPU completion/scanout. No stable 60 FPS or native-GPU performance claim. Short samples and repeat variance prohibit precise attribution to thermal/load conditions. No additional dynamic particle/lighting pass was introduced. Original cloister mist/full-detail and native/Firefox reference requirements remain open under DBL-245/246/074; existing DBL-299 scope is HUD isolation and measured investigation, not blanket performance acceptance. Pre-camera b8f973d data is explicitly retained separately; final tables use corrected camera runtime.

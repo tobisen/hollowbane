@@ -33,3 +33,5 @@
 - DBL-306 checkpoint: repeated benchmark scripts ready; optional noMist flag only for rendering A/B. Full check 172 and unchanged normal cloister visual pass. Final measured runtime checkpoint follows.
 
 - DBL-308 complete: HUD-safe camera/inverse projection; full check 176, nine polish scenarios pass including edge movement/resize. Final captures/reference updated. Resume DBL-306 profiling; DBL-307 publication and 309 final review follow.
+
+- DBL-306 complete: repeated final-runtime performance and component/mist comparisons retained; software p95 threshold remains open, no stable universal HUD speedup. DBL-307 hosted verification next.

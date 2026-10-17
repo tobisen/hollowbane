@@ -209,7 +209,7 @@ try {
         engine,
         viewport: [1920, 1080],
         method:
-          "10s after 2s warmup per paired legacy/skill encounter, immortal player, durable 60000HP enemies to hold entity counts, virtual Xbox primary edge every 700ms aimed away from enemies. Injection-to-observed-skill-start latency measured separately from HUD request-to-start metric. No native hardware latency claim. CPU metrics are rolling p95; ability metric includes combat. Effects count is concurrent statuses and projectiles, not cumulative events.",
+          "6s after 2s warmup per paired legacy/skill encounter, immortal player, durable 60000HP enemies to hold entity counts, virtual Xbox primary edge every 700ms aimed away from enemies. Injection-to-observed-skill-start latency measured separately from HUD request-to-start metric. No native hardware latency claim. CPU metrics are rolling p95; ability metric includes combat. Effects count is concurrent statuses and projectiles, not cumulative events.",
         results,
       },
       null,
