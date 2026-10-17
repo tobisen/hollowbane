@@ -11,3 +11,7 @@ Unfinished interact/pickup/map/inventory/skills are semantic reservations with h
 ## DBL-263 / DBL-GP01
 
 Semantic actions and device-independent edge frames implemented; keyboard defaults use the same action vocabulary. Two targeted tests; full check passes with 92 unit tests. Twelve unique aliases scoped, original numbering/roadmap preserved; Phase 3 resumption dependency recorded explicitly.
+
+## DBL-264 / DBL-GP02
+
+Pure lifecycle ownership and explicit active-controller selection implemented. Neutral-on-rearm protects focus/disconnect/reconnect; idle pads do not steal keyboard/mouse input. Three lifecycle tests plus semantic tests, typecheck and lint pass.

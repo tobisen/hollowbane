@@ -2742,9 +2742,10 @@
     "priority": "p0",
     "parent": "DBL-009",
     "dependencies": ["DBL-263"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nGamepad lifecycle and selected controller\n\n## Scope\nAuthorized Phase 2.5 gamepad support. Stable numeric ID DBL-264; requested alias DBL-GP02. Preserve Phaser 4.2.1 and existing keyboard/mouse and completed combat.\n\n## Non-goals\nNew combat mechanics, loot, inventory or resuming Phase 3 before G2.5 user approval.\n\n## Acceptance criteria\nGamepad lifecycle and selected controller; deterministic device-independent intents; safe boundaries and documented fallback behavior.\n\n## Test requirements\nTargeted unit/browser coverage, check at milestones, full regression before G2.5; distinguish emulation from physical verification.\n\n## Definition of done\nVerified scoped increment committed with evidence in docs/gamepad/phase2.5.md; stop for G2.5 review after DBL-274.",
-    "deliveryPhase": "2.5"
+    "deliveryPhase": "2.5",
+    "evidence": "Pure lifecycle ownership and explicit active-controller selection implemented. Neutral-on-rearm protects focus/disconnect/reconnect; idle pads do not steal keyboard/mouse input. Three lifecycle tests plus semantic tests, typecheck and lint pass."
   },
   {
     "id": "DBL-265",
