@@ -35,11 +35,14 @@ export function movementConfig(
     if (!Number.isFinite(v) || v <= 0 || v > limit)
       throw new RangeError(`Invalid movement setting: ${key}`);
   }
+  if (result.runSpeed < result.walkSpeed)
+    throw new RangeError("Run speed must be at least walk speed");
   return result;
 }
 export interface Walker {
   position: Point;
   route: Point[];
+  queuedTargets: Point[];
   direction: number;
   walking: boolean;
   tick: number;
@@ -53,6 +56,7 @@ export function createWalker(position: Point): Walker {
   return {
     position: { ...position },
     route: [],
+    queuedTargets: [],
     direction: 0,
     walking: false,
     tick: 0,
@@ -84,12 +88,13 @@ export function retarget(
     return stopWalker(walker);
   const route = findPath(nav, walker.position, target);
   // Rejected commands cannot silently cancel an already accepted route.
-  return route.length ? { ...walker, route } : walker;
+  return route.length ? { ...walker, route, queuedTargets: [] } : walker;
 }
 export function stopWalker(walker: Walker): Walker {
   return {
     ...walker,
     route: [],
+    queuedTargets: [],
     walking: false,
     motion: "idle",
     speed: 0,
@@ -139,7 +144,10 @@ export function moveTick(
     walker.speed +
     Math.sign(desired - walker.speed) *
       Math.min(Math.abs(desired - walker.speed), change);
-  if (key) result.route = [];
+  if (key) {
+    result.route = [];
+    result.queuedTargets = [];
+  }
   let budget = result.speed / 60,
     moved = 0;
   let replanned = false;
@@ -182,9 +190,13 @@ export function moveTick(
     budget -= amount;
     if (goal && !key && length <= amount + 1e-9) {
       result.route.shift();
+      if (!result.route.length && result.queuedTargets.length) {
+        const [target, ...remaining] = result.queuedTargets;
+        result.queuedTargets = remaining;
+        result.route = findPath(nav, result.position, target!);
+      }
       if (!result.route.length) {
-        result.speed = 0;
-        result.velocity = { x: 0, y: 0 };
+        result = { ...stopWalker(result), position: result.position };
         break;
       }
     } else break;
