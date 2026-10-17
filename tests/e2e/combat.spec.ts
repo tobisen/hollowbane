@@ -37,6 +37,9 @@ test("arena is inspectable and preserves its visual reference", async ({
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await ready(page);
+  expect(
+    await page.evaluate(() => window.hollowbaneCombat!.metrics.renderWidth),
+  ).toBe(960);
   await page.locator("#combat-pause").click();
   await page.locator("#combat-reset").click();
   await expect

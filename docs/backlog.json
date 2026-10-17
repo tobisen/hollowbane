@@ -2681,5 +2681,17 @@
     "dependencies": ["DBL-257"],
     "status": "planned",
     "body": "## Purpose\nReplace explicitly provisional transform animations, training geometry and synthesized audio with dedicated original authored assets after mechanical review.\n\n## Non-goals\nBlocking the mechanical quality candidate, copied assets or later gameplay systems.\n\n## Acceptance criteria\nOriginal eight-direction attack/hit/death art and impact audio preserve deterministic event synchronization; record provenance.\n\n## Test requirements\nAsset validation and inspected animation/visual regression evidence.\n\n## Definition of done\nDedicated assets verified and committed; do not claim current proxies are finished production artwork."
+  },
+  {
+    "id": "DBL-261",
+    "title": "Combat arena software-rendering resolution parity",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p0",
+    "parent": "DBL-258",
+    "dependencies": ["DBL-257"],
+    "status": "completed",
+    "body": "## Purpose\nAddress measured full-resolution software renderer slowdown before quality gate publication.\n\n## Non-goals\nSimulation changes, reduced attack commitment or increased screenshot tolerance.\n\n## Acceptance criteria\nReuse existing renderSize and adaptive balance policy; preserve logical world/input projection and native GPU resolution. Record before/after measurements.\n\n## Test requirements\nExisting render-size tests, combat E2E, inspected refreshed arena screenshot, full check and measured workload.\n\n## Definition of done\nVerified increment and retained honest performance evidence before combat quality review.",
+    "evidence": "Initial 1920x1080 SwiftShader combat median 33.3 ms; existing cloister median 16.7 ms. Applied existing 960x600 software cap and adaptive fallback; comparison evidence in docs/combat/phase3.md."
   }
 ]

@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-17T07:57:58.480Z",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "browser": "156.0.8078.4",
+    "viewport": "1920x1080",
+    "renderer": "Explicit SwiftShader software WebGL",
+    "server": "http://127.0.0.1:4174/hollowbane/"
+  },
+  "limitations": [
+    "Different scenes/workloads: comparison is a rendering envelope, not an isolated causal combat overhead measurement.",
+    "Render metric measures CPU submission; it is not GPU execution time.",
+    "Attack latency includes command queue/recovery; approach distance can add latency.",
+    "Short local software-rendering sample; hardware and browser coverage differ."
+  ],
+  "results": [
+    {
+      "workload": "Existing cloister: continuous WASD traversal with decorative effects",
+      "seconds": 20,
+      "warmupSeconds": 2,
+      "frameP50": 16.700000000000728,
+      "frameP95": 33.399999999999636,
+      "samples": 996,
+      "maxEntities": 0,
+      "metrics": {
+        "engine": "4.2.1",
+        "renderer": "WebGL",
+        "samples": 1099,
+        "fps": 50.17937359747319,
+        "p95FrameMs": 21.66999999999971,
+        "readyMs": 1717.5,
+        "heapBytes": 15200000,
+        "drawCalls": 12
+      },
+      "errors": []
+    },
+    {
+      "workload": "Combat arena: repeated ballistic attacks, three targets, moving dummy, hostile sentinel; reset every six commands",
+      "seconds": 20,
+      "warmupSeconds": 2,
+      "frameP50": 33.30000000000018,
+      "frameP95": 33.400000000001455,
+      "samples": 659,
+      "maxEntities": 6,
+      "metrics": {
+        "frameP50": 30.299999997019768,
+        "frameP95": 33.1000000089407,
+        "simulationP95": 0.10000000894069672,
+        "renderP95": 0.20000000298023224,
+        "updateP95": 0.5,
+        "attackLatencyP95": 109.1000000089407,
+        "attackSamples": 31,
+        "activeEntities": 6,
+        "droppedTicks": 11
+      },
+      "errors": []
+    }
+  ]
+}

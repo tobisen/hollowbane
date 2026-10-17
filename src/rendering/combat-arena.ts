@@ -1,3 +1,4 @@
+import { renderSize, shouldBalanceDetail } from "../world/render-size";
 import Phaser from "phaser";
 import {
   ARENA_NAV,
@@ -51,6 +52,8 @@ export interface CombatPresentation {
     attackSamples: number;
     activeEntities: number;
     droppedTicks: number;
+    renderWidth: number;
+    renderHeight: number;
   };
 }
 declare global {
@@ -86,6 +89,19 @@ export function startCombatArena(): Phaser.Game {
     private updates: number[] = [];
     private latencies: number[] = [];
     private previousFrame = 0;
+    private balancedDetail = false;
+    private startedAt = 0;
+    private syncResolution = (): void => {
+      const size = renderSize(
+        { x: innerWidth, y: innerHeight },
+        this.balancedDetail,
+      );
+      this.scale.resize(size.x, size.y);
+      this.cameras.main.setZoom(
+        Math.min(innerWidth / 1280, innerHeight / 800) * size.ratio,
+      );
+      this.cameras.main.centerOn(768, 512);
+    };
     private renderAt = 0;
     private inputAt: number | null = null;
     private droppedTicks = 0;
@@ -144,14 +160,18 @@ export function startCombatArena(): Phaser.Game {
             .setDepth(2002),
         );
       }
-      this.cameras.main.centerOn(768, 512);
-      const resize = () => {
-        this.scale.resize(innerWidth, innerHeight);
-        this.cameras.main.setZoom(
-          Math.min(innerWidth / 1280, innerHeight / 800),
-        );
-        this.cameras.main.centerOn(768, 512);
-      };
+      this.startedAt = performance.now();
+      if (this.game.renderer.type === Phaser.WEBGL) {
+        const gl = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)
+          .gl;
+        const debug = gl.getExtension("WEBGL_debug_renderer_info");
+        this.balancedDetail = debug
+          ? /swiftshader|llvmpipe|software/i.test(
+              String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)),
+            )
+          : false;
+      } else this.balancedDetail = true;
+      const resize = this.syncResolution;
       resize();
       window.addEventListener("resize", resize);
       const point = (event: PointerEvent): Point =>
@@ -452,6 +472,14 @@ export function startCombatArena(): Phaser.Game {
         delta = this.previousFrame ? start - this.previousFrame : 1000 / 60;
       this.previousFrame = start;
       this.record(this.frames, delta);
+      if (
+        !this.balancedDetail &&
+        this.game.loop.frame % 60 === 0 &&
+        shouldBalanceDetail(this.frames, start - this.startedAt, false)
+      ) {
+        this.balancedDetail = true;
+        this.syncResolution();
+      }
       const player = this.world.actors[0]!;
       if (player.controller.timeline.phase === "idle") {
         player.weapon = weapon.value as Weapon;
@@ -514,6 +542,8 @@ export function startCombatArena(): Phaser.Game {
           this.world.actors.filter((a) => a.hp > 0).length +
           this.world.projectiles.length,
         droppedTicks: this.droppedTicks,
+        renderWidth: this.scale.width,
+        renderHeight: this.scale.height,
       };
       window.hollowbaneCombat = {
         tick: this.world.tick,
