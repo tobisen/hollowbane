@@ -31,3 +31,25 @@ Dedicated ?monsters=1 Cinder Watch arena reuses the combat renderer, targeting, 
 ## DBL-287 dependency split
 
 Short keyboard taps could be released between browser polls; trusted key pulses now latch for one semantic sample and reset with focus/device safety. Same-tick melee reservations now include queued commands, preventing eight attackers from all claiming three slots before combat advanced. Regression reproduces the overbooking before repair. Full check: 131 tests; nine quick-tap/handoff/editable-field cases across Chromium/Firefox/WebKit pass. No attack cancellation or physical mapping change. Resume DBL-281 quality verification.
+
+## Quality measurements (DBL-281)
+
+Matched Apple M4 / Chromium 156 / explicit SwiftShader software WebGL, 1920×1080 viewport and 960×540 balanced buffer. Twenty-second samples after two-second warmup; no competing browser tests during measurement. Virtual standard Xbox stick pulses with independent right-stick aim; AI encounters use the explicitly labeled immortal test player to preserve sustained enemy pressure. No player attacks during these samples; enemy attacks use the real combat timeline/projectiles. Each enemy count remained constant throughout; zero page errors and twenty successful movement samples per workload. Raw frames, per-second snapshots and latency samples: performance.json. Reproduce after build/preview using `node scripts/monster-benchmark.mjs PREVIEW_URL`.
+
+| Enemies                          | rAF frame p50/p95 ms | AI CPU p95 ms | Total tick CPU p95 ms | Render submission CPU p95 ms | View update p95 ms | Virtual input-to-movement p95 ms |
+| -------------------------------- | -------------------- | ------------- | --------------------- | ---------------------------- | ------------------ | -------------------------------- |
+| 0 (prior combat trial reference) | 16.7 / 16.7          | —             | 0.10                  | 0.20                         | 0.20               | 16.8                             |
+| 5                                | 16.7 / 16.7          | 0.10          | 0.10                  | 0.20                         | 0.20               | 16.8                             |
+| 10                               | 16.7 / 16.7          | 0.10          | 0.10                  | 0.20                         | 0.30               | 16.8                             |
+| 20                               | 16.7 / 16.8          | 0.10          | 0.20                  | 0.20                         | 0.40               | 33.3                             |
+| 30                               | 16.7 / 33.3          | 0.10          | 0.10                  | 0.30                         | 0.40               | 33.4                             |
+
+The reference trial differs in geometry/content and has its sentinel disabled; this is an encounter-scale envelope, not isolated causal AI overhead. Frame values are complete workload rAF samples; CPU values are final rolling diagnostic p95 windows with browser timer quantization. The software renderer misses the provisional 20 ms tail-frame target at 30 enemies, while remaining inside the previously reported software 33.4 ms envelope. Native GPU and the provisional 50-entity/60-second reference-hardware budgets remain unverified. CPU submission is not GPU execution time. API injection-to-observed simulation movement includes callback sampling; it is neither physical-device nor photon latency. The immortality diagnostic avoids player hitstun/death during latency measurements; normal encounters and committed attacks are tested separately.
+
+CI checkpoint 39026478414 at 14ae5e9 failed one original cloister projection test (38 passed); Pages correctly skipped deployment. The fixture clicked a precise blocked point while reset zoom was easing: it now waits for actual view stability and explicitly verifies the blocked-feedback message, retaining the original zero-route assertion and coordinates. No movement implementation or screenshot tolerance changed. Final regression/publication results follow below.
+
+GitHub import dry-run inspected for 287 unique records; apply stopped before requests because GITHUB_TOKEN is absent. No external issue creation is claimed. SSH publication remains available. Physical follow-ups DBL-282–286 are planned, never satisfied by the virtual mapping scenarios.
+
+## DBL-281 verification checkpoint
+
+Full check/format: 132 tests; complete Chromium suite 43 cases passes, including all original screenshots and the strengthened blocked-point fixture. Eight Firefox/WebKit encounter behaviors and nine targeted input-boundary cases pass. Complete legacy cross-browser, final CI/Pages and hosted verification remain in progress. This checkpoint preserves reviewable implementation, benchmark runner/raw data and reproducible fixtures without marking the gate approved.

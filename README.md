@@ -1,12 +1,18 @@
 # Hollowbane
 
-Original browser-first, singleplayer dark fantasy ARPG built with Phaser 4.2.1. The [playable demo](https://tobisen.github.io/hollowbane/) includes the gothic cloister, keyboard/mouse and analog controller movement; `?combat=1` opens the preserved combat test arena. Phase 2.5 controller support is at G2.5 review. Phase 3 development stays frozen pending approval. See [STATUS.md](STATUS.md) for verified scope and limitations.
+Original browser-first, singleplayer dark fantasy ARPG built with Phaser 4.2.1. The [playable demo](https://tobisen.github.io/hollowbane/) includes the gothic cloister, keyboard/mouse and analog controller movement; `?combat=1` opens the preserved combat test arena. G2.5 controller support is approved. Phase 4 Monster AI is under quality verification; `?monsters=1` opens the new encounter arena. Completed combat systems are preserved. See [STATUS.md](STATUS.md) for verified scope and limitations.
 
 ## Development
 
 Node >=20.19. Run `npm ci`, `npx playwright install chromium`, then `npm run dev`. Open `/hollowbane/` for the Phaser 4.2.1 playable scene; `?gallery=1` reviews the character animations. `?engine=4` and `?engine=3` retain the comparison observatory. Decorative motion honors reduced motion initially. Click reachable ground or focus the game and use WASD/arrows; scroll or use +/- to zoom. Add `&metrics=1` for optional GL instrumentation; read `window.hollowbaneDiagnostics` for timing/heap/draw data. Use `npm run check`, `npm run test:e2e`, `npm run format:check`. `npm run build` outputs `dist/`; `npm run preview` serves the Pages base path locally.
 
 Asset tooling: `npm run assets:export` and `npm run validate:assets`. Production benchmark: `npm run build`, `npm run preview`, then `npm run benchmark` (60-second sample after 10-second warmup; output under ignored `.local/`). Set `BENCHMARK_BROWSER=firefox` for the full-detail Firefox benchmark after installing that runtime. Full/Balanced detail adjusts render cost; detected software graphics starts in balanced mode. Full G1 review checklist and limitations: [docs/g1-review.md](docs/g1-review.md).
+
+## Monster encounters
+
+Open `?monsters=1` (or Controller menu → Monster encounters) for The Cinder Watch. Choose 5/10/20/30 enemies; AI uses shared combat timing/damage and collision/navigation, with patrol, awareness, chase, retreat, pack rallying and return-to-home. Six roles have different speeds, ranges and attack rhythms. Caster/support foundations use existing physical bolts and pack alerts; final monster art, spells and elite affix libraries remain follow-ups.
+
+AI navigation overlay shows state, home, paths and selected/hovered perception. Reset restores the seed; corpses expire after ten simulation seconds. Immortal test player is an explicit diagnostics option. `?monsters=1&count=30` selects a stress workload; `&paused=1` starts paused. Measured limits and hardware-verification status: [Phase 4 evidence](docs/ai/phase4.md).
 
 ## Controllers
 
@@ -22,4 +28,4 @@ Start at [STATUS.md](STATUS.md). See [ROADMAP.md](ROADMAP.md), [BACKLOG.md](BACK
 
 ## GitHub and deployment
 
-Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 274 issues (231 source requirements plus scoped increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.
+Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 287 issues (231 source requirements plus scoped increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.

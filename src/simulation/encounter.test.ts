@@ -9,11 +9,12 @@ import {
 import { canWalk } from "../world/navigation";
 it("composes 5/10/20/30/50 safely and replays mixed encounters exactly", () => {
   for (const count of [5, 10, 20, 30, 50]) {
-    const a = createEncounter(count, 123),
-      b = structuredClone(a);
+    const a = createEncounter(count, 123);
+    a.combat.actors[0]!.invulnerableUntil = 100000;
+    const b = structuredClone(a);
     expect(a.brains).toHaveLength(count);
     expect(a.brains.filter((b) => b.champion)).toHaveLength(1);
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 600; i++) {
       stepEncounter(a);
       stepEncounter(b);
       expect(a.work.pathRequests).toBeLessThanOrEqual(2);

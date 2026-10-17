@@ -120,7 +120,35 @@ test("click routes, retargeting, keyboard directions, collision and zoom work", 
   await expect
     .poll(() => page.evaluate(() => window.hollowbanePrototype!.x))
     .toBe(780);
+  // Projection uses the current camera. Reset eases zoom, so wait for a stable view
+  // before testing a precise blocked point rather than clicking through a moving camera.
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        let previous = window.hollowbanePrototype!.view,
+          stable = 0;
+        const check = () => {
+          const view = window.hollowbanePrototype!.view;
+          stable =
+            Math.max(
+              Math.abs(view.x - previous.x),
+              Math.abs(view.y - previous.y),
+              Math.abs(view.width - previous.width),
+              Math.abs(view.height - previous.height),
+            ) < 0.01
+              ? stable + 1
+              : 0;
+          previous = view;
+          if (stable >= 4) resolve();
+          else requestAnimationFrame(check);
+        };
+        requestAnimationFrame(check);
+      }),
+  );
   await clickGround(page, 500, 300);
+  await expect(page.locator("#world-status")).toHaveText(
+    "The ruins block that path",
+  );
   await expect(page.locator("#world")).toHaveCSS("cursor", "default");
   expect(
     await page.evaluate(() => window.hollowbanePrototype!.routeLength),

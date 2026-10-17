@@ -686,9 +686,10 @@
     "phase": 8,
     "priority": "p0",
     "dependencies": ["DBL-063"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nAI determinism stress tester med 30–50 aktiva monster.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 08; P0. Target roadmap phase 08; source phase metadata retained.\n\n## Dependencies\nDBL-063\n\n## Acceptance criteria\n- Deliver the independently reviewable result: AI determinism stress tester med 30–50 aktiva monster.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-064; no known critical regression.\n",
-    "targetPhase": 8
+    "targetPhase": 8,
+    "evidence": "Scoped Phase 4 deterministic 600-tick tests through 50 enemies and measured browser profiles at 5/10/20/30. Original long reference-hardware/50-enemy acceptance remains incomplete; software tail-frame budget open. See docs/ai/phase4.md."
   },
   {
     "id": "DBL-065",
@@ -2982,7 +2983,8 @@
     "parent": "DBL-064",
     "dependencies": ["DBL-280"],
     "status": "in-progress",
-    "body": "## Purpose\nMonster quality gate: browser regression and 5–30 enemy performance\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review."
+    "body": "## Purpose\nMonster quality gate: browser regression and 5–30 enemy performance\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review.",
+    "evidence": "Local quality checkpoint: full check/format 132 tests; complete Chromium 43 cases; eight Firefox/WebKit encounter cases and nine targeted input-boundary cases pass. 5/10/20/30 enemy twenty-second profiles retain all enemies, zero errors, twenty input samples each; raw data docs/ai/performance.json. CI/Pages/hosted and complete legacy cross-browser reruns pending. Gate approval remains false."
   },
   {
     "id": "DBL-282",

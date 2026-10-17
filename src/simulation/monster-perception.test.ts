@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { ARENA_NAV, createCombat } from "./combat";
+import { ARENA_NAV, createCombat, applyCombatHit } from "./combat";
 import { createMonster } from "./monsters";
 import { perceive, planMonsterPath } from "./monster-perception";
 import { fromGround } from "../world/navigation";
@@ -60,4 +60,17 @@ it("shares a bounded path budget, caches goals and backs off failed requests", (
       requests: 0,
     }),
   ).toBe(false);
+});
+
+it("resolved damage creates threat memory even when the attacker subsequently leaves sight", () => {
+  const { w, actor, brain } = fixture();
+  const source = w.actors[0]!;
+  source.offense.accuracy = 100000;
+  source.offense.damage = 1;
+  applyCombatHit(w, source, actor, ARENA_NAV);
+  const nav = { ...ARENA_NAV, obstacles: [{ x: 675, y: 560, rx: 5, ry: 30 }] };
+  const result = perceive(w, actor, brain, nav);
+  expect(result.damaged).toBe(true);
+  expect(result.remembered).toBe(true);
+  expect(brain.threat).toBe(0);
 });

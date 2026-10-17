@@ -43,6 +43,7 @@ export interface CombatPresentation {
     phase: string;
     remaining: number;
     sequence: number;
+    direction: number;
     selected: number | null;
     locked: number | null;
     walking: boolean;
@@ -844,6 +845,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
             phase: a.controller.timeline.phase,
             remaining: a.controller.timeline.remaining,
             sequence: a.controller.timeline.sequence,
+            direction: a.controller.walker.direction,
             selected: a.controller.selected,
             locked: a.controller.locked,
             walking: a.controller.walker.walking,
