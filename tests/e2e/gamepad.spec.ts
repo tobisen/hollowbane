@@ -235,13 +235,22 @@ test("controller activates existing atelier and both engine screens", async ({
     );
   }
 });
+async function replaceId(page: Page, id: string) {
+  await page.evaluate((id) => {
+    window.virtualPads[0]!.id = id;
+  }, id);
+  await page.waitForFunction(
+    (id) =>
+      window.hollowbaneInput?.pads[0]?.id === id &&
+      window.hollowbaneInput.armed,
+    id,
+  );
+}
 test("prompts switch between PlayStation, generic and keyboard/mouse", async ({
   page,
 }) => {
   await ready(page);
-  await page.evaluate(() => {
-    window.virtualPads[0]!.id = "Xbox Wireless Controller (045e)";
-  });
+  await replaceId(page, "Xbox Wireless Controller (045e)");
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput!.family))
     .toBe("xbox");
@@ -249,9 +258,7 @@ test("prompts switch between PlayStation, generic and keyboard/mouse", async ({
   await expect(page.locator("#controller-prompts")).toContainText("A: Choose");
   await tap(page, 1);
 
-  await page.evaluate(() => {
-    window.virtualPads[0]!.id = "DualSense 054c virtual";
-  });
+  await replaceId(page, "DualSense 054c virtual");
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput!.family))
     .toBe("playstation");
@@ -262,9 +269,7 @@ test("prompts switch between PlayStation, generic and keyboard/mouse", async ({
   await tap(page, 1);
   await page.mouse.move(50, 50);
   await expect(page.locator("#controller-open")).toContainText("F2");
-  await page.evaluate(() => {
-    window.virtualPads[0]!.id = "USB generic virtual";
-  });
+  await replaceId(page, "USB generic virtual");
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput!.family))
     .toBe("generic");
