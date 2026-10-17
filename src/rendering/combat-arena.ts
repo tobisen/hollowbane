@@ -1,3 +1,17 @@
+import { actionPrompt } from "../simulation/prompts";
+import {
+  createSkills,
+  requestSkill,
+  skillHooks,
+  SKILLS,
+  worldAim,
+  groundAim,
+} from "../simulation/skills";
+import {
+  SKILL_ACTIONS,
+  SKILL_SLOTS,
+  cycleSkill,
+} from "../simulation/skill-input";
 import {
   createEncounter,
   ENCOUNTER_NAV,
@@ -69,6 +83,20 @@ export interface CombatPresentation {
 }
 declare global {
   interface Window {
+    hollowbaneSkills?: {
+      tick: number;
+      users: import("../simulation/skills").SkillUser[];
+      events: import("../simulation/skills").SkillEvent[];
+      effects: import("../simulation/skill-effects").EffectEvent[];
+      statuses: import("../simulation/skill-effects").Status[];
+      bolts: number;
+      selected: number;
+      metrics: {
+        skillCombatP95: number;
+        inputP95: number;
+        inputSamples: number;
+      };
+    };
     hollowbaneCombat?: CombatPresentation;
     hollowbaneAI?: {
       tick: number;
@@ -89,6 +117,7 @@ declare global {
 }
 export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
+  const skills = query.has("skills");
   const requested = Number(query.get("count") ?? 5);
   const initialCount = [5, 10, 20, 30].includes(requested) ? requested : 5;
   const nav = monsters ? ENCOUNTER_NAV : ARENA_NAV;
@@ -112,6 +141,16 @@ export function startCombatArena(monsters = false): Phaser.Game {
         `<label>Enemies <select id="ai-count">${[5, 10, 20, 30].map((n) => `<option ${n === initialCount ? "selected" : ""}>${n}</option>`).join("")}</select></label><label>AI navigation overlay <input id="ai-debug" type="checkbox"></label><label>Immortal test player <input id="ai-practice" type="checkbox"></label>`,
       );
   }
+  if (skills) {
+    root.classList.add("skill-arena");
+    root.querySelector(".arena-header p")!.textContent = "HOLLOWBANE / SKILLS";
+    root.querySelector("h1")!.textContent = "The Kindled Circle";
+    document.title = "Hollowbane · The Kindled Circle";
+    root.insertAdjacentHTML(
+      "beforeend",
+      `<section class="skill-bar" aria-label="Abilities"><p id="skill-resource">Mana 100 / 100</p><div>${SKILL_SLOTS.map((id, i) => `<button type="button" data-skill="${i}" aria-pressed="${i === 0}">${SKILLS.find((s) => s.id === id)!.name}</button>`).join("")}</div><p id="skill-prompts">X / Q / 1–4: cast · Right click: selected skill · Left click: attack / move</p><p id="skill-status" role="status">Select a skill. Aim with mouse or right stick.</p></section>`,
+    );
+  }
   const field = document.querySelector<HTMLElement>("#combat-world")!;
   const weapon = document.querySelector<HTMLSelectElement>("#combat-weapon")!;
   const speed = document.querySelector<HTMLSelectElement>("#combat-speed")!;
@@ -124,6 +163,12 @@ export function startCombatArena(monsters = false): Phaser.Game {
       ? createEncounter(initialCount)
       : null;
     private world = this.encounter?.combat ?? createCombat();
+    private abilities = skills ? createSkills(this.world) : null;
+    private selectedSkill = 0;
+    private mouseGround: Point = { x: 790, y: 560 };
+    private skillCosts: number[] = [];
+    private skillLatencies: number[] = [];
+    private skillInputAt: number | null = null;
     private aiCosts: number[] = [];
     private accumulator = 0;
     private paused = monsters && query.has("paused");
@@ -234,6 +279,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
           onGround,
         );
       const down = (event: PointerEvent) => {
+        if (skills && event.button === 2 && !this.paused) {
+          event.preventDefault();
+          field.focus();
+          this.mouseGround = point(event);
+          this.hovered = pick(this.mouseGround);
+          this.castSkill(this.selectedSkill);
+          return;
+        }
         if (event.button !== 0 || this.paused) return;
         event.preventDefault();
         field.focus();
@@ -255,7 +308,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
       };
       const move = (event: PointerEvent) => {
-        this.hovered = pick(point(event));
+        this.mouseGround = point(event);
+        this.hovered = pick(this.mouseGround);
         field.style.cursor = this.hovered === null ? "crosshair" : "pointer";
       };
       const release = () => {
@@ -266,6 +320,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
         release();
         this.keys.clear();
         this.inputAt = null;
+        this.skillInputAt = null;
+        if (this.abilities) this.abilities.pending = [];
         const p = this.world.actors[0]!;
         p.controller = commandCombat(p.controller, { kind: "stop" });
         this.accumulator = 0;
@@ -295,7 +351,19 @@ export function startCombatArena(monsters = false): Phaser.Game {
       };
       const keyup = (event: KeyboardEvent) =>
         this.keys.delete(event.key.toLowerCase());
+      const context = (e: Event) => {
+        if (skills) e.preventDefault();
+      };
+      field.addEventListener("contextmenu", context);
       field.addEventListener("pointerdown", down);
+      if (skills)
+        for (const button of Array.from(
+          root.querySelectorAll<HTMLButtonElement>("[data-skill]"),
+        ))
+          button.onclick = () => {
+            this.selectedSkill = Number(button.dataset.skill);
+            field.focus();
+          };
       field.addEventListener("pointermove", move);
       field.addEventListener("pointerup", release);
       field.addEventListener("pointercancel", release);
@@ -320,6 +388,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
               )
             : null;
           this.world = this.encounter?.combat ?? createCombat();
+          this.abilities = skills ? createSkills(this.world) : null;
+          this.skillCosts = [];
+          this.skillLatencies = [];
           this.impactUntil.clear();
           this.numberUntil.clear();
           this.deathAt.clear();
@@ -363,6 +434,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         document.removeEventListener("visibilitychange", visibility);
         this.game.events.off(Phaser.Core.Events.PRE_RENDER, preRender);
         this.game.events.off(Phaser.Core.Events.POST_RENDER, postRender);
+        field.removeEventListener("contextmenu", context);
         field.removeEventListener("pointerdown", down);
         field.removeEventListener("pointermove", move);
         field.removeEventListener("pointerup", release);
@@ -372,6 +444,66 @@ export function startCombatArena(monsters = false): Phaser.Game {
         void this.audio?.close();
       });
       document.documentElement.dataset.combatReady = "true";
+    }
+    private castSkill(slot: number): void {
+      if (!this.abilities || this.paused || controllerInput.blockGameplay)
+        return;
+      const a = this.world.actors[0]!,
+        candidates = this.world.actors.filter((t) => t.hp > 0 && t.id !== 0),
+        aim = controllerInput.frame.aim;
+      const isMouse = controllerInput.frame.device === "mouse";
+      const selected = candidates.find(
+        (t) => t.id === (isMouse ? this.hovered : a.controller.selected),
+      );
+      const direction =
+        Math.hypot(aim.x, aim.y) > 0.01
+          ? worldAim(aim)
+          : isMouse
+            ? groundAim(
+                a.controller.walker.position,
+                selected?.controller.walker.position ??
+                  fromGround(this.mouseGround),
+              )
+            : selected
+              ? groundAim(
+                  a.controller.walker.position,
+                  selected.controller.walker.position,
+                )
+              : worldAim({
+                  x: Math.cos(
+                    ((a.controller.walker.direction + 2) * Math.PI) / 4,
+                  ),
+                  y: Math.sin(
+                    ((a.controller.walker.direction + 2) * Math.PI) / 4,
+                  ),
+                });
+      const d = Math.hypot(direction.x, direction.y);
+      const target =
+        selected ??
+        [...candidates].sort((x, y) => {
+          const score = (t: CombatActor) => {
+            const p = t.controller.walker.position,
+              o = a.controller.walker.position,
+              dx = p.x - o.x,
+              dy = p.y - o.y,
+              n = Math.hypot(dx, dy);
+            return (
+              n +
+              5 *
+                (1 -
+                  (dx * direction.x + dy * direction.y) / Math.max(1e-9, n * d))
+            );
+          };
+          return score(x) - score(y) || x.id - y.id;
+        })[0];
+      requestSkill(this.abilities, {
+        actor: 0,
+        skill: SKILL_SLOTS[slot]!,
+        target: target?.id ?? null,
+        direction,
+      });
+      this.selectedSkill = slot;
+      this.skillInputAt = performance.now();
     }
     private syncActors(): void {
       const ids = new Set(this.world.actors.map((a) => a.id));
@@ -596,7 +728,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         if (target) {
           const angle =
             Math.PI / 2 +
-            (a.controller.walker.direction * Math.PI) / 4 +
+            ((a.controller.walker.direction + 2) * Math.PI) / 4 +
             (phase === "windup"
               ? -0.7 * progress
               : phase === "active"
@@ -680,7 +812,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         if (controllerInput.take("toggleRun"))
           player.controller.walker.gait =
             player.controller.walker.gait === "walk" ? "run" : "walk";
-        if (controllerInput.take("primary")) {
+        if (!skills && controllerInput.take("primary")) {
           void controllerInput.vibrate();
           const aim = controllerInput.frame.aim,
             p = onGround(player.controller.walker.position);
@@ -722,6 +854,16 @@ export function startCombatArena(monsters = false): Phaser.Game {
           player.controller = commandCombat(player.controller, {
             kind: "stop",
           });
+        if (skills) {
+          if (controllerInput.take("left"))
+            this.selectedSkill = cycleSkill(this.selectedSkill, -1);
+          if (controllerInput.take("right"))
+            this.selectedSkill = cycleSkill(this.selectedSkill, 1);
+          if (controllerInput.take("interact"))
+            this.castSkill(this.selectedSkill);
+          for (const [i, action] of SKILL_ACTIONS.entries())
+            if (controllerInput.take(action)) this.castSkill(i);
+        }
         for (const a of [
           "secondary",
           "skill1",
@@ -731,7 +873,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           "interact",
           "pickup",
         ] as const)
-          if (controllerInput.take(a))
+          if (!skills && controllerInput.take(a))
             document.querySelector("#combat-log")!.textContent =
               `${a} is reserved; no new system is active.`;
       }
@@ -763,7 +905,32 @@ export function startCombatArena(monsters = false): Phaser.Game {
             )
               player.invulnerableUntil = this.world.tick + 2;
           }
-          stepCombat(this.world, nav, direct.vector, direct.scale);
+          const skillStart = performance.now();
+          stepCombat(
+            this.world,
+            nav,
+            direct.vector,
+            direct.scale,
+            this.abilities ? skillHooks(this.abilities, nav) : {},
+          );
+          if (this.abilities) {
+            this.record(this.skillCosts, performance.now() - skillStart);
+            const recent = this.abilities.events.filter(
+              (e) => e.tick === this.world.tick && e.actor === 0,
+            );
+            for (const event of recent) {
+              if (event.kind === "start" && this.skillInputAt !== null) {
+                this.record(
+                  this.skillLatencies,
+                  performance.now() - this.skillInputAt,
+                );
+                this.skillInputAt = null;
+              }
+              if (event.kind === "rejected") this.skillInputAt = null;
+              document.querySelector("#skill-status")!.textContent =
+                `${SKILLS.find((s) => s.id === event.skill)?.name}: ${event.reason ?? event.kind}`;
+            }
+          }
           if (this.encounter) finishEncounter(this.encounter, nav);
           const aim = controllerInput.frame.aim;
           if (
@@ -811,6 +978,75 @@ export function startCombatArena(monsters = false): Phaser.Game {
       for (const projectile of this.world.projectiles) {
         const p = onGround(projectile.position);
         this.effect.fillStyle(0xf2ce85, 1).fillCircle(p.x, p.y - 28, 4);
+      }
+      if (this.abilities) {
+        const colors = {
+          physical: 0xe6c48a,
+          fire: 0xff9c55,
+          cold: 0x8fdde5,
+          lightning: 0xc7b6ff,
+          poison: 0x9fcd71,
+          arcane: 0xe3ca89,
+        };
+        for (const bolt of this.abilities.effects.bolts) {
+          const p = onGround(bolt.position);
+          this.effect
+            .fillStyle(colors[bolt.element], 1)
+            .fillCircle(p.x, p.y - 24, 5);
+        }
+        for (const e of this.abilities.effects.events) {
+          const age = this.world.tick - e.tick;
+          if (age > 18 || e.kind !== "release") continue;
+          const p = onGround(e.from),
+            q = onGround(e.to);
+          this.effect.lineStyle(2, colors[e.element], (1 - age / 19) * 0.8);
+          if (e.shape === "radial" || e.shape === "self")
+            this.effect.strokeEllipse(p.x, p.y, 60 + age * 7, 30 + age * 3.5);
+          else if (e.shape === "chain")
+            this.effect.lineBetween(p.x, p.y - 24, q.x, q.y - 24);
+          else this.effect.strokeEllipse(p.x, p.y - 20, 25 + age * 2, 18 + age);
+        }
+        const u = this.abilities.users[0]!;
+        if (this.game.loop.frame % 6 === 0) {
+          document.querySelector("#skill-resource")!.textContent =
+            `MANA ${u.mana.toFixed(0)} / ${u.maxMana} · ${u.cast?.skill ?? "READY"} · skill+combat p95 ${percentile(this.skillCosts, 0.95).toFixed(2)} ms · input p95 ${percentile(this.skillLatencies, 0.95).toFixed(1)} ms`;
+          const buttons = Array.from(
+            root.querySelectorAll<HTMLButtonElement>("[data-skill]"),
+          );
+          for (const [i, b] of buttons.entries()) {
+            const s = SKILLS.find((s) => s.id === SKILL_SLOTS[i])!;
+            if (s.kind !== "active") continue;
+            const cd = Math.max(0, (u.cooldowns[s.id] ?? 0) - this.world.tick);
+            b.textContent = `${s.name} · ${s.mana} MP${cd ? ` · ${(cd / 60).toFixed(1)}s` : ""}`;
+            b.setAttribute("aria-pressed", String(i === this.selectedSkill));
+          }
+          const prompts =
+            controllerInput.frame.device === "gamepad"
+              ? SKILL_ACTIONS.map((a) =>
+                  actionPrompt(
+                    a,
+                    controllerInput.family,
+                    controllerInput.settings.bindings,
+                  ),
+                ).join(" / ")
+              : "X / Q / 1 / 2 / 3 / 4";
+          document.querySelector("#skill-prompts")!.textContent =
+            `${prompts}: cast slots · D-pad ←/→: select · A/Cross/Enter: cast selected · R3/T: target · Right stick: aim · Right click: cast selected`;
+        }
+        window.hollowbaneSkills = {
+          tick: this.world.tick,
+          users: structuredClone(this.abilities.users),
+          events: structuredClone(this.abilities.events),
+          effects: structuredClone(this.abilities.effects.events),
+          statuses: structuredClone(this.abilities.effects.statuses),
+          bolts: this.abilities.effects.bolts.length,
+          selected: this.selectedSkill,
+          metrics: {
+            skillCombatP95: percentile(this.skillCosts, 0.95),
+            inputP95: percentile(this.skillLatencies, 0.95),
+            inputSamples: this.skillLatencies.length,
+          },
+        };
       }
       this.record(this.updates, performance.now() - updateAt);
       const camera = this.cameras.main.worldView;

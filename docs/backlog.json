@@ -3146,8 +3146,9 @@
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-293"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nPlayable skill arena and semantic controller activation. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
+    "status": "completed",
+    "body": "## Acceptance criteria\nPlayable skill arena and semantic controller activation. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial.",
+    "evidence": "Playable ?skills=1 reuses arena; six semantic slots, independent aim, D-pad selection, mouse cast, mana/cooldown prompts and bounded original procedural VFX. 151 unit/full check; 5 Chromium and 8 Firefox/WebKit skill scenarios; screenshot reviewed."
   },
   {
     "id": "DBL-295",
@@ -3158,7 +3159,7 @@
     "deliveryPhase": "skills",
     "priority": "p0",
     "dependencies": ["DBL-294"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Acceptance criteria\nShared monster ability execution. Deterministic simulation and existing combat/input behavior preserved.\n\n## Non-goals\nLoot, inventory, itemization, character skill trees or campaign. No physical controller claims.\n\n## Test requirements\nTargeted deterministic tests, full check and relevant browser scenarios; record detailed evidence.\n\n## Definition of done\nVerified increment committed with evidence; original partial parents remain partial."
   },
   {

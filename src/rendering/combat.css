@@ -116,3 +116,46 @@
     font-size: 10px;
   }
 }
+
+.skill-arena .skill-bar {
+  position: absolute;
+  left: 24px;
+  bottom: 92px;
+  max-width: min(650px, calc(100vw - 330px));
+  padding: 10px 14px;
+  background: #0c1319ed;
+  border: 1px solid #87755066;
+  font: 11px/1.5 system-ui;
+}
+.skill-bar p {
+  margin: 4px 0;
+  color: #bdd1dc;
+}
+.skill-bar div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.skill-bar button {
+  color: #e9dac0;
+  background: #24313b;
+  border: 1px solid #6c726e;
+  padding: 7px;
+  cursor: pointer;
+}
+.skill-bar button[aria-pressed="true"] {
+  border-color: #efc477;
+  background: #38434b;
+}
+.skill-bar button:focus-visible {
+  outline: 2px solid #efc477;
+}
+@media (max-width: 800px) {
+  .skill-arena .skill-bar {
+    left: 8px;
+    bottom: 100px;
+    max-width: calc(100vw - 250px);
+    max-height: 210px;
+    overflow: auto;
+  }
+}

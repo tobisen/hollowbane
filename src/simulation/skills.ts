@@ -21,8 +21,8 @@ import {
   type CombatWorld,
 } from "./combat";
 import { directionFor } from "./locomotion";
-import { onGround, type Navigation } from "../world/navigation";
-import type { Point } from "../world/isometric";
+import { type Navigation } from "../world/navigation";
+import { worldToScreen, type Point } from "../world/isometric";
 export const SKILLS = validateSkills(data);
 export const CAST_BREAKPOINTS = [
   { minimum: 0, frames: 100 },
@@ -225,7 +225,9 @@ export function skillHooks(
           },
         };
         if (Math.hypot(intent.direction.x, intent.direction.y) > 1e-6)
-          a.controller.walker.direction = directionFor(intent.direction);
+          a.controller.walker.direction = directionFor(
+            worldToScreen(intent.direction),
+          );
         u.cast = {
           skill: s.id,
           target: intent.target,
@@ -273,7 +275,5 @@ export function worldAim(direction: Point): Point {
   };
 }
 export function groundAim(source: Point, target: Point): Point {
-  const a = onGround(source),
-    b = onGround(target);
-  return { x: b.x - a.x, y: b.y - a.y };
+  return { x: target.x - source.x, y: target.y - source.y };
 }

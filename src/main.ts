@@ -5,7 +5,11 @@ import "./style.css";
 const query = new URLSearchParams(location.search);
 if (query.has("controller")) {
   controllerPage();
-} else if (query.has("combat") || query.has("monsters")) {
+} else if (
+  query.has("combat") ||
+  query.has("monsters") ||
+  query.has("skills")
+) {
   await import("./rendering/combat.css");
   const { startCombatArena } = await import("./rendering/combat-arena");
   startCombatArena(query.has("monsters"));
