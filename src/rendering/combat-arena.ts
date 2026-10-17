@@ -1,3 +1,4 @@
+import { createPolishGround } from "./polish-ground";
 import { CombatAudio } from "./combat-audio";
 import { PolishHUD } from "./polish-hud";
 import { drawSkillVisuals, type SpellVisualStats } from "./skill-visuals";
@@ -199,6 +200,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private accumulator = 0;
     private paused = monsters && query.has("paused");
     private sprites = new Map<number, Phaser.GameObjects.Sprite>();
+    private contactShadows = new Map<number, Phaser.GameObjects.Image>();
     private labels = new Map<number, Phaser.GameObjects.Text>();
     private ink!: Phaser.GameObjects.Graphics;
     private effect!: Phaser.GameObjects.Graphics;
@@ -259,17 +261,26 @@ export function startCombatArena(monsters = false): Phaser.Game {
         "ArrowLeft",
         "ArrowRight",
       ]);
-      this.add
-        .image(0, 0, "arena-plate")
-        .setOrigin(0)
-        .setAlpha(0.38)
-        .setDepth(-1000);
-      const floor = this.add.graphics().setDepth(-999);
-      floor.fillStyle(0x18252c, 0.9).fillRect(230, 260, 1070, 570);
-      floor.lineStyle(1, 0x617579, 0.14);
-      for (let x = 230; x < 1300; x += 64) floor.lineBetween(x, 260, x, 830);
-      for (let y = 260; y < 830; y += 32) floor.lineBetween(230, y, 1300, y);
-      floor.lineStyle(2, 0xb19a62, 0.6).strokeRect(230, 260, 1070, 570);
+      if (polish)
+        createPolishGround(
+          this,
+          nav,
+          query.has("flat"),
+          query.has("noBackdrop"),
+        );
+      else {
+        this.add
+          .image(0, 0, "arena-plate")
+          .setOrigin(0)
+          .setAlpha(0.38)
+          .setDepth(-1000);
+        const floor = this.add.graphics().setDepth(-999);
+        floor.fillStyle(0x18252c, 0.9).fillRect(230, 260, 1070, 570);
+        floor.lineStyle(1, 0x617579, 0.14);
+        for (let x = 230; x < 1300; x += 64) floor.lineBetween(x, 260, x, 830);
+        for (let y = 260; y < 830; y += 32) floor.lineBetween(230, y, 1300, y);
+        floor.lineStyle(2, 0xb19a62, 0.6).strokeRect(230, 260, 1070, 570);
+      }
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
       this.prepareShowcase();
@@ -609,6 +620,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
       for (const [id, sprite] of this.sprites)
         if (!ids.has(id)) {
           sprite.destroy();
+          this.contactShadows.get(id)?.destroy();
+          this.contactShadows.delete(id);
           this.sprites.delete(id);
           this.labels.get(id)?.destroy();
           this.labels.delete(id);
@@ -626,6 +639,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
         if (actor.kind === "dummy" || actor.kind === "moving")
           sprite.setVisible(false);
         this.sprites.set(actor.id, sprite);
+        if (polish)
+          this.contactShadows.set(
+            actor.id,
+            this.add.image(0, 0, "sable-contact-shadow").setDepth(-100),
+          );
         this.labels.set(
           actor.id,
           this.add
@@ -756,6 +774,22 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
       }
       const brain = this.encounter?.brains.find((b) => b.id === a.id);
+      if (polish) {
+        const pose = combatPose(a, this.motion[a.id], this.world.tick),
+          scale =
+            brain?.role === "tank"
+              ? 1.05
+              : brain?.role === "flanker"
+                ? 0.88
+                : 0.93;
+        const champion = brain?.champion ? 1.06 : 1;
+        sprite.setScale(scale * champion, 0.93 * champion * pose.scaleY);
+        this.contactShadows
+          .get(a.id)!
+          .setPosition(p.x, p.y + 2)
+          .setDisplaySize((34 + pose.fall * 12) * champion, 14 + pose.fall * 3)
+          .setAlpha(dead ? 0.65 : 1);
+      }
       if (brain && !flash)
         sprite.setTint(
           brain.champion
@@ -791,7 +825,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
                 )[brain.role],
           );
       }
-      this.ink.fillStyle(0x03070a, 0.5).fillEllipse(p.x, p.y + 3, 34, 12);
+      if (!polish)
+        this.ink.fillStyle(0x03070a, 0.5).fillEllipse(p.x, p.y + 3, 34, 12);
       const selected = this.world.actors[0]!.controller.selected === a.id;
       if (selected || this.hovered === a.id)
         this.ink
@@ -853,6 +888,28 @@ export function startCombatArena(monsters = false): Phaser.Game {
       const number = this.numberUntil.get(a.id),
         numberText =
           number && number.until > this.world.tick ? `\n${number.text}` : "";
+      if (polish) {
+        const numberVisible = Boolean(numberText),
+          showName = selected || this.hovered === a.id || debug || a.id === 0;
+        label
+          .setVisible(numberVisible || showName)
+          .setPosition(
+            p.x,
+            numberVisible
+              ? p.y - 96 - (1 - (number!.until - this.world.tick) / 35) * 18
+              : p.y + 16,
+          )
+          .setText(
+            numberVisible
+              ? number!.text
+              : showName
+                ? `${a.name}${dead ? " · fallen" : ""}${debug && brain ? ` · ${brain.state}` : ""}`
+                : "",
+          )
+          .setColor(numberVisible ? number!.color : "#d9cfb5")
+          .setStroke("#10191c", 2);
+        return;
+      }
       label
         .setPosition(p.x, p.y + (a.id === 0 ? 34 : 14))
         .setText(
@@ -1149,7 +1206,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       this.ink.clear();
       this.effect.clear();
       this.syncActors();
-      if (monsters)
+      if (monsters && !polish)
         for (const obstacle of nav.obstacles) {
           this.ink
             .fillStyle(0x19252d, 1)
@@ -1173,7 +1230,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         const p = onGround(projectile.position);
         this.effect.fillStyle(0xf2ce85, 1).fillCircle(p.x, p.y - 28, 4);
       }
-      if (this.abilities && polish) {
+      if (this.abilities && polish && !query.has("simplefx")) {
         const aim = controllerInput.frame.aim,
           selected = this.world.actors.find(
             (a) => a.id === player.controller.selected && a.hp > 0,

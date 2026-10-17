@@ -1,4 +1,4 @@
-- Skills quality technically approved by user. Gameplay & Visual Polish authorized through its review gate; start DBL-299, then DBL-300 through 305 sequentially. Existing gameplay and all open hardware/asset/performance follow-ups preserved.
+- Skills quality technically approved by user. Gameplay & Visual Polish authorized through its review gate; start DBL-299, then DBL-300 through 307 sequentially. Existing gameplay and all open hardware/asset/performance follow-ups preserved.
 
 # Status
 
@@ -25,3 +25,5 @@
 - DBL-302 complete: accessible resource meters, original ability icons, actual costs/cooldowns, contextual prompts and collapsible diagnostics. Full check 169/five polish cases pass; screenshot reviewed. DBL-303 audio next.
 
 - DBL-303 complete: original bounded spell/combat synthesis, mute and API fallback; full check 172, three unit and two browser audio cases pass. DBL-304 contact/lighting consistency next.
+
+- DBL-304 complete: cached original floor/light/contact graphics, original backdrop cropping, depth-sorted obstacles and readable pack labels. Seven polish cases/full check 172 pass; screenshot reviewed. DBL-305 full regression and showcase captures next; 306 performance/307 publication gate.

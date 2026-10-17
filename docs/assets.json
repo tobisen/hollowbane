@@ -99,5 +99,13 @@
     "placeholder": false,
     "type": "audio",
     "provenance": "docs/polish/milestone.md"
+  },
+  {
+    "id": "sable-ground-and-contact",
+    "source": "src/rendering/polish-ground.ts",
+    "rights": "Original project vector stone/rune/light/contact artwork; backdrop crops reuse original approved cloister",
+    "placeholder": false,
+    "type": "geometry",
+    "provenance": "docs/polish/milestone.md"
   }
 ]

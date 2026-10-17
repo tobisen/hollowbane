@@ -3284,19 +3284,44 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p1",
     "dependencies": ["DBL-303"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nConsistent monster contact shadows and restrained arena lighting. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+    "status": "completed",
+    "body": "## Acceptance criteria\nConsistent monster contact shadows and restrained arena lighting. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review.",
+    "evidence": "Once-baked original stone/rune/light floor, cropped original backdrop avoids covered-floor overdraw, small cached contact shadows, depth-sorted obstacle artwork and consistent role/champion proportions. Labels limited to selected/hovered/debug plus actual damage to avoid pack clutter. All seven polish browser cases/full check 172 pass; screenshot reviewed; provenance/texture sizes documented. No dynamic light/mist emitters, no original atlas replacement."
   },
   {
     "id": "DBL-305",
-    "title": "Repeated polish performance, cross-browser regression and quality gate",
+    "title": "Polish regression and reviewed skill showcase",
     "parent": "DBL-074",
     "phase": 7,
     "targetPhase": 10,
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p1",
     "dependencies": ["DBL-304"],
+    "status": "in-progress",
+    "body": "## Acceptance criteria\nFull regression, cross-browser checks, visual reference and reviewed skill showcase captures. Performance and final gate split to DBL-306/307. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+  },
+  {
+    "id": "DBL-306",
+    "title": "Repeated polish rendering and presentation performance",
+    "parent": "DBL-074",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p1",
+    "dependencies": ["DBL-305"],
     "status": "planned",
-    "body": "## Acceptance criteria\nRepeated polish performance, cross-browser regression and quality gate. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+    "body": "## Acceptance criteria\nRepeated polish rendering and presentation performance. Preserve all existing mechanics and open reference-hardware requirements.\n\n## Non-goals\nNew gameplay, loot, inventory, crafting, classes or campaign. No false hardware claims.\n\n## Test requirements\nRelevant checks and retained repeatable evidence; distinguish simulation CPU, render CPU and presentation timing.\n\n## Definition of done\nVerified scoped increment committed; final polish approval remains user-owned."
+  },
+  {
+    "id": "DBL-307",
+    "title": "Gameplay and Visual Polish publication quality gate",
+    "parent": "DBL-074",
+    "phase": 7,
+    "targetPhase": 10,
+    "deliveryPhase": "gameplay-visual-polish",
+    "priority": "p1",
+    "dependencies": ["DBL-306"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nGameplay and Visual Polish publication quality gate. Preserve all existing mechanics and open reference-hardware requirements.\n\n## Non-goals\nNew gameplay, loot, inventory, crafting, classes or campaign. No false hardware claims.\n\n## Test requirements\nRelevant checks and retained repeatable evidence; distinguish simulation CPU, render CPU and presentation timing.\n\n## Definition of done\nVerified scoped increment committed; final polish approval remains user-owned."
   }
 ]
