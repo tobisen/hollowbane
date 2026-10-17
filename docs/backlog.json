@@ -3605,8 +3605,9 @@
     "deliveryPhase": "inventory-l2",
     "priority": "p0",
     "dependencies": ["DBL-327"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nL2 lifecycle regression and visual verification. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nL2 lifecycle regression and visual verification. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review.",
+    "evidence": "Full check213 and complete Chromium83 pass;20 inventory/storage cross-browser cases +12 expanded controller/natural death/ring comparison cases pass. Reviewed1920/1024 visual goldens. Extended all-system FF/WebKit config for final gate; Linux baselines reviewed during publication330."
   },
   {
     "id": "DBL-329",

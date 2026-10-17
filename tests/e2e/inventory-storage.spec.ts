@@ -15,7 +15,8 @@ test.beforeAll(async () => {
     },
   });
   const output = Array.isArray(result) ? result[0] : result;
-  if (!output || !("output" in output)) throw Error("Missing storage test bundle");
+  if (!output || !("output" in output))
+    throw Error("Missing storage test bundle");
   const chunk = output.output.find((c) => c.type === "chunk");
   if (!chunk || chunk.type !== "chunk") throw Error("Missing storage module");
   code = chunk.code;

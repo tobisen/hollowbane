@@ -165,6 +165,22 @@ export class InventoryView {
       "hollowbane-inventory-action",
       this.controllerAction,
     );
+    this.dialog.addEventListener("focusin", (e) => {
+      if (!this.held) return;
+      for (const el of Array.from(
+        this.dialog.querySelectorAll<HTMLElement>("[data-placement]"),
+      ))
+        delete el.dataset.placement;
+      const target = this.destination(e.target as Element);
+      if (target)
+        target.element.dataset.placement = moveOwned(
+          this.runtime.session(),
+          this.held,
+          target.destination,
+        ).ok
+          ? "valid"
+          : "invalid";
+    });
     this.dialog.addEventListener("pointerdown", this.pointerDown);
     this.dialog.addEventListener("pointermove", this.pointerMove);
     this.dialog.addEventListener("pointerup", this.pointerUp);
@@ -190,7 +206,6 @@ export class InventoryView {
     this.dialog.addEventListener("close", () => {
       this.held = null;
       this.cancelDrag();
-      hub.clear();
       hub.blockGameplay = false;
       root.querySelector<HTMLElement>("#combat-world")?.focus();
     });
@@ -296,6 +311,7 @@ export class InventoryView {
     if (!this.dirty || this.saving || !this.ready || this.disposed) return;
     this.dirty = false;
     this.saving = true;
+    this.message("Saving character checkpoint…");
     let saved = false;
     try {
       await this.storage.save(this.runtime.session());
@@ -326,6 +342,8 @@ export class InventoryView {
   }
   close(): void {
     if (!this.ready) return;
+    hub.clear();
+    hub.blockGameplay = false;
     this.dialog.close();
   }
   private perform(result: Parameters<InventoryRuntime["commit"]>[0]): string {
@@ -336,13 +354,15 @@ export class InventoryView {
     this.render();
     return message;
   }
+  private slotFor(item: GeneratedItem) {
+    const slots = equipmentDefinition(item).slots;
+    return slots.find((s) => !this.runtime.character.equipment[s]) ?? slots[0];
+  }
   private equip() {
     const item =
       this.selected && ownedItem(this.runtime.character, this.selected);
     if (!item) return;
-    const slots = equipmentDefinition(item).slots;
-    const slot =
-      slots.find((s) => !this.runtime.character.equipment[s]) ?? slots[0];
+    const slot = this.slotFor(item);
     if (slot)
       this.perform(
         moveOwned(this.runtime.session(), item.id, { kind: "equipment", slot }),
@@ -370,6 +390,9 @@ export class InventoryView {
       gear = this.dialog.querySelector("#inventory-gear")!,
       grid = this.dialog.querySelector<HTMLElement>("#inventory-grid")!;
     const focus = (document.activeElement as HTMLElement | null)?.dataset.focus;
+    this.dialog.querySelector(
+      "section[aria-label=Backpack] h3 small",
+    )!.textContent = `${c.grid.columns} × ${c.grid.rows} · fixed footprints`;
     gear.replaceChildren();
     grid.replaceChildren();
     grid.style.setProperty("--columns", String(c.grid.columns));
@@ -437,7 +460,7 @@ export class InventoryView {
       : "Select a grid item or equipment slot. Carrying is a selection only; invalid moves never remove an item.";
     let comparison = "";
     if (item?.identified) {
-      const slot = equipmentDefinition(item).slots[0];
+      const slot = this.slotFor(item);
       const result = slot && equipItem(c, item.id, slot);
       comparison =
         result && result.ok
