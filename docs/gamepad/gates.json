@@ -96,12 +96,37 @@
       "DBL-308",
       "DBL-309"
     ],
-    "evidence": "docs/polish/milestone.md and performance.json; user quality approval remains false",
+    "evidence": "docs/polish/milestone.md; technically approved explicitly by user before L1.",
     "approval": "Explicit user technical approval of Gameplay & Visual Polish"
   },
   "lootL1": {
     "authorized": true,
     "qualityGateApproved": false,
-    "scope": ["DBL-310", "DBL-319"]
+    "scope": ["DBL-310", "DBL-319"],
+    "technicalCandidateDelivered": true,
+    "stoppedForReview": true,
+    "runtimeCommit": "b565a1e",
+    "ciRun": "39067012054",
+    "unitTests": 194,
+    "chromiumCases": 74,
+    "firefoxWebkitLootCases": 10,
+    "firefoxWebkitRegressionCases": 40,
+    "applicationSourceCommit": "d3179c4",
+    "ciCommit": "b565a1e",
+    "hostedControllerSkillPolishLootCases": 48,
+    "physicalControllerVerified": false,
+    "completedIssues": [
+      "DBL-310",
+      "DBL-311",
+      "DBL-312",
+      "DBL-313",
+      "DBL-314",
+      "DBL-315",
+      "DBL-316",
+      "DBL-317",
+      "DBL-318",
+      "DBL-319"
+    ],
+    "evidence": "docs/loot/l1.md, distributions.json, performance-chromium.json"
   }
 }

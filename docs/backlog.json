@@ -826,9 +826,10 @@
     "phase": 11,
     "priority": "p0",
     "dependencies": ["DBL-076"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nItem bases, item-level, quality, rarity, level requirement.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 11; P0. Target roadmap phase 11; source phase metadata retained.\n\n## Dependencies\nDBL-076\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Item bases, item-level, quality, rarity, level requirement.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-077; no known critical regression.\n",
-    "targetPhase": 11
+    "targetPhase": 11,
+    "evidence": "L1 scoped foundation DBL-310\u2013319 only; full equipment/itemization/inventory, comparisons, set library and broader acceptance remain open. docs/loot/l1.md."
   },
   {
     "id": "DBL-078",
@@ -866,9 +867,10 @@
     "phase": 11,
     "priority": "p0",
     "dependencies": ["DBL-080"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nItem identification, binding/free trade flags, durability policy.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 11; P0. Target roadmap phase 11; source phase metadata retained.\n\n## Dependencies\nDBL-080\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Item identification, binding/free trade flags, durability policy.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-081; no known critical regression.\n",
-    "targetPhase": 11
+    "targetPhase": 11,
+    "evidence": "L1 scoped foundation DBL-310\u2013319 only; full equipment/itemization/inventory, comparisons, set library and broader acceptance remain open. docs/loot/l1.md."
   },
   {
     "id": "DBL-082",
@@ -916,9 +918,10 @@
     "phase": 12,
     "priority": "p0",
     "dependencies": ["DBL-085"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nGround items, loot labels, highlighting, item pickup radius.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 12; P0. Target roadmap phase 13; source phase metadata retained.\n\n## Dependencies\nDBL-085\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Ground items, loot labels, highlighting, item pickup radius.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-086; no known critical regression.\n",
-    "targetPhase": 13
+    "targetPhase": 13,
+    "evidence": "L1 scoped foundation DBL-310\u2013319 only; full equipment/itemization/inventory, comparisons, set library and broader acceptance remain open. docs/loot/l1.md."
   },
   {
     "id": "DBL-087",
@@ -946,9 +949,10 @@
     "phase": 12,
     "priority": "p0",
     "dependencies": ["DBL-088"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nKeyboard controls, controller readiness och item comparisons.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 12; P0. Target roadmap phase 13; source phase metadata retained.\n\n## Dependencies\nDBL-088\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Keyboard controls, controller readiness och item comparisons.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-089; no known critical regression.\n",
-    "targetPhase": 13
+    "targetPhase": 13,
+    "evidence": "L1 scoped foundation DBL-310\u2013319 only; full equipment/itemization/inventory, comparisons, set library and broader acceptance remain open. docs/loot/l1.md."
   },
   {
     "id": "DBL-090",
@@ -956,9 +960,10 @@
     "phase": 13,
     "priority": "p0",
     "dependencies": ["DBL-089"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nQuality rolls + weighted drop tables per monster/area/difficulty.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 13; P0. Target roadmap phase 12; source phase metadata retained.\n\n## Dependencies\nDBL-089\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Quality rolls + weighted drop tables per monster/area/difficulty.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-090; no known critical regression.\n",
-    "targetPhase": 12
+    "targetPhase": 12,
+    "evidence": "L1 scoped foundation DBL-310\u2013319 only; full equipment/itemization/inventory, comparisons, set library and broader acceptance remain open. docs/loot/l1.md."
   },
   {
     "id": "DBL-091",
@@ -966,9 +971,10 @@
     "phase": 13,
     "priority": "p0",
     "dependencies": ["DBL-090"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nPrefix/suffix pools, tiers, item level gates, exclusions.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 13; P0. Target roadmap phase 12; source phase metadata retained.\n\n## Dependencies\nDBL-090\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Prefix/suffix pools, tiers, item level gates, exclusions.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-091; no known critical regression.\n",
-    "targetPhase": 12
+    "targetPhase": 12,
+    "evidence": "L1 scoped foundation DBL-310\u2013319 only; full equipment/itemization/inventory, comparisons, set library and broader acceptance remain open. docs/loot/l1.md."
   },
   {
     "id": "DBL-092",
@@ -976,9 +982,10 @@
     "phase": 13,
     "priority": "p0",
     "dependencies": ["DBL-091"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nMagic/Rare item rolling och guaranteed stat constraints.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 13; P0. Target roadmap phase 12; source phase metadata retained.\n\n## Dependencies\nDBL-091\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Magic/Rare item rolling och guaranteed stat constraints.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-092; no known critical regression.\n",
-    "targetPhase": 12
+    "targetPhase": 12,
+    "evidence": "L1 scoped foundation DBL-310\u2013319 only; full equipment/itemization/inventory, comparisons, set library and broader acceptance remain open. docs/loot/l1.md."
   },
   {
     "id": "DBL-093",
@@ -986,9 +993,10 @@
     "phase": 13,
     "priority": "p0",
     "dependencies": ["DBL-092"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nUnique and set item templates med versionshantering.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 13; P0. Target roadmap phase 12; source phase metadata retained.\n\n## Dependencies\nDBL-092\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Unique and set item templates med versionshantering.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-093; no known critical regression.\n",
-    "targetPhase": 12
+    "targetPhase": 12,
+    "evidence": "L1 scoped foundation DBL-310\u2013319 only; full equipment/itemization/inventory, comparisons, set library and broader acceptance remain open. docs/loot/l1.md."
   },
   {
     "id": "DBL-094",
@@ -1006,9 +1014,10 @@
     "phase": 13,
     "priority": "p0",
     "dependencies": ["DBL-094"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nLoot simulator (100k rolls) med distribution tests och report.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 13; P0. Target roadmap phase 12; source phase metadata retained.\n\n## Dependencies\nDBL-094\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Loot simulator (100k rolls) med distribution tests och report.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-095; no known critical regression.\n",
-    "targetPhase": 12
+    "targetPhase": 12,
+    "evidence": "L1 scoped foundation DBL-310\u2013319 only; full equipment/itemization/inventory, comparisons, set library and broader acceptance remain open. docs/loot/l1.md."
   },
   {
     "id": "DBL-096",
@@ -3442,7 +3451,7 @@
     "dependencies": ["DBL-315"],
     "status": "complete",
     "body": "## Acceptance criteria\nL1 regression and visual verification. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review.",
-    "evidence": "Full check191; 68 existing Chromium scenarios plus six L1 final cases pass, new1% reference/unmasked capture reviewed, ten final FF/WebKit cases pass, including actual hostile death and adaptive navigation spacing. Stable-build rerun after aborted build race. Performance/publication split into317; final gate318."
+    "evidence": "Runtimeb565a1e, full check194, full CI74 Chromium, final L1 six Chromium and10 FF/WebKit cases, hosted48; performance-chromium.json repeated comparable samples and reviewed showcase.webp; CI/Pages39067012054."
   },
   {
     "id": "DBL-317",
@@ -3455,7 +3464,7 @@
     "dependencies": ["DBL-316", "DBL-319"],
     "status": "complete",
     "body": "## Acceptance criteria\nL1 repeated performance and hosted verification. Deterministic original Hollowbane L1 foundation; preserve existing systems.\n\n## Non-goals\nFull inventory, equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nTargeted deterministic tests and relevant browser/evidence checks.\n\n## Definition of done\nVerified committed increment; broader parents remain partial; stop at L1 review.",
-    "evidence": "Final CI/Pages39067012054 (b565a1e; app source d3179c4) verify/deploy success;74 Chromium,194 unit,40 final FF-WebKit combined and48 hosted scenarios pass. 18-case corrected-content2 performance and1000 death bursts retained; software threshold limitation explicit. docs/loot/l1.md."
+    "evidence": "Repeated 18-case SwiftShader performance; CI/Pages39067012054, hosted48 scenarios. docs/loot/l1.md/performance-chromium.json."
   },
   {
     "id": "DBL-318",
@@ -3466,8 +3475,9 @@
     "deliveryPhase": "loot-l1",
     "priority": "p0",
     "dependencies": ["DBL-317"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nCollect verified L1 item, loot, browser, performance, public and remaining-scope evidence. Stop for user L1 review.\n\n## Non-goals\nL2, inventory/equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nReference verified L1 regression/performance/publication evidence.\n\n## Definition of done\nL1 technical candidate delivered; user approval remains false."
+    "status": "complete",
+    "body": "## Acceptance criteria\nCollect verified L1 item, loot, browser, performance, public and remaining-scope evidence. Stop for user L1 review.\n\n## Non-goals\nL2, inventory/equipment UI, crafting, vendors, sockets, runewords and progression.\n\n## Test requirements\nReference verified L1 regression/performance/publication evidence.\n\n## Definition of done\nL1 technical candidate delivered; user approval remains false.",
+    "evidence": "docs/loot/l1.md; L1 technical candidate delivered, user approval false; stop before L2. Original item/equipment parents remain partial."
   },
   {
     "id": "DBL-319",

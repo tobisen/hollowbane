@@ -37,3 +37,5 @@ User approval / L1 authorization: polish DBL-299–309 approved. L1 Item Archite
 L1 quality work split before completion: DBL-316 regression/visual, DBL-317 repeated performance/hosted verification, DBL-318 final review evidence. Scope is now310–318; stable original IDs/topics preserved, no duplicate acceptance.
 
 DBL-319 is a required L1 dependency discovered by burst profiling: early-seed RNG correlation fix/content version2. DBL-317 depends on319 before final performance/publication;318 remains final gate. Graph validation now supports later-added dependencies without renumbering IDs and detects actual cycles.
+
+L1 checkpoint: DBL-310–319 technically delivered; runtimeb565a1e, CI/Pages39067012054,194 unit/74 Chromium/10 FF-WebKit/48 hosted scenarios. Stop for user L1 quality review; approval false. Preserve broad partial parents and hardware/performance/art follow-ups. No L2 without explicit approval. Evidence docs/loot/l1.md.

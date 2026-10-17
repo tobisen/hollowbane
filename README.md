@@ -28,10 +28,12 @@ Start at [STATUS.md](STATUS.md). See [ROADMAP.md](ROADMAP.md), [BACKLOG.md](BACK
 
 ## GitHub and deployment
 
-Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 309 issues (231 source requirements plus scoped increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.
+Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 319 issues (231 source requirements plus scoped increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.
 
 ## Skill laboratory
 
 `?skills=1` opens The Kindled Circle; add `&monsters=1&count=20` for shared monster abilities. Six original prototypes: Ember Lance, Rime Ring, Storm Thread, Iron Fan, Oath Echo and Briar Edge. X/Q/1–4 cast semantic slots; right click casts the selected skill; controller face/shoulder/trigger actions use saved remaps. D-pad left/right selects and interact casts selected. Target lock (T/R3) and independent right-stick aim are preserved. Mana regenerates through Still Well; costs/cooldowns start on acceptance, interruptions do not refund, movement waits for recovery. Full evidence: [Skills delivery](docs/skills/phase.md).
 
 Gameplay and Visual Polish is delivered for quality review after approved Skills. `?polish=1` opens The Sable Court; `&training=1` retains training dummies; `&showcase=1` runs an explicit durable-target animation showcase with actual skill execution. No new mechanics. Evidence: docs/polish/milestone.md.
+
+L1 Item Architecture & Loot is delivered for quality review: `?loot=1`, `&training=1` for dummies. Ground selection/inspection/identification only; no inventory or equipment. Deterministic examples, statistics, checks and limits: docs/loot/l1.md.
