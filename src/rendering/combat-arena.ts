@@ -273,6 +273,9 @@ export function startCombatArena(): Phaser.Game {
           this.impactUntil.clear();
           this.numberUntil.clear();
           this.deathAt.clear();
+          this.hovered = null;
+          document.querySelector("#combat-log")!.textContent =
+            "Select a target to begin.";
         };
       const pause = document.querySelector<HTMLButtonElement>("#combat-pause")!;
       pause.onclick = () => {
@@ -427,7 +430,7 @@ export function startCombatArena(): Phaser.Game {
         numberText =
           number && number.until > this.world.tick ? `\n${number.text}` : "";
       label
-        .setPosition(p.x, p.y + 14)
+        .setPosition(p.x, p.y + (a.id === 0 ? 34 : 14))
         .setText(`${a.name}${dead ? " · fallen" : ""}${numberText}`)
         .setColor(numberText ? number!.color : "#c7bc9e");
       if (["windup", "active", "recovery"].includes(phase) && !dead) {

@@ -61,4 +61,19 @@ describe("projectile foundation", () => {
     expect(w.events.filter((e) => e.kind === "damage")).toHaveLength(0);
     expect(w.projectiles).toHaveLength(0);
   });
+  it("lets the first opposing body intercept a shot at another target", () => {
+    const w = shot(),
+      extra = createCombat().actors[4]!;
+    extra.controller.walker.position = {
+      x: w.actors[0]!.controller.walker.position.x + 1.5,
+      y: w.actors[0]!.controller.walker.position.y,
+    };
+    w.actors.push(extra);
+    for (let i = 0; i < 40; i++) stepCombat(w);
+    expect(extra.hp).toBeLessThan(extra.maxHp);
+    expect(w.actors[1]!.hp).toBe(160);
+    expect(w.events.find((e) => e.kind === "impact")).toMatchObject({
+      target: 4,
+    });
+  });
 });

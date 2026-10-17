@@ -79,4 +79,44 @@ describe("combat resolution and reactions", () => {
     expect(b.controller.walker.position.x).toBeGreaterThan(x);
     expect(a.controller.timeline.timing.windup).toBe(8);
   });
+  it("hit recovery cancels the pending strike and lethal hits prevent launch", () => {
+    const w = duel(),
+      a = w.actors[0]!,
+      b = w.actors[1]!;
+    a.controller = commandCombat(a.controller, {
+      kind: "attack",
+      target: 1,
+      repeat: false,
+    });
+    for (let i = 0; i < 4; i++) stepCombat(w);
+    b.offense.damage = 40;
+    applyCombatHit(w, b, a, ARENA_NAV);
+    expect(a.controller.timeline.phase).toBe("hitstun");
+    for (let i = 0; i < 40; i++) stepCombat(w);
+    expect(b.hp).toBe(160);
+    a.weapon = "projectile";
+    a.range = 6;
+    a.controller = commandCombat(a.controller, {
+      kind: "attack",
+      target: 1,
+      repeat: false,
+    });
+    stepCombat(w);
+    a.hp = 1;
+    applyCombatHit(w, b, a, ARENA_NAV);
+    for (let i = 0; i < 40; i++) stepCombat(w);
+    expect(a.hp).toBe(0);
+    expect(w.projectiles).toHaveLength(0);
+    expect(b.hp).toBe(160);
+  });
+  it("does not knock targets through arena boundaries", () => {
+    const w = duel(),
+      a = w.actors[0]!,
+      b = w.actors[1]!;
+    a.knockback = 99;
+    const position = { ...b.controller.walker.position };
+    applyCombatHit(w, a, b, ARENA_NAV);
+    expect(b.controller.walker.position).toEqual(position);
+    expect(b.hp).toBeLessThan(160);
+  });
 });

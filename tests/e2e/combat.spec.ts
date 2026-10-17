@@ -173,6 +173,17 @@ test("hostile attacks cause hit recovery and player death remains terminal", asy
     )
     .toBe(true);
   await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          window.hollowbaneCombat!.events.some(
+            (e) => e.kind === "stagger" && e.target === 0,
+          ),
+        ),
+      { timeout: 5000 },
+    )
+    .toBe(true);
+  await expect
     .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.hp), {
       timeout: 45000,
     })

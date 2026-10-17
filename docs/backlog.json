@@ -391,7 +391,7 @@
     "status": "partial",
     "body": "## Purpose\nAction states: idle, move, windup, strike, recovery, hitstun, block, dead.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-035\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Action states: idle, move, windup, strike, recovery, hitstun, block, dead.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-036; no known critical regression.\n",
     "targetPhase": 6,
-    "evidence": "Idle/move delivered by DBL-240; pure combat timeline delivered by DBL-253. Rendering integration, block and complete actor transitions remain outstanding. Phase 3 authorized; parent remains partial."
+    "evidence": "Partial: DBL-240 idle/move plus DBL-253–257 windup/active/recovery/hitstun/dead integrated. Block is still unimplemented; no parent completion claimed."
   },
   {
     "id": "DBL-037",
@@ -399,9 +399,10 @@
     "phase": 5,
     "priority": "p0",
     "dependencies": ["DBL-036"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nTick-accurate timeline med start, active frames, recovery och möjlighet till avbrott.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-036\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Tick-accurate timeline med start, active frames, recovery och möjlighet till avbrott.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-037; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Partial: fixed-tick committed timeline and projectile foundation delivered by DBL-253/256/257. Original parent dependencies retained; broader block/cast validation not complete."
   },
   {
     "id": "DBL-038",
@@ -409,9 +410,10 @@
     "phase": 5,
     "priority": "p0",
     "dependencies": ["DBL-037"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nMelee target acquisition, range, facing, auto-approach.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-037\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Melee target acquisition, range, facing, auto-approach.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-038; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Scoped melee targeting, range, facing and approach delivered/tested by DBL-254/257. Original dependency DBL-037 remains partial; parent remains partial."
   },
   {
     "id": "DBL-039",
@@ -419,9 +421,10 @@
     "phase": 5,
     "priority": "p0",
     "dependencies": ["DBL-038"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nAttack speed modifiers och diskreta breakpoints (egna balansvärden).\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-038\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Attack speed modifiers och diskreta breakpoints (egna balansvärden).\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-039; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Scoped configurable attack speed/hit-recovery thresholds delivered by DBL-253/255/257. Original dependencies remain unchanged; broader gate review pending."
   },
   {
     "id": "DBL-040",
@@ -429,9 +432,10 @@
     "phase": 5,
     "priority": "p0",
     "dependencies": ["DBL-039"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nHit/miss/block, critical, armor/defense, damage types.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-039\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Hit/miss/block, critical, armor/defense, damage types.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-040; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Physical accuracy/defense/armor/resistance/critical calculations delivered by DBL-259/255. Block and additional damage-type systems remain outstanding."
   },
   {
     "id": "DBL-041",
@@ -439,9 +443,10 @@
     "phase": 5,
     "priority": "p0",
     "dependencies": ["DBL-040"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nHit recovery, knockback och stagger samt anti-stunlock regler.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-040\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Hit recovery, knockback och stagger samt anti-stunlock regler.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-041; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Scoped recovery, stagger guard and swept knockback delivered/tested by DBL-255. Original dependencies and broader balancing remain outstanding."
   },
   {
     "id": "DBL-042",
@@ -449,9 +454,10 @@
     "phase": 5,
     "priority": "p0",
     "dependencies": ["DBL-041"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nHit feedback, sound, VFX, screen shake och animation sync.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-041\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Hit feedback, sound, VFX, screen shake och animation sync.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-042; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Procedural combat animation/feedback and synthesized sound delivered by DBL-257; dedicated production assets tracked by DBL-260."
   },
   {
     "id": "DBL-043",
@@ -459,9 +465,10 @@
     "phase": 5,
     "priority": "p0",
     "dependencies": ["DBL-042"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nCombat event log/test scenarios/replay.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-042\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Combat event log/test scenarios/replay.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-043; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Bounded typed combat log and serializable seeded replay tests delivered. Full original replay bug-report workflow remains outstanding."
   },
   {
     "id": "DBL-044",
@@ -469,9 +476,10 @@
     "phase": 6,
     "priority": "p0",
     "dependencies": ["DBL-043"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nHP, mana, regen, resource costs och thresholds.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 06; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-043\n\n## Acceptance criteria\n- Deliver the independently reviewable result: HP, mana, regen, resource costs och thresholds.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-044; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Health/death training slice delivered in DBL-255/257. Mana, regen and resource costs remain unimplemented."
   },
   {
     "id": "DBL-045",
@@ -499,9 +507,10 @@
     "phase": 6,
     "priority": "p0",
     "dependencies": ["DBL-046"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nResistances/absorbs, immunities, vulnerabilities och max/min caps.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 06; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-046\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Resistances/absorbs, immunities, vulnerabilities och max/min caps.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-047; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Physical resistance caps and vulnerabilities delivered by DBL-259; other resistance/absorb/immunity systems remain outstanding."
   },
   {
     "id": "DBL-048",
@@ -509,9 +518,10 @@
     "phase": 6,
     "priority": "p0",
     "dependencies": ["DBL-047"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nPlayer death/resurrection, death penalty och återhämtning.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 06; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-047\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Player death/resurrection, death penalty och återhämtning.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-048; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Terminal combat death delivered by DBL-255/257. Resurrection and penalties are outside this phase."
   },
   {
     "id": "DBL-049",
@@ -529,9 +539,10 @@
     "phase": 6,
     "priority": "p0",
     "dependencies": ["DBL-049"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nStatus HUD med life/mana orbs och tydliga varningar.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 06; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-049\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Status HUD med life/mana orbs och tydliga varningar.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-050; no known critical regression.\n",
-    "targetPhase": 6
+    "targetPhase": 6,
+    "evidence": "Combat health bars delivered by DBL-257. Broader life/mana HUD requirements remain outstanding."
   },
   {
     "id": "DBL-051",
@@ -2656,8 +2667,9 @@
     "priority": "p0",
     "parent": "DBL-043",
     "dependencies": ["DBL-257"],
-    "status": "planned",
-    "body": "## Purpose\nCombat quality evidence and public demo\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nFull prior tests plus combat E2E/replays/visual regressions; matched before/after latency, frame p50/p95, simulation and rendering cost/entity counts; publish verified demo then stop for user combat quality review.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+    "status": "in-progress",
+    "body": "## Purpose\nCombat quality evidence and public demo\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nFull prior tests plus combat E2E/replays/visual regressions; matched before/after latency, frame p50/p95, simulation and rendering cost/entity counts; publish verified demo then stop for user combat quality review.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n",
+    "evidence": "90 unit tests, full local check/format, 20 Chromium E2E, 15 cross-browser movement cases and eight Firefox/WebKit combat cases pass. Final performance evidence retained. CI 39015793783: 19/20 pass; arena screenshot differs only in platform fonts (13,072 pixels). Deploy skipped; platform baseline repair required before completion."
   },
   {
     "id": "DBL-259",
