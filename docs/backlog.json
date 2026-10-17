@@ -2882,9 +2882,9 @@
     "priority": "p0",
     "parent": "DBL-009",
     "dependencies": ["DBL-273"],
-    "status": "in-progress",
+    "status": "completed",
     "body": "## Purpose\nG2.5 browser regression, performance and review\n\n## Scope\nAuthorized Phase 2.5 gamepad support. Stable numeric ID DBL-274; requested alias DBL-GP12. Preserve Phaser 4.2.1 and existing keyboard/mouse and completed combat.\n\n## Non-goals\nNew combat mechanics, loot, inventory or resuming Phase 3 before G2.5 user approval.\n\n## Acceptance criteria\nG2.5 browser regression, performance and review; deterministic device-independent intents; safe boundaries and documented fallback behavior.\n\n## Test requirements\nTargeted unit/browser coverage, check at milestones, full regression before G2.5; distinguish emulation from physical verification.\n\n## Definition of done\nVerified scoped increment committed with evidence in docs/gamepad/phase2.5.md; stop for G2.5 review after DBL-274.",
     "deliveryPhase": "2.5",
-    "evidence": "Quality checkpoint: 114 unit tests and full check/format pass. Full Chromium 37 cases; final calibrated-ownership follow-up 17 Chromium controller cases and 32 Firefox/WebKit behaviors pass; 15 legacy movement cases plus smoke pass. Frame-aware speed observation preserves original speed/collision assertions (five repeats pass). Performance/publication pending; G2.5 approval false."
+    "evidence": "Technical G2.5 candidate delivered; user approval remains false. Full check/format: 115 unit tests. CI/Pages 39024351109 at runtime 3ad5f5e passed all 37 Chromium cases and deployed. Final runtime passes 32 Firefox/WebKit controller cases, 15 prior three-browser movement cases and smoke; hosted 22 controller/movement cases pass after explicit scene-readiness fixture repair. Frame p50/p95 before/after 16.7/33.4 ms; controller CPU p95 0.10 ms; virtual injection-to-movement p95 38.8 ms. Physical controller/vibration unverified. Detailed evidence docs/gamepad/phase2.5.md. Phase 3 frozen pending explicit G2.5 approval."
   }
 ]

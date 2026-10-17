@@ -13,3 +13,5 @@ Phase 3 continuation policy (2026-10-17): After each verified issue commit, cont
 Phase 3 gate checkpoint (2026-10-17): DBL-253–259 and DBL-261–262 delivered; CI/Pages and hosted combat verified. Stop at combat quality review. DBL-260 art/audio polish and incomplete original parents remain visible; do not continue gameplay work beyond this gate without user approval.
 
 Priority change (2026-10-17): Phase 2.5 Gamepad Support is authorized through G2.5. Preserve completed combat through 4f68d1f; freeze further Phase 3 work. Execute DBL-263–274 (aliases DBL-GP01–12) sequentially and autonomously, committing verified increments. Phase 3 resumption requires DBL-274 and explicit G2.5 user approval. Never claim physical-controller verification from virtual tests.
+
+G2.5 checkpoint (2026-10-17): DBL-263–274 / DBL-GP01–12 technical candidate delivered, CI/Pages and 22 hosted controller/movement checks pass. Stop for user G2.5 review. User approval remains false; Phase 3 stays frozen. Physical-controller/vibration checks have not been performed. See docs/gamepad/phase2.5.md and gates.json.

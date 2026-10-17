@@ -39,6 +39,15 @@ async function ready(page: Page, url = "./") {
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
     .toBe(true);
+  if (url.includes("combat=1")) {
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-combat-ready",
+      "true",
+    );
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneCombat?.tick ?? 0))
+      .toBeGreaterThan(2);
+  }
   if (url === "./")
     await expect
       .poll(() => page.evaluate(() => window.hollowbanePrototype?.tick ?? 0))

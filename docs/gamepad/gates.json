@@ -5,6 +5,11 @@
     "resumeRequires": ["DBL-274", "G2.5-user-approval"]
   },
   "G2.5": {
-    "approved": false
+    "approved": false,
+    "technicalCandidateVerified": true,
+    "physicalControllerVerified": false,
+    "runtimeCommit": "3ad5f5e",
+    "ciRun": "39024351109",
+    "hostedControllerMovementCases": 22
   }
 }

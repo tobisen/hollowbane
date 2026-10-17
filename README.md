@@ -1,6 +1,6 @@
 # Hollowbane
 
-Original browser-first, singleplayer dark fantasy ARPG. Current local build is the G1 visual prototype: a detailed gothic cloister, eight-direction animated wanderer, click/WASD traversal, depth sorting, smooth camera/zoom and atmospheric effects. G0 and G1 are approved. The [published prototype](https://tobisen.github.io/hollowbane/) passed CI and all ten hosted browser tests. No combat or loot.
+Original browser-first, singleplayer dark fantasy ARPG built with Phaser 4.2.1. The [playable demo](https://tobisen.github.io/hollowbane/) includes the gothic cloister, keyboard/mouse and analog controller movement; `?combat=1` opens the preserved combat test arena. Phase 2.5 controller support is at G2.5 review. Phase 3 development stays frozen pending approval. See [STATUS.md](STATUS.md) for verified scope and limitations.
 
 ## Development
 
@@ -8,10 +8,18 @@ Node >=20.19. Run `npm ci`, `npx playwright install chromium`, then `npm run dev
 
 Asset tooling: `npm run assets:export` and `npm run validate:assets`. Production benchmark: `npm run build`, `npm run preview`, then `npm run benchmark` (60-second sample after 10-second warmup; output under ignored `.local/`). Set `BENCHMARK_BROWSER=firefox` for the full-detail Firefox benchmark after installing that runtime. Full/Balanced detail adjusts render cost; detected software graphics starts in balanced mode. Full G1 review checklist and limitations: [docs/g1-review.md](docs/g1-review.md).
 
+## Controllers
+
+Connect a standard-compatible Xbox, PlayStation or generic gamepad and press/release a button to activate it. Left stick moves, right stick aims/faces, L3 toggles walk/run, A/Cross chooses/interacts and B/Circle returns. Menu/Options opens Pause; F2 opens the same menu from a keyboard. Every existing screen is navigable using the left stick/D-pad and confirm/back.
+
+Open `?controller=1` or Pause → Gamepad settings for persistent mappings, selected controller, layout overrides, deadzones, sensitivity, response curves and axis selection. Diagnostics/calibration shows raw and processed sticks; vibration is optional and capability-checked. Remapping conflicts are rejected. Focus loss, disconnect and menu transitions clear held inputs and require neutral before rearming. Reserved actions do not create unfinished gameplay systems.
+
+Browser emulation is verified separately from hardware: physical-controller and physical-vibration checks have not been performed. Contracts, test evidence and measured performance: [Phase 2.5](docs/gamepad/phase2.5.md).
+
 ## Project state
 
 Start at [STATUS.md](STATUS.md). See [ROADMAP.md](ROADMAP.md), [BACKLOG.md](BACKLOG.md), [GAME_DESIGN.md](GAME_DESIGN.md), [ART_BIBLE.md](ART_BIBLE.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSET_MANIFEST.md](ASSET_MANIFEST.md), [TEST_STRATEGY.md](TEST_STRATEGY.md) and [PERFORMANCE_BUDGET.md](PERFORMANCE_BUDGET.md). Source backlog retained byte-for-byte under docs/source. No assets copied from reference games.
 
 ## GitHub and deployment
 
-Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 239 issues (231 source requirements plus eight scoped G1 increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.
+Origin: tobisen/hollowbane. Main is the release branch; focused substantial work uses feature/DBL-xxx or fix/DBL-xxx. Verified small foundation checkpoints may use current branch. `npm run github:import` prints a dry-run. Set GITHUB_TOKEN (issues write) and run `npm run github:import -- --apply` to reconcile 36 milestones, labels and 274 issues (231 source requirements plus scoped increments) by stable title IDs. Never commit tokens. Workflow deploys only after checks pass on main or manual dispatch; repository Pages source must be GitHub Actions. Live verification is separately required; a workflow file alone is not proof of deployment.

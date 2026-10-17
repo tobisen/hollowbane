@@ -269,3 +269,5 @@ Original numeric IDs and all 36 roadmap phases remain unchanged. Requested GP ID
 | DBL-GP10     | DBL-272      | Diagnostics/calibration                      |
 | DBL-GP11     | DBL-273      | Vibration and safe input lifecycle           |
 | DBL-GP12     | DBL-274      | Cross-browser/performance evidence and G2.5  |
+
+DBL-263–274 are technically complete for G2.5 review; user gate approval is pending. CI, hosted/browser evidence and physical-verification limitations are recorded in [docs/gamepad/phase2.5.md](docs/gamepad/phase2.5.md). Broad parent requirements remain partial.
