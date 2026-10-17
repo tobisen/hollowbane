@@ -1,3 +1,4 @@
+import { ITEM_CONTENT, type ItemContent } from "./item-content";
 import type { CombatEvent, CombatWorld } from "./combat";
 import { generateLoot, type GeneratedItem } from "./loot";
 import { identifyItem } from "./item-save";
@@ -27,6 +28,7 @@ export interface LootWorld {
   noDrop: number;
   blocked: number;
   capacity: number;
+  reserved?: readonly string[];
 }
 export function createLootWorld(seed = 42): LootWorld {
   return {
@@ -54,6 +56,7 @@ export function placeLoot(
 ): WorldDrop | null {
   if (
     world.drops.length >= world.capacity ||
+    world.reserved?.includes(item.id) ||
     world.drops.some((d) => d.item.id === item.id)
   ) {
     world.blocked++;
@@ -89,6 +92,7 @@ export function consumeLootDeaths(
   combat: CombatWorld,
   nav: Navigation,
   events: readonly CombatEvent[] = combat.events,
+  content: ItemContent = ITEM_CONTENT,
 ): WorldDrop[] {
   const added: WorldDrop[] = [];
   for (const event of [...events]
@@ -105,13 +109,16 @@ export function consumeLootDeaths(
       loot.seed = (loot.seed + 1) >>> 0;
       loot.sequence = 0;
     }
-    const item = generateLoot({
-      seed: loot.seed,
-      sequence: loot.sequence++,
-      monsterLevel: loot.monsterLevel,
-      areaLevel: loot.areaLevel,
-      table: loot.table,
-    });
+    const item = generateLoot(
+      {
+        seed: loot.seed,
+        sequence: loot.sequence++,
+        monsterLevel: loot.monsterLevel,
+        areaLevel: loot.areaLevel,
+        table: loot.table,
+      },
+      content,
+    );
     if (!item) {
       loot.noDrop++;
       continue;
