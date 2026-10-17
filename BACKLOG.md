@@ -271,3 +271,7 @@ Original numeric IDs and all 36 roadmap phases remain unchanged. Requested GP ID
 | DBL-GP12     | DBL-274      | Cross-browser/performance evidence and G2.5  |
 
 DBL-263–274 are technically complete for G2.5 review; user gate approval is pending. CI, hosted/browser evidence and physical-verification limitations are recorded in [docs/gamepad/phase2.5.md](docs/gamepad/phase2.5.md). Broad parent requirements remain partial.
+
+## Phase 4 delivery — Monster AI
+
+G2.5 approved. Sequential scoped chain DBL-275 model → 276 perception/navigation → 277 behavior/archetypes → 278 packs/separation → 279 lifecycle/champion → 280 playable diagnostics → 281 browser/performance gate. These map to original DBL-058–065, whose complete source scope and dependencies remain preserved. Physical follow-ups DBL-282–286 remain planned and do not claim emulation as hardware verification.

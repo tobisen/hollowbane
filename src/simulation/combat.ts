@@ -9,7 +9,7 @@ import {
   segmentWalkable,
   type Navigation,
 } from "../world/navigation";
-import { createWalker } from "./locomotion";
+import { createWalker, type MovementConfig } from "./locomotion";
 import { breakpointFrames, type TimelineEvent } from "./combat-timing";
 import {
   commandCombat,
@@ -37,6 +37,7 @@ export const ARENA_NAV: Navigation = {
 export type Weapon = "melee" | "projectile";
 export interface CombatActor {
   id: number;
+  movement?: MovementConfig;
   name: string;
   kind: "player" | "dummy" | "moving" | "hostile";
   controller: CombatController;
@@ -318,7 +319,7 @@ export function stepCombat(
       "wait",
       breakpointFrames(actor.recoveryBonus, RECOVERY_BREAKPOINTS),
       actor.kind === "player" ? keyboard : { x: 0, y: 0 },
-      undefined,
+      actor.movement,
       actor.kind === "player" ? inputScale : 1,
     );
     actor.controller = next.controller;

@@ -60,3 +60,7 @@ The import uses `phase` for original source numbering and `targetPhase` for GitH
 Authorized 2026-10-17, after approved movement and before any further combat development. This delivery phase does not renumber the original 36 target phases above. All completed Phase 3 work through `4f68d1f` is preserved; the request to pause after DBL-253 is applied prospectively because later combat increments were already completed. No combat systems are added in this phase.
 
 DBL-GP01–12 map uniquely to stable DBL-263–274 (see BACKLOG.md). Complete semantic input, lifecycle/profiles, analog movement/aim, existing-screen navigation, prompts, persistent settings, calibration, safety/haptics, browser/performance validation, then stop at **G2.5**. Phase 3 resumption depends on DBL-274 completion **and explicit G2.5 user approval**; docs/gamepad/gates.json records this dependency. Emulated browser validation never substitutes for physical-controller verification.
+
+## Authorized delivery: Phase 4 — Monster AI
+
+G2.5 is approved. User delivery Phase 4 maps to original roadmap topic 08 (Monster AI) and foundations in 09; the original 36 phases and numeric source metadata remain unchanged. Scoped DBL-275–281 depend on completed combat/controller slices rather than marking the original spell-chain dependencies done. Implement through the Monster AI quality gate only; hardware follow-ups DBL-282–286 remain separate.

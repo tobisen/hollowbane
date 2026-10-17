@@ -5,11 +5,18 @@
     "resumeRequires": ["DBL-274", "G2.5-user-approval"]
   },
   "G2.5": {
-    "approved": false,
+    "approved": true,
     "technicalCandidateVerified": true,
     "physicalControllerVerified": false,
     "runtimeCommit": "3ad5f5e",
     "ciRun": "39024351109",
-    "hostedControllerMovementCases": 22
+    "hostedControllerMovementCases": 22,
+    "approval": "Explicit user approval for G2.5 and Phase 4 Monster AI"
+  },
+  "phase4": {
+    "authorized": true,
+    "qualityGateApproved": false,
+    "scope": ["DBL-275", "DBL-281"],
+    "excludes": ["loot", "inventory", "skill trees", "campaign"]
   }
 }

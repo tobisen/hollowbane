@@ -1,6 +1,11 @@
 # Status
 
-- Phase 2.5 Gamepad Support: DBL-263–274 / DBL-GP01–12 technically completed; candidate delivered for G2.5 review. G2.5 is **not approved**. Phase 3 remains frozen; do not resume it without explicit user approval.
+- G2.5 explicitly approved by user. Phase 4 Monster AI authorized through quality review; scoped DBL-275–281 sequentially. DBL-275 complete; DBL-276 in progress. Preserve completed systems; no loot/inventory/skill trees/campaign.
+- Physical follow-ups DBL-282–286 remain unverified. Phase 4 evidence: docs/ai/phase4.md.
+
+## Previous checkpoint (historical)
+
+- Historical Phase 2.5 delivery: DBL-263–274 / DBL-GP01–12 technically completed; candidate delivered for G2.5 review. G2.5 is **not approved**. Phase 3 remains frozen; do not resume it without explicit user approval.
 - Preserved Phaser 4.2.1, original 36-phase roadmap, keyboard/mouse behavior and completed combat through 4f68d1f. Original parent requirements, including DBL-036, remain partial.
 - Delivered unified semantic actions, standard Xbox/PlayStation/generic and extensible vendor profiles, selected-controller lifecycle, analog movement through existing collision/navigation, independent aim/facing, safe device switching, every existing screen/menu navigation, contextual prompts, persistent remapping/settings, diagnostics/calibration and optional capability-checked vibration. Unfinished gameplay actions remain reserved.
 - Final local check/format passes: 115 unit tests, strict TypeScript/lint/build, ten asset records and 274 backlog records. CI passed all 37 Chromium cases; final Firefox/WebKit controller behavior regression passed 32 cases. Legacy movement: 15 cases across three browsers plus original Firefox/WebKit smoke pass. Screenshots reviewed; existing visual tolerance unchanged.
