@@ -1,6 +1,6 @@
 # Status
 
-- G2.5 explicitly approved by user. Phase 4 Monster AI authorized through quality review; scoped DBL-275–281 sequentially. DBL-275 complete; DBL-276 complete; DBL-277 in progress. Preserve completed systems; no loot/inventory/skill trees/campaign.
+- G2.5 explicitly approved by user. Phase 4 Monster AI authorized through quality review; scoped DBL-275–281 sequentially. DBL-275 complete; DBL-276 complete; DBL-277 complete; DBL-278 in progress. Preserve completed systems; no loot/inventory/skill trees/campaign.
 - Physical follow-ups DBL-282–286 remain unverified. Phase 4 evidence: docs/ai/phase4.md.
 
 ## Previous checkpoint (historical)

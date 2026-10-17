@@ -11,3 +11,7 @@ Deterministic serializable monster/brain models and six role profiles, seeded st
 ## DBL-276
 
 Perception uses resolved positions/damage with conservative obstacle line of sight, last-seen threat memory, dead-target clearing and home leash. Shared per-tick path budget, cached goals and 30+ tick retry cooldown bound navigation requests. Three targeted tests and full check pass: 120 tests.
+
+## DBL-277
+
+Explicit validated idle/patrol/alert/chase/attack/retreat/return/dead transitions, staggered decisions, six distinct profiles, flanking approach and ranged retreat. Existing combat commands retain attack/recovery/hitstun commitment and projectile strike boundaries; caster/support currently use physical projectiles (no new spell system). Four behavior tests cover deterministic replay, actual projectile launches, return/death and interruption ownership. Full check/format: 124 tests.

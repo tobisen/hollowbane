@@ -2922,8 +2922,9 @@
     "priority": "p0",
     "parent": "DBL-060",
     "dependencies": ["DBL-276"],
-    "status": "in-progress",
-    "body": "## Purpose\nBehavior states and melee/ranged/caster/support rhythms\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review."
+    "status": "completed",
+    "body": "## Purpose\nBehavior states and melee/ranged/caster/support rhythms\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review.",
+    "evidence": "Explicit validated idle/patrol/alert/chase/attack/retreat/return/dead transitions, staggered decisions, six distinct profiles, flanking approach and ranged retreat. Existing combat commands retain attack/recovery/hitstun commitment and projectile strike boundaries; caster/support currently use physical projectiles (no new spell system). Four behavior tests cover deterministic replay, actual projectile launches, return/death and interruption ownership. Full check/format: 124 tests."
   },
   {
     "id": "DBL-278",
@@ -2934,7 +2935,7 @@
     "priority": "p0",
     "parent": "DBL-061",
     "dependencies": ["DBL-277"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Purpose\nPack aggression and collision-safe separation\n\n## Acceptance criteria\nDeterministic scoped Phase 4 implementation reusing completed combat, movement and semantic input; preserve original parent dependencies and record partial scope.\n\n## Non-goals\nLoot, inventory, skill trees, campaign, full monster art production or reimplementation of existing systems.\n\n## Test requirements\nTargeted deterministic tests; check/format; relevant browser scenarios and screenshot review; physical hardware results separately recorded.\n\n## Definition of done\nVerified increment committed; STATUS and docs/ai/phase4.md accurate. Stop at Phase 4 quality review."
   },
   {
