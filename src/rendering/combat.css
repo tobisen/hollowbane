@@ -404,3 +404,15 @@
     gap: 4px;
   }
 }
+
+.polish-arena .vital {
+  display: block;
+}
+.polish-navigation button {
+  font: 11px system-ui;
+  color: #e3d3af;
+  background: #1b282d;
+  border: 1px solid #726b55;
+  cursor: pointer;
+  padding: 4px 8px;
+}

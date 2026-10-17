@@ -1,3 +1,4 @@
+import { CombatAudio } from "./combat-audio";
 import { PolishHUD } from "./polish-hud";
 import { drawSkillVisuals, type SpellVisualStats } from "./skill-visuals";
 import { combatPose, recordMotion, type MotionCues } from "./combat-motion";
@@ -90,6 +91,7 @@ declare global {
     hollowbanePolish?: {
       tick: number;
       visuals: SpellVisualStats | null;
+      audio: ReturnType<CombatAudio["status"]>;
       poses: {
         id: number;
         pose: ReturnType<typeof combatPose>;
@@ -225,6 +227,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private inputAt: number | null = null;
     private padAttack = false;
     private droppedTicks = 0;
+    private soundBank = new CombatAudio();
     private audio: AudioContext | null = null;
     private impactUntil = new Map<number, number>();
     private deathAt = new Map<number, number>();
@@ -305,6 +308,12 @@ export function startCombatArena(monsters = false): Phaser.Game {
           onGround,
         );
       const down = (event: PointerEvent) => {
+        if (
+          polish &&
+          sound.checked &&
+          (event.button === 0 || event.button === 2)
+        )
+          void this.soundBank.unlock();
         if (skills && event.button === 2 && !this.paused) {
           event.preventDefault();
           field.focus();
@@ -328,7 +337,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
             : { kind: "attack", target, repeat: true },
         );
         field.setPointerCapture(event.pointerId);
-        if (sound.checked) {
+        if (sound.checked && !polish) {
           this.audio ??= new AudioContext();
           void this.audio.resume();
         }
@@ -351,9 +360,12 @@ export function startCombatArena(monsters = false): Phaser.Game {
         const p = this.world.actors[0]!;
         p.controller = commandCombat(p.controller, { kind: "stop" });
         this.accumulator = 0;
+        if (polish) this.soundBank.silence();
       };
       const keydown = (event: KeyboardEvent) => {
         if (event.target !== field) return;
+        if (polish && sound.checked && !event.repeat)
+          void this.soundBank.unlock();
         if (
           [
             "w",
@@ -446,6 +458,28 @@ export function startCombatArena(monsters = false): Phaser.Game {
           for (const a of this.world.actors.filter((a) => a.kind === "hostile"))
             a.controller = commandCombat(a.controller, { kind: "stop" });
       };
+      if (polish) {
+        const audioButton = document.createElement("button");
+        audioButton.id = "polish-audio";
+        audioButton.textContent = "Sound: enable";
+        audioButton.type = "button";
+        root.querySelector(".polish-navigation")!.append(audioButton);
+        audioButton.onclick = () => {
+          const status = this.soundBank.status();
+          if (status.state === "running" && !status.muted) {
+            sound.checked = false;
+            this.soundBank.setMuted(true);
+          } else {
+            sound.checked = true;
+            this.soundBank.setMuted(false);
+            void this.soundBank.unlock();
+          }
+        };
+        sound.onchange = () => {
+          this.soundBank.setMuted(!sound.checked);
+          if (sound.checked) void this.soundBank.unlock();
+        };
+      }
       const preRender = () => {
         this.renderAt = performance.now();
       };
@@ -471,6 +505,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         field.removeEventListener("lostpointercapture", release);
         field.removeEventListener("blur", stop);
         void this.audio?.close();
+        void this.soundBank.dispose();
       });
       if (polishedHud && this.abilities)
         polishedHud.update(
@@ -624,11 +659,16 @@ export function startCombatArena(monsters = false): Phaser.Game {
           `${this.world.actors.find((a) => a.id === event.actor)?.name ?? "Departed actor"} → ${this.world.actors.find((a) => a.id === event.target)?.name ?? "Departed target"}: ${text}`;
       } else if (event.kind === "death") {
         this.deathAt.set(event.target, this.world.tick);
+        if (polish) this.soundBank.play({ kind: "death" });
         document.querySelector("#combat-log")!.textContent =
           `${this.world.actors.find((a) => a.id === event.target)?.name ?? "Departed target"} has fallen. Reset the trial to restore all targets.`;
       }
     }
     private tone(): void {
+      if (polish) {
+        this.soundBank.play({ kind: "impact" });
+        return;
+      }
       if (!sound.checked || !this.audio || this.audio.state !== "running")
         return;
       const osc = this.audio.createOscillator(),
@@ -1079,7 +1119,29 @@ export function startCombatArena(monsters = false): Phaser.Game {
               this.world.tick,
             );
           for (const event of this.world.events)
-            if (event.tick === this.world.tick) this.feedback(event);
+            if (event.tick === this.world.tick) {
+              this.feedback(event);
+              if (
+                polish &&
+                event.kind === "phase" &&
+                event.phase === "active" &&
+                !this.abilities?.users.find((u) => u.actor === event.actor)
+                  ?.cast
+              )
+                this.soundBank.play({ kind: "attack" });
+            }
+          if (polish && this.abilities)
+            for (const e of this.abilities.events
+              .filter(
+                (e) =>
+                  e.tick === this.world.tick &&
+                  (e.kind === "start" || e.kind === "effect"),
+              )
+              .slice(0, 4))
+              this.soundBank.play({
+                kind: e.kind === "start" ? "cast" : "spell",
+                skill: e.skill,
+              });
           this.accumulator -= 1000 / 60;
         }
       }
@@ -1164,6 +1226,20 @@ export function startCombatArena(monsters = false): Phaser.Game {
           else this.effect.strokeEllipse(p.x, p.y - 20, 25 + age * 2, 18 + age);
         }
         const u = this.abilities.users[0]!;
+        if (polish && this.game.loop.frame % 6 === 0) {
+          const b = document.querySelector("#polish-audio")!,
+            status = this.soundBank.status(),
+            label =
+              status.state === "running"
+                ? "Sound: on"
+                : status.state === "muted"
+                  ? "Sound: muted"
+                  : status.state === "unavailable"
+                    ? "Sound: unavailable"
+                    : "Sound: enable";
+          if (b.textContent !== label) b.textContent = label;
+          b.setAttribute("aria-pressed", String(status.state === "running"));
+        }
         if (this.game.loop.frame % 6 === 0 && polishedHud)
           polishedHud.update(
             this.abilities,
@@ -1276,6 +1352,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         window.hollowbanePolish = {
           tick: this.world.tick,
           visuals: this.visualStats,
+          audio: this.soundBank.status(),
           poses: this.world.actors.map((a) => ({
             id: a.id,
             pose: combatPose(a, this.motion[a.id], this.world.tick),

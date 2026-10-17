@@ -23,3 +23,5 @@
 - DBL-301 complete: six distinct vector VFX, real targeting geometry, windup/recovery feedback and live actual-simulation showcase. Full check 169/two browser cases pass; screenshot/provenance reviewed. DBL-302 HUD next.
 
 - DBL-302 complete: accessible resource meters, original ability icons, actual costs/cooldowns, contextual prompts and collapsible diagnostics. Full check 169/five polish cases pass; screenshot reviewed. DBL-303 audio next.
+
+- DBL-303 complete: original bounded spell/combat synthesis, mute and API fallback; full check 172, three unit and two browser audio cases pass. DBL-304 contact/lighting consistency next.

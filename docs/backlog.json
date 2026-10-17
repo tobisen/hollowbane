@@ -3271,8 +3271,9 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p1",
     "dependencies": ["DBL-302"],
-    "status": "in-progress",
-    "body": "## Acceptance criteria\nOriginal bounded combat and spell audio with safe fallback. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
+    "status": "completed",
+    "body": "## Acceptance criteria\nOriginal bounded combat and spell audio with safe fallback. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review.",
+    "evidence": "Original six spell timbres plus cast/swing/impact/death synthesis, deterministic filtered noise, finite envelopes, eight voices maximum, no downloaded samples. Gesture activation, immediate mute/focus silence, capability fallback and retry after suspended access. Three unit tests/full check 172; two real browser audio/fallback cases pass. Original broader DBL-260 remains partial."
   },
   {
     "id": "DBL-304",
@@ -3283,7 +3284,7 @@
     "deliveryPhase": "gameplay-visual-polish",
     "priority": "p1",
     "dependencies": ["DBL-303"],
-    "status": "planned",
+    "status": "in-progress",
     "body": "## Acceptance criteria\nConsistent monster contact shadows and restrained arena lighting. Presentation only; preserve deterministic combat, skill mechanics, breakpoints and controls.\n\n## Non-goals\nLoot, inventory, crafting, classes, campaign or new gameplay. No physical hardware claims.\n\n## Test requirements\nTargeted unit/browser tests, relevant visual review and full check; document evidence and asset provenance.\n\n## Definition of done\nVerified scoped increment committed, broader parents partial; stop at Gameplay and Visual Polish review."
   },
   {

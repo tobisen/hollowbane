@@ -200,3 +200,72 @@ for (const id of ["Xbox standard virtual", "Wireless Controller"])
       await page.evaluate(() => window.hollowbaneInput!.aim.y),
     ).toBeLessThan(0);
   });
+
+test("original audio unlocks on gesture, plays spells and mutes immediately", async ({
+  page,
+}) => {
+  await ready(page);
+  await page.locator("#polish-audio").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePolish!.audio.state))
+    .toBe("running");
+  await page.locator("#combat-world").focus();
+  await page.keyboard.press("q");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePolish!.audio.played))
+    .toBeGreaterThan(0);
+  await page.locator("#polish-audio").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePolish!.audio.state))
+    .toBe("muted");
+  expect(await page.evaluate(() => window.hollowbanePolish!.audio.active)).toBe(
+    0,
+  );
+  const played = await page.evaluate(
+    () => window.hollowbanePolish!.audio.played,
+  );
+  await page.locator("#combat-world").focus();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase))
+    .toBe("idle");
+  await page.keyboard.press("x");
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        window.hollowbaneSkills!.events.some(
+          (e) => e.skill === "ember-lance" && e.kind === "effect",
+        ),
+      ),
+    )
+    .toBe(true);
+  expect(await page.evaluate(() => window.hollowbanePolish!.audio.played)).toBe(
+    played,
+  );
+});
+test("missing Web Audio keeps spells and muted gameplay usable", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "AudioContext", {
+      value: undefined,
+      configurable: true,
+    });
+  });
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await ready(page);
+  await page.locator("#polish-audio").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbanePolish!.audio.state))
+    .toBe("unavailable");
+  await page.locator("#combat-world").focus();
+  await page.keyboard.press("q");
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        window.hollowbaneSkills!.events.some((e) => e.kind === "effect"),
+      ),
+    )
+    .toBe(true);
+  expect(errors).toEqual([]);
+});

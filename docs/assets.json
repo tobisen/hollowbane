@@ -91,5 +91,13 @@
     "placeholder": false,
     "type": "geometry",
     "provenance": "docs/polish/milestone.md"
+  },
+  {
+    "id": "sable-combat-synthesis",
+    "source": "src/rendering/combat-audio.ts",
+    "rights": "Original project oscillator/envelope/filter recipes and deterministic generated noise; no samples or external audio",
+    "placeholder": false,
+    "type": "audio",
+    "provenance": "docs/polish/milestone.md"
   }
 ]
