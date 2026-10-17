@@ -51,6 +51,8 @@ declare global {
 export class LootView {
   world: LootWorld;
   selected: string | null = null;
+  onPickup?: (id: string) => string;
+  onChange?: () => void;
   private inspected = false;
   private labels = new Map<string, HTMLButtonElement>();
   private panel: HTMLElement;
@@ -104,6 +106,7 @@ export class LootView {
         if (this.alive && d && identifyWorldDrop(d, this.player, nav)) {
           this.inspected = true;
           this.message("Identified. Attributes preserved.");
+          this.onChange?.();
         } else this.message("Move closer on reachable ground.");
         this.focus();
       };
@@ -134,6 +137,7 @@ export class LootView {
           this.selected = d.item.id;
           this.inspected = true;
           this.cue(item.quality);
+          this.onChange?.();
           this.message(
             "Explicit developer drop; natural death odds unchanged.",
           );
@@ -143,7 +147,13 @@ export class LootView {
       }
       this.focus();
     };
+    if (content.version === 3) {
+      this.panel.querySelector("h2")!.textContent = "World loot · L2";
+      for (const id of ["loot-save", "loot-load"])
+        this.panel.querySelector<HTMLButtonElement>(`#${id}`)!.hidden = true;
+    }
     this.panel.querySelector<HTMLButtonElement>("#loot-save")!.onclick = () => {
+      if (this.content.version === 3) return;
       try {
         localStorage.setItem(
           "hollowbane.l1.items",
@@ -157,6 +167,7 @@ export class LootView {
       }
     };
     this.panel.querySelector<HTMLButtonElement>("#loot-load")!.onclick = () => {
+      if (this.content.version === 3) return;
       try {
         const items = deserializeItems(
           localStorage.getItem("hollowbane.l1.items") ?? "",
@@ -215,6 +226,8 @@ export class LootView {
     );
     this.costs.push(performance.now() - start);
     if (this.costs.length > 300) this.costs.shift();
+    if (added.length || combat.events.some((e) => e.kind === "death"))
+      this.onChange?.();
     for (const d of added) this.cue(d.item.quality);
     if (!this.selected && added.length) this.selected = added[0]!.item.id;
   }
@@ -245,6 +258,10 @@ export class LootView {
     if (!canInspectDrop(d, this.player, this.nav)) {
       this.inspected = false;
       this.message("Move closer on reachable ground to inspect.");
+      return true;
+    }
+    if (this.onPickup) {
+      this.message(this.onPickup(d.item.id));
       return true;
     }
     this.inspected = true;
@@ -360,7 +377,10 @@ export class LootView {
       inRange &&
       !d.item.identified
     );
-    const help = `D-pad ↑↓: select · ${prompt}: inspect · F: nearest. No inventory; items stay on ground.`;
+    const help =
+      this.content.version === 3
+        ? `D-pad ↑↓: select · ${prompt}: pick up · F: nearest · V / View: inventory.`
+        : `D-pad ↑↓: select · ${prompt}: inspect · F: nearest. No inventory; items stay on ground.`;
     const h = this.panel.querySelector("#loot-help")!;
     if (h.textContent !== help) h.textContent = help;
     this.viewCosts.push(performance.now() - start);

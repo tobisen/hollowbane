@@ -3579,8 +3579,9 @@
     "deliveryPhase": "inventory-l2",
     "priority": "p0",
     "dependencies": ["DBL-332"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nGothic inventory equipment and comparison interface. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nGothic inventory equipment and comparison interface. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review.",
+    "evidence": "Gothic responsive equipment/grid/inspection/comparison UI, native pickup and async checkpoint integration. Full check212;6 inventory/storage lifecycle E2E across Chromium/Firefox/WebKit; screenshot reviewed. Drag/controller follows327."
   },
   {
     "id": "DBL-327",

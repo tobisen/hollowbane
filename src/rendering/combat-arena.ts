@@ -1,3 +1,4 @@
+import { InventoryView } from "./inventory-view";
 import { InventoryRuntime } from "./inventory-runtime";
 import { EQUIPMENT_CONTENT } from "../simulation/item-content";
 import { LootView, LOOT_COLORS } from "./loot-view";
@@ -193,6 +194,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       : null;
     private world = this.encounter?.combat ?? createCombat();
     private lootView: LootView | null = null;
+    private inventoryView: InventoryView | null = null;
     private inventoryRuntime: InventoryRuntime | null = null;
     private abilities = skills ? createSkills(this.world) : null;
     private selectedSkill = 0;
@@ -278,6 +280,18 @@ export function startCombatArena(monsters = false): Phaser.Game {
           (w) => {
             this.lootView!.world = w;
           },
+        );
+      if (this.inventoryRuntime && this.lootView)
+        this.inventoryView = new InventoryView(
+          root,
+          this.inventoryRuntime,
+          this.lootView,
+          nav,
+          () => ({
+            position: this.world.actors[0]!.controller.walker.position,
+            alive: this.world.actors[0]!.hp > 0,
+            tick: this.world.tick,
+          }),
         );
       controllerInput.movementKeys = new Set([
         "KeyW",
@@ -551,6 +565,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         field.removeEventListener("blur", stop);
         void this.audio?.close();
         void this.soundBank.dispose();
+        this.inventoryView?.dispose();
         this.lootView?.dispose();
       });
       if (polishedHud && this.abilities)

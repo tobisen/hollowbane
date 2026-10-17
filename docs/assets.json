@@ -115,5 +115,11 @@
     "placeholder": false,
     "type": "geometry",
     "provenance": "docs/loot/l1.md"
+  },
+  {
+    "id": "inventory-item-line-icons",
+    "source": "src/rendering/inventory-view.ts",
+    "rights": "original SVG paths authored for Hollowbane; no third-party assets",
+    "placeholder": true
   }
 ]
