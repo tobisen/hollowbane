@@ -1,3 +1,4 @@
+import { ITEM_CONTENT, type ItemContent } from "../simulation/item-content";
 import { inspectDropTable } from "../simulation/loot-diagnostics";
 import {
   consumeLootDeaths,
@@ -64,16 +65,22 @@ export class LootView {
     private nav: Navigation,
     seed: number,
     private cue: (quality: Quality) => void,
+    private content: ItemContent = ITEM_CONTENT,
   ) {
     this.world = createLootWorld(seed);
+    if (content.version === 3) this.world.table = "reliquary";
     root.insertAdjacentHTML(
       "beforeend",
       `<section class="loot-panel" aria-label="Loot inspection"><h2>World loot · L1</h2><p id="loot-help">D-pad ↑↓: select · Enter / Interact: inspect · F: inspect nearest. Items remain on the ground.</p><p id="loot-message" role="status">Defeat monsters to discover items.</p><output id="loot-info">No item selected.</output><button id="loot-identify" disabled>Identify selected</button><details><summary>Loot diagnostics & item archive</summary><label>Seed <input id="loot-seed" type="number" min="0" max="4294967295" value="${seed}"></label><label>Roll sequence <input id="loot-sequence" type="number" min="0" max="4294967295" value="0"></label><label>Example roll <select id="loot-example"><option value="">Custom seed / sequence</option><option value="3">Normal · 3</option><option value="30">Magic · 30</option><option value="47">Rare · 47</option><option value="5634">Unique · 5634</option></select></label><button id="loot-test">Replay test drop near player</button><button id="loot-save">Save item archive locally</button><button id="loot-load">Load item archive near player</button><output id="loot-diagnostics"></output><details><summary>Drop table at level 12</summary><pre id="loot-table"></pre></details></details></section><div class="loot-labels" aria-label="Ground item labels"></div>`,
     );
     this.panel = root.querySelector(".loot-panel")!;
     this.layer = root.querySelector(".loot-labels")!;
+    if (content.version === 3)
+      this.panel.querySelector<HTMLElement>(
+        "#loot-example",
+      )!.parentElement!.hidden = true;
     this.panel.querySelector("#loot-table")!.textContent = JSON.stringify(
-      inspectDropTable(12),
+      inspectDropTable(12, this.world.table, this.content),
       null,
       2,
     );
@@ -108,13 +115,16 @@ export class LootView {
           sequence = Number(
             this.panel.querySelector<HTMLInputElement>("#loot-sequence")!.value,
           );
-        const item = generateLoot({
-          seed,
-          sequence,
-          areaLevel: 12,
-          monsterLevel: 12,
-          table: "court",
-        });
+        const item = generateLoot(
+          {
+            seed,
+            sequence,
+            areaLevel: 12,
+            monsterLevel: 12,
+            table: this.world.table,
+          },
+          this.content,
+        );
         if (!item) {
           this.message("This roll produces no item.");
           return;
@@ -187,13 +197,22 @@ export class LootView {
     this.alive = alive;
   }
   reset() {
-    this.world = createLootWorld(this.world.seed);
+    this.world =
+      this.content.version === 3
+        ? { ...this.world, deaths: new Set() }
+        : createLootWorld(this.world.seed);
     this.selected = null;
     this.inspected = false;
   }
   advance(combat: CombatWorld) {
     const start = performance.now();
-    const added = consumeLootDeaths(this.world, combat, this.nav);
+    const added = consumeLootDeaths(
+      this.world,
+      combat,
+      this.nav,
+      combat.events,
+      this.content,
+    );
     this.costs.push(performance.now() - start);
     if (this.costs.length > 300) this.costs.shift();
     for (const d of added) this.cue(d.item.quality);
@@ -349,7 +368,7 @@ export class LootView {
     const p95 = (v: number[]) =>
       [...v].sort((a, b) => a - b)[Math.floor(v.length * 0.95)] ?? 0;
     this.panel.querySelector("#loot-diagnostics")!.textContent =
-      `seed ${this.world.seed}, next ${this.world.sequence}; deaths ${this.world.attempts}, empty ${this.world.noDrop}, blocked ${this.world.blocked}; ${this.world.drops.length}/128 drops; table court: 35% drop; quality weights 8000/1700/290/10; loot CPU ${p95(this.costs).toFixed(3)}ms, view ${p95(this.viewCosts).toFixed(3)}ms p95`;
+      `seed ${this.world.seed}, next ${this.world.sequence}; deaths ${this.world.attempts}, empty ${this.world.noDrop}, blocked ${this.world.blocked}; ${this.world.drops.length}/128 drops; table ${this.world.table}: 35% drop; quality weights 8000/1700/290/10; loot CPU ${p95(this.costs).toFixed(3)}ms, view ${p95(this.viewCosts).toFixed(3)}ms p95`;
     window.hollowbaneLoot = {
       seed: this.world.seed,
       sequence: this.world.sequence,

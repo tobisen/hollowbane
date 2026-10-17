@@ -1,4 +1,6 @@
 # Status
 
-- **L1 approved; L2 Inventory & Equipment active.** Scoped DBL-320–331 authorized sequentially; DBL-320 metadata/content extension first. Stop at L2 gate; no L3, crafting/vendors/sockets/runewords/classes/progression. Preserve Phaser4.2.1 and all current systems.
-- L1 verified app d3179c4, CI checkpoint b565a1e/run39067012054; gate evidence3487d0c.194 unit/74 Chromium/40 FF-WebKit/48 hosted; docs/loot/l1.md. Content2 seeded generation must remain reproducible and loadable. Existing original parent/hardware/art/software/native/Firefox performance/issue-sync follow-ups remain open.
+- L1 approved; **L2 active** through DBL-320–331, no L3/progression/crafting/vendors/sockets/runewords. Phaser4.2.1/current systems preserved.
+- DBL-320–324 complete: content3 equipment extension alongside unchanged legacy2, deterministic grid/equipment/world transactions, single stat pipeline and optional inventory scene bridge. Full check209 and6 L1 browser regressions pass; docs/inventory/l2.md.
+- DBL-325 persistence next,326 gothic UI,327 drag/controller,328 regression,329 performance,330 publication,331 review gate. Stop for L2 approval. Current ?inventory=1 is wiring only until UI; no public playable-inventory claim yet.
+- L1 verified runtime b565a1e/CI39067012054, prior gate3487d0c; docs/loot/l1.md. Original36 topics/231 IDs, broad partial parents and physical282–286/art/native/software/Firefox/issue-sync follow-ups remain open.

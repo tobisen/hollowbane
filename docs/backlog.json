@@ -3553,8 +3553,9 @@
     "deliveryPhase": "inventory-l2",
     "priority": "p0",
     "dependencies": ["DBL-323"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nSingle derived-stat pipeline and gameplay integration. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nSingle derived-stat pipeline and gameplay integration. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review.",
+    "evidence": "One pure derived-stat pipeline and optional inventory scene bridge. Actual future hit damage/bow behavior tested; no timeline/RNG/resource refill/reset. Full check209 +6 L1 browser regressions. UI/persistence later issues."
   },
   {
     "id": "DBL-325",

@@ -1,3 +1,5 @@
+import { InventoryRuntime } from "./inventory-runtime";
+import { EQUIPMENT_CONTENT } from "../simulation/item-content";
 import { LootView, LOOT_COLORS } from "./loot-view";
 import { arenaView } from "../world/arena-view";
 import { createPolishGround } from "./polish-ground";
@@ -135,7 +137,8 @@ declare global {
 }
 export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
-  const loot = query.has("loot");
+  const inventory = query.has("inventory");
+  const loot = query.has("loot") || inventory;
   const polish = query.has("polish") || loot;
   const skills = query.has("skills") || polish;
   const requested = Number(query.get("count") ?? 5);
@@ -190,6 +193,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       : null;
     private world = this.encounter?.combat ?? createCombat();
     private lootView: LootView | null = null;
+    private inventoryRuntime: InventoryRuntime | null = null;
     private abilities = skills ? createSkills(this.world) : null;
     private selectedSkill = 0;
     private mouseGround: Point = { x: 790, y: 560 };
@@ -264,6 +268,16 @@ export function startCombatArena(monsters = false): Phaser.Game {
           nav,
           Number(query.get("lootSeed") ?? 42),
           (quality) => this.soundBank.play({ kind: "loot", quality }),
+          inventory ? EQUIPMENT_CONTENT : undefined,
+        );
+      if (inventory && this.lootView)
+        this.inventoryRuntime = new InventoryRuntime(
+          () => this.world.actors[0]!,
+          () => this.abilities?.users.find((u) => u.actor === 0),
+          () => this.lootView!.world,
+          (w) => {
+            this.lootView!.world = w;
+          },
         );
       controllerInput.movementKeys = new Set([
         "KeyW",
@@ -480,6 +494,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
         pause.setAttribute("aria-pressed", String(this.paused));
       };
       hostile.onchange = () => {
+        this.inventoryRuntime?.sync(
+          Number(speed.value),
+          weapon.value as Weapon,
+        );
         this.world.hostilesActive = !monsters && hostile.checked;
         if (!hostile.checked)
           for (const a of this.world.actors.filter((a) => a.kind === "hostile"))
