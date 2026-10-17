@@ -391,7 +391,7 @@
     "status": "partial",
     "body": "## Purpose\nAction states: idle, move, windup, strike, recovery, hitstun, block, dead.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 05; P0. Target roadmap phase 06; source phase metadata retained.\n\n## Dependencies\nDBL-035\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Action states: idle, move, windup, strike, recovery, hitstun, block, dead.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-036; no known critical regression.\n",
     "targetPhase": 6,
-    "evidence": "Only the Phase 2 idle/move state foundation is delivered in DBL-240. Windup/strike/recovery/hitstun/block/dead and all combat behavior remain explicitly unauthorized and unimplemented."
+    "evidence": "Idle/move delivered by DBL-240; pure combat timeline delivered by DBL-253. Rendering integration, block and complete actor transitions remain outstanding. Phase 3 authorized; parent remains partial."
   },
   {
     "id": "DBL-037",
@@ -2587,5 +2587,72 @@
     "status": "completed",
     "body": "## Purpose\nUpdate the two G1 scene baselines to the authorized Phase 2 controls.\n\n## Non-goals\nNo screenshot tolerance increases, movement changes or later-phase features.\n\n## Acceptance criteria\nInspect existing and updated scene/occlusion images; retain 1% tolerance; all browser cases and Linux CI pass before claiming publication.\n\n## Test requirements\nTargeted visual cases, check, format and full Chromium regression. Hosted movement checks after Pages deploys.\n\n## Definition of done\nReviewed baselines and failure evidence committed with DBL-252; publication status reported honestly.\n",
     "evidence": "Both old/new scene baselines inspected; exactly two PNG expectations refreshed for intentional movement toolbar/feedback. Screenshot masks and 1% tolerances unchanged. 61 unit tests, all 15 local Chromium E2E cases, check and format pass. Initial failed CI run 39010274698 documented; final publication result is reported in session."
+  },
+  {
+    "id": "DBL-253",
+    "title": "Deterministic combat timeline and configurable frame breakpoints",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p0",
+    "parent": "DBL-036",
+    "dependencies": ["DBL-240", "DBL-244"],
+    "status": "completed",
+    "body": "## Purpose\nDeterministic combat timeline and configurable frame breakpoints\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nPure fixed-tick windup/active/recovery/hitstun/dead timeline; one strike opportunity; movement cannot cancel attacks; discrete validated thresholds.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n",
+    "evidence": "Seven deterministic timeline/breakpoint tests pass; milestone regression results in docs/combat/phase3.md. No rendered combat or damage implemented."
+  },
+  {
+    "id": "DBL-254",
+    "title": "Combat targeting and movement integration",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p0",
+    "parent": "DBL-038",
+    "dependencies": ["DBL-253"],
+    "status": "planned",
+    "body": "## Purpose\nCombat targeting and movement integration\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nHover/select, facing, held attack, range hysteresis, auto-approach, moving/dead target handling; preserve movement.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+  },
+  {
+    "id": "DBL-255",
+    "title": "Seeded physical damage and reaction resolution",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p0",
+    "parent": "DBL-040",
+    "dependencies": ["DBL-254"],
+    "status": "planned",
+    "body": "## Purpose\nSeeded physical damage and reaction resolution\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nSeeded accuracy/defense/critical, configurable physical mitigation and resistance caps, typed events, death, invulnerability, stagger/knockback foundation; replay tests.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+  },
+  {
+    "id": "DBL-256",
+    "title": "Projectile attack foundation",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p0",
+    "parent": "DBL-037",
+    "dependencies": ["DBL-255"],
+    "status": "planned",
+    "body": "## Purpose\nProjectile attack foundation\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nDeterministic projectile travel, collision and lifetime; windup/recovery and one impact; no advanced skills.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+  },
+  {
+    "id": "DBL-257",
+    "title": "Combat arena, feedback and diagnostics",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p0",
+    "parent": "DBL-042",
+    "dependencies": ["DBL-256"],
+    "status": "planned",
+    "body": "## Purpose\nCombat arena, feedback and diagnostics\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nStationary/moving dummies, minimal hostile melee, multiple targets, configurable speed, original attack/hit feedback, impact audio, health/target displays; inspect screenshots and record provenance.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
+  },
+  {
+    "id": "DBL-258",
+    "title": "Combat quality evidence and public demo",
+    "phase": 5,
+    "targetPhase": 6,
+    "priority": "p0",
+    "parent": "DBL-043",
+    "dependencies": ["DBL-257"],
+    "status": "planned",
+    "body": "## Purpose\nCombat quality evidence and public demo\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nFull prior tests plus combat E2E/replays/visual regressions; matched before/after latency, frame p50/p95, simulation and rendering cost/entity counts; publish verified demo then stop for user combat quality review.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n"
   }
 ]

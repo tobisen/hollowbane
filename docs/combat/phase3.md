@@ -1,0 +1,21 @@
+# Phase 3 combat fundamentals
+
+Phase 2 explicitly approved by user on 2026-10-17. Phase 3 authorized through combat quality gate. One normal issue per session; DBL-253 is the first increment. Original backlog dependencies are unchanged; scoped slices do not close their parents.
+
+Sequence: DBL-253 timing → DBL-254 targeting/integration → DBL-255 damage/reactions → DBL-256 projectiles → DBL-257 arena/feedback/diagnostics → DBL-258 quality evidence/publication. Each is split further if it exceeds a focused session. DBL-036 remains partial, including outstanding block and full actor integration. No loot, inventory, advanced AI, skill trees or campaign.
+
+## DBL-253 contract
+
+`src/simulation/combat-timing.ts` is independent of rendering, DOM and clocks. Each call advances exactly one existing 60 Hz simulation tick. The caller supplies attack/hit/death commands; later damage resolution will use the existing seeded RNG primitive. No random draws or damage occur in the timeline.
+
+Idle accepts attack; windup → active → recovery → idle. An accepted attack consumes its first windup frame on that tick. Transition into active emits exactly one typed strike opportunity; an extended active window never repeats damage. Melee and projectile consumers must resolve that event separately. Held attack must be resubmitted after recovery. Movement and further attack commands cannot cancel commitment. Hit interrupts windup/active/recovery; repeated hits during hitstun do not extend its duration. Kill wins over phase expiry and is terminal. Hitstun is not invulnerability: damage rules remain DBL-255 scope. Move is a permission query; movement integration remains DBL-254.
+
+Timing configuration is copied and requires positive integer frame durations. Inclusive, strictly increasing configurable thresholds select discrete frame counts for either attack speed or hit recovery. Thresholds and formulas are original configuration, not copied balance values. The module has no defaults for attack balance and no production integration yet.
+
+## Verification and limitations
+
+Seven targeted tests cover exact boundaries, held input, movement commitment, interruption, anti-extension, terminal death, replay/immutability, thresholds and invalid configuration. No visible changes or new assets; screenshot baselines remain unchanged. No combat demo or measured performance comparison yet: production does not import this module. Movement baseline remains median 59.9 FPS, frame p95 33.4 ms, movement input p95 38.8 ms; this is historical movement evidence, not a combat measurement.
+
+Public demo remains https://tobisen.github.io/hollowbane/ (approved Phase 2). Combat publication and hosted verification belong to DBL-258. No external issue sync attempted in this increment; prior unauthenticated GitHub CLI limitation remains recorded. Combat quality gate has not been reached.
+
+Milestone result: `npm run check` passes (68 tests across 16 files, strict typecheck/lint, six asset records, 258 backlog records, production build); `npm run format:check` passes. All 15 Chromium Playwright regressions pass, including existing visual comparisons with unchanged baselines and tolerance. Initial sandbox attempt could not bind localhost (`EPERM`); authorized rerun passed in 27.1 seconds. No visible changes were introduced, so no baseline refresh was required. Existing build chunk-size warning remains unchanged. Phaser stays pinned to 4.2.1. Commit reference: `git log --grep DBL-253`.
