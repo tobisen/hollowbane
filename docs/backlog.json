@@ -2854,9 +2854,10 @@
     "priority": "p0",
     "parent": "DBL-009",
     "dependencies": ["DBL-271"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Purpose\nController diagnostics and calibration\n\n## Scope\nAuthorized Phase 2.5 gamepad support. Stable numeric ID DBL-272; requested alias DBL-GP10. Preserve Phaser 4.2.1 and existing keyboard/mouse and completed combat.\n\n## Non-goals\nNew combat mechanics, loot, inventory or resuming Phase 3 before G2.5 user approval.\n\n## Acceptance criteria\nController diagnostics and calibration; deterministic device-independent intents; safe boundaries and documented fallback behavior.\n\n## Test requirements\nTargeted unit/browser coverage, check at milestones, full regression before G2.5; distinguish emulation from physical verification.\n\n## Definition of done\nVerified scoped increment committed with evidence in docs/gamepad/phase2.5.md; stop for G2.5 review after DBL-274.",
-    "deliveryPhase": "2.5"
+    "deliveryPhase": "2.5",
+    "evidence": "Controller laboratory exposes raw/processed separate stick vectors, buttons, profile/ownership/connection/rearm status and polling cost. Stable twenty-frame center calibration persists and rejects held/moving sticks; disconnect/change cancels capture. Pure calibration test plus two browser calibration/visual cases pass; full check 111 unit tests. Original SVG stick visual baseline inspected; no vendor graphical assets copied. Physical-controller verification remains unperformed."
   },
   {
     "id": "DBL-273",

@@ -67,5 +67,13 @@
     "placeholder": true,
     "type": "audio",
     "provenance": "docs/combat/phase3.md"
+  },
+  {
+    "id": "controller-stick-diagnostics",
+    "source": "src/rendering/controller-calibration.ts",
+    "rights": "Original project SVG utility geometry",
+    "placeholder": false,
+    "type": "geometry",
+    "provenance": "docs/gamepad/phase2.5.md"
   }
 ]

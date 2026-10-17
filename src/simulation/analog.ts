@@ -44,3 +44,24 @@ export function processStick(
   );
   return { x: (x / length) * amount, y: (y / length) * amount };
 }
+
+/** Stable center capture; never interpret a held stick as its new neutral. */
+export function calibrateCenters(
+  samples: readonly (readonly number[])[],
+): number[] {
+  if (
+    samples.length < 20 ||
+    samples.some(
+      (s) =>
+        s.length !== 4 ||
+        s.some((v) => !Number.isFinite(v) || Math.abs(v) > 0.25),
+    )
+  )
+    throw new Error("Release both sticks before calibration");
+  const centers = [0, 1, 2, 3].map(
+    (axis) => samples.reduce((sum, s) => sum + s[axis]!, 0) / samples.length,
+  );
+  if (samples.some((s) => s.some((v, i) => Math.abs(v - centers[i]!) > 0.04)))
+    throw new Error("Keep sticks still during calibration");
+  return centers;
+}

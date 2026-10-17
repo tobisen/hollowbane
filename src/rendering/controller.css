@@ -77,3 +77,15 @@
   outline: 2px solid #ffcf88;
   outline-offset: 3px;
 }
+
+.controller-sticks {
+  display: flex;
+  gap: 24px;
+  width: 384px;
+  max-width: 100%;
+  background: #15202a;
+}
+.controller-sticks svg {
+  flex: 1;
+  max-width: 180px;
+}

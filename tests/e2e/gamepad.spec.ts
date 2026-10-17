@@ -299,3 +299,31 @@ test("custom button mappings and stick settings persist; conflicts are rejected"
     )
     .toBe(true);
 });
+test("calibration captures stable centers, persists and rejects held sticks", async ({
+  page,
+}) => {
+  await ready(page, "./?controller=1");
+  await axes(page, [0.08, -0.03, 0.02, 0]);
+  await page.locator("#pad-calibrate").click();
+  await expect(page.locator("#calibration-state")).toHaveText(
+    "Center calibration saved.",
+  );
+  await page.reload();
+  await expect(page.locator("#calibration-values")).toContainText(
+    "0.080, -0.030, 0.020",
+  );
+  await axes(page, [1, 0, 0, 0]);
+  await page.locator("#pad-calibrate").click();
+  await expect(page.locator("#calibration-state")).toContainText(
+    "Release both sticks",
+  );
+});
+test("neutral stick diagnostics preserve their visual reference", async ({
+  page,
+}) => {
+  await ready(page, "./?controller=1");
+  await expect(page.locator(".controller-sticks")).toHaveScreenshot(
+    "controller-sticks.png",
+    { maxDiffPixelRatio: 0.01 },
+  );
+});

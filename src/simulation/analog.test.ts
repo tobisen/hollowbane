@@ -28,3 +28,21 @@ describe("radial analog", () => {
     expect(validateStick(DEFAULT_STICK)).toEqual(DEFAULT_STICK);
   });
 });
+
+import { calibrateCenters } from "./analog";
+it("calibrates stable centers and rejects motion or held sticks", () => {
+  expect(
+    calibrateCenters(
+      Array.from({ length: 20 }, () => [0.08, -0.03, 0, 0.02]),
+    )[0],
+  ).toBeCloseTo(0.08);
+  expect(() => calibrateCenters([[0, 0, 0, 0]])).toThrow();
+  expect(() =>
+    calibrateCenters(Array.from({ length: 20 }, () => [1, 0, 0, 0])),
+  ).toThrow();
+  expect(() =>
+    calibrateCenters(
+      Array.from({ length: 20 }, (_, i) => [i % 2 ? 0.1 : -0.1, 0, 0, 0]),
+    ),
+  ).toThrow();
+});
