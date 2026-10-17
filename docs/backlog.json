@@ -3592,8 +3592,9 @@
     "deliveryPhase": "inventory-l2",
     "priority": "p0",
     "dependencies": ["DBL-326"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nInventory drag and semantic controller interaction. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review."
+    "status": "complete",
+    "body": "## Acceptance criteria\nInventory drag and semantic controller interaction. Preserve Phaser4.2.1 and L1 content2 generation; deterministic strict TypeScript; no loss or duplication.\n\n## Non-goals\nL3, crafting, vendors, sockets, runewords, classes or progression. No rotation.\n\n## Test requirements\nRelevant deterministic tests, browser lifecycle checks and detailed retained evidence.\n\n## Definition of done\nVerified increment committed; broader parents remain partial and stop at L2 review.",
+    "evidence": "Atomic pointer drag previews/cancel, 2D semantic controller navigation/equip/compare, context prompts and safe device handoff. Full check213;15 inventory/storage E2E pass Chromium/Firefox/WebKit with virtual Xbox/PlayStation. Physical hardware unverified."
   },
   {
     "id": "DBL-328",

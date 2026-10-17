@@ -219,3 +219,29 @@
     right: 8px;
   }
 }
+#inventory-dialog [data-placement="valid"] {
+  outline: 3px solid #91df9a !important;
+  outline-offset: -3px;
+}
+#inventory-dialog [data-placement="invalid"] {
+  outline: 3px solid #ff938a !important;
+  outline-offset: -3px;
+}
+.inventory-drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 100;
+  width: 64px;
+  height: 80px;
+  background: #101810da;
+  border: 1px solid var(--quality);
+  color: var(--quality);
+}
+.inventory-drag-ghost svg {
+  width: 100%;
+  height: 100%;
+}
+.inventory-cell,
+.inventory-slot {
+  touch-action: none;
+}

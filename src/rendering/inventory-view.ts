@@ -1,3 +1,7 @@
+import {
+  inventoryNeighbor,
+  type GridDirection,
+} from "../simulation/inventory-navigation";
 import type { InventoryRuntime } from "./inventory-runtime";
 import { InventoryStorage } from "./inventory-storage";
 import { controllerInput as hub } from "./controller-input";
@@ -58,6 +62,19 @@ export class InventoryView {
   private dirty = false;
   private timer = 0;
   private disposed = false;
+  private drag: {
+    id: string;
+    pointer: number;
+    x: number;
+    y: number;
+    dx: number;
+    dy: number;
+    active: boolean;
+  } | null = null;
+  private ghost: HTMLElement | null = null;
+  private suppressClick = false;
+  private promptTimer = 0;
+  private lastDevice = "";
   private status = "Loading character checkpoint…";
   private listen = (reason: string) => {
     this.render();
@@ -142,6 +159,27 @@ export class InventoryView {
         const file = (e.target as HTMLInputElement).files?.[0];
         if (file) void this.importFile(file);
       };
+    window.addEventListener("hollowbane-inventory-toggle", this.mapToggle);
+    window.addEventListener("blur", this.cancelDrag);
+    this.dialog.addEventListener(
+      "hollowbane-inventory-action",
+      this.controllerAction,
+    );
+    this.dialog.addEventListener("pointerdown", this.pointerDown);
+    this.dialog.addEventListener("pointermove", this.pointerMove);
+    this.dialog.addEventListener("pointerup", this.pointerUp);
+    this.dialog.addEventListener("pointercancel", this.cancelDrag);
+    this.dialog.addEventListener(
+      "click",
+      (e) => {
+        if (this.suppressClick) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          this.suppressClick = false;
+        }
+      },
+      true,
+    );
     this.dialog.addEventListener("cancel", (e) => {
       e.preventDefault();
       if (this.held) {
@@ -151,6 +189,7 @@ export class InventoryView {
     });
     this.dialog.addEventListener("close", () => {
       this.held = null;
+      this.cancelDrag();
       hub.clear();
       hub.blockGameplay = false;
       root.querySelector<HTMLElement>("#combat-world")?.focus();
@@ -169,6 +208,8 @@ export class InventoryView {
     this.render();
     this.dialog.showModal();
     hub.blockGameplay = true;
+    this.promptTimer = window.setInterval(() => this.updatePrompts(), 100);
+    window.addEventListener("hollowbane-input-reset", this.resetSelection);
     void this.load();
   }
   private keydown = (e: KeyboardEvent) => {
@@ -184,9 +225,13 @@ export class InventoryView {
   private async load() {
     try {
       const result = await this.storage.load();
-      if (this.disposed) return;
+      if (this.disposed) {
+        this.storage.close();
+        return;
+      }
       if (result.kind === "valid") this.runtime.restore(result.session);
       if (result.kind === "invalid" || result.kind === "recoverable") {
+        this.ready = true;
         this.message(
           `${result.error}. Original retained. ${result.kind === "recoverable" ? "Recovering the previous checkpoint may omit later changes; use the explicit recovery button." : "No valid backup. Export current session; stored original is retained."}`,
         );
@@ -312,6 +357,7 @@ export class InventoryView {
     if (this.held)
       this.perform(moveOwned(this.runtime.session(), this.held, destination));
     else {
+      if (id && this.selected === id) this.held = id;
       this.selected = id;
       this.render();
     }
@@ -419,13 +465,193 @@ export class InventoryView {
         !item ||
         (id === "inventory-identify" && !!item.identified);
     this.dialog.querySelector("#inventory-prompts")!.textContent =
-      `${hub.frame.device === "gamepad" ? actionPrompt("interact", hub.family, hub.settings.bindings) : "Enter / click"}: select/place · Carry: move selection · Equip: wear · Cancel: keep items`;
+      `${hub.frame.device === "gamepad" ? actionPrompt("interact", hub.family, hub.settings.bindings) : "Enter / click"}: select/carry/place · ${actionPrompt("primary", hub.family, hub.settings.bindings)}: equip · ${actionPrompt("secondary", hub.family, hub.settings.bindings)}: compare · Cancel: keep items`;
     this.message(this.status);
     if (focus)
       Array.from(this.dialog.querySelectorAll<HTMLElement>("[data-focus]"))
         .find((e) => e.dataset.focus === focus)
         ?.focus();
   }
+  private resetSelection = () => {
+    this.cancelDrag();
+    if (this.held) {
+      this.held = null;
+      this.render();
+    }
+  };
+  private updatePrompts() {
+    const device = hub.frame.device;
+    if (
+      this.lastDevice &&
+      this.lastDevice !== device &&
+      (this.lastDevice === "gamepad" || device === "gamepad")
+    )
+      this.resetSelection();
+    this.lastDevice = device;
+    const text =
+      device === "gamepad"
+        ? `${actionPrompt("interact", hub.family, hub.settings.bindings)}: select/carry/place · ${actionPrompt("primary", hub.family, hub.settings.bindings)}: equip · ${actionPrompt("secondary", hub.family, hub.settings.bindings)}: compare · ${actionPrompt("cancel", hub.family, hub.settings.bindings)}: cancel · D-pad: navigate`
+        : "Click / Enter: select · select again to carry · drag: move · V: inventory · Escape: cancel";
+    const el = this.dialog.querySelector("#inventory-prompts")!;
+    if (el.textContent !== text) el.textContent = text;
+  }
+  private mapToggle = (e: Event) => {
+    e.preventDefault();
+    this.toggle();
+  };
+  private controllerAction = (e: Event) => {
+    const action = (e as CustomEvent<string>).detail;
+    if (action === "cancel") {
+      e.preventDefault();
+      if (this.held) {
+        this.held = null;
+        this.render();
+      } else this.close();
+      return;
+    }
+    if (action === "primary") {
+      e.preventDefault();
+      this.equip();
+      return;
+    }
+    if (action === "secondary") {
+      e.preventDefault();
+      this.dialog
+        .querySelector<HTMLElement>("#inventory-compare")!
+        .scrollIntoView({ block: "nearest" });
+      return;
+    }
+    const active = document.activeElement as HTMLElement | null;
+    if (!active || !["up", "down", "left", "right"].includes(action)) return;
+    if (active.dataset.x !== undefined) {
+      const c = this.runtime.character.grid;
+      const next = inventoryNeighbor(
+        Number(active.dataset.x),
+        Number(active.dataset.y),
+        action as GridDirection,
+        c.columns,
+        c.rows,
+      );
+      const target = next
+        ? this.dialog.querySelector<HTMLElement>(
+            `[data-focus="cell-${next.x}-${next.y}"]`,
+          )
+        : this.dialog.querySelector<HTMLElement>(
+            action === "left"
+              ? '[data-focus="gear-main"]'
+              : action === "up"
+                ? "#inventory-close"
+                : "#inventory-take",
+          );
+      target?.focus();
+      e.preventDefault();
+    } else if (active.dataset.slot && action === "right") {
+      this.dialog
+        .querySelector<HTMLElement>('[data-focus="cell-0-0"]')
+        ?.focus();
+      e.preventDefault();
+    }
+  };
+  private destination(target: Element | null) {
+    const el = target?.closest<HTMLElement>("button[data-x],button[data-slot]");
+    if (!el || !this.dialog.contains(el)) return null;
+    if (el.dataset.slot)
+      return {
+        element: el,
+        destination: {
+          kind: "equipment" as const,
+          slot: el.dataset.slot as EquipSlot,
+        },
+      };
+    return {
+      element: el,
+      destination: {
+        kind: "grid" as const,
+        x: Number(el.dataset.x) - (this.drag?.dx ?? 0),
+        y: Number(el.dataset.y) - (this.drag?.dy ?? 0),
+      },
+    };
+  }
+  private pointerDown = (e: PointerEvent) => {
+    if (e.button !== 0 || !this.ready) return;
+    const el = (e.target as Element).closest<HTMLElement>("button[data-item]");
+    const id = el?.dataset.item;
+    if (!id) return;
+    const source = this.runtime.character.grid.items.find(
+      (v) => v.item.id === id,
+    );
+    this.drag = {
+      id,
+      pointer: e.pointerId,
+      x: e.clientX,
+      y: e.clientY,
+      dx: source && el?.dataset.x ? Number(el.dataset.x) - source.x : 0,
+      dy: source && el?.dataset.y ? Number(el.dataset.y) - source.y : 0,
+      active: false,
+    };
+  };
+  private pointerMove = (e: PointerEvent) => {
+    const d = this.drag;
+    if (
+      !d ||
+      e.pointerId !== d.pointer ||
+      (!d.active && Math.hypot(e.clientX - d.x, e.clientY - d.y) < 5)
+    )
+      return;
+    e.preventDefault();
+    if (!d.active) {
+      d.active = true;
+      this.dialog.setPointerCapture(e.pointerId);
+      this.ghost = document.createElement("div");
+      this.ghost.className = "inventory-drag-ghost";
+      const item = ownedItem(this.runtime.character, d.id)!;
+      this.decorate(this.ghost, item);
+      this.dialog.append(this.ghost);
+    }
+    this.ghost!.style.left = `${e.clientX + 12}px`;
+    this.ghost!.style.top = `${e.clientY + 12}px`;
+    for (const el of Array.from(
+      this.dialog.querySelectorAll<HTMLElement>("[data-placement]"),
+    ))
+      delete el.dataset.placement;
+    const target = this.destination(
+      document.elementFromPoint(e.clientX, e.clientY),
+    );
+    if (target)
+      target.element.dataset.placement = moveOwned(
+        this.runtime.session(),
+        d.id,
+        target.destination,
+      ).ok
+        ? "valid"
+        : "invalid";
+  };
+  private pointerUp = (e: PointerEvent) => {
+    const d = this.drag;
+    if (!d || e.pointerId !== d.pointer) return;
+    if (d.active) {
+      const target = this.destination(
+        document.elementFromPoint(e.clientX, e.clientY),
+      );
+      this.suppressClick = true;
+      if (target)
+        this.perform(
+          moveOwned(this.runtime.session(), d.id, target.destination),
+        );
+    }
+    this.cancelDrag();
+  };
+  private cancelDrag = () => {
+    if (this.drag && this.dialog.hasPointerCapture(this.drag.pointer))
+      this.dialog.releasePointerCapture(this.drag.pointer);
+    this.drag = null;
+    this.ghost?.remove();
+    this.ghost = null;
+    for (const el of Array.from(
+      this.dialog.querySelectorAll<HTMLElement>("[data-placement]"),
+    ))
+      delete el.dataset.placement;
+  };
   private decorate(element: HTMLElement, item: GeneratedItem) {
     element.style.setProperty("--quality", LOOT_COLORS[item.quality]);
     element.dataset.item = item.id;
@@ -435,9 +661,14 @@ export class InventoryView {
   dispose(): void {
     this.disposed = true;
     window.clearTimeout(this.timer);
+    window.clearInterval(this.promptTimer);
+    window.removeEventListener("hollowbane-input-reset", this.resetSelection);
     this.storage.close();
     this.runtime.listeners.delete(this.listen);
     window.removeEventListener("keydown", this.keydown);
+    window.removeEventListener("hollowbane-inventory-toggle", this.mapToggle);
+    window.removeEventListener("blur", this.cancelDrag);
+    this.cancelDrag();
     this.dialog.remove();
     this.root.querySelector("#inventory-open")?.remove();
   }
