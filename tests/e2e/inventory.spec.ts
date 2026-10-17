@@ -377,13 +377,11 @@ test("ring comparison uses the same free slot as the equip transaction", async (
   s.character.equipment.ring1 = inventoryItem("copper-band");
   s.character.grid.items.push({ item: incoming, x: 0, y: 0 });
   await page.locator("#inventory-open").click();
-  await page
-    .locator("#inventory-import")
-    .setInputFiles({
-      name: "character.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(serializeCharacter(s)),
-    });
+  await page.locator("#inventory-import").setInputFiles({
+    name: "character.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(serializeCharacter(s)),
+  });
   await expect(page.locator("#inventory-grid .inventory-item")).toHaveCount(1);
   await page.locator('[data-focus="cell-0-0"]').click();
   await expect(page.locator("#inventory-compare")).toContainText(
