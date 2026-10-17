@@ -71,3 +71,16 @@ First publication outcome: CI 39015793783 failed only the new arena screenshot (
 ## DBL-262 platform visual expectations
 
 Only the new arena screenshot now includes `process.platform` in its name. Darwin expectation was refreshed from the final local scene; Linux expectation comes from the inspected actual image in CI 39015793783. Its geometry, actors and indicators matched; the diff isolated system-font differences in labels/UI. Existing snapshot paths, masks and 1% tolerance remain unchanged. The final player-label vertical readability adjustment is intentionally small and separately inspected. Windows artwork/rendering is not covered by these two platform expectations. Linux CI must pass before this follow-up or DBL-258 is called complete.
+
+## Final publication and stop checkpoint
+
+**Phase 3 combat quality candidate delivered; stop for user review.** No subjective feel approval is inferred.
+
+- Runtime candidate: `050172b`. [CI run 39016191594](https://github.com/tobisen/hollowbane/actions/runs/39016191594) succeeded; both verify and Pages deployment succeeded. The platform font repair passed Linux without tolerance increases.
+- [Public combat arena](https://tobisen.github.io/hollowbane/?combat=1); original [movement scene](https://tobisen.github.io/hollowbane/) remains available.
+- Hosted verification on 2026-10-17: all 10 combat/movement browser scenarios pass in 34.7 seconds, including the arena screenshot, held melee/death, ballistic launch/impact, moving target selection, recovery/deferred movement/breakpoints, hostile stagger/player death/reset and all five movement acceptance cases. Command: `PLAYWRIGHT_BASE_URL='https://tobisen.github.io/hollowbane/' npx playwright test tests/e2e/combat.spec.ts tests/e2e/movement.spec.ts`.
+- Final local checks: 90 unit tests, strict typecheck/lint/build, nine asset records and 262 backlog records; format check; 20 Chromium E2E; 15 cross-browser movement; eight Firefox/WebKit combat; original Firefox/WebKit smoke. Windup/death captures and Darwin/Linux baselines inspected. No combat art is represented as finished production sprite artwork.
+- Completed scoped IDs: DBL-253–259, DBL-261–262. DBL-260 remains planned. DBL-036 and other broad source parents remain partial; original dependency graph preserved. No excluded systems were implemented.
+- Implementation commits: `112b407` DBL-259 damage; `dcbddb8` DBL-254 targeting; `37a8116` DBL-255 resolution/reactions; `2cc5703` DBL-256 projectiles; `369d67f` DBL-257 arena; `08437f4` DBL-261 rendering correction; `a36f831` DBL-258 quality checkpoint; `050172b` DBL-262 platform baseline repair. Closing evidence commit can be located with `git log --grep 'record verified hosted combat quality gate'`.
+
+Closing evidence updates only AGENTS.md, STATUS.md, this document and backlog status/evidence. They do not change the verified runtime assets. Publication remains authorized; user combat quality approval is the next gate decision.

@@ -2667,9 +2667,9 @@
     "priority": "p0",
     "parent": "DBL-043",
     "dependencies": ["DBL-257"],
-    "status": "in-progress",
+    "status": "completed",
     "body": "## Purpose\nCombat quality evidence and public demo\n\n## Scope\nAuthorized Phase 3 slice; original dependencies and broader parent scope preserved.\n\n## Non-goals\nLoot, inventory, advanced AI, skill trees, campaign, resurrection and crossing the combat quality gate.\n\n## Acceptance criteria\nFull prior tests plus combat E2E/replays/visual regressions; matched before/after latency, frame p50/p95, simulation and rendering cost/entity counts; publish verified demo then stop for user combat quality review.\n\n## Test requirements\nTargeted unit tests, npm run check, relevant Playwright; screenshot review for visible changes. Detailed evidence in docs/combat/phase3.md.\n\n## Definition of done\nVerified increment, accurate evidence/status, DBL commit; parent remains partial until all its requirements are met.\n",
-    "evidence": "90 unit tests, full local check/format, 20 Chromium E2E, 15 cross-browser movement cases and eight Firefox/WebKit combat cases pass. Final performance evidence retained. CI 39015793783: 19/20 pass; arena screenshot differs only in platform fonts (13,072 pixels). Deploy skipped; platform baseline repair required before completion."
+    "evidence": "Combat quality candidate delivered, not subjectively approved. 90 unit tests; check/format; 20 Chromium E2E; 15 cross-browser movement; eight Firefox/WebKit combat; existing two-browser smoke; 10 hosted combat/movement cases pass. CI/Pages 39016191594 passed at 050172b. Final measured evidence and limitations in docs/combat/phase3.md; stop at user combat quality gate."
   },
   {
     "id": "DBL-259",
@@ -2714,8 +2714,8 @@
     "priority": "p0",
     "parent": "DBL-258",
     "dependencies": ["DBL-261"],
-    "status": "in-progress",
+    "status": "completed",
     "body": "## Purpose\nRepair first combat Linux CI screenshot failure caused by system font differences.\n\n## Non-goals\nTolerance increases, expanding masks, changing existing baselines or gameplay.\n\n## Acceptance criteria\nInspect actual/expected/diff; separate only arena Darwin/Linux expectations at original 1% tolerance; all CI scenarios pass and Pages deploys.\n\n## Test requirements\nTargeted local screenshot, full check/format and CI browser suite.\n\n## Definition of done\nPlatform baseline evidence committed and passing Linux CI recorded before combat gate completion.",
-    "evidence": "First CI run 39015793783: 19 pass, arena font-only screenshot differs by 13,072 pixels. Actual/expected/diff inspected. Linux expectation sourced from that public CI artifact; Darwin refreshed locally."
+    "evidence": "First CI 39015793783 failed only new arena font screenshot (13,072 pixels); actual/expected/diff inspected. Separate Darwin/Linux expectations retain 1% tolerance and unchanged masks. CI/Pages 39016191594 succeeded at 050172b; 10 hosted cases pass."
   }
 ]

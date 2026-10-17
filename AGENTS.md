@@ -9,3 +9,5 @@ Run targeted tests, npm run check and relevant Playwright checks. Review screens
 Phase authorization update (2026-10-17): User approved Phase 2 movement quality and authorized Phase 3 Combat Fundamentals through combat quality review. This supersedes the movement-gate stop and combat prohibition above. Execute scoped DBL-253–258 sequentially, one normal issue per session; preserve original parent dependencies and Phaser 4.2.1. No loot, inventory, advanced monster AI, skill trees or campaign. Stop for combat quality review.
 
 Phase 3 continuation policy (2026-10-17): After each verified issue commit, continue automatically to the next ready scoped issue. Stop only at the combat quality gate, a critical blocker, or an outside-scope decision. Preserve checkpoint evidence for another Codex session.
+
+Phase 3 gate checkpoint (2026-10-17): DBL-253–259 and DBL-261–262 delivered; CI/Pages and hosted combat verified. Stop at combat quality review. DBL-260 art/audio polish and incomplete original parents remain visible; do not continue gameplay work beyond this gate without user approval.
