@@ -329,3 +329,5 @@ DBL-356 splits actual contextual hit/skill/DoT arithmetic from343 after355. Proc
 DBL-357 inspection/comparison/glyphs and358 explicit socket/controller UI split the oversized345 after344;345 retains final lab/replay/controller integration before346. Existing IDs and partial parent scope preserved.
 
 DBL-359 addresses the discovered zero-damage power-buff rank case after358, before345. Generic item-rank interpretation only; no skill tree or character progression.
+
+DBL-360 is a small required348 dependency: CI virtual D-pad taps must not accidentally become400ms repeats on slow RAFs. Real input/held-repeat behavior remains unchanged; prior failing CI evidence retained.

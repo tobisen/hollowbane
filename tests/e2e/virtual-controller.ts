@@ -43,17 +43,50 @@ export async function pressVirtualButton(
     .toBe(true);
   for (const value of [1, 0])
     await page.evaluate(
-      async ({ index, value, frames }) => {
+      async ({ index, value, frames, holdFrames }) => {
         window.virtualPads[0]!.buttons[index] = {
           pressed: !!value,
           touched: !!value,
           value,
         };
-        for (let frame = 0; frame < frames; frame++)
-          await new Promise<void>((resolve) =>
-            requestAnimationFrame(() => resolve()),
+        // A navigation tap ends when the UI consumes it. Three slow CI RAFs
+        // can exceed the real 400 ms repeat threshold and are not a short tap.
+        const directions: Record<number, string> = {
+          12: "up",
+          13: "down",
+          14: "left",
+          15: "right",
+        };
+        const releaseTap = (event: Event) => {
+          if (
+            value &&
+            holdFrames === 3 &&
+            (event as CustomEvent<string>).detail === directions[index]
+          )
+            window.virtualPads[0]!.buttons[index] = {
+              pressed: false,
+              touched: false,
+              value: 0,
+            };
+        };
+        window.addEventListener(
+          "hollowbane-inventory-action",
+          releaseTap,
+          true,
+        );
+        try {
+          for (let frame = 0; frame < frames; frame++)
+            await new Promise<void>((resolve) =>
+              requestAnimationFrame(() => resolve()),
+            );
+        } finally {
+          window.removeEventListener(
+            "hollowbane-inventory-action",
+            releaseTap,
+            true,
           );
+        }
       },
-      { index, value, frames: value ? holdFrames : 3 },
+      { index, value, frames: value ? holdFrames : 3, holdFrames },
     );
 }

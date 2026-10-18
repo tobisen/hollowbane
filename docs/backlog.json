@@ -3869,7 +3869,7 @@
     "targetPhase": 12,
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
-    "dependencies": ["DBL-347"],
+    "dependencies": ["DBL-347", "DBL-360"],
     "status": "planned",
     "body": "## Acceptance criteria\nL3 repeated performance and visual evidence. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication.\n\n## Tracked visual exception from337\nLinux advanced set baselines pending. Remove temporary platform condition after generating and reviewing Linux reference artifacts. Darwin Chromium/Firefox/WebKit references exist; old four non-Chromium L2 exclusions remain exceptions, not successful visual coverage."
   },
@@ -4012,5 +4012,18 @@
     "status": "complete",
     "body": "## Acceptance criteria\nMake item ranks affect magnitude/duration of non-damaging power skills through generic typed rules; Oath Echo must have an actual benefit. Keep existing damaging skill/DoT timing and triggered-status exclusions.\n\n## Non-goals\nNo skill tree/progression or per-unique branches.\n\n## Test requirements\nReal generated buff-rank item changes actual buff/damage then expires without drift; unchanged costs/commitment/other statuses and full regression.\n\n## Definition of done\nVerified dependency committed before integrated345.",
     "evidence": "Generic non-damaging power buff ranks improve actual magnitude/duration and outgoing damage, expire without drift; damaging/triggered statuses unchanged.2 new/full check282 and2 Firefox/WebKit skill regressions pass."
+  },
+  {
+    "id": "DBL-360",
+    "title": "Acknowledge virtual controller navigation taps under slow CI frames",
+    "parent": "DBL-101",
+    "phase": 12,
+    "targetPhase": 12,
+    "deliveryPhase": "advanced-items-l3",
+    "priority": "p0",
+    "dependencies": ["DBL-346"],
+    "status": "partial",
+    "body": "## Acceptance criteria\nCI navigation emulation releases a short D-pad tap when the inventory UI consumes it, preserving intentional held-repeat tests and real controller behavior. Assert modal-open focus before navigation.\n\n## Non-goals\nNo physical verification, weakened focus assertions or gameplay timing changes.\n\n## Test requirements\nAll three browser controller socket scenarios and green Linux CI.\n\n## Definition of done\nVerified dependency before L3 publication; preserve evidence of prior CI failure.",
+    "evidence": "Short inventory D-pad taps release on UI consumption; intentional holds and real controller repeat unchanged. Full check288 and39 advanced scenarios across Chromium/Firefox/WebKit pass. Linux CI confirmation pending; prior failure39115547966/artifact12132751019 retained."
   }
 ]

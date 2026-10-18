@@ -120,6 +120,8 @@ for (const id of [
     const press = (i: number, frames = 3) =>
       pressVirtualButton(page, i, frames);
     await press(8);
+    await expect(page.locator("#inventory-dialog")).toBeVisible();
+    await expect(page.locator("#inventory-close")).toBeFocused();
     await press(15);
     await expect(page.locator('[data-slot="main"]')).toBeFocused();
     await press(0);
