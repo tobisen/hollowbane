@@ -1,0 +1,299 @@
+{
+  "version": 1,
+  "trees": [
+    {
+      "classId": "warrior",
+      "branches": [
+        {
+          "id": "warrior-arms",
+          "name": "Arms",
+          "nodes": [
+            {
+              "id": "warrior-arms-foundation",
+              "ability": {
+                "kind": "existing",
+                "id": "iron-fan"
+              },
+              "level": 1,
+              "maxRank": 5,
+              "prerequisites": []
+            },
+            {
+              "id": "warrior-arms-mastery",
+              "ability": {
+                "kind": "planned",
+                "id": "warrior-arms-mastery-ability"
+              },
+              "level": 12,
+              "maxRank": 3,
+              "prerequisites": [
+                {
+                  "node": "warrior-arms-foundation",
+                  "rank": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "warrior-resolve",
+          "name": "Resolve",
+          "nodes": [
+            {
+              "id": "warrior-resolve-foundation",
+              "ability": {
+                "kind": "existing",
+                "id": "oath-echo"
+              },
+              "level": 1,
+              "maxRank": 5,
+              "prerequisites": []
+            },
+            {
+              "id": "warrior-resolve-mastery",
+              "ability": {
+                "kind": "planned",
+                "id": "warrior-resolve-mastery-ability"
+              },
+              "level": 12,
+              "maxRank": 3,
+              "prerequisites": [
+                {
+                  "node": "warrior-resolve-foundation",
+                  "rank": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "warrior-bulwark",
+          "name": "Bulwark",
+          "nodes": [
+            {
+              "id": "warrior-bulwark-foundation",
+              "ability": {
+                "kind": "planned",
+                "id": "warrior-bulwark-ability"
+              },
+              "level": 1,
+              "maxRank": 5,
+              "prerequisites": []
+            },
+            {
+              "id": "warrior-bulwark-mastery",
+              "ability": {
+                "kind": "planned",
+                "id": "warrior-bulwark-mastery-ability"
+              },
+              "level": 12,
+              "maxRank": 3,
+              "prerequisites": [
+                {
+                  "node": "warrior-bulwark-foundation",
+                  "rank": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "classId": "sorcerer",
+      "branches": [
+        {
+          "id": "sorcerer-ember",
+          "name": "Ember",
+          "nodes": [
+            {
+              "id": "sorcerer-ember-foundation",
+              "ability": {
+                "kind": "existing",
+                "id": "ember-lance"
+              },
+              "level": 1,
+              "maxRank": 5,
+              "prerequisites": []
+            },
+            {
+              "id": "sorcerer-ember-mastery",
+              "ability": {
+                "kind": "planned",
+                "id": "sorcerer-ember-mastery-ability"
+              },
+              "level": 12,
+              "maxRank": 3,
+              "prerequisites": [
+                {
+                  "node": "sorcerer-ember-foundation",
+                  "rank": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sorcerer-rime",
+          "name": "Rime",
+          "nodes": [
+            {
+              "id": "sorcerer-rime-foundation",
+              "ability": {
+                "kind": "existing",
+                "id": "rime-ring"
+              },
+              "level": 1,
+              "maxRank": 5,
+              "prerequisites": []
+            },
+            {
+              "id": "sorcerer-rime-mastery",
+              "ability": {
+                "kind": "planned",
+                "id": "sorcerer-rime-mastery-ability"
+              },
+              "level": 12,
+              "maxRank": 3,
+              "prerequisites": [
+                {
+                  "node": "sorcerer-rime-foundation",
+                  "rank": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sorcerer-tempest",
+          "name": "Tempest",
+          "nodes": [
+            {
+              "id": "sorcerer-tempest-foundation",
+              "ability": {
+                "kind": "existing",
+                "id": "storm-thread"
+              },
+              "level": 1,
+              "maxRank": 5,
+              "prerequisites": []
+            },
+            {
+              "id": "sorcerer-tempest-mastery",
+              "ability": {
+                "kind": "planned",
+                "id": "sorcerer-tempest-mastery-ability"
+              },
+              "level": 12,
+              "maxRank": 3,
+              "prerequisites": [
+                {
+                  "node": "sorcerer-tempest-foundation",
+                  "rank": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "classId": "ranger",
+      "branches": [
+        {
+          "id": "ranger-wilds",
+          "name": "Wilds",
+          "nodes": [
+            {
+              "id": "ranger-wilds-foundation",
+              "ability": {
+                "kind": "existing",
+                "id": "briar-edge"
+              },
+              "level": 1,
+              "maxRank": 5,
+              "prerequisites": []
+            },
+            {
+              "id": "ranger-wilds-mastery",
+              "ability": {
+                "kind": "planned",
+                "id": "ranger-wilds-mastery-ability"
+              },
+              "level": 12,
+              "maxRank": 3,
+              "prerequisites": [
+                {
+                  "node": "ranger-wilds-foundation",
+                  "rank": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ranger-precision",
+          "name": "Precision",
+          "nodes": [
+            {
+              "id": "ranger-precision-foundation",
+              "ability": {
+                "kind": "planned",
+                "id": "ranger-precision-ability"
+              },
+              "level": 1,
+              "maxRank": 5,
+              "prerequisites": []
+            },
+            {
+              "id": "ranger-precision-mastery",
+              "ability": {
+                "kind": "planned",
+                "id": "ranger-precision-mastery-ability"
+              },
+              "level": 12,
+              "maxRank": 3,
+              "prerequisites": [
+                {
+                  "node": "ranger-precision-foundation",
+                  "rank": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ranger-trailcraft",
+          "name": "Trailcraft",
+          "nodes": [
+            {
+              "id": "ranger-trailcraft-foundation",
+              "ability": {
+                "kind": "planned",
+                "id": "ranger-trailcraft-ability"
+              },
+              "level": 1,
+              "maxRank": 5,
+              "prerequisites": []
+            },
+            {
+              "id": "ranger-trailcraft-mastery",
+              "ability": {
+                "kind": "planned",
+                "id": "ranger-trailcraft-mastery-ability"
+              },
+              "level": 12,
+              "maxRank": 3,
+              "prerequisites": [
+                {
+                  "node": "ranger-trailcraft-foundation",
+                  "rank": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

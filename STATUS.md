@@ -1,5 +1,12 @@
 # Status
 
+## C1–C3 class/skill-tree foundations complete (2026-10-18)
+
+- User approves P1–P11 (1ce9e92); C1–C3 bounded scope delivered under DBL-113/111/115. Broader original parents/dependencies remain partial and unchanged.
+- Warrior/Sorcerer/Ranger configurable class data; shared XP/attribute/equipment engines; versioned nine-branch tree data, ranked prerequisites and unavailable planned ability extension points. Existing six active skills and saves unchanged.
+- Eight focused unit tests, TypeScript, focused lint/format pass. No browser changes/E2E, full regression or loot simulation. Evidence and provisional-data limitations: docs/character-classes.md.
+- STOP after C3. Next: await user-defined continuation scope before runtime class selection, skill point allocation or rendering. Preserve pre-existing local L3/backlog edits and hardware/art/performance follow-ups.
+
 ## P11 release verified — DBL-109 complete (2026-10-18)
 
 - Verified runtime51a943ac96f845a9f749262436c146ea9244511f: CI39159873168 success;105 Chromium and15 advanced cross-browser cases pass, including unchanged Linux visual comparisons. Existing320 unit evidence reused locally; CI check/format passed.
