@@ -1,3 +1,6 @@
+import { ADVANCED_EXAMPLES } from "../simulation/advanced-item-examples";
+import { ADVANCED_ITEMS } from "../simulation/advanced-item-content";
+import { describeAdvancedItem } from "../simulation/item-description";
 import { ITEM_CONTENT, type ItemContent } from "../simulation/item-content";
 import { inspectDropTable } from "../simulation/loot-diagnostics";
 import {
@@ -71,7 +74,8 @@ export class LootView {
     private content: ItemContent = ITEM_CONTENT,
   ) {
     this.world = createLootWorld(seed);
-    if (content.version === 3) this.world.table = "reliquary";
+    if (content.version >= 3)
+      this.world.table = content.version >= 4 ? "sanctum" : "reliquary";
     root.insertAdjacentHTML(
       "beforeend",
       `<section class="loot-panel" aria-label="Loot inspection"><h2>World loot · L1</h2><p id="loot-help">D-pad ↑↓: select · Enter / Interact: inspect · F: inspect nearest. Items remain on the ground.</p><p id="loot-message" role="status">Defeat monsters to discover items.</p><output id="loot-info">No item selected.</output><button id="loot-identify" disabled>Identify selected</button><details><summary>Loot diagnostics & item archive</summary><label>Seed <input id="loot-seed" type="number" min="0" max="4294967295" value="${seed}"></label><label>Roll sequence <input id="loot-sequence" type="number" min="0" max="4294967295" value="0"></label><label>Example roll <select id="loot-example"><option value="">Custom seed / sequence</option><option value="3">Normal · 3</option><option value="30">Magic · 30</option><option value="47">Rare · 47</option><option value="5634">Unique · 5634</option></select></label><button id="loot-test">Replay test drop near player</button><button id="loot-save">Save item archive locally</button><button id="loot-load">Load item archive near player</button><output id="loot-diagnostics"></output><details><summary>Drop table at level 12</summary><pre id="loot-table"></pre></details></details></section><div class="loot-labels" aria-label="Ground item labels"></div>`,
@@ -82,6 +86,18 @@ export class LootView {
       this.panel.querySelector<HTMLElement>(
         "#loot-example",
       )!.parentElement!.hidden = true;
+    if (content.version >= 4) {
+      const select =
+        this.panel.querySelector<HTMLSelectElement>("#loot-example")!;
+      select.replaceChildren(new Option("Custom seed / sequence", ""));
+      for (const [id, sequence] of Object.entries(ADVANCED_EXAMPLES)) {
+        const name =
+          ADVANCED_ITEMS.uniques.find((u) => u.id === id)?.name ??
+          ADVANCED_ITEMS.sets.flatMap((s) => s.pieces).find((p) => p.id === id)!
+            .name;
+        select.add(new Option(name, String(sequence)));
+      }
+    }
     this.panel.querySelector("#loot-table")!.textContent = JSON.stringify(
       inspectDropTable(12, this.world.table, this.content),
       null,
@@ -148,13 +164,14 @@ export class LootView {
       }
       this.focus();
     };
-    if (content.version === 3) {
-      this.panel.querySelector("h2")!.textContent = "World loot · L2";
+    if (content.version >= 3) {
+      this.panel.querySelector("h2")!.textContent =
+        content.version >= 4 ? "World loot · L3" : "World loot · L2";
       for (const id of ["loot-save", "loot-load"])
         this.panel.querySelector<HTMLButtonElement>(`#${id}`)!.hidden = true;
     }
     this.panel.querySelector<HTMLButtonElement>("#loot-save")!.onclick = () => {
-      if (this.content.version === 3) return;
+      if (this.content.version >= 3) return;
       try {
         localStorage.setItem(
           "hollowbane.l1.items",
@@ -168,7 +185,7 @@ export class LootView {
       }
     };
     this.panel.querySelector<HTMLButtonElement>("#loot-load")!.onclick = () => {
-      if (this.content.version === 3) return;
+      if (this.content.version >= 3) return;
       try {
         const items = deserializeItems(
           localStorage.getItem("hollowbane.l1.items") ?? "",
@@ -204,13 +221,16 @@ export class LootView {
   private message(text: string) {
     this.panel.querySelector("#loot-message")!.textContent = text;
   }
+  get contentVersion(): number {
+    return this.content.version;
+  }
   setPlayer(position: Point, alive: boolean) {
     this.player = position;
     this.alive = alive;
   }
   reset() {
     this.world =
-      this.content.version === 3
+      this.content.version >= 3
         ? { ...this.world, deaths: new Set() }
         : createLootWorld(this.world.seed);
     this.selected = null;
@@ -368,9 +388,12 @@ export class LootView {
             : "Select then interact nearby to inspect."
         }`
       : "No item selected.";
-    if (text !== this.lastInfo) {
-      this.panel.querySelector("#loot-info")!.textContent = text;
-      this.lastInfo = text;
+    const advanced =
+      d && this.inspected && inRange ? describeAdvancedItem(d.item) : "";
+    const detail = text + (advanced ? `\n${advanced}` : "");
+    if (detail !== this.lastInfo) {
+      this.panel.querySelector("#loot-info")!.textContent = detail;
+      this.lastInfo = detail;
     }
     this.panel.querySelector<HTMLButtonElement>("#loot-identify")!.disabled = !(
       d &&
@@ -379,7 +402,7 @@ export class LootView {
       !d.item.identified
     );
     const help =
-      this.content.version === 3
+      this.content.version >= 3
         ? `D-pad ↑↓: select · ${prompt}: pick up · F: nearest · V / View: inventory.`
         : `D-pad ↑↓: select · ${prompt}: inspect · F: nearest. No inventory; items stay on ground.`;
     const h = this.panel.querySelector("#loot-help")!;

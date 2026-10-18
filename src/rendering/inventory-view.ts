@@ -1,3 +1,4 @@
+import { describeAdvancedItem } from "../simulation/item-description";
 import {
   inventoryNeighbor,
   type GridDirection,
@@ -99,6 +100,8 @@ export class InventoryView {
     this.dialog.id = "inventory-dialog";
     this.dialog.setAttribute("aria-labelledby", "inventory-title");
     this.dialog.innerHTML = `<header><p>HOLLOWBANE / L2</p><h2 id="inventory-title">The Wayfarer’s Kit</h2><button id="inventory-close" aria-label="Close inventory">Close ×</button></header><p id="inventory-prompts"></p><div class="inventory-layout"><section aria-label="Equipment"><h3>Equipment</h3><div id="inventory-gear"></div><output id="inventory-stats"></output></section><section aria-label="Backpack"><h3>Backpack <small>10 × 4 · fixed footprints</small></h3><div id="inventory-grid"></div><p id="inventory-held">Select an item to inspect or move.</p></section><section class="inventory-inspector" aria-label="Item inspection"><h3 id="inventory-name">No item selected</h3><pre id="inventory-details"></pre><pre id="inventory-compare"></pre><div class="inventory-actions"><button id="inventory-take">Select / carry</button><button id="inventory-equip">Equip</button><button id="inventory-identify">Identify</button><button id="inventory-drop">Drop nearby</button><button id="inventory-cancel">Cancel selection</button></div></section></div><footer><p id="inventory-status" role="status"></p><button id="inventory-save">Save now</button><button id="inventory-recover" hidden>Recover previous checkpoint</button><button id="inventory-export">Export snapshot</button><label>Import character snapshot <input id="inventory-import" type="file" accept="application/json,.json"></label><p>Items and loot stream are saved. Combat, position and current resources restart. An L1 item archive is not a character save.</p></footer>`;
+    if (loot.contentVersion >= 4)
+      this.dialog.querySelector("header p")!.textContent = "HOLLOWBANE / L3";
     root.append(this.dialog);
     const button = (id: string, fn: () => void) => {
       this.dialog.querySelector<HTMLButtonElement>(`#${id}`)!.onclick = fn;
@@ -340,6 +343,7 @@ export class InventoryView {
       this.render();
       hub.clear();
       this.dialog.showModal();
+      this.dialog.querySelector<HTMLButtonElement>("#inventory-close")!.focus();
       hub.blockGameplay = true;
     }
   }
@@ -461,6 +465,17 @@ export class InventoryView {
             : "Unidentified — rolled attributes concealed."
         }`
       : "Select a grid item or equipment slot. Carrying is a selection only; invalid moves never remove an item.";
+    (this.dialog.querySelector("#inventory-name") as HTMLElement).style.color =
+      "";
+    if (item) {
+      const advanced = describeAdvancedItem(item, Object.values(c.equipment));
+      if (advanced)
+        this.dialog.querySelector("#inventory-details")!.textContent += `
+${advanced}`;
+      (
+        this.dialog.querySelector("#inventory-name") as HTMLElement
+      ).style.color = LOOT_COLORS[item.quality];
+    }
     let comparison = "";
     if (item?.identified) {
       const slot = this.slotFor(item);
@@ -492,6 +507,9 @@ export class InventoryView {
         (id === "inventory-identify" && !!item.identified);
     this.dialog.querySelector("#inventory-prompts")!.textContent =
       `${hub.frame.device === "gamepad" ? actionPrompt("interact", hub.family, hub.settings.bindings) : "Enter / click"}: select/carry/place · ${actionPrompt("primary", hub.family, hub.settings.bindings)}: equip · ${actionPrompt("secondary", hub.family, hub.settings.bindings)}: compare · Cancel: keep items`;
+    if (d.advanced?.active.length)
+      this.dialog.querySelector("#inventory-stats")!.textContent += `
+Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece`).join(", ")}`;
     this.message(this.status);
     if (focus)
       Array.from(this.dialog.querySelectorAll<HTMLElement>("[data-focus]"))
@@ -684,7 +702,16 @@ export class InventoryView {
   private decorate(element: HTMLElement, item: GeneratedItem) {
     element.style.setProperty("--quality", LOOT_COLORS[item.quality]);
     element.dataset.item = item.id;
-    element.title = inspectItem(item).name;
+    element.title = [
+      inspectItem(item).name,
+      describeAdvancedItem(
+        item,
+        Object.values(this.runtime.character.equipment),
+      ),
+    ]
+      .filter(Boolean)
+      .join("\n");
+    element.dataset.quality = item.quality;
     element.insertAdjacentHTML("beforeend", icon(item));
   }
   dispose(): void {

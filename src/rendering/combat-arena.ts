@@ -1,5 +1,6 @@
 import { InventoryView } from "./inventory-view";
 import { InventoryRuntime } from "./inventory-runtime";
+import { ADVANCED_CONTENT } from "../simulation/item-registry";
 import { EQUIPMENT_CONTENT } from "../simulation/item-content";
 import { LootView, LOOT_COLORS } from "./loot-view";
 import { arenaView } from "../world/arena-view";
@@ -139,6 +140,7 @@ declare global {
 export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
   const inventory = query.has("inventory");
+  const advanced = inventory && query.has("advanced");
   const loot = query.has("loot") || inventory;
   const polish = query.has("polish") || loot;
   const skills = query.has("skills") || polish;
@@ -270,7 +272,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
           nav,
           Number(query.get("lootSeed") ?? 42),
           (quality) => this.soundBank.play({ kind: "loot", quality }),
-          inventory ? EQUIPMENT_CONTENT : undefined,
+          advanced
+            ? ADVANCED_CONTENT
+            : inventory
+              ? EQUIPMENT_CONTENT
+              : undefined,
         );
       if (inventory && this.lootView)
         this.inventoryRuntime = new InventoryRuntime(
