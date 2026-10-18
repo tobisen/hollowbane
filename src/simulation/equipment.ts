@@ -61,7 +61,8 @@ export function validateCharacter(c: CharacterInventory): void {
     throw Error("Invalid character");
   validateGrid(c.grid);
   const items = ownedItems(c);
-  if (new Set(itemTree(items).map((i) => i.id)).size !== itemTree(items).length)
+  const tree = itemTree(items);
+  if (new Set(tree.map((i) => i.id)).size !== tree.length)
     throw Error("Duplicate owned identity");
   items.forEach((i) => validateGeneratedItem(i));
   for (const [slot, item] of Object.entries(c.equipment))

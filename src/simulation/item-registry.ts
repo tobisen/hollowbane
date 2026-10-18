@@ -98,15 +98,44 @@ export const AFFIX_ITEM_CONTENT = validateItemContent(
   { ...structuredClone(RUNE_ITEM_CONTENT), version: 7 },
   7,
 );
+/** Final L3 tables include components on legacy arena table IDs without changing versions2–7. */
+function finalContent(): ItemContent {
+  const c = structuredClone(AFFIX_ITEM_CONTENT);
+  c.version = 8;
+  const components = c.tables
+    .find((t) => t.id === "sanctum")!
+    .bases.filter((entry) => {
+      const base = c.bases.find((b) => b.id === entry.id)!;
+      return base.category === "gem" || base.category === "rune";
+    });
+  for (const id of ["court", "reliquary"])
+    c.tables
+      .find((t) => t.id === id)!
+      .bases.push(...structuredClone(components));
+  return validateItemContent(c, 8);
+}
+export const L3_ITEM_CONTENT = finalContent();
+export function registeredContentForTable(
+  table: string,
+  preferredVersion: number,
+): ItemContent {
+  const preferred = registeredItemContent(preferredVersion);
+  if (preferred.tables.some((t) => t.id === table)) return preferred;
+  if (L3_ITEM_CONTENT.tables.some((t) => t.id === table))
+    return L3_ITEM_CONTENT;
+  throw Error("Unsupported loot table");
+}
 /** Product callers migrate to this registry when version4 item execution is wired. */
 export function registeredItemContent(version: number): ItemContent {
-  return version === 7
-    ? AFFIX_ITEM_CONTENT
-    : version === 6
-      ? RUNE_ITEM_CONTENT
-      : version === 5
-        ? SOCKET_ITEM_CONTENT
-        : version === 4
-          ? ADVANCED_CONTENT
-          : legacyContent(version);
+  return version === 8
+    ? L3_ITEM_CONTENT
+    : version === 7
+      ? AFFIX_ITEM_CONTENT
+      : version === 6
+        ? RUNE_ITEM_CONTENT
+        : version === 5
+          ? SOCKET_ITEM_CONTENT
+          : version === 4
+            ? ADVANCED_CONTENT
+            : legacyContent(version);
 }

@@ -1,3 +1,4 @@
+import { registeredContentForTable } from "../simulation/item-registry";
 import { ADVANCED_EXAMPLES } from "../simulation/advanced-item-examples";
 import { ADVANCED_ITEMS } from "../simulation/advanced-item-content";
 import { describeAdvancedItem } from "../simulation/item-description";
@@ -64,6 +65,7 @@ export class LootView {
   private player: Point = { x: 0, y: 0 };
   private alive = true;
   private lastInfo = "";
+  private tableKey = "";
   private costs: number[] = [];
   private viewCosts: number[] = [];
   constructor(
@@ -143,7 +145,7 @@ export class LootView {
             monsterLevel: 12,
             table: this.world.table,
           },
-          this.content,
+          this.dropContent(),
         );
         if (!item) {
           this.message("This roll produces no item.");
@@ -221,6 +223,9 @@ export class LootView {
   private message(text: string) {
     this.panel.querySelector("#loot-message")!.textContent = text;
   }
+  private dropContent(): ItemContent {
+    return registeredContentForTable(this.world.table, this.content.version);
+  }
   get contentVersion(): number {
     return this.content.version;
   }
@@ -243,7 +248,7 @@ export class LootView {
       combat,
       this.nav,
       combat.events,
-      this.content,
+      this.dropContent(),
     );
     this.costs.push(performance.now() - start);
     if (this.costs.length > 300) this.costs.shift();
@@ -411,8 +416,32 @@ export class LootView {
     if (this.viewCosts.length > 300) this.viewCosts.shift();
     const p95 = (v: number[]) =>
       [...v].sort((a, b) => a - b)[Math.floor(v.length * 0.95)] ?? 0;
+    const content = this.dropContent(),
+      table = content.tables.find((t) => t.id === this.world.table)!;
+    const level = Math.max(
+      1,
+      Math.min(
+        99,
+        Math.max(this.world.areaLevel, this.world.monsterLevel) +
+          table.levelModifier,
+      ),
+    );
+    const key = `${content.version}/${table.id}/${level}`;
+    if (key !== this.tableKey) {
+      this.panel.querySelector("#loot-table")!.textContent = JSON.stringify(
+        inspectDropTable(level, table.id, content),
+        null,
+        2,
+      );
+      if (this.content.version >= 3)
+        this.panel
+          .querySelector("#loot-table")!
+          .parentElement!.querySelector("summary")!.textContent =
+          `Drop table at level ${level} · content ${content.version}`;
+      this.tableKey = key;
+    }
     this.panel.querySelector("#loot-diagnostics")!.textContent =
-      `seed ${this.world.seed}, next ${this.world.sequence}; deaths ${this.world.attempts}, empty ${this.world.noDrop}, blocked ${this.world.blocked}; ${this.world.drops.length}/128 drops; table ${this.world.table}: 35% drop; quality weights 8000/1700/290/10; loot CPU ${p95(this.costs).toFixed(3)}ms, view ${p95(this.viewCosts).toFixed(3)}ms p95`;
+      `seed ${this.world.seed}, next ${this.world.sequence}; deaths ${this.world.attempts}, empty ${this.world.noDrop}, blocked ${this.world.blocked}; ${this.world.drops.length}/128 drops; table ${this.world.table}: ${table.chance / 100}% drop; quality weights ${Object.values(table.quality).join("/")}; loot CPU ${p95(this.costs).toFixed(3)}ms, view ${p95(this.viewCosts).toFixed(3)}ms p95`;
     window.hollowbaneLoot = {
       seed: this.world.seed,
       sequence: this.world.sequence,

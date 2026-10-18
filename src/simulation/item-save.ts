@@ -6,18 +6,26 @@ import { ITEM_CONTENT, type ItemContent } from "./item-content";
 import { generateLoot, type GeneratedItem, type LootContext } from "./loot";
 const object = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null && !Array.isArray(v);
-function canonical(v: unknown): string {
-  if (Array.isArray(v)) return "[" + v.map(canonical).join(",") + "]";
-  if (object(v))
+/** Traverse only the trusted replay shape; malformed extra/nested data cannot drive recursion. */
+function sameItemData(expected: unknown, value: unknown): boolean {
+  if (Array.isArray(expected))
     return (
-      "{" +
-      Object.keys(v)
-        .sort()
-        .map((k) => JSON.stringify(k) + ":" + canonical(v[k]))
-        .join(",") +
-      "}"
+      Array.isArray(value) &&
+      expected.length === value.length &&
+      expected.every((entry, i) => sameItemData(entry, value[i]))
     );
-  return JSON.stringify(v);
+  if (object(expected)) {
+    if (!object(value)) return false;
+    const keys = Object.keys(expected);
+    return (
+      keys.length === Object.keys(value).length &&
+      keys.every(
+        (key) =>
+          Object.hasOwn(value, key) && sameItemData(expected[key], value[key]),
+      )
+    );
+  }
+  return expected === value;
 }
 /** Recompute every generated attribute; never trust saved stats or display text. */
 export function validateGeneratedItem(
@@ -54,7 +62,7 @@ export function validateGeneratedItem(
       if (
         !object(raw) ||
         raw.embedded !== undefined ||
-        ![5, 6, 7].includes(Number(raw.contentVersion))
+        ![5, 6, 7, 8].includes(Number(raw.contentVersion))
       )
         throw Error("Invalid embedded component");
       const child = validateGeneratedItem(raw);
@@ -67,7 +75,7 @@ export function validateGeneratedItem(
       return child;
     });
   }
-  if (canonical(expected) !== canonical(value))
+  if (!sameItemData(expected, value))
     throw Error("Item attributes do not match origin");
   return expected;
 }

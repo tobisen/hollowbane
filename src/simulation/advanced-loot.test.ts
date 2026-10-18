@@ -98,7 +98,7 @@ it("keeps advanced items out of archives and uses explicit character schema2", (
     body: { contentVersions: number[] };
   };
   expect(root.schema).toBe(2);
-  expect(root.body.contentVersions).toEqual([2, 3, 4, 5, 6, 7]);
+  expect(root.body.contentVersions).toEqual([2, 3, 4, 5, 6, 7, 8]);
   expect(deserializeCharacter(text).character).toEqual(character);
   expect(serializeCharacter(deserializeCharacter(text))).toBe(text);
   root.body.contentVersions = [2, 3, 4];
