@@ -1101,9 +1101,10 @@
     "phase": 15,
     "priority": "p0",
     "dependencies": ["DBL-102"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nXP tables, level-up, penalties and high-level tapering.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 15; P0. Target roadmap phase 16; source phase metadata retained.\n\n## Dependencies\nDBL-102\n\n## Acceptance criteria\n- Deliver the independently reviewable result: XP tables, level-up, penalties and high-level tapering.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-103; no known critical regression.\n",
-    "targetPhase": 16
+    "targetPhase": 16,
+    "evidence": "P1 foundation complete: pure cumulative integer XP, configurable 98-cost curve, levels1\u201399, exact/multiple threshold calculation, saturating safe additions and invalid-value rejection. Five targeted unit tests, TypeScript and targeted lint pass. No runtime/save changes. Broader level-up/penalties/tapering remain open; original dependencies retained. P1 explicitly authorized independently of unfinished parent dependencies."
   },
   {
     "id": "DBL-104",

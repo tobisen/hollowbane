@@ -331,3 +331,5 @@ DBL-357 inspection/comparison/glyphs and358 explicit socket/controller UI split 
 DBL-359 addresses the discovered zero-damage power-buff rank case after358, before345. Generic item-rank interpretation only; no skill tree or character progression.
 
 DBL-360 is a small required348 dependency: CI virtual D-pad taps must not accidentally become400ms repeats on slow RAFs. Real input/held-repeat behavior remains unchanged; prior failing CI evidence retained.
+
+DBL-103 / P1: P1 foundation complete: pure cumulative integer XP, configurable 98-cost curve, levels1–99, exact/multiple threshold calculation, saturating safe additions and invalid-value rejection. Five targeted unit tests, TypeScript and targeted lint pass. No runtime/save changes. Broader level-up/penalties/tapering remain open; original dependencies retained. P1 explicitly authorized independently of unfinished parent dependencies.

@@ -1,5 +1,12 @@
 # Status
 
+## Current session — DBL-103 / P1 (2026-10-18)
+
+- P1 character level/XP foundation completed and verified; stop after this task. No P2 authorization or runtime/save changes.
+- Five focused XP unit tests, TypeScript and targeted lint pass. Default provisional curve costs100 × L² per advancement; configurable cumulative thresholds cap at99. Persist total XP with a versioned curve in future; no migration now.
+- User reports L3 CI/deployment successful after2c8218d; final playable-demo review remains pending. No known local blocking implementation defect. Independent CI recheck unavailable (gh unauthenticated; public API DNS unavailable). Earlier L3 checkpoint below is historical and does not override this report.
+- Pre-existing documentation/backlog edits retained separately. DBL-103 remains partial; no new issue IDs or dependencies changed.
+
 - **L2 approved; L3 Advanced Itemization active.** DBL-320–332 complete. DBL-334–350 authorized sequentially through five increments/L3 review. No vendors, crafting, character progression or campaign.
 - Playable demo: https://tobisen.github.io/hollowbane/?inventory=1 · V / View/Create opens inventory. Phaser4.2.1, all prior gameplay, original36 topics/231 requirements and unchanged L1 content2 preserved; versioned L2 content3 adds equipment bases.
 - Verified application9288dd1; CI/Pages39071489421 success; hosted `index-puSphf0k.js` matches tested local build. Full check213, complete Chromium85, complete Firefox/WebKit134 and hosted inventory29 pass (4 intended non-Chromium visual skips). Evidence/screenshots: docs/inventory/l2.md.
