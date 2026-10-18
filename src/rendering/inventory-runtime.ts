@@ -21,35 +21,55 @@ export class InventoryRuntime {
   private actor: CombatActor;
   private key = "";
   private speed = 0;
+  private recovery = 0;
   private weapon: CombatActor["weapon"] = "melee";
   listeners = new Set<(reason: string) => void>();
   constructor(
     private getActor: () => CombatActor,
-    private getMana: () => { mana: number; maxMana: number } | undefined,
+    private getMana: () =>
+      { mana: number; maxMana: number; castSpeed?: number } | undefined,
     private getLoot: () => LootWorld,
     private setLoot: (world: LootWorld) => void,
   ) {
     this.actor = getActor();
-    this.base = captureEquipmentBase(this.actor);
+    this.base = captureEquipmentBase(
+      this.actor,
+      getMana()?.maxMana ?? 100,
+      getMana()?.castSpeed ?? 0,
+    );
     this.derived = deriveEquipment(this.character, this.base);
   }
   session(): InventorySession {
     return { character: this.character, loot: this.getLoot() };
   }
-  sync(speed = this.speed, weapon = this.weapon): void {
+  sync(
+    speed = this.speed,
+    weapon = this.weapon,
+    recovery = this.recovery,
+  ): void {
     this.speed = speed;
+    this.recovery = recovery;
     this.weapon = weapon;
     const actor = this.getActor();
     if (actor !== this.actor) {
       this.actor = actor;
-      this.base = captureEquipmentBase(actor);
+      this.base = captureEquipmentBase(
+        actor,
+        this.getMana()?.maxMana ?? 100,
+        this.getMana()?.castSpeed ?? 0,
+      );
       this.key = "";
     }
-    const key = `${this.character.revision}/${speed}/${weapon}`;
+    const key = `${this.character.revision}/${speed}/${weapon}/${recovery}`;
     if (key !== this.key) {
       this.derived = deriveEquipment(
         this.character,
-        { ...this.base, weapon, range: weapon === "melee" ? 1.05 : 6 },
+        {
+          ...this.base,
+          weapon,
+          range: weapon === "melee" ? 1.05 : 6,
+          recoveryBonus: this.base.recoveryBonus + recovery,
+        },
         speed,
       );
       applyEquipment(this.derived, actor, this.getMana());
@@ -59,6 +79,7 @@ export class InventoryRuntime {
       actor.weapon = this.derived.weapon;
       actor.range = this.derived.range;
       actor.attackSpeed = this.derived.attackSpeed;
+      actor.recoveryBonus = this.derived.recoveryBonus;
     }
   }
   commit(result: InventoryResult<InventorySession>, reason = "change"): string {

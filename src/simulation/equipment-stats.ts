@@ -17,6 +17,8 @@ export interface EquipmentBase {
   health: number;
   mana: number;
   attackSpeed: number;
+  castSpeed: number;
+  recoveryBonus: number;
   weapon: CombatActor["weapon"];
   range: number;
 }
@@ -26,6 +28,8 @@ export interface DerivedEquipment {
   maxHp: number;
   maxMana: number;
   attackSpeed: number;
+  castSpeed: number;
+  recoveryBonus: number;
   weapon: CombatActor["weapon"];
   range: number;
   bonuses: ItemStats;
@@ -44,6 +48,7 @@ export interface DerivedEquipment {
 export function captureEquipmentBase(
   actor: CombatActor,
   maxMana = 100,
+  castSpeed = 0,
 ): EquipmentBase {
   return {
     offense: { ...actor.offense },
@@ -54,6 +59,8 @@ export function captureEquipmentBase(
     health: actor.maxHp,
     mana: maxMana,
     attackSpeed: actor.attackSpeed,
+    castSpeed,
+    recoveryBonus: actor.recoveryBonus,
     weapon: actor.weapon,
     range: actor.range,
   };
@@ -107,6 +114,8 @@ export function deriveEquipment(
     maxHp: base.health + (bonuses.life ?? 0),
     maxMana: base.mana + (bonuses.mana ?? 0),
     attackSpeed: base.attackSpeed + manualSpeed + (bonuses.speed ?? 0),
+    castSpeed: base.castSpeed,
+    recoveryBonus: base.recoveryBonus,
     weapon: main ? (bow ? "projectile" : "melee") : base.weapon,
     range: main ? (bow ? 6 : 1.05) : base.range,
     bonuses,
@@ -162,13 +171,21 @@ export function deriveEquipment(
       skills,
     };
   }
+  derived.castSpeed = Math.max(
+    -90,
+    Math.min(300, base.castSpeed + (derived.advanced?.castSpeed ?? 0)),
+  );
+  derived.recoveryBonus = Math.max(
+    -90,
+    Math.min(300, base.recoveryBonus + (derived.advanced?.hitRecovery ?? 0)),
+  );
   return derived;
 }
 /** Never heal/refill/resurrect, reset timing, RNG, intents or unrelated encounter state. */
 export function applyEquipment(
   derived: DerivedEquipment,
   actor: CombatActor,
-  mana?: { mana: number; maxMana: number },
+  mana?: { mana: number; maxMana: number; castSpeed?: number },
 ): void {
   actor.offense = { ...derived.offense };
   actor.defense = {
@@ -178,11 +195,13 @@ export function applyEquipment(
   actor.maxHp = derived.maxHp;
   actor.hp = Math.min(actor.hp, actor.maxHp);
   actor.attackSpeed = derived.attackSpeed;
+  actor.recoveryBonus = derived.recoveryBonus;
   if (actor.controller.timeline.phase === "idle") {
     actor.weapon = derived.weapon;
     actor.range = derived.range;
   }
   if (mana) {
+    if (mana.castSpeed !== undefined) mana.castSpeed = derived.castSpeed;
     mana.maxMana = derived.maxMana;
     mana.mana = Math.min(mana.mana, mana.maxMana);
   }

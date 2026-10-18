@@ -1,3 +1,4 @@
+import { AFFIX_ITEM_CONTENT } from "../../src/simulation/item-registry";
 import {
   installVirtualController,
   pressVirtualButton,
@@ -155,3 +156,82 @@ for (const id of [
     await expect(page.locator("#inventory-dialog")).not.toBeVisible();
   });
 }
+
+test("equipped bow and attack speed survive idle scene updates and launch real projectiles", async ({
+  page,
+}) => {
+  await page.goto("./?inventory=1&advanced=1&training=1");
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await page.getByText("Developer diagnostics", { exact: true }).click();
+  await page.locator("#combat-hostile").uncheck();
+  const session = createInventorySession();
+  session.character.level = 40;
+  session.character.equipment.main = identifyItem(
+    generateLoot(
+      {
+        seed: 42,
+        sequence: ADVANCED_EXAMPLES.reedwake!,
+        areaLevel: 12,
+        monsterLevel: 12,
+        table: "sanctum",
+      },
+      ADVANCED_CONTENT,
+    )!,
+  );
+  for (let sequence = 0; sequence < 100000; sequence++) {
+    const i = generateLoot(
+      { seed: 42, sequence, areaLevel: 40, monsterLevel: 40, table: "sanctum" },
+      AFFIX_ITEM_CONTENT,
+    );
+    if (
+      i?.base === "sootwrap-gloves" &&
+      i.advanced?.modifiers.some(
+        (m) => m.kind === "stat" && m.stat === "attackSpeed" && m.value >= 10,
+      )
+    ) {
+      session.character.equipment.gloves = identifyItem(i);
+      break;
+    }
+  }
+  expect(session.character.equipment.gloves).toBeDefined();
+  await page.locator("#inventory-open").click();
+  await page
+    .locator("#inventory-import")
+    .setInputFiles({
+      name: "bow.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(serializeCharacter(session)),
+    });
+  await expect(page.locator("#inventory-stats")).toContainText("projectile");
+  await page.locator("#inventory-close").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat?.actors[0]?.weapon))
+    .toBe("projectile");
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.hollowbaneCombat?.actors[0]?.attackSpeed ?? 0),
+    )
+    .toBeGreaterThanOrEqual(20);
+  const point = await page.evaluate(() => {
+    const a = window.hollowbaneCombat!.actors[1]!,
+      v = window.hollowbaneCombat!.view,
+      r = document.querySelector("canvas")!.getBoundingClientRect();
+    return {
+      x: r.x + ((a.x - v.x) / v.width) * r.width,
+      y: r.y + ((a.y - 28 - v.y) / v.height) * r.height,
+    };
+  });
+  await page.mouse.click(point.x, point.y);
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        window.hollowbaneCombat!.events.some(
+          (e) => e.kind === "launch" && e.actor === 0,
+        ),
+      ),
+    )
+    .toBe(true);
+  expect(
+    await page.evaluate(() => window.hollowbaneCombat!.actors[0]!.windup),
+  ).toBe(10);
+});

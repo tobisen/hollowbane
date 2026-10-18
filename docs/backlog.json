@@ -3804,7 +3804,7 @@
     "targetPhase": 12,
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
-    "dependencies": ["DBL-355"],
+    "dependencies": ["DBL-356"],
     "status": "planned",
     "body": "## Acceptance criteria\nBounded combat proc leech and conditional effect execution. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
   },
@@ -3952,7 +3952,20 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-354"],
+    "status": "complete",
+    "body": "## Acceptance criteria\nFix scene manual selectors overwriting equipped weapon/speed each idle frame; bridge equipment casting/hit-recovery stats while preserving committed attacks and current resources. Discovered during343 integration inspection.\n\n## Non-goals\nProc/leech execution remains343; no new combat system.\n\n## Test requirements\nActual equipped bow launch/attack speed persistence and casting/recovery breakpoints, keyboard/controller regressions and full checks.\n\n## Definition of done\nVerified runtime prerequisite committed before343.",
+    "evidence": "Fixed scene synchronization and equipped weapon/speed persistence, applied shared casting/recovery stats without resetting commitment/resources.2 targeted/full check258; complete cross-browser inventory41 pass/4 old visual exceptions, real bow/projectile cases in all3 engines."
+  },
+  {
+    "id": "DBL-356",
+    "title": "Generic contextual item damage, skill rank and DoT interpretation",
+    "parent": "DBL-079",
+    "phase": 12,
+    "targetPhase": 12,
+    "deliveryPhase": "advanced-items-l3",
+    "priority": "p0",
+    "dependencies": ["DBL-355"],
     "status": "planned",
-    "body": "## Acceptance criteria\nFix scene manual selectors overwriting equipped weapon/speed each idle frame; bridge equipment casting/hit-recovery stats while preserving committed attacks and current resources. Discovered during343 integration inspection.\n\n## Non-goals\nProc/leech execution remains343; no new combat system.\n\n## Test requirements\nActual equipped bow launch/attack speed persistence and casting/recovery breakpoints, keyboard/controller regressions and full checks.\n\n## Definition of done\nVerified runtime prerequisite committed before343."
+    "body": "## Acceptance criteria\nInterpret shared item modifiers at actual hit resolution: conditional weapon damage/accuracy/defense, elemental skill amplification, skill rank damage and DoT potency. Explicit source/target context and no double application; preserve legacy RNG/timing.\n\n## Non-goals\nProc/leech/status interpretation remains343; no per-unique branches or new progression.\n\n## Test requirements\nActual weapon/skill/DoT effects and condition transitions, resistance and source eligibility, preserve legacy replay and full checks.\n\n## Definition of done\nVerified prerequisite committed before343."
   }
 ]

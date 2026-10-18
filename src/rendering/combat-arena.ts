@@ -75,6 +75,9 @@ export interface CombatPresentation {
     walking: boolean;
     windup: number;
     recovery: number;
+    weapon: Weapon;
+    attackSpeed: number;
+    hitRecovery: number;
   }[];
   projectiles: { x: number; y: number }[];
   events: CombatEvent[];
@@ -514,10 +517,6 @@ export function startCombatArena(monsters = false): Phaser.Game {
         pause.setAttribute("aria-pressed", String(this.paused));
       };
       hostile.onchange = () => {
-        this.inventoryRuntime?.sync(
-          Number(speed.value),
-          weapon.value as Weapon,
-        );
         this.world.hostilesActive = !monsters && hostile.checked;
         if (!hostile.checked)
           for (const a of this.world.actors.filter((a) => a.kind === "hostile"))
@@ -1027,7 +1026,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
         player.controller.walker.position,
         player.hp > 0,
       );
-      if (player.controller.timeline.phase === "idle") {
+      if (this.inventoryRuntime)
+        this.inventoryRuntime.sync(
+          Number(speed.value),
+          weapon.value as Weapon,
+          Number(recovery.value),
+        );
+      else if (player.controller.timeline.phase === "idle") {
         player.weapon = weapon.value as Weapon;
         player.range = player.weapon === "melee" ? 1.05 : 6;
         player.attackSpeed = Number(speed.value);
@@ -1480,6 +1485,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
             walking: a.controller.walker.walking,
             windup: a.controller.timeline.timing.windup,
             recovery: a.controller.timeline.timing.recovery,
+            weapon: a.weapon,
+            attackSpeed: a.attackSpeed,
+            hitRecovery: a.recoveryBonus,
           };
         }),
         projectiles: this.world.projectiles.map((p) => onGround(p.position)),
