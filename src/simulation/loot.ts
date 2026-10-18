@@ -112,7 +112,8 @@ export function generateLoot(
   ).id;
   const base = content.bases.find((b) => b.id === baseId)!;
   let quality =
-    content.version >= 5 && base.category === "gem"
+    content.version >= 5 &&
+    (base.category === "gem" || base.category === "rune")
       ? "normal"
       : (weighted(
           Object.entries(table.quality),

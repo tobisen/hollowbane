@@ -1,3 +1,4 @@
+import { RUNE_CONTENT } from "./rune-content";
 import { SOCKET_CONTENT } from "./socket-content";
 import { effectiveRequirement } from "./item-ownership";
 import { registeredItemContent as itemContentForVersion } from "./item-registry";
@@ -53,11 +54,13 @@ export function validateGeneratedItem(
       if (
         !object(raw) ||
         raw.embedded !== undefined ||
-        raw.contentVersion !== 5
+        ![5, 6].includes(Number(raw.contentVersion))
       )
         throw Error("Invalid embedded component");
       const child = validateGeneratedItem(raw);
-      const definition = SOCKET_CONTENT.gems.find((g) => g.id === child.base);
+      const definition =
+        SOCKET_CONTENT.gems.find((g) => g.id === child.base) ??
+        RUNE_CONTENT.components.find((r) => r.id === child.base);
       if (!definition || definition.level > expected.level || ids.has(child.id))
         throw Error("Incompatible or duplicate socket component");
       ids.add(child.id);

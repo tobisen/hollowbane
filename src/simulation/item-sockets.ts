@@ -1,3 +1,4 @@
+import { RUNE_CONTENT } from "./rune-content";
 import {
   ownedItem,
   validateCharacter,
@@ -54,7 +55,10 @@ export function insertSocket(
     hostId === componentId ||
     !host.identified ||
     !component.identified ||
-    !SOCKET_CONTENT.gems.some((g) => g.id === component.base) ||
+    !(
+      SOCKET_CONTENT.gems.some((g) => g.id === component.base) ||
+      RUNE_CONTENT.components.some((r) => r.id === component.base)
+    ) ||
     !(host.socketCapacity! > (host.embedded?.length ?? 0))
   )
     return {

@@ -1,3 +1,4 @@
+import { RUNE_CONTENT } from "./rune-content";
 import { SOCKET_CONTENT } from "./socket-content";
 import { itemContentForVersion, type ItemContent } from "./item-content";
 import type { GeneratedItem } from "./loot";
@@ -85,13 +86,16 @@ export function equipmentDefinition(
   item: Pick<GeneratedItem, "base" | "contentVersion">,
 ): EquipmentDefinition {
   if (
-    item.contentVersion === 5 &&
-    SOCKET_CONTENT.gems.some((g) => g.id === item.base)
+    item.contentVersion >= 5 &&
+    item.contentVersion <= 6 &&
+    (SOCKET_CONTENT.gems.some((g) => g.id === item.base) ||
+      (item.contentVersion >= 6 &&
+        RUNE_CONTENT.components.some((r) => r.id === item.base)))
   )
     return { base: item.base, width: 1, height: 1, slots: [], hands: 0 };
   const d = registries
     .get(
-      item.contentVersion >= 4 && item.contentVersion <= 5
+      item.contentVersion >= 4 && item.contentVersion <= 6
         ? 3
         : item.contentVersion,
     )

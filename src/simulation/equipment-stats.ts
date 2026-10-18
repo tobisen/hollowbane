@@ -32,6 +32,7 @@ export interface DerivedEquipment {
   advanced?: {
     modifiers: ItemModifier[];
     active: ReturnType<typeof equipmentModifiers>["active"];
+    patterns: ReturnType<typeof equipmentModifiers>["patterns"];
     castSpeed: number;
     hitRecovery: number;
     lifeLeech: number;

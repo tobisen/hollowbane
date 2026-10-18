@@ -67,7 +67,11 @@ export function inspectDropTable(
     expected.set = 0;
     for (const b of bases.filter((b) => b.eligible)) {
       const share = b.effectiveWeight / total;
-      if (content.bases.find((x) => x.id === b.id)!.category === "gem") {
+      if (
+        ["gem", "rune"].includes(
+          content.bases.find((x) => x.id === b.id)!.category,
+        )
+      ) {
         expected.normal += share;
         continue;
       }
