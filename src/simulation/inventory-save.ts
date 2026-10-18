@@ -1,5 +1,5 @@
 import { EQUIP_SLOTS, type EquipSlot } from "./equipment-content";
-import { itemContentForVersion } from "./item-content";
+import { registeredItemContent as itemContentForVersion } from "./item-registry";
 import { validateGeneratedItem } from "./item-save";
 import {
   reserveOwned,
@@ -8,7 +8,9 @@ import {
 } from "./inventory-world";
 import type { Navigation } from "../world/navigation";
 
-export const CHARACTER_SCHEMA = 1;
+export const CHARACTER_SCHEMA = 2;
+const LEGACY_VERSIONS = [2, 3];
+const ADVANCED_VERSIONS = [2, 3, 4];
 const FORMAT = "hollowbane-character";
 const MAX_BYTES = 1048576;
 function record(v: unknown): Record<string, unknown> {
@@ -41,9 +43,9 @@ export function snapshotChecksum(text: string): string {
     hash = Math.imul(hash ^ text.charCodeAt(i), 16777619);
   return (hash >>> 0).toString(16).padStart(8, "0");
 }
-function body(s: InventorySession): unknown {
+function body(s: InventorySession, versions: readonly number[]): unknown {
   return {
-    contentVersions: [2, 3],
+    contentVersions: [...versions],
     character: s.character,
     loot: {
       seed: s.loot.seed,
@@ -59,10 +61,14 @@ function body(s: InventorySession): unknown {
     },
   };
 }
-function validateBody(value: unknown, nav?: Navigation): InventorySession {
+function validateBody(
+  value: unknown,
+  nav?: Navigation,
+  versions: readonly number[] = ADVANCED_VERSIONS,
+): InventorySession {
   const b = record(value);
   keys(b, ["contentVersions", "character", "loot"]);
-  if (JSON.stringify(b.contentVersions) !== "[2,3]")
+  if (JSON.stringify(b.contentVersions) !== JSON.stringify(versions))
     throw Error("Unsupported content registry");
   const c = record(b.character),
     g = record(c.grid),
@@ -89,7 +95,9 @@ function validateBody(value: unknown, nav?: Navigation): InventorySession {
   ]);
   if (
     typeof w.table !== "string" ||
-    !itemContentForVersion(3).tables.some((t) => t.id === w.table)
+    !versions.some((v) =>
+      itemContentForVersion(v).tables.some((t) => t.id === w.table),
+    )
   )
     throw Error("Unknown loot table");
   const session: InventorySession = {
@@ -141,7 +149,7 @@ function validateBody(value: unknown, nav?: Navigation): InventorySession {
       ...session.character.grid.items.map((p) => p.item),
       ...Object.values(session.character.equipment),
       ...session.loot.drops.map((d) => d.item),
-    ].some((i) => i.contentVersion !== 2 && i.contentVersion !== 3)
+    ].some((i) => !versions.includes(i.contentVersion))
   )
     throw Error("Unsupported content registry");
   validateSession(session, nav);
@@ -151,11 +159,19 @@ export function serializeCharacter(
   s: InventorySession,
   nav?: Navigation,
 ): string {
-  const validated = validateBody(body(s), nav),
-    payload = body(validated);
+  const modern =
+    [
+      ...s.character.grid.items.map((p) => p.item),
+      ...Object.values(s.character.equipment),
+      ...s.loot.drops.map((d) => d.item),
+    ].some((i) => i.contentVersion >= 4) ||
+    !itemContentForVersion(3).tables.some((t) => t.id === s.loot.table);
+  const versions = modern ? ADVANCED_VERSIONS : LEGACY_VERSIONS;
+  const validated = validateBody(body(s, versions), nav, versions),
+    payload = body(validated, versions);
   const text = JSON.stringify({
     format: FORMAT,
-    schema: CHARACTER_SCHEMA,
+    schema: modern ? CHARACTER_SCHEMA : 1,
     checksum: snapshotChecksum(JSON.stringify(payload)),
     body: payload,
   });
@@ -186,7 +202,15 @@ export function deserializeCharacter(
   if (schema > CHARACTER_SCHEMA)
     throw Error("Unsupported newer character schema; original retained");
   while (schema < CHARACTER_SCHEMA) {
-    const migrate = migrations.get(schema);
+    const migrate =
+      migrations.get(schema) ??
+      (schema === 1
+        ? (old: unknown) => {
+            // Validate the original declared registry before widening it. Never bless forged modern data.
+            validateBody(old, nav, LEGACY_VERSIONS);
+            return { ...record(old), contentVersions: [...ADVANCED_VERSIONS] };
+          }
+        : undefined);
     if (!migrate)
       throw Error("Unsupported older character schema; original retained");
     payload = migrate(payload);

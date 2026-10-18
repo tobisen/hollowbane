@@ -317,3 +317,5 @@ L3 authorized after L2 approval: DBL-334–350 sequential dependency chain cover
 DBL-351 splits version4 registry isolation out of336, after335 and before336. It prevents circular initialization and legacy content mutation; final L3 gate remains350 after the full dependency chain.
 
 DBL-352 splits generic derived-stat integration from337, following336. Proc/leech execution remains343; advanced save compatibility must precede playable activation.
+
+DBL-353 splits content4 character-save compatibility from344 before playable337: schema2 snapshots, validated1→2 migration and unchanged legacy-only serialized output. Embedded ownership/migrations for later component versions remain344.

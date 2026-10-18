@@ -163,12 +163,33 @@
     ],
     "evidence": "docs/inventory/l2.md and performance*.json",
     "publicUrl": "https://tobisen.github.io/hollowbane/?inventory=1",
-    "remainingFollowup": "DBL-333 and physical DBL-282\u2013286; original broad parents remain partial",
+    "remainingFollowup": "DBL-333 and physical DBL-282–286; original broad parents remain partial",
     "approval": "Explicit user L2 approval2026-10-18"
   },
   "advancedItemsL3": {
     "authorized": true,
     "qualityGateApproved": false,
-    "scope": ["DBL-334", "DBL-351"]
+    "scope": [
+      "DBL-334",
+      "DBL-335",
+      "DBL-336",
+      "DBL-337",
+      "DBL-338",
+      "DBL-339",
+      "DBL-340",
+      "DBL-341",
+      "DBL-342",
+      "DBL-343",
+      "DBL-344",
+      "DBL-345",
+      "DBL-346",
+      "DBL-347",
+      "DBL-348",
+      "DBL-349",
+      "DBL-350",
+      "DBL-351",
+      "DBL-352",
+      "DBL-353"
+    ]
   }
 }

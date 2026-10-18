@@ -1,3 +1,4 @@
+import { inventoryItem } from "./inventory-test-helper";
 import { createCombat, stepCombat, ARENA_NAV } from "./combat";
 import { commandCombat } from "./combat-targeting";
 import {
@@ -18,7 +19,11 @@ import {
 import { simulateLoot } from "./loot-diagnostics";
 import { createCharacterInventory, validateCharacter } from "./equipment";
 import { equipmentModifiers } from "./equipment-modifiers";
-import { serializeCharacter } from "./inventory-save";
+import {
+  serializeCharacter,
+  deserializeCharacter,
+  snapshotChecksum,
+} from "./inventory-save";
 import { createLootWorld } from "./world-loot";
 import { equipmentDefinition } from "./equipment-content";
 const context = { seed: 42, monsterLevel: 12, areaLevel: 12, table: "sanctum" };
@@ -80,14 +85,28 @@ it("reports modern set rarity separately and respects expected conditional distr
   expect(report.invalidItems).toBe(0);
 });
 
-it("rejects modern items in legacy save envelopes until an explicit migration exists", () => {
+it("keeps advanced items out of archives and uses explicit character schema2", () => {
   const item = [...found.values()][0]!;
   expect(() => serializeItems([item])).toThrow(/versioned character/);
   const character = createCharacterInventory();
   character.grid.items.push({ item, x: 0, y: 0 });
-  expect(() =>
-    serializeCharacter({ character, loot: createLootWorld(42) }),
-  ).toThrow(/Unsupported content registry/);
+  const session = { character, loot: createLootWorld(42) };
+  const text = serializeCharacter(session);
+  const root = JSON.parse(text) as {
+    schema: number;
+    checksum: string;
+    body: { contentVersions: number[] };
+  };
+  expect(root.schema).toBe(2);
+  expect(root.body.contentVersions).toEqual([2, 3, 4]);
+  expect(deserializeCharacter(text).character).toEqual(character);
+  expect(serializeCharacter(deserializeCharacter(text))).toBe(text);
+  root.schema = 1;
+  root.body.contentVersions = [2, 3];
+  root.checksum = snapshotChecksum(JSON.stringify(root.body));
+  expect(() => deserializeCharacter(JSON.stringify(root))).toThrow(
+    /Unsupported content registry/,
+  );
 });
 
 it("applies unique modifiers to real committed weapon strikes through the shared stat pipeline", () => {
@@ -176,4 +195,37 @@ it("evaluates contextual defenses and skill modifiers with explicit bounds", () 
   const capped = deriveEquipment(c, extreme);
   expect(capped.offense.damage).toBe(10000);
   expect(capped.attackSpeed).toBe(300);
+});
+
+it("round-trips mixed legacy and advanced ownership and rejects newer schemas without mutation", () => {
+  const character = createCharacterInventory(),
+    loot = createLootWorld(4294967295);
+  character.equipment.main = inventoryItem("ash-blade", 0, 2);
+  character.grid.items.push({
+    item: identifyItem(found.get("raincoil")!),
+    x: 0,
+    y: 0,
+  });
+  loot.table = "sanctum";
+  loot.sequence = 9876;
+  loot.drops.push({
+    item: found.get("nightstitch")!,
+    position: { x: 2, y: 3 },
+    tick: 45,
+    source: -1,
+  });
+  const session = { character, loot },
+    before = structuredClone(session),
+    text = serializeCharacter(session);
+  const restored = deserializeCharacter(text);
+  expect(restored.character).toEqual(character);
+  expect(restored.loot.drops).toEqual(loot.drops);
+  expect(restored.loot.seed).toBe(4294967295);
+  expect(restored.loot.sequence).toBe(9876);
+  expect(restored.loot.reserved).toContain(character.equipment.main!.id);
+  expect(serializeCharacter(restored)).toBe(text);
+  expect(() =>
+    deserializeCharacter(text.replace('"schema":2', '"schema":99')),
+  ).toThrow(/newer/);
+  expect(session).toEqual(before);
 });

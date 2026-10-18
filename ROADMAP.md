@@ -94,3 +94,5 @@ L2 performance follow-up DBL-333 retains open-modal software-compositing/native-
 L2 approved2026-10-18. L3 Advanced Itemization is a scoped delivery across existing itemization requirements, preserving all36 original phases: L3.1 uniques/sets334–337; L3.2 sockets/gems338–339; L3.3 original runes/combinations340–341; L3.4 advanced affixes/procs342–343; L3.5 saves/UI/regression/statistics/performance/publication344–350. Stop for L3 review.
 
 L3 dependency refinement:351 isolates version4 registry before336; original IDs and five-increment scope unchanged.
+
+L3 integration dependencies352 (shared unique/set derived stats) and353 (versioned snapshots and validated legacy migration) precede playable337. These scoped splits preserve the original36-phase roadmap.
