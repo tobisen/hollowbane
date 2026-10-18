@@ -1,3 +1,9 @@
+import {
+  attributeBonuses,
+  STARTING_ATTRIBUTES,
+  type AttributeValues,
+  type AttributeCoefficients,
+} from "./attributes";
 import { createItemHitRules, type ItemHitRules } from "./item-hit-rules";
 import { registeredItemContent as itemContentForVersion } from "./item-registry";
 import { equipmentModifiers } from "./equipment-modifiers";
@@ -13,6 +19,8 @@ import type { CombatActor } from "./combat";
 import type { Offense, Defense } from "./damage";
 import type { ItemStats } from "./item-content";
 export interface EquipmentBase {
+  attributes?: AttributeValues;
+  attributeCoefficients?: AttributeCoefficients;
   offense: Offense;
   defense: Defense;
   health: number;
@@ -74,6 +82,10 @@ export function deriveEquipment(
   manualSpeed = 0,
   context?: ModifierContext,
 ): DerivedEquipment {
+  const attributes = attributeBonuses(
+    base.attributes ?? STARTING_ATTRIBUTES,
+    base.attributeCoefficients,
+  );
   const bonuses: ItemStats = {};
   for (const item of Object.values(c.equipment))
     for (const [key, value] of Object.entries(item.stats)) {
@@ -95,11 +107,12 @@ export function deriveEquipment(
     offense: {
       ...base.offense,
       damage: base.offense.damage + (bonuses.damage ?? 0),
-      accuracy: base.offense.accuracy + (bonuses.accuracy ?? 0),
+      accuracy:
+        base.offense.accuracy + attributes.accuracy + (bonuses.accuracy ?? 0),
     },
     defense: {
       ...base.defense,
-      defense: base.defense.defense + (bonuses.armor ?? 0),
+      defense: base.defense.defense + attributes.defense + (bonuses.armor ?? 0),
       armor: base.defense.armor + (bonuses.armor ?? 0),
       resistances: {
         ...base.defense.resistances,
@@ -113,8 +126,8 @@ export function deriveEquipment(
         ),
       },
     },
-    maxHp: base.health + (bonuses.life ?? 0),
-    maxMana: base.mana + (bonuses.mana ?? 0),
+    maxHp: base.health + attributes.health + (bonuses.life ?? 0),
+    maxMana: base.mana + attributes.mana + (bonuses.mana ?? 0),
     attackSpeed: base.attackSpeed + manualSpeed + (bonuses.speed ?? 0),
     castSpeed: base.castSpeed,
     recoveryBonus: base.recoveryBonus,
@@ -123,9 +136,23 @@ export function deriveEquipment(
     bonuses,
   };
   if (
+    attributes.damage > 0 ||
     Object.values(c.equipment).some((i) => i.advanced || i.embedded?.length)
   ) {
     const collected = equipmentModifiers(c);
+    if (attributes.damage > 0)
+      collected.modifiers.push({
+        id: "attributes:strength",
+        source: "attributes",
+        kind: "stat",
+        stat: "damage",
+        operation: "add",
+        value: attributes.damage,
+        group: "attributes:strength",
+        stacking: "sum",
+        priority: 0,
+        condition: { kind: "element", element: "physical" },
+      });
     const hitRules = createItemHitRules(
       derived.offense,
       derived.defense,
@@ -190,7 +217,8 @@ export function deriveEquipment(
   );
   return derived;
 }
-/** Never heal/refill/resurrect, reset timing, RNG, intents or unrelated encounter state. */
+/** Explicit resource policy: retain absolute amounts, clamp to new maxima.
+ * Increasing maxima never heals/refills/resurrects. Timing/RNG/intents are unchanged. */
 export function applyEquipment(
   derived: DerivedEquipment,
   actor: CombatActor,
@@ -205,7 +233,7 @@ export function applyEquipment(
     resistances: { ...derived.defense.resistances },
   };
   actor.maxHp = derived.maxHp;
-  actor.hp = Math.min(actor.hp, actor.maxHp);
+  actor.hp = Math.max(0, Math.min(actor.hp, actor.maxHp));
   actor.attackSpeed = derived.attackSpeed;
   actor.recoveryBonus = derived.recoveryBonus;
   if (actor.controller.timeline.phase === "idle") {
@@ -215,7 +243,7 @@ export function applyEquipment(
   if (mana) {
     if (mana.castSpeed !== undefined) mana.castSpeed = derived.castSpeed;
     mana.maxMana = derived.maxMana;
-    mana.mana = Math.min(mana.mana, mana.maxMana);
+    mana.mana = Math.max(0, Math.min(mana.mana, mana.maxMana));
   }
 }
 export function compareEquipment(

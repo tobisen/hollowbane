@@ -1,5 +1,13 @@
 # Status
 
+## Current session — DBL-103/104/105 / P3–P5 (2026-10-18)
+
+- Completed the explicitly authorized cohesive P3–P5 increment. Five attribute points per gained level, high-water reward ledger, immutable attribute allocation and shared combat/equipment derivation. No P6 authorization; stop after this commit.
+- Configurable defaults: starting Strength/Dexterity/Vitality/Energy all0 to preserve baseline; flat coefficients per point Strength→physical damage0.5, Dexterity→accuracy2/defense1, Vitality→max HP5, Energy→max mana3. Bonuses precede advanced gear multipliers; Strength is a physical-only modifier, excluding proc damage. Default coefficients/starts live in src/simulation/attributes.ts; EquipmentBase accepts overrides.
+- Resource policy remains absolute amounts clamped to new maxima, never proportional refill or resurrection. Inventory stat refresh/comparisons share the same attribute-aware base; no character UI or new browser interaction.
+- Eight new tests;29 focused progression/XP/equipment/hit-rule/runtime tests, TypeScript and relevant lint pass. No browser suite: simulation changes and runtime wiring are unit-tested; no UI/browser API changes.
+- Progression is session-only as in P2. Future saves must persist total XP/versioned curve, starting/allocated attributes, available/spent budget and rewarded-level high-water mark with validation; skill points remain separate and unimplemented. Original parent IDs/dependencies and pre-existing L3 edits preserved; final playable-demo review remains pending.
+
 ## Current session — DBL-103 / P2 (2026-10-18)
 
 - P2 monster XP rewards completed: configurable base rewards for six authored roles (champions share base), exactly once per encounter monster identity, eligible player kills only. Immediate death-event consumption survives bounded log eviction; environmental/non-player/training deaths cannot later gain credit by replay.

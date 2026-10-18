@@ -140,3 +140,42 @@ it("retains equipped weapon and speed across repeated idle synchronization and m
   expect(a.attackSpeed).toBeGreaterThan(50);
   expect(a.recoveryBonus).toBe(60);
 });
+
+it("refreshes allocated attributes and comparisons without repeated stat application", async () => {
+  const { createAttributes, allocateAttributes } =
+    await import("../simulation/attributes");
+  const { compareEquipment } = await import("../simulation/equipment-stats");
+  const actor = createCombat().actors[0]!;
+  let attributes = createAttributes(
+    { strength: 2, dexterity: 0, vitality: 0, energy: 0 },
+    2,
+  );
+  let loot = createLootWorld(42);
+  const mana = { mana: 50, maxMana: 100 };
+  const runtime = new InventoryRuntime(
+    () => actor,
+    () => mana,
+    () => loot,
+    (next) => {
+      loot = next;
+    },
+    12,
+    () => attributes,
+  );
+  expect(runtime.derived.offense.damage).toBe(29);
+  runtime.sync();
+  attributes = allocateAttributes(attributes, {
+    strength: 1,
+    dexterity: 1,
+    vitality: 2,
+    energy: 1,
+  });
+  for (let i = 0; i < 3; i++) runtime.sync();
+  expect(actor.offense.damage).toBe(29.5);
+  expect(actor.offense.accuracy).toBe(122);
+  expect(actor.maxHp).toBe(310);
+  expect(mana).toEqual({ mana: 50, maxMana: 103 });
+  expect(
+    compareEquipment(runtime.character, runtime.base, runtime.character).damage,
+  ).toBe(0);
+});

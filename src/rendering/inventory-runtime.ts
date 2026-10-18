@@ -1,3 +1,7 @@
+import {
+  attributeValues,
+  type CharacterAttributes,
+} from "../simulation/attributes";
 import { createCharacterInventory } from "../simulation/equipment";
 import {
   captureEquipmentBase,
@@ -31,6 +35,8 @@ export class InventoryRuntime {
     private getLoot: () => LootWorld,
     private setLoot: (world: LootWorld) => void,
     initialLevel = 12,
+    private getAttributes: () => CharacterAttributes | undefined = () =>
+      undefined,
   ) {
     this.character = createCharacterInventory(initialLevel);
     this.actor = getActor();
@@ -39,6 +45,8 @@ export class InventoryRuntime {
       getMana()?.maxMana ?? 100,
       getMana()?.castSpeed ?? 0,
     );
+    const attributes = getAttributes();
+    if (attributes) this.base.attributes = attributeValues(attributes);
     this.derived = deriveEquipment(this.character, this.base);
   }
   session(): InventorySession {
@@ -62,7 +70,11 @@ export class InventoryRuntime {
       );
       this.key = "";
     }
-    const key = `${this.character.revision}/${speed}/${weapon}/${recovery}`;
+    const attributes = this.getAttributes();
+    if (attributes) this.base.attributes = attributeValues(attributes);
+    else delete this.base.attributes;
+    const values = this.base.attributes;
+    const key = `${this.character.revision}/${speed}/${weapon}/${recovery}/${values ? `${values.strength}/${values.dexterity}/${values.vitality}/${values.energy}` : ""}`;
     if (key !== this.key) {
       this.derived = deriveEquipment(
         this.character,

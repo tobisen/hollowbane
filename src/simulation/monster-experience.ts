@@ -1,3 +1,8 @@
+import {
+  createAttributes,
+  rewardAttributeLevels,
+  type CharacterAttributes,
+} from "./attributes";
 import type { CombatEvent, CombatWorld } from "./combat";
 import type { MonsterRole } from "./monsters";
 import {
@@ -19,6 +24,7 @@ export const MONSTER_XP: Readonly<Record<MonsterRole, number>> = Object.freeze({
 });
 export interface MonsterExperience {
   character: CharacterExperience;
+  attributes: CharacterAttributes;
   readonly player: number;
   readonly rewards: Readonly<Record<MonsterRole, number>>;
   readonly curve: XpCurve;
@@ -36,6 +42,7 @@ export function createMonsterExperience(
       throw new RangeError("Monster XP must be a nonnegative safe integer");
   return {
     character: experienceAt(totalXp, curve),
+    attributes: createAttributes(undefined, experienceAt(totalXp, curve).level),
     player,
     rewards: Object.freeze({ ...rewards }),
     curve: Object.freeze([...curve]),
@@ -65,9 +72,12 @@ export function consumeMonsterDeathXp(
     !target.monsterRole
   )
     return;
-  xp.character = addExperience(
+  const character = addExperience(
     xp.character.totalXp,
     xp.rewards[target.monsterRole],
     xp.curve,
   );
+  const attributes = rewardAttributeLevels(xp.attributes, character.level);
+  xp.character = character;
+  xp.attributes = attributes;
 }
