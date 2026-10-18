@@ -3766,8 +3766,9 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-339"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nOriginal rune components and ordered combination content. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
+    "status": "complete",
+    "body": "## Acceptance criteria\nOriginal rune components and ordered combination content. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication.",
+    "evidence": "12 original weighted sigil components and8 ordered recipe definitions, strict levels/host capacity/quality/effect validation and ambiguity prevention.2 targeted tests/full check245. Runtime combination activation follows341."
   },
   {
     "id": "DBL-341",
