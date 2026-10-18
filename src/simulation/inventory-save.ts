@@ -1,3 +1,4 @@
+import { itemTree } from "./item-ownership";
 import { EQUIP_SLOTS, type EquipSlot } from "./equipment-content";
 import { registeredItemContent as itemContentForVersion } from "./item-registry";
 import { validateGeneratedItem } from "./item-save";
@@ -10,7 +11,7 @@ import type { Navigation } from "../world/navigation";
 
 export const CHARACTER_SCHEMA = 2;
 const LEGACY_VERSIONS = [2, 3];
-const ADVANCED_VERSIONS = [2, 3, 4];
+const ADVANCED_VERSIONS = [2, 3, 4, 5];
 const FORMAT = "hollowbane-character";
 const MAX_BYTES = 1048576;
 function record(v: unknown): Record<string, unknown> {
@@ -68,6 +69,14 @@ function validateBody(
 ): InventorySession {
   const b = record(value);
   keys(b, ["contentVersions", "character", "loot"]);
+  if (
+    versions === ADVANCED_VERSIONS &&
+    Array.isArray(b.contentVersions) &&
+    b.contentVersions.length >= 3 &&
+    b.contentVersions.length <= versions.length &&
+    b.contentVersions.every((v, i) => v === versions[i])
+  )
+    versions = b.contentVersions as number[];
   if (JSON.stringify(b.contentVersions) !== JSON.stringify(versions))
     throw Error("Unsupported content registry");
   const c = record(b.character),
@@ -145,11 +154,11 @@ function validateBody(
     },
   };
   if (
-    [
+    itemTree([
       ...session.character.grid.items.map((p) => p.item),
       ...Object.values(session.character.equipment),
       ...session.loot.drops.map((d) => d.item),
-    ].some((i) => !versions.includes(i.contentVersion))
+    ]).some((i) => !versions.includes(i.contentVersion))
   )
     throw Error("Unsupported content registry");
   validateSession(session, nav);

@@ -1,3 +1,4 @@
+import { SOCKET_CONTENT } from "./socket-content";
 import { createRng } from "./core";
 import {
   ITEM_CONTENT,
@@ -33,6 +34,8 @@ export interface GeneratedItem {
   stats: ItemStats;
   affixes: RolledAffix[];
   unique: string | null;
+  socketCapacity?: number;
+  embedded?: GeneratedItem[];
   advanced?: {
     schema: 1;
     set: { id: string; piece: string } | null;
@@ -108,11 +111,14 @@ export function generateLoot(
     random,
   ).id;
   const base = content.bases.find((b) => b.id === baseId)!;
-  let quality = weighted(
-    Object.entries(table.quality),
-    (v) => v[1],
-    random,
-  )[0] as ItemQuality;
+  let quality =
+    content.version >= 5 && base.category === "gem"
+      ? "normal"
+      : (weighted(
+          Object.entries(table.quality),
+          (v) => v[1],
+          random,
+        )[0] as ItemQuality);
   const templates = content.uniques.filter(
     (u) => u.base === base.id && u.level <= level,
   );
@@ -124,7 +130,7 @@ export function generateLoot(
   const affixes: RolledAffix[] = [];
   const chosen: Affix[] = [];
   if (quality === "unique" && !templates.length) quality = "rare";
-  if (content.version === 4 && quality === "rare") {
+  if (content.version >= 4 && quality === "rare") {
     const pieces = ADVANCED_ITEMS.sets.flatMap((set) =>
       set.pieces
         .filter((p) => p.base === base.id && p.level <= level)
@@ -146,7 +152,7 @@ export function generateLoot(
   }
   if (quality === "unique") {
     const u =
-      content.version === 4
+      content.version >= 4
         ? weighted(
             templates,
             (t) =>
@@ -157,7 +163,7 @@ export function generateLoot(
     unique = u.id;
     name = u.name;
     const template =
-      content.version === 4
+      content.version >= 4
         ? ADVANCED_ITEMS.uniques.find((t) => t.id === u.id)
         : undefined;
     if (template)
@@ -202,6 +208,13 @@ export function generateLoot(
       ...chosen.filter((a) => a.kind === "suffix").map((a) => a.name),
     ].join(" ");
   }
+  const sockets =
+    content.version >= 5 ? SOCKET_CONTENT.hosts[base.id] : undefined;
+  const capacity = sockets
+    ? random() < 0.35
+      ? 1 + Math.floor(random() * sockets.limit)
+      : 0
+    : undefined;
   return {
     schema: 1,
     contentVersion: content.version,
@@ -220,5 +233,8 @@ export function generateLoot(
     affixes,
     unique,
     ...(advanced ? { advanced } : {}),
+    ...(capacity !== undefined
+      ? { socketCapacity: capacity, embedded: [] }
+      : {}),
   };
 }

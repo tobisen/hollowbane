@@ -1,3 +1,5 @@
+import { SOCKET_CONTENT } from "./socket-content";
+import { effectiveRequirement } from "./item-ownership";
 import { registeredItemContent as itemContentForVersion } from "./item-registry";
 import { ITEM_CONTENT, type ItemContent } from "./item-content";
 import { generateLoot, type GeneratedItem, type LootContext } from "./loot";
@@ -40,6 +42,28 @@ export function validateGeneratedItem(
   if (expected.identified && !value.identified)
     throw Error("Invalid identification state");
   expected.identified = value.identified;
+  if (expected.embedded !== undefined) {
+    if (
+      !Array.isArray(value.embedded) ||
+      value.embedded.length > (expected.socketCapacity ?? 0)
+    )
+      throw Error("Invalid socket contents");
+    const ids = new Set([expected.id]);
+    expected.embedded = value.embedded.map((raw: unknown) => {
+      if (
+        !object(raw) ||
+        raw.embedded !== undefined ||
+        raw.contentVersion !== 5
+      )
+        throw Error("Invalid embedded component");
+      const child = validateGeneratedItem(raw);
+      const definition = SOCKET_CONTENT.gems.find((g) => g.id === child.base);
+      if (!definition || definition.level > expected.level || ids.has(child.id))
+        throw Error("Incompatible or duplicate socket component");
+      ids.add(child.id);
+      return child;
+    });
+  }
   if (canonical(expected) !== canonical(value))
     throw Error("Item attributes do not match origin");
   return expected;
@@ -63,7 +87,9 @@ export function inspectItem(item: GeneratedItem): {
     name: item.identified ? item.name : `Unidentified ${base.name}`,
     quality: item.quality,
     level: item.level,
-    requirement: item.identified ? item.requirement : base.requirement,
+    requirement: item.identified
+      ? effectiveRequirement(item)
+      : base.requirement,
     stats: item.identified ? { ...item.stats } : null,
     identified: item.identified,
   };

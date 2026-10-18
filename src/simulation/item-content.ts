@@ -14,6 +14,7 @@ export const CATEGORIES = [
   "gloves",
   "belt",
   "amulet",
+  "gem",
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 export const STATS = [
@@ -100,7 +101,7 @@ export function validateItemContent(
     throw new Error("Invalid or unsupported item content");
   };
   if (
-    ![2, 3, 4].includes(expectedVersion) ||
+    ![2, 3, 4, 5].includes(expectedVersion) ||
     !record(value) ||
     value.version !== expectedVersion
   )

@@ -1,3 +1,4 @@
+import { SOCKET_CONTENT, validateSocketCatalog } from "./socket-content";
 import {
   EQUIPMENT_CONTENT,
   validateItemContent,
@@ -36,7 +37,41 @@ function advancedContent(): ItemContent {
   return validateItemContent(c, 4);
 }
 export const ADVANCED_CONTENT = advancedContent();
+function socketContent(): ItemContent {
+  const c = structuredClone(ADVANCED_CONTENT);
+  c.version = 5;
+  validateSocketCatalog(SOCKET_CONTENT);
+  for (const base of Object.keys(SOCKET_CONTENT.hosts))
+    if (!c.bases.some((b) => b.id === base))
+      throw Error("Unknown socket host base");
+  c.bases.push(
+    ...SOCKET_CONTENT.gems.map((g) => ({
+      id: g.id,
+      name: g.name,
+      category: "gem" as const,
+      level: g.level,
+      requirement: g.level,
+      weight: g.weight,
+      stats: { mana: 0 },
+    })),
+  );
+  const gems = SOCKET_CONTENT.gems.map((g) => ({ id: g.id, weight: 1 }));
+  c.tables.find((t) => t.id === "sanctum")!.bases.push(...gems);
+  c.tables.push({
+    id: "gem-cache",
+    chance: 10000,
+    levelModifier: 0,
+    quality: { normal: 1, magic: 0, rare: 0, unique: 0 },
+    bases: gems,
+  });
+  return validateItemContent(c, 5);
+}
+export const SOCKET_ITEM_CONTENT = socketContent();
 /** Product callers migrate to this registry when version4 item execution is wired. */
 export function registeredItemContent(version: number): ItemContent {
-  return version === 4 ? ADVANCED_CONTENT : legacyContent(version);
+  return version === 5
+    ? SOCKET_ITEM_CONTENT
+    : version === 4
+      ? ADVANCED_CONTENT
+      : legacyContent(version);
 }

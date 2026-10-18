@@ -1,3 +1,4 @@
+import { itemTree, effectiveRequirement } from "./item-ownership";
 import {
   equipmentDefinition,
   EQUIP_SLOTS,
@@ -45,7 +46,7 @@ export function compatible(
 ): boolean {
   return (
     item.identified &&
-    item.requirement <= level &&
+    effectiveRequirement(item) <= level &&
     equipmentDefinition(item).slots.includes(slot)
   );
 }
@@ -60,7 +61,7 @@ export function validateCharacter(c: CharacterInventory): void {
     throw Error("Invalid character");
   validateGrid(c.grid);
   const items = ownedItems(c);
-  if (new Set(items.map((i) => i.id)).size !== items.length)
+  if (new Set(itemTree(items).map((i) => i.id)).size !== itemTree(items).length)
     throw Error("Duplicate owned identity");
   items.forEach((i) => validateGeneratedItem(i));
   for (const [slot, item] of Object.entries(c.equipment))

@@ -1,3 +1,4 @@
+import { SOCKET_CONTENT, gemModifiers } from "./socket-content";
 import { activeSetBonuses } from "./advanced-item-content";
 import type { CharacterInventory } from "./equipment";
 import { validateModifiers, type ItemModifier } from "./item-modifiers";
@@ -19,6 +20,14 @@ export function equipmentModifiers(character: CharacterInventory): {
   const modifiers = equipped
     .flatMap((i) => i.advanced?.modifiers ?? [])
     .concat(sets.modifiers);
+  for (const item of equipped) {
+    const host = SOCKET_CONTENT.hosts[item.base];
+    if (host)
+      for (const component of item.embedded ?? [])
+        modifiers.push(
+          ...gemModifiers(component.base, host.kind, component.id),
+        );
+  }
   validateModifiers(modifiers);
   return { active: sets.active, modifiers: structuredClone(modifiers) };
 }

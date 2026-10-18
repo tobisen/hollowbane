@@ -62,6 +62,33 @@ export function inspectDropTable(
       );
     expected.rare -= expected.set;
   }
+  if (content.version >= 5) {
+    for (const q of QUALITIES) expected[q] = 0;
+    expected.set = 0;
+    for (const b of bases.filter((b) => b.eligible)) {
+      const share = b.effectiveWeight / total;
+      if (content.bases.find((x) => x.id === b.id)!.category === "gem") {
+        expected.normal += share;
+        continue;
+      }
+      expected.normal += (share * table.quality.normal) / sum;
+      expected.magic += (share * table.quality.magic) / sum;
+      expected.unique +=
+        (share * (b.uniqueEligible ? table.quality.unique : 0)) / sum;
+      const rare =
+        (share *
+          (table.quality.rare +
+            (b.uniqueEligible ? 0 : table.quality.unique))) /
+        sum;
+      const set = ADVANCED_ITEMS.sets.some((s) =>
+        s.pieces.some((p) => p.base === b.id && p.level <= level),
+      )
+        ? (rare * ADVANCED_GENERATION.setFromRareBasisPoints) / 10000
+        : 0;
+      expected.rare += rare - set;
+      expected.set += set;
+    }
+  }
   return {
     contentVersion: content.version,
     table: table.id,

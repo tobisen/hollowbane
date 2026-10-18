@@ -1,3 +1,4 @@
+import { itemTree } from "./item-ownership";
 import {
   createCharacterInventory,
   ownedItems,
@@ -30,12 +31,18 @@ export function createInventorySession(seed = 42): InventorySession {
 export function reserveOwned(s: InventorySession): InventorySession {
   return {
     character: s.character,
-    loot: { ...s.loot, reserved: ownedItems(s.character).map((i) => i.id) },
+    loot: {
+      ...s.loot,
+      reserved: itemTree(ownedItems(s.character)).map((i) => i.id),
+    },
   };
 }
 export function validateSession(s: InventorySession, nav?: Navigation): void {
   validateCharacter(s.character);
-  const all = [...ownedItems(s.character), ...s.loot.drops.map((d) => d.item)];
+  const all = itemTree([
+    ...ownedItems(s.character),
+    ...s.loot.drops.map((d) => d.item),
+  ]);
   if (
     s.loot.drops.length > s.loot.capacity ||
     s.loot.capacity < 1 ||

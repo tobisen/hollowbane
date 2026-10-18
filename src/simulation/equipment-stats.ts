@@ -110,7 +110,9 @@ export function deriveEquipment(
     range: main ? (bow ? 6 : 1.05) : base.range,
     bonuses,
   };
-  if (Object.values(c.equipment).some((i) => i.advanced)) {
+  if (
+    Object.values(c.equipment).some((i) => i.advanced || i.embedded?.length)
+  ) {
     const collected = equipmentModifiers(c);
     const ctx: ModifierContext = context ?? {
       healthFraction: 1,
