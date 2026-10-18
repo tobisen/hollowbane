@@ -11,7 +11,7 @@ import {
 } from "./inventory-world";
 import type { Navigation } from "../world/navigation";
 
-export const CHARACTER_SCHEMA = 3;
+export const CHARACTER_SCHEMA = 4;
 const LEGACY_VERSIONS = [2, 3];
 const ADVANCED_VERSIONS = [2, 3, 4, 5, 6, 7, 8];
 const FORMAT = "hollowbane-character";
@@ -239,10 +239,26 @@ export function deserializeCharacter(
               const validated = validateBody(old, nav);
               return {
                 ...record(old),
-                progression: progressionAtLevel(validated.character.level),
+                progression: (() => {
+                  const { skills: _skills, ...legacy } = progressionAtLevel(
+                    validated.character.level,
+                  );
+                  void _skills;
+                  return legacy;
+                })(),
               };
             }
-          : undefined);
+          : schema === 3
+            ? (old: unknown) => {
+                const b = record(old);
+                const p = record(b.progression);
+                // Strict old validation before introducing the new point ledger.
+                const progression = validateProgression(p, true);
+                const migrated = { ...b, progression };
+                validateBody(migrated, nav, ADVANCED_VERSIONS, true);
+                return migrated;
+              }
+            : undefined);
     if (!migrate)
       throw Error("Unsupported older character schema; original retained");
     payload = migrate(payload);

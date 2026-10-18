@@ -79,3 +79,74 @@ it("rejects malformed progression, inconsistent XP/points and unsupported curves
     /mismatch/,
   );
 });
+
+it("round-trips class skill points/ranks and migrates schema3 without changing prior progression/items", async () => {
+  const { createSkillProgression, allocateSkillRanks, rewardSkillLevels } =
+    await import("./skill-progression");
+  const s = createInventorySession(29);
+  s.progression = progressionAtLevel(s.character.level);
+  s.character.equipment.main = inventoryItem("ash-blade");
+  s.progression = {
+    ...s.progression,
+    attributes: allocateAttributes(s.progression.attributes, { strength: 5 }),
+    skills: allocateSkillRanks(
+      createSkillProgression("warrior", s.character.level),
+      s.character.level,
+      { "warrior-arms-foundation": 3 },
+    ),
+  };
+  const text = serializeCharacter(s);
+  const restored = deserializeCharacter(text);
+  expect(restored.progression).toEqual(s.progression);
+  expect(restored.character).toEqual(s.character);
+  expect(
+    rewardSkillLevels(restored.progression!.skills, s.character.level),
+  ).toBe(restored.progression!.skills);
+  const legacy = JSON.parse(text);
+  legacy.schema = 3;
+  delete legacy.body.progression.skills;
+  legacy.checksum = snapshotChecksum(JSON.stringify(legacy.body));
+  const migrated = deserializeCharacter(JSON.stringify(legacy));
+  expect(migrated.character).toEqual(s.character);
+  expect(migrated.loot).toEqual(restored.loot);
+  expect(migrated.progression!.attributes).toEqual(s.progression.attributes);
+  expect(migrated.progression!.character).toEqual(s.progression.character);
+  expect(migrated.progression!.skills).toEqual(
+    createSkillProgression(null, s.character.level),
+  );
+});
+it("rejects forged skill budgets, class/version/level/ranks and preserves recovery snapshots", async () => {
+  const { createSkillProgression, allocateSkillRanks } =
+    await import("./skill-progression");
+  const s = createInventorySession();
+  const p = progressionAtLevel(s.character.level);
+  s.progression = {
+    ...p,
+    skills: allocateSkillRanks(
+      createSkillProgression("warrior", s.character.level),
+      s.character.level,
+      { "warrior-arms-foundation": 3 },
+    ),
+  };
+  const text = serializeCharacter(s);
+  for (const patch of [
+    { available: 99 },
+    { spent: 0 },
+    { version: 2 },
+    { treeVersion: 2 },
+    { classId: "unknown" },
+    { rewardedLevel: 1 },
+    { ranks: { "warrior-arms-foundation": 6 } },
+    { ranks: { "sorcerer-ember-foundation": 3 } },
+    { ranks: { "warrior-arms-foundation": 1.5 } },
+  ]) {
+    const root = JSON.parse(text);
+    Object.assign(root.body.progression.skills, patch);
+    root.checksum = snapshotChecksum(JSON.stringify(root.body));
+    expect(() => deserializeCharacter(JSON.stringify(root))).toThrow();
+    expect(inspectSnapshots(JSON.stringify(root), text).kind).toBe(
+      "recoverable",
+    );
+  }
+  expect(serializeCharacter(s)).toBe(text);
+});

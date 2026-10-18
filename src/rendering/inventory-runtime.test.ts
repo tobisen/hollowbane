@@ -261,3 +261,51 @@ it("restores progression and inventory together, retains XP across encounter res
   expect(notifications).toEqual(["progression"]);
   expect(runtime.session().progression?.character.totalXp).toBe(105);
 });
+it("persists allocation through the authoritative runtime and rejects stale/invalid skill transactions", async () => {
+  const { createSkillProgression } =
+    await import("../simulation/skill-progression");
+  const { progressionAtLevel } = await import("../simulation/progression-save");
+  const { serializeCharacter, deserializeCharacter } =
+    await import("../simulation/inventory-save");
+  let world = createCombat();
+  const skills = createSkills(world);
+  let loot = createLootWorld(42);
+  const runtime = new InventoryRuntime(
+    () => world.actors[0]!,
+    () => skills.users[0],
+    () => loot,
+    (value) => {
+      loot = value;
+    },
+    1,
+    () => world.experience.attributes,
+    () => world.experience,
+  );
+  const progression = {
+    ...progressionAtLevel(12),
+    skills: createSkillProgression("warrior", 12),
+  };
+  runtime.restore({
+    character: createCharacterInventory(12),
+    loot,
+    progression,
+  });
+  const initial = world.experience.skills;
+  expect(
+    runtime.allocateSkills({ "warrior-arms-foundation": 3 }, initial),
+  ).toBe("Allocated skill points.");
+  const committed = world.experience.skills;
+  expect(
+    runtime.allocateSkills({ "warrior-arms-foundation": 1 }, initial),
+  ).toMatch(/changed/);
+  expect(
+    runtime.allocateSkills({ "warrior-arms-foundation": 4 }, committed),
+  ).toMatch(/rank/);
+  expect(world.experience.skills).toBe(committed);
+  const saved = deserializeCharacter(serializeCharacter(runtime.session()));
+  world = createCombat();
+  runtime.sync();
+  expect(world.experience.skills).toBe(committed);
+  runtime.restore(saved);
+  expect(world.experience.skills).toEqual(committed);
+});

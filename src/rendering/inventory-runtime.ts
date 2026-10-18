@@ -1,3 +1,7 @@
+import {
+  allocateSkillRanks,
+  type SkillProgression,
+} from "../simulation/skill-progression";
 import { DEFAULT_XP_CURVE } from "../simulation/experience";
 import {
   progressionAtLevel,
@@ -64,6 +68,7 @@ export class InventoryRuntime {
         const initial = progressionAtLevel(progressionFloor);
         xp.character = initial.character;
         xp.attributes = initial.attributes;
+        xp.skills = initial.skills;
       }
       this.character.level = xp.character.level;
       this.lastXp = xp.character.totalXp;
@@ -113,6 +118,25 @@ export class InventoryRuntime {
         : "Allocation rejected; state unchanged.";
     }
   }
+  /** Domain API only; selection and input routing remain separate. */
+  allocateSkills(
+    request: Readonly<Record<string, number>>,
+    expected: SkillProgression,
+  ): string {
+    const xp = this.progression();
+    if (!xp || xp.skills !== expected)
+      return "Character changed; review skills and retry.";
+    try {
+      const skills = allocateSkillRanks(expected, xp.character.level, request);
+      xp.skills = skills;
+      for (const listener of this.listeners) listener("skills");
+      return "Allocated skill points.";
+    } catch (error) {
+      return error instanceof Error
+        ? error.message
+        : "Skill allocation rejected.";
+    }
+  }
   requirements(): EquipmentRequirementContext {
     const state = this.getAttributes();
     return {
@@ -133,6 +157,7 @@ export class InventoryRuntime {
               curve: "xp-v1",
               character: xp.character,
               attributes: xp.attributes,
+              skills: xp.skills,
             }),
           }
         : {}),
@@ -154,6 +179,7 @@ export class InventoryRuntime {
       if (this.boundProgression) {
         xp.character = this.boundProgression.character;
         xp.attributes = this.boundProgression.attributes;
+        xp.skills = this.boundProgression.skills;
       }
       this.boundProgression = xp;
     }
@@ -226,6 +252,7 @@ export class InventoryRuntime {
     if (xp) {
       xp.character = snapshot.character;
       xp.attributes = snapshot.attributes;
+      xp.skills = snapshot.skills;
     }
     this.boundProgression = xp;
     this.lastXp = snapshot.character.totalXp;

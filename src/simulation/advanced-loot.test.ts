@@ -85,7 +85,7 @@ it("reports modern set rarity separately and respects expected conditional distr
   expect(report.invalidItems).toBe(0);
 });
 
-it("keeps advanced items out of archives and uses explicit character schema3", () => {
+it("keeps advanced items out of archives and uses explicit character schema4", () => {
   const item = [...found.values()][0]!;
   expect(() => serializeItems([item])).toThrow(/versioned character/);
   const character = createCharacterInventory();
@@ -97,7 +97,7 @@ it("keeps advanced items out of archives and uses explicit character schema3", (
     checksum: string;
     body: { contentVersions: number[]; progression?: unknown };
   };
-  expect(root.schema).toBe(3);
+  expect(root.schema).toBe(4);
   expect(root.body.contentVersions).toEqual([2, 3, 4, 5, 6, 7, 8]);
   expect(deserializeCharacter(text).character).toEqual(character);
   expect(serializeCharacter(deserializeCharacter(text))).toBe(text);

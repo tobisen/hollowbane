@@ -1,4 +1,9 @@
 import {
+  createSkillProgression,
+  validateSkillProgression,
+  type SkillProgression,
+} from "./skill-progression";
+import {
   ATTRIBUTE_NAMES,
   attributeValues,
   createAttributes,
@@ -13,6 +18,7 @@ export interface ProgressionSnapshot {
   readonly curve: "xp-v1";
   readonly character: CharacterExperience;
   readonly attributes: CharacterAttributes;
+  readonly skills: SkillProgression;
 }
 function object(
   value: unknown,
@@ -32,11 +38,20 @@ export function progressionAtLevel(level: number): ProgressionSnapshot {
     curve: "xp-v1",
     character: experienceAt(DEFAULT_XP_CURVE[level - 1]!),
     attributes: createAttributes(undefined, level),
+    skills: createSkillProgression(null, level),
   };
 }
 /** Strictly validate redundant totals and reward high-water mark before accepting data. */
-export function validateProgression(value: unknown): ProgressionSnapshot {
-  const p = object(value, ["curve", "character", "attributes"]);
+export function validateProgression(
+  value: unknown,
+  legacy = false,
+): ProgressionSnapshot {
+  const p = object(
+    value,
+    legacy
+      ? ["curve", "character", "attributes"]
+      : ["curve", "character", "attributes", "skills"],
+  );
   if (p.curve !== "xp-v1")
     throw Error("Unsupported XP curve; original retained");
   const c = object(p.character, ["level", "totalXp", "nextLevelXp"]);
@@ -72,6 +87,9 @@ export function validateProgression(value: unknown): ProgressionSnapshot {
     throw Error("Attribute rewards and XP mismatch");
   return Object.freeze({
     curve: "xp-v1",
+    skills: legacy
+      ? createSkillProgression(null, character.level)
+      : validateSkillProgression(p.skills, character.level),
     character: Object.freeze(character),
     attributes: Object.freeze({
       ...attributes,

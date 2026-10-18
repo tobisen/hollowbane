@@ -1,5 +1,12 @@
 # Status
 
+## C4–C6 skill progression/combat complete (2026-10-18)
+
+- Authorized C4–C6 delivered under scoped DBL-103/111/110/210; original broader parents/dependencies remain partial. One skill point per gained level, separate immutable budget/high-water ledger; atomic validated rank increments and stale-state rejection. No respec/UI.
+- Existing cast intents enforce class unlocks and configurable ranked damage/poison/power; timing/cooldowns/input rules unchanged. Committed casts/projectiles snapshot rank effects. Unclassed compatibility retains all six existing skills and passive.
+- Schema4 strictly persists ranks/budgets/class/tree versions; explicit1/2/3 migration preserves prior progression/items and awards unspent level−1 skills without assigning a class. Runtime save/restore/encounter resets retain the ledger.
+- 56 focused tests, TypeScript, focused lint/format pass. No E2E/full regression/loot simulations. See docs/character-classes.md. STOP after C6; await new scope, no skill-tree UI. Preserve pre-existing local L3/backlog edits and hardware/art/performance follow-ups.
+
 ## C1–C3 class/skill-tree foundations complete (2026-10-18)
 
 - User approves P1–P11 (1ce9e92); C1–C3 bounded scope delivered under DBL-113/111/115. Broader original parents/dependencies remain partial and unchanged.

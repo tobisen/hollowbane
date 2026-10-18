@@ -23,3 +23,13 @@ Class content and tree content each start at version1. Future save work must exp
 Verification: eight focused tests across class foundations, tree validation and existing skill registry; TypeScript, focused ESLint and formatting pass. No browser behavior changed; no E2E, full regression or loot simulations run.
 
 STOP after C3. Next requires user scope/authorization (for example skill point rules); class selection, allocation UI, tree rendering, effects, artwork, vendors and campaign remain unimplemented.
+
+## C4–C6 (2026-10-18)
+
+C4 rewards one skill point per gained level (98 total at99), with an immutable high-water ledger separate from attributes. C5 validates atomic rank increments, class/level/prerequisites/caps and total spending; no refunds/respec. `InventoryRuntime.allocateSkills` checks the expected authoritative state, persists through the existing session API and rejects stale requests. Scoped original IDs: DBL-103 rewards, DBL-111 allocation, DBL-110 combat and DBL-210 persistence; broader parents/dependencies remain partial.
+
+C6 gates existing semantic cast intents against class ranks without selecting or allocating skills. Rank1 preserves authored effects; configurable defaults add10% base damage and poison/power magnitude per extra rank, leaving slow, timing, cooldowns, mana, geometry and durations unchanged. Casts/projectiles snapshot their ranked definition; existing item modifiers, hit rules and baseline mana passive remain intact. Class-bound characters start with locked skills; class assignment remains an explicit domain-state initialization (`createSkillProgression(classId, level)`), without a selector/UI. Existing unclassed characters retain six-skill compatibility; allocating to them requires future explicit class assignment. Planned nodes remain unavailable.
+
+Character schema4 adds strict version1 skill progression/tree metadata, class identity, ranks and budget. Explicit1/2/3 migrations preserve items, loot stream, XP and attributes; old saves gain level−1 unspent skill points and remain unclassed. Invalid budgets, ranks, requirements, class or versions reject the load without replacing the original/backup. Encounter reset, save/restore and attribute allocation retain the skill ledger. Prior C1–C3 descriptions of unimplemented spending/persistence are historical.
+
+Verification:56 focused tests across rewards/allocation, real cast effects, timing, snapshots, saves/migrations, runtime and existing monster/input/item-save contracts; TypeScript, focused lint and formatting pass. No browser UI/input behavior changed, E2E/full regression/loot simulations not run. STOP after C6; await authorization before further class work or skill-tree UI.

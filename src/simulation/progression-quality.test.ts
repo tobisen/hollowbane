@@ -80,6 +80,7 @@ it("earns level/points from an actual timed monster kill then equips, derives an
       curve: "xp-v1" as const,
       character: world.experience.character,
       attributes,
+      skills: world.experience.skills,
     },
   };
   const restored = deserializeCharacter(serializeCharacter(session));

@@ -1,4 +1,9 @@
 import {
+  createSkillProgression,
+  rewardSkillLevels,
+  type SkillProgression,
+} from "./skill-progression";
+import {
   createAttributes,
   rewardAttributeLevels,
   type CharacterAttributes,
@@ -25,6 +30,7 @@ export const MONSTER_XP: Readonly<Record<MonsterRole, number>> = Object.freeze({
 export interface MonsterExperience {
   character: CharacterExperience;
   attributes: CharacterAttributes;
+  skills: SkillProgression;
   readonly player: number;
   readonly rewards: Readonly<Record<MonsterRole, number>>;
   readonly curve: XpCurve;
@@ -43,6 +49,7 @@ export function createMonsterExperience(
   return {
     character: experienceAt(totalXp, curve),
     attributes: createAttributes(undefined, experienceAt(totalXp, curve).level),
+    skills: createSkillProgression(null, experienceAt(totalXp, curve).level),
     player,
     rewards: Object.freeze({ ...rewards }),
     curve: Object.freeze([...curve]),
@@ -78,6 +85,8 @@ export function consumeMonsterDeathXp(
     xp.curve,
   );
   const attributes = rewardAttributeLevels(xp.attributes, character.level);
+  const skills = rewardSkillLevels(xp.skills, character.level);
+  xp.skills = skills;
   xp.character = character;
   xp.attributes = attributes;
 }

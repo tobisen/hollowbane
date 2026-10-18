@@ -1,3 +1,9 @@
+import {
+  unlockedSkillRank,
+  scaleRankedSkill,
+  DEFAULT_SKILL_RANK_SCALING,
+  type SkillRankScaling,
+} from "./skill-progression";
 import { prepareItemEffects, resolveItemEffects } from "./item-effects";
 import {
   createEffects,
@@ -39,6 +45,7 @@ export interface SkillIntent {
   direction: Point;
 }
 export interface Cast {
+  definition?: ActiveSkill;
   skill: string;
   target: number | null;
   direction: Point;
@@ -64,6 +71,7 @@ export type SkillEvent = {
   direction: Point;
 };
 export interface SkillRuntime {
+  rankScaling?: SkillRankScaling;
   effects: Effects;
   combat: CombatWorld;
   definitions: readonly SkillDefinition[];
@@ -77,6 +85,7 @@ export function createSkills(
 ): SkillRuntime {
   return {
     combat,
+    rankScaling: DEFAULT_SKILL_RANK_SCALING,
     effects: createEffects(),
     definitions,
     users: combat.actors.map((a) => ({
@@ -140,6 +149,20 @@ export function activeSkill(
 ): ActiveSkill | undefined {
   const s = r.definitions.find((s) => s.id === id);
   return s?.kind === "active" ? s : undefined;
+}
+/** Selection/input intents never spend points or unlock abilities. */
+export function actorSkill(
+  r: SkillRuntime,
+  actor: number,
+  id: string,
+): ActiveSkill | undefined {
+  const definition = activeSkill(r, id);
+  if (!definition) return undefined;
+  if (actor !== r.combat.experience.player) return definition;
+  const rank = unlockedSkillRank(r.combat.experience.skills, id);
+  return rank > 0
+    ? scaleRankedSkill(definition, rank, r.rankScaling)
+    : undefined;
 }
 function validateTarget(
   r: SkillRuntime,
@@ -219,7 +242,7 @@ export function skillHooks(
       for (const intent of r.pending) {
         const a = r.combat.actors.find((a) => a.id === intent.actor),
           u = r.users.find((u) => u.actor === intent.actor),
-          s = activeSkill(r, intent.skill);
+          s = actorSkill(r, intent.actor, intent.skill);
         const reason =
           !a || a.hp <= 0 || !u || !s
             ? "unavailable"
@@ -257,6 +280,7 @@ export function skillHooks(
             worldToScreen(intent.direction),
           );
         u.cast = {
+          definition: { ...s, status: s.status ? { ...s.status } : null },
           skill: s.id,
           target: intent.target,
           direction: { ...intent.direction },
@@ -273,7 +297,7 @@ export function skillHooks(
       if (!c) return false;
       if (!c.resolved) {
         c.resolved = true;
-        const s = activeSkill(r, c.skill)!;
+        const s = c.definition ?? activeSkill(r, c.skill)!;
         const reason = validateTarget(r, a, { actor: a.id, ...c }, s, nav);
         if (!reason) releaseSkill(r, s, a, c, nav);
         event(

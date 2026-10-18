@@ -19,6 +19,7 @@ export interface Status extends SkillStatus {
   triggered?: boolean;
 }
 export interface SkillBolt extends Projectile {
+  definition?: ActiveSkill;
   skill: string;
   damage: number;
   element: ActiveSkill["element"];
@@ -237,6 +238,7 @@ export function releaseSkill(
     bolt.remaining = Math.ceil((s.range / 12) * 60);
     r.effects.bolts.push({
       ...bolt,
+      definition: s,
       skill: s.id,
       damage: s.damage,
       element: s.element,
@@ -306,7 +308,7 @@ export function stepStatuses(r: SkillRuntime, nav: Navigation): void {
 export function stepSkillBolts(r: SkillRuntime, nav: Navigation): void {
   r.effects.bolts = r.effects.bolts.filter((p) => {
     const source = r.combat.actors.find((a) => a.id === p.source),
-      s = r.definitions.find((s) => s.id === p.skill);
+      s = p.definition ?? r.definitions.find((s) => s.id === p.skill);
     if (
       !source ||
       source.hp <= 0 ||

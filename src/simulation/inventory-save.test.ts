@@ -90,7 +90,7 @@ it("rejects corrupt, forged, duplicated, conflicting and unsupported snapshots a
     alter(text, (b) => {
       (b.loot as typeof s.loot).drops[0]!.position = { x: -999999, y: -999999 };
     }),
-    text.replace('"schema":3', '"schema":4'),
+    text.replace('"schema":4', '"schema":5'),
     JSON.stringify({ schema: 1, contentVersion: 2, items: [] }),
   ])
     expect(() => deserializeCharacter(invalid, ARENA_NAV)).toThrow();
