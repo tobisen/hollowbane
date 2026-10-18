@@ -1,4 +1,11 @@
-import { itemContentForVersion } from "./item-content";
+import { registeredItemContent as itemContentForVersion } from "./item-registry";
+import { equipmentModifiers } from "./equipment-modifiers";
+import {
+  aggregateModifier,
+  type ModifierContext,
+  type ModifierStat,
+  type ItemModifier,
+} from "./item-modifiers";
 import { DAMAGE_FORMULA } from "./damage";
 import { type CharacterInventory } from "./equipment";
 import type { CombatActor } from "./combat";
@@ -22,6 +29,16 @@ export interface DerivedEquipment {
   weapon: CombatActor["weapon"];
   range: number;
   bonuses: ItemStats;
+  advanced?: {
+    modifiers: ItemModifier[];
+    active: ReturnType<typeof equipmentModifiers>["active"];
+    castSpeed: number;
+    hitRecovery: number;
+    lifeLeech: number;
+    manaLeech: number;
+    dotBonus: number;
+    skills: Record<string, number>;
+  };
 }
 export function captureEquipmentBase(
   actor: CombatActor,
@@ -45,6 +62,7 @@ export function deriveEquipment(
   c: CharacterInventory,
   base: EquipmentBase,
   manualSpeed = 0,
+  context?: ModifierContext,
 ): DerivedEquipment {
   const bonuses: ItemStats = {};
   for (const item of Object.values(c.equipment))
@@ -63,7 +81,7 @@ export function deriveEquipment(
       DAMAGE_FORMULA.minimumResistance,
       Math.min(DAMAGE_FORMULA.maximumResistance, v),
     );
-  return {
+  const derived: DerivedEquipment = {
     offense: {
       ...base.offense,
       damage: base.offense.damage + (bonuses.damage ?? 0),
@@ -92,6 +110,53 @@ export function deriveEquipment(
     range: main ? (bow ? 6 : 1.05) : base.range,
     bonuses,
   };
+  if (Object.values(c.equipment).some((i) => i.advanced)) {
+    const collected = equipmentModifiers(c);
+    const ctx: ModifierContext = context ?? {
+      healthFraction: 1,
+      targetStatuses: [],
+      element: "physical",
+      weapon: derived.weapon,
+    };
+    const stat = (key: ModifierStat, value: number, min = 0, max = 10000) =>
+      aggregateModifier(key, value, collected.modifiers, ctx, { min, max });
+    derived.offense.damage = stat("damage", derived.offense.damage);
+    derived.offense.accuracy = stat("accuracy", derived.offense.accuracy);
+    derived.defense.armor = stat("armor", derived.defense.armor);
+    derived.defense.defense = stat("armor", derived.defense.defense);
+    derived.maxHp = stat("life", derived.maxHp, 1);
+    derived.maxMana = stat("mana", derived.maxMana);
+    derived.attackSpeed = stat("attackSpeed", derived.attackSpeed, -90, 300);
+    for (const element of [
+      "physical",
+      "fire",
+      "cold",
+      "lightning",
+      "poison",
+    ] as const)
+      derived.defense.resistances![element] = cap(
+        stat(
+          `${element}Resistance`,
+          (derived.defense.resistances?.[element] ?? 0) * 100,
+          -100,
+          75,
+        ) / 100,
+      );
+    const skills: Record<string, number> = {};
+    for (const m of collected.modifiers)
+      if (m.kind === "stat" && m.stat.startsWith("skill."))
+        skills[m.stat.slice(6)] = stat(m.stat, 0, 0, 20);
+    derived.advanced = {
+      ...collected,
+      castSpeed: stat("castSpeed", 0, -90, 300),
+      hitRecovery: stat("hitRecovery", 0, -90, 300),
+      lifeLeech: stat("lifeLeech", 0, 0, 30),
+      manaLeech: stat("manaLeech", 0, 0, 30),
+      dotBonus: stat("dotBonus", 0, -90, 300),
+      skills,
+    };
+  }
+  return derived;
 }
 /** Never heal/refill/resurrect, reset timing, RNG, intents or unrelated encounter state. */
 export function applyEquipment(
@@ -123,7 +188,7 @@ export function compareEquipment(
 ): Record<string, number> {
   const before = deriveEquipment(c, base),
     after = deriveEquipment(alternative, base);
-  return {
+  const result: Record<string, number> = {
     damage: after.offense.damage - before.offense.damage,
     defense: after.defense.defense - before.defense.defense,
     armor: after.defense.armor - before.defense.armor,
@@ -138,4 +203,27 @@ export function compareEquipment(
       (after.defense.resistances?.cold ?? 0) -
       (before.defense.resistances?.cold ?? 0),
   };
+  if (before.advanced || after.advanced) {
+    for (const key of [
+      "castSpeed",
+      "hitRecovery",
+      "lifeLeech",
+      "manaLeech",
+      "dotBonus",
+    ] as const)
+      result[key] =
+        (after.advanced?.[key] ?? 0) - (before.advanced?.[key] ?? 0);
+    for (const element of ["physical", "lightning", "poison"] as const)
+      result[`${element}Resistance`] =
+        (after.defense.resistances?.[element] ?? 0) -
+        (before.defense.resistances?.[element] ?? 0);
+    for (const skill of new Set([
+      ...Object.keys(before.advanced?.skills ?? {}),
+      ...Object.keys(after.advanced?.skills ?? {}),
+    ]))
+      result[`skill.${skill}`] =
+        (after.advanced?.skills[skill] ?? 0) -
+        (before.advanced?.skills[skill] ?? 0);
+  }
+  return result;
 }

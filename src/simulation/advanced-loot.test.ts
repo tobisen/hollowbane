@@ -1,3 +1,11 @@
+import { createCombat, stepCombat, ARENA_NAV } from "./combat";
+import { commandCombat } from "./combat-targeting";
+import {
+  captureEquipmentBase,
+  deriveEquipment,
+  applyEquipment,
+  compareEquipment,
+} from "./equipment-stats";
 import { expect, it } from "vitest";
 import { ADVANCED_ITEMS } from "./advanced-item-content";
 import { ADVANCED_CONTENT } from "./item-registry";
@@ -80,4 +88,92 @@ it("rejects modern items in legacy save envelopes until an explicit migration ex
   expect(() =>
     serializeCharacter({ character, loot: createLootWorld(42) }),
   ).toThrow(/Unsupported content registry/);
+});
+
+it("applies unique modifiers to real committed weapon strikes through the shared stat pipeline", () => {
+  const weapon = identifyItem(found.get("coalward-edge")!);
+  const run = (advanced: boolean) => {
+    const w = createCombat(),
+      a = w.actors[0]!,
+      c = createCharacterInventory();
+    const item = structuredClone(weapon);
+    if (!advanced) delete item.advanced; // Isolate the modifier contribution, same base/RNG/timing.
+    c.equipment.main = item;
+    const base = captureEquipmentBase(a),
+      d = deriveEquipment(c, base);
+    expect(deriveEquipment(c, base)).toEqual(d);
+    applyEquipment(d, a);
+    a.controller = commandCombat(a.controller, {
+      kind: "attack",
+      target: 1,
+      repeat: true,
+    });
+    for (let tick = 0; tick < 180; tick++) {
+      stepCombat(w, ARENA_NAV);
+      const event = w.events.find(
+        (e) => e.kind === "damage" && e.actor === 0 && e.result.amount > 0,
+      );
+      if (event?.kind === "damage")
+        return { amount: event.result.amount, tick: w.tick };
+    }
+    throw Error("Missing strike");
+  };
+  const enhanced = run(true),
+    plain = run(false);
+  expect(enhanced.amount).toBeGreaterThan(plain.amount);
+  expect(enhanced.tick).toBe(plain.tick);
+});
+it("uses cumulative set damage and trade-offs in comparisons and removes bonuses exactly", () => {
+  const c = createCharacterInventory(),
+    actor = createCombat().actors[0]!,
+    base = captureEquipmentBase(actor);
+  const set = ADVANCED_ITEMS.sets.find((s) => s.id === "wayfarer-vow")!;
+  for (const piece of set.pieces) {
+    const item = identifyItem(found.get(piece.id)!);
+    c.equipment[equipmentDefinition(item).slots[0]!] = item;
+  }
+  const full = deriveEquipment(c, base);
+  expect(full.advanced?.active.map((s) => s.required)).toEqual([2, 3, 4]);
+  expect(full.advanced?.castSpeed).toBe(-8);
+  const removed = structuredClone(c);
+  delete removed.equipment.amulet;
+  const partial = deriveEquipment(removed, base),
+    comparison = compareEquipment(removed, base, c);
+  expect(partial.advanced?.active.map((s) => s.required)).toEqual([2, 3]);
+  expect(partial.advanced?.castSpeed).toBe(0);
+  expect(full.offense.damage).toBeCloseTo(partial.offense.damage * 1.15);
+  expect(comparison.damage).toBeCloseTo(
+    full.offense.damage - partial.offense.damage,
+  );
+  expect(comparison.castSpeed).toBe(-8);
+  expect(deriveEquipment(c, base)).toEqual(full);
+});
+it("evaluates contextual defenses and skill modifiers with explicit bounds", () => {
+  const actor = createCombat().actors[0]!,
+    base = captureEquipmentBase(actor),
+    c = createCharacterInventory();
+  c.equipment.helmet = identifyItem(found.get("bastion-brow")!);
+  c.equipment.amulet = identifyItem(found.get("sable-meridian")!);
+  const context = {
+    healthFraction: 0.2,
+    targetStatuses: [],
+    element: "physical" as const,
+    weapon: "melee" as const,
+  };
+  const low = deriveEquipment(c, base, 0, context),
+    healthy = deriveEquipment(c, base);
+  expect(low.defense.armor).toBeGreaterThan(healthy.defense.armor);
+  expect(low.advanced?.skills["ember-lance"]).toBeGreaterThanOrEqual(1);
+  expect(low.defense.resistances?.lightning).toBeGreaterThan(0);
+  expect(
+    compareEquipment(createCharacterInventory(), base, c)["skill.ember-lance"],
+  ).toBe(low.advanced!.skills["ember-lance"]);
+  const extreme = {
+    ...base,
+    attackSpeed: 10000,
+    offense: { ...base.offense, damage: 1e8 },
+  };
+  const capped = deriveEquipment(c, extreme);
+  expect(capped.offense.damage).toBe(10000);
+  expect(capped.attackSpeed).toBe(300);
 });
