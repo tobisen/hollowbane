@@ -87,3 +87,39 @@ This follow-up reference/checkpoint commit is local pending review of the curren
 CI run, avoiding cancellation of evidence collection. Resume publication quality
 verification only; do not start further gameplay work. The final progression gate
 is pending these visual/CI/Pages/hosted checks and user review.
+
+## Release verification follow-up (2026-10-18)
+
+Run39156818075 for466bf7c completed with failure. Public jobs API confirms
+check and format success, browser regression failure, skipped advanced browser
+step and skipped Pages deployment. Public check annotations report95 Chromium
+passes and10 failures:6 equipment-route controller cases,2 laboratory wording
+cases and2 Linux inventory screenshots. No unit suite was repeated; the320
+passing units remain valid for this rendering-only correction.
+
+Adding Character changed sequential right navigation from Close. Restore the
+existing explicit Close → main equipment route; down still reaches Character.
+The laboratory now correctly says “starts at level40”; its stale fixed-level
+assertion is updated to the current copy.15 targeted Chromium cases pass:
+8 formerly failing controller/laboratory cases plus4 character allocation/save/
+migration cases and3 virtual controller progression cases. TypeScript, focused
+ESLint/Prettier and build pass. Both existing Darwin references pass regular
+comparisons (2/2);1920/1024 references and the character panel screenshot were
+visually reviewed. No new reference generation, tolerance changes or simulations.
+
+Linux1920 annotation reports expected1180×792 versus actual1180×858;1024
+reports31211 differing pixels. These numbers are diagnostic, not approval of
+the images. Artifact12147467280 (test-evidence, digest
+sha256:be3d652c335fb711846109eae9cadbccaacba046854fdcec6e280d290c51c17f)
+exists but its public archive endpoint returns401; job117761627696 logs return403.
+GitHub CLI is unauthenticated. Public run/job/check annotations were accessible
+through approved network access. Linux images have NOT been reviewed or replaced.
+The advanced browser step did not execute; no claim of its passing.
+
+Hosted index inspected directly still references index-DnCJfCbe.js, the old L3
+runtime. No hosted progression/allocation/save verification can be claimed.
+DBL-109 remains partial and the release gate incomplete. Next: authenticated
+artifact review, justified Linux references and regular comparisons, successor
+CI/Pages SHA verification, then only hosted critical progression flows.994eac1
+was inspected and its Darwin references independently verified for publication.
+User quality approval remains false; physical-controller evidence remains absent.

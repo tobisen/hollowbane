@@ -1,5 +1,12 @@
 # Status
 
+## P11 release verification checkpoint (2026-10-18)
+
+- CI39156818075 /466bf7c FAILED: check/format passed; Chromium95 passed/10 failed; deploy skipped. Eight failures were controller-route/laboratory-text regressions; two Linux inventory comparisons remain unreviewed. DBL-109 stays partial; quality approval false.
+- Restored right from Close to Equipment, retaining down to Character; updated laboratory assertion to starts-at40. Verified15 affected/critical Chromium cases, including allocation/save/reload/migration and virtual controllers;2 Darwin visual comparisons pass without updates. Reviewed both references and character screenshot. TypeScript, focused ESLint/format and production build pass; reused320 unit passes, no unit/benchmark rerun.
+- Reviewed local994eac1 as appropriate for publication. Linux artifacts12147467280 require authenticated download (401); failed-job log403; gh has no authentication. Public annotations identify exact failures. No Linux references changed or tolerances relaxed. Hosted index remains index-DnCJfCbe.js; progression hosted verification is blocked by skipped deployment.
+- Resume: obtain/review Linux actual/diff images from test-evidence; resolve only justified reference changes, verify regular comparisons and advanced checks, then confirm successor CI/Pages and hosted character/allocation/save flows. Stop at progression review; no classes/skill trees. Detailed evidence: docs/progression.md. Pre-existing L3 edits preserved separately.
+
 ## Latest progression checkpoint — P11 publication/visual checkpoint (2026-10-18)
 
 - Soft-budget checkpoint: P10 delivered/pushedfcd3af1; P11 local check/build320 units and7 focused browser flows pass; runtime466bf7c pushed to main. Character Progression quality gate remains INCOMPLETE/user approval false. No new gameplay work.

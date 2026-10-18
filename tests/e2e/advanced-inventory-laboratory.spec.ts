@@ -60,7 +60,7 @@ for (const id of [
     await page.keyboard.press("f");
     await page.locator("#inventory-open").click();
     await expect(page.locator("#inventory-laboratory-notice")).toContainText(
-      "fixed level 40",
+      "starts at level 40",
     );
     await expect(page.locator("#inventory-grid .inventory-item")).toHaveCount(
       1,

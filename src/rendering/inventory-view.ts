@@ -866,6 +866,14 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
     }
     const active = document.activeElement as HTMLElement | null;
     if (!active || !["up", "down", "left", "right"].includes(action)) return;
+    // Preserve the equipment route; down from Close reaches Character.
+    if (active.id === "inventory-close" && action === "right") {
+      this.dialog
+        .querySelector<HTMLElement>('[data-focus="gear-main"]')
+        ?.focus();
+      e.preventDefault();
+      return;
+    }
     if (active.hasAttribute("data-controller-read")) {
       e.preventDefault();
       if (action === "up" || action === "down")
