@@ -4,8 +4,10 @@ import {
   type Affix,
   type ItemContent,
   type ItemStats,
-  type Quality,
 } from "./item-content";
+import { ADVANCED_GENERATION, type ItemQuality } from "./item-registry";
+import { ADVANCED_ITEMS, rollModifiers } from "./advanced-item-content";
+import type { ItemModifier } from "./item-modifiers";
 export interface LootContext {
   seed: number;
   sequence: number;
@@ -25,12 +27,17 @@ export interface GeneratedItem {
   base: string;
   level: number;
   requirement: number;
-  quality: Quality;
+  quality: ItemQuality;
   identified: boolean;
   name: string;
   stats: ItemStats;
   affixes: RolledAffix[];
   unique: string | null;
+  advanced?: {
+    schema: 1;
+    set: { id: string; piece: string } | null;
+    modifiers: ItemModifier[];
+  };
 }
 export function weighted<T>(
   values: readonly T[],
@@ -105,20 +112,60 @@ export function generateLoot(
     Object.entries(table.quality),
     (v) => v[1],
     random,
-  )[0] as Quality;
+  )[0] as ItemQuality;
   const templates = content.uniques.filter(
     (u) => u.base === base.id && u.level <= level,
   );
   let unique: string | null = null;
+  let advanced: GeneratedItem["advanced"];
+  const identity = `l${content.version}-${context.seed.toString(16)}-${context.sequence.toString(16)}`;
   const stats = { ...base.stats };
   let name = base.name;
   const affixes: RolledAffix[] = [];
   const chosen: Affix[] = [];
   if (quality === "unique" && !templates.length) quality = "rare";
+  if (content.version === 4 && quality === "rare") {
+    const pieces = ADVANCED_ITEMS.sets.flatMap((set) =>
+      set.pieces
+        .filter((p) => p.base === base.id && p.level <= level)
+        .map((piece) => ({ set, piece })),
+    );
+    if (
+      pieces.length &&
+      random() * 10000 < ADVANCED_GENERATION.setFromRareBasisPoints
+    ) {
+      const chosen = pieces[Math.floor(random() * pieces.length)]!;
+      quality = "set";
+      name = chosen.piece.name;
+      advanced = {
+        schema: 1,
+        set: { id: chosen.set.id, piece: chosen.piece.id },
+        modifiers: rollModifiers(chosen.piece.modifiers, identity, random),
+      };
+    }
+  }
   if (quality === "unique") {
-    const u = templates[Math.floor(random() * templates.length)]!;
+    const u =
+      content.version === 4
+        ? weighted(
+            templates,
+            (t) =>
+              ADVANCED_ITEMS.uniques.find((a) => a.id === t.id)?.weight ?? 1,
+            random,
+          )
+        : templates[Math.floor(random() * templates.length)]!;
     unique = u.id;
     name = u.name;
+    const template =
+      content.version === 4
+        ? ADVANCED_ITEMS.uniques.find((t) => t.id === u.id)
+        : undefined;
+    if (template)
+      advanced = {
+        schema: 1,
+        set: null,
+        modifiers: rollModifiers(template.modifiers, identity, random),
+      };
     for (const [s, v] of Object.entries(u.stats))
       stats[s as keyof ItemStats] = (stats[s as keyof ItemStats] ?? 0) + v;
   }
@@ -158,7 +205,7 @@ export function generateLoot(
   return {
     schema: 1,
     contentVersion: content.version,
-    id: `l${content.version}-${context.seed.toString(16)}-${context.sequence.toString(16)}`,
+    id: identity,
     origin: { ...context },
     base: base.id,
     level,
@@ -172,5 +219,6 @@ export function generateLoot(
     stats,
     affixes,
     unique,
+    ...(advanced ? { advanced } : {}),
   };
 }

@@ -3714,8 +3714,9 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-351"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nVersioned advanced item generation and set activation. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
+    "status": "complete",
+    "body": "## Acceptance criteria\nVersioned advanced item generation and set activation. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication.",
+    "evidence": "Version4 deterministic unique/set generation, replay validation and equipped-only cumulative set thresholds; four targeted tests, full check229 and existing pickup/equipment browser scenario pass. Modern content intentionally rejected by legacy save envelopes until an explicit migration."
   },
   {
     "id": "DBL-337",

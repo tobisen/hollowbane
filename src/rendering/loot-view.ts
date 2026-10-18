@@ -18,12 +18,13 @@ import {
 import { onGround, type Navigation } from "../world/navigation";
 import type { CombatWorld } from "../simulation/combat";
 import type { Point } from "../world/isometric";
-import type { Quality } from "../simulation/item-content";
+import type { ItemQuality as Quality } from "../simulation/item-registry";
 export const LOOT_COLORS: Record<Quality, string> = {
   normal: "#eee8d9",
   magic: "#97c7ff",
   rare: "#ffe080",
   unique: "#edb98a",
+  set: "#91e3a4",
 };
 declare global {
   interface Window {

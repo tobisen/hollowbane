@@ -84,7 +84,7 @@ export function equipmentDefinition(
   item: Pick<GeneratedItem, "base" | "contentVersion">,
 ): EquipmentDefinition {
   const d = registries
-    .get(item.contentVersion)
+    .get(item.contentVersion === 4 ? 3 : item.contentVersion)
     ?.find((d) => d.base === item.base);
   if (!d) throw Error("Unsupported equipment definition");
   return d;

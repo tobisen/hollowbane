@@ -3,7 +3,7 @@ export type SoundKind =
 export interface SoundCue {
   kind: SoundKind;
   skill?: string;
-  quality?: "normal" | "magic" | "rare" | "unique";
+  quality?: "normal" | "magic" | "rare" | "unique" | "set";
 }
 export interface SoundRecipe {
   wave: OscillatorType;
@@ -14,7 +14,7 @@ export interface SoundRecipe {
 }
 export function soundRecipe(c: SoundCue): SoundRecipe {
   if (c.kind === "loot") {
-    const rank = ["normal", "magic", "rare", "unique"].indexOf(
+    const rank = ["normal", "magic", "rare", "unique", "set"].indexOf(
       c.quality ?? "normal",
     );
     return {

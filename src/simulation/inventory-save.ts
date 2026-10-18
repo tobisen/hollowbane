@@ -136,6 +136,14 @@ function validateBody(value: unknown, nav?: Navigation): InventorySession {
       }),
     },
   };
+  if (
+    [
+      ...session.character.grid.items.map((p) => p.item),
+      ...Object.values(session.character.equipment),
+      ...session.loot.drops.map((d) => d.item),
+    ].some((i) => i.contentVersion !== 2 && i.contentVersion !== 3)
+  )
+    throw Error("Unsupported content registry");
   validateSession(session, nav);
   return reserveOwned(session);
 }

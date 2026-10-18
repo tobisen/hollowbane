@@ -1,9 +1,9 @@
+import { ADVANCED_ITEMS } from "./advanced-item-content";
 import {
-  ITEM_CONTENT,
-  QUALITIES,
-  type ItemContent,
-  type Quality,
-} from "./item-content";
+  ADVANCED_GENERATION,
+  type ItemQuality as Quality,
+} from "./item-registry";
+import { ITEM_CONTENT, QUALITIES, type ItemContent } from "./item-content";
 import { generateLoot, type LootContext } from "./loot";
 import { validateGeneratedItem } from "./item-save";
 export function inspectDropTable(
@@ -40,6 +40,28 @@ export function inspectDropTable(
     ) as Record<Quality, number>;
   expected.rare += expected.unique * (1 - uniqueShare);
   expected.unique *= uniqueShare;
+  if (content.version === 4) {
+    expected.set = bases
+      .filter(
+        (b) =>
+          b.eligible &&
+          ADVANCED_ITEMS.sets.some((set) =>
+            set.pieces.some((p) => p.base === b.id && p.level <= level),
+          ),
+      )
+      .reduce(
+        (s, b) =>
+          s +
+          ((((b.effectiveWeight / total) *
+            (table.quality.rare +
+              (b.uniqueEligible ? 0 : table.quality.unique))) /
+            sum) *
+            ADVANCED_GENERATION.setFromRareBasisPoints) /
+            10000,
+        0,
+      );
+    expected.rare -= expected.set;
+  }
   return {
     contentVersion: content.version,
     table: table.id,
@@ -77,7 +99,7 @@ export function simulateLoot(
     ),
   );
   const inspection = inspectDropTable(level, context.table, content),
-    quality: Record<Quality, number> = {
+    quality: Partial<Record<Quality, number>> = {
       normal: 0,
       magic: 0,
       rare: 0,
@@ -91,7 +113,7 @@ export function simulateLoot(
     if (!item) continue;
     validateGeneratedItem(item, content);
     drops++;
-    quality[item.quality]++;
+    quality[item.quality] = (quality[item.quality] ?? 0) + 1;
     bases[item.base] = (bases[item.base] ?? 0) + 1;
     examples[item.quality] ??= item;
     const affixes = item.affixes.map((a) =>
@@ -128,8 +150,8 @@ export function simulateLoot(
     Object.entries(expectedBases).every(([id, p]) =>
       within(bases[id] ?? 0, drops, p),
     ) &&
-    QUALITIES.every((q) =>
-      within(quality[q], drops, inspection.expectedConditionalQuality[q]),
+    Object.entries(inspection.expectedConditionalQuality).every(([q, p]) =>
+      within(quality[q as Quality] ?? 0, drops, p),
     );
   return {
     context,

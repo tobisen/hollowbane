@@ -1,8 +1,5 @@
-import {
-  ITEM_CONTENT,
-  itemContentForVersion,
-  type ItemContent,
-} from "./item-content";
+import { registeredItemContent as itemContentForVersion } from "./item-registry";
+import { ITEM_CONTENT, type ItemContent } from "./item-content";
 import { generateLoot, type GeneratedItem, type LootContext } from "./loot";
 const object = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null && !Array.isArray(v);
@@ -74,6 +71,8 @@ export function inspectItem(item: GeneratedItem): {
 /** L1 item archive, not an inventory/equipment model. Atomic bounded parsing. */
 export function serializeItems(items: readonly GeneratedItem[]): string {
   if (items.length > 256) throw Error("Item archive capacity exceeded");
+  if (items.some((i) => i.contentVersion >= 4))
+    throw Error("Advanced items require a versioned character snapshot");
   const validated = items.map((i) => validateGeneratedItem(i));
   if (new Set(validated.map((i) => i.id)).size !== validated.length)
     throw Error("Duplicate item identity");
@@ -96,6 +95,8 @@ export function deserializeItems(text: string): GeneratedItem[] {
   )
     throw Error("Unsupported item archive");
   const items = v.items.map((i) => validateGeneratedItem(i));
+  if (items.some((i) => i.contentVersion >= 4))
+    throw Error("Advanced items require a versioned character snapshot");
   if (new Set(items.map((i) => i.id)).size !== items.length)
     throw Error("Duplicate item identity");
   return items;
