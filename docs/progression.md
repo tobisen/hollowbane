@@ -1,4 +1,4 @@
-# Character progression — P1–P9
+# Character progression — P1–P11
 
 The character sheet opens inside Inventory (V / View). Expand Character to inspect
 XP, innate/allocated attributes and the same derived totals used by combat. +1
@@ -40,6 +40,31 @@ assertion failures; those assertions were updated for schema3 and24 targeted
 save/runtime cases pass. Four Chromium scenarios cover panel/keyboard access,
 funded allocation and duplicate protection, rejected corrupt import, reload, and
 schema1 IndexedDB migration retaining the original backup. Unit coverage includes
-schema2 migration with real mixed-content sockets/runes and levels1–99. Physical
-controllers, full controller focus/prompt validation and final balance/quality
-review remain P10/P11, outside this continuation. No publication claim.
+schema2 migration with real mixed-content sockets/runes and levels1–99. Physical controllers remain unverified.
+
+## Character Progression quality gate
+
+Technical candidate ready for user review; user quality approval remains false.
+P10 adds contextual mapped prompts, gamepad-visible focus, allocate/confirm/read,
+bounded navigation and cancel-to-summary before leaving inventory. Existing hub
+edge detection and remapping remain authoritative. Three Chromium API-emulated
+Xbox/PlayStation/generic cases pass, including a remapped generic confirm,
+held allocation, controller disconnection/reconnection and mouse recovery.
+
+P11 adds an actual timed monster attack/kill → XP → level/points → allocation →
+requirement-checked equipment → derived stats → persistence test, checking both
+XP and loot death deduplication. All99 default level/point budgets are checked.
+Final `npm run check`:320 tests/80 files, TypeScript, lint, asset/backlog validators
+and production build pass. Formatting passes. Four critical Chromium character/
+allocation/save/migration cases pass, in addition to the three controller cases.
+CI's full browser regression remains required for publication; no repeated loot
+simulations or unrelated benchmark runs were performed.
+
+Balance remains provisional: reaching99 requires31854900 cumulative XP under the
+current quadratic per-level cost. Monster rewards remain25–40 with no level
+scaling or champion premium. This is a deterministic foundation, not a completed
+leveling-pace rebalance. Zero starting attributes and frozen zero Strength/
+Dexterity item minima preserve prior content; level requirements still apply.
+No respec, skill points, classes, skill trees or vendors. Reference hardware and
+physical controllers/vibration are unverified. CI/Pages and hosted verification
+are pending until recorded below; stop at this quality gate.

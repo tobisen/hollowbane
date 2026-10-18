@@ -1,5 +1,12 @@
 # Status
 
+## Latest progression checkpoint — P11 technical candidate (2026-10-18)
+
+- P10 committedfcd3af1. P11 technical candidate verified: npm run check320 unit tests/80 files, TypeScript/lint/assets/backlog/build; formatting passes.4 Chromium panel/allocation/persistence/migration cases and3 virtual controller cases pass. Actual timed monster kill→XP→points→equipment→save and all99 level budgets covered.
+- Stop at Character Progression quality review; user quality approval remains false. No classes/skill trees/vendors. Balance is provisional (quadratic costs, fixed monster base XP, no level scaling/champion premium); see docs/progression.md. Physical controllers/reference hardware unverified. Schema1/2→3 item ownership/migration remains covered.
+- Publication authorized. Remote main verified2c8218d; local P1–P11 commits need push to existing verify-deploy workflow. Required CI full browser regression/Pages and hosted character/save checks are NOT yet verified. Local combat-arena asset is combat-arena-BRv-XqEg.js. Record exact CI/run/runtime evidence after publication.
+- Prior uncommitted L3 documentation/backlog changes remain separate. Original broad source issue parents remain partial. If session limit interrupts publication, resume external verification only; no further gameplay work.
+
 ## Latest progression checkpoint — P10 (2026-10-18)
 
 - Current user authorizes P10 then P11 and existing CI/Pages publication through Character Progression quality review. This supersedes the prior P9 stop only for this scope; no classes/skill trees/vendors.
