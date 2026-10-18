@@ -1,3 +1,4 @@
+import { insertSocket, extractSockets } from "../simulation/item-sockets";
 import { SOCKET_CONTENT } from "../simulation/socket-content";
 import { RUNE_CONTENT } from "../simulation/rune-content";
 import {
@@ -17,7 +18,7 @@ import {
   equipmentDefinition,
   type EquipSlot,
 } from "../simulation/equipment-content";
-import { ownedItem, equipItem } from "../simulation/equipment";
+import { ownedItem, ownedItems, equipItem } from "../simulation/equipment";
 import {
   moveOwned,
   identifyOwned,
@@ -77,6 +78,8 @@ export class InventoryView {
   private storage: InventoryStorage;
   private selected: string | null = null;
   private held: string | null = null;
+  private socketHost: string | null = null;
+  private componentChoice: string | null = null;
   private ready = false;
   private saving = false;
   private dirty = false;
@@ -121,6 +124,18 @@ export class InventoryView {
     this.dialog.innerHTML = `<header><p>HOLLOWBANE / L2</p><h2 id="inventory-title">The Wayfarer’s Kit</h2><button id="inventory-close" aria-label="Close inventory">Close ×</button></header><p id="inventory-prompts"></p><div class="inventory-layout"><section aria-label="Equipment"><h3>Equipment</h3><div id="inventory-gear"></div><output id="inventory-stats"></output></section><section aria-label="Backpack"><h3>Backpack <small>10 × 4 · fixed footprints</small></h3><div id="inventory-grid"></div><p id="inventory-held">Select an item to inspect or move.</p></section><section class="inventory-inspector" aria-label="Item inspection"><h3 id="inventory-name">No item selected</h3><pre id="inventory-details"></pre><pre id="inventory-compare"></pre><div class="inventory-actions"><button id="inventory-take">Select / carry</button><button id="inventory-equip">Equip</button><button id="inventory-identify">Identify</button><button id="inventory-drop">Drop nearby</button><button id="inventory-cancel">Cancel selection</button></div></section></div><footer><p id="inventory-status" role="status"></p><button id="inventory-save">Save now</button><button id="inventory-recover" hidden>Recover previous checkpoint</button><button id="inventory-export">Export snapshot</button><label>Import character snapshot <input id="inventory-import" type="file" accept="application/json,.json"></label><p>Items and loot stream are saved. Combat, position and current resources restart. An L1 item archive is not a character save.</p></footer>`;
     if (loot.contentVersion >= 4)
       this.dialog.querySelector("header p")!.textContent = "HOLLOWBANE / L3";
+    this.dialog
+      .querySelector(".inventory-actions")!
+      .insertAdjacentHTML(
+        "beforeend",
+        '<button id="inventory-socket" hidden>Sockets…</button><button id="inventory-extract" hidden>Extract all contents</button>',
+      );
+    this.dialog
+      .querySelector(".inventory-actions")!
+      .insertAdjacentHTML(
+        "afterend",
+        '<p id="inventory-socket-message" role="status" hidden></p><section id="inventory-socket-controls" class="inventory-socket-controls" aria-label="Socket insertion" hidden><h4>Append a component</h4><p>Insertion preserves order. Extraction returns every component intact only when all fit.</p><label>Bag component <select id="inventory-component"></select></label><pre id="inventory-socket-preview" tabindex="0" data-controller-read aria-live="polite"></pre><button id="inventory-insert">Insert component</button><button id="inventory-socket-cancel">Back without inserting</button></section>',
+      );
     root.append(this.dialog);
     const button = (id: string, fn: () => void) => {
       this.dialog.querySelector<HTMLButtonElement>(`#${id}`)!.onclick = fn;
@@ -128,6 +143,16 @@ export class InventoryView {
     root.querySelector<HTMLButtonElement>("#inventory-open")!.onclick = () =>
       this.toggle();
     button("inventory-close", () => this.close());
+    button("inventory-socket", () => this.openSockets());
+    button("inventory-socket-cancel", () => this.closeSockets());
+    button("inventory-insert", () => this.insertComponent());
+    button("inventory-extract", () => this.extractComponents());
+    this.dialog.querySelector<HTMLSelectElement>(
+      "#inventory-component",
+    )!.onchange = (e) => {
+      this.componentChoice = (e.target as HTMLSelectElement).value;
+      this.renderSockets();
+    };
     button("inventory-take", () => {
       this.held = this.selected;
       this.render();
@@ -223,13 +248,16 @@ export class InventoryView {
     );
     this.dialog.addEventListener("cancel", (e) => {
       e.preventDefault();
-      if (this.held) {
+      if (this.socketHost) this.closeSockets();
+      else if (this.held) {
         this.held = null;
         this.render();
       } else this.close();
     });
     this.dialog.addEventListener("close", () => {
       this.held = null;
+      this.socketHost = null;
+      this.componentChoice = null;
       this.cancelDrag();
       hub.blockGameplay = false;
       root.querySelector<HTMLElement>("#combat-world")?.focus();
@@ -374,10 +402,14 @@ export class InventoryView {
   }
   private perform(result: Parameters<InventoryRuntime["commit"]>[0]): string {
     if (!this.ready) return "Character storage is not ready.";
+    if (result.ok) {
+      this.held = null;
+      this.socketHost = null;
+      this.componentChoice = null;
+    }
     const message = this.runtime.commit(result);
-    if (result.ok) this.held = null;
     this.message(message);
-    this.render();
+    if (!result.ok) this.render();
     return message;
   }
   private slotFor(item: GeneratedItem) {
@@ -400,6 +432,9 @@ export class InventoryView {
       | { kind: "grid"; x: number; y: number }
       | { kind: "equipment"; slot: EquipSlot },
   ) {
+    this.socketHost = null;
+    this.componentChoice = null;
+    this.socketMessage();
     if (this.held)
       this.perform(moveOwned(this.runtime.session(), this.held, destination));
     else {
@@ -539,8 +574,17 @@ ${lines.join("\n")}`;
         !item ||
         (id === "inventory-identify" && !!item.identified) ||
         (id === "inventory-equip" && !this.slotFor(item));
+    this.renderSockets();
+    const advanced =
+      this.loot.contentVersion >= 4 ||
+      ownedItems(c).some((i) => i.contentVersion >= 4);
+    for (const id of ["inventory-details", "inventory-compare"]) {
+      const el = this.dialog.querySelector<HTMLElement>(`#${id}`)!;
+      el.tabIndex = advanced ? 0 : -1;
+      el.toggleAttribute("data-controller-read", advanced);
+    }
     this.dialog.querySelector("#inventory-prompts")!.textContent =
-      `${hub.frame.device === "gamepad" ? actionPrompt("interact", hub.family, hub.settings.bindings) : "Enter / click"}: select/carry/place · ${actionPrompt("primary", hub.family, hub.settings.bindings)}: equip · ${actionPrompt("secondary", hub.family, hub.settings.bindings)}: compare · Cancel: keep items`;
+      this.promptText();
     if (d.advanced) {
       this.dialog.querySelector("#inventory-stats")!.textContent += `
 Cast speed ${d.castSpeed >= 0 ? "+" : ""}${d.castSpeed}% · Hit recovery ${d.recoveryBonus >= 0 ? "+" : ""}${d.recoveryBonus}%`;
@@ -556,6 +600,171 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
       Array.from(this.dialog.querySelectorAll<HTMLElement>("[data-focus]"))
         .find((e) => e.dataset.focus === focus)
         ?.focus();
+  }
+  private promptText(): string {
+    if (
+      this.socketHost &&
+      (document.activeElement as HTMLElement | null)?.hasAttribute(
+        "data-controller-read",
+      )
+    )
+      return `${actionPrompt("primary", hub.family, hub.settings.bindings)}: insert · D-pad ↑↓: read · ←: component · →: insert button · Cancel: back`;
+    if (this.socketHost)
+      return hub.frame.device === "gamepad"
+        ? `${actionPrompt("primary", hub.family, hub.settings.bindings)}: insert chosen component · ${actionPrompt("secondary", hub.family, hub.settings.bindings)}: read preview · ${actionPrompt("cancel", hub.family, hub.settings.bindings)}: back · D-pad ←→: choose`
+        : "Choose a bag component, then Insert explicitly · Escape: back without inserting";
+    if (
+      (document.activeElement as HTMLElement | null)?.hasAttribute(
+        "data-controller-read",
+      )
+    )
+      return "D-pad ↑↓: read · ←: inspect/grid · →: actions · Cancel: close";
+    return hub.frame.device === "gamepad"
+      ? `${actionPrompt("interact", hub.family, hub.settings.bindings)}: select/carry/place · ${actionPrompt("primary", hub.family, hub.settings.bindings)}: equip · ${actionPrompt("secondary", hub.family, hub.settings.bindings)}: read comparison · ${actionPrompt("cancel", hub.family, hub.settings.bindings)}: cancel · D-pad: navigate`
+      : "Click / Enter: select · select again to carry · drag: move · V: inventory · Escape: cancel";
+  }
+  private openSockets(): void {
+    const item = this.selected
+      ? ownedItem(this.runtime.character, this.selected)
+      : undefined;
+    if (!this.ready || !item?.identified || !item.socketCapacity) return;
+    this.socketMessage();
+    this.held = null;
+    this.cancelDrag();
+    this.socketHost = item.id;
+    this.componentChoice = null;
+    this.render();
+    const select = this.dialog.querySelector<HTMLSelectElement>(
+      "#inventory-component",
+    )!;
+    select.focus();
+    select.scrollIntoView({ block: "nearest" });
+  }
+  private closeSockets(): void {
+    this.socketHost = null;
+    this.componentChoice = null;
+    this.dialog.querySelector<HTMLElement>(
+      "#inventory-socket-controls",
+    )!.hidden = true;
+    this.dialog.querySelector<HTMLButtonElement>("#inventory-socket")!.focus();
+  }
+  private renderSockets(): void {
+    const c = this.runtime.character,
+      item = this.selected ? ownedItem(c, this.selected) : undefined;
+    const socket =
+        this.dialog.querySelector<HTMLButtonElement>("#inventory-socket")!,
+      extract =
+        this.dialog.querySelector<HTMLButtonElement>("#inventory-extract")!,
+      panel = this.dialog.querySelector<HTMLElement>(
+        "#inventory-socket-controls",
+      )!;
+    socket.hidden = !item?.identified || !item.socketCapacity;
+    socket.disabled =
+      !this.ready ||
+      !item ||
+      !item.socketCapacity ||
+      (item.embedded?.length ?? 0) >= item.socketCapacity;
+    extract.hidden = !item?.identified || !item.embedded?.length;
+    extract.disabled = !this.ready || !item?.embedded?.length;
+    if (!this.socketHost || item?.id !== this.socketHost) {
+      this.socketHost = null;
+      panel.hidden = true;
+      return;
+    }
+    panel.hidden = false;
+    const components = c.grid.items
+      .map((e) => e.item)
+      .filter(
+        (i) =>
+          i.identified &&
+          i.id !== item.id &&
+          (SOCKET_CONTENT.gems.some((g) => g.id === i.base) ||
+            RUNE_CONTENT.components.some((r) => r.id === i.base)),
+      );
+    const select = this.dialog.querySelector<HTMLSelectElement>(
+        "#inventory-component",
+      )!,
+      key = components.map((i) => i.id).join(",");
+    if (select.dataset.options !== key) {
+      select.replaceChildren();
+      for (const component of components)
+        select.add(
+          new Option(
+            `${component.name} · requires ${component.requirement}`,
+            component.id,
+          ),
+        );
+      if (!components.length) select.add(new Option("No bag components", ""));
+      select.dataset.options = key;
+    }
+    if (!components.some((i) => i.id === this.componentChoice))
+      this.componentChoice = components[0]?.id ?? null;
+    select.value = this.componentChoice ?? "";
+    const candidate = this.componentChoice
+      ? insertSocket(c, item.id, this.componentChoice)
+      : null;
+    const insert =
+      this.dialog.querySelector<HTMLButtonElement>("#inventory-insert")!;
+    insert.disabled = !this.ready || !candidate?.ok;
+    insert.textContent = `Insert into socket ${(item.embedded?.length ?? 0) + 1}`;
+    let text = candidate?.ok
+      ? "After insertion:\n" +
+        describeAdvancedItem(
+          ownedItem(candidate.value, item.id)!,
+          Object.values(candidate.value.equipment),
+        )
+      : candidate
+        ? candidate.reason
+        : "Collect a gem or sigil in the backpack first.";
+    if (candidate?.ok) {
+      const changes = Object.entries(
+        compareEquipment(c, this.runtime.base, candidate.value),
+      )
+        .filter(([, v]) => Math.abs(v) > 1e-8)
+        .map(([key, v]) => `${key}: ${v >= 0 ? "+" : ""}${v.toFixed(2)}`);
+      if (changes.length) text += "\nDerived changes:\n" + changes.join("\n");
+      const diff = compareItemModifiers(c, candidate.value);
+      if (diff.added.length)
+        text += "\nEquipped effects added:\n" + diff.added.join("\n");
+    }
+    this.dialog.querySelector("#inventory-socket-preview")!.textContent = text;
+  }
+  private socketMessage(text = ""): void {
+    const el = this.dialog.querySelector<HTMLElement>(
+      "#inventory-socket-message",
+    )!;
+    el.textContent = text;
+    el.hidden = !text;
+  }
+  private insertComponent(): void {
+    if (!this.socketHost || !this.componentChoice) return;
+    const s = this.runtime.session(),
+      result = insertSocket(s.character, this.socketHost, this.componentChoice);
+    this.perform(
+      result.ok
+        ? { ok: true, value: { ...s, character: result.value } }
+        : result,
+    );
+    this.socketMessage(result.ok ? "" : result.reason);
+    if (result.ok)
+      this.dialog
+        .querySelector<HTMLButtonElement>("#inventory-cancel")!
+        .focus();
+  }
+  private extractComponents(): void {
+    if (!this.selected) return;
+    const s = this.runtime.session(),
+      result = extractSockets(s.character, this.selected);
+    this.perform(
+      result.ok
+        ? { ok: true, value: { ...s, character: result.value } }
+        : result,
+    );
+    this.socketMessage(result.ok ? "" : result.reason);
+    if (result.ok)
+      this.dialog
+        .querySelector<HTMLButtonElement>("#inventory-cancel")!
+        .focus();
   }
   private resetSelection = () => {
     this.cancelDrag();
@@ -573,10 +782,7 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
     )
       this.resetSelection();
     this.lastDevice = device;
-    const text =
-      device === "gamepad"
-        ? `${actionPrompt("interact", hub.family, hub.settings.bindings)}: select/carry/place · ${actionPrompt("primary", hub.family, hub.settings.bindings)}: equip · ${actionPrompt("secondary", hub.family, hub.settings.bindings)}: compare · ${actionPrompt("cancel", hub.family, hub.settings.bindings)}: cancel · D-pad: navigate`
-        : "Click / Enter: select · select again to carry · drag: move · V: inventory · Escape: cancel";
+    const text = this.promptText();
     const el = this.dialog.querySelector("#inventory-prompts")!;
     if (el.textContent !== text) el.textContent = text;
   }
@@ -588,7 +794,8 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
     const action = (e as CustomEvent<string>).detail;
     if (action === "cancel") {
       e.preventDefault();
-      if (this.held) {
+      if (this.socketHost) this.closeSockets();
+      else if (this.held) {
         this.held = null;
         this.render();
       } else this.close();
@@ -596,18 +803,50 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
     }
     if (action === "primary") {
       e.preventDefault();
-      this.equip();
+      if (this.socketHost) this.insertComponent();
+      else this.equip();
       return;
     }
     if (action === "secondary") {
       e.preventDefault();
-      this.dialog
-        .querySelector<HTMLElement>("#inventory-compare")!
-        .scrollIntoView({ block: "nearest" });
+      const target = this.dialog.querySelector<HTMLElement>(
+        this.socketHost ? "#inventory-socket-preview" : "#inventory-compare",
+      )!;
+      target.focus();
+      target.scrollIntoView({ block: "nearest" });
       return;
     }
     const active = document.activeElement as HTMLElement | null;
     if (!active || !["up", "down", "left", "right"].includes(action)) return;
+    if (active.hasAttribute("data-controller-read")) {
+      e.preventDefault();
+      if (action === "up" || action === "down")
+        this.dialog.scrollBy({
+          top:
+            (action === "down" ? 1 : -1) *
+            Math.max(80, this.dialog.clientHeight * 0.4),
+        });
+      else {
+        const selector =
+          active.id === "inventory-socket-preview"
+            ? action === "left"
+              ? "#inventory-component"
+              : this.dialog.querySelector<HTMLButtonElement>(
+                    "#inventory-insert",
+                  )!.disabled
+                ? "#inventory-socket-cancel"
+                : "#inventory-insert"
+            : active.id === "inventory-compare"
+              ? action === "left"
+                ? "#inventory-details"
+                : "#inventory-take"
+              : action === "right"
+                ? "#inventory-compare"
+                : '[data-focus="cell-0-0"]';
+        this.dialog.querySelector<HTMLElement>(selector)?.focus();
+      }
+      return;
+    }
     if (active.dataset.x !== undefined) {
       const c = this.runtime.character.grid;
       const next = inventoryNeighbor(

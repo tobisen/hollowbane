@@ -242,3 +242,24 @@
 .inventory-slot {
   touch-action: none;
 }
+
+.inventory-socket-controls {
+  border-top: 1px solid #68583e;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+.inventory-socket-controls[hidden] {
+  display: none;
+}
+.inventory-socket-controls select {
+  max-width: 100%;
+  width: 100%;
+  background: #18201b;
+  color: #f0e4c9;
+  border: 1px solid #9c855e;
+  padding: 8px;
+}
+#inventory-dialog [data-controller-read]:focus-visible {
+  outline: 2px solid #fff3a5;
+  outline-offset: 3px;
+}

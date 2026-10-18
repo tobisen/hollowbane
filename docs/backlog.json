@@ -3830,7 +3830,7 @@
     "targetPhase": 12,
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
-    "dependencies": ["DBL-358"],
+    "dependencies": ["DBL-359"],
     "status": "planned",
     "body": "## Acceptance criteria\nController socket component and advanced tooltip interface. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
   },
@@ -3993,7 +3993,20 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-357"],
+    "status": "complete",
+    "body": "## Acceptance criteria\nExplicit append/extract UI using existing atomic model, safe focus/read navigation and complete virtual Xbox/PlayStation lifecycle. No drag-to-socket or crafting.\n\n## Non-goals\nNo vendors/crafting/progression/campaign or final art claim.\n\n## Test requirements\nTargeted tests, full checks and relevant browser/screenshot review.\n\n## Definition of done\nVerified increment committed with evidence before integrated345.",
+    "evidence": "Explicit append/extract controls, model-backed preview, persistent errors and controller read/focus routing; no drag embedding or double held activation. Full check280; complete inventory62 pass/4 tracked old visual exceptions,12 new socket cases and3 reviewed matched previews across engines."
+  },
+  {
+    "id": "DBL-359",
+    "title": "Meaningful item ranks for non-damaging power buffs",
+    "parent": "DBL-079",
+    "phase": 12,
+    "targetPhase": 12,
+    "deliveryPhase": "advanced-items-l3",
+    "priority": "p0",
+    "dependencies": ["DBL-358"],
     "status": "planned",
-    "body": "## Acceptance criteria\nExplicit append/extract UI using existing atomic model, safe focus/read navigation and complete virtual Xbox/PlayStation lifecycle. No drag-to-socket or crafting.\n\n## Non-goals\nNo vendors/crafting/progression/campaign or final art claim.\n\n## Test requirements\nTargeted tests, full checks and relevant browser/screenshot review.\n\n## Definition of done\nVerified increment committed with evidence before integrated345."
+    "body": "## Acceptance criteria\nMake item ranks affect magnitude/duration of non-damaging power skills through generic typed rules; Oath Echo must have an actual benefit. Keep existing damaging skill/DoT timing and triggered-status exclusions.\n\n## Non-goals\nNo skill tree/progression or per-unique branches.\n\n## Test requirements\nReal generated buff-rank item changes actual buff/damage then expires without drift; unchanged costs/commitment/other statuses and full regression.\n\n## Definition of done\nVerified dependency committed before integrated345."
   }
 ]

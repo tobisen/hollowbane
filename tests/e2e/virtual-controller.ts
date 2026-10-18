@@ -23,7 +23,11 @@ export async function installVirtualController(page: Page, id: string) {
     });
   }, id);
 }
-export async function pressVirtualButton(page: Page, index: number) {
+export async function pressVirtualButton(
+  page: Page,
+  index: number,
+  holdFrames = 3,
+) {
   const samples = await page.evaluate(
     () => window.hollowbaneInput?.samples ?? 0,
   );
@@ -39,18 +43,17 @@ export async function pressVirtualButton(page: Page, index: number) {
     .toBe(true);
   for (const value of [1, 0])
     await page.evaluate(
-      async ({ index, value }) => {
+      async ({ index, value, frames }) => {
         window.virtualPads[0]!.buttons[index] = {
           pressed: !!value,
           touched: !!value,
           value,
         };
-        await new Promise<void>((resolve) =>
-          requestAnimationFrame(() =>
-            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
-          ),
-        );
+        for (let frame = 0; frame < frames; frame++)
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => resolve()),
+          );
       },
-      { index, value },
+      { index, value, frames: value ? holdFrames : 3 },
     );
 }

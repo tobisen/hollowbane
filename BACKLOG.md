@@ -327,3 +327,5 @@ DBL-355 isolates the discovered scene equipment-sync/selector override and casti
 DBL-356 splits actual contextual hit/skill/DoT arithmetic from343 after355. Proc/leech/status event interpretation remains343. No parent completion implied.
 
 DBL-357 inspection/comparison/glyphs and358 explicit socket/controller UI split the oversized345 after344;345 retains final lab/replay/controller integration before346. Existing IDs and partial parent scope preserved.
+
+DBL-359 addresses the discovered zero-damage power-buff rank case after358, before345. Generic item-rank interpretation only; no skill tree or character progression.

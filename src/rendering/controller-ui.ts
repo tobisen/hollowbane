@@ -77,7 +77,7 @@ export function installControllerUI(): void {
     const scope = document.querySelector("dialog[open]") ?? document;
     return Array.from(
       scope.querySelectorAll<HTMLElement>(
-        "button,a[href],input,select,summary",
+        "button,a[href],input,select,summary,[data-controller-read]",
       ),
     ).filter(
       (e) =>
