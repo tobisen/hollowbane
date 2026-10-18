@@ -1,4 +1,4 @@
-import type { Element } from "./skill-content";
+import { ELEMENTS, type Element } from "./skill-content";
 export const MODIFIER_STATS = [
   "damage",
   "armor",
@@ -13,6 +13,7 @@ export const MODIFIER_STATS = [
   "lightningResistance",
   "poisonResistance",
   "physicalResistance",
+  "arcaneResistance",
   "lifeLeech",
   "manaLeech",
   "dotBonus",
@@ -66,7 +67,7 @@ export interface ModifierBounds {
   min: number;
   max: number;
 }
-const elements = ["physical", "fire", "cold", "lightning", "poison"];
+const elements: readonly string[] = ELEMENTS;
 const statuses = ["slow", "poison", "power"];
 const number = (v: unknown, min: number, max: number): v is number =>
   typeof v === "number" && Number.isFinite(v) && v >= min && v <= max;

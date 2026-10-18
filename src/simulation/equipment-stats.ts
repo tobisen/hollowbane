@@ -1,3 +1,4 @@
+import { createItemHitRules, type ItemHitRules } from "./item-hit-rules";
 import { registeredItemContent as itemContentForVersion } from "./item-registry";
 import { equipmentModifiers } from "./equipment-modifiers";
 import {
@@ -35,6 +36,7 @@ export interface DerivedEquipment {
   bonuses: ItemStats;
   advanced?: {
     modifiers: ItemModifier[];
+    hitRules: ItemHitRules;
     active: ReturnType<typeof equipmentModifiers>["active"];
     patterns: ReturnType<typeof equipmentModifiers>["patterns"];
     castSpeed: number;
@@ -124,6 +126,11 @@ export function deriveEquipment(
     Object.values(c.equipment).some((i) => i.advanced || i.embedded?.length)
   ) {
     const collected = equipmentModifiers(c);
+    const hitRules = createItemHitRules(
+      derived.offense,
+      derived.defense,
+      collected.modifiers,
+    );
     const ctx: ModifierContext = context ?? {
       healthFraction: 1,
       targetStatuses: [],
@@ -145,6 +152,7 @@ export function deriveEquipment(
       "cold",
       "lightning",
       "poison",
+      "arcane",
     ] as const)
       derived.defense.resistances![element] = cap(
         stat(
@@ -163,6 +171,7 @@ export function deriveEquipment(
         skills[m.stat.slice(6)] = stat(m.stat, 0, 0, 20);
     derived.advanced = {
       ...collected,
+      hitRules,
       castSpeed: stat("castSpeed", 0, -90, 300),
       hitRecovery: stat("hitRecovery", 0, -90, 300),
       lifeLeech: stat("lifeLeech", 0, 0, 30),
@@ -187,6 +196,9 @@ export function applyEquipment(
   actor: CombatActor,
   mana?: { mana: number; maxMana: number; castSpeed?: number },
 ): void {
+  if (derived.advanced?.modifiers.length)
+    actor.itemRules = derived.advanced.hitRules;
+  else delete actor.itemRules;
   actor.offense = { ...derived.offense };
   actor.defense = {
     ...derived.defense,
@@ -238,7 +250,12 @@ export function compareEquipment(
     ] as const)
       result[key] =
         (after.advanced?.[key] ?? 0) - (before.advanced?.[key] ?? 0);
-    for (const element of ["physical", "lightning", "poison"] as const)
+    for (const element of [
+      "physical",
+      "lightning",
+      "poison",
+      "arcane",
+    ] as const)
       result[`${element}Resistance`] =
         element === "physical"
           ? after.defense.physicalResistance - before.defense.physicalResistance

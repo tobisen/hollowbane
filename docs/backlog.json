@@ -3965,7 +3965,8 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-355"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nInterpret shared item modifiers at actual hit resolution: conditional weapon damage/accuracy/defense, elemental skill amplification, skill rank damage and DoT potency. Explicit source/target context and no double application; preserve legacy RNG/timing.\n\n## Non-goals\nProc/leech/status interpretation remains343; no per-unique branches or new progression.\n\n## Test requirements\nActual weapon/skill/DoT effects and condition transitions, resistance and source eligibility, preserve legacy replay and full checks.\n\n## Definition of done\nVerified prerequisite committed before343."
+    "status": "complete",
+    "body": "## Acceptance criteria\nInterpret shared item modifiers at actual hit resolution: conditional weapon damage/accuracy/defense, elemental skill amplification, skill rank damage and DoT potency. Explicit source/target context and no double application; preserve legacy RNG/timing.\n\n## Non-goals\nProc/leech/status interpretation remains343; no per-unique branches or new progression.\n\n## Test requirements\nActual weapon/skill/DoT effects and condition transitions, resistance and source eligibility, preserve legacy replay and full checks.\n\n## Definition of done\nVerified prerequisite committed before343.",
+    "evidence": "Generic pre-modifier hit baselines prevent double application; exact health/status defense and weapon contexts, skill-rank/elemental/DoT actual damage.6 targeted/full check264;12 advanced/controller/real-bow browser cases pass. Proc/leech/status engine343 next."
   }
 ]

@@ -102,7 +102,7 @@ export function applyStatus(
       expires: r.combat.tick + t.duration,
       next: r.combat.tick + t.interval,
     });
-  if (r.combat.hitTrace)
+  if (r.combat.hitTrace || r.combat.actors.some((a) => a.itemRules))
     target.effectStatuses = r.effects.statuses
       .filter((t) => t.actor === target.id)
       .map((t) => t.kind);
@@ -269,12 +269,14 @@ export function stepStatuses(r: SkillRuntime, nav: Navigation): void {
     if (tick === t.expires) visual(r, s, a, a, "expire");
     return tick < t.expires;
   });
+  const trackContext =
+    !!r.combat.hitTrace || r.combat.actors.some((a) => a.itemRules);
   for (const a of r.combat.actors) {
     r.effects.bases[a.id] ??= { ...(a.movement ?? MOVEMENT) };
     const base = r.effects.bases[a.id]!,
       statuses = r.effects.statuses.filter((t) => t.actor === a.id),
       slow = statuses.find((t) => t.kind === "slow")?.magnitude ?? 0;
-    if (r.combat.hitTrace) a.effectStatuses = statuses.map((t) => t.kind);
+    if (trackContext) a.effectStatuses = statuses.map((t) => t.kind);
     a.movement = {
       ...base,
       walkSpeed: base.walkSpeed * (1 - slow),

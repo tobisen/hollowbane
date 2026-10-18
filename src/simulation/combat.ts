@@ -1,3 +1,8 @@
+import {
+  itemHitOffense,
+  itemHitDefense,
+  type ItemHitRules,
+} from "./item-hit-rules";
 import type { Element } from "./skill-content";
 import {
   launchProjectile,
@@ -40,6 +45,7 @@ export interface CombatActor {
   id: number;
   powerMultiplier?: number;
   effectStatuses?: string[];
+  itemRules?: ItemHitRules;
   movement?: MovementConfig;
   name: string;
   kind: "player" | "dummy" | "moving" | "hostile";
@@ -248,14 +254,40 @@ export function applyCombatHit(
     world.seed = (Math.imul(world.seed, 1664525) + 1013904223) >>> 0;
     return world.seed / 4294967296;
   };
+  const element = hit?.element ?? "physical",
+    origin = hit?.origin ?? (hit ? "skill" : "weapon");
+  const offense = source.itemRules
+    ? itemHitOffense(
+        source.itemRules,
+        source.offense,
+        hit?.damage ?? source.offense.damage,
+        origin,
+        {
+          healthFraction: Math.max(0, Math.min(1, source.hp / source.maxHp)),
+          targetStatuses: target.effectStatuses ?? [],
+          element,
+          weapon: hit?.weapon ?? source.weapon,
+        },
+        hit?.skill,
+      )
+    : source.offense;
+  const defense = target.itemRules
+    ? itemHitDefense(target.itemRules, {
+        healthFraction: Math.max(0, Math.min(1, target.hp / target.maxHp)),
+        targetStatuses: source.effectStatuses ?? [],
+        element,
+        weapon: target.weapon,
+      })
+    : target.defense;
   const result = resolveDamage(
     {
-      ...source.offense,
+      ...offense,
       damage:
-        (hit?.damage ?? source.offense.damage) * (source.powerMultiplier ?? 1),
+        (source.itemRules ? offense.damage : (hit?.damage ?? offense.damage)) *
+        (source.powerMultiplier ?? 1),
       ...(hit?.guaranteed ? { criticalChance: 0 } : {}),
     },
-    target.defense,
+    defense,
     random,
     undefined,
     hit?.element ?? "physical",
