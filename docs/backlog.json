@@ -4006,7 +4006,8 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-358"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nMake item ranks affect magnitude/duration of non-damaging power skills through generic typed rules; Oath Echo must have an actual benefit. Keep existing damaging skill/DoT timing and triggered-status exclusions.\n\n## Non-goals\nNo skill tree/progression or per-unique branches.\n\n## Test requirements\nReal generated buff-rank item changes actual buff/damage then expires without drift; unchanged costs/commitment/other statuses and full regression.\n\n## Definition of done\nVerified dependency committed before integrated345."
+    "status": "complete",
+    "body": "## Acceptance criteria\nMake item ranks affect magnitude/duration of non-damaging power skills through generic typed rules; Oath Echo must have an actual benefit. Keep existing damaging skill/DoT timing and triggered-status exclusions.\n\n## Non-goals\nNo skill tree/progression or per-unique branches.\n\n## Test requirements\nReal generated buff-rank item changes actual buff/damage then expires without drift; unchanged costs/commitment/other statuses and full regression.\n\n## Definition of done\nVerified dependency committed before integrated345.",
+    "evidence": "Generic non-damaging power buff ranks improve actual magnitude/duration and outgoing damage, expire without drift; damaging/triggered statuses unchanged.2 new/full check282 and2 Firefox/WebKit skill regressions pass."
   }
 ]

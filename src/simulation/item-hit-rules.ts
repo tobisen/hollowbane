@@ -1,3 +1,4 @@
+import type { ActiveSkill, SkillStatus } from "./skill-content";
 import {
   aggregateModifier,
   validateModifiers,
@@ -11,6 +12,8 @@ export const ITEM_SKILL_RULES = Object.freeze({
   damagePerRank: 0.1,
   maximumRank: 20,
   maximumDamage: 10000,
+  powerMagnitudePerRank: 0.1,
+  powerDurationPerRank: 0.05,
 });
 export interface ItemHitRules {
   reactive: boolean;
@@ -114,5 +117,40 @@ export function itemHitDefense(
     physicalResistance:
       element === "physical" ? resistance : base.physicalResistance,
     resistances: { ...base.resistances, [element]: resistance },
+  };
+}
+
+/** Non-damaging power skills gain meaningful ranks without altering damaging/poison timing. */
+export function itemPowerStatus(
+  r: ItemHitRules,
+  skill: Pick<ActiveSkill, "id" | "damage">,
+  status: SkillStatus,
+  context: ModifierContext,
+): SkillStatus {
+  if (skill.damage !== 0 || status.kind !== "power") return status;
+  const rank = stat(
+    r,
+    `skill.${skill.id}`,
+    0,
+    context,
+    0,
+    ITEM_SKILL_RULES.maximumRank,
+  );
+  if (rank === 0) return status;
+  return {
+    ...status,
+    magnitude: Math.min(
+      4,
+      status.magnitude * (1 + rank * ITEM_SKILL_RULES.powerMagnitudePerRank),
+    ),
+    duration: Math.max(
+      1,
+      Math.min(
+        36000,
+        Math.ceil(
+          status.duration * (1 + rank * ITEM_SKILL_RULES.powerDurationPerRank),
+        ),
+      ),
+    ),
   };
 }

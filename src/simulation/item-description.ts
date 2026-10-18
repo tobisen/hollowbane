@@ -41,8 +41,11 @@ export function describeModifier(m: ItemModifier): string {
           ? `${m.value >= 0 ? "+" : ""}${Math.round(m.value * 100)}%`
           : `×${m.value}`;
     const raw = m.stat.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
+    const definition = m.stat.startsWith("skill.")
+      ? SKILLS.find((s) => s.id === m.stat.slice(6))
+      : undefined;
     const label = m.stat.startsWith("skill.")
-      ? `${SKILLS.find((s) => s.id === m.stat.slice(6))?.name ?? m.stat.slice(6)} damage rank`
+      ? `${definition?.name ?? m.stat.slice(6)} ${definition?.damage === 0 && definition.status?.kind === "power" ? "buff" : "damage"} rank`
       : m.stat === "dotBonus"
         ? "Damage over time"
         : m.stat === "life"

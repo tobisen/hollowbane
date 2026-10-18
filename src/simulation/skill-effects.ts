@@ -1,3 +1,4 @@
+import { itemPowerStatus } from "./item-hit-rules";
 import { applyCombatHit, type CombatActor } from "./combat";
 import {
   projectileContact,
@@ -81,7 +82,15 @@ export function applyStatus(
   triggered = false,
 ): boolean {
   if (!s.status || target.hp <= 0) return false;
-  const t = s.status,
+  const t =
+      source.itemRules && !triggered
+        ? itemPowerStatus(source.itemRules, s, s.status, {
+            healthFraction: Math.max(0, Math.min(1, source.hp / source.maxHp)),
+            targetStatuses: target.effectStatuses ?? [],
+            element: s.element,
+            weapon: source.weapon,
+          })
+        : s.status,
     old = r.effects.statuses.find(
       (x) => x.actor === target.id && x.kind === t.kind,
     );
