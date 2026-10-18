@@ -100,7 +100,7 @@ export function validateItemContent(
     throw new Error("Invalid or unsupported item content");
   };
   if (
-    ![2, 3].includes(expectedVersion) ||
+    ![2, 3, 4].includes(expectedVersion) ||
     !record(value) ||
     value.version !== expectedVersion
   )

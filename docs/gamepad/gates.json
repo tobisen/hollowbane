@@ -169,6 +169,6 @@
   "advancedItemsL3": {
     "authorized": true,
     "qualityGateApproved": false,
-    "scope": ["DBL-334", "DBL-350"]
+    "scope": ["DBL-334", "DBL-351"]
   }
 }

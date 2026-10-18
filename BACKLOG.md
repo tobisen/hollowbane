@@ -313,3 +313,5 @@ Persistence split: DBL-325 pure snapshot validation/migration infrastructure, th
 DBL-333 is a planned post-review inventory-modal compositing/native-GPU follow-up under partial DBL-074, based on DBL-329 measurements. It does not extend the L2 completion scope or authorize L3.
 
 L3 authorized after L2 approval: DBL-334–350 sequential dependency chain covers all five increments. Requires12 original uniques,3 complete sets,12 rune components/8 ordered recipes, typed generic modifiers, atomic socket ownership, legacy-compatible saves, actual combat effects and million-roll validation. Original IDs/requirements retained and broader parents partial.333 and282–286 remain separate; no vendors/crafting/progression/campaign.
+
+DBL-351 splits version4 registry isolation out of336, after335 and before336. It prevents circular initialization and legacy content mutation; final L3 gate remains350 after the full dependency chain.
