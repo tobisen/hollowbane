@@ -1,5 +1,11 @@
 # Status
 
+## Current session — DBL-103 / P2 (2026-10-18)
+
+- P2 monster XP rewards completed: configurable base rewards for six authored roles (champions share base), exactly once per encounter monster identity, eligible player kills only. Immediate death-event consumption survives bounded log eviction; environmental/non-player/training deaths cannot later gain credit by replay.
+- Five new focused tests;16 targeted XP/combat-hit-trace/encounter tests, TypeScript and targeted lint pass. Session-only XP uses P1 progression/level99 cap; no save migration, loot, UI or combat-rule changes.
+- P2 explicitly authorized after P1; stop now, no P3. DBL-103 remains partial; preserve prior local L3 documentation edits and pending playable-demo review.
+
 ## Current session — DBL-103 / P1 (2026-10-18)
 
 - P1 character level/XP foundation completed and verified; stop after this task. No P2 authorization or runtime/save changes.

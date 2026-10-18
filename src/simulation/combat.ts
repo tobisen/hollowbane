@@ -1,3 +1,9 @@
+import {
+  createMonsterExperience,
+  consumeMonsterDeathXp,
+  type MonsterExperience,
+} from "./monster-experience";
+import type { MonsterRole } from "./monsters";
 import type { ItemEffectState } from "./item-effects";
 import {
   itemHitOffense,
@@ -43,6 +49,7 @@ export const ARENA_NAV: Navigation = {
 };
 export type Weapon = "melee" | "projectile";
 export interface CombatActor {
+  monsterRole?: MonsterRole;
   id: number;
   powerMultiplier?: number;
   effectStatuses?: string[];
@@ -123,6 +130,7 @@ export interface CombatHooks {
   controlsActor?: (actor: CombatActor) => boolean;
 }
 export interface CombatWorld {
+  experience: MonsterExperience;
   hitTrace?: CombatHitTrace;
   itemEffects?: ItemEffectState;
   hostilesActive: boolean;
@@ -179,6 +187,7 @@ export function createCombat(seed = 42): CombatWorld {
     reactionGuardUntil: 0,
   });
   return {
+    experience: createMonsterExperience(),
     tick: 0,
     hostilesActive: true,
     projectiles: [],
@@ -210,6 +219,7 @@ export function actorTargets(
     }));
 }
 function log(world: CombatWorld, event: CombatEvent): void {
+  consumeMonsterDeathXp(world, event);
   world.events.push(event);
   if (world.events.length > 256) world.events.shift();
 }

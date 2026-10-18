@@ -171,6 +171,7 @@ export function createMonster(
   const profile = MONSTER_PROFILES[role];
   const actor = createCombat(seed).actors[3]!;
   actor.id = id;
+  actor.monsterRole = role;
   actor.name = (champion ? "Champion " : "") + profile.name;
   actor.controller.walker.position = { ...position };
   actor.hp = actor.maxHp = profile.health * (champion ? 1.8 : 1);
