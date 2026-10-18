@@ -3804,7 +3804,7 @@
     "targetPhase": 12,
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
-    "dependencies": ["DBL-354"],
+    "dependencies": ["DBL-355"],
     "status": "planned",
     "body": "## Acceptance criteria\nBounded combat proc leech and conditional effect execution. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
   },
@@ -3939,7 +3939,20 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-342"],
+    "status": "complete",
+    "body": "## Acceptance criteria\nDistinguish weapon/skill/DoT/proc hits with typed serializable deterministic hit-resolution data for343. Preserve existing hit timing, event output and RNG when item effects are absent. Bounded trace with explicit overflow handling.\n\n## Non-goals\nNo per-item combat branches; effect interpretation remains343.\n\n## Test requirements\nMelee/projectile/skill/DoT provenance, death/immune handling and legacy replay equivalence; full checks.\n\n## Definition of done\nVerified prerequisite committed and documented before343.",
+    "evidence": "Optional bounded serializable hit trace tags weapon/projectile/skill/DoT/proc, captures actual health damage/death/context and preserves prior logs/RNG/timing.3 targeted/full check256;4 Chromium +4 Firefox/WebKit attack/skill scenarios pass."
+  },
+  {
+    "id": "DBL-355",
+    "title": "Persistent playable equipment timing and weapon runtime integration",
+    "parent": "DBL-079",
+    "phase": 12,
+    "targetPhase": 12,
+    "deliveryPhase": "advanced-items-l3",
+    "priority": "p0",
+    "dependencies": ["DBL-354"],
     "status": "planned",
-    "body": "## Acceptance criteria\nDistinguish weapon/skill/DoT/proc hits with typed serializable deterministic hit-resolution data for343. Preserve existing hit timing, event output and RNG when item effects are absent. Bounded trace with explicit overflow handling.\n\n## Non-goals\nNo per-item combat branches; effect interpretation remains343.\n\n## Test requirements\nMelee/projectile/skill/DoT provenance, death/immune handling and legacy replay equivalence; full checks.\n\n## Definition of done\nVerified prerequisite committed and documented before343."
+    "body": "## Acceptance criteria\nFix scene manual selectors overwriting equipped weapon/speed each idle frame; bridge equipment casting/hit-recovery stats while preserving committed attacks and current resources. Discovered during343 integration inspection.\n\n## Non-goals\nProc/leech execution remains343; no new combat system.\n\n## Test requirements\nActual equipped bow launch/attack speed persistence and casting/recovery breakpoints, keyboard/controller regressions and full checks.\n\n## Definition of done\nVerified runtime prerequisite committed before343."
   }
 ]

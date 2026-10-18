@@ -321,3 +321,5 @@ DBL-352 splits generic derived-stat integration from337, following336. Proc/leec
 DBL-353 splits content4 character-save compatibility from344 before playable337: schema2 snapshots, validated1→2 migration and unchanged legacy-only serialized output. Embedded ownership/migrations for later component versions remain344.
 
 DBL-354 splits typed hit provenance and bounded serializable resolution tracing from343, after342. Actual effect interpretation remains343 and L3 final gate350.
+
+DBL-355 isolates the discovered scene equipment-sync/selector override and casting/recovery bridge after354, before343. Preserve active commitment timing and existing manual controls.

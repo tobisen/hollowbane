@@ -39,6 +39,7 @@ export type Weapon = "melee" | "projectile";
 export interface CombatActor {
   id: number;
   powerMultiplier?: number;
+  effectStatuses?: string[];
   movement?: MovementConfig;
   name: string;
   kind: "player" | "dummy" | "moving" | "hostile";
@@ -76,6 +77,36 @@ export type CombatEvent =
       target: number;
       kind: "whiff" | "death" | "stagger" | "immune" | "launch" | "impact";
     };
+export type CombatHitOrigin = "weapon" | "skill" | "dot" | "proc";
+export interface CombatHit {
+  damage: number;
+  element: Element;
+  guaranteed?: boolean;
+  origin?: CombatHitOrigin;
+  skill?: string;
+  weapon?: Weapon;
+}
+export interface ResolvedCombatHit {
+  sequence: number;
+  tick: number;
+  actor: number;
+  target: number;
+  origin: CombatHitOrigin;
+  element: Element;
+  weapon: Weapon;
+  damage: number;
+  killed: boolean;
+  sourceHealthFraction: number;
+  targetStatuses: string[];
+  skill?: string;
+}
+export interface CombatHitTrace {
+  next: number;
+  pending: ResolvedCombatHit[];
+}
+export function enableCombatHitTrace(world: CombatWorld): void {
+  world.hitTrace ??= { next: 0, pending: [] };
+}
 export interface CombatHooks {
   beforeTick?: () => void;
   strike?: (actor: CombatActor) => boolean;
@@ -83,6 +114,7 @@ export interface CombatHooks {
   controlsActor?: (actor: CombatActor) => boolean;
 }
 export interface CombatWorld {
+  hitTrace?: CombatHitTrace;
   hostilesActive: boolean;
   projectiles: Projectile[];
   nextProjectile: number;
@@ -191,7 +223,7 @@ export function applyCombatHit(
   source: CombatActor,
   target: CombatActor,
   nav: Navigation,
-  hit?: { damage: number; element: Element; guaranteed?: boolean },
+  hit?: CombatHit,
 ): void {
   if (target.hp <= 0 || source.hp <= 0) return;
   if (world.tick < target.invulnerableUntil) {
@@ -203,6 +235,15 @@ export function applyCombatHit(
     });
     return;
   }
+  if (
+    world.hitTrace &&
+    (!Number.isSafeInteger(world.hitTrace.next) ||
+      world.hitTrace.next < 0 ||
+      world.hitTrace.next >= Number.MAX_SAFE_INTEGER ||
+      world.hitTrace.pending.length >= 4096)
+  )
+    throw Error("Combat hit trace must be drained before further hits");
+  const priorHp = target.hp;
   const random = () => {
     world.seed = (Math.imul(world.seed, 1664525) + 1013904223) >>> 0;
     return world.seed / 4294967296;
@@ -239,6 +280,7 @@ export function applyCombatHit(
       target: target.id,
       kind: "death",
     });
+    recordResolvedHit(world, source, target, result, priorHp, hit);
     return;
   }
   target.stagger += result.amount;
@@ -291,6 +333,31 @@ export function applyCombatHit(
         };
     }
   }
+  recordResolvedHit(world, source, target, result, priorHp, hit);
+}
+function recordResolvedHit(
+  world: CombatWorld,
+  source: CombatActor,
+  target: CombatActor,
+  result: DamageResult,
+  priorHp: number,
+  hit?: CombatHit,
+): void {
+  if (!world.hitTrace) return;
+  world.hitTrace.pending.push({
+    sequence: world.hitTrace.next++,
+    tick: world.tick,
+    actor: source.id,
+    target: target.id,
+    origin: hit?.origin ?? (hit ? "skill" : "weapon"),
+    element: result.type,
+    weapon: hit?.weapon ?? source.weapon,
+    damage: Math.min(priorHp, result.amount),
+    killed: target.hp === 0,
+    sourceHealthFraction: source.hp / source.maxHp,
+    targetStatuses: [...(target.effectStatuses ?? [])],
+    ...(hit?.skill ? { skill: hit.skill } : {}),
+  });
 }
 /** Mutates an owned world by exactly one fixed tick; snapshots are plain serializable data. */
 export function stepCombat(
@@ -431,7 +498,12 @@ export function stepCombat(
         target: hit.id,
         kind: "impact",
       });
-      applyCombatHit(world, source, hit, nav);
+      applyCombatHit(world, source, hit, nav, {
+        damage: source.offense.damage,
+        element: "physical",
+        origin: "weapon",
+        weapon: "projectile",
+      });
       return false;
     }
     projectile.position = end;

@@ -102,6 +102,10 @@ export function applyStatus(
       expires: r.combat.tick + t.duration,
       next: r.combat.tick + t.interval,
     });
+  if (r.combat.hitTrace)
+    target.effectStatuses = r.effects.statuses
+      .filter((t) => t.actor === target.id)
+      .map((t) => t.kind);
   visual(r, s, source, target, "status");
 }
 function hit(
@@ -118,6 +122,8 @@ function hit(
     damage,
     element: poison ? "poison" : s.element,
     guaranteed: poison || s.element !== "physical",
+    origin: poison ? "dot" : "skill",
+    skill: s.id,
   });
   if (t.hp < prior) {
     visual(r, s, a, t, "hit");
@@ -268,6 +274,7 @@ export function stepStatuses(r: SkillRuntime, nav: Navigation): void {
     const base = r.effects.bases[a.id]!,
       statuses = r.effects.statuses.filter((t) => t.actor === a.id),
       slow = statuses.find((t) => t.kind === "slow")?.magnitude ?? 0;
+    if (r.combat.hitTrace) a.effectStatuses = statuses.map((t) => t.kind);
     a.movement = {
       ...base,
       walkSpeed: base.walkSpeed * (1 - slow),
