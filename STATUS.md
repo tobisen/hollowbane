@@ -1,5 +1,12 @@
 # Status
 
+## C7–C9 skill-tree UI complete (2026-10-18)
+
+- Scoped DBL-111/114/204/004/210 delivered: gothic Skills panel, three branches per discipline, prerequisite/state/rank display, shared-rule current/next effect inspector, confirmed allocation and learned-active skillbar assignment. No new abilities/respec.
+- Existing semantic keyboard/mouse/controller input retained; repeated input, stale state, cancel/disconnect/device changes protected. Optional validated schema4 bar preserves prior saves and legacy six-skill access. Permanent discipline choice is explicit and changes skill access only, preserving attributes/items.
+- 33 focused unit/8 targeted Chromium cases, TypeScript/relevant lint/format/build pass; desktop/narrow screenshots reviewed. Controller evidence is virtual Xbox/PlayStation only. Planned nodes/hardware/broader parents remain open. Evidence: docs/character-classes.md.
+- STOP after C9. Await new authorization before further classes/gameplay; preserve unrelated local L3/backlog edits and hardware/art/performance follow-ups.
+
 ## C4–C6 skill progression/combat complete (2026-10-18)
 
 - Authorized C4–C6 delivered under scoped DBL-103/111/110/210; original broader parents/dependencies remain partial. One skill point per gained level, separate immutable budget/high-water ledger; atomic validated rank increments and stale-state rejection. No respec/UI.

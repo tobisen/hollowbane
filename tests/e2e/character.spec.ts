@@ -158,5 +158,5 @@ test("legacy IndexedDB checkpoint upgrades without changing equipment identity",
     db.close();
     return result;
   });
-  expect(schemas).toEqual([3, 1]);
+  expect(schemas).toEqual([4, 1]);
 });

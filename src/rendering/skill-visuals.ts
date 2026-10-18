@@ -80,7 +80,7 @@ export function drawSkillVisuals(
       x: direction.x / Math.max(d, 1e-9),
       y: direction.y / Math.max(d, 1e-9),
     };
-  if (player.hp > 0) {
+  if (player.hp > 0 && s && style) {
     if (s.shape === "radial" || s.shape === "self")
       ellipse(g, p, s.radius, style.color, 0.25);
     else if (s.shape === "cone")

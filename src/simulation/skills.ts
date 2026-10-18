@@ -12,7 +12,7 @@ import {
   releaseSkill,
   type Effects,
 } from "./skill-effects";
-import data from "../content/skills.json";
+import data from "../content/skills.json" with { type: "json" };
 import {
   validateSkills,
   type ActiveSkill,

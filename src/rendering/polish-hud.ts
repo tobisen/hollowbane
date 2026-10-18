@@ -1,16 +1,11 @@
+import { SKILL_ICONS as ICONS } from "./skill-icons";
+import { skillBar } from "../simulation/skill-progression";
 import { SKILL_ACTIONS, SKILL_SLOTS } from "../simulation/skill-input";
 import { activeSkill, type SkillRuntime } from "../simulation/skills";
 import { actionPrompt } from "../simulation/prompts";
 import type { ControllerSettings } from "../simulation/controller-settings";
 import type { GlyphFamily } from "../simulation/gamepad-profile";
-const ICONS = [
-  "M5 27L22 3L28 12Z M12 21L23 9",
-  "M16 3V29 M3 16H29 M6 6L26 26 M6 26L26 6",
-  "M20 2L7 17H17L12 30L27 12H17Z",
-  "M4 27L10 5Q28 7 28 24Z M4 27L22 10",
-  "M16 3L27 16L16 29L5 16Z M10 16H22 M16 10V22",
-  "M7 29L23 3 M12 22L5 16 M17 15L26 18 M20 10L13 6",
-];
+
 function text(node: Element, value: string): void {
   if (node.textContent !== value) node.textContent = value;
 }
@@ -83,12 +78,24 @@ export class PolishHUD {
         : "No target · aim freely or lock a target",
     );
     for (const [i, b] of this.buttons.entries()) {
-      const s = activeSkill(r, SKILL_SLOTS[i]!)!,
-        remaining = Math.max(0, (u.cooldowns[s.id] ?? 0) - tick),
+      const id = skillBar(r.combat.experience.skills)[i],
+        s = id ? activeSkill(r, id) : undefined;
+      if (!s) {
+        text(b.querySelector(".slot-name")!, "Empty slot");
+        text(b.querySelector(".slot-meta")!, "Assign a learned skill");
+        b.disabled = true;
+        continue;
+      }
+      b.disabled = false;
+      const remaining = Math.max(0, (u.cooldowns[s.id] ?? 0) - tick),
         label = `${s.mana} MP${remaining ? ` · ${(remaining / 60).toFixed(1)}s` : " · ready"}`,
         key = pad
           ? actionPrompt(SKILL_ACTIONS[i]!, family, settings.bindings)
           : ["X", "Q", "1", "2", "3", "4"][i]!;
+      b.querySelector("path")!.setAttribute(
+        "d",
+        ICONS[SKILL_SLOTS.indexOf(s.id as (typeof SKILL_SLOTS)[number])]!,
+      );
       text(b.querySelector(".slot-name")!, s.name);
       text(b.querySelector(".slot-meta")!, label);
       text(b.querySelector(".slot-key")!, key);

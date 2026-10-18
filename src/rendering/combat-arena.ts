@@ -1,3 +1,4 @@
+import { skillBar } from "../simulation/skill-progression";
 import type { ItemEffectState } from "../simulation/item-effects";
 import { InventoryView } from "./inventory-view";
 import { InventoryRuntime } from "./inventory-runtime";
@@ -675,7 +676,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         })[0];
       requestSkill(this.abilities, {
         actor: 0,
-        skill: SKILL_SLOTS[slot]!,
+        skill: skillBar(this.world.experience.skills)[slot] ?? "locked",
         target: target?.id ?? null,
         direction,
       });
@@ -1195,7 +1196,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
             this.selectedSkill = this.showcaseSlot % 6;
             requestSkill(this.abilities, {
               actor: 0,
-              skill: SKILL_SLOTS[this.selectedSkill]!,
+              skill:
+                skillBar(this.world.experience.skills)[this.selectedSkill] ??
+                "locked",
               target: target.id,
               direction: {
                 x:
@@ -1341,7 +1344,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
         this.visualStats = drawSkillVisuals(
           this.effect,
           this.abilities,
-          SKILL_SLOTS[this.selectedSkill]!,
+          skillBar(this.world.experience.skills)[this.selectedSkill] ??
+            "locked",
           direction,
           nav,
         );
@@ -1406,7 +1410,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
             root.querySelectorAll<HTMLButtonElement>("[data-skill]"),
           );
           for (const [i, b] of buttons.entries()) {
-            const s = SKILLS.find((s) => s.id === SKILL_SLOTS[i])!;
+            const s = SKILLS.find(
+              (s) => s.id === skillBar(this.world.experience.skills)[i],
+            );
+            b.disabled = !s;
+            if (!s) {
+              b.textContent = "Empty slot";
+              continue;
+            }
             if (s.kind !== "active") continue;
             const cd = Math.max(0, (u.cooldowns[s.id] ?? 0) - this.world.tick);
             const label = `${s.name} · ${s.mana} MP${cd ? ` · ${(cd / 60).toFixed(1)}s` : ""}`;

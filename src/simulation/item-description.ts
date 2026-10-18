@@ -4,7 +4,7 @@ import type { GeneratedItem } from "./loot";
 import { SOCKET_CONTENT, SOCKET_KINDS, gemModifiers } from "./socket-content";
 import { RUNE_CONTENT } from "./rune-content";
 import { runeModifiers, activeRuneRecipe } from "./rune-recipes";
-import SKILLS from "../content/skills.json";
+import SKILLS from "../content/skills.json" with { type: "json" };
 import { EQUIPMENT_CONTENT } from "./item-content";
 import { equipmentModifiers } from "./equipment-modifiers";
 import type { CharacterInventory } from "./equipment";

@@ -1,3 +1,4 @@
+import { SkillTreePanel } from "./skill-tree-panel";
 import { CharacterPanel } from "./character-panel";
 import { insertSocket, extractSockets } from "../simulation/item-sockets";
 import { SOCKET_CONTENT } from "../simulation/socket-content";
@@ -79,6 +80,7 @@ export class InventoryView {
   readonly dialog: HTMLDialogElement;
   private storage: InventoryStorage;
   private characterPanel: CharacterPanel;
+  private skillPanel: SkillTreePanel;
   private selected: string | null = null;
   private held: string | null = null;
   private socketHost: string | null = null;
@@ -168,6 +170,17 @@ export class InventoryView {
     this.dialog
       .querySelector(".inventory-layout")!
       .before(this.characterPanel.element);
+    this.skillPanel = new SkillTreePanel(
+      runtime,
+      () => this.ready,
+      () => {
+        if (this.lastDevice !== hub.frame.device) {
+          this.resetSelection();
+          this.lastDevice = hub.frame.device;
+        }
+      },
+    );
+    this.characterPanel.element.after(this.skillPanel.element);
     root.append(this.dialog);
     const button = (id: string, fn: () => void) => {
       this.dialog.querySelector<HTMLButtonElement>(`#${id}`)!.onclick = fn;
@@ -280,7 +293,11 @@ export class InventoryView {
     );
     this.dialog.addEventListener("cancel", (e) => {
       e.preventDefault();
-      if (this.characterPanel.action("cancel")) return;
+      if (
+        this.skillPanel.action("cancel") ||
+        this.characterPanel.action("cancel")
+      )
+        return;
       if (this.socketHost) this.closeSockets();
       else if (this.held) {
         this.held = null;
@@ -431,6 +448,7 @@ export class InventoryView {
     if (!this.ready) return;
     hub.clear();
     hub.blockGameplay = false;
+    this.skillPanel.cancelPending();
     this.dialog.close();
   }
   private perform(result: Parameters<InventoryRuntime["commit"]>[0]): string {
@@ -479,6 +497,7 @@ export class InventoryView {
   render(): void {
     if (!this.dialog) return;
     this.characterPanel.render();
+    this.skillPanel.render();
     if (this.held && !ownedItem(this.runtime.character, this.held))
       this.held = null;
     const c = this.runtime.character,
@@ -637,6 +656,11 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
         ?.focus();
   }
   private promptText(): string {
+    if (this.skillPanel.containsFocus()) {
+      return hub.frame.device === "gamepad"
+        ? `${actionPrompt("interact", hub.family, hub.settings.bindings)} choose / confirm · ${actionPrompt("cancel", hub.family, hub.settings.bindings)} cancel · D-pad / LS navigate · Learning costs 1 point`
+        : "Enter / click: inspect or confirm · Tab: navigate · Escape: cancel · No respec";
+    }
     if (this.characterPanel.containsFocus()) {
       if (hub.frame.device !== "gamepad")
         return "Enter / click: choose or allocate · Tab: navigate · Escape: back · Points cannot be refunded";
@@ -809,6 +833,7 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
         .focus();
   }
   private resetSelection = () => {
+    this.skillPanel.cancelPending();
     this.cancelDrag();
     if (this.held) {
       this.held = null;
@@ -817,6 +842,13 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
   };
   private updatePrompts() {
     this.characterPanel.element.dataset.device = hub.frame.device;
+    this.skillPanel.element.dataset.device = hub.frame.device;
+    if (
+      hub.frame.device === "gamepad" &&
+      window.hollowbaneInput?.armed === false
+    )
+      this.skillPanel.cancelPending();
+    if (this.dialog.open) this.skillPanel.render();
     if (this.dialog.open) this.characterPanel.render();
     const device = hub.frame.device;
     if (
@@ -836,7 +868,24 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
   };
   private controllerAction = (e: Event) => {
     const action = (e as CustomEvent<string>).detail;
-    if (this.characterPanel.action(action)) {
+    const focusId = (document.activeElement as HTMLElement | null)?.id;
+    if (focusId === "character-stats" && action === "right") {
+      this.skillPanel.element.querySelector<HTMLElement>("summary")!.focus();
+      e.preventDefault();
+      return;
+    }
+    if (
+      focusId === "skill-tree-toggle" &&
+      (action === "up" || action === "left")
+    ) {
+      this.characterPanel.element.open = true;
+      this.characterPanel.element
+        .querySelector<HTMLElement>("#character-stats")!
+        .focus();
+      e.preventDefault();
+      return;
+    }
+    if (this.skillPanel.action(action) || this.characterPanel.action(action)) {
       e.preventDefault();
       return;
     }

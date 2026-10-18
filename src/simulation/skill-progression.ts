@@ -1,5 +1,5 @@
-import treeData from "../content/skill-trees.json";
-import skillData from "../content/skills.json";
+import treeData from "../content/skill-trees.json" with { type: "json" };
+import skillData from "../content/skills.json" with { type: "json" };
 import { validateSkills, type ActiveSkill } from "./skill-content";
 import { CLASS_IDS, type ClassId } from "./character-classes";
 import {
@@ -20,6 +20,7 @@ export interface SkillProgression {
   readonly spent: number;
   readonly rewardedLevel: number;
   readonly ranks: Readonly<Record<string, number>>;
+  readonly bar?: readonly (string | null)[];
 }
 function level(value: number): void {
   if (!Number.isSafeInteger(value) || value < 1 || value > 99)
@@ -44,6 +45,7 @@ export function validateSkillProgression(
         "spent",
         "rewardedLevel",
         "ranks",
+        ...(Object.hasOwn(s, "bar") ? ["bar"] : []),
       ]
         .sort()
         .join() ||
@@ -72,7 +74,26 @@ export function validateSkillProgression(
     s.available !== characterLevel - 1 - spent
   )
     throw Error("Inconsistent skill point budget");
-  return Object.freeze({ ...s, ranks: Object.freeze({ ...s.ranks }) });
+  if (
+    s.bar !== undefined &&
+    (!Array.isArray(s.bar) ||
+      s.bar.length !== 6 ||
+      s.bar.some(
+        (id) =>
+          id !== null &&
+          (typeof id !== "string" ||
+            !skillData.some(
+              (skill) => skill.kind === "active" && skill.id === id,
+            ) ||
+            unlockedSkillRank(s, id) < 1),
+      ))
+  )
+    throw Error("Invalid saved skillbar");
+  return Object.freeze({
+    ...s,
+    ranks: Object.freeze({ ...s.ranks }),
+    ...(s.bar ? { bar: Object.freeze([...s.bar]) } : {}),
+  });
 }
 export function createSkillProgression(
   classId: ClassId | null = null,
@@ -192,4 +213,51 @@ export function scaleRankedSkill(
         }
       : null,
   };
+}
+
+/** Existing schema4 snapshots may omit the bar; defaults preserve legacy bindings. */
+export function skillBar(state: SkillProgression): readonly (string | null)[] {
+  return (
+    state.bar ??
+    (state.classId === null
+      ? [
+          "ember-lance",
+          "rime-ring",
+          "storm-thread",
+          "iron-fan",
+          "oath-echo",
+          "briar-edge",
+        ]
+      : Array<string | null>(6).fill(null))
+  );
+}
+export function chooseSkillClass(
+  state: SkillProgression,
+  classId: ClassId,
+): SkillProgression {
+  validateSkillProgression(state, state.rewardedLevel);
+  if (state.classId !== null)
+    throw Error("Skill discipline is permanent; no respec");
+  return validateSkillProgression(
+    { ...state, classId, bar: Array<null>(6).fill(null) },
+    state.rewardedLevel,
+  );
+}
+export function assignSkill(
+  state: SkillProgression,
+  slot: number,
+  skill: string,
+): SkillProgression {
+  validateSkillProgression(state, state.rewardedLevel);
+  if (
+    !Number.isInteger(slot) ||
+    slot < 0 ||
+    slot >= 6 ||
+    !skillData.some((s) => s.kind === "active" && s.id === skill) ||
+    unlockedSkillRank(state, skill) < 1
+  )
+    throw Error("Cannot assign locked skill");
+  const bar = [...skillBar(state)];
+  bar[slot] = skill;
+  return validateSkillProgression({ ...state, bar }, state.rewardedLevel);
 }

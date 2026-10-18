@@ -1,5 +1,7 @@
 import {
   allocateSkillRanks,
+  chooseSkillClass,
+  assignSkill,
   type SkillProgression,
 } from "../simulation/skill-progression";
 import { DEFAULT_XP_CURVE } from "../simulation/experience";
@@ -135,6 +137,26 @@ export class InventoryRuntime {
       return error instanceof Error
         ? error.message
         : "Skill allocation rejected.";
+    }
+  }
+  changeSkills(
+    expected: SkillProgression,
+    change:
+      | { classId: import("../simulation/character-classes").ClassId }
+      | { slot: number; skill: string },
+  ): string {
+    const xp = this.progression();
+    if (!xp || xp.skills !== expected)
+      return "Character changed; review skills and retry.";
+    try {
+      xp.skills =
+        "classId" in change
+          ? chooseSkillClass(expected, change.classId)
+          : assignSkill(expected, change.slot, change.skill);
+      for (const listener of this.listeners) listener("skills");
+      return "Skill discipline / skillbar saved to session.";
+    } catch (error) {
+      return error instanceof Error ? error.message : "Skill change rejected.";
     }
   }
   requirements(): EquipmentRequirementContext {
