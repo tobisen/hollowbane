@@ -5,7 +5,10 @@ export async function advancedReference(
   name: string,
   info: TestInfo,
 ) {
-  if (process.platform !== "darwin") {
+  if (
+    process.platform !== "darwin" &&
+    !process.env.HOLLOWBANE_CAPTURE_VISUALS
+  ) {
     info.annotations.push({
       type: "visual-exception",
       description:
