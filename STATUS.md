@@ -1,5 +1,12 @@
 # Status
 
+## P11 release verified — DBL-109 complete (2026-10-18)
+
+- Verified runtime51a943ac96f845a9f749262436c146ea9244511f: CI39159873168 success;105 Chromium and15 advanced cross-browser cases pass, including unchanged Linux visual comparisons. Existing320 unit evidence reused locally; CI check/format passed.
+- Pages deployment7159839021 success, exact same SHA; public index-BJpbzwJa.js matches the local production build. Seven hosted panel/allocation/save/reload/migration/virtual-controller cases pass; hosted screenshot reviewed.
+- DBL-109 / P11 technically complete. STOP at Character Progression quality review; user approval remains false. No Character Classes/Skill Trees or further gameplay. Physical controllers/reference hardware and broader partial parents remain open. Detailed release/provenance evidence: docs/progression.md.
+- Commits994eac1, a7f1868 and51a943a pushed. Pre-existing L3 documentation/backlog edits remain separate and uncommitted; do not discard them.
+
 ## P11 Linux visual follow-up (2026-10-18)
 
 - Successor39158266321 /a7f1868:103 Chromium passed, only2 Linux inventory references failed; advanced cross-browser step/deploy skipped. Controller fixes confirmed by CI.

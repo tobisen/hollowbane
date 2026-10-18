@@ -145,3 +145,41 @@ assertion or tolerance increase. SHA256:
   and the previously skipped advanced cross-browser step remain required.
   No new unit run, loot simulation or benchmark. DBL-109 stays partial until CI,
   Pages SHA and hosted character/allocation/save/reload checks pass.
+
+## Final release verification — DBL-109 complete (2026-10-18)
+
+Release runtime: `51a943ac96f845a9f749262436c146ea9244511f`, an intended
+successor of466bf7c containing the reviewed994eac1 Darwin checkpoint, controller
+repaira7f1868 and Linux reference follow-up51a943a.
+[CI39159873168](https://github.com/tobisen/hollowbane/actions/runs/39159873168)
+completed successfully: check/format passed,105 Chromium cases passed in7.7m
+(including both regular Linux comparisons), then15 advanced Chromium/Firefox/
+WebKit cases passed in2.0m. No skipped advanced step was counted as passing.
+Existing320 units were reused locally; the required CI check passed as configured.
+No new simulation, benchmark, test exclusion or tolerance adjustment.
+
+Pages deployment7159839021 reports success at2026-10-18T19:52:32Z with the exact
+release SHA above. Public index references `index-BJpbzwJa.js`, matching the local
+production build. Hosted verification used:
+
+```sh
+PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/ npx playwright test tests/e2e/character.spec.ts tests/e2e/character-controller.spec.ts
+```
+
+All7 hosted cases passed in17.9s: default panel/totals, disabled unearned
+allocation/keyboard access, funded Vitality/Strength allocation and duplicate
+protection, rejected corrupt import, IndexedDB save/reload preserving gear and
+progression, schema1 migration retaining previous checkpoint, plus3 virtual
+Xbox/PlayStation/remapped-generic controller allocation/cancel/disconnect cases.
+The allocation/save assertions verify level2,3 remaining points, Vitality1,
+Strength1, Health305,100/500 XP and unchanged equipment identity after reload.
+Migration verifies level12/55 points and current/previous schemas3/1.
+Hosted character screenshot reviewed: readable shared totals and disabled
+zero-budget controls; scrollable panel remains intact. Physical controllers
+remain unverified.
+
+DBL-109 is technically complete and P11 release criteria pass. User progression
+quality approval remains false: STOP for that review. No classes, skill trees,
+vendors or further gameplay authorized. Historical pending/failure checkpoints
+above are superseded by this evidence; broad partial parents and hardware/art/
+performance follow-ups remain separate.
