@@ -106,3 +106,7 @@
     display: block;
   }
 }
+#character-panel[data-device="gamepad"] :focus {
+  outline: 3px solid #fff3a5;
+  outline-offset: 2px;
+}

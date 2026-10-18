@@ -13,7 +13,7 @@ export class CharacterPanel {
     private canAllocate: () => boolean = () => false,
   ) {
     this.element.id = "character-panel";
-    this.element.innerHTML = `<summary id="character-toggle">Character · The Wayfarer</summary><section aria-label="Character progression"><div class="character-heading"><div><p class="character-eyebrow">THE WAYFARER</p><h3>Level <span id="character-level"></span></h3></div><p>Unspent points <strong id="character-points"></strong></p></div><label class="character-xp-label">Experience <span id="character-xp"></span><progress id="character-progress" max="1" value="0"></progress></label><div class="character-columns"><div><h4>Attributes</h4>${ATTRIBUTE_NAMES.map((key) => `<div class="character-attribute"><span>${key[0]!.toUpperCase() + key.slice(1)}</span><strong id="character-${key}"></strong><span data-allocation="${key}"></span></div>`).join("")}</div><div><h4>Combat totals</h4><dl id="character-stats"></dl><h4>Resistances</h4><dl id="character-resistances"></dl></div></div><p id="character-feedback" role="status">Maximum changes retain current HP and mana; decreases clamp them. No respec.</p></section>`;
+    this.element.innerHTML = `<summary id="character-toggle">Character · The Wayfarer</summary><section aria-label="Character progression"><div class="character-heading"><div><p class="character-eyebrow">THE WAYFARER</p><h3>Level <span id="character-level"></span></h3></div><p>Unspent points <strong id="character-points"></strong></p></div><label class="character-xp-label">Experience <span id="character-xp"></span><progress id="character-progress" max="1" value="0"></progress></label><div class="character-columns"><div><h4>Attributes</h4>${ATTRIBUTE_NAMES.map((key) => `<div class="character-attribute"><span>${key[0]!.toUpperCase() + key.slice(1)}</span><strong id="character-${key}"></strong><span data-allocation="${key}"></span></div>`).join("")}</div><div><h4>Combat totals</h4><dl id="character-stats" tabindex="0" aria-label="Derived combat statistics"></dl><h4>Resistances</h4><dl id="character-resistances"></dl></div></div><p id="character-feedback" role="status">Maximum changes retain current HP and mana; decreases clamp them. No respec.</p></section>`;
     for (const key of ATTRIBUTE_NAMES) {
       const button = document.createElement("button");
       button.type = "button";
@@ -33,6 +33,61 @@ export class CharacterPanel {
       this.element.querySelector(`[data-allocation="${key}"]`)!.append(button);
     }
   }
+  containsFocus(): boolean {
+    return this.element.contains(document.activeElement);
+  }
+  /** Semantic actions only; existing hub owns mappings, edge detection and disconnect. */
+  action(action: string): boolean {
+    if (!this.containsFocus()) return false;
+    const active = document.activeElement as HTMLElement;
+    const summary = this.element.querySelector<HTMLElement>("summary")!;
+    const stats = this.element.querySelector<HTMLElement>("#character-stats")!;
+    const buttons = Array.from(
+      this.element.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"),
+    );
+    const focus = (target: HTMLElement) => {
+      target.focus();
+      target.scrollIntoView({ block: "nearest" });
+    };
+    if (action === "cancel") {
+      if (!this.element.open) return false;
+      this.element.open = false;
+      focus(summary);
+      return true;
+    }
+    if (action === "primary") {
+      if (active === summary || active instanceof HTMLButtonElement)
+        active.click();
+      return true;
+    }
+    if (action === "secondary") {
+      this.element.open = true;
+      focus(stats);
+      return true;
+    }
+    if (!["up", "down", "left", "right"].includes(action)) return false;
+    if (active === summary) {
+      if (action === "up" || action === "left") return false;
+      this.element.open = true;
+      focus(buttons[0] ?? stats);
+      return true;
+    }
+    if (active === stats) {
+      if (action === "right") return false;
+      if (action === "left") focus(buttons[0] ?? summary);
+      else
+        this.element
+          .closest("dialog")!
+          .scrollBy({ top: action === "down" ? 100 : -100 });
+      return true;
+    }
+    const index = buttons.indexOf(active as HTMLButtonElement);
+    if (action === "left") focus(summary);
+    else if (action === "right") focus(stats);
+    else if (action === "up") focus(buttons[index - 1] ?? summary);
+    else focus(buttons[index + 1] ?? stats);
+    return true;
+  }
   render(): void {
     const xp = this.runtime.progression();
     if (!xp) {
@@ -41,10 +96,17 @@ export class CharacterPanel {
     }
     this.element.hidden = false;
     this.shown = xp.attributes;
+    const focused = document.activeElement;
     for (const key of ATTRIBUTE_NAMES)
       this.element.querySelector<HTMLButtonElement>(
         `#allocate-${key}`,
       )!.disabled = !this.canAllocate() || xp.attributes.available < 1;
+    if (
+      focused instanceof HTMLButtonElement &&
+      this.element.contains(focused) &&
+      focused.disabled
+    )
+      this.element.querySelector<HTMLElement>("#character-stats")!.focus();
     const view = characterPanelState(xp, this.runtime.derived);
     const text = (id: string, value: string | number) => {
       const el = this.element.querySelector(`#character-${id}`)!;

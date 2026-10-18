@@ -280,6 +280,7 @@ export class InventoryView {
     );
     this.dialog.addEventListener("cancel", (e) => {
       e.preventDefault();
+      if (this.characterPanel.action("cancel")) return;
       if (this.socketHost) this.closeSockets();
       else if (this.held) {
         this.held = null;
@@ -636,6 +637,13 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
         ?.focus();
   }
   private promptText(): string {
+    if (this.characterPanel.containsFocus()) {
+      if (hub.frame.device !== "gamepad")
+        return "Enter / click: choose or allocate · Tab: navigate · Escape: back · Points cannot be refunded";
+      const key = (action: "interact" | "primary" | "cancel" | "secondary") =>
+        actionPrompt(action, hub.family, hub.settings.bindings);
+      return `${key("interact")}: choose / allocate 1 · ${key("primary")}: confirm · ${key("secondary")}: read statistics · ${key("cancel")}: back · D-pad / LS: navigate`;
+    }
     if (
       this.socketHost &&
       (document.activeElement as HTMLElement | null)?.hasAttribute(
@@ -808,6 +816,7 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
     }
   };
   private updatePrompts() {
+    this.characterPanel.element.dataset.device = hub.frame.device;
     if (this.dialog.open) this.characterPanel.render();
     const device = hub.frame.device;
     if (
@@ -827,6 +836,10 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
   };
   private controllerAction = (e: Event) => {
     const action = (e as CustomEvent<string>).detail;
+    if (this.characterPanel.action(action)) {
+      e.preventDefault();
+      return;
+    }
     if (action === "cancel") {
       e.preventDefault();
       if (this.socketHost) this.closeSockets();

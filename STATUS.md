@@ -1,5 +1,12 @@
 # Status
 
+## Latest progression checkpoint — P10 (2026-10-18)
+
+- Current user authorizes P10 then P11 and existing CI/Pages publication through Character Progression quality review. This supersedes the prior P9 stop only for this scope; no classes/skill trees/vendors.
+- P10 controller implementation verified:3 Chromium scenarios for virtual Xbox/PlayStation/remapped generic, held allocation and disconnect/mouse/reconnect/cancel;19 focused units, TypeScript and relevant lint pass. Screenshot reviewed. Physical hardware remains unverified.
+- P11 quality work now has2 passing focused tests for actual timed monster kill→XP→points→equipment→save, deduplicated XP/loot and all99 level budgets. These tests are not yet part of a verified P11 commit.
+- Next: run required final check/build once, critical character persistence/browser checks, commit P11 evidence, push existing main CI/Pages workflow and verify hosted panel/save. Record inaccessible/pending external results honestly. Pre-existing L3 documentation edits remain separate.
+
 ## Latest progression checkpoint — P9 complete (2026-10-18)
 
 - P7–P9 technically delivered. P7 commit8e72707, P8 commit14a22b6; this P9 increment completes current authorization. STOP: do not begin P10/P11 or later work without a new request. Broad DBL-108/104/210 parents remain partial beyond these scoped slices.
