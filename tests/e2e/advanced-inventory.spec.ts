@@ -195,13 +195,11 @@ test("equipped bow and attack speed survive idle scene updates and launch real p
   }
   expect(session.character.equipment.gloves).toBeDefined();
   await page.locator("#inventory-open").click();
-  await page
-    .locator("#inventory-import")
-    .setInputFiles({
-      name: "bow.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(serializeCharacter(session)),
-    });
+  await page.locator("#inventory-import").setInputFiles({
+    name: "bow.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(serializeCharacter(session)),
+  });
   await expect(page.locator("#inventory-stats")).toContainText("projectile");
   await page.locator("#inventory-close").click();
   await expect
