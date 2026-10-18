@@ -7,4 +7,4 @@
 - Repeated SwiftShader combat RAF p9516.7–16.8ms at5/10/20/30 enemies after inline navigation fix; open modal33.4ms retained as DBL-333 follow-up. Native GPU/physical latency unverified.
 - DBL-282–286 physical-controller tasks, friend native-layout metadata, provisional art/audio, native/full-detail/software/Firefox performance and GitHub issue synchronization remain open. Import dry-run333 records/36 milestones; no token-based synchronization claimed. Original parents036/074/079/080/081/082/083/084 remain partial.
 
-L3 issue334 complete: typed deterministic modifier/event foundation,5 targeted tests/full check218. Issue335 original unique/set definitions next;335–350 planned. No advanced playable-content claim yet. Detailed docs/items/l3.md.
+L3 issue334 complete: typed deterministic modifier/event foundation,5 targeted tests/full check218. 335 complete:12 unique definitions/3 complete sets,5 new tests/full check223.336 registry/generation next;336–350 planned. No advanced playable-content claim yet. Detailed docs/items/l3.md.
