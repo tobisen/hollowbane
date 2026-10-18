@@ -179,3 +179,34 @@ it("refreshes allocated attributes and comparisons without repeated stat applica
     compareEquipment(runtime.character, runtime.base, runtime.character).damage,
   ).toBe(0);
 });
+
+it("allocates transactionally, rejects stale requests and updates stats without healing", async () => {
+  const { createMonsterExperience } =
+    await import("../simulation/monster-experience");
+  const xp = createMonsterExperience(100);
+  const actor = createCombat().actors[0]!;
+  actor.hp = 150;
+  let loot = createLootWorld(42);
+  const runtime = new InventoryRuntime(
+    () => actor,
+    () => undefined,
+    () => loot,
+    (next) => {
+      loot = next;
+    },
+    12,
+    () => xp.attributes,
+    () => xp,
+  );
+  const before = xp.attributes;
+  expect(runtime.allocate("vitality", before)).toBe("Allocated 1 vitality.");
+  expect(xp.attributes.available).toBe(4);
+  expect(actor.maxHp).toBe(305);
+  expect(actor.hp).toBe(150);
+  expect(runtime.allocate("vitality", before)).toMatch(/changed/);
+  for (let i = 0; i < 4; i++) runtime.allocate("strength", xp.attributes);
+  const exhausted = xp.attributes;
+  expect(runtime.allocate("energy", exhausted)).toMatch(/Insufficient/);
+  expect(xp.attributes).toBe(exhausted);
+  expect(actor.offense.damage).toBe(30);
+});

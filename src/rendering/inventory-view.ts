@@ -164,7 +164,7 @@ export class InventoryView {
         : "Open separate item laboratory";
       this.dialog.querySelector("footer")!.append(notice, link);
     }
-    this.characterPanel = new CharacterPanel(runtime);
+    this.characterPanel = new CharacterPanel(runtime, () => this.ready);
     this.dialog
       .querySelector(".inventory-layout")!
       .before(this.characterPanel.element);

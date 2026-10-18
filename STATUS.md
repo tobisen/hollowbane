@@ -1,5 +1,11 @@
 # Status
 
+## Latest progression checkpoint — P8 (2026-10-18)
+
+- P7 committed8e72707; P8 allocation verified:12 focused unit/runtime tests,2 Chromium panel/keyboard/disabled-controls scenarios; TypeScript/lint pass and screenshot reviewed.
+- P9 remains: strict versioned progression snapshot, legacy level-to-XP migration preserving gear and ownership, single runtime progression authority, atomic load/save and funded allocation/reload browser evidence. Current data is still session-only.
+- Authorization is now only P7–P9. Stop after P9 or checkpoint at soft session limit. P10/P11 are not authorized in this continuation. Pre-existing L3 edits remain untouched.
+
 ## Latest progression checkpoint — P7 (2026-10-18)
 
 - P7 delivered; P6 preserved. P8 allocation and P9 persistence remain next under current authorization. Stop after P9; P10/P11 are outside this session.

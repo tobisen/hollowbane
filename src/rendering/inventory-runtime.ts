@@ -1,10 +1,15 @@
 import type { MonsterExperience } from "../simulation/monster-experience";
 import type { EquipmentRequirementContext } from "../simulation/equipment-requirements";
 import {
+  allocateAttributes,
+  type Attribute,
   attributeValues,
   type CharacterAttributes,
 } from "../simulation/attributes";
-import { createCharacterInventory } from "../simulation/equipment";
+import {
+  reconcileEquipmentRequirements,
+  createCharacterInventory,
+} from "../simulation/equipment";
 import {
   captureEquipmentBase,
   deriveEquipment,
@@ -55,6 +60,39 @@ export class InventoryRuntime {
   }
   progression(): MonsterExperience | undefined {
     return this.getProgression();
+  }
+  allocate(attribute: Attribute, expected: CharacterAttributes): string {
+    const xp = this.progression();
+    if (!xp || xp.attributes !== expected)
+      return "Character changed; review points and retry.";
+    try {
+      const attributes = allocateAttributes(expected, { [attribute]: 1 });
+      const requirements = {
+        ...this.requirements(),
+        attributes: attributeValues(attributes),
+      };
+      const reconciled = reconcileEquipmentRequirements(
+        this.character,
+        this.character.level,
+        requirements,
+      );
+      if (!reconciled.ok) return reconciled.reason;
+      // Prepare/validate all derived data before committing either half of the transaction.
+      deriveEquipment(reconciled.value, {
+        ...this.base,
+        attributes: requirements.attributes,
+      });
+      xp.attributes = attributes;
+      this.character = reconciled.value;
+      this.key = "";
+      this.sync();
+      for (const listener of this.listeners) listener("attributes");
+      return `Allocated 1 ${attribute}.`;
+    } catch (error) {
+      return error instanceof Error
+        ? error.message
+        : "Allocation rejected; state unchanged.";
+    }
   }
   requirements(): EquipmentRequirementContext {
     const state = this.getAttributes();
