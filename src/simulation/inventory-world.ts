@@ -1,3 +1,7 @@
+import {
+  validateProgression,
+  type ProgressionSnapshot,
+} from "./progression-save";
 import type { EquipmentRequirementContext } from "./equipment-requirements";
 import { itemTree } from "./item-ownership";
 import {
@@ -21,6 +25,7 @@ import { validateGeneratedItem, identifyItem } from "./item-save";
 import { canWalk, type Navigation } from "../world/navigation";
 import type { Point } from "../world/isometric";
 export interface InventorySession {
+  progression?: ProgressionSnapshot;
   /** Runtime rule context, deliberately excluded from item/save identity. */
   requirements?: EquipmentRequirementContext;
   character: CharacterInventory;
@@ -42,6 +47,11 @@ export function reserveOwned(s: InventorySession): InventorySession {
   };
 }
 export function validateSession(s: InventorySession, nav?: Navigation): void {
+  if (
+    s.progression &&
+    validateProgression(s.progression).character.level !== s.character.level
+  )
+    throw Error("Inventory and progression level mismatch");
   validateCharacter(s.character, s.requirements);
   const all = itemTree([
     ...ownedItems(s.character),

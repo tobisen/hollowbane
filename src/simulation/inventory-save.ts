@@ -1,3 +1,5 @@
+import { progressionAtLevel, validateProgression } from "./progression-save";
+import { attributeValues } from "./attributes";
 import { itemTree } from "./item-ownership";
 import { EQUIP_SLOTS, type EquipSlot } from "./equipment-content";
 import { registeredItemContent as itemContentForVersion } from "./item-registry";
@@ -9,7 +11,7 @@ import {
 } from "./inventory-world";
 import type { Navigation } from "../world/navigation";
 
-export const CHARACTER_SCHEMA = 2;
+export const CHARACTER_SCHEMA = 3;
 const LEGACY_VERSIONS = [2, 3];
 const ADVANCED_VERSIONS = [2, 3, 4, 5, 6, 7, 8];
 const FORMAT = "hollowbane-character";
@@ -46,6 +48,7 @@ export function snapshotChecksum(text: string): string {
 }
 function body(s: InventorySession, versions: readonly number[]): unknown {
   return {
+    progression: s.progression ?? progressionAtLevel(s.character.level),
     contentVersions: [...versions],
     character: s.character,
     loot: {
@@ -66,13 +69,19 @@ function validateBody(
   value: unknown,
   nav?: Navigation,
   versions: readonly number[] = ADVANCED_VERSIONS,
+  progression = false,
 ): InventorySession {
   const b = record(value);
-  keys(b, ["contentVersions", "character", "loot"]);
+  keys(
+    b,
+    progression
+      ? ["contentVersions", "character", "loot", "progression"]
+      : ["contentVersions", "character", "loot"],
+  );
   if (
     versions === ADVANCED_VERSIONS &&
     Array.isArray(b.contentVersions) &&
-    b.contentVersions.length >= 3 &&
+    b.contentVersions.length >= (progression ? 2 : 3) &&
     b.contentVersions.length <= versions.length &&
     b.contentVersions.every((v, i) => v === versions[i])
   )
@@ -161,6 +170,12 @@ function validateBody(
     ]).some((i) => !versions.includes(i.contentVersion))
   )
     throw Error("Unsupported content registry");
+  if (progression) {
+    session.progression = validateProgression(b.progression);
+    session.requirements = {
+      attributes: attributeValues(session.progression.attributes),
+    };
+  }
   validateSession(session, nav);
   return reserveOwned(session);
 }
@@ -176,11 +191,11 @@ export function serializeCharacter(
     ].some((i) => i.contentVersion >= 4) ||
     !itemContentForVersion(3).tables.some((t) => t.id === s.loot.table);
   const versions = modern ? ADVANCED_VERSIONS : LEGACY_VERSIONS;
-  const validated = validateBody(body(s, versions), nav, versions),
+  const validated = validateBody(body(s, versions), nav, versions, true),
     payload = body(validated, versions);
   const text = JSON.stringify({
     format: FORMAT,
-    schema: modern ? CHARACTER_SCHEMA : 1,
+    schema: CHARACTER_SCHEMA,
     checksum: snapshotChecksum(JSON.stringify(payload)),
     body: payload,
   });
@@ -219,13 +234,21 @@ export function deserializeCharacter(
             validateBody(old, nav, LEGACY_VERSIONS);
             return { ...record(old), contentVersions: [...ADVANCED_VERSIONS] };
           }
-        : undefined);
+        : schema === 2
+          ? (old: unknown) => {
+              const validated = validateBody(old, nav);
+              return {
+                ...record(old),
+                progression: progressionAtLevel(validated.character.level),
+              };
+            }
+          : undefined);
     if (!migrate)
       throw Error("Unsupported older character schema; original retained");
     payload = migrate(payload);
     schema++;
   }
-  return validateBody(payload, nav);
+  return validateBody(payload, nav, ADVANCED_VERSIONS, true);
 }
 export type SnapshotPair =
   | { kind: "empty" }

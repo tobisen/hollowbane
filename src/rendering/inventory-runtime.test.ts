@@ -210,3 +210,54 @@ it("allocates transactionally, rejects stale requests and updates stats without 
   expect(xp.attributes).toBe(exhausted);
   expect(actor.offense.damage).toBe(30);
 });
+
+it("restores progression and inventory together, retains XP across encounter reset and rejects partial corrupt loads", async () => {
+  const { createMonsterExperience } =
+    await import("../simulation/monster-experience");
+  const { progressionAtLevel } = await import("../simulation/progression-save");
+  let xp = createMonsterExperience();
+  const actor = createCombat().actors[0]!;
+  let loot = createLootWorld(42);
+  const runtime = new InventoryRuntime(
+    () => actor,
+    () => undefined,
+    () => loot,
+    (next) => {
+      loot = next;
+    },
+    12,
+    () => xp.attributes,
+    () => xp,
+  );
+  const character = createCharacterInventory(2);
+  const snapshot = progressionAtLevel(2);
+  runtime.restore({ character, loot, progression: snapshot });
+  expect(xp.character.level).toBe(2);
+  runtime.allocate("vitality", xp.attributes);
+  const saved = runtime.session();
+  xp = createMonsterExperience();
+  runtime.sync();
+  expect(xp.character.level).toBe(2);
+  expect(xp.attributes.allocated.vitality).toBe(1);
+  expect(runtime.session().progression).toEqual(saved.progression);
+  const before = runtime.character;
+  expect(() =>
+    runtime.restore({
+      ...saved,
+      progression: {
+        ...snapshot,
+        attributes: { ...snapshot.attributes, available: 999 },
+      },
+    }),
+  ).toThrow();
+  expect(runtime.character).toBe(before);
+  expect(runtime.session().progression).toEqual(saved.progression);
+  const { addExperience } = await import("../simulation/experience");
+  const notifications: string[] = [];
+  runtime.listeners.add((reason) => notifications.push(reason));
+  xp.character = addExperience(xp.character.totalXp, 5);
+  runtime.sync();
+  runtime.sync();
+  expect(notifications).toEqual(["progression"]);
+  expect(runtime.session().progression?.character.totalXp).toBe(105);
+});

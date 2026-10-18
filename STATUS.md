@@ -1,5 +1,13 @@
 # Status
 
+## Latest progression checkpoint — P9 complete (2026-10-18)
+
+- P7–P9 technically delivered. P7 commit8e72707, P8 commit14a22b6; this P9 increment completes current authorization. STOP: do not begin P10/P11 or later work without a new request. Broad DBL-108/104/210 parents remain partial beyond these scoped slices.
+- Schema3 persists strict versioned progression; schema1/2 migrations preserve all item/embedded ownership and loot state, map legacy level to threshold XP/unspent budget. New normal characters start1; separate item laboratory starts40. Single progression authority supplies UI, requirements and saves. See docs/progression.md.
+- P9:24 focused save/runtime cases pass; full unit run316/318 initially (2 hardcoded schema2 assertions), both updated and verified in targeted rerun. TypeScript/relevant lint/backlog checks pass. Four Chromium scenarios pass across corrected runs; reviewed panel screenshot at P7/P8. No final P11 quality gate claim or physical-controller verification.
+- Browser evidence includes earned-point allocation, duplicate-click rejection, corrupt-import atomicity, save/reload and legacy IndexedDB upgrade retaining schema1 previous checkpoint. Unit evidence covers levels1–99 and schema2 mixed-content sockets/runes. Existing CAS/backup/quarantine policy unchanged.
+- No publication/deployment performed. P10 controller-specific focus/prompts and P11 balancing/quality review remain pending. Pre-existing local L3 docs/backlog edits are preserved separately; final L3 playable review still pending.
+
 ## Latest progression checkpoint — P8 (2026-10-18)
 
 - P7 committed8e72707; P8 allocation verified:12 focused unit/runtime tests,2 Chromium panel/keyboard/disabled-controls scenarios; TypeScript/lint pass and screenshot reviewed.

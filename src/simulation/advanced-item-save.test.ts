@@ -94,6 +94,18 @@ it("round-trips all ownership layers and immutable attributes across mixed L1/L2
   expect(new Set(restored.loot.reserved)).toEqual(new Set(ids));
   expect(new Set(ids).size).toBe(ids.length);
   expect(serializeCharacter(restored, ARENA_NAV)).toBe(text);
+  const legacy = JSON.parse(text) as {
+    schema: number;
+    body: Record<string, unknown>;
+    checksum: string;
+  };
+  legacy.schema = 2;
+  delete legacy.body.progression;
+  legacy.checksum = snapshotChecksum(JSON.stringify(legacy.body));
+  const migrated = deserializeCharacter(JSON.stringify(legacy), ARENA_NAV);
+  expect(migrated.character).toEqual(s.character);
+  expect(migrated.loot.drops).toEqual(s.loot.drops);
+  expect(migrated.progression?.character.level).toBe(40);
   expect(s).toEqual(before);
 });
 it("rejects corrupt embedded attributes, capacities, nesting, cross-location duplicates and forged manifests atomically", () => {

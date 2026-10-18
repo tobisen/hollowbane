@@ -90,21 +90,35 @@ it("rejects corrupt, forged, duplicated, conflicting and unsupported snapshots a
     alter(text, (b) => {
       (b.loot as typeof s.loot).drops[0]!.position = { x: -999999, y: -999999 };
     }),
-    text.replace('"schema":1', '"schema":2'),
+    text.replace('"schema":3', '"schema":4'),
     JSON.stringify({ schema: 1, contentVersion: 2, items: [] }),
   ])
     expect(() => deserializeCharacter(invalid, ARENA_NAV)).toThrow();
   expect(s).toEqual(before);
 });
 it("requires explicit migration and offers backups without applying them", () => {
-  const text = serializeCharacter(fixture(), ARENA_NAV),
-    old = text.replace('"schema":1', '"schema":0');
+  const text = serializeCharacter(fixture(), ARENA_NAV);
+  const legacy = JSON.parse(text) as {
+    schema: number;
+    body: Record<string, unknown>;
+    checksum: string;
+  };
+  delete legacy.body.progression;
+  legacy.body.contentVersions = [2, 3];
+  legacy.schema = 0;
+  legacy.checksum = snapshotChecksum(JSON.stringify(legacy.body));
+  const old = JSON.stringify(legacy);
   expect(() => deserializeCharacter(old)).toThrow(/older/);
+  const migrated = deserializeCharacter(
+    old,
+    ARENA_NAV,
+    new Map([[0, (b) => b]]),
+  );
+  expect(migrated.character).toEqual(fixture().character);
+  expect(migrated.progression?.character.level).toBe(12);
   expect(
-    serializeCharacter(
-      deserializeCharacter(old, ARENA_NAV, new Map([[0, (b) => b]])),
-    ),
-  ).toBe(text);
+    deserializeCharacter(serializeCharacter(migrated)).progression,
+  ).toEqual(migrated.progression);
   expect(inspectSnapshots(null, null)).toEqual({ kind: "empty" });
   expect(inspectSnapshots(text, null).kind).toBe("valid");
   expect(inspectSnapshots("corrupt", text).kind).toBe("recoverable");

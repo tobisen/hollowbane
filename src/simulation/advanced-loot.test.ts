@@ -85,7 +85,7 @@ it("reports modern set rarity separately and respects expected conditional distr
   expect(report.invalidItems).toBe(0);
 });
 
-it("keeps advanced items out of archives and uses explicit character schema2", () => {
+it("keeps advanced items out of archives and uses explicit character schema3", () => {
   const item = [...found.values()][0]!;
   expect(() => serializeItems([item])).toThrow(/versioned character/);
   const character = createCharacterInventory();
@@ -95,9 +95,9 @@ it("keeps advanced items out of archives and uses explicit character schema2", (
   const root = JSON.parse(text) as {
     schema: number;
     checksum: string;
-    body: { contentVersions: number[] };
+    body: { contentVersions: number[]; progression?: unknown };
   };
-  expect(root.schema).toBe(2);
+  expect(root.schema).toBe(3);
   expect(root.body.contentVersions).toEqual([2, 3, 4, 5, 6, 7, 8]);
   expect(deserializeCharacter(text).character).toEqual(character);
   expect(serializeCharacter(deserializeCharacter(text))).toBe(text);
@@ -107,6 +107,7 @@ it("keeps advanced items out of archives and uses explicit character schema2", (
     character,
   );
   root.schema = 1;
+  delete root.body.progression;
   root.body.contentVersions = [2, 3];
   root.checksum = snapshotChecksum(JSON.stringify(root.body));
   expect(() => deserializeCharacter(JSON.stringify(root))).toThrow(
@@ -230,7 +231,7 @@ it("round-trips mixed legacy and advanced ownership and rejects newer schemas wi
   expect(restored.loot.reserved).toContain(character.equipment.main!.id);
   expect(serializeCharacter(restored)).toBe(text);
   expect(() =>
-    deserializeCharacter(text.replace('"schema":2', '"schema":99')),
+    deserializeCharacter(text.replace('"schema":3', '"schema":99')),
   ).toThrow(/newer/);
   expect(session).toEqual(before);
 });

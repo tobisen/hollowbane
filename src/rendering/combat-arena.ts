@@ -299,6 +299,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           itemLab ? 40 : 12,
           () => this.world.experience.attributes,
           () => this.world.experience,
+          itemLab ? 40 : 1,
         );
       if (this.inventoryRuntime && this.lootView)
         this.inventoryView = new InventoryView(
