@@ -14,7 +14,7 @@ describe("class skill-tree data", () => {
       .filter((n) => n.ability.kind === "existing")
       .map((n) => n.ability.id)
       .sort();
-    expect(refs).toEqual(
+    expect([...new Set(refs)]).toEqual(
       skills
         .filter((s) => s.kind === "active")
         .map((s) => s.id)

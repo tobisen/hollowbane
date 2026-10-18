@@ -238,8 +238,8 @@
             {
               "id": "ranger-precision-foundation",
               "ability": {
-                "kind": "planned",
-                "id": "ranger-precision-ability"
+                "kind": "existing",
+                "id": "storm-thread"
               },
               "level": 1,
               "maxRank": 5,

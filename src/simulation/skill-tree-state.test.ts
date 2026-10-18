@@ -17,8 +17,8 @@ it("presents the allocator verdict for available, learned, maxed and planned nod
   expect(skillNodeState(learned, "warrior", 12, node)).toMatchObject({
     status: "learned",
     rank: 1,
-    current: { damage: 36 },
-    next: { damage: 39.6 },
+    current: { damage: 48 },
+    next: { damage: 52.8 },
   });
   expect(
     skillNodeState(

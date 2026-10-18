@@ -1,5 +1,11 @@
 # Status
 
+## C10–C11 class combat domain verified (2026-10-18)
+
+- Scoped DBL-110/112/113: heavy guarded-stagger Warrior melee/defensive armor buff; Sorcerer projectile/slow control; Ranger precise poison/piercing projectiles. Attribute scaling, one ranked passive and conditional direct-hit synergy per class use existing modifiers, fresh baselines and duplicate-hit prevention.
+- 59 focused unit tests, TypeScript/relevant lint pass. Schema4, existing IDs/ranks and six unclassed abilities preserved; no switching/respec. Original broader parents remain partial.
+- C12 remaining: commit browser/HUD/description integration and isolated memory-only developer fixture route with final seven-case browser evidence/screenshot review. No next-phase authorization. Details: docs/character-classes.md; preserve unrelated local edits.
+
 ## C7–C9 skill-tree UI complete (2026-10-18)
 
 - Scoped DBL-111/114/204/004/210 delivered: gothic Skills panel, three branches per discipline, prerequisite/state/rank display, shared-rule current/next effect inspector, confirmed allocation and learned-active skillbar assignment. No new abilities/respec.

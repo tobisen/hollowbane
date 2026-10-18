@@ -20,6 +20,7 @@ export interface Status extends SkillStatus {
 }
 export interface SkillBolt extends Projectile {
   definition?: ActiveSkill;
+  hitActors?: number[];
   skill: string;
   damage: number;
   element: ActiveSkill["element"];
@@ -117,7 +118,11 @@ export function applyStatus(
       next: r.combat.tick + t.interval,
       ...(triggered ? { triggered: true } : {}),
     });
-  if (r.combat.hitTrace || r.combat.actors.some((a) => a.itemRules))
+  if (
+    r.combat.experience.skills.classId !== null ||
+    r.combat.hitTrace ||
+    r.combat.actors.some((a) => a.itemRules)
+  )
     target.effectStatuses = r.effects.statuses
       .filter((t) => t.actor === target.id)
       .map((t) => t.kind);
@@ -138,7 +143,8 @@ function hit(
   applyCombatHit(r.combat, a, t, nav, {
     damage,
     element: poison ? "poison" : s.element,
-    guaranteed: poison || s.element !== "physical",
+    guaranteed: poison || s.precise === true || s.element !== "physical",
+    ...(s.stagger && !poison && !triggered ? { stagger: true } : {}),
     origin: triggered ? "proc" : poison ? "dot" : "skill",
     ...(triggered ? { scalePower: false } : {}),
     skill: s.id,
@@ -239,6 +245,7 @@ export function releaseSkill(
     r.effects.bolts.push({
       ...bolt,
       definition: s,
+      ...(s.piercing ? { hitActors: [] } : {}),
       skill: s.id,
       damage: s.damage,
       element: s.element,
@@ -289,7 +296,9 @@ export function stepStatuses(r: SkillRuntime, nav: Navigation): void {
     return tick < t.expires;
   });
   const trackContext =
-    !!r.combat.hitTrace || r.combat.actors.some((a) => a.itemRules);
+    r.combat.experience.skills.classId !== null ||
+    !!r.combat.hitTrace ||
+    r.combat.actors.some((a) => a.itemRules);
   for (const a of r.combat.actors) {
     r.effects.bases[a.id] ??= { ...(a.movement ?? MOVEMENT) };
     const base = r.effects.bases[a.id]!,
@@ -323,7 +332,9 @@ export function stepSkillBolts(r: SkillRuntime, nav: Navigation): void {
     };
     if (!segmentWalkable(nav, p.position, end)) return false;
     const candidates = r.combat.actors
-      .filter((a) => a.hp > 0 && enemies(source, a))
+      .filter(
+        (a) => a.hp > 0 && enemies(source, a) && !p.hitActors?.includes(a.id),
+      )
       .map((a) => ({
         a,
         t: projectileContact(
@@ -335,9 +346,11 @@ export function stepSkillBolts(r: SkillRuntime, nav: Navigation): void {
       }))
       .filter((x): x is { a: CombatActor; t: number } => x.t !== null)
       .sort((x, y) => x.t - y.t || x.a.id - y.a.id);
-    if (candidates[0]) {
-      hit(r, s, source, candidates[0].a, nav, p.damage);
-      return false;
+    for (const candidate of candidates) {
+      hit(r, s, source, candidate.a, nav, p.damage);
+      if (!s.piercing) return false;
+      p.hitActors!.push(candidate.a.id);
+      if (p.hitActors!.length >= s.piercing) return false;
     }
     p.position = end;
     return true;

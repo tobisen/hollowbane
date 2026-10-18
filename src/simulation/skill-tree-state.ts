@@ -1,3 +1,5 @@
+import { classAbility } from "./class-abilities";
+import { STARTING_ATTRIBUTES, type AttributeValues } from "./attributes";
 import {
   allocateSkillRanks,
   scaleRankedSkill,
@@ -12,6 +14,7 @@ export function skillNodeState(
   classId: ClassId,
   level: number,
   node: SkillTreeNode,
+  attributes: AttributeValues = STARTING_ATTRIBUTES,
 ) {
   const rank = state.classId === classId ? (state.ranks[node.id] ?? 0) : 0;
   let reason = "";
@@ -28,10 +31,19 @@ export function skillNodeState(
   }
   const skill = SKILLS.find((s) => s.id === node.ability.id);
   const effects = (r: number) =>
-    skill?.kind === "active" ? scaleRankedSkill(skill, Math.max(1, r)) : null;
+    skill?.kind === "active"
+      ? classAbility(
+          scaleRankedSkill(skill, Math.max(1, r)),
+          { ...state, classId },
+          attributes,
+        )
+      : null;
   return {
     rank,
-    name: skill?.name ?? node.id.split("-").slice(1).join(" "),
+    name:
+      effects(Math.max(1, rank))?.name ??
+      skill?.name ??
+      node.id.split("-").slice(1).join(" "),
     status:
       rank === node.maxRank
         ? "maxed"

@@ -1,3 +1,5 @@
+import { classAbility, classManaRegen } from "./class-abilities";
+import { attributeValues } from "./attributes";
 import {
   unlockedSkillRank,
   scaleRankedSkill,
@@ -161,7 +163,11 @@ export function actorSkill(
   if (actor !== r.combat.experience.player) return definition;
   const rank = unlockedSkillRank(r.combat.experience.skills, id);
   return rank > 0
-    ? scaleRankedSkill(definition, rank, r.rankScaling)
+    ? classAbility(
+        scaleRankedSkill(definition, rank, r.rankScaling),
+        r.combat.experience.skills,
+        attributeValues(r.combat.experience.attributes),
+      )
     : undefined;
 }
 function validateTarget(
@@ -232,6 +238,11 @@ export function skillHooks(
           u.cast = null;
         } else if (u.cast && a.controller.timeline.phase === "idle")
           u.cast = null;
+        if (a.hp > 0 && u.actor === r.combat.experience.player)
+          u.mana = Math.min(
+            u.maxMana,
+            u.mana + classManaRegen(r.combat.experience.skills) / 60,
+          );
         if (a.hp > 0)
           for (const id of u.passives) {
             const p = r.definitions.find((p) => p.id === id);

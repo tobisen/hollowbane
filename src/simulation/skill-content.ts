@@ -18,6 +18,10 @@ export interface SkillStatus {
   stacking: "refresh" | "strongest";
 }
 export interface ActiveSkill {
+  /** Derived class mechanics; legacy definitions omit these fields. */
+  stagger?: boolean;
+  precise?: boolean;
+  piercing?: number;
   kind: "active";
   id: string;
   name: string;
@@ -96,6 +100,12 @@ export function validateSkills(data: unknown): readonly SkillDefinition[] {
         s.radius > 100
       )
         throw new Error("Invalid active skill");
+      if (
+        (s.stagger !== undefined && typeof s.stagger !== "boolean") ||
+        (s.precise !== undefined && typeof s.precise !== "boolean") ||
+        (s.piercing !== undefined && (!integer(s.piercing) || s.piercing > 8))
+      )
+        throw new Error("Invalid class mechanics");
       if (s.status !== null) {
         const t = s.status;
         if (

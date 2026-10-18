@@ -1,3 +1,4 @@
+import { classArmor, classAccuracy, classSynergy } from "./class-abilities";
 import {
   createMonsterExperience,
   consumeMonsterDeathXp,
@@ -94,6 +95,7 @@ export type CombatEvent =
     };
 export type CombatHitOrigin = "weapon" | "skill" | "dot" | "proc";
 export interface CombatHit {
+  stagger?: boolean;
   damage: number;
   element: Element;
   guaranteed?: boolean;
@@ -293,15 +295,44 @@ export function applyCombatHit(
         weapon: target.weapon,
       })
     : target.defense;
+  const classSource = source.id === world.experience.player;
+  const classTarget = target.id === world.experience.player;
+  const rawDamage =
+    (source.itemRules ? offense.damage : (hit?.damage ?? offense.damage)) *
+    (hit?.scalePower === false ? 1 : (source.powerMultiplier ?? 1));
   const result = resolveDamage(
     {
       ...offense,
+      accuracy: classSource
+        ? classAccuracy(world.experience.skills, offense.accuracy)
+        : offense.accuracy,
       damage:
-        (source.itemRules ? offense.damage : (hit?.damage ?? offense.damage)) *
-        (hit?.scalePower === false ? 1 : (source.powerMultiplier ?? 1)),
+        classSource && origin === "skill"
+          ? classSynergy(
+              world.experience.skills,
+              hit?.skill,
+              rawDamage,
+              source.effectStatuses ?? [],
+              {
+                healthFraction: source.hp / source.maxHp,
+                targetStatuses: target.effectStatuses ?? [],
+                element,
+                weapon: hit?.weapon ?? source.weapon,
+              },
+            )
+          : rawDamage,
       ...(hit?.guaranteed ? { criticalChance: 0 } : {}),
     },
-    defense,
+    classTarget
+      ? {
+          ...defense,
+          armor: classArmor(
+            world.experience.skills,
+            defense.armor,
+            target.effectStatuses ?? [],
+          ),
+        }
+      : defense,
     random,
     undefined,
     hit?.element ?? "physical",
@@ -330,7 +361,7 @@ export function applyCombatHit(
     return;
   }
   target.stagger += result.amount;
-  const staggered = target.stagger >= target.maxHp * 0.08;
+  const staggered = hit?.stagger || target.stagger >= target.maxHp * 0.08;
   if (
     result.amount > 0 &&
     staggered &&
