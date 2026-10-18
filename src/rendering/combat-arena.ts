@@ -1,3 +1,4 @@
+import type { ItemEffectState } from "../simulation/item-effects";
 import { InventoryView } from "./inventory-view";
 import { InventoryRuntime } from "./inventory-runtime";
 import { ADVANCED_CONTENT } from "../simulation/item-registry";
@@ -122,6 +123,10 @@ declare global {
         inputSamples: number;
       };
     };
+    hollowbaneItems?: Pick<
+      ItemEffectState,
+      "roots" | "procs" | "applied" | "lifeLeeched" | "manaLeeched" | "events"
+    > & { pending: number };
     hollowbaneCombat?: CombatPresentation;
     hollowbaneAI?: {
       tick: number;
@@ -1463,6 +1468,20 @@ export function startCombatArena(monsters = false): Phaser.Game {
         renderWidth: this.scale.width,
         renderHeight: this.scale.height,
       };
+      if (this.game.loop.frame % 6 === 0) {
+        const effects = this.world.itemEffects;
+        if (effects)
+          window.hollowbaneItems = {
+            roots: effects.roots,
+            procs: effects.procs,
+            applied: effects.applied,
+            lifeLeeched: effects.lifeLeeched,
+            manaLeeched: effects.manaLeeched,
+            events: effects.events.slice(-24),
+            pending: this.world.hitTrace?.pending.length ?? 0,
+          };
+        else delete window.hollowbaneItems;
+      }
       window.hollowbaneCombat = {
         tick: this.world.tick,
         paused: this.paused,

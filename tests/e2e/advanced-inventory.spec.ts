@@ -1,3 +1,5 @@
+import { insertSocket } from "../../src/simulation/item-sockets";
+import { SOCKET_ITEM_CONTENT } from "../../src/simulation/item-registry";
 import { AFFIX_ITEM_CONTENT } from "../../src/simulation/item-registry";
 import {
   installVirtualController,
@@ -232,4 +234,74 @@ test("equipped bow and attack speed survive idle scene updates and launch real p
   expect(
     await page.evaluate(() => window.hollowbaneCombat!.actors[0]!.windup),
   ).toBe(10);
+});
+
+test("an embedded gem adds one real elemental impact without recursive activations", async ({
+  page,
+}) => {
+  await page.goto("./?inventory=1&advanced=1&training=1");
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await page.getByText("Developer diagnostics", { exact: true }).click();
+  await page.locator("#combat-hostile").uncheck();
+  let host: ReturnType<typeof generateLoot> = null,
+    gem: ReturnType<typeof generateLoot> = null;
+  for (let sequence = 0; sequence < 10000 && (!host || !gem); sequence++) {
+    const context = { seed: 42, sequence, areaLevel: 40, monsterLevel: 40 };
+    const h = generateLoot(
+        { ...context, table: "sanctum" },
+        SOCKET_ITEM_CONTENT,
+      ),
+      g = generateLoot(
+        { ...context, seed: 43, table: "gem-cache" },
+        SOCKET_ITEM_CONTENT,
+      );
+    if (h?.base === "ash-blade" && h.quality === "normal" && h.socketCapacity)
+      host = identifyItem(h);
+    if (g?.base === "fire-gem-1") gem = g;
+  }
+  if (!host || !gem) throw Error("Missing fixtures");
+  const session = createInventorySession();
+  session.character.level = 40;
+  session.character.equipment.main = host;
+  session.character.grid.items = [{ item: gem, x: 0, y: 0 }];
+  const inserted = insertSocket(session.character, host.id, gem.id);
+  if (!inserted.ok) throw Error(inserted.reason);
+  session.character = inserted.value;
+  await page.locator("#inventory-open").click();
+  await page.locator("#inventory-import").setInputFiles({
+    name: "gem.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(serializeCharacter(session)),
+  });
+  await page.locator("#inventory-close").click();
+  const point = await page.evaluate(() => {
+    const a = window.hollowbaneCombat!.actors[1]!,
+      v = window.hollowbaneCombat!.view,
+      r = document.querySelector("canvas")!.getBoundingClientRect();
+    return {
+      x: r.x + ((a.x - v.x) / v.width) * r.width,
+      y: r.y + ((a.y - 28 - v.y) / v.height) * r.height,
+    };
+  });
+  await page.mouse.click(point.x, point.y);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneItems?.applied ?? 0))
+    .toBe(1);
+  const effects = await page.evaluate(() => window.hollowbaneItems!);
+  expect(effects.procs).toBe(1);
+  expect(effects.pending).toBe(0);
+  const hits = await page.evaluate(() =>
+    window.hollowbaneCombat!.events.filter(
+      (e) => e.kind === "damage" && e.actor === 0,
+    ),
+  );
+  expect(
+    hits.filter((e) => e.kind === "damage" && e.result.type === "physical"),
+  ).toHaveLength(1);
+  expect(
+    hits.filter(
+      (e) =>
+        e.kind === "damage" && e.result.type === "fire" && e.result.amount > 0,
+    ),
+  ).toHaveLength(1);
 });

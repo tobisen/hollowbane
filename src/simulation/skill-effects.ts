@@ -15,6 +15,7 @@ export interface Status extends SkillStatus {
   skill: string;
   expires: number;
   next: number;
+  triggered?: boolean;
 }
 export interface SkillBolt extends Projectile {
   skill: string;
@@ -77,21 +78,24 @@ export function applyStatus(
   s: ActiveSkill,
   source: CombatActor,
   target: CombatActor,
-): void {
-  if (!s.status || target.hp <= 0) return;
+  triggered = false,
+): boolean {
+  if (!s.status || target.hp <= 0) return false;
   const t = s.status,
     old = r.effects.statuses.find(
       (x) => x.actor === target.id && x.kind === t.kind,
     );
   if (old) {
     // A weaker strongest effect cannot prolong or replace a stronger effect.
-    if (t.stacking === "strongest" && old.magnitude > t.magnitude) return;
+    if (t.stacking === "strongest" && old.magnitude > t.magnitude) return false;
     const stronger = t.magnitude > old.magnitude;
     Object.assign(old, t, {
       source: source.id,
       skill: s.id,
       expires: r.combat.tick + t.duration,
     });
+    if (triggered) old.triggered = true;
+    else delete old.triggered;
     if (stronger) old.next = r.combat.tick + t.interval;
   } else
     r.effects.statuses.push({
@@ -101,12 +105,14 @@ export function applyStatus(
       skill: s.id,
       expires: r.combat.tick + t.duration,
       next: r.combat.tick + t.interval,
+      ...(triggered ? { triggered: true } : {}),
     });
   if (r.combat.hitTrace || r.combat.actors.some((a) => a.itemRules))
     target.effectStatuses = r.effects.statuses
       .filter((t) => t.actor === target.id)
       .map((t) => t.kind);
   visual(r, s, source, target, "status");
+  return true;
 }
 function hit(
   r: SkillRuntime,
@@ -116,13 +122,15 @@ function hit(
   nav: Navigation,
   damage = s.damage,
   poison = false,
+  triggered = false,
 ): void {
   const prior = t.hp;
   applyCombatHit(r.combat, a, t, nav, {
     damage,
     element: poison ? "poison" : s.element,
     guaranteed: poison || s.element !== "physical",
-    origin: poison ? "dot" : "skill",
+    origin: triggered ? "proc" : poison ? "dot" : "skill",
+    ...(triggered ? { scalePower: false } : {}),
     skill: s.id,
   });
   if (t.hp < prior) {
@@ -263,7 +271,7 @@ export function stepStatuses(r: SkillRuntime, nav: Navigation): void {
       return false;
     }
     if (t.kind === "poison" && tick >= t.next && source && source.hp > 0) {
-      hit(r, s, source, a, nav, t.magnitude, true);
+      hit(r, s, source, a, nav, t.magnitude, true, t.triggered ?? false);
       t.next += t.interval;
     }
     if (tick === t.expires) visual(r, s, a, a, "expire");

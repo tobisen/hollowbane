@@ -1,3 +1,4 @@
+import { prepareItemEffects, resolveItemEffects } from "./item-effects";
 import {
   createEffects,
   stepStatuses,
@@ -178,8 +179,12 @@ export function skillHooks(
 ): CombatHooks {
   return {
     controlsActor: (a) => !!r.users.find((u) => u.actor === a.id)?.cast,
-    afterTick: () => stepSkillBolts(r, nav),
+    afterTick: () => {
+      stepSkillBolts(r, nav);
+      resolveItemEffects(r.combat, nav, r);
+    },
     beforeTick: () => {
+      prepareItemEffects(r.combat);
       syncSkillUsers(r);
       stepStatuses(r, nav);
       for (const u of r.users) {

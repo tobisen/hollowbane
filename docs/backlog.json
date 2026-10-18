@@ -3805,8 +3805,9 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-356"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nBounded combat proc leech and conditional effect execution. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
+    "status": "complete",
+    "body": "## Acceptance criteria\nBounded combat proc leech and conditional effect execution. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication.",
+    "evidence": "Generic fixed-tick proc/status/leech interpreter uses typed actual-hit roots, cooldowns, dedup and triggered provenance. Real gem/unique/on-kill effects, resources, status movement, monster actor and proc loot death tested.8 targeted/full check272;15 cross-browser advanced/controller/bow/gem scenarios pass."
   },
   {
     "id": "DBL-344",

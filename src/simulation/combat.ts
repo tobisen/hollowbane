@@ -1,3 +1,4 @@
+import type { ItemEffectState } from "./item-effects";
 import {
   itemHitOffense,
   itemHitDefense,
@@ -46,6 +47,7 @@ export interface CombatActor {
   powerMultiplier?: number;
   effectStatuses?: string[];
   itemRules?: ItemHitRules;
+  leechable?: boolean;
   movement?: MovementConfig;
   name: string;
   kind: "player" | "dummy" | "moving" | "hostile";
@@ -88,6 +90,7 @@ export interface CombatHit {
   damage: number;
   element: Element;
   guaranteed?: boolean;
+  scalePower?: boolean;
   origin?: CombatHitOrigin;
   skill?: string;
   weapon?: Weapon;
@@ -121,6 +124,7 @@ export interface CombatHooks {
 }
 export interface CombatWorld {
   hitTrace?: CombatHitTrace;
+  itemEffects?: ItemEffectState;
   hostilesActive: boolean;
   projectiles: Projectile[];
   nextProjectile: number;
@@ -284,7 +288,7 @@ export function applyCombatHit(
       ...offense,
       damage:
         (source.itemRules ? offense.damage : (hit?.damage ?? offense.damage)) *
-        (source.powerMultiplier ?? 1),
+        (hit?.scalePower === false ? 1 : (source.powerMultiplier ?? 1)),
       ...(hit?.guaranteed ? { criticalChance: 0 } : {}),
     },
     defense,
@@ -386,7 +390,7 @@ function recordResolvedHit(
     weapon: hit?.weapon ?? source.weapon,
     damage: Math.min(priorHp, result.amount),
     killed: target.hp === 0,
-    sourceHealthFraction: source.hp / source.maxHp,
+    sourceHealthFraction: Math.max(0, Math.min(1, source.hp / source.maxHp)),
     targetStatuses: [...(target.effectStatuses ?? [])],
     ...(hit?.skill ? { skill: hit.skill } : {}),
   });

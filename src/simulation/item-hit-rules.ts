@@ -13,6 +13,7 @@ export const ITEM_SKILL_RULES = Object.freeze({
   maximumDamage: 10000,
 });
 export interface ItemHitRules {
+  reactive: boolean;
   offense: Offense;
   defense: Defense;
   modifiers: ItemModifier[];
@@ -25,6 +26,12 @@ export function createItemHitRules(
 ): ItemHitRules {
   validateModifiers(modifiers);
   return {
+    reactive: modifiers.some(
+      (m) =>
+        m.kind === "proc" ||
+        (m.kind === "stat" &&
+          (m.stat === "lifeLeech" || m.stat === "manaLeech")),
+    ),
     offense: { ...offense },
     defense: { ...defense, resistances: { ...defense.resistances } },
     modifiers: structuredClone([...modifiers]),
