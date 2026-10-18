@@ -311,3 +311,5 @@ L1 approved; L2 Inventory & Equipment authorized through DBL-320–331 and L2 ga
 Persistence split: DBL-325 pure snapshot validation/migration infrastructure, then required DBL-332 atomic IndexedDB/recovery before326 UI. Existing IDs preserved; L2 scope320–332.
 
 DBL-333 is a planned post-review inventory-modal compositing/native-GPU follow-up under partial DBL-074, based on DBL-329 measurements. It does not extend the L2 completion scope or authorize L3.
+
+L3 authorized after L2 approval: DBL-334–350 sequential dependency chain covers all five increments. Requires12 original uniques,3 complete sets,12 rune components/8 ordered recipes, typed generic modifiers, atomic socket ownership, legacy-compatible saves, actual combat effects and million-roll validation. Original IDs/requirements retained and broader parents partial.333 and282–286 remain separate; no vendors/crafting/progression/campaign.

@@ -132,7 +132,7 @@
   },
   "inventoryL2": {
     "authorized": true,
-    "qualityGateApproved": false,
+    "qualityGateApproved": true,
     "scope": ["DBL-320", "DBL-332"],
     "technicalCandidateReady": true,
     "stoppedForReview": true,
@@ -163,6 +163,12 @@
     ],
     "evidence": "docs/inventory/l2.md and performance*.json",
     "publicUrl": "https://tobisen.github.io/hollowbane/?inventory=1",
-    "remainingFollowup": "DBL-333 and physical DBL-282\u2013286; original broad parents remain partial"
+    "remainingFollowup": "DBL-333 and physical DBL-282\u2013286; original broad parents remain partial",
+    "approval": "Explicit user L2 approval2026-10-18"
+  },
+  "advancedItemsL3": {
+    "authorized": true,
+    "qualityGateApproved": false,
+    "scope": ["DBL-334", "DBL-350"]
   }
 }

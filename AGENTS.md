@@ -43,3 +43,5 @@ L1 checkpoint: DBL-310–319 technically delivered; runtimeb565a1e, CI/Pages3906
 L1 approved; L2 Inventory & Equipment authorized through DBL-320–331 and L2 gate, superseding the earlier inventory prohibition for this scope. Sequential footprints/grid/equipment/world transactions/stats/persistence/UI/controller/regression/performance/publication/gate. Original36 topics and IDs preserved; no L3/progression/crafting/vendors/sockets/runewords.
 
 Persistence split: DBL-325 pure snapshot validation/migration infrastructure, then required DBL-332 atomic IndexedDB/recovery before326 UI. Existing IDs preserved; L2 scope320–332.
+
+L2 approval / L3 authorization (2026-10-18): user approves DBL-320–332 and authorizes Advanced Itemization through five increments and L3 quality review. Scoped DBL-334–350 sequentially; split oversized work. This supersedes socket/rune prohibition only for this scope. Preserve legacy2/3 items, saves, Phaser4.2.1 and all systems. No vendors, crafting, progression or campaign. Keep333/hardware282–286/native GPU/art/issue-sync separate. Stop at L3 review; no automatic next phase.

@@ -90,3 +90,5 @@ L1 approved; L2 Inventory & Equipment authorized through DBL-320–331 and L2 ga
 Persistence split: DBL-325 pure snapshot validation/migration infrastructure, then required DBL-332 atomic IndexedDB/recovery before326 UI. Existing IDs preserved; L2 scope320–332.
 
 L2 performance follow-up DBL-333 retains open-modal software-compositing/native-GPU verification after review; closed-inventory combat performance is covered by329. Original36 phases unchanged.
+
+L2 approved2026-10-18. L3 Advanced Itemization is a scoped delivery across existing itemization requirements, preserving all36 original phases: L3.1 uniques/sets334–337; L3.2 sockets/gems338–339; L3.3 original runes/combinations340–341; L3.4 advanced affixes/procs342–343; L3.5 saves/UI/regression/statistics/performance/publication344–350. Stop for L3 review.
