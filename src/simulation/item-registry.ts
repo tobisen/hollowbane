@@ -94,13 +94,19 @@ function runeContent(): ItemContent {
   return validateItemContent(c, 6);
 }
 export const RUNE_ITEM_CONTENT = runeContent();
+export const AFFIX_ITEM_CONTENT = validateItemContent(
+  { ...structuredClone(RUNE_ITEM_CONTENT), version: 7 },
+  7,
+);
 /** Product callers migrate to this registry when version4 item execution is wired. */
 export function registeredItemContent(version: number): ItemContent {
-  return version === 6
-    ? RUNE_ITEM_CONTENT
-    : version === 5
-      ? SOCKET_ITEM_CONTENT
-      : version === 4
-        ? ADVANCED_CONTENT
-        : legacyContent(version);
+  return version === 7
+    ? AFFIX_ITEM_CONTENT
+    : version === 6
+      ? RUNE_ITEM_CONTENT
+      : version === 5
+        ? SOCKET_ITEM_CONTENT
+        : version === 4
+          ? ADVANCED_CONTENT
+          : legacyContent(version);
 }

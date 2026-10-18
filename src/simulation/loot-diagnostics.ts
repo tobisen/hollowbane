@@ -1,3 +1,4 @@
+import { validateAdvancedAffixSelection } from "./advanced-affixes";
 import { ADVANCED_ITEMS } from "./advanced-item-content";
 import {
   ADVANCED_GENERATION,
@@ -147,6 +148,13 @@ export function simulateLoot(
     quality[item.quality] = (quality[item.quality] ?? 0) + 1;
     bases[item.base] = (bases[item.base] ?? 0) + 1;
     examples[item.quality] ??= item;
+    if (item.advanced?.affixes)
+      validateAdvancedAffixSelection(
+        item.advanced.affixes,
+        content.bases.find((b) => b.id === item.base)!.category,
+        item.level,
+        item.quality,
+      );
     const affixes = item.affixes.map((a) =>
       content.affixes.find((x) => x.id === a.id)!,
     );

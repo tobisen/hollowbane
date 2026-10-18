@@ -1,3 +1,4 @@
+import { rollAdvancedAffixes } from "./advanced-affixes";
 import { SOCKET_CONTENT } from "./socket-content";
 import { createRng } from "./core";
 import {
@@ -38,6 +39,7 @@ export interface GeneratedItem {
   embedded?: GeneratedItem[];
   advanced?: {
     schema: 1;
+    affixes?: string[];
     set: { id: string; piece: string } | null;
     modifiers: ItemModifier[];
   };
@@ -130,6 +132,7 @@ export function generateLoot(
   let name = base.name;
   const affixes: RolledAffix[] = [];
   const chosen: Affix[] = [];
+  let advancedRequirement = base.requirement;
   if (quality === "unique" && !templates.length) quality = "rare";
   if (content.version >= 4 && quality === "rare") {
     const pieces = ADVANCED_ITEMS.sets.flatMap((set) =>
@@ -176,7 +179,17 @@ export function generateLoot(
     for (const [s, v] of Object.entries(u.stats))
       stats[s as keyof ItemStats] = (stats[s as keyof ItemStats] ?? 0) + v;
   }
-  if (quality === "magic" || quality === "rare") {
+  if (content.version >= 7 && (quality === "magic" || quality === "rare")) {
+    const rolled = rollAdvancedAffixes(base, level, quality, identity, random);
+    name = rolled.name;
+    advancedRequirement = rolled.requirement;
+    advanced = {
+      schema: 1,
+      set: null,
+      affixes: rolled.affixes,
+      modifiers: rolled.modifiers,
+    };
+  } else if (quality === "magic" || quality === "rare") {
     const count =
       quality === "magic"
         ? 1 + Math.floor(random() * 2)
@@ -224,7 +237,7 @@ export function generateLoot(
     base: base.id,
     level,
     requirement: Math.max(
-      base.requirement,
+      advancedRequirement,
       ...chosen.map((a) => Math.max(1, a.minLevel - 2)),
     ),
     quality,

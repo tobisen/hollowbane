@@ -488,3 +488,5 @@ export function activeSetBonuses(
   return { active, modifiers };
 }
 validateAdvancedCatalog(ADVANCED_ITEMS);
+
+export { templates as validateModifierTemplates };

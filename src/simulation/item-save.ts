@@ -54,7 +54,7 @@ export function validateGeneratedItem(
       if (
         !object(raw) ||
         raw.embedded !== undefined ||
-        ![5, 6].includes(Number(raw.contentVersion))
+        ![5, 6, 7].includes(Number(raw.contentVersion))
       )
         throw Error("Invalid embedded component");
       const child = validateGeneratedItem(raw);

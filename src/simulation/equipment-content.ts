@@ -87,7 +87,7 @@ export function equipmentDefinition(
 ): EquipmentDefinition {
   if (
     item.contentVersion >= 5 &&
-    item.contentVersion <= 6 &&
+    item.contentVersion <= 7 &&
     (SOCKET_CONTENT.gems.some((g) => g.id === item.base) ||
       (item.contentVersion >= 6 &&
         RUNE_CONTENT.components.some((r) => r.id === item.base)))
@@ -95,7 +95,7 @@ export function equipmentDefinition(
     return { base: item.base, width: 1, height: 1, slots: [], hands: 0 };
   const d = registries
     .get(
-      item.contentVersion >= 4 && item.contentVersion <= 6
+      item.contentVersion >= 4 && item.contentVersion <= 7
         ? 3
         : item.contentVersion,
     )

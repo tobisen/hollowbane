@@ -11,7 +11,7 @@ import type { Navigation } from "../world/navigation";
 
 export const CHARACTER_SCHEMA = 2;
 const LEGACY_VERSIONS = [2, 3];
-const ADVANCED_VERSIONS = [2, 3, 4, 5, 6];
+const ADVANCED_VERSIONS = [2, 3, 4, 5, 6, 7];
 const FORMAT = "hollowbane-character";
 const MAX_BYTES = 1048576;
 function record(v: unknown): Record<string, unknown> {

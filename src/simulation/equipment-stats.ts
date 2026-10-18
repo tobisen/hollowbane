@@ -140,11 +140,14 @@ export function deriveEquipment(
       derived.defense.resistances![element] = cap(
         stat(
           `${element}Resistance`,
-          (derived.defense.resistances?.[element] ?? 0) * 100,
+          (element === "physical"
+            ? base.defense.physicalResistance
+            : (derived.defense.resistances?.[element] ?? 0)) * 100,
           -100,
           75,
         ) / 100,
       );
+    derived.defense.physicalResistance = derived.defense.resistances!.physical!;
     const skills: Record<string, number> = {};
     for (const m of collected.modifiers)
       if (m.kind === "stat" && m.stat.startsWith("skill."))
@@ -218,8 +221,10 @@ export function compareEquipment(
         (after.advanced?.[key] ?? 0) - (before.advanced?.[key] ?? 0);
     for (const element of ["physical", "lightning", "poison"] as const)
       result[`${element}Resistance`] =
-        (after.defense.resistances?.[element] ?? 0) -
-        (before.defense.resistances?.[element] ?? 0);
+        element === "physical"
+          ? after.defense.physicalResistance - before.defense.physicalResistance
+          : (after.defense.resistances?.[element] ?? 0) -
+            (before.defense.resistances?.[element] ?? 0);
     for (const skill of new Set([
       ...Object.keys(before.advanced?.skills ?? {}),
       ...Object.keys(after.advanced?.skills ?? {}),

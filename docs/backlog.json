@@ -3792,8 +3792,9 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-341"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nAdvanced affix generation and compatibility budgets. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
+    "status": "complete",
+    "body": "## Acceptance criteria\nAdvanced affix generation and compatibility budgets. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication.",
+    "evidence": "Frozen content7: expanded typed affix pool replaces rather than appends legacy magic/rare budgets; constraints/ranges/seed replay validated.4 targeted/full check253;3 cross-browser set/save scenarios pass. Physical resistance verified in actual mitigation. Proc/skill/leech runtime remains343."
   },
   {
     "id": "DBL-343",
@@ -3803,7 +3804,7 @@
     "targetPhase": 12,
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
-    "dependencies": ["DBL-342"],
+    "dependencies": ["DBL-354"],
     "status": "planned",
     "body": "## Acceptance criteria\nBounded combat proc leech and conditional effect execution. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
   },
@@ -3928,5 +3929,17 @@
     "status": "complete",
     "body": "## Acceptance criteria\nExplicit schema2 snapshots support content4 with validated schema1 migration preserving legacy items, world RNG and ownership. Reject advanced items inside legacy envelopes; keep legacy save output stable. Dependency before playable337.\n\n## Non-goals\nEmbedded component ownership remains344; no prototype archive conversion.\n\n## Test requirements\nMixed-version roundtrip, real legacy migration, forged manifests and unsupported/corrupt snapshots; full regression.\n\n## Definition of done\nVerified increment committed with evidence in docs/items/l3.md.",
     "evidence": "Schema2 content4 snapshots and validated1→2 migration; legacy-only output remains schema1/manifest2,3. Full check233 and inventory Chromium/Firefox/WebKit29 pass/4 intentional visual skips, including virtual Xbox/PlayStation and IndexedDB recovery. No embedded ownership claim (344)."
+  },
+  {
+    "id": "DBL-354",
+    "title": "Typed deterministic combat hit provenance and bounded resolution trace",
+    "parent": "DBL-079",
+    "phase": 12,
+    "targetPhase": 12,
+    "deliveryPhase": "advanced-items-l3",
+    "priority": "p0",
+    "dependencies": ["DBL-342"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nDistinguish weapon/skill/DoT/proc hits with typed serializable deterministic hit-resolution data for343. Preserve existing hit timing, event output and RNG when item effects are absent. Bounded trace with explicit overflow handling.\n\n## Non-goals\nNo per-item combat branches; effect interpretation remains343.\n\n## Test requirements\nMelee/projectile/skill/DoT provenance, death/immune handling and legacy replay equivalence; full checks.\n\n## Definition of done\nVerified prerequisite committed and documented before343."
   }
 ]
