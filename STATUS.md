@@ -1,5 +1,12 @@
 # Status
 
+## C13 class quality publication candidate (2026-10-18)
+
+- Scoped DBL-113/115/116:31 focused unit checks, three keyboard/mouse/virtual Xbox–PlayStation class combat flows, TypeScript/relevant lint pass. Reused prior class/save/equipment evidence. Fixed bare class-lab routing and conflicting encounter/loot flags; class lab creates no inventory/IndexedDB access and no NPC spell casts.
+- Reviewed/refreshed only two Darwin inventory references for the intended Skills summary; assertions/tolerances unchanged. Linux references require real Linux evidence. No full local regression or loot simulations; existing CI requires full regression.
+- Publication authorized; inspected SSH push dry-run (remote1ce9e92 → local25fb180 before this increment). Next: push this verified candidate, record exact CI/Pages SHA/result, review real failures/Linux images and run hosted class scenarios. C13/user quality approval remains false until review. Candidate demo: https://tobisen.github.io/hollowbane/?developer=1&classLab=warrior (also sorcerer/ranger); hosted verification NOT yet claimed.
+- STOP at C13; no world/campaign. Preserve unrelated local edits and provisional balance/planned-node/physical-controller follow-ups. Evidence: docs/character-classes.md.
+
 ## C10–C12 class gameplay complete (2026-10-18)
 
 - C10–C11 domain committed f1c50ed (scoped DBL-110/112/113). C12 connects shared class mechanics/descriptions/HUD/skillbar and correct pointer-source aiming; schema4, old ranks/items and six legacy abilities preserved. No permanent class switching/respec/new tree UI.

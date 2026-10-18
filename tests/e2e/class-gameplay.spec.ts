@@ -1,8 +1,18 @@
+import {
+  installVirtualController,
+  pressVirtualButton,
+} from "./virtual-controller";
 import { expect, test } from "@playwright/test";
 for (const classId of ["warrior", "sorcerer", "ranger"] as const)
   test(`developer ${classId} combat stays separate from saved progression`, async ({
     page,
   }) => {
+    await installVirtualController(
+      page,
+      classId === "sorcerer"
+        ? "Wireless Controller (STANDARD GAMEPAD)"
+        : "Xbox 360 Controller",
+    );
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.addInitScript(() => {
@@ -12,7 +22,9 @@ for (const classId of ["warrior", "sorcerer", "ranger"] as const)
         },
       });
     });
-    await page.goto(`./?developer=1&classLab=${classId}&inventory=1`);
+    await page.goto(
+      `./?developer=1&classLab=${classId}${classId === "warrior" ? "&inventory=1&loot=1&monsters=1" : ""}`,
+    );
     await expect(page.locator("html")).toHaveAttribute(
       "data-combat-ready",
       "true",
@@ -118,5 +130,62 @@ for (const classId of ["warrior", "sorcerer", "ranger"] as const)
       .toBe(true);
     if (classId === "warrior")
       await page.screenshot({ path: "test-results/class-warrior.png" });
+    await expect
+      .poll(() =>
+        page.evaluate((skill) => {
+          const r = window.hollowbaneSkills!;
+          return (
+            window.hollowbaneCombat!.actors[0]!.phase === "idle" &&
+            (r.users[0]!.cooldowns[skill] ?? 0) <= r.tick
+          );
+        }, primary),
+      )
+      .toBe(true);
+    const count = await page.evaluate(
+      (skill) =>
+        window.hollowbaneSkills!.events.filter(
+          (e) => e.kind === "start" && e.actor === 0 && e.skill === skill,
+        ).length,
+      primary,
+    );
+    const hits = await page.evaluate(
+      () =>
+        window.hollowbaneCombat!.events.filter(
+          (e) => e.kind === "damage" && e.actor === 0,
+        ).length,
+    );
+    await page.evaluate(() => {
+      window.virtualPads[0]!.axes[2] = 0.8;
+      window.virtualPads[0]!.axes[3] = 0.4;
+    });
+    await pressVirtualButton(page, 2, 15);
+    await expect
+      .poll(() =>
+        page.evaluate(
+          (skill) =>
+            window.hollowbaneSkills!.events.filter(
+              (e) => e.kind === "start" && e.actor === 0 && e.skill === skill,
+            ).length,
+          primary,
+        ),
+      )
+      .toBe(count + 1);
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            window.hollowbaneCombat!.events.filter(
+              (e) => e.kind === "damage" && e.actor === 0,
+            ).length,
+        ),
+      )
+      .toBeGreaterThan(hits);
+    expect(
+      await page.evaluate(() =>
+        window.hollowbaneSkills!.events.some(
+          (e) => e.actor !== 0 && e.kind === "start",
+        ),
+      ),
+    ).toBe(false);
     expect(errors).toEqual([]);
   });

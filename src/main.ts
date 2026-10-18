@@ -11,7 +11,8 @@ if (query.has("controller")) {
   query.has("skills") ||
   query.has("polish") ||
   query.has("loot") ||
-  query.has("inventory")
+  query.has("inventory") ||
+  (query.get("developer") === "1" && query.has("classLab"))
 ) {
   await import("./rendering/combat.css");
   const { startCombatArena } = await import("./rendering/combat-arena");

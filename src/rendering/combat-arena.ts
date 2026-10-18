@@ -156,10 +156,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
     query.get("developer") === "1" && CLASS_IDS.includes(labId as ClassId)
       ? (labId as ClassId)
       : null;
+  if (classLab) monsters = false;
   const inventory = query.has("inventory") && !classLab;
   const advanced = inventory && query.has("advanced");
   const itemLab = advanced && query.has("itemLab");
-  const loot = query.has("loot") || inventory;
+  const loot = !classLab && (query.has("loot") || inventory);
   const polish = query.has("polish") || loot || classLab !== null;
   const skills = query.has("skills") || polish;
   const requested = Number(query.get("count") ?? 5);
@@ -213,6 +214,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     document.querySelector<HTMLSelectElement>("#combat-recovery")!;
   const hostile = document.querySelector<HTMLInputElement>("#combat-hostile")!;
   const sound = document.querySelector<HTMLInputElement>("#combat-sound")!;
+  if (classLab) hostile.checked = false;
   class Arena extends Phaser.Scene {
     private encounter: Encounter | null = monsters
       ? createEncounter(initialCount)
