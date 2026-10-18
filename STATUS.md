@@ -1,5 +1,12 @@
 # Status
 
+## C13 CI failure / safe publication checkpoint (2026-10-18)
+
+- Runtime83593130685becfcbaa40d65f67f98ee24c2427c pushed; CI39164311209 FAILED in npm run check; Pages skipped. Public index-BJpbzwJa.js is still the prior progression build; candidate index-DBDMEo57.js is NOT hosted-verified. C13 and user quality approval remain pending.
+- Fixed stale future-schema assertion at advanced-loot.test.ts:235: schema3 replacement was a no-op for schema4. Both schema assertions now use CHARACTER_SCHEMA. Three focused save tests, TypeScript/relevant lint pass; no local full regression/million-roll initializer/loot simulations rerun. Existing31 focused class/persistence checks and three keyboard/mouse/virtual-controller class scenarios passed. Two reviewed Darwin references pass normal comparisons.
+- Resume: inspect successor CI triggered by this commit, resolve actual failures; Linux inventory references likely need actual Linux image review for the intended Skills summary. Do not copy Darwin references or relax tolerances. Confirm exact CI/Pages runtime SHA, then run three hosted class flows. Prior failed run: https://github.com/tobisen/hollowbane/actions/runs/39164311209 . Detailed evidence/hashes: docs/character-classes.md.
+- Candidate URLs: https://tobisen.github.io/hollowbane/?developer=1&classLab=warrior (also sorcerer/ranger); deployment pending. STOP at C13; no world/campaign. Preserve unrelated L3/backlog edits, provisional balance/planned nodes and physical-controller follow-ups.
+
 ## C13 class quality publication candidate (2026-10-18)
 
 - Scoped DBL-113/115/116:31 focused unit checks, three keyboard/mouse/virtual Xbox–PlayStation class combat flows, TypeScript/relevant lint pass. Reused prior class/save/equipment evidence. Fixed bare class-lab routing and conflicting encounter/loot flags; class lab creates no inventory/IndexedDB access and no NPC spell casts.

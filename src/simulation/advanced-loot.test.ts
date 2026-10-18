@@ -20,6 +20,7 @@ import { simulateLoot } from "./loot-diagnostics";
 import { createCharacterInventory, validateCharacter } from "./equipment";
 import { equipmentModifiers } from "./equipment-modifiers";
 import {
+  CHARACTER_SCHEMA,
   serializeCharacter,
   deserializeCharacter,
   snapshotChecksum,
@@ -97,7 +98,7 @@ it("keeps advanced items out of archives and uses explicit character schema4", (
     checksum: string;
     body: { contentVersions: number[]; progression?: unknown };
   };
-  expect(root.schema).toBe(4);
+  expect(root.schema).toBe(CHARACTER_SCHEMA);
   expect(root.body.contentVersions).toEqual([2, 3, 4, 5, 6, 7, 8]);
   expect(deserializeCharacter(text).character).toEqual(character);
   expect(serializeCharacter(deserializeCharacter(text))).toBe(text);
@@ -231,7 +232,9 @@ it("round-trips mixed legacy and advanced ownership and rejects newer schemas wi
   expect(restored.loot.reserved).toContain(character.equipment.main!.id);
   expect(serializeCharacter(restored)).toBe(text);
   expect(() =>
-    deserializeCharacter(text.replace('"schema":3', '"schema":99')),
+    deserializeCharacter(
+      text.replace(`"schema":${CHARACTER_SCHEMA}`, '"schema":99'),
+    ),
   ).toThrow(/newer/);
   expect(session).toEqual(before);
 });
