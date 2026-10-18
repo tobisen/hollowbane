@@ -1,3 +1,5 @@
+import { advancedReference } from "./advanced-visual";
+import { advancedItem } from "../../src/simulation/advanced-item-test-helper";
 import { insertSocket } from "../../src/simulation/item-sockets";
 import { SOCKET_ITEM_CONTENT } from "../../src/simulation/item-registry";
 import { AFFIX_ITEM_CONTENT } from "../../src/simulation/item-registry";
@@ -65,17 +67,11 @@ test("advanced unique inspection and equipped set transitions persist without re
   await expect(page.locator("#inventory-stats")).toContainText(
     "ashen-watch 4-piece",
   );
-  if (process.platform !== "darwin")
-    info.annotations.push({
-      type: "visual-exception",
-      description:
-        "DBL-348: Linux advanced set visual baselines pending; this functional scenario still runs.",
-    });
-  if (process.platform === "darwin")
-    await expect(page.locator("#inventory-details")).toHaveScreenshot(
-      `advanced-set-${info.project.name || "chromium"}-${process.platform}.png`,
-      { maxDiffPixelRatio: 0.005 },
-    );
+  await advancedReference(
+    page.locator("#inventory-details"),
+    "advanced-set",
+    info,
+  );
   await page.screenshot({
     path: `test-results/advanced-set-${info.project.name}.png`,
   });
@@ -350,4 +346,53 @@ test("older inventory route safely resumes a saved advanced component table", as
   await expect(page.locator("#inventory-dialog")).not.toBeVisible();
   await page.locator("#inventory-open").click();
   await expect(page.locator("#inventory-grid .inventory-item")).toHaveCount(1);
+});
+
+test("component grades, original glyphs and slot-specific effects are inspectable", async ({
+  page,
+}, info) => {
+  await page.goto("./?inventory=1&advanced=1&training=1");
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  const session = createInventorySession();
+  session.character.level = 40;
+  session.character.equipment.main = advancedItem("ash-blade", {
+    accept: (i) => i.quality === "normal" && i.socketCapacity === 2,
+  });
+  session.character.grid.items = [
+    { item: advancedItem("fire-gem-3", { version: 5, seed: 43 }), x: 0, y: 0 },
+    {
+      item: advancedItem("sigil-lyrvek", { version: 6, seed: 44 }),
+      x: 2,
+      y: 0,
+    },
+  ];
+  await page.locator("#inventory-open").click();
+  await page.locator("#inventory-import").setInputFiles({
+    name: "components.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(serializeCharacter(session)),
+  });
+  await page.locator('[data-focus="cell-0-0"]').click();
+  await expect(page.locator("#inventory-details")).toContainText(
+    "Gem grade 3 · fire",
+  );
+  await expect(page.locator("#inventory-details")).toContainText(
+    "Fire resistance: +15%",
+  );
+  await expect(page.locator("#inventory-equip")).toBeDisabled();
+  await expect(page.locator("#inventory-grid .inventory-item svg")).toHaveCount(
+    2,
+  );
+  await advancedReference(
+    page.locator(".inventory-layout"),
+    "advanced-components",
+    info,
+  );
+  await page.screenshot({
+    path: `test-results/advanced-components-${info.project.name}.png`,
+  });
+  await page.locator('[data-focus="cell-2-0"]').click();
+  await expect(page.locator("#inventory-details")).toContainText(
+    "Cast speed: +5%",
+  );
 });

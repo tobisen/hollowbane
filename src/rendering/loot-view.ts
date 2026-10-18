@@ -387,6 +387,7 @@ export class LootView {
           this.inspected && inRange
             ? known.stats
               ? Object.entries(known.stats)
+                  .filter(([, v]) => v !== 0)
                   .map(([k, v]) => `${k}: +${v}`)
                   .join(" · ")
               : "Unidentified — rolled attributes concealed."

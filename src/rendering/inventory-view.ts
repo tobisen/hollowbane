@@ -1,4 +1,9 @@
-import { describeAdvancedItem } from "../simulation/item-description";
+import { SOCKET_CONTENT } from "../simulation/socket-content";
+import { RUNE_CONTENT } from "../simulation/rune-content";
+import {
+  describeAdvancedItem,
+  compareItemModifiers,
+} from "../simulation/item-description";
 import {
   inventoryNeighbor,
   type GridDirection,
@@ -32,6 +37,20 @@ import type { GeneratedItem } from "../simulation/loot";
 import "./inventory.css";
 function icon(item: GeneratedItem): string {
   const base = item.base;
+  const gem = SOCKET_CONTENT.gems.find((g) => g.id === base),
+    rune = RUNE_CONTENT.components.findIndex((r) => r.id === base);
+  if (gem) {
+    const color = {
+      fire: "#f3a078",
+      cold: "#a6e8f3",
+      lightning: "#d5bfff",
+      poison: "#a8d98e",
+    }[gem.element];
+    return `<svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="${color}" stroke-width="2.2"><path d="m32 5 22 24-22 29L10 29Zm0 0-9 24 9 29 9-29ZM10 29h44"/><text x="32" y="37" text-anchor="middle" fill="${color}" stroke="none" font-size="11">${["I", "II", "III"][gem.grade - 1]}</text></svg>`;
+  }
+  if (rune >= 0)
+    return `<svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#decaa5" stroke-width="2.2"><path d="m18 8 28 2 7 22-9 23-28-2-6-23ZM32 17v29m-10-17 10-8 10 8${rune & 1 ? "m-20 9 10 8 10-8" : "m-20-1h20"}${rune & 2 ? "m-25-12 5 4" : ""}${rune & 4 ? "m20 8-5 4" : ""}${rune & 8 ? "m-11-19 5-4" : ""}"/></svg>`;
+
   const shape = base.includes("blade")
     ? '<path d="M14 45 39 10l5-2-1 6-25 35m-9-10 18 12M9 53l5-7"/>'
     : base.includes("bow")
@@ -460,6 +479,7 @@ export class InventoryView {
       ? `${info.quality.toUpperCase()} · item level ${info.level}\nRequires level ${info.requirement}\n${
           info.stats
             ? Object.entries(info.stats)
+                .filter(([, v]) => v !== 0)
                 .map(([k, v]) => `${k}: +${v}`)
                 .join("\n")
             : "Unidentified — rolled attributes concealed."
@@ -486,7 +506,20 @@ ${advanced}`;
             Object.entries(compareEquipment(c, this.runtime.base, result.value))
               .map(([k, v]) => `${k}: ${v >= 0 ? "+" : ""}${v.toFixed(2)}`)
               .join("\n")
-          : "Cannot equip: requirement or space restriction.";
+          : SOCKET_CONTENT.gems.some((g) => g.id === item.base) ||
+              RUNE_CONTENT.components.some((r) => r.id === item.base)
+            ? "Socket component · compare host effects above."
+            : "Cannot equip: requirement or space restriction.";
+      if (result?.ok) {
+        const difference = compareItemModifiers(c, result.value);
+        const lines = [
+          ...difference.removed.map((s) => `Removed: ${s}`),
+          ...difference.added.map((s) => `Added: ${s}`),
+        ];
+        if (lines.length)
+          comparison += `
+${lines.join("\n")}`;
+      }
     }
     this.dialog.querySelector("#inventory-compare")!.textContent = comparison;
     const d = this.runtime.derived;
@@ -504,9 +537,17 @@ ${advanced}`;
       this.dialog.querySelector<HTMLButtonElement>(`#${id}`)!.disabled =
         !this.ready ||
         !item ||
-        (id === "inventory-identify" && !!item.identified);
+        (id === "inventory-identify" && !!item.identified) ||
+        (id === "inventory-equip" && !this.slotFor(item));
     this.dialog.querySelector("#inventory-prompts")!.textContent =
       `${hub.frame.device === "gamepad" ? actionPrompt("interact", hub.family, hub.settings.bindings) : "Enter / click"}: select/carry/place · ${actionPrompt("primary", hub.family, hub.settings.bindings)}: equip · ${actionPrompt("secondary", hub.family, hub.settings.bindings)}: compare · Cancel: keep items`;
+    if (d.advanced) {
+      this.dialog.querySelector("#inventory-stats")!.textContent += `
+Cast speed ${d.castSpeed >= 0 ? "+" : ""}${d.castSpeed}% · Hit recovery ${d.recoveryBonus >= 0 ? "+" : ""}${d.recoveryBonus}%`;
+      if (d.advanced.patterns.length)
+        this.dialog.querySelector("#inventory-stats")!.textContent += `
+Active patterns: ${d.advanced.patterns.map((p) => p.name).join(", ")}`;
+    }
     if (d.advanced?.active.length)
       this.dialog.querySelector("#inventory-stats")!.textContent += `
 Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece`).join(", ")}`;

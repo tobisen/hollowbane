@@ -325,3 +325,5 @@ DBL-354 splits typed hit provenance and bounded serializable resolution tracing 
 DBL-355 isolates the discovered scene equipment-sync/selector override and casting/recovery bridge after354, before343. Preserve active commitment timing and existing manual controls.
 
 DBL-356 splits actual contextual hit/skill/DoT arithmetic from343 after355. Proc/leech/status event interpretation remains343. No parent completion implied.
+
+DBL-357 inspection/comparison/glyphs and358 explicit socket/controller UI split the oversized345 after344;345 retains final lab/replay/controller integration before346. Existing IDs and partial parent scope preserved.

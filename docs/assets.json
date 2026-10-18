@@ -121,5 +121,12 @@
     "source": "src/rendering/inventory-view.ts",
     "rights": "original SVG paths authored for Hollowbane; no third-party assets",
     "placeholder": true
+  },
+  {
+    "id": "l3-component-line-icons",
+    "source": "src/rendering/inventory-view.ts",
+    "rights": "original procedural SVG gem facets and twelve sigil motifs authored for Hollowbane; no external artwork",
+    "placeholder": true,
+    "provenance": "docs/items/l3.md"
   }
 ]

@@ -3830,7 +3830,7 @@
     "targetPhase": 12,
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
-    "dependencies": ["DBL-344"],
+    "dependencies": ["DBL-358"],
     "status": "planned",
     "body": "## Acceptance criteria\nController socket component and advanced tooltip interface. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
   },
@@ -3970,5 +3970,30 @@
     "status": "complete",
     "body": "## Acceptance criteria\nInterpret shared item modifiers at actual hit resolution: conditional weapon damage/accuracy/defense, elemental skill amplification, skill rank damage and DoT potency. Explicit source/target context and no double application; preserve legacy RNG/timing.\n\n## Non-goals\nProc/leech/status interpretation remains343; no per-unique branches or new progression.\n\n## Test requirements\nActual weapon/skill/DoT effects and condition transitions, resistance and source eligibility, preserve legacy replay and full checks.\n\n## Definition of done\nVerified prerequisite committed before343.",
     "evidence": "Generic pre-modifier hit baselines prevent double application; exact health/status defense and weapon contexts, skill-rank/elemental/DoT actual damage.6 targeted/full check264;12 advanced/controller/real-bow browser cases pass. Proc/leech/status engine343 next."
+  },
+  {
+    "id": "DBL-357",
+    "title": "Advanced inspection, modifier comparisons and original component glyphs",
+    "parent": "DBL-093",
+    "phase": 12,
+    "targetPhase": 12,
+    "deliveryPhase": "advanced-items-l3",
+    "priority": "p0",
+    "dependencies": ["DBL-344"],
+    "status": "complete",
+    "body": "## Acceptance criteria\nShared readable sockets/components/pattern descriptions and complete modifier differences; original provisional component SVGs, unit and visual evidence.\n\n## Non-goals\nNo vendors/crafting/progression/campaign or final art claim.\n\n## Test requirements\nTargeted tests, full checks and relevant browser/screenshot review.\n\n## Definition of done\nVerified increment committed with evidence before integrated345.",
+    "evidence": "Readable gem grades/slot effects, ordered contents and active-vs-bag patterns; complete modifier contract differences, original provisional glyphs/provenance.3 new tests/full check280;6 cross-browser visual/functional cases pass after reviewing6 Darwin references and rerunning without update mode. Linux exception remains348."
+  },
+  {
+    "id": "DBL-358",
+    "title": "Explicit atomic socket controls and readable controller navigation",
+    "parent": "DBL-101",
+    "phase": 12,
+    "targetPhase": 12,
+    "deliveryPhase": "advanced-items-l3",
+    "priority": "p0",
+    "dependencies": ["DBL-357"],
+    "status": "planned",
+    "body": "## Acceptance criteria\nExplicit append/extract UI using existing atomic model, safe focus/read navigation and complete virtual Xbox/PlayStation lifecycle. No drag-to-socket or crafting.\n\n## Non-goals\nNo vendors/crafting/progression/campaign or final art claim.\n\n## Test requirements\nTargeted tests, full checks and relevant browser/screenshot review.\n\n## Definition of done\nVerified increment committed with evidence before integrated345."
   }
 ]
