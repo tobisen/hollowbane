@@ -1,3 +1,4 @@
+import { CharacterPanel } from "./character-panel";
 import { insertSocket, extractSockets } from "../simulation/item-sockets";
 import { SOCKET_CONTENT } from "../simulation/socket-content";
 import { RUNE_CONTENT } from "../simulation/rune-content";
@@ -77,6 +78,7 @@ function icon(item: GeneratedItem): string {
 export class InventoryView {
   readonly dialog: HTMLDialogElement;
   private storage: InventoryStorage;
+  private characterPanel: CharacterPanel;
   private selected: string | null = null;
   private held: string | null = null;
   private socketHost: string | null = null;
@@ -162,6 +164,10 @@ export class InventoryView {
         : "Open separate item laboratory";
       this.dialog.querySelector("footer")!.append(notice, link);
     }
+    this.characterPanel = new CharacterPanel(runtime);
+    this.dialog
+      .querySelector(".inventory-layout")!
+      .before(this.characterPanel.element);
     root.append(this.dialog);
     const button = (id: string, fn: () => void) => {
       this.dialog.querySelector<HTMLButtonElement>(`#${id}`)!.onclick = fn;
@@ -471,6 +477,7 @@ export class InventoryView {
   }
   render(): void {
     if (!this.dialog) return;
+    this.characterPanel.render();
     if (this.held && !ownedItem(this.runtime.character, this.held))
       this.held = null;
     const c = this.runtime.character,
@@ -801,6 +808,7 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
     }
   };
   private updatePrompts() {
+    if (this.dialog.open) this.characterPanel.render();
     const device = hub.frame.device;
     if (
       this.lastDevice &&

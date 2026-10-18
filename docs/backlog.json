@@ -1155,9 +1155,10 @@
     "phase": 15,
     "priority": "p0",
     "dependencies": ["DBL-107"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nFull character sheet, combat breakdown och tooltips.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 15; P0. Target roadmap phase 16; source phase metadata retained.\n\n## Dependencies\nDBL-107\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Full character sheet, combat breakdown och tooltips.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-108; no known critical regression.\n",
-    "targetPhase": 16
+    "targetPhase": 16,
+    "evidence": "P7 gothic expandable character panel inside existing inventory modal; shared XP/current-level progress/cap, innate+allocated attributes/unspent points and actual shared combat/resistance totals. One view-state and3 existing runtime tests, TypeScript/relevant lint and1 Chromium panel scenario pass;1280x800 screenshot reviewed. No allocation/persistence yet; broader character-sheet parent remains partial."
   },
   {
     "id": "DBL-109",

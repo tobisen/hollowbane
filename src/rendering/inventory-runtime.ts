@@ -1,3 +1,4 @@
+import type { MonsterExperience } from "../simulation/monster-experience";
 import type { EquipmentRequirementContext } from "../simulation/equipment-requirements";
 import {
   attributeValues,
@@ -38,6 +39,8 @@ export class InventoryRuntime {
     initialLevel = 12,
     private getAttributes: () => CharacterAttributes | undefined = () =>
       undefined,
+    private getProgression: () => MonsterExperience | undefined = () =>
+      undefined,
   ) {
     this.character = createCharacterInventory(initialLevel);
     this.actor = getActor();
@@ -49,6 +52,9 @@ export class InventoryRuntime {
     const attributes = getAttributes();
     if (attributes) this.base.attributes = attributeValues(attributes);
     this.derived = deriveEquipment(this.character, this.base);
+  }
+  progression(): MonsterExperience | undefined {
+    return this.getProgression();
   }
   requirements(): EquipmentRequirementContext {
     const state = this.getAttributes();

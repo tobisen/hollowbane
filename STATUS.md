@@ -1,5 +1,12 @@
 # Status
 
+## Latest progression checkpoint — P7 (2026-10-18)
+
+- P7 delivered; P6 preserved. P8 allocation and P9 persistence remain next under current authorization. Stop after P9; P10/P11 are outside this session.
+- Shared panel has no duplicate stat formulas;1 new view-state +3 runtime tests and1 Chromium browser scenario pass, screenshot reviewed.
+- Current XP is still session-only and inventory requirement level remains legacy12/laboratory40 until P9 migration. Preserve existing item/save data and all pre-existing local L3 edits.
+- Next: P8 allocate through immutable domain logic with ready-state protection and requirement validation; P9 schema3 snapshot plus explicit schema1/2 migration, progression authority binding and atomic restore. Original broad issue parents remain partial.
+
 ## Active progression batch — P6–P11 (2026-10-18)
 
 - User authorizes autonomous sequential P6–P11 through progression quality review, superseding prior P5 stop. Preserve all prior mechanics/items/saves and pre-existing local L3 documentation. No classes/skill trees/vendors/campaign.

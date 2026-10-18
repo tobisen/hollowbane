@@ -1,0 +1,108 @@
+#character-panel {
+  border: 1px solid #79613e;
+  margin: 12px 0 20px;
+  background:
+    radial-gradient(ellipse at top left, #38312666, transparent 65%), #101714;
+}
+#character-toggle {
+  color: #ead3a0;
+  padding: 12px 16px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+}
+#character-toggle:focus-visible {
+  outline: 3px solid #fff3a5;
+  outline-offset: 2px;
+}
+#character-panel section {
+  padding: 0 22px 18px;
+}
+.character-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #65553b;
+}
+#character-panel h3 {
+  font-size: 26px;
+  margin: 0 0 12px;
+}
+.character-eyebrow {
+  color: #b7a17a;
+  letter-spacing: 0.18em;
+  font-size: 10px;
+  margin: 8px 0 3px;
+}
+#character-points {
+  color: #f0d58c;
+  font-size: 22px;
+  padding-left: 10px;
+}
+.character-xp-label {
+  display: block;
+  color: #bdb5a3;
+  margin: 14px 0;
+}
+#character-xp {
+  float: right;
+  font-variant-numeric: tabular-nums;
+}
+#character-progress {
+  display: block;
+  width: 100%;
+  height: 10px;
+  margin-top: 8px;
+  accent-color: #bb9856;
+}
+.character-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+#character-panel h4 {
+  color: #d9c18e;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  margin: 14px 0 8px;
+}
+.character-attribute {
+  display: grid;
+  grid-template-columns: 1fr 55px 58px;
+  align-items: center;
+  min-height: 43px;
+  border-bottom: 1px solid #433d2d;
+}
+#character-panel dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  margin: 0;
+  gap: 4px 20px;
+  font-variant-numeric: tabular-nums;
+}
+#character-panel dt {
+  color: #bab5a6;
+}
+#character-panel dd {
+  margin: 0;
+  color: #eee2c8;
+}
+#character-feedback {
+  color: #b5aa91;
+  font-size: 12px;
+  margin-bottom: 0;
+}
+@media (max-width: 650px) {
+  .character-columns {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .character-heading {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  #character-xp {
+    float: none;
+    display: block;
+  }
+}
