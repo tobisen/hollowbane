@@ -108,7 +108,7 @@ test("legacy discipline confirmation and keyboard learning remain explicit", asy
   await expect(page.locator("#node-ranger-wilds-foundation")).toContainText(
     "1 / 5",
   );
-  await page.locator("#skill-branch-1").click();
+  await page.locator("#skill-branch-2").click();
   await expect(page.locator("#skill-learn")).toBeDisabled();
   await expect(page.locator("#skill-inspector")).toContainText(
     "Ability not implemented",

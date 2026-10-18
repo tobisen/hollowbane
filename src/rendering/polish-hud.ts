@@ -1,7 +1,11 @@
 import { SKILL_ICONS as ICONS } from "./skill-icons";
 import { skillBar } from "../simulation/skill-progression";
 import { SKILL_ACTIONS, SKILL_SLOTS } from "../simulation/skill-input";
-import { activeSkill, type SkillRuntime } from "../simulation/skills";
+import {
+  activeSkill,
+  actorSkill,
+  type SkillRuntime,
+} from "../simulation/skills";
 import { actionPrompt } from "../simulation/prompts";
 import type { ControllerSettings } from "../simulation/controller-settings";
 import type { GlyphFamily } from "../simulation/gamepad-profile";
@@ -79,7 +83,7 @@ export class PolishHUD {
     );
     for (const [i, b] of this.buttons.entries()) {
       const id = skillBar(r.combat.experience.skills)[i],
-        s = id ? activeSkill(r, id) : undefined;
+        s = id ? actorSkill(r, 0, id) : undefined;
       if (!s) {
         text(b.querySelector(".slot-name")!, "Empty slot");
         text(b.querySelector(".slot-meta")!, "Assign a learned skill");

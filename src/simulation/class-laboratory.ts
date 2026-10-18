@@ -1,3 +1,4 @@
+import { commandCombat } from "./combat-targeting";
 import type { ClassId } from "./character-classes";
 import {
   CHARACTER_CLASSES,
@@ -63,6 +64,7 @@ export function createClassLaboratory(world: CombatWorld, classId: ClassId) {
     const target = world.actors[i];
     if (!target) continue;
     target.kind = "dummy";
+    target.controller = commandCombat(target.controller, { kind: "stop" });
     target.name = `Class target ${i}`;
     target.hp = target.maxHp = 500;
     target.defense = { defense: 0, armor: 0, physicalResistance: 0 };

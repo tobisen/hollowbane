@@ -1,3 +1,5 @@
+import { CLASS_IDS, type ClassId } from "../simulation/character-classes";
+import { createClassLaboratory } from "../simulation/class-laboratory";
 import { skillBar } from "../simulation/skill-progression";
 import type { ItemEffectState } from "../simulation/item-effects";
 import { InventoryView } from "./inventory-view";
@@ -15,6 +17,7 @@ import { queueMonsterSkills } from "../simulation/monster-skills";
 import { actionPrompt } from "../simulation/prompts";
 import {
   createSkills,
+  actorSkill,
   requestSkill,
   skillHooks,
   SKILLS,
@@ -148,11 +151,16 @@ declare global {
 }
 export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
-  const inventory = query.has("inventory");
+  const labId = query.get("classLab");
+  const classLab =
+    query.get("developer") === "1" && CLASS_IDS.includes(labId as ClassId)
+      ? (labId as ClassId)
+      : null;
+  const inventory = query.has("inventory") && !classLab;
   const advanced = inventory && query.has("advanced");
   const itemLab = advanced && query.has("itemLab");
   const loot = query.has("loot") || inventory;
-  const polish = query.has("polish") || loot;
+  const polish = query.has("polish") || loot || classLab !== null;
   const skills = query.has("skills") || polish;
   const requested = Number(query.get("count") ?? 5);
   const initialCount = [5, 10, 20, 30].includes(requested) ? requested : 5;
@@ -192,6 +200,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
     root.querySelector("h1")!.textContent = "The Sable Court";
     document.title = "Hollowbane · The Sable Court";
   }
+  if (classLab) {
+    root.querySelector(".arena-header p")!.textContent =
+      `DEVELOPER CLASS LAB · ${classLab.toUpperCase()} · MEMORY ONLY · NO PLAYER SAVES`;
+    root.querySelector("h1")!.textContent = "The Proving Circle";
+  }
   const polishedHud = polish ? new PolishHUD(root) : null;
   const field = document.querySelector<HTMLElement>("#combat-world")!;
   const weapon = document.querySelector<HTMLSelectElement>("#combat-weapon")!;
@@ -208,7 +221,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private lootView: LootView | null = null;
     private inventoryView: InventoryView | null = null;
     private inventoryRuntime: InventoryRuntime | null = null;
-    private abilities = skills ? createSkills(this.world) : null;
+    private abilities = classLab
+      ? createClassLaboratory(this.world, classLab)
+      : skills
+        ? createSkills(this.world)
+        : null;
     private selectedSkill = 0;
     private mouseGround: Point = { x: 790, y: 560 };
     private skillCosts: number[] = [];
@@ -395,7 +412,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           field.focus();
           this.mouseGround = point(event);
           this.hovered = pick(this.mouseGround);
-          this.castSkill(this.selectedSkill);
+          this.castSkill(this.selectedSkill, true);
           return;
         }
         if (event.button !== 0 || this.paused) return;
@@ -504,7 +521,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.world = this.encounter?.combat ?? createCombat();
           this.prepareShowcase();
           this.prepareBenchmark();
-          this.abilities = skills ? createSkills(this.world) : null;
+          this.abilities = classLab
+            ? createClassLaboratory(this.world, classLab)
+            : skills
+              ? createSkills(this.world)
+              : null;
           this.skillCosts = [];
           this.skillLatencies = [];
           this.motion = {};
@@ -623,13 +644,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
       document.querySelector(".arena-header p")!.textContent =
         "HOLLOWBANE / DURABLE TARGET BENCHMARK";
     }
-    private castSkill(slot: number): void {
+    private castSkill(slot: number, pointerIntent = false): void {
       if (!this.abilities || this.paused || controllerInput.blockGameplay)
         return;
       const a = this.world.actors[0]!,
         candidates = this.world.actors.filter((t) => t.hp > 0 && t.id !== 0),
         aim = controllerInput.frame.aim;
-      const isMouse = controllerInput.frame.device === "mouse";
+      const isMouse = pointerIntent || controllerInput.frame.device === "mouse";
       const selected = candidates.find(
         (t) => t.id === (isMouse ? this.hovered : a.controller.selected),
       );
@@ -1410,9 +1431,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
             root.querySelectorAll<HTMLButtonElement>("[data-skill]"),
           );
           for (const [i, b] of buttons.entries()) {
-            const s = SKILLS.find(
-              (s) => s.id === skillBar(this.world.experience.skills)[i],
-            );
+            const id = skillBar(this.world.experience.skills)[i];
+            const s = id ? actorSkill(this.abilities, 0, id) : undefined;
             b.disabled = !s;
             if (!s) {
               b.textContent = "Empty slot";

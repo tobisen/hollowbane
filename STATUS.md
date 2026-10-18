@@ -1,5 +1,12 @@
 # Status
 
+## C10–C12 class gameplay complete (2026-10-18)
+
+- C10–C11 domain committed f1c50ed (scoped DBL-110/112/113). C12 connects shared class mechanics/descriptions/HUD/skillbar and correct pointer-source aiming; schema4, old ranks/items and six legacy abilities preserved. No permanent class switching/respec/new tree UI.
+- Developer-only `?developer=1&classLab=warrior|sorcerer|ranger` creates memory-only level12 starter fixtures and passive targets; inventory/save UI is excluded. Browser checks deny IndexedDB access, proving no character checkpoint reads/writes on this route.
+- 59 focused unit/7 targeted Chromium cases pass; TypeScript, relevant lint/format/build pass. Class/skill screenshots reviewed. Provisional balancing, planned nodes, physical controllers and broader parents remain open; no full regression/loot simulation/publication claim. Details: docs/character-classes.md.
+- STOP after C12. Await explicit continuation; preserve unrelated local L3/backlog edits and all hardware/art/performance follow-ups.
+
 ## C10–C11 class combat domain verified (2026-10-18)
 
 - Scoped DBL-110/112/113: heavy guarded-stagger Warrior melee/defensive armor buff; Sorcerer projectile/slow control; Ranger precise poison/piercing projectiles. Attribute scaling, one ranked passive and conditional direct-hit synergy per class use existing modifiers, fresh baselines and duplicate-hit prevention.

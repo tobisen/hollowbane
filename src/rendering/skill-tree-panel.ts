@@ -1,3 +1,5 @@
+import { classMechanicsDescription } from "../simulation/class-abilities";
+import { attributeValues } from "../simulation/attributes";
 import {
   CHARACTER_CLASSES,
   type ClassId,
@@ -180,6 +182,7 @@ export class SkillTreePanel {
       this.selected = branch.nodes[0]!.id;
     const key = JSON.stringify([
       xp.skills,
+      xp.attributes,
       xp.character.level,
       this.classId,
       this.branch,
@@ -199,10 +202,11 @@ export class SkillTreePanel {
       this.classId,
       xp.character.level,
       selected,
+      attributeValues(xp.attributes),
     );
     const effect = (s: typeof view.current) =>
       s
-        ? `${s.damage.toFixed(1)} damage${s.status ? ` · ${s.status.kind} ${s.status.magnitude.toFixed(2)} for ${(s.status.duration / 60).toFixed(1)}s` : ""} · ${s.mana} mana · ${(s.cooldown / 60).toFixed(1)}s cooldown`
+        ? `${s.damage.toFixed(1)} damage${s.stagger ? " · Staggers on hit (reaction guard applies)" : ""}${s.precise ? " · Precise: cannot miss" : ""}${s.piercing ? ` · Pierces ${s.piercing} targets once each` : ""}${s.status ? ` · ${s.status.kind} ${s.status.magnitude.toFixed(2)} for ${(s.status.duration / 60).toFixed(1)}s` : ""} · ${s.mana} mana · ${(s.cooldown / 60).toFixed(1)}s cooldown`
         : "Not learned";
     const label = (id: string) =>
       tree.branches.flatMap((b) => b.nodes).find((n) => n.id === id);
@@ -232,7 +236,7 @@ export class SkillTreePanel {
         })
         .join(
           "",
-        )}</div><aside id="skill-inspector" aria-live="polite"><p class="character-eyebrow">${view.status.toUpperCase()}</p><h4>${esc(view.name)}</h4><p>Rank ${view.rank} / ${selected.maxRank} · Requires level ${selected.level}</p><p>${selected.prerequisites.map((p) => `Requires ${esc(requirement(p.node))} rank ${p.rank}`).join("<br>") || "No prerequisites"}</p><p>Current: ${esc(effect(view.current))}</p><p>Next rank: ${view.planned ? "Ability not implemented" : esc(effect(view.next))}</p><p>${esc(view.reason)}</p><button id="skill-learn" ${!view.canAllocate || !this.ready() ? "disabled" : ""}>Learn rank ${view.rank + 1} · 1 point</button>${xp.skills.classId === null ? '<button id="skill-choose-class">Choose this discipline…</button><p>Changes skill access only. Existing attributes and items remain.</p>' : ""}<div class="skill-assign" aria-label="Assign learned ability">${Array.from({ length: 6 }, (_, i) => `<button id="skill-assign-${i}" data-assign="${i + 1}" ${!view.current || view.planned || !this.ready() ? "disabled" : ""}>Assign ${i + 1}</button>`).join("")}</div></aside></div><p id="skill-feedback" role="status">${esc(this.feedback || "Select a node to inspect. Learning requires confirmation; no respec.")}</p>${this.pending ? `<div class="skill-confirmation" role="alertdialog" aria-labelledby="skill-confirm-title" aria-describedby="skill-confirm-description"><h4 id="skill-confirm-title">${this.pending.kind === "rank" ? "Spend 1 skill point?" : `Commit to ${this.classId}?`}</h4><p id="skill-confirm-description">${this.pending.kind === "rank" ? `${esc(view.name)}: rank ${view.rank} → ${view.rank + 1}. This cannot be refunded.` : "Permanent skill discipline. Only learned class abilities will remain assignable and usable. Legacy six-skill access ends. Attributes and items are retained."}</p><button id="skill-back">Cancel</button><button id="skill-confirm">Confirm ${this.pending.kind === "rank" ? "1 point" : "discipline"}</button></div>` : ""}`;
+        )}</div><aside id="skill-inspector" aria-live="polite"><p class="character-eyebrow">${view.status.toUpperCase()}</p><h4>${esc(view.name)}</h4><p>Rank ${view.rank} / ${selected.maxRank} · Requires level ${selected.level}</p><p>${selected.prerequisites.map((p) => `Requires ${esc(requirement(p.node))} rank ${p.rank}`).join("<br>") || "No prerequisites"}</p><p>Base effects before gear and mitigation.</p><p>Current: ${esc(effect(view.current))}</p><p>Next rank: ${view.planned ? "Ability not implemented" : esc(effect(view.next))}</p><p>${esc(classMechanicsDescription(xp.skills))}</p><p>${esc(view.reason)}</p><button id="skill-learn" ${!view.canAllocate || !this.ready() ? "disabled" : ""}>Learn rank ${view.rank + 1} · 1 point</button>${xp.skills.classId === null ? '<button id="skill-choose-class">Choose this discipline…</button><p>Changes skill access only. Existing attributes and items remain.</p>' : ""}<div class="skill-assign" aria-label="Assign learned ability">${Array.from({ length: 6 }, (_, i) => `<button id="skill-assign-${i}" data-assign="${i + 1}" ${!view.current || view.planned || !this.ready() ? "disabled" : ""}>Assign ${i + 1}</button>`).join("")}</div></aside></div><p id="skill-feedback" role="status">${esc(this.feedback || "Select a node to inspect. Learning requires confirmation; no respec.")}</p>${this.pending ? `<div class="skill-confirmation" role="alertdialog" aria-labelledby="skill-confirm-title" aria-describedby="skill-confirm-description"><h4 id="skill-confirm-title">${this.pending.kind === "rank" ? "Spend 1 skill point?" : `Commit to ${this.classId}?`}</h4><p id="skill-confirm-description">${this.pending.kind === "rank" ? `${esc(view.name)}: rank ${view.rank} → ${view.rank + 1}. This cannot be refunded.` : "Permanent skill discipline. Only learned class abilities will remain assignable and usable. Legacy six-skill access ends. Attributes and items are retained."}</p><button id="skill-back">Cancel</button><button id="skill-confirm">Confirm ${this.pending.kind === "rank" ? "1 point" : "discipline"}</button></div>` : ""}`;
     if (this.pending)
       for (const button of Array.from(
         this.element.querySelectorAll<HTMLButtonElement>(
