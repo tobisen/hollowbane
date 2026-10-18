@@ -1134,9 +1134,10 @@
     "phase": 15,
     "priority": "p0",
     "dependencies": ["DBL-105"],
-    "status": "planned",
+    "status": "partial",
     "body": "## Purpose\nLevel restrictions och skill/stat requirements.\n\n## Scope\nImplement this result only, using the original requirement above. Split before work if it cannot fit a focused session.\n\n## Non-goals\nOther phase features and mass content production.\n\n## Phase and priority\nSource phase 15; P0. Target roadmap phase 16; source phase metadata retained.\n\n## Dependencies\nDBL-105\n\n## Acceptance criteria\n- Deliver the independently reviewable result: Level restrictions och skill/stat requirements.\n- Document inputs, outputs, boundary conditions and failure behavior.\n- Demonstrate the result against the phase gate with retained evidence.\n\n## Test requirements\nRelevant unit/integration coverage; typecheck, lint, production build; E2E for player-facing flows; screenshot review for visible changes.\n\n## Assets and licensing\nOriginal or compatible licensed assets only; record provenance in ASSET_MANIFEST.md. Design and tooling tasks need no production assets.\n\n## Definition of done\nAcceptance evidence reviewed; relevant checks pass; docs/status updated; diff reviewed; commit includes DBL-106; no known critical regression.\n",
-    "targetPhase": 16
+    "targetPhase": 16,
+    "evidence": "P6 equipment requirements delivered: configurable level/Strength/Dexterity checks on equip/swap/world transactions; only innate/allocated stats count. Atomic reconciliation stows invalidated gear or rejects the whole stat change when bag space is insufficient. Frozen content2–8 retains original level requirements and zero stat minima; no item replay/content mutation. Six new tests;19 targeted equipment/world/save/runtime tests, TypeScript and relevant lint pass. Broader DBL-106 remains partial (skill requirements excluded)."
   },
   {
     "id": "DBL-107",

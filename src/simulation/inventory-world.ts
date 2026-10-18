@@ -1,3 +1,4 @@
+import type { EquipmentRequirementContext } from "./equipment-requirements";
 import { itemTree } from "./item-ownership";
 import {
   createCharacterInventory,
@@ -20,6 +21,8 @@ import { validateGeneratedItem, identifyItem } from "./item-save";
 import { canWalk, type Navigation } from "../world/navigation";
 import type { Point } from "../world/isometric";
 export interface InventorySession {
+  /** Runtime rule context, deliberately excluded from item/save identity. */
+  requirements?: EquipmentRequirementContext;
   character: CharacterInventory;
   loot: LootWorld;
 }
@@ -30,6 +33,7 @@ export function createInventorySession(seed = 42): InventorySession {
 }
 export function reserveOwned(s: InventorySession): InventorySession {
   return {
+    ...s,
     character: s.character,
     loot: {
       ...s.loot,
@@ -38,7 +42,7 @@ export function reserveOwned(s: InventorySession): InventorySession {
   };
 }
 export function validateSession(s: InventorySession, nav?: Navigation): void {
-  validateCharacter(s.character);
+  validateCharacter(s.character, s.requirements);
   const all = itemTree([
     ...ownedItems(s.character),
     ...s.loot.drops.map((d) => d.item),
@@ -68,7 +72,7 @@ function complete(
   character: CharacterInventory,
   loot = s.loot,
 ): InventoryResult<InventorySession> {
-  return { ok: true, value: reserveOwned({ character, loot }) };
+  return { ok: true, value: reserveOwned({ ...s, character, loot }) };
 }
 export function pickupDrop(
   s: InventorySession,
@@ -142,12 +146,13 @@ export function moveOwned(
 ): InventoryResult<InventorySession> {
   let result: InventoryResult<CharacterInventory>;
   if (destination.kind === "equipment")
-    result = equipItem(s.character, id, destination.slot);
+    result = equipItem(s.character, id, destination.slot, s.requirements);
   else {
     const slot = EQUIP_SLOTS.find(
       (slot) => s.character.equipment[slot]?.id === id,
     );
-    if (slot) result = unequipItem(s.character, slot, destination);
+    if (slot)
+      result = unequipItem(s.character, slot, destination, s.requirements);
     else {
       if (s.character.revision >= Number.MAX_SAFE_INTEGER)
         return { ok: false, reason: "Revision limit reached" };

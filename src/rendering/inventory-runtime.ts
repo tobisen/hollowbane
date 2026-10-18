@@ -1,3 +1,4 @@
+import type { EquipmentRequirementContext } from "../simulation/equipment-requirements";
 import {
   attributeValues,
   type CharacterAttributes,
@@ -49,8 +50,20 @@ export class InventoryRuntime {
     if (attributes) this.base.attributes = attributeValues(attributes);
     this.derived = deriveEquipment(this.character, this.base);
   }
+  requirements(): EquipmentRequirementContext {
+    const state = this.getAttributes();
+    return {
+      attributes: state
+        ? attributeValues(state)
+        : { strength: 0, dexterity: 0 },
+    };
+  }
   session(): InventorySession {
-    return { character: this.character, loot: this.getLoot() };
+    return {
+      character: this.character,
+      loot: this.getLoot(),
+      requirements: this.requirements(),
+    };
   }
   sync(
     speed = this.speed,

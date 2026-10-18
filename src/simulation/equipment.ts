@@ -1,4 +1,8 @@
-import { itemTree, effectiveRequirement } from "./item-ownership";
+import { itemTree } from "./item-ownership";
+import {
+  meetsEquipmentRequirements,
+  type EquipmentRequirementContext,
+} from "./equipment-requirements";
 import {
   equipmentDefinition,
   EQUIP_SLOTS,
@@ -43,14 +47,22 @@ export function compatible(
   item: GeneratedItem,
   slot: EquipSlot,
   level: number,
+  requirements?: EquipmentRequirementContext,
 ): boolean {
-  return (
-    item.identified &&
-    effectiveRequirement(item) <= level &&
-    equipmentDefinition(item).slots.includes(slot)
-  );
+  try {
+    return (
+      item.identified &&
+      meetsEquipmentRequirements(item, level, requirements) &&
+      equipmentDefinition(item).slots.includes(slot)
+    );
+  } catch {
+    return false;
+  }
 }
-export function validateCharacter(c: CharacterInventory): void {
+export function validateCharacter(
+  c: CharacterInventory,
+  requirements?: EquipmentRequirementContext,
+): void {
   if (
     !Number.isInteger(c.level) ||
     c.level < 1 ||
@@ -68,7 +80,7 @@ export function validateCharacter(c: CharacterInventory): void {
   for (const [slot, item] of Object.entries(c.equipment))
     if (
       !EQUIP_SLOTS.includes(slot as EquipSlot) ||
-      !compatible(item, slot as EquipSlot, c.level)
+      !compatible(item, slot as EquipSlot, c.level, requirements)
     )
       throw Error("Incompatible equipment");
   if (
@@ -90,9 +102,10 @@ export function equipItem(
   c: CharacterInventory,
   id: string,
   slot: EquipSlot,
+  requirements?: EquipmentRequirementContext,
 ): InventoryResult<CharacterInventory> {
   const item = ownedItem(c, id);
-  if (!item || !compatible(item, slot, c.level))
+  if (!item || !compatible(item, slot, c.level, requirements))
     return {
       ok: false,
       reason: "Unidentified, unmet requirement or incompatible slot",
@@ -126,7 +139,7 @@ export function equipItem(
     if (
       sourceSlot &&
       !candidate.equipment[sourceSlot] &&
-      compatible(old, sourceSlot, c.level)
+      compatible(old, sourceSlot, c.level, requirements)
     ) {
       candidate.equipment[sourceSlot] = old;
       continue;
@@ -143,7 +156,7 @@ export function equipItem(
     candidate.grid = placed.value;
   }
   try {
-    validateCharacter(candidate);
+    validateCharacter(candidate, requirements);
   } catch {
     return { ok: false, reason: "Equipment conflict" };
   }
@@ -153,6 +166,7 @@ export function unequipItem(
   c: CharacterInventory,
   slot: EquipSlot,
   point?: { x: number; y: number },
+  requirements?: EquipmentRequirementContext,
 ): InventoryResult<CharacterInventory> {
   const item = c.equipment[slot];
   if (c.revision >= Number.MAX_SAFE_INTEGER)
@@ -161,7 +175,7 @@ export function unequipItem(
   if (point) {
     const targets = c.grid.items.filter((e) => overlap({ item, ...point }, e));
     if (targets.length === 1) {
-      const swapped = equipItem(c, targets[0]!.item.id, slot);
+      const swapped = equipItem(c, targets[0]!.item.id, slot, requirements);
       if (!swapped.ok) return swapped;
       const moved = swapped.value.grid.items.find((e) => e.item === item);
       if (moved?.x === point.x && moved.y === point.y) return swapped;
@@ -180,4 +194,41 @@ export function unequipItem(
   candidate.grid = placed.value;
   delete candidate.equipment[slot];
   return { ok: true, value: candidate };
+}
+
+/** Reconcile level/stat reductions atomically. If every invalid item cannot fit,
+ * reject the whole stat change; never delete, drop, or partially move equipment.
+ */
+export function reconcileEquipmentRequirements(
+  c: CharacterInventory,
+  level: number,
+  requirements?: EquipmentRequirementContext,
+): InventoryResult<CharacterInventory> {
+  if (!Number.isSafeInteger(level) || level < 1 || level > 99)
+    return { ok: false, reason: "Invalid character level" };
+  if (c.revision >= Number.MAX_SAFE_INTEGER)
+    return { ok: false, reason: "Revision limit reached" };
+  const candidate = next(c);
+  candidate.level = level;
+  try {
+    for (const slot of EQUIP_SLOTS) {
+      const item = candidate.equipment[slot];
+      if (!item || compatible(item, slot, level, requirements)) continue;
+      const placed = addGrid(candidate.grid, item);
+      if (!placed.ok)
+        return {
+          ok: false,
+          reason: "Inventory full; stat change and equipment unchanged",
+        };
+      candidate.grid = placed.value;
+      delete candidate.equipment[slot];
+    }
+    validateCharacter(candidate, requirements);
+    return { ok: true, value: candidate };
+  } catch {
+    return {
+      ok: false,
+      reason: "Invalid equipment requirements; state unchanged",
+    };
+  }
 }

@@ -1,5 +1,13 @@
 # Status
 
+## Active progression batch — P6–P11 (2026-10-18)
+
+- User authorizes autonomous sequential P6–P11 through progression quality review, superseding prior P5 stop. Preserve all prior mechanics/items/saves and pre-existing local L3 documentation. No classes/skill trees/vendors/campaign.
+- P6 / DBL-106 requirement domain delivered and verified: configurable minima for level/Strength/Dexterity, equip/swap/world checks, immutable atomic invalidation reconciliation with full-bag rejection. Legacy content stat minima remain0; future requirement tuning uses base rules without rewriting items. Runtime uses innate/allocated attributes; no gear self-support cycles.
+- Six new tests;19 targeted equipment/world/save/runtime tests, TypeScript and relevant lint pass. No visual change in P6.
+- Next P7–P8 / DBL-108/104: accessible gothic character panel and transactional allocation using existing modal/controller input; P9 / DBL-210: versioned progression snapshot/legacy migration with full item preservation; P10 / DBL-004: controller focus/prompts; P11 / DBL-109: one final broad regression and quality evidence. These are not yet delivered. Existing broad parents remain partial.
+- P9 must bind the single progression authority to inventory session snapshots and synchronize effective requirement level. Current saves remain unchanged/session XP is not persisted. Legacy inventory starts at12 (separate item laboratory40); migration must preserve equipped identities and explicitly document initial XP/attribute budget mapping. Current HP/mana policy: retain absolute amounts/clamp, no refill or resurrection.
+
 ## Current session — DBL-103/104/105 / P3–P5 (2026-10-18)
 
 - Completed the explicitly authorized cohesive P3–P5 increment. Five attribute points per gained level, high-water reward ledger, immutable attribute allocation and shared combat/equipment derivation. No P6 authorization; stop after this commit.

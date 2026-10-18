@@ -560,7 +560,8 @@ ${advanced}`;
     let comparison = "";
     if (item?.identified) {
       const slot = this.slotFor(item);
-      const result = slot && equipItem(c, item.id, slot);
+      const result =
+        slot && equipItem(c, item.id, slot, this.runtime.requirements());
       comparison =
         result && result.ok
           ? `Compared in ${slot}\n` +
