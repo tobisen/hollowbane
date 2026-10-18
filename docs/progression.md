@@ -44,7 +44,8 @@ schema2 migration with real mixed-content sockets/runes and levels1–99. Physic
 
 ## Character Progression quality gate
 
-Technical candidate ready for user review; user quality approval remains false.
+Local technical candidate; release verification is incomplete and user quality
+approval remains false.
 P10 adds contextual mapped prompts, gamepad-visible focus, allocate/confirm/read,
 bounded navigation and cancel-to-summary before leaving inventory. Existing hub
 edge detection and remapping remain authoritative. Three Chromium API-emulated
@@ -68,3 +69,21 @@ Dexterity item minima preserve prior content; level requirements still apply.
 No respec, skill points, classes, skill trees or vendors. Reference hardware and
 physical controllers/vibration are unverified. CI/Pages and hosted verification
 are pending until recorded below; stop at this quality gate.
+
+Publication checkpoint: runtime466bf7c and P10fcd3af1 were pushed to main.
+CI39156818075 was still installing browser dependencies at the last check; no
+result or Pages deployment is claimed. Public index still references
+index-DnCJfCbe.js (L3), while the local progression build references
+index-CVMXKv8V.js / combat-arena-BRv-XqEg.js. Hosted progression/save testing has
+not run. Prior L3 CI39117110123 is independently confirmed successful, but is not
+progression release evidence.
+
+The two Darwin inventory visual comparisons initially failed because the P7
+panel adds68px at1920 and changes layout at1024. Both captures were individually
+reviewed, retained as references and verified without update mode (2/2 pass).
+Linux inventory and advanced-item references still require capture/review against
+the character panel; do not relax assertions or copy Darwin images into Linux.
+This follow-up reference/checkpoint commit is local pending review of the current
+CI run, avoiding cancellation of evidence collection. Resume publication quality
+verification only; do not start further gameplay work. The final progression gate
+is pending these visual/CI/Pages/hosted checks and user review.

@@ -1,5 +1,13 @@
 # Status
 
+## Latest progression checkpoint — P11 publication/visual checkpoint (2026-10-18)
+
+- Soft-budget checkpoint: P10 delivered/pushedfcd3af1; P11 local check/build320 units and7 focused browser flows pass; runtime466bf7c pushed to main. Character Progression quality gate remains INCOMPLETE/user approval false. No new gameplay work.
+- CI39156818075 for466bf7c was in progress, last step browser dependency installation. Inspect its final jobs/artifacts before proceeding: https://github.com/tobisen/hollowbane/actions/runs/39156818075 . Prior L3 CI39117110123 independently confirmed success, not progression evidence.
+- Directly affected inventory visuals failed against old references. Reviewed both Darwin actuals (1920/1024), replaced baselines and verified2/2 without update mode. This reference/checkpoint follow-up commit remains local to avoid canceling the currently collecting CI run. Inspect git log/status for the exact local head; do not discard it. Pre-existing L3 docs/backlog edits remain separately unstaged.
+- NEXT: resolve actual CI failures; capture/review Linux inventory and advanced-item references affected by panel/footer; retain all assertions/tolerances. Do not substitute Darwin baselines or call exclusions passes. Check critical normal-character gear/loot flows at new level1. Then push verified follow-up, confirm full CI/Pages, and run hosted character-controller plus allocation/save/migration checks. No large loot simulations needed.
+- Public index still index-DnCJfCbe.js; progression build index-CVMXKv8V.js/combat-arena-BRv-XqEg.js. Hosted progression/save NOT verified. Schema1/2→3 compatibility locally covered; physical controllers and reference GPU unverified. See docs/progression.md. Stop at progression review; no classes/skill trees/vendors.
+
 ## Latest progression checkpoint — P11 technical candidate (2026-10-18)
 
 - P10 committedfcd3af1. P11 technical candidate verified: npm run check320 unit tests/80 files, TypeScript/lint/assets/backlog/build; formatting passes.4 Chromium panel/allocation/persistence/migration cases and3 virtual controller cases pass. Actual timed monster kill→XP→points→equipment→save and all99 level budgets covered.
