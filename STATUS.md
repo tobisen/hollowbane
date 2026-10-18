@@ -1,5 +1,11 @@
 # Status
 
+## P11 Linux visual follow-up (2026-10-18)
+
+- Successor39158266321 /a7f1868:103 Chromium passed, only2 Linux inventory references failed; advanced cross-browser step/deploy skipped. Controller fixes confirmed by CI.
+- Retrieved current public test-evidence through nightly.link, resolving direct API401. Reviewed both Linux actual/diff images: intended Character summary/layout and progression footer changes, no unexplained geometry/control regression. Updated only matching1920/1024 Linux baselines; assertions/tolerance unchanged. Provenance/hashes: docs/progression.md.
+- Next: regular successor Linux comparisons, advanced browser step, CI/Pages SHA, then hosted critical character/allocation/save/reload flows. DBL-109 remains partial and user quality approval false. No classes/skill trees. Existing320 unit evidence reused; no new simulation/benchmark.
+
 ## P11 release verification checkpoint (2026-10-18)
 
 - CI39156818075 /466bf7c FAILED: check/format passed; Chromium95 passed/10 failed; deploy skipped. Eight failures were controller-route/laboratory-text regressions; two Linux inventory comparisons remain unreviewed. DBL-109 stays partial; quality approval false.

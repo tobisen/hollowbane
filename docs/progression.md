@@ -123,3 +123,25 @@ artifact review, justified Linux references and regular comparisons, successor
 CI/Pages SHA verification, then only hosted critical progression flows.994eac1
 was inspected and its Darwin references independently verified for publication.
 User quality approval remains false; physical-controller evidence remains absent.
+
+## Reviewed Linux references (2026-10-18)
+
+Successor39158266321 /a7f1868 confirms103 Chromium passes, with only the two
+inventory visual references failing. Public artifact download via nightly.link
+resolved the direct GitHub API authentication limitation. Retrieved the current
+run's test-evidence archive; individually reviewed1920/1024 actual and diff images.
+The Character summary adds66px to the1920 dialog (1180×858);1024 retains its
+scrollable viewport and shifts the equipment/grid by the new summary. Existing
+item geometry, equipment, inspector, actions and status remain intact. Footer copy
+now includes progression/attributes. These are intentional P7/P9 changes, matching
+the already-reviewed Darwin layout, rather than unexplained visual regressions.
+
+Copied only these two actual Linux captures from39158266321 to their matching
+Linux reference paths. No Darwin substitution, screenshot regeneration, changed
+assertion or tolerance increase. SHA256:
+
+- 1920: `815cca9412d597caeabef205701c3b35cf921a73620a09d8da6179ddb533e18d`
+- 1024: `c107e534c0e45f84683827d932cf54c0667e9c76767502aaa039572ad7181c12` Regular Linux CI comparison
+  and the previously skipped advanced cross-browser step remain required.
+  No new unit run, loot simulation or benchmark. DBL-109 stays partial until CI,
+  Pages SHA and hosted character/allocation/save/reload checks pass.
