@@ -1,3 +1,7 @@
+import {
+  installVirtualController,
+  pressVirtualButton,
+} from "./virtual-controller";
 import { createInventorySession } from "../../src/simulation/inventory-world";
 import { inventoryItem } from "../../src/simulation/inventory-test-helper";
 import { serializeCharacter } from "../../src/simulation/inventory-save";
@@ -103,27 +107,7 @@ for (const id of [
   }) => {
     if (id.includes("PlayStation"))
       await page.setViewportSize({ width: 1024, height: 800 });
-    await page.addInitScript((id) => {
-      window.virtualPads = [
-        {
-          id,
-          index: 0,
-          mapping: "standard",
-          connected: true,
-          axes: [0, 0, 0, 0],
-          timestamp: 0,
-          buttons: Array.from({ length: 17 }, () => ({
-            pressed: false,
-            touched: false,
-            value: 0,
-          })),
-        },
-      ];
-      Object.defineProperty(navigator, "getGamepads", {
-        configurable: true,
-        value: () => window.virtualPads,
-      });
-    }, id);
+    await installVirtualController(page, id);
     await page.goto("./?inventory=1&training=1");
     await expect
       .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
@@ -137,26 +121,7 @@ for (const id of [
       .poll(() => page.evaluate(() => window.hollowbaneLoot?.drops.length))
       .toBe(1);
     await page.locator("#combat-world").focus();
-    async function press(index: number) {
-      for (const value of [1, 0])
-        await page.evaluate(
-          async ({ index, value }) => {
-            window.virtualPads[0]!.buttons[index] = {
-              pressed: !!value,
-              touched: !!value,
-              value,
-            };
-            await new Promise<void>((resolve) =>
-              requestAnimationFrame(() =>
-                requestAnimationFrame(() =>
-                  requestAnimationFrame(() => resolve()),
-                ),
-              ),
-            );
-          },
-          { index, value },
-        );
-    }
+    const press = (index: number) => pressVirtualButton(page, index);
     await press(0); // semantic interact: pickup
     await expect
       .poll(() => page.evaluate(() => window.hollowbaneLoot?.drops.length))
