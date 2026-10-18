@@ -1,7 +1,7 @@
 import type { ItemEffectState } from "../simulation/item-effects";
 import { InventoryView } from "./inventory-view";
 import { InventoryRuntime } from "./inventory-runtime";
-import { ADVANCED_CONTENT } from "../simulation/item-registry";
+import { L3_ITEM_CONTENT } from "../simulation/item-registry";
 import { EQUIPMENT_CONTENT } from "../simulation/item-content";
 import { LootView, LOOT_COLORS } from "./loot-view";
 import { arenaView } from "../world/arena-view";
@@ -149,6 +149,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
   const inventory = query.has("inventory");
   const advanced = inventory && query.has("advanced");
+  const itemLab = advanced && query.has("itemLab");
   const loot = query.has("loot") || inventory;
   const polish = query.has("polish") || loot;
   const skills = query.has("skills") || polish;
@@ -281,10 +282,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
           Number(query.get("lootSeed") ?? 42),
           (quality) => this.soundBank.play({ kind: "loot", quality }),
           advanced
-            ? ADVANCED_CONTENT
+            ? L3_ITEM_CONTENT
             : inventory
               ? EQUIPMENT_CONTENT
               : undefined,
+          itemLab ? 40 : 12,
         );
       if (inventory && this.lootView)
         this.inventoryRuntime = new InventoryRuntime(
@@ -294,6 +296,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           (w) => {
             this.lootView!.world = w;
           },
+          itemLab ? 40 : 12,
         );
       if (this.inventoryRuntime && this.lootView)
         this.inventoryView = new InventoryView(
@@ -306,6 +309,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
             alive: this.world.actors[0]!.hp > 0,
             tick: this.world.tick,
           }),
+          itemLab,
         );
       controllerInput.movementKeys = new Set([
         "KeyW",

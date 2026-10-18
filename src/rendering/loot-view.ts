@@ -1,4 +1,8 @@
-import { registeredContentForTable } from "../simulation/item-registry";
+import { ITEM_LABORATORY_EXAMPLES } from "../simulation/item-laboratory-examples";
+import {
+  registeredItemContent,
+  registeredContentForTable,
+} from "../simulation/item-registry";
 import { ADVANCED_EXAMPLES } from "../simulation/advanced-item-examples";
 import { ADVANCED_ITEMS } from "../simulation/advanced-item-content";
 import { describeAdvancedItem } from "../simulation/item-description";
@@ -74,13 +78,15 @@ export class LootView {
     seed: number,
     private cue: (quality: Quality) => void,
     private content: ItemContent = ITEM_CONTENT,
+    level = 12,
   ) {
     this.world = createLootWorld(seed);
+    this.world.areaLevel = this.world.monsterLevel = level;
     if (content.version >= 3)
       this.world.table = content.version >= 4 ? "sanctum" : "reliquary";
     root.insertAdjacentHTML(
       "beforeend",
-      `<section class="loot-panel" aria-label="Loot inspection"><h2>World loot · L1</h2><p id="loot-help">D-pad ↑↓: select · Enter / Interact: inspect · F: inspect nearest. Items remain on the ground.</p><p id="loot-message" role="status">Defeat monsters to discover items.</p><output id="loot-info">No item selected.</output><button id="loot-identify" disabled>Identify selected</button><details><summary>Loot diagnostics & item archive</summary><label>Seed <input id="loot-seed" type="number" min="0" max="4294967295" value="${seed}"></label><label>Roll sequence <input id="loot-sequence" type="number" min="0" max="4294967295" value="0"></label><label>Example roll <select id="loot-example"><option value="">Custom seed / sequence</option><option value="3">Normal · 3</option><option value="30">Magic · 30</option><option value="47">Rare · 47</option><option value="5634">Unique · 5634</option></select></label><button id="loot-test">Replay test drop near player</button><button id="loot-save">Save item archive locally</button><button id="loot-load">Load item archive near player</button><output id="loot-diagnostics"></output><details><summary>Drop table at level 12</summary><pre id="loot-table"></pre></details></details></section><div class="loot-labels" aria-label="Ground item labels"></div>`,
+      `<section class="loot-panel" aria-label="Loot inspection"><h2>World loot · L1</h2><p id="loot-help">D-pad ↑↓: select · Enter / Interact: inspect · F: inspect nearest. Items remain on the ground.</p><p id="loot-message" role="status">Defeat monsters to discover items.</p><output id="loot-info">No item selected.</output><button id="loot-identify" disabled>Identify selected</button><details><summary>Loot diagnostics & item archive</summary><label>Seed <input id="loot-seed" type="number" min="0" max="4294967295" value="${seed}"></label><label>Roll sequence <input id="loot-sequence" type="number" min="0" max="4294967295" value="0"></label><label>Replay item level <input id="loot-level" type="number" min="1" max="99" value="${level}"></label><label>Example roll <select id="loot-example"><option value="">Custom seed / sequence</option><option value="3">Normal · 3</option><option value="30">Magic · 30</option><option value="47">Rare · 47</option><option value="5634">Unique · 5634</option></select></label><button id="loot-test">Replay test drop near player</button><button id="loot-save">Save item archive locally</button><button id="loot-load">Load item archive near player</button><output id="loot-diagnostics"></output><details><summary>Drop table at level 12</summary><pre id="loot-table"></pre></details></details></section><div class="loot-labels" aria-label="Ground item labels"></div>`,
     );
     this.panel = root.querySelector(".loot-panel")!;
     this.layer = root.querySelector(".loot-labels")!;
@@ -97,15 +103,37 @@ export class LootView {
           ADVANCED_ITEMS.uniques.find((u) => u.id === id)?.name ??
           ADVANCED_ITEMS.sets.flatMap((s) => s.pieces).find((p) => p.id === id)!
             .name;
-        select.add(new Option(name, String(sequence)));
+        const option = new Option(name, String(sequence));
+        Object.assign(option.dataset, {
+          version: "4",
+          seed: "42",
+          sequence: String(sequence),
+          level: "12",
+          table: "sanctum",
+        });
+        select.add(option);
+      }
+    }
+    if (content.version >= 8) {
+      const select =
+        this.panel.querySelector<HTMLSelectElement>("#loot-example")!;
+      for (const example of ITEM_LABORATORY_EXAMPLES) {
+        const option = new Option(example.name, `component:${example.base}`);
+        Object.assign(
+          option.dataset,
+          Object.fromEntries(
+            Object.entries(example).map(([key, value]) => [key, String(value)]),
+          ),
+        );
+        select.add(option);
       }
     }
     this.panel.querySelector("#loot-table")!.textContent = JSON.stringify(
-      inspectDropTable(12, this.world.table, this.content),
+      inspectDropTable(level, this.world.table, this.content),
       null,
       2,
     );
-    for (const id of ["loot-seed", "loot-sequence"])
+    for (const id of ["loot-seed", "loot-sequence", "loot-level"])
       this.panel.querySelector<HTMLInputElement>(`#${id}`)!.oninput = () => {
         this.panel.querySelector<HTMLSelectElement>("#loot-example")!.value =
           "";
@@ -114,10 +142,16 @@ export class LootView {
       e,
     ) => {
       if (!(e.target as HTMLSelectElement).value) return;
-      this.panel.querySelector<HTMLInputElement>("#loot-seed")!.value = "42";
-      this.panel.querySelector<HTMLInputElement>("#loot-sequence")!.value = (
-        e.target as HTMLSelectElement
-      ).value;
+      const option = (e.target as HTMLSelectElement).selectedOptions[0]!;
+      const origin = {
+        seed: "42",
+        sequence: option.value,
+        level: "12",
+        ...option.dataset,
+      };
+      for (const key of ["seed", "sequence", "level"] as const)
+        this.panel.querySelector<HTMLInputElement>(`#loot-${key}`)!.value =
+          origin[key];
     };
     this.panel.querySelector<HTMLButtonElement>("#loot-identify")!.onclick =
       () => {
@@ -137,15 +171,23 @@ export class LootView {
           sequence = Number(
             this.panel.querySelector<HTMLInputElement>("#loot-sequence")!.value,
           );
+        const selected =
+          this.panel.querySelector<HTMLSelectElement>("#loot-example")!
+            .selectedOptions[0]?.dataset;
+        const replayLevel = Number(
+          this.panel.querySelector<HTMLInputElement>("#loot-level")!.value,
+        );
         const item = generateLoot(
           {
             seed,
             sequence,
-            areaLevel: 12,
-            monsterLevel: 12,
-            table: this.world.table,
+            areaLevel: replayLevel,
+            monsterLevel: replayLevel,
+            table: selected?.table ?? this.world.table,
           },
-          this.dropContent(),
+          selected?.version
+            ? registeredItemContent(Number(selected.version))
+            : this.dropContent(),
         );
         if (!item) {
           this.message("This roll produces no item.");

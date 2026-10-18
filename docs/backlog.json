@@ -3831,8 +3831,9 @@
     "deliveryPhase": "advanced-items-l3",
     "priority": "p0",
     "dependencies": ["DBL-359"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nController socket component and advanced tooltip interface. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication."
+    "status": "complete",
+    "body": "## Acceptance criteria\nController socket component and advanced tooltip interface. Preserve Phaser4.2.1, legacy content2/3 item identities and save integrity, existing gameplay and semantic controls. Generic typed deterministic data-driven modifiers; no per-unique combat branches.\n\n## Non-goals\nVendors, crafting, character progression and campaign. DBL-333 and physical verification remain separate.\n\n## Test requirements\nTargeted deterministic unit and applicable browser/actual combat tests; preserve prior regressions and retain evidence in docs/items/l3.md.\n\n## Definition of done\nVerified increment committed. Broader parents remain partial; stop at L3 quality review after all five increments and publication.",
+    "evidence": "Final content8 route, 24 preserved version4 replays,30 offline-discovered component/host examples, separate level40 lab save and controller-readable eight-pattern book.2 new/full check284, full inventory68 pass/4 tracked exclusions plus6 strengthened save-isolation cases; new UI screenshot reviewed."
   },
   {
     "id": "DBL-346",

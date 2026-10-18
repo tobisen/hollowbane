@@ -30,7 +30,9 @@ export class InventoryRuntime {
       { mana: number; maxMana: number; castSpeed?: number } | undefined,
     private getLoot: () => LootWorld,
     private setLoot: (world: LootWorld) => void,
+    initialLevel = 12,
   ) {
+    this.character = createCharacterInventory(initialLevel);
     this.actor = getActor();
     this.base = captureEquipmentBase(
       this.actor,

@@ -3,6 +3,7 @@ import { SOCKET_CONTENT } from "../simulation/socket-content";
 import { RUNE_CONTENT } from "../simulation/rune-content";
 import {
   describeAdvancedItem,
+  describeRuneRecipes,
   compareItemModifiers,
 } from "../simulation/item-description";
 import {
@@ -109,8 +110,12 @@ export class InventoryView {
     private loot: LootView,
     private nav: Navigation,
     private player: () => { position: Point; alive: boolean; tick: number },
+    laboratory = false,
   ) {
-    this.storage = new InventoryStorage(nav);
+    this.storage = new InventoryStorage(
+      nav,
+      laboratory ? "hollowbane-l3-item-laboratory" : undefined,
+    );
     root.insertAdjacentHTML(
       "beforeend",
       '<button id="inventory-open" class="inventory-open">Inventory · V / View</button>',
@@ -136,6 +141,27 @@ export class InventoryView {
         "afterend",
         '<p id="inventory-socket-message" role="status" hidden></p><section id="inventory-socket-controls" class="inventory-socket-controls" aria-label="Socket insertion" hidden><h4>Append a component</h4><p>Insertion preserves order. Extraction returns every component intact only when all fit.</p><label>Bag component <select id="inventory-component"></select></label><pre id="inventory-socket-preview" tabindex="0" data-controller-read aria-live="polite"></pre><button id="inventory-insert">Insert component</button><button id="inventory-socket-cancel">Back without inserting</button></section>',
       );
+    if (loot.contentVersion >= 4) {
+      const book = document.createElement("details");
+      book.id = "inventory-recipes";
+      book.innerHTML =
+        '<summary id="inventory-recipes-toggle">Ordered sigil patterns · 8 recipes</summary><pre id="inventory-recipe-text" tabindex="0" data-controller-read></pre>';
+      book.querySelector("pre")!.textContent = describeRuneRecipes();
+      this.dialog.querySelector("footer")!.prepend(book);
+      const notice = document.createElement("p");
+      notice.id = "inventory-laboratory-notice";
+      notice.textContent = laboratory
+        ? "Developer item laboratory · fixed level 40 requirement fixture · separate save. No character progression."
+        : "Normal character save · item requirements apply. The separate developer laboratory can test all high-level patterns.";
+      const link = document.createElement("a");
+      link.href = laboratory
+        ? "?inventory=1&advanced=1"
+        : "?inventory=1&advanced=1&itemLab=1";
+      link.textContent = laboratory
+        ? "Return to normal character"
+        : "Open separate item laboratory";
+      this.dialog.querySelector("footer")!.append(notice, link);
+    }
     root.append(this.dialog);
     const button = (id: string, fn: () => void) => {
       this.dialog.querySelector<HTMLButtonElement>(`#${id}`)!.onclick = fn;
@@ -828,21 +854,25 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
         });
       else {
         const selector =
-          active.id === "inventory-socket-preview"
+          active.id === "inventory-recipe-text"
             ? action === "left"
-              ? "#inventory-component"
-              : this.dialog.querySelector<HTMLButtonElement>(
-                    "#inventory-insert",
-                  )!.disabled
-                ? "#inventory-socket-cancel"
-                : "#inventory-insert"
-            : active.id === "inventory-compare"
+              ? "#inventory-recipes-toggle"
+              : "#inventory-save"
+            : active.id === "inventory-socket-preview"
               ? action === "left"
-                ? "#inventory-details"
-                : "#inventory-take"
-              : action === "right"
-                ? "#inventory-compare"
-                : '[data-focus="cell-0-0"]';
+                ? "#inventory-component"
+                : this.dialog.querySelector<HTMLButtonElement>(
+                      "#inventory-insert",
+                    )!.disabled
+                  ? "#inventory-socket-cancel"
+                  : "#inventory-insert"
+              : active.id === "inventory-compare"
+                ? action === "left"
+                  ? "#inventory-details"
+                  : "#inventory-take"
+                : action === "right"
+                  ? "#inventory-compare"
+                  : '[data-focus="cell-0-0"]';
         this.dialog.querySelector<HTMLElement>(selector)?.focus();
       }
       return;
