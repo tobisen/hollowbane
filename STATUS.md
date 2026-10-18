@@ -1,5 +1,11 @@
 # Status
 
+## C13 Linux inventory references reviewed (2026-10-18)
+
+- CI39164518366 /63bd4c8 passed check/format and110 Chromium cases; only two Linux inventory visual references failed. Advanced browser verification and Pages deployment were skipped; C13/user quality approval remain pending.
+- Retrieved public artifact12150163212, verified artifact expected images exactly matched repository references, and reviewed both Linux actual/diff pairs. Copied only the exact1920/1024 Linux actuals for the intended Skills summary/layout shift (1920 height858→930). No tolerance/assertion changes or platform substitution. Provenance/full hashes: docs/character-classes.md.
+- Reference-only follow-up; reused CI simulation/type/lint evidence, no local broad tests or loot simulations. Next: push this increment, confirm regular Linux/advanced CI checks and exact Pages SHA/assets, then run hosted class tests. Stop at C13; physical hardware, provisional balance/planned nodes and unrelated local edits stay open.
+
 ## C13 CI failure / safe publication checkpoint (2026-10-18)
 
 - Runtime83593130685becfcbaa40d65f67f98ee24c2427c pushed; CI39164311209 FAILED in npm run check; Pages skipped. Public index-BJpbzwJa.js is still the prior progression build; candidate index-DBDMEo57.js is NOT hosted-verified. C13 and user quality approval remain pending.
