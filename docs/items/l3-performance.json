@@ -1,0 +1,5768 @@
+{
+  "cpu": "Apple M4",
+  "browser": "156.0.8078.4",
+  "renderer": "Chromium ANGLE SwiftShader software rendering; no native GPU or physical input verification",
+  "method": "Three paired repetitions per count5/10/20/30,1920×1080, same default auto-balanced rendering, practice-player/durable-enemy fixtures. Both have9 equipped+21 bag items; L3 includes full Ashen Watch, Lastlight Vow, unique effects and embedded sigils.45 RAF warmup,120 held weapon frames,60 recovery frames,one virtual semantic Oath Echo self-buff press (avoids target-range rejection) and120 skill frames. Simulation/render/update CPU diagnostics are distinct from RAF pacing (which is not completed presentation). Modal60 RAF frames and5 synchronous opening CPU samples. Node1000 warm derive and100 encode/decode samples. Input metrics are software event-to-simulation, not hardware latency. No concurrent browser workloads during these measurements.",
+  "cpuSamples": {
+    "l2": {
+      "derivedP50": 0.0020420000000171967,
+      "derivedP95": 0.0023339999999620886,
+      "encodeP95": 0.3914999999999509,
+      "decodeP95": 0.5956659999999943,
+      "bytes": 9932,
+      "modifiers": 0
+    },
+    "l3": {
+      "derivedP50": 0.3201250000000755,
+      "derivedP95": 0.35866699999996854,
+      "encodeP95": 0.42200000000002547,
+      "decodeP95": 0.6867079999999532,
+      "bytes": 13871,
+      "modifiers": 23
+    }
+  },
+  "results": [
+    {
+      "repeat": 0,
+      "count": 5,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 16.800000000000182,
+        "combat": {
+          "frameP50": 16.600000023841858,
+          "frameP95": 20.69999998807907,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 5.800000011920929,
+          "attackSamples": 1,
+          "activeEntities": 6,
+          "droppedTicks": 55,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 0,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 16.700000000000728,
+        "combat": {
+          "frameP50": 16.69999998807907,
+          "frameP95": 17.5,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.20000001788139343,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 5.800000011920929,
+          "attackSamples": 1,
+          "activeEntities": 7,
+          "droppedTicks": 55,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.09999999403953552,
+          "inputP95": 0,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 6,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 1.7000000178813934
+      },
+      "alive": 5,
+      "errors": []
+    },
+    {
+      "repeat": 0,
+      "count": 5,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 16.799999999999955,
+        "combat": {
+          "frameP50": 16.69999998807907,
+          "frameP95": 25.200000017881393,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 7.200000017881393,
+          "attackSamples": 1,
+          "activeEntities": 6,
+          "droppedTicks": 4,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 100,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 100,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 126,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 126,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 157,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 157,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 189,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 189,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 189,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 16.800000000000182,
+        "combat": {
+          "frameP50": 16.69999998807907,
+          "frameP95": 16.900000005960464,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.20000001788139343,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 7.200000017881393,
+          "attackSamples": 1,
+          "activeEntities": 7,
+          "droppedTicks": 4,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 2,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 6,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 100,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 100,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 126,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 126,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 157,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 157,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 189,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 189,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 189,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 2.0999999940395355
+      },
+      "alive": 5,
+      "errors": []
+    },
+    {
+      "repeat": 0,
+      "count": 10,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.299999999999955,
+        "combat": {
+          "frameP50": 16.69999998807907,
+          "frameP95": 28,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 13,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 16.700000000000728,
+        "combat": {
+          "frameP50": 16.5,
+          "frameP95": 22.900000005960464,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.29999998211860657,
+          "updateP95": 0.5,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 12,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 3,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 11,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.399999999999636,
+        "openCpuP95": 1.5999999940395355
+      },
+      "alive": 10,
+      "errors": []
+    },
+    {
+      "repeat": 0,
+      "count": 10,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 16.800000000000182,
+        "combat": {
+          "frameP50": 16.599999994039536,
+          "frameP95": 25,
+          "simulationP95": 0.29999998211860657,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 22.400000005960464,
+          "attackSamples": 1,
+          "activeEntities": 13,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 2,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 96,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 96,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 122,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 122,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 152,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 152,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 16.800000000000182,
+        "combat": {
+          "frameP50": 16.600000023841858,
+          "frameP95": 18.099999994039536,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 22.400000005960464,
+          "attackSamples": 1,
+          "activeEntities": 11,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0.19999998807907104,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 11,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 96,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 96,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 122,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 122,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 152,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 152,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 2
+      },
+      "alive": 10,
+      "errors": []
+    },
+    {
+      "repeat": 0,
+      "count": 20,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.299999999999955,
+        "combat": {
+          "frameP50": 16.19999998807907,
+          "frameP95": 27.900000005960464,
+          "simulationP95": 0.30000001192092896,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.6000000238418579,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 23,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.19999998807907104,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 4,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.29999999999927,
+        "combat": {
+          "frameP50": 16.5,
+          "frameP95": 23.30000001192093,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5999999940395355,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 22,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 3,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0.09999999403953552,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 1.5999999940395355
+      },
+      "alive": 20,
+      "errors": []
+    },
+    {
+      "repeat": 0,
+      "count": 20,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.40000000000009,
+        "combat": {
+          "frameP50": 16.900000005960464,
+          "frameP95": 27.700000017881393,
+          "simulationP95": 0.4000000059604645,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.6000000238418579,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 21,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.19999998807907104,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 3,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 102,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 102,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 129,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 129,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 159,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 159,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 191,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 191,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 191,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 16.80000001192093,
+          "frameP95": 24.30000001192093,
+          "simulationP95": 0.29999998211860657,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5999999940395355,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 24,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 3,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0.09999999403953552,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 5,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.9400000000000002,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 102,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 102,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 129,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 129,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 159,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 159,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 191,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 191,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 191,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 222,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 222,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0
+              },
+              "amount": 0,
+              "applied": false
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.5,
+        "openCpuP95": 2.300000011920929
+      },
+      "alive": 20,
+      "errors": []
+    },
+    {
+      "repeat": 0,
+      "count": 30,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.40000000000009,
+        "combat": {
+          "frameP50": 17.200000017881393,
+          "frameP95": 33.900000005960464,
+          "simulationP95": 0.4000000059604645,
+          "renderP95": 0.3999999761581421,
+          "updateP95": 0.9000000059604645,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 31,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.30000001192092896,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 1,
+          "decisions": 3,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 17.200000017881393,
+          "frameP95": 25.30000001192093,
+          "simulationP95": 0.30000001192092896,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.7999999821186066,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 33,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 4,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0.7999999821186066,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 2
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 50,
+        "openCpuP95": 1.5
+      },
+      "alive": 30,
+      "errors": []
+    },
+    {
+      "repeat": 0,
+      "count": 30,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.40000000000009,
+        "combat": {
+          "frameP50": 16.5,
+          "frameP95": 36.30000001192093,
+          "simulationP95": 0.4000000059604645,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.800000011920929,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 33,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.19999998807907104,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 5,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 120,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 120,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 152,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 152,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 25,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 17,
+          "frameP95": 24.700000017881393,
+          "simulationP95": 0.30000001192092896,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.7999999821186066,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 34,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 5,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0.4000000059604645,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 5,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.9400000000000002,
+          "manaLeeched": 1.6666666666674383,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 120,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 120,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 152,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 152,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 184,
+              "actor": 0,
+              "target": 25,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 217,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 217,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.02666666666743822
+              },
+              "amount": 0.02666666666743822,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 2
+      },
+      "alive": 30,
+      "errors": []
+    },
+    {
+      "repeat": 1,
+      "count": 5,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 16.799999999999955,
+        "combat": {
+          "frameP50": 16.099999994039536,
+          "frameP95": 25.80000001192093,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 2.5,
+          "attackSamples": 1,
+          "activeEntities": 6,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 16.5,
+          "frameP95": 23.5,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.20000001788139343,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 2.5,
+          "attackSamples": 1,
+          "activeEntities": 7,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 6,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000000546,
+        "openCpuP95": 1.5999999940395355
+      },
+      "alive": 5,
+      "errors": []
+    },
+    {
+      "repeat": 1,
+      "count": 5,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 16.799999999999955,
+        "combat": {
+          "frameP50": 16.599999994039536,
+          "frameP95": 26,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 5.5999999940395355,
+          "attackSamples": 1,
+          "activeEntities": 6,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 16.800000000000182,
+        "combat": {
+          "frameP50": 16.200000017881393,
+          "frameP95": 22.80000001192093,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.29999998211860657,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 5.5999999940395355,
+          "attackSamples": 1,
+          "activeEntities": 7,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 0,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0.09999999403953552,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 6,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 2.199999988079071
+      },
+      "alive": 5,
+      "errors": []
+    },
+    {
+      "repeat": 1,
+      "count": 10,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 16.800000000000182,
+        "combat": {
+          "frameP50": 16.19999998807907,
+          "frameP95": 26.69999998807907,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 13,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.29999999999927,
+        "combat": {
+          "frameP50": 16.299999982118607,
+          "frameP95": 23.69999998807907,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 12,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0.09999999403953552,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 11,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 1.7000000178813934
+      },
+      "alive": 10,
+      "errors": []
+    },
+    {
+      "repeat": 1,
+      "count": 10,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 16.800000000000182,
+        "combat": {
+          "frameP50": 16.30000001192093,
+          "frameP95": 25,
+          "simulationP95": 0.29999998211860657,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 5.5,
+          "attackSamples": 1,
+          "activeEntities": 13,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.19999999999982,
+        "combat": {
+          "frameP50": 16.30000001192093,
+          "frameP95": 23.899999976158142,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.29999998211860657,
+          "updateP95": 0.5,
+          "attackLatencyP95": 5.5,
+          "attackSamples": 1,
+          "activeEntities": 12,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0.09999999403953552,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 11,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 97,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 2.100000023841858
+      },
+      "alive": 10,
+      "errors": []
+    },
+    {
+      "repeat": 1,
+      "count": 20,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 16.599999994039536,
+          "frameP95": 26.19999998807907,
+          "simulationP95": 0.4000000059604645,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5999999940395355,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 23,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.19999998807907104,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 4,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 16.799999982118607,
+          "frameP95": 24.599999994039536,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5999999940395355,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 22,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 4,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0.4000000059604645,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000000546,
+        "openCpuP95": 1.5999999940395355
+      },
+      "alive": 20,
+      "errors": []
+    },
+    {
+      "repeat": 1,
+      "count": 20,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 16.69999998807907,
+          "frameP95": 31.099999994039536,
+          "simulationP95": 0.4000000059604645,
+          "renderP95": 0.4000000059604645,
+          "updateP95": 0.6000000238418579,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 22,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.20000001788139343,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 3,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 100,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 100,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 126,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 126,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 156,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 156,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 188,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 188,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 188,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 17,
+          "frameP95": 24.900000005960464,
+          "simulationP95": 0.30000001192092896,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.699999988079071,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 24,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 3,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0.4000000059604645,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 5,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.9400000000000002,
+          "manaLeeched": 1.6666666666674383,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 100,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 100,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 126,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 126,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 156,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 156,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 188,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 188,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 188,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 219,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 219,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.02666666666743822
+              },
+              "amount": 0.02666666666743822,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.399999999999636,
+        "openCpuP95": 2.0999999940395355
+      },
+      "alive": 20,
+      "errors": []
+    },
+    {
+      "repeat": 1,
+      "count": 30,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.40000000000009,
+        "combat": {
+          "frameP50": 16.80000001192093,
+          "frameP95": 35.29999998211861,
+          "simulationP95": 0.4000000059604645,
+          "renderP95": 0.3999999761581421,
+          "updateP95": 0.7999999821186066,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 32,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.29999998211860657,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 4,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 17.5,
+          "frameP95": 24.900000005960464,
+          "simulationP95": 0.30000001192092896,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.7000000178813934,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 33,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 4,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 1,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 2
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.399999999999636,
+        "openCpuP95": 1.5
+      },
+      "alive": 30,
+      "errors": []
+    },
+    {
+      "repeat": 1,
+      "count": 30,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.40000000000009,
+        "combat": {
+          "frameP50": 16.900000005960464,
+          "frameP95": 34.599999994039536,
+          "simulationP95": 0.4000000059604645,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.699999988079071,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 32,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.20000001788139343,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 6,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 121,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 121,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 25,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 17.5,
+          "frameP95": 25.30000001192093,
+          "simulationP95": 0.30000001192092896,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.7000000178813934,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 32,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 3,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0.9000000059604645,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 2
+        },
+        "items": {
+          "roots": 5,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.9400000000000002,
+          "manaLeeched": 1.6666666666674383,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 121,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 121,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 153,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 185,
+              "actor": 0,
+              "target": 25,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 218,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 218,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.02666666666743822
+              },
+              "amount": 0.02666666666743822,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.399999999999636,
+        "openCpuP95": 2.4000000059604645
+      },
+      "alive": 30,
+      "errors": []
+    },
+    {
+      "repeat": 2,
+      "count": 5,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 16.800000000000182,
+        "combat": {
+          "frameP50": 16.200000017881393,
+          "frameP95": 25.30000001192093,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 6,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.700000000000728,
+        "p95": 33.399999999999636,
+        "combat": {
+          "frameP50": 19.899999976158142,
+          "frameP95": 28.799999982118607,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 6,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 2,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 6,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.30000000000109,
+        "p95": 50,
+        "openCpuP95": 2
+      },
+      "alive": 5,
+      "errors": []
+    },
+    {
+      "repeat": 2,
+      "count": 5,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.29999999999973,
+        "combat": {
+          "frameP50": 16.599999994039536,
+          "frameP95": 26.19999998807907,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 6,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 0,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 154,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 154,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.29999999999927,
+        "combat": {
+          "frameP50": 16.5,
+          "frameP95": 24,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.20000001788139343,
+          "updateP95": 0.4000000059604645,
+          "attackLatencyP95": 0.5,
+          "attackSamples": 1,
+          "activeEntities": 7,
+          "droppedTicks": 6,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 5,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 5,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0.09999999403953552,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 6,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 5,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.9400000000000002,
+          "manaLeeched": 1.6666666666674383,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 123,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 154,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 154,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 218,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 218,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.02666666666743822
+              },
+              "amount": 0.02666666666743822,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 2.0999999940395355
+      },
+      "alive": 5,
+      "errors": []
+    },
+    {
+      "repeat": 2,
+      "count": 10,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 16.5,
+          "frameP95": 26.5,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 13,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.399999999999636,
+        "combat": {
+          "frameP50": 16.69999998807907,
+          "frameP95": 24.900000005960464,
+          "simulationP95": 0.19999998807907104,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 12,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 1,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 11,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.30000000000018,
+        "p95": 33.400000000001455,
+        "openCpuP95": 1.7000000178813934
+      },
+      "alive": 10,
+      "errors": []
+    },
+    {
+      "repeat": 2,
+      "count": 10,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.399999999999636,
+        "combat": {
+          "frameP50": 16.700000017881393,
+          "frameP95": 27,
+          "simulationP95": 0.29999998211860657,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 12,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 2,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 124,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 124,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 154,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 154,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 16.899999976158142,
+          "frameP95": 25,
+          "simulationP95": 0.20000001788139343,
+          "renderP95": 0.29999998211860657,
+          "updateP95": 0.5,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 12,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.09999999403953552,
+          "alive": 10,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 2,
+          "spawned": 10,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.10000002384185791,
+          "inputP95": 0.09999999403953552,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 11,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 5,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.9400000000000002,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 98,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 124,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 124,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 154,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 154,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 186,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 218,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 218,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0
+              },
+              "amount": 0,
+              "applied": false
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 2.199999988079071
+      },
+      "alive": 10,
+      "errors": []
+    },
+    {
+      "repeat": 2,
+      "count": 20,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.40000000000009,
+        "combat": {
+          "frameP50": 17.099999994039536,
+          "frameP95": 27.099999994039536,
+          "simulationP95": 0.30000001192092896,
+          "renderP95": 0.3999999761581421,
+          "updateP95": 0.5999999940395355,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 22,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.19999998807907104,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 1,
+          "decisions": 2,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.399999999999636,
+        "combat": {
+          "frameP50": 17.69999998807907,
+          "frameP95": 25.69999998807907,
+          "simulationP95": 0.29999998211860657,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.5999999940395355,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 23,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 2,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0.7999999821186066,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 1.5999999940395355
+      },
+      "alive": 20,
+      "errors": []
+    },
+    {
+      "repeat": 2,
+      "count": 20,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "combat": {
+          "frameP50": 17.400000005960464,
+          "frameP95": 29.30000001192093,
+          "simulationP95": 0.3999999761581421,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.699999988079071,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 21,
+          "droppedTicks": 7,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.19999998807907104,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 3,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 4,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.6400000000000001,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 101,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 101,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 128,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 128,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 158,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 158,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 190,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 190,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 190,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.399999999999636,
+        "combat": {
+          "frameP50": 17.69999998807907,
+          "frameP95": 25.5,
+          "simulationP95": 0.29999998211860657,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.6000000238418579,
+          "attackLatencyP95": 0.4000000059604645,
+          "attackSamples": 1,
+          "activeEntities": 23,
+          "droppedTicks": 7,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 20,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 4,
+          "spawned": 20,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0.09999999403953552,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 1
+        },
+        "items": {
+          "roots": 5,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.9400000000000002,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 101,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 101,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 128,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 128,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 158,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 158,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 190,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 190,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 190,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 221,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 221,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0
+              },
+              "amount": 0,
+              "applied": false
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 2.399999976158142
+      },
+      "alive": 20,
+      "errors": []
+    },
+    {
+      "repeat": 2,
+      "count": 30,
+      "variant": "l2",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.40000000000009,
+        "combat": {
+          "frameP50": 17.799999982118607,
+          "frameP95": 37.20000001788139,
+          "simulationP95": 0.4000000059604645,
+          "renderP95": 0.4000000059604645,
+          "updateP95": 0.7000000178813934,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 31,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.20000001788139343,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 4,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 0
+        },
+        "items": null
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.400000000000546,
+        "combat": {
+          "frameP50": 18.19999998807907,
+          "frameP95": 26.599999994039536,
+          "simulationP95": 0.30000001192092896,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.7000000178813934,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 33,
+          "droppedTicks": 5,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 6,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0.09999999403953552,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 1
+        },
+        "items": null
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 33.400000000001455,
+        "openCpuP95": 1.699999988079071
+      },
+      "alive": 30,
+      "errors": []
+    },
+    {
+      "repeat": 2,
+      "count": 30,
+      "variant": "l3",
+      "combat": {
+        "p50": 16.699999999999818,
+        "p95": 33.40000000000009,
+        "combat": {
+          "frameP50": 18.100000023841858,
+          "frameP95": 32.30000001192093,
+          "simulationP95": 0.5,
+          "renderP95": 0.4000000059604645,
+          "updateP95": 0.7999999821186066,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 31,
+          "droppedTicks": 7,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.20000001788139343,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 5,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.20000001788139343,
+          "inputP95": 0,
+          "inputSamples": 0
+        },
+        "effects": {
+          "statuses": 0,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 5,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.9400000000000002,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 95,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 95,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 127,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 127,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 159,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 159,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 194,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 194,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 194,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 224,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 224,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0
+              },
+              "amount": 0,
+              "applied": false
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "skill": {
+        "p50": 16.699999999999818,
+        "p95": 33.400000000000546,
+        "combat": {
+          "frameP50": 18.299999982118607,
+          "frameP95": 27.099999994039536,
+          "simulationP95": 0.30000001192092896,
+          "renderP95": 0.30000001192092896,
+          "updateP95": 0.7999999821186066,
+          "attackLatencyP95": 0.30000001192092896,
+          "attackSamples": 1,
+          "activeEntities": 33,
+          "droppedTicks": 7,
+          "renderWidth": 960,
+          "renderHeight": 540
+        },
+        "ai": {
+          "aiP95": 0.10000002384185791,
+          "alive": 30,
+          "corpses": 0,
+          "pathRequests": 0,
+          "decisions": 5,
+          "spawned": 30,
+          "despawned": 0
+        },
+        "skills": {
+          "skillCombatP95": 0.19999998807907104,
+          "inputP95": 0.19999998807907104,
+          "inputSamples": 1
+        },
+        "effects": {
+          "statuses": 13,
+          "bolts": 0
+        },
+        "items": {
+          "roots": 5,
+          "procs": 1,
+          "applied": 1,
+          "lifeLeeched": 1.9400000000000002,
+          "manaLeeched": 1.6400000000000001,
+          "events": [
+            {
+              "sequence": 0,
+              "tick": 95,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 0,
+              "tick": 95,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 127,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 1,
+              "tick": 127,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.52
+              },
+              "amount": 0.52,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 159,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 2,
+              "tick": 159,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 194,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 194,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 3,
+              "tick": 194,
+              "actor": 0,
+              "target": 1,
+              "kind": "proc",
+              "modifier": "set:ashen-watch/watch-flare",
+              "effect": {
+                "kind": "damage",
+                "element": "fire",
+                "amount": 12
+              },
+              "amount": 12,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 224,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "life-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "life",
+                "amount": 0.3
+              },
+              "amount": 0.3,
+              "applied": true
+            },
+            {
+              "sequence": 5,
+              "tick": 224,
+              "actor": 0,
+              "target": 0,
+              "kind": "leech",
+              "modifier": "mana-leech",
+              "effect": {
+                "kind": "restore",
+                "resource": "mana",
+                "amount": 0
+              },
+              "amount": 0,
+              "applied": false
+            }
+          ],
+          "pending": 0
+        }
+      },
+      "inventory": {
+        "p50": 33.29999999999927,
+        "p95": 50,
+        "openCpuP95": 2.399999976158142
+      },
+      "alive": 30,
+      "errors": []
+    }
+  ]
+}
