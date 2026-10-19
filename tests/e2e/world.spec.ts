@@ -46,7 +46,8 @@ test("virtual controller walks through both area exits", async ({ page }) => {
     "data-combat-ready",
     "true",
   );
-  await page.locator("#combat-world").focus();
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await page.locator("#combat-world").click();
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
     .toBe(true);
@@ -72,4 +73,65 @@ test("virtual controller walks through both area exits", async ({ page }) => {
       )
       .toBe(true);
   }
+});
+
+test("saves forest and character in one checkpoint, reloads safely and returns to camp", async ({
+  page,
+}) => {
+  await page.goto("?world=1");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  async function travelTo(destination: string) {
+    const target = await page.evaluate(() => {
+      const p = window.hollowbaneWorld!.exits[0]!;
+      const hudTop = document
+        .querySelector(".skill-bar")!
+        .getBoundingClientRect().top;
+      const bottom = Math.max(120, Math.min(innerHeight, hudTop - 16));
+      const scale = Math.min(innerWidth / 1280, bottom / 800);
+      return {
+        x: innerWidth / 2 + (p.x - 768) * scale,
+        y: bottom / 2 + (p.y - 512) * scale,
+      };
+    });
+    await page.locator("#combat-world").click({ position: target });
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+      .toBe(destination);
+  }
+  await travelTo("haunted-forest");
+  await page.locator("#inventory-open").click();
+  await page.locator("#inventory-save").click();
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint saved locally.",
+  );
+  const before = await page.evaluate(async () => {
+    return await new Promise<string>((resolve, reject) => {
+      const open = indexedDB.open("hollowbane-character-v1", 1);
+      open.onsuccess = () => {
+        const db = open.result;
+        const get = db
+          .transaction("snapshots")
+          .objectStore("snapshots")
+          .get("current");
+        get.onsuccess = () => {
+          db.close();
+          resolve(get.result.text);
+        };
+        get.onerror = () => reject(get.error);
+      };
+    });
+  });
+  const saved = JSON.parse(before);
+  expect(saved.body.exploration.area).toBe("haunted-forest");
+  expect(saved.body.character).toBeTruthy();
+  expect(saved.body.progression).toBeTruthy();
+  await page.reload();
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await expect(page.locator(".arena-header h1")).toHaveText("Haunted Forest");
+  await travelTo("ashen-refuge");
+  await expect(page.locator(".arena-header h1")).toHaveText("Ashen Refuge");
 });

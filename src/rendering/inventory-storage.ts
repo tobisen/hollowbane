@@ -57,6 +57,9 @@ export class InventoryStorage {
     });
     this.db.onversionchange = () => this.close();
   }
+  lock(): void {
+    this.writable = false;
+  }
   close(): void {
     this.db?.close();
     this.db = null;

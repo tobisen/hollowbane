@@ -2,6 +2,7 @@ import { expect, it } from "vitest";
 import { createInventorySession } from "./inventory-world";
 import { inventoryItem } from "./inventory-test-helper";
 import {
+  CHARACTER_SCHEMA,
   serializeCharacter,
   deserializeCharacter,
   snapshotChecksum,
@@ -90,7 +91,10 @@ it("rejects corrupt, forged, duplicated, conflicting and unsupported snapshots a
     alter(text, (b) => {
       (b.loot as typeof s.loot).drops[0]!.position = { x: -999999, y: -999999 };
     }),
-    text.replace('"schema":4', '"schema":5'),
+    text.replace(
+      `"schema":${CHARACTER_SCHEMA}`,
+      `"schema":${CHARACTER_SCHEMA + 1}`,
+    ),
     JSON.stringify({ schema: 1, contentVersion: 2, items: [] }),
   ])
     expect(() => deserializeCharacter(invalid, ARENA_NAV)).toThrow();

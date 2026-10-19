@@ -1,3 +1,4 @@
+import type { ExplorationSnapshot } from "./world-save";
 import {
   validateProgression,
   type ProgressionSnapshot,
@@ -25,6 +26,7 @@ import { validateGeneratedItem, identifyItem } from "./item-save";
 import { canWalk, type Navigation } from "../world/navigation";
 import type { Point } from "../world/isometric";
 export interface InventorySession {
+  exploration?: ExplorationSnapshot;
   progression?: ProgressionSnapshot;
   /** Runtime rule context, deliberately excluded from item/save identity. */
   requirements?: EquipmentRequirementContext;
@@ -42,7 +44,11 @@ export function reserveOwned(s: InventorySession): InventorySession {
     character: s.character,
     loot: {
       ...s.loot,
-      reserved: itemTree(ownedItems(s.character)).map((i) => i.id),
+      reserved: itemTree([
+        ...ownedItems(s.character),
+        ...(s.exploration?.areas.flatMap((a) => a.drops.map((d) => d.item)) ??
+          []),
+      ]).map((i) => i.id),
     },
   };
 }
@@ -56,6 +62,7 @@ export function validateSession(s: InventorySession, nav?: Navigation): void {
   const all = itemTree([
     ...ownedItems(s.character),
     ...s.loot.drops.map((d) => d.item),
+    ...(s.exploration?.areas.flatMap((a) => a.drops.map((d) => d.item)) ?? []),
   ]);
   if (
     s.loot.drops.length > s.loot.capacity ||

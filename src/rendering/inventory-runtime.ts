@@ -36,6 +36,10 @@ import {
 import type { InventoryResult } from "../simulation/inventory-grid";
 import type { CombatActor } from "../simulation/combat";
 import type { LootWorld } from "../simulation/world-loot";
+export interface ExplorationBinding {
+  capture(): NonNullable<InventorySession["exploration"]>;
+  prepare(session: InventorySession): () => void;
+}
 export class InventoryRuntime {
   character = createCharacterInventory();
   derived: DerivedEquipment;
@@ -60,6 +64,7 @@ export class InventoryRuntime {
     private getProgression: () => MonsterExperience | undefined = () =>
       undefined,
     progressionFloor = 1,
+    private exploration?: ExplorationBinding,
   ) {
     this.character = createCharacterInventory(initialLevel);
     this.actor = getActor();
@@ -183,6 +188,7 @@ export class InventoryRuntime {
             }),
           }
         : {}),
+      ...(this.exploration ? { exploration: this.exploration.capture() } : {}),
       character: this.character,
       loot: this.getLoot(),
       requirements: this.requirements(),
@@ -270,6 +276,11 @@ export class InventoryRuntime {
       ...this.base,
       attributes: requirements.attributes,
     });
+    if (session.exploration && !this.exploration)
+      throw Error(
+        "Open the world route to restore this exploration checkpoint; original retained",
+      );
+    const restoreExploration = this.exploration?.prepare(candidate);
     const xp = this.progression();
     if (xp) {
       xp.character = snapshot.character;
@@ -278,6 +289,7 @@ export class InventoryRuntime {
     }
     this.boundProgression = xp;
     this.lastXp = snapshot.character.totalXp;
+    restoreExploration?.();
     this.commit({ ok: true, value: candidate }, "load");
   }
 }

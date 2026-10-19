@@ -1,3 +1,4 @@
+import { WorldSession } from "../../src/simulation/world-session";
 import { test, expect } from "@playwright/test";
 import { build } from "vite";
 import { createInventorySession } from "../../src/simulation/inventory-world";
@@ -34,6 +35,10 @@ test("IndexedDB atomic current/backup, stale-tab conflict and explicit corrupt-s
     x: 0,
     y: 0,
   });
+  session.exploration = new WorldSession().capture(
+    { x: 0, y: 0 },
+    session.loot,
+  );
   const text = serializeCharacter(session);
   const result = await page.evaluate(async (text) => {
     const url = new URL("__inventory-storage-test.js", location.href).href;
@@ -110,6 +115,7 @@ test("IndexedDB atomic current/backup, stale-tab conflict and explicit corrupt-s
       blocked,
       restored: restored.character.grid.items[0]?.item.id,
       final: final.kind,
+      exploration: restored.exploration,
       quarantine,
     };
   }, text);
@@ -120,6 +126,7 @@ test("IndexedDB atomic current/backup, stale-tab conflict and explicit corrupt-s
     offered: "recoverable",
     final: "valid",
     restored: session.character.grid.items[0]!.item.id,
+    exploration: session.exploration,
     quarantine: { revision: 2, text: "corrupt" },
   });
   expect(result.conflict).toContain("another tab");

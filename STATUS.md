@@ -1,5 +1,13 @@
 # Status
 
+## World persistence checkpoint — DBL-367 (2026-10-19)
+
+- Schema5 adds optional versioned exploration to the existing checksum/CAS/current+previous IndexedDB transaction. Persists area, four derived seeds, position, discovery, parked ground items and per-area loot death identities. One global loot stream and nested item ownership remain authoritative. Schema1–4 saves migrate without inventing exploration.
+- World route restores validated layout/navigation/position and character together; exit-zone positions resume at a clear spawn. Invalid/unknown/unavailable area references reject without partial load, retain originals and leave the safe camp session available with explicit backup recovery. Character-only routes refuse exploration restoration and lock saving rather than overwrite world state. Out-of-bounds legacy ground items require retained-original recovery/export, never silent relocation/deletion.
+- 31 focused save/progression/equipment/runtime/navigation/ownership checks pass; TypeScript/relevant lint pass. Chromium save→reload in forest→camp and IndexedDB world+character backup/stale-tab/corruption recovery pass. No loot simulations or physical-controller claim. Original temporary W1 floors remain; complete expedition is not delivered.
+- CI inspected once: latest39267892319 still targets b737d96 and failed formatting;8090595 has no published run, so its correction is not remotely verified. No new Pages claim.
+- W1 technical scope362–367 is complete. No dependency-ready W1 issues remain: exact next DBL-368 is W2 reusable wilderness modules, followed369 seeded outdoor composition. Session-budget stop; W1–W5 authorization remains active through World review.
+
 ## World runtime checkpoint — DBL-366 (2026-10-19)
 
 - `?world=1` integrates original temporary logical camp/forest floors and exit markers with the existing Phaser scene, pointer/keyboard/virtual-controller movement and logical swept navigation adapter. One live player/progression authority survives travel; area-local actors/projectiles clear only after validated commit. W2 generation/W3 art remain pending; no external assets added.

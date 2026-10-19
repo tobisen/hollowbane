@@ -131,6 +131,9 @@ export class InventoryView {
     this.dialog.id = "inventory-dialog";
     this.dialog.setAttribute("aria-labelledby", "inventory-title");
     this.dialog.innerHTML = `<header><p>HOLLOWBANE / L2</p><h2 id="inventory-title">The Wayfarer’s Kit</h2><button id="inventory-close" aria-label="Close inventory">Close ×</button></header><p id="inventory-prompts"></p><div class="inventory-layout"><section aria-label="Equipment"><h3>Equipment</h3><div id="inventory-gear"></div><output id="inventory-stats"></output></section><section aria-label="Backpack"><h3>Backpack <small>10 × 4 · fixed footprints</small></h3><div id="inventory-grid"></div><p id="inventory-held">Select an item to inspect or move.</p></section><section class="inventory-inspector" aria-label="Item inspection"><h3 id="inventory-name">No item selected</h3><pre id="inventory-details"></pre><pre id="inventory-compare"></pre><div class="inventory-actions"><button id="inventory-take">Select / carry</button><button id="inventory-equip">Equip</button><button id="inventory-identify">Identify</button><button id="inventory-drop">Drop nearby</button><button id="inventory-cancel">Cancel selection</button></div></section></div><footer><p id="inventory-status" role="status"></p><button id="inventory-save">Save now</button><button id="inventory-recover" hidden>Recover previous checkpoint</button><button id="inventory-export">Export snapshot</button><label>Import character snapshot <input id="inventory-import" type="file" accept="application/json,.json"></label><p>Progression, attributes, items and loot stream are saved. Combat, position and current resources restart. An L1 item archive is not a character save.</p></footer>`;
+    if (nav.logicalMap)
+      this.dialog.querySelector("footer p:last-child")!.textContent =
+        "World checkpoints restore area, position, progression, items and loot together. Combat and current resources restart.";
     if (loot.contentVersion >= 4)
       this.dialog.querySelector("header p")!.textContent = "HOLLOWBANE / L3";
     this.dialog
@@ -366,6 +369,7 @@ export class InventoryView {
         this.close();
       }
     } catch (e) {
+      this.storage.lock();
       this.ready = true;
       this.message(`${String(e)}. Session usable; export to retain items.`);
     }
@@ -385,6 +389,7 @@ export class InventoryView {
       );
       this.render();
     } catch (e) {
+      this.storage.lock();
       this.message(String(e));
     }
   }

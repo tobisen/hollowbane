@@ -1,3 +1,6 @@
+import { validateExploration } from "./world-save";
+import { prototypeArea } from "./world-prototype";
+import { areaNavigation } from "../world/navigation";
 import { progressionAtLevel, validateProgression } from "./progression-save";
 import { attributeValues } from "./attributes";
 import { itemTree } from "./item-ownership";
@@ -11,7 +14,7 @@ import {
 } from "./inventory-world";
 import type { Navigation } from "../world/navigation";
 
-export const CHARACTER_SCHEMA = 4;
+export const CHARACTER_SCHEMA = 5;
 const LEGACY_VERSIONS = [2, 3];
 const ADVANCED_VERSIONS = [2, 3, 4, 5, 6, 7, 8];
 const FORMAT = "hollowbane-character";
@@ -48,6 +51,7 @@ export function snapshotChecksum(text: string): string {
 }
 function body(s: InventorySession, versions: readonly number[]): unknown {
   return {
+    ...(s.exploration ? { exploration: s.exploration } : {}),
     progression: s.progression ?? progressionAtLevel(s.character.level),
     contentVersions: [...versions],
     character: s.character,
@@ -70,12 +74,23 @@ function validateBody(
   nav?: Navigation,
   versions: readonly number[] = ADVANCED_VERSIONS,
   progression = false,
+  exploration = false,
 ): InventorySession {
   const b = record(value);
+  const world =
+    exploration && b.exploration !== undefined
+      ? validateExploration(b.exploration)
+      : undefined;
   keys(
     b,
     progression
-      ? ["contentVersions", "character", "loot", "progression"]
+      ? [
+          "contentVersions",
+          "character",
+          "loot",
+          "progression",
+          ...(world ? ["exploration"] : []),
+        ]
       : ["contentVersions", "character", "loot"],
   );
   if (
@@ -119,6 +134,7 @@ function validateBody(
   )
     throw Error("Unknown loot table");
   const session: InventorySession = {
+    ...(world ? { exploration: world } : {}),
     character: {
       level: integer(c.level, 1, 99),
       revision: integer(c.revision),
@@ -167,6 +183,7 @@ function validateBody(
       ...session.character.grid.items.map((p) => p.item),
       ...Object.values(session.character.equipment),
       ...session.loot.drops.map((d) => d.item),
+      ...(world?.areas.flatMap((a) => a.drops.map((d) => d.item)) ?? []),
     ]).some((i) => !versions.includes(i.contentVersion))
   )
     throw Error("Unsupported content registry");
@@ -176,7 +193,10 @@ function validateBody(
       attributes: attributeValues(session.progression.attributes),
     };
   }
-  validateSession(session, nav);
+  validateSession(
+    session,
+    world ? areaNavigation(prototypeArea(world.area, world.seed).map) : nav,
+  );
   return reserveOwned(session);
 }
 export function serializeCharacter(
@@ -188,10 +208,12 @@ export function serializeCharacter(
       ...s.character.grid.items.map((p) => p.item),
       ...Object.values(s.character.equipment),
       ...s.loot.drops.map((d) => d.item),
+      ...(s.exploration?.areas.flatMap((a) => a.drops.map((d) => d.item)) ??
+        []),
     ].some((i) => i.contentVersion >= 4) ||
     !itemContentForVersion(3).tables.some((t) => t.id === s.loot.table);
   const versions = modern ? ADVANCED_VERSIONS : LEGACY_VERSIONS;
-  const validated = validateBody(body(s, versions), nav, versions, true),
+  const validated = validateBody(body(s, versions), nav, versions, true, true),
     payload = body(validated, versions);
   const text = JSON.stringify({
     format: FORMAT,
@@ -258,13 +280,18 @@ export function deserializeCharacter(
                 validateBody(migrated, nav, ADVANCED_VERSIONS, true);
                 return migrated;
               }
-            : undefined);
+            : schema === 4
+              ? (old: unknown) => {
+                  validateBody(old, nav, ADVANCED_VERSIONS, true);
+                  return old;
+                }
+              : undefined);
     if (!migrate)
       throw Error("Unsupported older character schema; original retained");
     payload = migrate(payload);
     schema++;
   }
-  return validateBody(payload, nav, ADVANCED_VERSIONS, true);
+  return validateBody(payload, nav, ADVANCED_VERSIONS, true, true);
 }
 export type SnapshotPair =
   | { kind: "empty" }

@@ -1,5 +1,6 @@
-import { prototypeArea, stepWorldTravel } from "../simulation/world-runtime";
-import { WorldTravel } from "../simulation/world-travel";
+import { WorldSession } from "../simulation/world-session";
+import { validateSession } from "../simulation/inventory-world";
+import { commandCombat as stopCombat } from "../simulation/combat-targeting";
 import { areaDefinition } from "../simulation/world";
 import { areaNavigation } from "../world/navigation";
 import { CLASS_IDS, type ClassId } from "../simulation/character-classes";
@@ -161,19 +162,20 @@ declare global {
 export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
   const exploring = query.has("world");
-  const travel = exploring
-    ? new WorldTravel(42, prototypeArea("ashen-refuge", 42))
-    : null;
+  let worldSession = exploring ? new WorldSession() : null;
+  let travel = worldSession?.travel ?? null;
   const labId = query.get("classLab");
   const classLab =
-    query.get("developer") === "1" && CLASS_IDS.includes(labId as ClassId)
+    !exploring &&
+    query.get("developer") === "1" &&
+    CLASS_IDS.includes(labId as ClassId)
       ? (labId as ClassId)
       : null;
   if (classLab || exploring) monsters = false;
-  const inventory = query.has("inventory") && !classLab && !exploring;
-  const advanced = inventory && query.has("advanced");
-  const itemLab = advanced && query.has("itemLab");
-  const loot = !exploring && !classLab && (query.has("loot") || inventory);
+  const inventory = (exploring || query.has("inventory")) && !classLab;
+  const advanced = inventory && (exploring || query.has("advanced"));
+  const itemLab = !exploring && advanced && query.has("itemLab");
+  const loot = !classLab && (query.has("loot") || inventory);
   const polish = exploring || query.has("polish") || loot || classLab !== null;
   const skills = query.has("skills") || polish;
   const requested = Number(query.get("count") ?? 5);
@@ -337,6 +339,49 @@ export function startCombatArena(monsters = false): Phaser.Game {
           () => this.world.experience.attributes,
           () => this.world.experience,
           itemLab ? 40 : 1,
+          exploring
+            ? {
+                capture: () =>
+                  worldSession!.capture(
+                    this.world.actors[0]!.controller.walker.position,
+                    this.lootView!.world,
+                  ),
+                prepare: (session) => {
+                  const restored = new WorldSession(session.exploration);
+                  const candidateNav = areaNavigation(
+                    restored.travel.layout.map,
+                  );
+                  validateSession(session, candidateNav);
+                  return () => {
+                    worldSession = restored;
+                    travel = restored.travel;
+                    Object.assign(nav, candidateNav);
+                    const player = this.world.actors[0]!;
+                    player.controller = stopCombat(player.controller, {
+                      kind: "stop",
+                    });
+                    player.controller.selected = player.controller.locked =
+                      null;
+                    player.controller.walker.position = {
+                      ...travel.state.position,
+                    };
+                    this.world.actors = [player];
+                    this.world.projectiles = [];
+                    this.world.events = [];
+                    restored.restoreDeaths(session.loot);
+                    if (this.abilities) {
+                      this.abilities.pending = [];
+                      this.abilities.effects.bolts = [];
+                      this.abilities.effects.statuses = [];
+                      this.abilities.effects.events = [];
+                    }
+                    this.keys.clear();
+                    this.hovered = null;
+                    this.accumulator = 0;
+                  };
+                },
+              }
+            : undefined,
         );
       if (this.inventoryRuntime && this.lootView)
         this.inventoryView = new InventoryView(
@@ -407,7 +452,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         document.querySelector<HTMLButtonElement>("#combat-reset")!.disabled =
           true;
         root.querySelector(".arena-footer")!.textContent =
-          "Walk to the glowing exit to travel. Camp / forest prototype · saving arrives in W1 persistence.";
+          "Walk to the glowing exit to travel. Camp / forest prototype · world and character share one checkpoint.";
       }
       this.prepareShowcase();
       this.prepareBenchmark();
@@ -1358,9 +1403,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
           !this.paused &&
           !controllerInput.blockGameplay &&
           !this.abilities?.users.some((u) => u.cast) &&
-          stepWorldTravel(travel, this.world)
+          worldSession!.transition(this.world, this.lootView!.world)
         ) {
           Object.assign(nav, areaNavigation(travel.layout.map));
+          this.inventoryView?.changed();
           this.keys.clear();
           if (this.abilities) {
             this.abilities.pending = [];
