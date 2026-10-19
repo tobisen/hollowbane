@@ -1,5 +1,10 @@
 # Status
 
+## DBL-375 / W3 CI timeout follow-up (2026-10-19)
+
+- User CI evidence: historical/reproducibility world case exceeded5000ms at5439ms; the separate roundtrip case passed7461ms with its existing15s limit. The first case now also explicitly allows15s. Both cases retain every assertion, seed, path and fingerprint sample; no runtime/global unit timeout changes.
+- Only world-layout.test.ts rerun:2/2 pass. TypeScript/relevant lint/format pass. No browser/full regression needed for a test timeout-only fix. W3 review stop remains; no W4/W5 work. Unrelated local edits preserved.
+
 ## DBL-377 / scoped W3 environment review candidate (2026-10-19)
 
 - DBL-375 forest committed4d6995a;376 graveyard committed88bc39c.377 crypt now renders textured modular stone walls on existing solid boundary cells, original-footprint pillars, floor variations, torch-bearing arches and bounded static lantern pools. Existing generated rooms/corridors, exits and collision remain authoritative; no seeds/fingerprints/save contracts changed.

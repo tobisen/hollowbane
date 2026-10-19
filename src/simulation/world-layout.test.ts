@@ -53,7 +53,7 @@ it("pins historical rules and reproduces validated generated worlds independentl
     ]
   `);
   expect(() => worldLayout("haunted-forest", 42, 3)).toThrow();
-});
+}, 15_000);
 it("roundtrips generated travel, progression and parked items without duplicate ownership or loot reset", () => {
   const session = createInventorySession();
   session.loot.sequence = 123;
