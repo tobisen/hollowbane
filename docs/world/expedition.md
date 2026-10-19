@@ -25,3 +25,15 @@ Next DBL-364: authored spawn/entrance anchors validated against logical clearanc
 DBL-364 validates exact registered exits, clear actor-radius spawns/triggers/arrivals and separation from every exit interaction zone. Two focused tests, TypeScript and relevant lint pass. Logical anchors only; runtime integration follows DBL-366.
 
 Next: DBL-365 prepared atomic transition domain; then366 runtime prototype and367 save binding.
+
+## DBL-365 checkpoint
+
+DBL-365 owns only immutable travel/layout state. Prepared transitions verify proximity, registered destination and area seed, deep-copy validated destinations, reject forged/canceled/stale/cross-session/replayed handles and retain old state on failure. Three focused transition cases plus two anchor cases, TypeScript and relevant lint pass; no character/save mutation.
+
+Next: DBL-366 runtime lifecycle/two-area prototype, then367 atomic world persistence. W2–W5 remain pending.
+
+### DBL-366 implementation handoff
+
+Integrate the existing arena rather than introduce another character authority. `src/main.ts` routes labs to `startCombatArena`; `src/rendering/combat-arena.ts` closes over one `nav` object shared with movement, skills, loot and inventory. `src/world/navigation.ts` currently projects logical points through `onGround` and supports ellipse obstacles; introduce an explicit logical-map navigation adapter while preserving legacy behavior and run navigation/movement checks. WorldTravel owns frozen layouts and generation-independent area seeds; movement must synchronize travel position before prepare, while caller enforces idle/alive/input-modal safety.
+
+Scene actor0, world.experience, inventoryRuntime and loot session must survive travel; do not call the arena reset handler, which recreates world/abilities and resets loot. Clear per-area targets/projectiles/AI only after destination validation; do not transfer uncollected drops to the destination. DBL-366 may use clearly documented original temporary floor/exit visuals for camp/forest; W2 generation and W3 environment art are still pending. Test actual walk→exit→return flow and save-owner identity; use keyboard/mouse and virtual controller. DBL-367 then binds versioned world state to existing atomic character save, with legacy/no-world compatibility. No hosted expedition claim until W5.

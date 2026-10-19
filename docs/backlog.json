@@ -4093,8 +4093,9 @@
     "deliveryPhase": "world-exploration",
     "priority": "p1",
     "dependencies": ["DBL-364"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nW1: Atomic prepared area transition domain. Preserve character ownership, deterministic simulation and original parent dependencies. See docs/world/expedition.md for integration contracts.\n\n## Non-goals\nNo campaign, NPC dialogue, vendors, crafting, new classes or engine migration; broader parent remains partial.\n\n## Test requirements\nAffected unit tests, TypeScript and relevant lint; browser checks only for browser changes. Reuse prior evidence.\n\n## Definition of done\nVerified increment committed with evidence and STATUS checkpoint; stop at World quality review."
+    "status": "completed",
+    "body": "## Acceptance criteria\nW1: Atomic prepared area transition domain. Preserve character ownership, deterministic simulation and original parent dependencies. See docs/world/expedition.md for integration contracts.\n\n## Non-goals\nNo campaign, NPC dialogue, vendors, crafting, new classes or engine migration; broader parent remains partial.\n\n## Test requirements\nAffected unit tests, TypeScript and relevant lint; browser checks only for browser changes. Reuse prior evidence.\n\n## Definition of done\nVerified increment committed with evidence and STATUS checkpoint; stop at World quality review.",
+    "evidence": "DBL-365 owns only immutable travel/layout state. Prepared transitions verify proximity, registered destination and area seed, deep-copy validated destinations, reject forged/canceled/stale/cross-session/replayed handles and retain old state on failure. Three focused transition cases plus two anchor cases, TypeScript and relevant lint pass; no character/save mutation."
   },
   {
     "id": "DBL-366",

@@ -1,5 +1,11 @@
 # Status
 
+## World & Exploration checkpoint — DBL-365 (2026-10-19)
+
+- DBL-365 owns only immutable travel/layout state. Prepared transitions verify proximity, registered destination and area seed, deep-copy validated destinations, reject forged/canceled/stale/cross-session/replayed handles and retain old state on failure. Three focused transition cases plus two anchor cases, TypeScript and relevant lint pass; no character/save mutation.
+- Next: DBL-366 runtime lifecycle/two-area prototype, then367 atomic world persistence. W2–W5 remain pending.
+- W1–W5 remains authorized; stop at World quality review. No complete expedition or new hosted claim. Preserve pre-existing L3 changes; physical-controller evidence remains open.
+
 ## World & Exploration checkpoint — DBL-364 (2026-10-19)
 
 - DBL-364 validates exact registered exits, clear actor-radius spawns/triggers/arrivals and separation from every exit interaction zone. Two focused tests, TypeScript and relevant lint pass. Logical anchors only; runtime integration follows DBL-366.
