@@ -1,12 +1,12 @@
 # World & Exploration
 
-Authorized 2026-10-19: W1–W5, thirty dependency-ordered scoped increments DBL-362–391. Stop at World quality review. C13 technical prerequisite verified against CI39165184187, runtime e14335fad98afbc7464ae2c2a0505ce465af619b and hosted class flows. This is not a claim of class balance approval or physical hardware verification.
+Authorized 2026-10-19: W1–W5, thirty dependency-ordered scoped increments DBL-362–391. The pre-existing local DBL-361 follow-up record is retained unchanged as an ID reservation so committed numbering remains contiguous; it is not part of world delivery. Stop at World quality review. C13 technical prerequisite verified against CI39165184187, runtime e14335fad98afbc7464ae2c2a0505ce465af619b and hosted class flows. This is not a claim of class balance approval or physical hardware verification.
 
 ## Architecture
 
 DBL-362 defines four logical identities, reciprocal named arrivals, safe camp metadata and versioned uint32 per-area seed derivation independent of generation/visit order. Registry validation checks identity uniqueness, reciprocity and reachability. Seeds are content-versioned; subsequent generator changes must preserve older saved layouts or migrate explicitly. Area levels1/1/3/5 are provisional tuning.
 
-World coordinates and collision/navigation stay in simulation. Rendering projects loaded area data through existing movement/camera/depth systems. Planned layers separate terrain, collidable objects, decoration and authored spawn/connection anchors; no monolithic scene or renderer rewrite. Runtime world loading is not implemented yet.
+World coordinates and collision/navigation stay in simulation. Rendering projects loaded area data through existing movement/camera/depth systems. Planned layers separate terrain, collidable objects, decoration and authored spawn/connection anchors; no monolithic scene or renderer rewrite. DBL-363 adds bounded row-major terrain and separate identified objects with logical circular footprints, plus pure map validation and actor-clearance queries. Existing src/world/navigation.ts uses projected ground-image pixels; DBL-366 must explicitly adapt logical navigation without changing legacy movement. Runtime world loading is not implemented yet.
 
 The current character/inventory session remains the single owner of XP, attributes, skills, equipment, item ownership and loot stream. Area changes must prepare and validate destination terrain/spawn before committing, reject stale/repeated requests, and leave the live session intact on failure. World state will own only area seed/version, discovery, encounter/container identities and position. Save integration must use the existing atomic checkpoint/CAS path, not a second independent character save.
 
@@ -16,4 +16,6 @@ W2 composes reusable modules into paths/clearings and rooms/corridors, validates
 
 DBL-362: three focused domain cases cover reciprocal connected registry, invalid/missing/disconnected entries and deterministic independent seed identities, including invalid seed bounds. TypeScript and focused lint required before commit. No assets added; no new placeholders. No world browser route or public expedition exists yet.
 
-Next DBL-363: inspect src/simulation/geometry.ts (or current collision types) and movement/encounter integration before defining logical terrain/object/navigation layers. Then DBL-364 anchors, DBL-365 prepared transitions, DBL-366 runtime prototype, DBL-367 atomic world persistence. Continue sequentially under user W1–W5 authorization; no routine approval stops. Preserve unrelated L3 edits and original parent dependencies. Final broad suite only at W5 or meaningful shared-system risk.
+DBL-363: two focused map validation/clearance cases pass (five combined world tests), TypeScript/relevant lint pass. Test-only appearance ID test-only-rock is a fixture, not a runtime asset/placeholder. No production assets added.
+
+Next DBL-364: authored spawn/entrance anchors validated against logical clearance and registry arrival names. Then DBL-365 prepared transitions, DBL-366 runtime prototype, DBL-367 atomic world persistence. Continue sequentially under user W1–W5 authorization; no routine approval stops. Preserve unrelated L3 edits and original parent dependencies. Final broad suite only at W5 or meaningful shared-system risk.

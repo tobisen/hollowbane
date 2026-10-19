@@ -1,10 +1,10 @@
 # Status
 
-## World & Exploration active — DBL-362 (2026-10-19)
+## World & Exploration checkpoint — DBL-362–363 (2026-10-19)
 
 - User authorizes autonomous W1–W5 through World quality review. C13 technical prerequisite complete: CI39165184187 / e14335fad98afbc7464ae2c2a0505ce465af619b verify+Pages success; public index-DBDMEo57.js matches; three hosted class cases pass, Warrior screenshot reviewed. No physical-controller/balance claim.
 - DBL-362 pure four-area registry, reciprocal connections and stable versioned area seeds delivered; three focused tests, TypeScript/relevant lint and backlog validation pass. No runtime world integration or public expedition yet.
-- Thirty increments DBL-362–391 registered without renumbering original IDs/parents; scope and continuation docs/world/expedition.md. Next DBL-363 logical terrain/object/navigation contracts, then364 anchors,365 safe transitions,366 runtime prototype,367 persistence. Continue sequentially under W1–W5 authorization; no new approval required before World review. Respect soft session budget.
+- Thirty increments DBL-362–391 registered without renumbering original IDs/parents; scope and continuation docs/world/expedition.md. DBL-363 logical terrain/object/navigation contracts also delivered: two focused clearance/validation tests (five combined), TypeScript/relevant lint pass. Next DBL-364 spawn/entrance anchors, then365 safe transitions,366 runtime prototype,367 persistence. Continue sequentially under W1–W5 authorization; no new approval required before World review. Soft session checkpoint; resume at DBL-364. Existing src/world/navigation.ts uses projected ground-image pixels; preserve it and add an explicit logical-map adapter at366 rather than mixing units.
 - Preserve pre-existing BACKLOG.md/docs/backlog.json/docs/items/l3.md/STATUS.md changes separately. Hardware, artwork, provisional class balance, broader parent and issue-sync follow-ups remain open. This checkpoint supersedes historical “no world authorized” notes below.
 
 ## C13 Linux inventory references reviewed (2026-10-18)

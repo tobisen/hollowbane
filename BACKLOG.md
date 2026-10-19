@@ -357,7 +357,7 @@ DBL-109 / P11 release complete (2026-10-18): P11 release verified2026-10-18: run
 ## Authorized World & Exploration scope (2026-10-19)
 W1–W5 authorized after technical C13 verification. Thirty sequential scoped increments; original source IDs/dependencies unchanged; broader parents remain partial.
 - DBL-362 / W1: World registry and stable area seed identities (completed).
-- DBL-363 / W1: Logical terrain object and navigation layer contracts (planned).
+- DBL-363 / W1: Logical terrain object and navigation layer contracts (completed).
 - DBL-364 / W1: Spawn and entrance placement validation (planned).
 - DBL-365 / W1: Atomic prepared area transition domain (planned).
 - DBL-366 / W1: Runtime area lifecycle and minimal two-area prototype (planned).
