@@ -1,3 +1,4 @@
+import { configureWorldRewards } from "./world-rewards";
 import {
   worldLayout,
   layoutFingerprint,
@@ -73,6 +74,8 @@ export class WorldSession {
     });
   }
   restoreDeaths(loot: LootWorld, world?: CombatWorld): void {
+    if (this.snapshot.contentVersion === 2)
+      configureWorldRewards(loot, this.travel.state.area);
     loot.deaths = new Set(
       this.snapshot.areas.find((a) => a.id === this.travel.state.area)!.deaths,
     );
@@ -114,6 +117,7 @@ export class WorldSession {
     ];
     loot.drops = destination.drops;
     loot.deaths = new Set(destination.deaths);
+    if (this.snapshot.contentVersion === 2) configureWorldRewards(loot, after);
     return true;
   }
 }

@@ -1,3 +1,4 @@
+import { configureWorldRewards } from "../simulation/world-rewards";
 import { WorldEncounterRuntime } from "../simulation/world-encounter-runtime";
 import { WorldEnvironment } from "./world-environment";
 import { CampEnvironment } from "./camp-environment";
@@ -334,7 +335,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private previousFrame = 0;
     private balancedDetail = false;
     private startedAt = 0;
-    private installWorldEncounter(deaths: ReadonlySet<number>): void {
+    private installWorldEncounter(
+      loot: import("../simulation/world-loot").LootWorld,
+    ): void {
+      if (travel && worldSession!.contentVersion === 2)
+        configureWorldRewards(loot, travel.state.area);
       if (!travel || peacefulWorld) {
         this.worldEncounter = null;
         return;
@@ -342,7 +347,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       this.worldEncounter = new WorldEncounterRuntime(
         this.world,
         travel.layout,
-        deaths,
+        loot.deaths,
       );
       this.encounter = this.worldEncounter.plan.length
         ? this.worldEncounter.encounter
@@ -490,7 +495,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
                     this.world.projectiles = [];
                     this.world.events = [];
                     restored.restoreDeaths(session.loot, this.world);
-                    this.installWorldEncounter(session.loot.deaths);
+                    this.installWorldEncounter(session.loot);
                     if (this.abilities) {
                       this.abilities.pending = [];
                       this.abilities.effects.bolts = [];
@@ -571,7 +576,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         root.querySelector(".arena-footer")!.textContent =
           "Walk to the glowing exits to travel. Seeded expedition · world and character share one checkpoint.";
       }
-      if (travel) this.installWorldEncounter(this.lootView!.world.deaths);
+      if (travel) this.installWorldEncounter(this.lootView!.world);
       this.prepareShowcase();
       this.prepareBenchmark();
       this.syncActors();
@@ -1526,7 +1531,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           worldSession!.transition(this.world, this.lootView!.world)
         ) {
           Object.assign(nav, areaNavigation(travel.layout.map));
-          this.installWorldEncounter(this.lootView!.world.deaths);
+          this.installWorldEncounter(this.lootView!.world);
           this.inventoryView?.changed();
           this.keys.clear();
           if (this.abilities) {

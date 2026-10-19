@@ -1,5 +1,11 @@
 # Status
 
+## W4 / DBL-382 reward context and safe checkpoint (2026-10-19)
+
+-380/381 delivered as0831dff/363e1c5.382 binds future generated-world loot levels1/3/5 on load/restore/travel, retaining content tables, global seed/sequence, reserved/parked ownership and existing pickup transactions. Legacy content1 loot policy, item rolls, maps/fingerprints and character save schema remain unchanged. Version1 encounter plan checksum is pinned against accidental identity drift.
+- Seven focused reward/lifecycle/save cases plus seeded placement case pass. Targeted Chromium live-ID checkpoint/reload passes and asserts stored forest reward level1; earlier screenshot reviewed. TypeScript/relevant lint/format/build pass. No broad regression, loot simulation, hardware/GPU or hosted-completion claim.
+- Session-budget checkpoint after the three related380–382 increments. Next383 containers/one-time item+gold rewards,384 interactions,385 persistent discovery/minimap remain authorized. W4 remains incomplete; stop before W5. Preserve unrelated local edits. W4 evidence docs/world/w4.md; hosted gameplay verification belongs at the W4 gate.
+
 ## W4 / DBL-381 encounter lifecycle (2026-10-19)
 
 - Existing AI/skills/lifecycle now run in generated world scenes, retaining the one player/progression authority. Packs defer within9 units of a restored player, use existing50-actor/path limits and champion mechanics, with provisional area/elite stat scaling. Camp/legacy small floors stay safe; survivors reset home, defeated IDs remain defeated.

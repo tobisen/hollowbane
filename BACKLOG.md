@@ -378,7 +378,7 @@ W1–W5 authorized after technical C13 verification. Thirty sequential scoped in
 - DBL-379 / W3: Connected environment visual and navigation review (completed).
 - DBL-380 / W4: Area-scaled seeded encounter placement (completed).
 - DBL-381 / W4: Encounter lifecycle and defeated identity persistence (completed).
-- DBL-382 / W4: Area-scaled existing loot and world pickup integration (planned).
+- DBL-382 / W4: Area-scaled existing loot and world pickup integration (completed).
 - DBL-383 / W4: Seeded containers and atomic one-time rewards (planned).
 - DBL-384 / W4: Controller-compatible container and exit interaction (planned).
 - DBL-385 / W4: Persistent exploration reveal and minimap markers (planned).

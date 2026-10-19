@@ -19,6 +19,26 @@ test("generated expedition installs stable safe monster identities across save/r
   await expect(page.locator("#inventory-status")).toHaveText(
     "Character checkpoint saved locally.",
   );
+  const context = await page.evaluate(async () => {
+    const db = await new Promise<IDBDatabase>((resolve) => {
+      const r = indexedDB.open("hollowbane-world-test-42-0-haunted-forest", 1);
+      r.onsuccess = () => resolve(r.result);
+    });
+    const result = await new Promise<{
+      areaLevel: number;
+      monsterLevel: number;
+    }>((resolve) => {
+      const r = db
+        .transaction("snapshots")
+        .objectStore("snapshots")
+        .get("current");
+      r.onsuccess = () => resolve(JSON.parse(r.result.text).body.loot);
+    });
+    db.close();
+    return result;
+  });
+  expect(context.areaLevel).toBe(1);
+  expect(context.monsterLevel).toBe(1);
   await page.reload();
   await expect(page.locator("#inventory-dialog")).not.toBeVisible();
   await expect
