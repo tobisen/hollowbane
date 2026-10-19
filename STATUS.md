@@ -1,5 +1,12 @@
 # Status
 
+## Outdoor composition checkpoint — DBL-369 (2026-10-19)
+
+- DBL-368 committed b7606a9;369 composes20 modules through a seeded spanning tree, winding passages, clearings and exact named entrances/arrivals. Original circular footprints follow rotated stamps. All walkable cell centers and anchors are checked with actor clearance/swept collision; invalid outdoor candidates use a deterministic validated clearing fallback.
+- 13 focused module/generation/save/travel tests pass, including nine representative seeds, route variation, an exact version1 digest, blocked entrances, split terrain and forced disconnected-extension fallback. TypeScript/relevant lint pass. Pure generation only: no rendering changes, browser tests, loot simulations or benchmarks. W1 runtime/schema5/layout1 saves remain pinned and unchanged; new layout1 is separately scoped to the wilderness generator, not installed as world content1.
+- No additional ready authorized issue: next graph node DBL-370 is dungeon generation, expressly excluded.371 navigation validation and372 general retries/fallback retain their dependencies and remain planned;369 includes only its local outdoor safety guard, not their broader acceptance.373 remains later seeded/runtime integration. Stop before370; W1–W5 expedition incomplete.
+- Remote main remains b737d96 and latest CI39267892319 is the old formatting failure. Local366 onward have not been pushed; no new CI/Pages success claimed. Unrelated local documentation preserved.
+
 ## Wilderness modules checkpoint — DBL-368 (2026-10-19)
 
 - Five original data-driven logical module kinds: path, clearing, forest, obstacles and ruins; seeded selection, quarter-turn masks and matching circular collision footprints. Two focused tests cover all20 rotated modules, ports, deterministic choices and invalid inputs; TypeScript/relevant lint pass.

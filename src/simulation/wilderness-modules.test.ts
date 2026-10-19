@@ -45,6 +45,12 @@ it("selects modules/rotations reproducibly without consuming a shared stream", (
   expect(
     new Set(picks.map((p) => p.module.id + p.rotation)).size,
   ).toBeGreaterThan(3);
+  expect(
+    validWildernessModule({
+      ...WILDERNESS_MODULES[0]!,
+      objects: WILDERNESS_MODULES[3]!.objects,
+    }),
+  ).toBe(false);
   expect(() => moduleChoice(-1)).toThrow();
   expect(() => moduleChoice(1, [])).toThrow();
   expect(

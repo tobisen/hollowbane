@@ -1,4 +1,4 @@
-import type { AreaObject } from "./area-map";
+import { areaWalkable, type AreaObject } from "./area-map";
 export const WILDERNESS_MODULE_VERSION = 1;
 export const MODULE_SIZE = 7;
 export const MODULE_PORTS = ["north", "east", "south", "west"] as const;
@@ -102,7 +102,27 @@ export function validWildernessModule(module: WildernessModule): boolean {
         o.position.x + o.radius < MODULE_SIZE &&
         o.position.y + o.radius < MODULE_SIZE &&
         Math.abs(o.position.x - 3.5) > o.radius + 0.7 &&
-        Math.abs(o.position.y - 3.5) > o.radius + 0.7,
+        Math.abs(o.position.y - 3.5) > o.radius + 0.7 &&
+        areaWalkable(
+          {
+            area: "haunted-forest",
+            seed: 0,
+            terrain: {
+              width: MODULE_SIZE,
+              height: MODULE_SIZE,
+              cellSize: 1,
+              origin: { x: 0, y: 0 },
+              cells: module.rows.flatMap((row) =>
+                [...row].map((c) =>
+                  c === "." ? ("ground" as const) : ("solid" as const),
+                ),
+              ),
+            },
+            objects: [],
+          },
+          o.position,
+          o.radius,
+        ),
     )
   );
 }
