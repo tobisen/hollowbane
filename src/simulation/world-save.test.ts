@@ -25,7 +25,7 @@ function fixture() {
   });
   session.loot.sequence = 123;
   session.loot.deaths.add(17);
-  const world = new WorldSession();
+  const world = new WorldSession(undefined, 42, 1);
   session.exploration = world.capture({ x: 0, y: 0 }, session.loot);
   return { session, world };
 }
@@ -99,7 +99,7 @@ it("migrates schema4 without world safely and restores exit-zone checkpoints awa
   expect(
     deserializeCharacter(JSON.stringify(root)).exploration,
   ).toBeUndefined();
-  const world = new WorldSession();
+  const world = new WorldSession(undefined, 42, 1);
   session.exploration = world.capture({ x: -2.5, y: 0 }, session.loot);
   const restored = new WorldSession(
     deserializeCharacter(serializeCharacter(session)).exploration,

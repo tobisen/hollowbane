@@ -364,12 +364,12 @@ W1–W5 authorized after technical C13 verification. Thirty sequential scoped in
 - DBL-365 / W1: Atomic prepared area transition domain (planned).
 - DBL-366 / W1: Runtime area lifecycle and minimal two-area prototype (planned).
 - DBL-367 / W1: Versioned exploration snapshot and atomic save binding (planned).
-- DBL-368 / W2: Reusable authored wilderness modules (planned).
-- DBL-369 / W2: Seeded outdoor path and clearing composition (planned).
-- DBL-370 / W2: Connected dungeon rooms and corridors (planned).
-- DBL-371 / W2: Restricted placement and navigation validation (planned).
-- DBL-372 / W2: Bounded generation retries and safe fallback (planned).
-- DBL-373 / W2: Representative seed reproducibility integration (planned).
+- DBL-368 / W2: Reusable authored wilderness modules (completed).
+- DBL-369 / W2: Seeded outdoor path and clearing composition (completed).
+- DBL-370 / W2: Connected dungeon rooms and corridors (completed).
+- DBL-371 / W2: Restricted placement and navigation validation (completed).
+- DBL-372 / W2: Bounded generation retries and safe fallback (completed).
+- DBL-373 / W2: Representative seed reproducibility integration (completed).
 - DBL-374 / W3: Ashen Refuge safe camp environment (planned).
 - DBL-375 / W3: Haunted Forest environment and depth integration (planned).
 - DBL-376 / W3: Forgotten Graveyard environment (planned).

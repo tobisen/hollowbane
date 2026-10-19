@@ -1,3 +1,7 @@
+import { drawWorldFloor } from "./world-floor";
+import { AREA_IDS, type AreaId } from "../simulation/world";
+import { layoutFingerprint } from "../simulation/world-layout";
+import { findPath as worldPath } from "../world/navigation";
 import { WorldSession } from "../simulation/world-session";
 import { validateSession } from "../simulation/inventory-world";
 import { commandCombat as stopCombat } from "../simulation/combat-targeting";
@@ -110,6 +114,11 @@ declare global {
   interface Window {
     hollowbaneWorld?: {
       area: string;
+      seed: number;
+      contentVersion: number;
+      fingerprint: string;
+      routeToExit?: (id: string) => Point[];
+      camera: { x: number; y: number; zoom: number };
       position: Point;
       exits: { id: string; x: number; y: number }[];
     };
@@ -162,7 +171,31 @@ declare global {
 export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
   const exploring = query.has("world");
-  let worldSession = exploring ? new WorldSession() : null;
+  const developerWorld = exploring && query.get("developer") === "1";
+  const requestedSeed = Number(query.get("worldSeed") ?? 42);
+  const testSeed =
+    Number.isInteger(requestedSeed) &&
+    requestedSeed >= 0 &&
+    requestedSeed <= 0xffffffff
+      ? requestedSeed
+      : 42;
+  const testArea = AREA_IDS.includes(query.get("worldArea") as AreaId)
+    ? (query.get("worldArea") as AreaId)
+    : "ashen-refuge";
+  const testRun = /^\d{1,9}$/.test(query.get("expedition") ?? "")
+    ? query.get("expedition")!
+    : "0";
+  const testStorage = developerWorld
+    ? `hollowbane-world-test-${testSeed}-${testRun}-${testArea}`
+    : undefined;
+  let worldSession = exploring
+    ? new WorldSession(
+        undefined,
+        developerWorld ? testSeed : 42,
+        2,
+        developerWorld ? testArea : "ashen-refuge",
+      )
+    : null;
   let travel = worldSession?.travel ?? null;
   const labId = query.get("classLab");
   const classLab =
@@ -234,6 +267,23 @@ export function startCombatArena(monsters = false): Phaser.Game {
   const hostile = document.querySelector<HTMLInputElement>("#combat-hostile")!;
   const sound = document.querySelector<HTMLInputElement>("#combat-sound")!;
   if (classLab) hostile.checked = false;
+  if (developerWorld) {
+    const controls = document.createElement("form");
+    controls.className = "world-developer";
+    controls.style.cssText =
+      "position:fixed;right:12px;top:12px;z-index:50;background:#151b19;padding:8px;color:#eadcba";
+    controls.innerHTML = `<label>Test seed <input name="seed" type="number" min="0" max="4294967295" value="${testSeed}" style="width:110px"></label> <button>Restart test expedition</button><output id="world-version"></output>`;
+    controls.onsubmit = (event) => {
+      event.preventDefault();
+      const seed = Number(new FormData(controls).get("seed"));
+      if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) return;
+      const url = new URL(location.href);
+      url.searchParams.set("worldSeed", String(seed));
+      url.searchParams.set("expedition", String(Number(testRun) + 1));
+      location.assign(url);
+    };
+    root.append(controls);
+  }
   class Arena extends Phaser.Scene {
     private encounter: Encounter | null = monsters
       ? createEncounter(initialCount)
@@ -262,6 +312,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private sprites = new Map<number, Phaser.GameObjects.Sprite>();
     private contactShadows = new Map<number, Phaser.GameObjects.Image>();
     private labels = new Map<number, Phaser.GameObjects.Text>();
+    private worldFloor: Phaser.GameObjects.Graphics | null = null;
+    private drawnLayout: unknown = null;
     private ink!: Phaser.GameObjects.Graphics;
     private effect!: Phaser.GameObjects.Graphics;
     private keys = new Set<string>();
@@ -395,6 +447,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
             tick: this.world.tick,
           }),
           itemLab,
+          testStorage,
         );
       controllerInput.movementKeys = new Set([
         "KeyW",
@@ -415,15 +468,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           query.has("noBackdrop"),
         );
       else if (travel) {
-        const floor = this.add.graphics().setDepth(-999);
-        floor.fillStyle(0x18252c, 1).fillPoints(
-          nav.boundary.map((p) => new Phaser.Math.Vector2(p.x, p.y)),
-          true,
-        );
-        floor.lineStyle(2, 0xb19a62, 0.7).strokePoints(
-          nav.boundary.map((p) => new Phaser.Math.Vector2(p.x, p.y)),
-          true,
-        );
+        this.worldFloor = this.add.graphics().setDepth(-999);
       } else {
         this.add
           .image(0, 0, "arena-plate")
@@ -452,7 +497,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         document.querySelector<HTMLButtonElement>("#combat-reset")!.disabled =
           true;
         root.querySelector(".arena-footer")!.textContent =
-          "Walk to the glowing exit to travel. Camp / forest prototype · world and character share one checkpoint.";
+          "Walk to the glowing exits to travel. Seeded expedition · world and character share one checkpoint.";
       }
       this.prepareShowcase();
       this.prepareBenchmark();
@@ -1399,6 +1444,19 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
       }
       if (travel) {
+        if (this.worldFloor && this.drawnLayout !== travel.layout) {
+          drawWorldFloor(this.worldFloor, travel.layout);
+          this.drawnLayout = travel.layout;
+        }
+        const framing = arenaView(
+          { x: innerWidth, y: innerHeight },
+          root.querySelector(".skill-bar")!.getBoundingClientRect().top,
+        );
+        const focus = onGround(player.controller.walker.position);
+        this.cameras.main.centerOn(
+          focus.x,
+          focus.y + (innerHeight - framing.playBottom) / (2 * framing.scale),
+        );
         if (
           !this.paused &&
           !controllerInput.blockGameplay &&
@@ -1423,8 +1481,33 @@ export function startCombatArena(monsters = false): Phaser.Game {
         root.querySelector(".arena-header h1")!.textContent = areaDefinition(
           travel.state.area,
         ).name;
+        const versionOutput = document.querySelector("#world-version");
+        if (versionOutput)
+          versionOutput.textContent = ` ${travel.state.area} · seed ${travel.state.seed} · layout ${worldSession!.contentVersion} / generator 1 · isolated test save`;
         window.hollowbaneWorld = {
           area: travel.state.area,
+          seed: travel.state.seed,
+          contentVersion: worldSession!.contentVersion,
+          fingerprint: layoutFingerprint(travel.layout),
+          camera: {
+            x: this.cameras.main.worldView.x,
+            y: this.cameras.main.worldView.y,
+            zoom: innerWidth / this.cameras.main.worldView.width,
+          },
+          ...(developerWorld
+            ? {
+                routeToExit: (id: string) => {
+                  const exit = travel!.layout.exits.find((e) => e.id === id);
+                  return exit
+                    ? worldPath(
+                        nav,
+                        player.controller.walker.position,
+                        exit.trigger,
+                      )
+                    : [];
+                },
+              }
+            : {}),
           position: { ...player.controller.walker.position },
           exits: travel.layout.exits.map((e) => ({
             id: e.id,
@@ -1445,9 +1528,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       if (travel)
         for (const exit of travel.layout.exits) {
           const p = onGround(exit.trigger);
-          this.ink
-            .lineStyle(3, exit.id === "graveyard" ? 0x555555 : 0xf1cf82, 1)
-            .strokeEllipse(p.x, p.y, 48, 24);
+          this.ink.lineStyle(3, 0xf1cf82, 1).strokeEllipse(p.x, p.y, 48, 24);
         }
       this.effect.clear();
       this.syncActors();

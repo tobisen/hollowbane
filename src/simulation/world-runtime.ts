@@ -4,11 +4,12 @@ import { WorldTravel } from "./world-travel";
 import type { CombatWorld } from "./combat";
 import { commandCombat } from "./combat-targeting";
 export { prototypeArea } from "./world-prototype";
-import { prototypeArea } from "./world-prototype";
+import { worldLayout } from "./world-layout";
 /** Caller gates modal/pause state. Never recreates character, resources or progression. */
 export function stepWorldTravel(
   travel: WorldTravel,
   world: CombatWorld,
+  contentVersion = 1,
 ): boolean {
   const player = world.actors[0]!;
   if (
@@ -21,16 +22,17 @@ export function stepWorldTravel(
   const edge = areaDefinition(travel.state.area).connections.find(
     (c) => c.id === exit?.id,
   );
-  // W1 deliberately exposes only the camp/forest prototype.
+  // Saved W1 worlds retain their original two-area availability.
   if (
     !edge ||
-    (edge.destination !== "ashen-refuge" &&
+    (contentVersion === 1 &&
+      edge.destination !== "ashen-refuge" &&
       edge.destination !== "haunted-forest")
   )
     return false;
   const prepared = travel.prepare(
     edge.id,
-    prototypeArea(edge.destination, travel.state.seed),
+    worldLayout(edge.destination, travel.state.seed, contentVersion),
   );
   if (!prepared || !travel.commit(prepared)) return false;
   player.controller = commandCombat(player.controller, { kind: "stop" });

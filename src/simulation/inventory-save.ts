@@ -1,5 +1,5 @@
 import { validateExploration } from "./world-save";
-import { prototypeArea } from "./world-prototype";
+import { worldLayout } from "./world-layout";
 import { areaNavigation } from "../world/navigation";
 import { progressionAtLevel, validateProgression } from "./progression-save";
 import { attributeValues } from "./attributes";
@@ -195,7 +195,11 @@ function validateBody(
   }
   validateSession(
     session,
-    world ? areaNavigation(prototypeArea(world.area, world.seed).map) : nav,
+    world
+      ? areaNavigation(
+          worldLayout(world.area, world.seed, world.contentVersion).map,
+        )
+      : nav,
   );
   return reserveOwned(session);
 }

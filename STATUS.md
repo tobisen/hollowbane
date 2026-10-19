@@ -1,5 +1,13 @@
 # Status
 
+## DBL-373 / W2 runtime checkpoint (2026-10-19)
+
+- New content2 expeditions integrate generator1 forest/graveyard/crypt geometry, live terrain/prop rendering, following camera, existing logical navigation and safe travel. Original primitives preview W2 geometry; W3 appearance placeholders remain. No W3 work started.
+- Content1 restores exact original layouts/seeds and two-area availability. Content2 requires per-area layout fingerprints; drift/invalid data rejects before character mutation. Existing atomic checkpoint/CAS and single player/progression/item/loot authorities remain; no automatic layout conversion.
+- Isolated developer seed/start-area/restart controls and current area/seed/layout/generator display use separate test-run databases; normal player storage is untouched. See docs/world/expedition.md.
+- 378 unit tests, TypeScript/relevant lint/build/backlog validation pass. Two Chromium forest mouse/keyboard/save/reload/restart and crypt virtual-controller corridor/travel cases pass; screenshots reviewed. No physical-controller claim. Latest CI inspected once but gh unauthenticated; no remote CI/Pages/public demo verification.
+- DBL-373 and W2 technically complete; stop here per current request. No W3 authorization inferred. Preserve unrelated BACKLOG/STATUS/L3 edits and historical external-result notes.
+
 ## DBL-372 checkpoint (2026-10-19)
 
 - Bounded three deterministic candidate attempts for wilderness/dungeon, then validated fallback. Reuses371 placement/navigation validation; first-attempt version1 fingerprints unchanged. Registered area seeds and character/loot streams preserved; invalid input/fallback fail closed.

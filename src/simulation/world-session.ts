@@ -1,7 +1,12 @@
+import {
+  worldLayout,
+  layoutFingerprint,
+  GENERATED_WORLD_VERSION,
+} from "./world-layout";
 import { itemTree } from "./item-ownership";
 import { WorldTravel } from "./world-travel";
-import { prototypeArea, stepWorldTravel } from "./world-runtime";
-import { AREA_IDS, areaSeed, WORLD_CONTENT_VERSION } from "./world";
+import { stepWorldTravel } from "./world-runtime";
+import { AREA_IDS, areaSeed, type AreaId } from "./world";
 import {
   restoredPosition,
   validateExploration,
@@ -14,26 +19,44 @@ import type { WorldPoint } from "./world";
 export class WorldSession {
   travel: WorldTravel;
   private snapshot: ExplorationSnapshot;
-  constructor(snapshot?: ExplorationSnapshot) {
+  constructor(
+    snapshot?: ExplorationSnapshot,
+    seed = 42,
+    contentVersion = GENERATED_WORLD_VERSION,
+    initialArea: AreaId = "ashen-refuge",
+  ) {
     this.snapshot = snapshot
       ? validateExploration(snapshot)
       : {
           version: 1,
-          contentVersion: WORLD_CONTENT_VERSION,
-          seed: 42,
-          area: "ashen-refuge",
-          position: { x: 0, y: 0 },
-          visited: ["ashen-refuge"],
+          contentVersion,
+          seed,
+          area: initialArea,
+          position: worldLayout(initialArea, seed, contentVersion).spawn,
+          visited: [initialArea],
           areas: AREA_IDS.map((id) => ({
             id,
-            seed: areaSeed(42, id),
+            seed: areaSeed(seed, id),
+            ...(contentVersion === 2
+              ? {
+                  layoutFingerprint: layoutFingerprint(
+                    worldLayout(id, seed, contentVersion),
+                  ),
+                }
+              : {}),
             drops: [],
             deaths: [],
           })),
         };
     const s = this.snapshot;
-    this.travel = new WorldTravel(s.seed, prototypeArea(s.area, s.seed));
+    this.travel = new WorldTravel(
+      s.seed,
+      worldLayout(s.area, s.seed, s.contentVersion),
+    );
     this.travel.setPosition(restoredPosition(s));
+  }
+  get contentVersion(): number {
+    return this.snapshot.contentVersion;
   }
   capture(position: WorldPoint, loot: LootWorld): ExplorationSnapshot {
     if (!this.travel.setPosition(position))
@@ -56,7 +79,8 @@ export class WorldSession {
   }
   transition(world: CombatWorld, loot: LootWorld): boolean {
     const before = this.travel.state.area;
-    if (!stepWorldTravel(this.travel, world)) return false;
+    if (!stepWorldTravel(this.travel, world, this.snapshot.contentVersion))
+      return false;
     const after = this.travel.state.area;
     const destination = this.snapshot.areas.find((a) => a.id === after)!;
     this.snapshot = {

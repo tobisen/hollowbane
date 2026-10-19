@@ -115,10 +115,11 @@ export class InventoryView {
     private nav: Navigation,
     private player: () => { position: Point; alive: boolean; tick: number },
     laboratory = false,
+    storageName?: string,
   ) {
     this.storage = new InventoryStorage(
       nav,
-      laboratory ? "hollowbane-l3-item-laboratory" : undefined,
+      storageName ?? (laboratory ? "hollowbane-l3-item-laboratory" : undefined),
     );
     root.insertAdjacentHTML(
       "beforeend",

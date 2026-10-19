@@ -1,11 +1,5 @@
-import {
-  AREA_IDS,
-  areaSeed,
-  type AreaId,
-  type WorldPoint,
-  WORLD_CONTENT_VERSION,
-} from "./world";
-import { prototypeArea } from "./world-prototype";
+import { AREA_IDS, areaSeed, type AreaId, type WorldPoint } from "./world";
+import { worldLayout, layoutFingerprint } from "./world-layout";
 import { areaWalkable } from "./area-map";
 import { WORLD_ACTOR_RADIUS, exitNear } from "./area-anchors";
 import type { WorldDrop } from "./world-loot";
@@ -17,7 +11,13 @@ export interface ExplorationSnapshot {
   area: AreaId;
   position: WorldPoint;
   visited: AreaId[];
-  areas: { id: AreaId; seed: number; drops: WorldDrop[]; deaths: number[] }[];
+  areas: {
+    id: AreaId;
+    seed: number;
+    drops: WorldDrop[];
+    deaths: number[];
+    layoutFingerprint?: string;
+  }[];
 }
 function record(v: unknown): Record<string, unknown> {
   if (!v || typeof v !== "object" || Array.isArray(v))
@@ -63,12 +63,17 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     "visited",
     "areas",
   ]);
-  if (w.version !== 1 || w.contentVersion !== WORLD_CONTENT_VERSION)
+  if (w.version !== 1 || (w.contentVersion !== 1 && w.contentVersion !== 2))
     throw Error("Unsupported exploration version");
+  const contentVersion = w.contentVersion as number;
   const seed = integer(w.seed, 0, 0xffffffff),
     current = area(w.area),
     position = point(w.position);
-  if (current !== "ashen-refuge" && current !== "haunted-forest")
+  if (
+    contentVersion === 1 &&
+    current !== "ashen-refuge" &&
+    current !== "haunted-forest"
+  )
     throw Error(
       "Area runtime unavailable in this world version; original retained",
     );
@@ -81,7 +86,13 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     throw Error("Invalid exploration areas");
   const areas = w.areas.map((value) => {
     const a = record(value);
-    keys(a, ["id", "seed", "drops", "deaths"]);
+    keys(a, [
+      "id",
+      "seed",
+      "drops",
+      "deaths",
+      ...(contentVersion === 2 ? ["layoutFingerprint"] : []),
+    ]);
     const id = area(a.id);
     if (
       a.seed !== areaSeed(seed, id) ||
@@ -91,7 +102,11 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       a.deaths.length > 4096
     )
       throw Error("Invalid exploration area state");
-    const map = prototypeArea(id, seed).map;
+    const layout = worldLayout(id, seed, contentVersion);
+    const fingerprint = layoutFingerprint(layout);
+    if (contentVersion === 2 && a.layoutFingerprint !== fingerprint)
+      throw Error("World layout fingerprint mismatch; original retained");
+    const map = layout.map;
     const drops = a.drops.map((value) => {
       const d = record(value);
       keys(d, ["item", "position", "tick", "source"]);
@@ -111,12 +126,18 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       (id === current && drops.length)
     )
       throw Error("Duplicate exploration state");
-    return { id, seed: areaSeed(seed, id), drops, deaths };
+    return {
+      id,
+      seed: areaSeed(seed, id),
+      drops,
+      deaths,
+      ...(contentVersion === 2 ? { layoutFingerprint: fingerprint } : {}),
+    };
   });
   if (
     new Set(areas.map((a) => a.id)).size !== 4 ||
     !areaWalkable(
-      prototypeArea(current, seed).map,
+      worldLayout(current, seed, contentVersion).map,
       position,
       WORLD_ACTOR_RADIUS,
     )
@@ -124,7 +145,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     throw Error("Invalid exploration layout or position");
   return {
     version: 1,
-    contentVersion: WORLD_CONTENT_VERSION,
+    contentVersion,
     seed,
     area: current,
     position,
@@ -132,8 +153,12 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     areas,
   };
 }
-/** Exact version-one layout recovery; never restart on an exit interaction zone. */
+/** Recover under the saved layout rules; never restart on an exit interaction zone. */
 export function restoredPosition(snapshot: ExplorationSnapshot): WorldPoint {
-  const layout = prototypeArea(snapshot.area, snapshot.seed);
+  const layout = worldLayout(
+    snapshot.area,
+    snapshot.seed,
+    snapshot.contentVersion,
+  );
   return exitNear(layout, snapshot.position) ? layout.spawn : snapshot.position;
 }

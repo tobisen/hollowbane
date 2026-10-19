@@ -23,6 +23,7 @@ export interface AreaDefinition {
   readonly safe: boolean;
   readonly connections: readonly AreaConnection[];
 }
+/** Seed identity namespace, pinned across layout/content versions. */
 export const WORLD_CONTENT_VERSION = 1;
 export const WORLD_AREAS: readonly AreaDefinition[] = [
   {

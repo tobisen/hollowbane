@@ -1,47 +1,128 @@
 import { expect, test } from "@playwright/test";
-test("walks from camp to forest and back using existing ground movement", async ({
+import { installVirtualController } from "./virtual-controller";
+
+test("generated forest supports mouse travel, atomic reload and isolated developer restart", async ({
   page,
 }) => {
-  await page.goto("?world=1");
-  await expect(page.locator(".arena-header h1")).toHaveText("Ashen Refuge");
-  const field = page.locator("#combat-world");
-  // Existing camera and pointer projection: use published ground coordinates.
-  async function exit() {
-    const point = await page.evaluate(() => {
-      const game = window.hollowbaneWorld!;
-      return game.exits[0]!;
-    });
-    // Camera framing is shared with the arena; use the same test projection.
-    const target = await page.evaluate(({ x, y }) => {
-      const canvas = document.querySelector("canvas")!;
-      const rect = canvas.getBoundingClientRect();
-      const hudTop = document
-        .querySelector(".skill-bar")!
-        .getBoundingClientRect().top;
-      const playBottom = Math.max(120, Math.min(innerHeight, hudTop - 16));
-      const scale = Math.min(innerWidth / 1280, playBottom / 800);
+  test.setTimeout(120000);
+  await page.goto("?world=1&developer=1&worldArea=haunted-forest&worldSeed=42");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld?.area))
+    .toBe("haunted-forest");
+  const fingerprint = await page.evaluate(
+    () => window.hollowbaneWorld!.fingerprint,
+  );
+  await page.screenshot({ path: "test-results/generated-forest.png" });
+  await page.locator("#inventory-open").click();
+  await page.locator("#inventory-save").click();
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint saved locally.",
+  );
+  await page.reload();
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld?.fingerprint))
+    .toBe(fingerprint);
+  const start = await page.evaluate(() => window.hollowbaneWorld!.position);
+  await page.locator("#combat-world").click();
+  await page.keyboard.down("d");
+  await expect
+    .poll(() =>
+      page.evaluate(
+        (p) =>
+          Math.hypot(
+            window.hollowbaneWorld!.position.x - p.x,
+            window.hollowbaneWorld!.position.y - p.y,
+          ),
+        start,
+      ),
+    )
+    .toBeGreaterThan(0.2);
+  await page.keyboard.up("d");
+  await page.keyboard.press("Space");
+
+  // Walk along real pathfinder waypoints using pointer projection and the moving camera.
+  const route = await page.evaluate(() => {
+    const w = window.hollowbaneWorld!;
+    const points = w.routeToExit!("camp");
+    const result: { x: number; y: number }[] = [];
+    let from = w.position;
+    for (const to of points) {
+      const steps = Math.ceil(Math.hypot(to.x - from.x, to.y - from.y) / 1.5);
+      for (let i = 1; i <= steps; i++)
+        result.push({
+          x: from.x + ((to.x - from.x) * i) / steps,
+          y: from.y + ((to.y - from.y) * i) / steps,
+        });
+      from = to;
+    }
+    return result;
+  });
+  expect(route.length).toBeGreaterThan(2);
+  for (const point of route) {
+    if (
+      (await page.evaluate(() => window.hollowbaneWorld!.area)) !==
+      "haunted-forest"
+    )
+      break;
+    const target = await page.evaluate((p) => {
+      const c = window.hollowbaneWorld!.camera;
       return {
-        x: rect.width / 2 + (x - 768) * scale,
-        y: playBottom / 2 + (y - 512) * scale,
+        x: (768 + (p.x - p.y) * 64 - c.x) * c.zoom,
+        y: (512 + (p.x + p.y) * 32 - c.y) * c.zoom,
       };
     }, point);
-    await field.click({ position: target });
+    await page.locator("#combat-world").click({ position: target });
+    await expect
+      .poll(
+        () =>
+          page.evaluate((p) => {
+            const w = window.hollowbaneWorld!;
+            return (
+              w.area !== "haunted-forest" ||
+              Math.hypot(w.position.x - p.x, w.position.y - p.y) < 0.22
+            );
+          }, point),
+        { timeout: 10000, intervals: [50] },
+      )
+      .toBe(true);
   }
-  await exit();
-  await expect(page.locator(".arena-header h1")).toHaveText("Haunted Forest", {
-    timeout: 15000,
-  });
-  await exit();
-  await expect(page.locator(".arena-header h1")).toHaveText("Ashen Refuge", {
-    timeout: 15000,
-  });
-  await page.screenshot({ path: "test-results/world-prototype.png" });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+    .toBe("ashen-refuge");
+  await page.locator("#inventory-open").click();
+  await page.locator("#inventory-save").click();
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint saved locally.",
+  );
+  await page.reload();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld?.area))
+    .toBe("ashen-refuge");
+  await page.locator(".world-developer button").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld?.area))
+    .toBe("haunted-forest");
+  expect(await page.evaluate(() => window.hollowbaneWorld!.fingerprint)).toBe(
+    fingerprint,
+  );
+  const databases = await page.evaluate(() => indexedDB.databases());
+  expect(databases.some((db) => db.name === "hollowbane-character-v1")).toBe(
+    false,
+  );
 });
 
-test("virtual controller walks through both area exits", async ({ page }) => {
-  const { installVirtualController } = await import("./virtual-controller");
+test("virtual controller traverses generated crypt rooms and corridors to the graveyard", async ({
+  page,
+}) => {
+  test.setTimeout(120000);
   await installVirtualController(page, "Xbox 360 Controller");
-  await page.goto("?world=1");
+  await page.goto("?world=1&developer=1&worldArea=ancient-crypt&worldSeed=42");
   await expect(page.locator("html")).toHaveAttribute(
     "data-combat-ready",
     "true",
@@ -51,87 +132,57 @@ test("virtual controller walks through both area exits", async ({ page }) => {
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
     .toBe(true);
-  for (const destination of ["haunted-forest", "ashen-refuge"]) {
+  await page.screenshot({ path: "test-results/generated-crypt.png" });
+  const route = await page.evaluate(() => {
+    const world = window.hollowbaneWorld!;
+    let from = world.position;
+    const result: { x: number; y: number }[] = [];
+    for (const to of world.routeToExit!("graveyard")) {
+      const steps = Math.ceil(Math.hypot(to.x - from.x, to.y - from.y) / 0.5);
+      for (let i = 1; i <= steps; i++)
+        result.push({
+          x: from.x + ((to.x - from.x) * i) / steps,
+          y: from.y + ((to.y - from.y) * i) / steps,
+        });
+      from = to;
+    }
+    return result;
+  });
+  expect(route.length).toBeGreaterThan(2);
+  for (const point of route) {
     await expect
       .poll(
         () =>
-          page.evaluate((destination) => {
-            const world = window.hollowbaneWorld!;
-            if (world.area === destination) {
+          page.evaluate((p) => {
+            const w = window.hollowbaneWorld!;
+            const dx = p.x - w.position.x,
+              dy = p.y - w.position.y;
+            if (w.area !== "ancient-crypt" || Math.hypot(dx, dy) < 0.08) {
               window.virtualPads[0]!.axes = [0, 0, 0, 0];
               return true;
             }
-            const dx = -2.5 - world.position.x,
-              dy = -world.position.y;
             const sx = dx - dy,
               sy = (dx + dy) / 2,
               length = Math.hypot(sx, sy);
-            window.virtualPads[0]!.axes = [sx / length, sy / length, 0, 0];
+            const scale = Math.min(1, Math.hypot(dx, dy) * 4);
+            window.virtualPads[0]!.axes = [
+              (sx / length) * scale,
+              (sy / length) * scale,
+              0,
+              0,
+            ];
             return false;
-          }, destination),
-        { timeout: 15000, intervals: [50] },
+          }, point),
+        { timeout: 30000, intervals: [30] },
       )
       .toBe(true);
+    if (
+      (await page.evaluate(() => window.hollowbaneWorld!.area)) !==
+      "ancient-crypt"
+    )
+      break;
   }
-});
-
-test("saves forest and character in one checkpoint, reloads safely and returns to camp", async ({
-  page,
-}) => {
-  await page.goto("?world=1");
-  await expect(page.locator("html")).toHaveAttribute(
-    "data-combat-ready",
-    "true",
-  );
-  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
-  async function travelTo(destination: string) {
-    const target = await page.evaluate(() => {
-      const p = window.hollowbaneWorld!.exits[0]!;
-      const hudTop = document
-        .querySelector(".skill-bar")!
-        .getBoundingClientRect().top;
-      const bottom = Math.max(120, Math.min(innerHeight, hudTop - 16));
-      const scale = Math.min(innerWidth / 1280, bottom / 800);
-      return {
-        x: innerWidth / 2 + (p.x - 768) * scale,
-        y: bottom / 2 + (p.y - 512) * scale,
-      };
-    });
-    await page.locator("#combat-world").click({ position: target });
-    await expect
-      .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
-      .toBe(destination);
-  }
-  await travelTo("haunted-forest");
-  await page.locator("#inventory-open").click();
-  await page.locator("#inventory-save").click();
-  await expect(page.locator("#inventory-status")).toHaveText(
-    "Character checkpoint saved locally.",
-  );
-  const before = await page.evaluate(async () => {
-    return await new Promise<string>((resolve, reject) => {
-      const open = indexedDB.open("hollowbane-character-v1", 1);
-      open.onsuccess = () => {
-        const db = open.result;
-        const get = db
-          .transaction("snapshots")
-          .objectStore("snapshots")
-          .get("current");
-        get.onsuccess = () => {
-          db.close();
-          resolve(get.result.text);
-        };
-        get.onerror = () => reject(get.error);
-      };
-    });
-  });
-  const saved = JSON.parse(before);
-  expect(saved.body.exploration.area).toBe("haunted-forest");
-  expect(saved.body.character).toBeTruthy();
-  expect(saved.body.progression).toBeTruthy();
-  await page.reload();
-  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
-  await expect(page.locator(".arena-header h1")).toHaveText("Haunted Forest");
-  await travelTo("ashen-refuge");
-  await expect(page.locator(".arena-header h1")).toHaveText("Ashen Refuge");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+    .toBe("forgotten-graveyard");
 });
