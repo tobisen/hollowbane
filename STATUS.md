@@ -1,5 +1,11 @@
 # Status
 
+## D00 / DBL-385 W4 verification candidate (2026-10-20)
+
+- Verification only; runtime/save formats, assets, dependencies and gate approvals unchanged. Added graveyard discovery unit coverage, real-input seed42 discovery/reload in all three generated environments, persisted container ownership/repeat-open checks and a natural monster kill→XP/loot→atomic save/reload check.
+- Fourteen focused units, TypeScript/lint/format and Playwright production build pass. Shipped baseline6d26ad3 exact CI/Pages39331041663 successful;26 hosted files match the local build. Hosted six-case W4 verification and reviewed screenshots documented in docs/overnight/d00.md.
+- Scoped verification commit publication remains runner-owned and pending: exact new SHA CI/Pages, hosted bytes/tests and machine checkpoint must pass before advancement. No push, D01 or user gate approval in this session. Physical-controller/native-GPU limits retained.
+
 ## DBL-010 actual implementation permissions (2026-10-19)
 
 - Supported explicit approval path verified from overnight/development: automatic-review workspace-write Codex executed approved Git index refresh, exact CI read, authenticated remote read and an actual harmless push to overnight/permission-probe-33a3fc5. Ordinary sandbox Git metadata remains protected. No unrestricted mode, rules changes, D00 or tracked gameplay edits. Astra6 Max probe passes.

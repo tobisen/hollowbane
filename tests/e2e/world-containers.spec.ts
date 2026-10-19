@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { readWorldCheckpoint, saveWorldCheckpoint } from "./world-checkpoint";
 import {
   installVirtualController,
   pressVirtualButton,
@@ -92,6 +93,9 @@ test("nearby treasure supports mouse travel, controller opening and atomic reloa
   await expect(page.locator("#inventory-status")).toHaveText(
     "Character checkpoint saved locally.",
   );
+  const saved = await readWorldCheckpoint(page, "haunted-forest");
+  expect(saved.exploration!.containers!.opened).toContain(chosen);
+  expect(saved.exploration!.containers!.gold).toBeGreaterThan(0);
   await page.reload();
   await expect(page.locator(".world-treasure output")).toHaveText(reward!);
   await expect
@@ -103,5 +107,16 @@ test("nearby treasure supports mouse travel, controller opening and atomic reloa
       ),
     )
     .toBe(true);
+  await page.locator("#combat-world").focus();
+  await page.keyboard.press("e");
+  await saveWorldCheckpoint(page);
+  const repeated = await readWorldCheckpoint(page, "haunted-forest");
+  expect(repeated.exploration!.containers).toEqual(
+    saved.exploration!.containers,
+  );
+  expect(repeated.loot).toEqual(saved.loot);
+  expect(repeated.character).toEqual(saved.character);
+  expect(repeated.progression).toEqual(saved.progression);
+  await page.locator("#inventory-close").click();
   await page.screenshot({ path: "test-results/w4-treasure-opened.png" });
 });

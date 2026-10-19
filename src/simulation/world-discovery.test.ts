@@ -5,7 +5,7 @@ import { createInventorySession } from "./inventory-world";
 import { serializeCharacter, deserializeCharacter } from "./inventory-save";
 import { validateExploration } from "./world-save";
 import { layoutFingerprint } from "./world-layout";
-it.each(["haunted-forest", "ancient-crypt"] as const)(
+it.each(["haunted-forest", "forgotten-graveyard", "ancient-crypt"] as const)(
   "reveals bounded cells in %s and keeps saves/layout identity intact",
   (area) => {
     const world = new WorldSession(undefined, 42, 2, area),
