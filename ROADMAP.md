@@ -1,6 +1,6 @@
 # Roadmap
 
-The initialization directive supplies the following 36 target phases. The imported backlog has a different topic ordering; its phase metadata is deliberately retained rather than silently renumbered. Use requirements/DBL IDs to plan against this target roadmap. Current authorization: G4 Monster AI approved; Skills & Spell Systems (topic 10) through its quality gate. Delivery gate names do not rename the original G0–G6 definitions.
+The initialization directive supplies the following 36 target phases. The imported backlog has a different topic ordering; its phase metadata is deliberately retained rather than silently renumbered. Use requirements/DBL IDs to plan against this target roadmap. Current authorization: World & Exploration W1–W5 (scoped DBL-362–391) through World quality review; C13 class technical verification complete. Original topic numbering and broader partial parents are preserved. Delivery gate names do not rename the original G0–G6 definitions.
 
 - **00 — Project Foundation**
 - **01 — Engine Evaluation**

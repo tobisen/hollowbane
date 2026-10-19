@@ -353,3 +353,36 @@ DBL-109 / P11 technical candidate (2026-10-18): P11 technical quality candidate:
 DBL-109 / P11 publication/visual checkpoint (2026-10-18): P10fcd3af1 and P11 runtime466bf7c pushed; CI39156818075 in progress (browser dependency install last inspected). Full local check320 and7 critical controller/character cases pass. Relevant inventory visual probes exposed2 stale Darwin refs; both reviewed/replaced and2/2 regular comparisons pass. Linux inventory/advanced references remain release follow-up. Public asset still index-DnCJfCbe.js versus progression build index-CVMXKv8V.js/combat-arena-BRv-XqEg.js; no current Pages or hosted progression verification. Stop at soft session budget; quality approval false. Follow-up checkpoint/reference commit intentionally local while CI gathers evidence.
 
 DBL-109 / P11 release complete (2026-10-18): P11 release verified2026-10-18: runtime51a943ac96f845a9f749262436c146ea9244511f; CI39159873168 success,105 Chromium and15 advanced cross-browser cases pass, unchanged Linux inventory comparisons. Pages deployment7159839021 success with matching SHA and index-BJpbzwJa.js. Seven hosted character/allocation/save/reload/migration/virtual-controller checks pass; hosted screenshot reviewed. Existing320 unit evidence reused locally; CI check passed. DBL-109 technically complete; user quality approval remains false. No classes/skill trees; hardware and broader partial parents remain open.
+
+## Authorized World & Exploration scope (2026-10-19)
+W1–W5 authorized after technical C13 verification. Thirty sequential scoped increments; original source IDs/dependencies unchanged; broader parents remain partial.
+- DBL-362 / W1: World registry and stable area seed identities (completed).
+- DBL-363 / W1: Logical terrain object and navigation layer contracts (planned).
+- DBL-364 / W1: Spawn and entrance placement validation (planned).
+- DBL-365 / W1: Atomic prepared area transition domain (planned).
+- DBL-366 / W1: Runtime area lifecycle and minimal two-area prototype (planned).
+- DBL-367 / W1: Versioned exploration snapshot and atomic save binding (planned).
+- DBL-368 / W2: Reusable authored wilderness modules (planned).
+- DBL-369 / W2: Seeded outdoor path and clearing composition (planned).
+- DBL-370 / W2: Connected dungeon rooms and corridors (planned).
+- DBL-371 / W2: Restricted placement and navigation validation (planned).
+- DBL-372 / W2: Bounded generation retries and safe fallback (planned).
+- DBL-373 / W2: Representative seed reproducibility integration (planned).
+- DBL-374 / W3: Ashen Refuge safe camp environment (planned).
+- DBL-375 / W3: Haunted Forest environment and depth integration (planned).
+- DBL-376 / W3: Forgotten Graveyard environment (planned).
+- DBL-377 / W3: Ancient Crypt environment and passages (planned).
+- DBL-378 / W3: Environment asset provenance and detail budgets (planned).
+- DBL-379 / W3: Connected environment visual and navigation review (planned).
+- DBL-380 / W4: Area-scaled seeded encounter placement (planned).
+- DBL-381 / W4: Encounter lifecycle and defeated identity persistence (planned).
+- DBL-382 / W4: Area-scaled existing loot and world pickup integration (planned).
+- DBL-383 / W4: Seeded containers and atomic one-time rewards (planned).
+- DBL-384 / W4: Controller-compatible container and exit interaction (planned).
+- DBL-385 / W4: Persistent exploration reveal and minimap markers (planned).
+- DBL-386 / W5: Complete camp forest graveyard crypt return flow (planned).
+- DBL-387 / W5: Character inventory and world save reload recovery (planned).
+- DBL-388 / W5: Three-class keyboard mouse virtual-controller expedition checks (planned).
+- DBL-389 / W5: Representative world performance and regression gate (planned).
+- DBL-390 / W5: Public expedition publication and hosted verification (planned).
+- DBL-391 / W5: World quality evidence and review checkpoint (planned).
