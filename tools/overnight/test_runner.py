@@ -232,6 +232,13 @@ class RunnerTests(unittest.TestCase):
         finally:
             self.execution_guard.start()
 
+    def test_formatting_or_configuration_paths_never_trigger_escalation(self):
+        self.assertFalse(r.complex_test_failure('Checking formatting\n[warn] tests/e2e/world.spec.ts'))
+        self.assertFalse(r.complex_test_failure('FAIL invalid configuration in playwright.config.ts'))
+        self.assertFalse(r.complex_test_failure('Error: No tests found'))
+        self.assertTrue(r.complex_test_failure('FAIL src/simulation/world.test.ts AssertionError'))
+        self.assertTrue(r.complex_test_failure('Error: expect(locator).toBeVisible() failed'))
+
     def test_empty_authorization_queue_blocks(self):
         with self.assertRaises(RuntimeError):
             r.validate(dict(window_seconds=28800, tasks=[]))

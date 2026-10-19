@@ -45,6 +45,14 @@ def diagnostic(output):
     return hashlib.sha256(text.encode()).hexdigest()
 
 
+def complex_test_failure(output):
+    """Formatting, missing tests and configuration failures never merit escalation."""
+    if re.search(r'checking formatting|code style issues|prettier|invalid configuration|configuration error|'
+                 r'no test files found|no tests found|unknown option|cannot find module', output, re.I):
+        return False
+    return bool(re.search(r'\bFAIL(?:ED)?\b|AssertionError|[✘×]|Error: (?:expect|Timed out|Test timeout)', output))
+
+
 def record_failure(state, failure, config):
     history = state.setdefault('history', [])
     entry = dict(task=state['index'], attempt=state['attempts'],
@@ -161,7 +169,7 @@ def release(task, deadline):
         if re.search(r'permission denied|operation not permitted|approval|usage limit|rate limit|quota|ENETUNREACH|ENOTFOUND|error connecting|could not resolve', exc.output, re.I):
             raise RuntimeError('permission, usage or network blocker; inspect command log') from exc
         failure = Repairable(str(exc), json.dumps(exc.argv), diagnostic(exc.output))
-        failure.complex = any(word in exc.argv for word in ('vitest', 'playwright', 'test'))
+        failure.complex = complex_test_failure(exc.output)
         raise failure from exc
     if run(['git', 'rev-parse', 'HEAD']) != sha or run(['git', 'status', '--porcelain']):
         raise RuntimeError('local gates changed the candidate')
@@ -186,7 +194,7 @@ def release(task, deadline):
                     raise RuntimeError('CI cancelled or unavailable; no automatic code repair')
                 failure = Repairable('exact-commit CI/Pages failed; failed-job log captured',
                                      'CI verify-deploy', diagnostic(output))
-                failure.complex = bool(re.search(r'FAIL|AssertionError|tests/e2e', output))
+                failure.complex = complex_test_failure(output)
                 raise failure
             details = json.loads(run(['gh', 'run', 'view', str(result['databaseId']), '--json', 'jobs']))
             if not any(j['name'] == 'deploy' and j['conclusion'] == 'success' for j in details['jobs']):

@@ -7,7 +7,7 @@
   "pages_deployment": 7185581214,
   "hosted_artifacts_matched": 26,
   "hosted_smoke": "Actual implementation worktree world-minimap.spec.ts: 1 passed (7.3s)",
-  "offline_tests": 16,
+  "offline_tests": 17,
   "queue_slots": 15,
   "executable_deliverables": 1,
   "blockers": [
@@ -36,5 +36,6 @@
   },
   "source_ci_run": 39326566635,
   "source_ci_pages_status": "success",
-  "record_type": "Pre-publication checkpoint. Final live release result is in ignored .local/overnight/permissions.json and events.jsonl; avoids a self-referential evidence commit."
+  "record_type": "Pre-publication checkpoint. Final live release result is in ignored .local/overnight/permissions.json and events.jsonl; avoids a self-referential evidence commit.",
+  "actual_preflight_cancellation": "verify-activation stopped cleanly via stop file; no D00/checkpoint index advanced"
 }
