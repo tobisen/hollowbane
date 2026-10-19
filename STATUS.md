@@ -1,5 +1,11 @@
 # Status
 
+## W4 / DBL-380 seeded encounters (2026-10-19)
+
+- User approves W3 and authorizes W4 DBL-380–385 only; stop before W5 IDs386+. Outstanding audit CI39307638495 inspected once:still in_progress, no new deployment claim.
+-380 adds pure encounter-plan1: forest skirmishers, graveyard mixed shield/support groups, crypt tank/caster groups; normal/champion/occasional elite leaders. Up to15/18/28 actors, stable area-namespaced IDs and independent RNG,9-unit anchor protection, actor-clear placement and swept intra-pack connections. Maps/fingerprints/save data unchanged. No runtime/reward adoption under380 alone.
+- Focused12-layout/seed placement case, TypeScript/relevant lint/format pass. Next381 lifecycle/death persistence,382 loot scaling. W4 remains incomplete; no containers/minimap or hosted claim. Unrelated edits preserved. Evidence docs/world/w4.md.
+
 ## DBL-379 / W3 final technical review (2026-10-19)
 
 - DBL-378 committedfb24201.379 connected review complete: four existing hosted environment cases4/4 (48.9s), one inspected screenshot per area, exact fingerprint/camera/real input/travel checks. Reused successful broad CI and earlier ownership/save/transition evidence; no unrelated regression, benchmarks or regenerated art.

@@ -376,7 +376,7 @@ W1–W5 authorized after technical C13 verification. Thirty sequential scoped in
 - DBL-377 / W3: Ancient Crypt environment and passages (completed).
 - DBL-378 / W3: Environment asset provenance and detail budgets (completed).
 - DBL-379 / W3: Connected environment visual and navigation review (completed).
-- DBL-380 / W4: Area-scaled seeded encounter placement (planned).
+- DBL-380 / W4: Area-scaled seeded encounter placement (completed).
 - DBL-381 / W4: Encounter lifecycle and defeated identity persistence (planned).
 - DBL-382 / W4: Area-scaled existing loot and world pickup integration (planned).
 - DBL-383 / W4: Seeded containers and atomic one-time rewards (planned).
