@@ -1,0 +1,9 @@
+{
+  "model": "gpt-6.1-sol",
+  "reasoning": "high",
+  "escalation_model": "gpt-6-astra",
+  "escalation_reasoning": "max",
+  "window_seconds": 28800,
+  "max_attempts": 3,
+  "tasks": []
+}
