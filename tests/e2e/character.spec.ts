@@ -98,7 +98,7 @@ test("legacy IndexedDB checkpoint upgrades without changing equipment identity",
     await import("../../src/simulation/inventory-world");
   const { inventoryItem } =
     await import("../../src/simulation/inventory-test-helper");
-  const { serializeCharacter, snapshotChecksum } =
+  const { serializeCharacter, snapshotChecksum, CHARACTER_SCHEMA } =
     await import("../../src/simulation/inventory-save");
   const s = createInventorySession();
   const item = inventoryItem("ash-blade");
@@ -158,5 +158,5 @@ test("legacy IndexedDB checkpoint upgrades without changing equipment identity",
     db.close();
     return result;
   });
-  expect(schemas).toEqual([4, 1]);
+  expect(schemas).toEqual([CHARACTER_SCHEMA, 1]);
 });

@@ -1,5 +1,11 @@
 # Status
 
+## DBL-373 / W3 browser CI repair (2026-10-19)
+
+- Attached CI log exposed a camp click outside the displayed viewport after travel, a forest waypoint wait and a legacy save expectation still pinned to schema4. Destination travel now precedes layout/camera presentation updates, and world diagnostics publish after rendering so area/position/camera describe the same displayed frame. Mouse waypoint checks stop prior movement and await walking=false before projection. Legacy browser assertion expects CHARACTER_SCHEMA while retaining previous schema1/item identity checks.
+- Only three failing browser cases rerun: legacy IndexedDB upgrade, camp→forest→camp and forest mouse/keyboard/save/reload/isolated restart pass. Camera-centering regression assertion added after each camp transition; no forced clicks, skipped assertions or relaxed collision tolerances. Three focused view/runtime unit cases, TypeScript/relevant lint/format/build pass; camp screenshot reviewed.
+- Existing unit5s failure was already fixed by6bccd6f; no further timeout increases. No save format, seeds, fingerprints or simulation rules changed. W3 review stop remains; no W4/W5. Preserve unrelated local documentation and external-result notes.
+
 ## DBL-375 / W3 CI timeout follow-up (2026-10-19)
 
 - User CI evidence: historical/reproducibility world case exceeded5000ms at5439ms; the separate roundtrip case passed7461ms with its existing15s limit. The first case now also explicitly allows15s. Both cases retain every assertion, seed, path and fingerprint sample; no runtime/global unit timeout changes.

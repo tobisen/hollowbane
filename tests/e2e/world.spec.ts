@@ -70,6 +70,11 @@ test("generated forest supports mouse travel, atomic reload and isolated develop
       "haunted-forest"
     )
       break;
+    // Stop the previous command before projecting the next target through a following camera.
+    await page.keyboard.press("Space");
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneWorld!.walking))
+      .toBe(false);
     const target = await page.evaluate((p) => {
       const c = window.hollowbaneWorld!.camera;
       return {
@@ -85,7 +90,8 @@ test("generated forest supports mouse travel, atomic reload and isolated develop
             const w = window.hollowbaneWorld!;
             return (
               w.area !== "haunted-forest" ||
-              Math.hypot(w.position.x - p.x, w.position.y - p.y) < 0.22
+              (!w.walking &&
+                Math.hypot(w.position.x - p.x, w.position.y - p.y) < 0.22)
             );
           }, point),
         { timeout: 10000, intervals: [50] },

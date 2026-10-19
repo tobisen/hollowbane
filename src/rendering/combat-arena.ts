@@ -122,6 +122,7 @@ declare global {
       routeToExit?: (id: string) => Point[];
       camera: { x: number; y: number; zoom: number };
       position: Point;
+      walking: boolean;
       exits: { id: string; x: number; y: number }[];
     };
     hollowbanePolish?: {
@@ -330,6 +331,42 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private previousFrame = 0;
     private balancedDetail = false;
     private startedAt = 0;
+    /** Publish only after camera preRender has produced the displayed view. */
+    private publishWorld(): void {
+      if (!travel) return;
+      const player = this.world.actors[0]!;
+      window.hollowbaneWorld = {
+        area: travel.state.area,
+        seed: travel.state.seed,
+        contentVersion: worldSession!.contentVersion,
+        fingerprint: layoutFingerprint(travel.layout),
+        camera: {
+          x: this.cameras.main.worldView.x,
+          y: this.cameras.main.worldView.y,
+          zoom: innerWidth / this.cameras.main.worldView.width,
+        },
+        ...(developerWorld
+          ? {
+              routeToExit: (id: string) => {
+                const exit = travel!.layout.exits.find((e) => e.id === id);
+                return exit
+                  ? worldPath(
+                      nav,
+                      player.controller.walker.position,
+                      exit.trigger,
+                    )
+                  : [];
+              },
+            }
+          : {}),
+        position: { ...player.controller.walker.position },
+        walking: player.controller.walker.walking,
+        exits: travel.layout.exits.map((e) => ({
+          id: e.id,
+          ...onGround(e.trigger),
+        })),
+      };
+    }
     private syncResolution = (): void => {
       const size = renderSize(
         { x: innerWidth, y: innerHeight },
@@ -733,6 +770,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       };
       const postRender = () => {
         this.record(this.renders, performance.now() - this.renderAt);
+        this.publishWorld();
       };
       this.game.events.on(Phaser.Core.Events.PRE_RENDER, preRender);
       this.game.events.on(Phaser.Core.Events.POST_RENDER, postRender);
@@ -1460,22 +1498,6 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
       }
       if (travel) {
-        if (this.worldFloor && this.drawnLayout !== travel.layout) {
-          drawWorldFloor(this.worldFloor, travel.layout);
-          this.campEnvironment?.draw(travel.layout);
-          this.environment?.draw(travel.layout);
-          this.drawnLayout = travel.layout;
-        }
-        this.environment?.update(player.controller.walker.position);
-        const framing = arenaView(
-          { x: innerWidth, y: innerHeight },
-          root.querySelector(".skill-bar")!.getBoundingClientRect().top,
-        );
-        const focus = onGround(player.controller.walker.position);
-        this.cameras.main.centerOn(
-          focus.x,
-          focus.y + (innerHeight - framing.playBottom) / (2 * framing.scale),
-        );
         if (
           !this.paused &&
           !controllerInput.blockGameplay &&
@@ -1497,42 +1519,28 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.hovered = null;
           this.accumulator = 0;
         }
+        if (this.worldFloor && this.drawnLayout !== travel.layout) {
+          drawWorldFloor(this.worldFloor, travel.layout);
+          this.campEnvironment?.draw(travel.layout);
+          this.environment?.draw(travel.layout);
+          this.drawnLayout = travel.layout;
+        }
+        this.environment?.update(player.controller.walker.position);
+        const framing = arenaView(
+          { x: innerWidth, y: innerHeight },
+          root.querySelector(".skill-bar")!.getBoundingClientRect().top,
+        );
+        const focus = onGround(player.controller.walker.position);
+        this.cameras.main.centerOn(
+          focus.x,
+          focus.y + (innerHeight - framing.playBottom) / (2 * framing.scale),
+        );
         root.querySelector(".arena-header h1")!.textContent = areaDefinition(
           travel.state.area,
         ).name;
         const versionOutput = document.querySelector("#world-version");
         if (versionOutput)
           versionOutput.textContent = ` ${travel.state.area} · seed ${travel.state.seed} · layout ${worldSession!.contentVersion} / generator 1 · isolated test save`;
-        window.hollowbaneWorld = {
-          area: travel.state.area,
-          seed: travel.state.seed,
-          contentVersion: worldSession!.contentVersion,
-          fingerprint: layoutFingerprint(travel.layout),
-          camera: {
-            x: this.cameras.main.worldView.x,
-            y: this.cameras.main.worldView.y,
-            zoom: innerWidth / this.cameras.main.worldView.width,
-          },
-          ...(developerWorld
-            ? {
-                routeToExit: (id: string) => {
-                  const exit = travel!.layout.exits.find((e) => e.id === id);
-                  return exit
-                    ? worldPath(
-                        nav,
-                        player.controller.walker.position,
-                        exit.trigger,
-                      )
-                    : [];
-                },
-              }
-            : {}),
-          position: { ...player.controller.walker.position },
-          exits: travel.layout.exits.map((e) => ({
-            id: e.id,
-            ...onGround(e.trigger),
-          })),
-        };
       }
       const updateAt = performance.now();
       this.ink.clear();

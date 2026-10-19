@@ -28,6 +28,19 @@ test("Ashen Refuge scenery preserves spawn, mouse travel and return", async ({
         timeout: 15000,
       })
       .toBe(area);
+    // Destination state and camera must describe the same rendered frame.
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const w = window.hollowbaneWorld!,
+            p = w.position,
+            c = w.camera;
+          return Math.abs(
+            (768 + (p.x - p.y) * 64 - c.x) * c.zoom - innerWidth / 2,
+          );
+        }),
+      )
+      .toBeLessThan(2);
   }
 });
 
