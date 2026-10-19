@@ -61,6 +61,15 @@ test("real expedition kill persists XP and loot ownership without respawning aft
     "data-combat-ready",
     "true",
   );
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Ready · no character checkpoint yet.",
+  );
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  // Keep the virtual stick neutral until the normal controller safety gate
+  // has sampled it, just as a player must release the stick before moving.
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+    .toBe(true);
   const route = await page.evaluate(() => {
     const w = window.hollowbaneWorld!;
     let from = w.position;
@@ -172,6 +181,12 @@ test("real expedition kill persists XP and loot ownership without respawning aft
     "data-combat-ready",
     "true",
   );
+  // Scene creation precedes the asynchronous IndexedDB restore. Wait for
+  // that transaction before inspecting actors or saving another checkpoint.
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint restored.",
+  );
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
   expect(
     await page.evaluate(
       (id) => window.hollowbaneCombat!.actors.some((a) => a.id === id),

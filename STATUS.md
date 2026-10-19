@@ -1,5 +1,11 @@
 # Status
 
+## D00 / DBL-385 exact-CI retry (2026-10-20)
+
+- Exact candidate0f86c38 workflow39341023318 failed:123 browser cases pass; live-kill assertion inspected actors before asynchronous IndexedDB restoration. Pages did not deploy it. Captured log/source diagnosis recorded in docs/overnight/d00.md.
+- Scoped test waits for initial storage/controller readiness and restored-checkpoint status before strict actor/reward ownership checks. No runtime/save/gameplay changes. Fourteen focused units, TypeScript/lint/format and production build pass. Five unaffected W4 browser cases pass; corrected live-kill passes3/3 repetitions. Reload screenshot reviewed.
+- Follow-up release remains pending runner-owned exact SHA CI/Pages, artifact identity and hosted six-case verification. No push, D01 or gate approval. Original parent/hardware limits retained.
+
 ## D00 / DBL-385 W4 verification candidate (2026-10-20)
 
 - Verification only; runtime/save formats, assets, dependencies and gate approvals unchanged. Added graveyard discovery unit coverage, real-input seed42 discovery/reload in all three generated environments, persisted container ownership/repeat-open checks and a natural monster kill→XP/loot→atomic save/reload check.
