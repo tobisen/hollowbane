@@ -40,6 +40,8 @@ for (const frame of meta.hero.frames)
 for (const [file, cell, count, foot] of [
   ["wanderer", 128, 64, 112],
   ["props", 512, 4, 496],
+  ["camp-shelter", 1024, 1, 984],
+  ["camp-fire", 1024, 1, 984],
 ]) {
   const { data, info } = await sharp(`public/assets/${file}.webp`)
     .ensureAlpha()
@@ -63,5 +65,5 @@ for (const [file, cell, count, foot] of [
   }
 }
 console.log(
-  `Validated ${assets.length} asset records, 64 character frames, 4 props, alpha/pivots and budgets.`,
+  `Validated ${assets.length} asset records, 64 character frames, 4 atlas props, 2 camp props, alpha/pivots and budgets.`,
 );

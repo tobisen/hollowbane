@@ -1,3 +1,4 @@
+import { CampEnvironment } from "./camp-environment";
 import { drawWorldFloor } from "./world-floor";
 import { AREA_IDS, type AreaId } from "../simulation/world";
 import { layoutFingerprint } from "../simulation/world-layout";
@@ -314,6 +315,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private labels = new Map<number, Phaser.GameObjects.Text>();
     private worldFloor: Phaser.GameObjects.Graphics | null = null;
     private drawnLayout: unknown = null;
+    private campEnvironment: CampEnvironment | null = null;
     private ink!: Phaser.GameObjects.Graphics;
     private effect!: Phaser.GameObjects.Graphics;
     private keys = new Set<string>();
@@ -360,6 +362,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
     preload(): void {
       const base = import.meta.env.BASE_URL + "assets/";
       this.load.image("arena-plate", base + "cloister.webp");
+      if (exploring) {
+        this.load.spritesheet("world-props", base + "props.webp", {
+          frameWidth: 512,
+          frameHeight: 512,
+        });
+        this.load.image("world-camp-shelter", base + "camp-shelter.webp");
+        this.load.image("world-camp-fire", base + "camp-fire.webp");
+      }
       this.load.spritesheet("arena-wanderer", base + "wanderer.webp", {
         frameWidth: 128,
         frameHeight: 128,
@@ -469,6 +479,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         );
       else if (travel) {
         this.worldFloor = this.add.graphics().setDepth(-999);
+        this.campEnvironment = new CampEnvironment(this);
       } else {
         this.add
           .image(0, 0, "arena-plate")
@@ -1446,6 +1457,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       if (travel) {
         if (this.worldFloor && this.drawnLayout !== travel.layout) {
           drawWorldFloor(this.worldFloor, travel.layout);
+          this.campEnvironment?.draw(travel.layout);
           this.drawnLayout = travel.layout;
         }
         const framing = arenaView(

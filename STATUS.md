@@ -1,5 +1,12 @@
 # Status
 
+## W3 / DBL-374 checkpoint (2026-10-19)
+
+- W2 approved; W3 DBL-374–377 authorized.374 camp technical candidate delivered: textured paving/apron, original transparent shelters/fire, reused ruins/trees/lanterns, static amber pools, exit sign and foot-depth layering. No generator/map/navigation/save changes; legacy/current camp fingerprint preserved.
+- Seven targeted camp/layout/save tests, TypeScript/relevant lint/build and asset transparency/pivot/budget checks pass. Chromium camp→forest→camp passes; revised screenshot reviewed at test-results/w3-ashen-refuge.png. Source art/runtime exports/provenance retained in docs/art/w3.md. Bounded static layers only; no measured hardware-performance claim.
+- Safe session-budget stop after374. Next375 forest, then376 graveyard and377 crypt; other areas retain W2 previews. W3 quality gate remains pending. No W4/W5 begun. Latest CI checked once but gh unauthenticated; no CI/Pages/public demo verification.
+- Preserve unrelated BACKLOG/STATUS/L3 edits. W3 continuation remains authorized; do not infer completion of375–377 or broaden scoped IDs.
+
 ## DBL-373 / W2 runtime checkpoint (2026-10-19)
 
 - New content2 expeditions integrate generator1 forest/graveyard/crypt geometry, live terrain/prop rendering, following camera, existing logical navigation and safe travel. Original primitives preview W2 geometry; W3 appearance placeholders remain. No W3 work started.

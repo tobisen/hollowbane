@@ -128,5 +128,23 @@
     "rights": "original procedural SVG gem facets and twelve sigil motifs authored for Hollowbane; no external artwork",
     "placeholder": true,
     "provenance": "docs/items/l3.md"
+  },
+  {
+    "id": "camp-shelter",
+    "source": "assets/source/camp-shelter.png",
+    "runtime": "public/assets/camp-shelter.webp",
+    "rights": "Original project prompt; built-in AI-generated art; release provenance review pending",
+    "placeholder": false,
+    "type": "environment-prop",
+    "provenance": "docs/art/w3.md"
+  },
+  {
+    "id": "camp-fire",
+    "source": "assets/source/camp-fire.png",
+    "runtime": "public/assets/camp-fire.webp",
+    "rights": "Original project prompt; built-in AI-generated art; release provenance review pending",
+    "placeholder": false,
+    "type": "environment-prop",
+    "provenance": "docs/art/w3.md"
   }
 ]
