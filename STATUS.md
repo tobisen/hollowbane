@@ -1,5 +1,12 @@
 # Status
 
+## Dungeon checkpoint — DBL-370 / Git sync (2026-10-19)
+
+- Reviewed unpublished8090595/3a220b5/b7606a9/993f1cc against remote b737d96: fast-forward ancestry, intended source/docs/tests only, no artifacts or credential-pattern matches. Formatting fix verified;13 focused checks/TypeScript pass. Dry-run then normal push succeeded through993f1cc; no history rewrite/unrelated edits staged.
+- Resulting CI39275311814/993f1cc checked once: in progress, not successful/deployed evidence.
+- DBL-370 adds versioned pure dungeon candidates: three reusable room sizes, seeded connected corridors, optional leaf rooms/dead ends, entrance/exit anchors, circular pillar footprints and future monster/treasure placement zones. Four focused deterministic/connectivity/invalid-input/fallback cases pass; TypeScript/relevant lint pass. Logical pillar appearance is a W3 placeholder, no artwork added.
+- Next371 shared placement/navigation validation, then372 bounded retries. Runtime/save adoption remains later373; existing world content1/schema5 layouts remain untouched. Current dungeon authorization supersedes historical exclusions below. W1–W5 incomplete.
+
 ## Outdoor composition checkpoint — DBL-369 (2026-10-19)
 
 - DBL-368 committed b7606a9;369 composes20 modules through a seeded spanning tree, winding passages, clearings and exact named entrances/arrivals. Original circular footprints follow rotated stamps. All walkable cell centers and anchors are checked with actor clearance/swept collision; invalid outdoor candidates use a deterministic validated clearing fallback.
