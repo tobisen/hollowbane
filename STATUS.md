@@ -1,5 +1,11 @@
 # Status
 
+## W4 / DBL-384 container interaction checkpoint (2026-10-19)
+
+- DBL-383 committed f802e61. DBL-384 renders original code-drawn chest/crate/barrel wood/iron props with world depth/occlusion, rare trim, opened lids and nearby highlight. Pointer click or nearby button, keyboard E and existing controller Interact share the validated transaction; dead/paused/modal input is blocked. Existing automatic safe exit travel remains unchanged. Gold/opened HUD and reward sound/state feedback trigger existing atomic autosave.
+- One focused browser scenario passes10s: real mouse route to nearby treasure, virtual-controller opening, repeat keyboard input, atomic save/reload and persisted gold/opened identity. Closed/opened screenshots reviewed under test-results/w4-treasure-*.png (not committed); HUD moved away from existing controls. TypeScript/relevant lint/format/build pass; seven383/save cases reused. No long forest route/full regression rerun, no hardware/GPU claim.
+- Session checkpoint after383–384.385 persistent discovery/minimap remains dependency-ready and authorized; W4 is incomplete and hosted gate verification remains pending. No W5. Existing save layouts/seeds/fingerprints/progression retained; nested exploration state migration is explicit. Preserve unrelated local edits.
+
 ## W4 / DBL-383 seeded one-time containers (2026-10-19)
 
 - Prior checkpoint1e77cd7 CI39314212850 completed success.383 adds container-rule1: up to six deterministic reachable nonblocking chest/barrel/crate positions outside safe camp/anchors, common/rare gold amounts and existing item generator/table rewards. No layout/encounter seeds, fingerprints or character schema changes.

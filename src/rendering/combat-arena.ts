@@ -1,3 +1,6 @@
+import { ContainerView } from "./world-containers";
+import { canOpenContainer } from "../simulation/world-containers";
+import { registeredItemContent } from "../simulation/item-registry";
 import { configureWorldRewards } from "../simulation/world-rewards";
 import { WorldEncounterRuntime } from "../simulation/world-encounter-runtime";
 import { WorldEnvironment } from "./world-environment";
@@ -122,6 +125,8 @@ declare global {
       contentVersion: number;
       fingerprint: string;
       routeToExit?: (id: string) => Point[];
+      containers?: { id: number; position: Point; opened: boolean }[];
+      routeToContainer?: (id: number) => Point[];
       camera: { x: number; y: number; zoom: number };
       position: Point;
       walking: boolean;
@@ -296,6 +301,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       ? createEncounter(initialCount)
       : null;
     private world = this.encounter?.combat ?? createCombat();
+    private containerView: ContainerView | null = null;
     private lootView: LootView | null = null;
     private inventoryView: InventoryView | null = null;
     private inventoryRuntime: InventoryRuntime | null = null;
@@ -335,6 +341,42 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private previousFrame = 0;
     private balancedDetail = false;
     private startedAt = 0;
+    private openContainer(id?: number): boolean {
+      if (
+        !worldSession ||
+        !this.lootView ||
+        this.paused ||
+        this.world.actors[0]!.hp <= 0 ||
+        controllerInput.blockGameplay
+      )
+        return false;
+      const player = this.world.actors[0]!;
+      const c = worldSession.containers.find(
+        (c) =>
+          (id === undefined || c.id === id) &&
+          !worldSession!.containerState.opened.includes(c.id) &&
+          canOpenContainer(
+            travel!.layout,
+            c,
+            player.controller.walker.position,
+          ),
+      );
+      if (
+        !c ||
+        !worldSession.openContainer(
+          c.id,
+          player.controller.walker.position,
+          this.lootView.world,
+          this.world.tick,
+          registeredItemContent(this.lootView.contentVersion),
+        )
+      )
+        return false;
+      player.controller = commandCombat(player.controller, { kind: "stop" });
+      this.inventoryView?.changed();
+      this.soundBank.play({ kind: "loot", quality: "normal" });
+      return true;
+    }
     private installWorldEncounter(
       loot: import("../simulation/world-loot").LootWorld,
     ): void {
@@ -370,6 +412,20 @@ export function startCombatArena(monsters = false): Phaser.Game {
         },
         ...(developerWorld
           ? {
+              containers: worldSession!.containers.map((c) => ({
+                ...c,
+                opened: worldSession!.containerState.opened.includes(c.id),
+              })),
+              routeToContainer: (id: number) => {
+                const c = worldSession!.containers.find((c) => c.id === id);
+                return c
+                  ? worldPath(
+                      nav,
+                      player.controller.walker.position,
+                      c.position,
+                    )
+                  : [];
+              },
               routeToExit: (id: string) => {
                 const exit = travel!.layout.exits.find((e) => e.id === id);
                 return exit
@@ -561,6 +617,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
       }
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
+      if (travel)
+        this.containerView = new ContainerView(this, root, (id) =>
+          this.openContainer(id),
+        );
       if (travel) {
         this.world.actors = [this.world.actors[0]!];
         this.world.actors[0]!.controller.walker.position = {
@@ -635,6 +695,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
           target = pick(p);
         this.inputAt = performance.now();
         const player = this.world.actors[0]!;
+        const container = worldSession?.containers.find(
+          (c) =>
+            Math.hypot(
+              c.position.x - fromGround(p).x,
+              c.position.y - fromGround(p).y,
+            ) < 0.6,
+        );
+        if (container && this.openContainer(container.id)) return;
         player.controller = commandCombat(
           player.controller,
           target === null
@@ -669,6 +737,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
       };
       const keydown = (event: KeyboardEvent) => {
         if (event.target !== field) return;
+        if (travel && event.key.toLowerCase() === "e" && !event.repeat) {
+          event.preventDefault();
+          this.openContainer();
+          return;
+        }
         if (polish && sound.checked && !event.repeat)
           void this.soundBank.unlock();
         if (
@@ -1371,7 +1444,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
             if (controllerInput.take("down")) this.lootView.cycle(1);
             if (controllerInput.take("pickup")) this.lootView.interact(true);
           }
-          if (controllerInput.take("interact") && !this.lootView?.interact())
+          if (
+            controllerInput.take("interact") &&
+            !this.openContainer() &&
+            !this.lootView?.interact()
+          )
             this.castSkill(this.selectedSkill);
           for (const [i, action] of SKILL_ACTIONS.entries())
             if (controllerInput.take(action)) this.castSkill(i);
@@ -1553,6 +1630,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.drawnLayout = travel.layout;
         }
         this.environment?.update(player.controller.walker.position);
+        this.containerView?.update(
+          worldSession!,
+          player.controller.walker.position,
+          player.hp > 0,
+        );
         const framing = arenaView(
           { x: innerWidth, y: innerHeight },
           root.querySelector(".skill-bar")!.getBoundingClientRect().top,

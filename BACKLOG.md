@@ -380,7 +380,7 @@ W1–W5 authorized after technical C13 verification. Thirty sequential scoped in
 - DBL-381 / W4: Encounter lifecycle and defeated identity persistence (completed).
 - DBL-382 / W4: Area-scaled existing loot and world pickup integration (completed).
 - DBL-383 / W4: Seeded containers and atomic one-time rewards (completed).
-- DBL-384 / W4: Controller-compatible container and exit interaction (planned).
+- DBL-384 / W4: Controller-compatible container and exit interaction (completed).
 - DBL-385 / W4: Persistent exploration reveal and minimap markers (planned).
 - DBL-386 / W5: Complete camp forest graveyard crypt return flow (planned).
 - DBL-387 / W5: Character inventory and world save reload recovery (planned).
