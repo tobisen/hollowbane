@@ -1,5 +1,11 @@
 # Status
 
+## DBL-372 checkpoint (2026-10-19)
+
+- Bounded three deterministic candidate attempts for wilderness/dungeon, then validated fallback. Reuses371 placement/navigation validation; first-attempt version1 fingerprints unchanged. Registered area seeds and character/loot streams preserved; invalid input/fallback fail closed.
+- 14 focused generation/retry/validation tests, TypeScript/relevant lint pass. No runtime/save/browser change. CI39275923451 checked once but gh unauthenticated; no CI/deployment claim.
+- Next373 versioned runtime integration is authorized; W2 incomplete, no W3 started. Unrelated local documentation preserved.
+
 ## Generation validation checkpoint — DBL-371 (2026-10-19)
 
 - DBL-370 committed99e995b.371 extracts shared actor-clearance/swept connectivity from wilderness, validates prop footprints against actual ground, prop/placement overlaps, reserved spawn/exit/arrival zones and bounded room placements. Dungeon checks room bounds/overlap, unique connected corridor metadata and actual swept room connections. Outdoor/dungeon version1 fingerprints remain unchanged.

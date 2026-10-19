@@ -1,3 +1,4 @@
+import { GENERATION_ATTEMPTS } from "./generation-retry";
 import * as validation from "./generation-validation";
 import { expect, it, vi } from "vitest";
 import { generateDungeon, validDungeon, DUNGEON_ROOMS } from "./dungeon-layout";
@@ -57,11 +58,13 @@ it("pins dungeon version one", () => {
 it("validates a deterministic fallback after candidate connectivity rejection", () => {
   const validate = vi.spyOn(validation, "validGeneratedPlacement");
   try {
-    validate.mockReturnValueOnce(false);
+    for (let i = 0; i < GENERATION_ATTEMPTS; i++)
+      validate.mockReturnValueOnce(false);
     const first = generateDungeon(42);
     expect(first.fallback).toBe(true);
     expect(validDungeon(first)).toBe(true);
-    validate.mockReturnValueOnce(false);
+    for (let i = 0; i < GENERATION_ATTEMPTS; i++)
+      validate.mockReturnValueOnce(false);
     expect(generateDungeon(42)).toEqual(first);
     expect(first.layout.map.objects).toHaveLength(0);
   } finally {

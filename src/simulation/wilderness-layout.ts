@@ -1,3 +1,4 @@
+import { generateValidated, generationAttemptSeed } from "./generation-retry";
 import { validGeneratedPlacement } from "./generation-validation";
 import { areaDefinition, areaSeed, type AreaId } from "./world";
 import type { AreaLayout } from "./area-anchors";
@@ -35,7 +36,7 @@ export interface WildernessLayout {
     row: number;
     ports: readonly ModulePort[];
   }[];
-  /** Local outdoor safety guard only; broader DBL-371/372 remain pending. */
+  /** True only when all bounded candidate attempts were rejected. */
   readonly fallback: boolean;
 }
 function compose(
@@ -43,9 +44,10 @@ function compose(
   seed: number,
   fallback: boolean,
   catalog: readonly WildernessModule[] = WILDERNESS_MODULES,
+  attempt = 0,
 ): WildernessLayout {
   const derived = areaSeed(seed, area),
-    random = wildernessRandom(derived);
+    random = wildernessRandom(generationAttemptSeed(derived, attempt));
   const ports: ModulePort[][] = Array.from(
     { length: COLUMNS * ROWS },
     () => [],
@@ -152,12 +154,11 @@ export function generateWilderness(
 ): WildernessLayout {
   if (area !== "haunted-forest" && area !== "forgotten-graveyard")
     throw Error("Not an outdoor wilderness area");
-  const generated = compose(area, seed, false, catalog);
-  if (validGeneratedPlacement(generated.layout)) return generated;
-  const fallback = compose(area, seed, true);
-  if (!validGeneratedPlacement(fallback.layout))
-    throw Error("Invalid authored wilderness fallback");
-  return fallback;
+  return generateValidated(
+    (attempt) => compose(area, seed, false, catalog, attempt),
+    (generated) => validGeneratedPlacement(generated.layout),
+    () => compose(area, seed, true),
+  );
 }
 /** Compatibility name for the version-one wilderness generator. */
 export { connectedGeneratedArea as wildernessConnected } from "./generation-validation";

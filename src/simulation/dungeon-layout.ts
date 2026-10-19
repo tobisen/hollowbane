@@ -1,3 +1,4 @@
+import { generateValidated, generationAttemptSeed } from "./generation-retry";
 import { areaNavigation, segmentWalkable } from "../world/navigation";
 import { validGeneratedPlacement } from "./generation-validation";
 import { areaSeed, areaDefinition, type WorldPoint } from "./world";
@@ -54,9 +55,10 @@ function compose(
   seed: number,
   catalog: readonly RoomTemplate[],
   fallback: boolean,
+  attempt = 0,
 ): DungeonLayout {
   const derived = areaSeed(seed, "ancient-crypt"),
-    random = wildernessRandom(derived);
+    random = wildernessRandom(generationAttemptSeed(derived, attempt));
   const start = 3,
     exit = 5,
     seen = new Set([start]),
@@ -295,9 +297,9 @@ export function generateDungeon(
     new Set(catalog.map((t) => t.id)).size !== catalog.length
   )
     throw Error("Invalid dungeon templates");
-  const candidate = compose(seed, catalog, false);
-  if (validDungeon(candidate)) return candidate;
-  const fallback = compose(seed, DUNGEON_ROOMS, true);
-  if (!validDungeon(fallback)) throw Error("Invalid authored dungeon fallback");
-  return fallback;
+  return generateValidated(
+    (attempt) => compose(seed, catalog, false, attempt),
+    validDungeon,
+    () => compose(seed, DUNGEON_ROOMS, true),
+  );
 }
