@@ -1,5 +1,12 @@
 # Status
 
+## World runtime checkpoint — DBL-366 (2026-10-19)
+
+- `?world=1` integrates original temporary logical camp/forest floors and exit markers with the existing Phaser scene, pointer/keyboard/virtual-controller movement and logical swept navigation adapter. One live player/progression authority survives travel; area-local actors/projectiles clear only after validated commit. W2 generation/W3 art remain pending; no external assets added.
+- 13 focused unit checks, TypeScript/relevant lint, build and two Chromium mouse/virtual-controller camp→forest→camp cases pass; screenshot reviewed. Prototype intentionally has no storage/inventory binding until DBL-367; no physical-controller claim.
+- Latest CI39267892319 at b737d96 failed format:check; deploy skipped. Reproduced committed BACKLOG missing blank lines, fixed only that formatting in the index while preserving unrelated local edits. No new hosted claim.
+- Soft session-budget checkpoint: next DBL-367 atomic world/character persistence, then DBL-368 W2 modules. W1–W5 authorization remains active through World quality review; complete expedition is pending.
+
 ## World & Exploration checkpoint — DBL-365 (2026-10-19)
 
 - DBL-365 owns only immutable travel/layout state. Prepared transitions verify proximity, registered destination and area seed, deep-copy validated destinations, reject forged/canceled/stale/cross-session/replayed handles and retain old state on failure. Three focused transition cases plus two anchor cases, TypeScript and relevant lint pass; no character/save mutation.

@@ -1,3 +1,7 @@
+import { prototypeArea, stepWorldTravel } from "../simulation/world-runtime";
+import { WorldTravel } from "../simulation/world-travel";
+import { areaDefinition } from "../simulation/world";
+import { areaNavigation } from "../world/navigation";
 import { CLASS_IDS, type ClassId } from "../simulation/character-classes";
 import { createClassLaboratory } from "../simulation/class-laboratory";
 import { skillBar } from "../simulation/skill-progression";
@@ -103,6 +107,11 @@ export interface CombatPresentation {
 }
 declare global {
   interface Window {
+    hollowbaneWorld?: {
+      area: string;
+      position: Point;
+      exits: { id: string; x: number; y: number }[];
+    };
     hollowbanePolish?: {
       tick: number;
       visuals: SpellVisualStats | null;
@@ -151,21 +160,29 @@ declare global {
 }
 export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
+  const exploring = query.has("world");
+  const travel = exploring
+    ? new WorldTravel(42, prototypeArea("ashen-refuge", 42))
+    : null;
   const labId = query.get("classLab");
   const classLab =
     query.get("developer") === "1" && CLASS_IDS.includes(labId as ClassId)
       ? (labId as ClassId)
       : null;
-  if (classLab) monsters = false;
-  const inventory = query.has("inventory") && !classLab;
+  if (classLab || exploring) monsters = false;
+  const inventory = query.has("inventory") && !classLab && !exploring;
   const advanced = inventory && query.has("advanced");
   const itemLab = advanced && query.has("itemLab");
-  const loot = !classLab && (query.has("loot") || inventory);
-  const polish = query.has("polish") || loot || classLab !== null;
+  const loot = !exploring && !classLab && (query.has("loot") || inventory);
+  const polish = exploring || query.has("polish") || loot || classLab !== null;
   const skills = query.has("skills") || polish;
   const requested = Number(query.get("count") ?? 5);
   const initialCount = [5, 10, 20, 30].includes(requested) ? requested : 5;
-  const nav = monsters ? ENCOUNTER_NAV : ARENA_NAV;
+  const nav = travel
+    ? areaNavigation(travel.layout.map)
+    : monsters
+      ? ENCOUNTER_NAV
+      : ARENA_NAV;
   const root = document.querySelector("main")!;
   root.className = "combat-arena";
   root.innerHTML = `<div id="combat-world" tabindex="0" role="application" aria-label="Combat arena. Click targets to attack, hold to repeat. Click ground or WASD to move. Space stops queued actions."></div><header class="arena-header"><p>HOLLOWBANE / PHASE III</p><h1>The Ashwood Trial</h1><a href="./">Return to the cloister</a></header><aside class="arena-panel"><h2>Combat laboratory</h2><label>Weapon <select id="combat-weapon"><option value="melee">Melee blade</option><option value="projectile">Training bolt</option></select></label><label>Attack speed <select id="combat-speed"><option value="0">+0</option><option value="20">+20</option><option value="50">+50</option><option value="90">+90</option></select></label><label>Hit recovery <select id="combat-recovery"><option value="0">+0</option><option value="25">+25</option><option value="60">+60</option></select></label><label>Hostile sentinel <input id="combat-hostile" type="checkbox" checked></label><label>Impact sound <input id="combat-sound" type="checkbox" checked></label><button id="combat-reset">Reset trial</button><button id="combat-pause" aria-pressed="false">Pause</button><output id="combat-diagnostics" aria-live="off">Preparing trial…</output></aside><footer class="arena-footer"><strong>CLICK TARGET · HOLD TO REPEAT</strong> / CLICK GROUND OR WASD TO MOVE / SPACE TO STOP<br>Movement waits for attack recovery. Bolts can miss moving targets. Reset restores the same seed.<div id="combat-log" role="status">Select a target to begin.</div></footer>`;
@@ -345,14 +362,24 @@ export function startCombatArena(monsters = false): Phaser.Game {
         "ArrowLeft",
         "ArrowRight",
       ]);
-      if (polish)
+      if (polish && !exploring)
         createPolishGround(
           this,
           nav,
           query.has("flat"),
           query.has("noBackdrop"),
         );
-      else {
+      else if (travel) {
+        const floor = this.add.graphics().setDepth(-999);
+        floor.fillStyle(0x18252c, 1).fillPoints(
+          nav.boundary.map((p) => new Phaser.Math.Vector2(p.x, p.y)),
+          true,
+        );
+        floor.lineStyle(2, 0xb19a62, 0.7).strokePoints(
+          nav.boundary.map((p) => new Phaser.Math.Vector2(p.x, p.y)),
+          true,
+        );
+      } else {
         this.add
           .image(0, 0, "arena-plate")
           .setOrigin(0)
@@ -367,6 +394,21 @@ export function startCombatArena(monsters = false): Phaser.Game {
       }
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
+      if (travel) {
+        this.world.actors = [this.world.actors[0]!];
+        this.world.actors[0]!.controller.walker.position = {
+          ...travel.state.position,
+        };
+        if (this.abilities)
+          this.abilities.users = this.abilities.users.filter(
+            (u) => u.actor === 0,
+          );
+        hostile.checked = false;
+        document.querySelector<HTMLButtonElement>("#combat-reset")!.disabled =
+          true;
+        root.querySelector(".arena-footer")!.textContent =
+          "Walk to the glowing exit to travel. Camp / forest prototype · saving arrives in W1 persistence.";
+      }
       this.prepareShowcase();
       this.prepareBenchmark();
       this.syncActors();
@@ -1311,6 +1353,39 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.accumulator -= 1000 / 60;
         }
       }
+      if (travel) {
+        if (
+          !this.paused &&
+          !controllerInput.blockGameplay &&
+          !this.abilities?.users.some((u) => u.cast) &&
+          stepWorldTravel(travel, this.world)
+        ) {
+          Object.assign(nav, areaNavigation(travel.layout.map));
+          this.keys.clear();
+          if (this.abilities) {
+            this.abilities.pending = [];
+            this.abilities.effects.bolts = [];
+            this.abilities.effects.events = [];
+            this.abilities.effects.statuses =
+              this.abilities.effects.statuses.filter(
+                (s) => s.actor === 0 && s.source === 0,
+              );
+          }
+          this.hovered = null;
+          this.accumulator = 0;
+        }
+        root.querySelector(".arena-header h1")!.textContent = areaDefinition(
+          travel.state.area,
+        ).name;
+        window.hollowbaneWorld = {
+          area: travel.state.area,
+          position: { ...player.controller.walker.position },
+          exits: travel.layout.exits.map((e) => ({
+            id: e.id,
+            ...onGround(e.trigger),
+          })),
+        };
+      }
       const updateAt = performance.now();
       this.ink.clear();
       for (const d of this.lootView?.world.drops ?? []) {
@@ -1321,6 +1396,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
         );
         this.ink.fillTriangle(p.x, p.y - 5, p.x - 4, p.y + 2, p.x + 4, p.y + 2);
       }
+      if (travel)
+        for (const exit of travel.layout.exits) {
+          const p = onGround(exit.trigger);
+          this.ink
+            .lineStyle(3, exit.id === "graveyard" ? 0x555555 : 0xf1cf82, 1)
+            .strokeEllipse(p.x, p.y, 48, 24);
+        }
       this.effect.clear();
       this.syncActors();
       if (monsters && !polish)

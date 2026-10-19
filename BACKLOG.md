@@ -355,7 +355,9 @@ DBL-109 / P11 publication/visual checkpoint (2026-10-18): P10fcd3af1 and P11 run
 DBL-109 / P11 release complete (2026-10-18): P11 release verified2026-10-18: runtime51a943ac96f845a9f749262436c146ea9244511f; CI39159873168 success,105 Chromium and15 advanced cross-browser cases pass, unchanged Linux inventory comparisons. Pages deployment7159839021 success with matching SHA and index-BJpbzwJa.js. Seven hosted character/allocation/save/reload/migration/virtual-controller checks pass; hosted screenshot reviewed. Existing320 unit evidence reused locally; CI check passed. DBL-109 technically complete; user quality approval remains false. No classes/skill trees; hardware and broader partial parents remain open.
 
 ## Authorized World & Exploration scope (2026-10-19)
+
 W1–W5 authorized after technical C13 verification. Thirty sequential scoped increments; original source IDs/dependencies unchanged; broader parents remain partial.
+
 - DBL-362 / W1: World registry and stable area seed identities (completed).
 - DBL-363 / W1: Logical terrain object and navigation layer contracts (completed).
 - DBL-364 / W1: Spawn and entrance placement validation (planned).

@@ -1,3 +1,5 @@
+import { areaWalkable, type AreaMap } from "../simulation/area-map";
+import { WORLD_ACTOR_RADIUS } from "../simulation/area-anchors";
 import { screenToWorld, worldToScreen, type Point } from "./isometric";
 export interface Obstacle {
   x: number;
@@ -6,6 +8,8 @@ export interface Obstacle {
   ry: number;
 }
 export interface Navigation {
+  /** Logical maps bypass the legacy ground-image collision representation. */
+  logicalMap?: AreaMap;
   boundary: Point[];
   obstacles: Obstacle[];
   /** Conservative actor clearance in ground-image pixels. */
@@ -69,6 +73,8 @@ function obstacleAxes(o: Obstacle, clearance: number): Point {
 }
 export function canWalk(nav: Navigation, world: Point): boolean {
   if (!finite(world)) return false;
+  if (nav.logicalMap)
+    return areaWalkable(nav.logicalMap, world, WORLD_ACTOR_RADIUS);
   const p = onGround(world),
     clearance = nav.clearance ?? 0;
   return (
@@ -171,6 +177,7 @@ export function findPath(nav: Navigation, start: Point, end: Point): Point[] {
 /** Analytic swept point/expanded-obstacle and boundary checks, independent of speed. */
 export function segmentWalkable(nav: Navigation, a: Point, b: Point): boolean {
   if (!canWalk(nav, a) || !canWalk(nav, b)) return false;
+  if (nav.logicalMap) return logicalSegment(nav.logicalMap, a, b);
   const p = onGround(a),
     q = onGround(b),
     clearance = nav.clearance ?? 0;
@@ -215,4 +222,50 @@ export function smoothPath(
     index = last + 1;
   }
   return result;
+}
+
+/** Projection is only for drawing; collision retains logical units. */
+export function areaNavigation(map: AreaMap): Navigation {
+  const t = map.terrain,
+    x = t.origin.x,
+    y = t.origin.y;
+  return {
+    logicalMap: map,
+    obstacles: [],
+    boundary: [
+      { x, y },
+      { x: x + t.width * t.cellSize, y },
+      { x: x + t.width * t.cellSize, y: y + t.height * t.cellSize },
+      { x, y: y + t.height * t.cellSize },
+    ].map(onGround),
+  };
+}
+function logicalSegment(map: AreaMap, a: Point, b: Point): boolean {
+  const t = map.terrain,
+    radius = WORLD_ACTOR_RADIUS;
+  // The rectangular outer boundary is convex; clear endpoints contain the sweep.
+  for (let row = 0; row < t.height; row++)
+    for (let col = 0; col < t.width; col++) {
+      if (t.cells[row * t.width + col] === "ground") continue;
+      const x = t.origin.x + col * t.cellSize,
+        y = t.origin.y + row * t.cellSize;
+      const corners = [
+        { x, y },
+        { x: x + t.cellSize, y },
+        { x: x + t.cellSize, y: y + t.cellSize },
+        { x, y: y + t.cellSize },
+      ];
+      if (
+        corners.some(
+          (p, i) =>
+            segmentDistanceSq(a, b, p, corners[(i + 1) % 4]!) <= radius ** 2,
+        )
+      )
+        return false;
+    }
+  return !map.objects.some(
+    (o) =>
+      o.blocking &&
+      distanceToSegmentSq(o.position, a, b) <= (radius + o.radius) ** 2,
+  );
 }

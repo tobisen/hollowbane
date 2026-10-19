@@ -6,6 +6,7 @@ const query = new URLSearchParams(location.search);
 if (query.has("controller")) {
   controllerPage();
 } else if (
+  query.has("world") ||
   query.has("combat") ||
   query.has("monsters") ||
   query.has("skills") ||
