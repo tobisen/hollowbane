@@ -1,5 +1,12 @@
 # Status
 
+## Wilderness modules checkpoint — DBL-368 (2026-10-19)
+
+- Five original data-driven logical module kinds: path, clearing, forest, obstacles and ruins; seeded selection, quarter-turn masks and matching circular collision footprints. Two focused tests cover all20 rotated modules, ports, deterministic choices and invalid inputs; TypeScript/relevant lint pass.
+- Collision-only appearance tags `wilderness-boulder-footprint` / `wilderness-ruin-footprint` are unresolved W3 renderer placeholders, not external artwork. Pure generator foundation only; version-one saved layouts and runtime remain unchanged.
+- Remote main is b737d96; local366/367 have not reached GitHub. Latest CI39267892319 failed pre-fix formatting; no new deployment evidence.
+- Next DBL-369 seeded outdoor composition. DBL-370 dungeon work is explicitly excluded this session;371/372 retain their original370/371 dependencies and cannot be closed as ready wilderness issues. W1–W5 remains incomplete.
+
 ## World persistence checkpoint — DBL-367 (2026-10-19)
 
 - Schema5 adds optional versioned exploration to the existing checksum/CAS/current+previous IndexedDB transaction. Persists area, four derived seeds, position, discovery, parked ground items and per-area loot death identities. One global loot stream and nested item ownership remain authoritative. Schema1–4 saves migrate without inventing exploration.
