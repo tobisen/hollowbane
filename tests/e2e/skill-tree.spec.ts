@@ -90,17 +90,22 @@ test("legacy discipline confirmation and keyboard learning remain explicit", asy
   await page.locator("#skill-class-ranger").click();
   await expect(page.getByRole("tab", { name: "Trailcraft" })).toBeVisible();
   await page.locator("#skill-choose-class").click();
+  await expect(page.locator("#skill-back")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.locator("#skill-confirm")).toHaveCount(0);
   await page.locator("#skill-choose-class").click();
+  await expect(page.locator("#skill-back")).toBeFocused();
   await page.keyboard.press("Tab");
+  await expect(page.locator("#skill-confirm")).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.locator(".skill-identity")).toContainText(
     "Committed: ranger",
   );
   await page.locator("#skill-learn").focus();
   await page.keyboard.press("Enter");
+  await expect(page.locator("#skill-back")).toBeFocused();
   await page.keyboard.press("Tab");
+  await expect(page.locator("#skill-confirm")).toBeFocused();
   await page.keyboard.down("Enter");
   await page.keyboard.down("Enter");
   await page.keyboard.up("Enter");

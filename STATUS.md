@@ -1,5 +1,10 @@
 # Status
 
+## DBL-114/004 skill confirmation CI repair (2026-10-19)
+
+- Quick mouse→Tab→Enter confirmation could be canceled by the click callback's device handoff before it read pending state. The callback now matches prompt policy: mouse/keyboard preserve pending confirmation; transitions to/from gamepad cancel. Added explicit focus assertions to legacy discipline/keyboard allocation browser coverage. No timeout/skill/save rule changes.
+- All4 targeted skill-tree Chromium cases pass (mouse/save/reload, keyboard confirmation/repeat, virtual Xbox/PlayStation/cancel/disconnect). TypeScript/relevant lint/format/build pass. No full regression or physical-controller claim. W3 review stop remains; no W4/W5 or new phase work. Unrelated edits preserved.
+
 ## DBL-373 / W3 browser CI repair (2026-10-19)
 
 - Attached CI log exposed a camp click outside the displayed viewport after travel, a forest waypoint wait and a legacy save expectation still pinned to schema4. Destination travel now precedes layout/camera presentation updates, and world diagnostics publish after rendering so area/position/camera describe the same displayed frame. Mouse waypoint checks stop prior movement and await walking=false before projection. Legacy browser assertion expects CHARACTER_SCHEMA while retaining previous schema1/item identity checks.

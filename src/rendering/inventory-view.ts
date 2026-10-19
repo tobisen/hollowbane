@@ -178,9 +178,13 @@ export class InventoryView {
       runtime,
       () => this.ready,
       () => {
-        if (this.lastDevice !== hub.frame.device) {
-          this.resetSelection();
-          this.lastDevice = hub.frame.device;
+        const device = hub.frame.device;
+        if (this.lastDevice !== device) {
+          // Mouse and keyboard share the confirmation workflow. Only gamepad
+          // handoffs invalidate a pending interaction, matching updatePrompts.
+          if (this.lastDevice === "gamepad" || device === "gamepad")
+            this.resetSelection();
+          this.lastDevice = device;
         }
       },
     );
