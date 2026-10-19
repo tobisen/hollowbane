@@ -1,5 +1,12 @@
 # Status
 
+## Generation validation checkpoint — DBL-371 (2026-10-19)
+
+- DBL-370 committed99e995b.371 extracts shared actor-clearance/swept connectivity from wilderness, validates prop footprints against actual ground, prop/placement overlaps, reserved spawn/exit/arrival zones and bounded room placements. Dungeon checks room bounds/overlap, unique connected corridor metadata and actual swept room connections. Outdoor/dungeon version1 fingerprints remain unchanged.
+- 18 focused dungeon/wilderness/shared-validation/save/travel checks, TypeScript/relevant lint pass. Pure candidate generation only: no live world/save contract/rendering changes or browser/full regression/loot simulations. Existing schema5/content1 areas stay pinned; no silent migration.
+- Git sync published four prior commits through993f1cc after review/dry-run. CI39275311814 checked once at993f1cc was in progress; no deployment claim. This newly verified370/371 batch is ready for normal fast-forward publication; record push outcome in final report rather than assume success.
+- Exact next DBL-372 bounded generation retries/fallback, then373 reproducibility/versioned integration before runtime adoption. Stop after the selected370/371 batch; W2 and full expedition remain incomplete. Preserve unrelated BACKLOG/STATUS/L3 edits.
+
 ## Dungeon checkpoint — DBL-370 / Git sync (2026-10-19)
 
 - Reviewed unpublished8090595/3a220b5/b7606a9/993f1cc against remote b737d96: fast-forward ancestry, intended source/docs/tests only, no artifacts or credential-pattern matches. Formatting fix verified;13 focused checks/TypeScript pass. Dry-run then normal push succeeded through993f1cc; no history rewrite/unrelated edits staged.

@@ -1,4 +1,4 @@
-import * as outdoor from "./wilderness-layout";
+import * as validation from "./generation-validation";
 import { expect, it, vi } from "vitest";
 import { generateDungeon, validDungeon, DUNGEON_ROOMS } from "./dungeon-layout";
 import { areaSeed } from "./world";
@@ -55,7 +55,7 @@ it("pins dungeon version one", () => {
 });
 
 it("validates a deterministic fallback after candidate connectivity rejection", () => {
-  const validate = vi.spyOn(outdoor, "wildernessConnected");
+  const validate = vi.spyOn(validation, "validGeneratedPlacement");
   try {
     validate.mockReturnValueOnce(false);
     const first = generateDungeon(42);

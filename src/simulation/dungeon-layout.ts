@@ -1,9 +1,10 @@
+import { areaNavigation, segmentWalkable } from "../world/navigation";
+import { validGeneratedPlacement } from "./generation-validation";
 import { areaSeed, areaDefinition, type WorldPoint } from "./world";
 import type { AreaLayout } from "./area-anchors";
 import type { AreaObject } from "./area-map";
 import { areaWalkable } from "./area-map";
 import { wildernessRandom } from "./wilderness-modules";
-import { wildernessConnected } from "./wilderness-layout";
 export const DUNGEON_LAYOUT_VERSION = 1;
 export interface RoomTemplate {
   readonly id: string;
@@ -192,8 +193,82 @@ function compose(
   };
 }
 export function validDungeon(dungeon: DungeonLayout): boolean {
-  if (!wildernessConnected(dungeon.layout)) return false;
   const rooms = new Set(dungeon.rooms.map((r) => r.id));
+  if (
+    !dungeon.rooms.every(
+      (r) =>
+        [r.x, r.y, r.width, r.height, r.center.x, r.center.y].every(
+          Number.isFinite,
+        ) &&
+        r.width > 0 &&
+        r.height > 0 &&
+        r.center.x === r.x + r.width / 2 &&
+        r.center.y === r.y + r.height / 2,
+    )
+  )
+    return false;
+  if (
+    !validGeneratedPlacement(
+      dungeon.layout,
+      dungeon.zones.map((z) => {
+        const room = dungeon.rooms.find((r) => r.id === z.room);
+        return {
+          ...z,
+          ...(room
+            ? {
+                region: {
+                  x: room.x,
+                  y: room.y,
+                  width: room.width,
+                  height: room.height,
+                },
+              }
+            : {}),
+        };
+      }),
+    )
+  )
+    return false;
+  const nav = areaNavigation(dungeon.layout.map),
+    graph = new Set<string>(),
+    queue = [dungeon.rooms.find((r) => r.role === "entrance")?.id];
+  const pairs = new Set<string>();
+  for (const edge of dungeon.corridors) {
+    const from = dungeon.rooms.find((r) => r.id === edge.from),
+      to = dungeon.rooms.find((r) => r.id === edge.to);
+    const pair = [edge.from, edge.to].sort().join("/");
+    if (
+      !from ||
+      !to ||
+      from === to ||
+      pairs.has(pair) ||
+      !segmentWalkable(nav, from.center, to.center)
+    )
+      return false;
+    pairs.add(pair);
+  }
+  for (let i = 0; i < queue.length; i++) {
+    const id = queue[i];
+    if (!id || graph.has(id)) continue;
+    graph.add(id);
+    for (const edge of dungeon.corridors)
+      if (edge.from === id) queue.push(edge.to);
+      else if (edge.to === id) queue.push(edge.from);
+  }
+  if (graph.size !== dungeon.rooms.length) return false;
+  for (const [index, room] of dungeon.rooms.entries())
+    if (
+      dungeon.rooms
+        .slice(index + 1)
+        .some(
+          (other) =>
+            room.x < other.x + other.width &&
+            room.x + room.width > other.x &&
+            room.y < other.y + other.height &&
+            room.y + room.height > other.y,
+        )
+    )
+      return false;
   return (
     rooms.size === dungeon.rooms.length &&
     dungeon.rooms.filter((r) => r.role === "entrance").length === 1 &&
