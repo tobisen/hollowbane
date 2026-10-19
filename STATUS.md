@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 actual implementation permissions (2026-10-19)
+
+- Supported explicit approval path verified from overnight/development: automatic-review workspace-write Codex executed approved Git index refresh, exact CI read, authenticated remote read and an actual harmless push to overnight/permission-probe-33a3fc5. Ordinary sandbox Git metadata remains protected. No unrestricted mode, rules changes, D00 or tracked gameplay edits. Astra6 Max probe passes.
+- Sixteen offline tests and complete15-task dry-run pass; actual implementation build and hosted minimap/movement/save smoke pass, all26 hosted files match. Added tooling-only verify-activation action: D00 start is blocked until exact activation release gates pass and verified SHA is recorded. Existing CI now also runs Python tests/queue dry-run.
+- Prior preflight35ab99b now has successful exact CI/Pages39326566635 and deployment7185581214; actual-worktree hosted bytes/smoke verified. This tooling-only integration/publication remains pending at commit time. Final live result/verified SHA will be persisted in .local/overnight/permissions.json and events.jsonl without triggering a self-referential evidence commit. Original main checkout dirty documents retained byte-for-byte.
+
 ## DBL-010 D00–D14 activation specification checkpoint (2026-10-19)
 
 - Supplied user specifications now define all15 D00–D14 tasks in tools/overnight/tasks.json; runner loads the versioned queue. Dry-run: D00 eligible, D01–D14 pending predecessor release evidence. Existing DBL numbering/parent edges preserved through explicit narrow slices. No gameplay/D00 executed.

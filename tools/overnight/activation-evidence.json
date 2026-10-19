@@ -3,25 +3,38 @@
   "setup_only": true,
   "source_sha": "35ab99bfb11c26e06c43dcac3857ab3abc7b6da6",
   "published_source_blobs_verified": 6,
-  "last_confirmed_pages_sha": "4fd66464c4ee356c75a5f0551d313a625d79dfb2",
-  "pages_deployment": 7184782837,
+  "last_confirmed_pages_sha": "35ab99bfb11c26e06c43dcac3857ab3abc7b6da6",
+  "pages_deployment": 7185581214,
   "hosted_artifacts_matched": 26,
-  "hosted_smoke": "world-minimap.spec.ts: 1 passed (7.1s)",
-  "offline_tests": 15,
+  "hosted_smoke": "Actual implementation worktree world-minimap.spec.ts: 1 passed (7.3s)",
+  "offline_tests": 16,
   "queue_slots": 15,
   "executable_deliverables": 1,
   "blockers": [
-    "35ab99b CI/Pages workflow 39326566635 pending at inspection",
-    "Activation tooling requires reviewed integration and its own exact-commit CI/Pages/hosted gate",
-    "Actual overnight/development worktree Codex/Git/network permission probe pending"
+    "Reviewed activation tooling integration into main and its own exact-commit CI/Pages/hosted verification pending"
   ],
   "models": {
     "default": "gpt-6.1-sol/high",
     "escalation": "gpt-6-astra/max",
     "catalog_supported": true,
-    "prior_read_only_probes_passed": true
+    "prior_read_only_probes_passed": true,
+    "actual_worktree_astra_probe": "ESCALATION_OK"
   },
   "pending_deliverables": 14,
   "next_task": "D00",
-  "queue_file": "tools/overnight/tasks.json"
+  "queue_file": "tools/overnight/tasks.json",
+  "implementation_worktree": "/Users/tobiasbertilsson/kod/hallowbane/.local/overnight-development",
+  "implementation_branch": "overnight/development",
+  "permissions": {
+    "ordinary_sandbox_git_metadata": "denied as expected; index.lock protected",
+    "supported_reviewed_git_metadata": "passed: git update-index --refresh",
+    "supported_reviewed_ci_read": "passed: exact run read",
+    "supported_reviewed_remote_read": "passed: git ls-remote",
+    "supported_reviewed_actual_push": "passed: refs/heads/overnight/permission-probe-33a3fc5",
+    "reviewer_mode": "--approve-for-me, workspace-write; eligible approvals retained; no global rules changed",
+    "main_integration_push": "not yet performed"
+  },
+  "source_ci_run": 39326566635,
+  "source_ci_pages_status": "success",
+  "record_type": "Pre-publication checkpoint. Final live release result is in ignored .local/overnight/permissions.json and events.jsonl; avoids a self-referential evidence commit."
 }

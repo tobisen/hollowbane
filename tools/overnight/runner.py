@@ -142,7 +142,7 @@ def command(argv, deadline, env=None):
 
 
 def codex(model, effort, prompt):
-    return ['codex', '-a', 'on-request', 'exec', '-s', 'workspace-write',
+    return ['codex', '--approve-for-me', 'exec', '-s', 'workspace-write',
             '-m', model, '-c', f'model_reasoning_effort={effort}', '--json', prompt]
 
 
@@ -239,7 +239,7 @@ def model_for(config, state):
             else (config['model'], config['reasoning']))
 
 
-def execution_worktree(config, deadline):
+def execution_worktree(config, deadline, require_release=True):
     branch = command(['git', 'branch', '--show-current'], deadline)
     if branch != config['implementation_branch']:
         raise RuntimeError('execution/publication forbidden from activation or unrelated branch')
@@ -251,6 +251,10 @@ def execution_worktree(config, deadline):
     if (receipt.get('worktree') != str(ROOT) or receipt.get('config_hash') != expected
             or not receipt.get('verified')):
         raise RuntimeError('actual execution-worktree permission verification is missing or stale')
+    if require_release and not receipt.get('activation_release_verified'):
+        raise RuntimeError('activation CI/Pages/hosted gate is not yet verified; D00 must not start')
+    if require_release:
+        command(['git', 'merge-base', '--is-ancestor', receipt['deployment_sha'], 'HEAD'], deadline)
 
 
 def validate(config):
@@ -322,7 +326,8 @@ def execute(config, resume):
                               f"Authorization: {task['authorization']}\n{task['prompt']}\n"
                               'Preserve unrelated edits. No next issue, no gate approval. '
                               'Diagnose failures with new evidence and alternative approaches. '
-                              'Stop on permissions, quota, missing authorization or infrastructure blockers. '
+                              'For known Git metadata/network sandbox limits request narrow supported approval from the configured reviewer. '
+                              'Stop on rejected/unavailable/human-only approvals, quota, missing authorization or infrastructure blockers. '
                               'Run relevant tests and commit verified scoped changes; title MUST include this Dxx ID and its existing DBL ID. '
                               'Do not push; the runner independently gates publication. '
                               f"Prior failures: {state['failures'][-2:]} "
@@ -361,9 +366,25 @@ def execute(config, resume):
             atomic(checkpoint, state)
 
 
+def verify_activation(config):
+    """Release this tooling only. Never invokes Codex or executes a Dxx task."""
+    deadline = time.time() + 1800
+    with lock(STATE), lock(repository_lock()):
+        execution_worktree(config, deadline, require_release=False)
+        task = dict(local_tests=[[sys.executable, '-m', 'unittest', 'discover',
+                                 '-s', 'tools/overnight', '-p', 'test_*.py']],
+                    hosted_url='https://tobisen.github.io/hollowbane/',
+                    hosted_tests=[['npx', 'playwright', 'test', 'tests/e2e/world-minimap.spec.ts']])
+        sha = release(task, deadline)
+        receipt = json.loads((STATE / 'permissions.json').read_text())
+        receipt.update(activation_release_verified=True, deployment_sha=sha)
+        atomic(STATE / 'permissions.json', receipt)
+        print(json.dumps(dict(status='READY', deployment_sha=sha, gameplay_started=False)))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['start', 'resume', 'status', 'stop', 'dry-run'])
+    parser.add_argument('action', choices=['start', 'resume', 'status', 'stop', 'dry-run', 'verify-activation'])
     args = parser.parse_args()
     STATE.mkdir(parents=True, exist_ok=True, mode=0o700)
     os.umask(0o077)
@@ -397,7 +418,10 @@ def main():
     for sig in (signal.SIGINT, signal.SIGTERM):
         signal.signal(sig, terminate)
     config = load_config()
-    execute(config, args.action == 'resume')
+    if args.action == 'verify-activation':
+        verify_activation(config)
+    else:
+        execute(config, args.action == 'resume')
 
 
 if __name__ == '__main__':

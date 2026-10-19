@@ -108,7 +108,8 @@ class RunnerTests(unittest.TestCase):
         argv = r.codex('gpt-6.1-sol', 'high', 'preflight')
         self.assertIn('model_reasoning_effort=high', argv)
         self.assertIn('workspace-write', argv)
-        self.assertIn('on-request', argv)
+        self.assertIn('--approve-for-me', argv)
+        self.assertNotIn('never', argv)
         self.assertFalse(any('bypass' in word for word in argv))
 
     def test_hosted_identity_rejects_stale_bytes(self):
@@ -213,6 +214,21 @@ class RunnerTests(unittest.TestCase):
             with patch.object(r, 'command', return_value='overnight/activation'):
                 with self.assertRaisesRegex(RuntimeError, 'activation'):
                     r.execution_worktree(r.load_config(), time.time() + 5)
+        finally:
+            self.execution_guard.start()
+
+    def test_unverified_activation_cannot_start_d00(self):
+        self.execution_guard.stop()
+        try:
+            config = r.load_config()
+            fingerprint = r.hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()
+            r.atomic(r.STATE / 'permissions.json', dict(worktree=str(r.ROOT), config_hash=fingerprint,
+                                                       verified=True, activation_release_verified=False))
+            def fake(argv, deadline):
+                return 'overnight/development' if argv[:3] == ['git', 'branch', '--show-current'] else ''
+            with patch.object(r, 'command', fake):
+                with self.assertRaisesRegex(RuntimeError, 'D00 must not start'):
+                    r.execution_worktree(config, time.time() + 5)
         finally:
             self.execution_guard.start()
 

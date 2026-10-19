@@ -8,5 +8,6 @@
   "queue_file": "tasks.json",
   "implementation_branch": "overnight/development",
   "publication_branch": "main",
-  "shutdown_margin_seconds": 60
+  "shutdown_margin_seconds": 60,
+  "approval_review": "auto_review"
 }

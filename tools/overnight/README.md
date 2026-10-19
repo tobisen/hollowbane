@@ -80,6 +80,16 @@ python3 tools/overnight/runner.py dry-run
 python3 -m unittest discover -s tools/overnight -p 'test_*.py'
 ```
 
+Tooling-only publication verification, after integration and a genuine permission receipt:
+
+```sh
+python3 tools/overnight/runner.py verify-activation
+```
+
+This action runs the local tooling release checks and hosted baseline smoke without
+Codex or D00. It records the exact deployment SHA only after CI/Pages/hosted gates
+pass. Start/resume reject a receipt lacking that verified activation gate.
+
 The dry run loads every deliverable, evaluates prerequisites, reports D00 next,
 and selects Sol High. Tests cover invalid/wrong-SHA CI, skipped Pages, stale
 artifacts and failed hosted smoke blocking release, checkpoint resume, actual
@@ -95,7 +105,11 @@ not qualify. Resolution returns the next task to Sol High. Both pairs passed
 real read-only CLI probes; permissions evidence must additionally exercise actual
 tool use. No global model changes or Ultra/automatic delegation.
 
-Existing rules, sandbox and `on-request` approvals remain in force;
+Existing rules, workspace sandbox and on-request approval requests remain in force.
+The supported `--approve-for-me` flag routes eligible requests through automatic
+review; it does not suppress approval. The explicit reviewed probe actually
+exercised Git metadata writes, CI reads, remote authentication and a real harmless
+probe-branch push. A rejected/unavailable/manual-only approval still blocks.
 `workspace-write` never becomes full access. Permission/quota/network failures
 stop for inspection. Do not suppress approvals to make unattended execution work.
 
@@ -131,3 +145,5 @@ See `activation-evidence.json` and STATUS.md for actual checks and remaining
 blockers. These records must not be interpreted as a successful release gate.
 
 Official CLI reference: [Non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode).
+
+Approval reviewer reference: [Sandbox and approval modes](https://learn.chatgpt.com/docs/sandboxing).
