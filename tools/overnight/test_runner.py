@@ -77,7 +77,11 @@ class RunnerTests(unittest.TestCase):
         state = json.loads((r.STATE / 'checkpoint.json').read_text())
         deadline = state['deadline']
         self.assertEqual(state['phase'], 'release')
-        with patch.object(r, 'command', side_effect=AssertionError('must not redevelop')), \
+        (r.STATE / 'stop').touch()
+        def guard(*args, **kwargs):
+            self.assertFalse((r.STATE / 'stop').exists())
+        with patch.object(r, 'execution_worktree', side_effect=guard), \
+             patch.object(r, 'command', side_effect=AssertionError('must not redevelop')), \
              patch.object(r, 'release', return_value='verified'):
             r.execute(config, True)
         restored = json.loads((r.STATE / 'checkpoint.json').read_text())

@@ -290,6 +290,7 @@ def execute(config, resume):
     fingerprint = hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()
     checkpoint = STATE / 'checkpoint.json'
     with lock(STATE), lock(repository_lock()):
+        (STATE / 'stop').unlink(missing_ok=True)
         execution_worktree(config, time.time() + 120)
         active = STATE / 'active-child.json'
         if active.exists():
@@ -312,7 +313,6 @@ def execute(config, resume):
             state = dict(config_hash=fingerprint, deadline=time.time() + config['window_seconds'],
                          index=0, attempts=0, total_attempts=0, sequence_attempts=0,
                          phase='develop', failures=[], history=[], completed={})
-        (STATE / 'stop').unlink(missing_ok=True)
         atomic(checkpoint, state)
         try:
             while state['index'] < len(config['tasks']):
@@ -378,6 +378,7 @@ def verify_activation(config):
     """Release this tooling only. Never invokes Codex or executes a Dxx task."""
     deadline = time.time() + 1800
     with lock(STATE), lock(repository_lock()):
+        (STATE / 'stop').unlink(missing_ok=True)
         execution_worktree(config, deadline, require_release=False)
         task = dict(local_tests=[[sys.executable, '-m', 'unittest', 'discover',
                                  '-s', 'tools/overnight', '-p', 'test_*.py']],
