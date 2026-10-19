@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 overnight activation checkpoint (2026-10-19)
+
+- Setup only; no gameplay/unattended execution. Isolated overnight/activation worktree preserves original modified BACKLOG.md, STATUS.md and docs/items/l3.md. D00–D14 authorized, but exact approved specifications unavailable: 15 blocked slots, zero executable deliverables. Dry-run stops safely at D00.
+- Twelve offline tests, TypeScript/lint/format/build pass. Evidence-based bounded retries retain cumulative history/deadline; exact-SHA CI, Pages, artifact and smoke failures block release. Added shared repository lock and terminal-independent launch commands. Sol6.1 High/Astra6 Max catalog and prior live probes verified.
+- Confirmed Pages4fd6646 deployment7184782837 success; 26 hosted files match and hosted minimap/movement/save smoke passes. Six35ab99b source blobs verified; its CI39326566635 still running. Activation publication and unattended worktree permissions remain unverified. NOT READY. Evidence: tools/overnight/activation-evidence.json.
+
 ## W4 / DBL-385 persistent automap checkpoint (2026-10-19)
 
 - DBL-384 runtime dce178e CI/Pages workflow39317420535 completed success (checked once). DBL-385 adds bounded radial terrain-cell reveal and a cached isometric minimap: unexplored cells remain dark; player, discovered spawn/exits and treasure are marked. Tab or controller Map toggles without modal/combat capture; existing M menu/V inventory and non-world routes retain their behavior.

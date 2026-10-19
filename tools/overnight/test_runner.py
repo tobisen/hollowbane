@@ -21,8 +21,11 @@ class RunnerTests(unittest.TestCase):
         self.old = r.STATE
         r.STATE = Path(self.temp.name)
         r.STOP = False
+        self.repo_lock = patch.object(r, 'repository_lock', return_value=r.STATE / 'repository')
+        self.repo_lock.start()
 
     def tearDown(self):
+        self.repo_lock.stop()
         r.STATE = self.old
         r.STOP = False
         self.temp.cleanup()
@@ -52,7 +55,7 @@ class RunnerTests(unittest.TestCase):
                 return ''
             if argv[:2] == ['git', 'rev-parse']:
                 return 'abc'
-            raise RuntimeError('failed targeted test')
+            raise r.CommandFailure(argv, 'FAIL targeted assertion', 'test.log')
         with patch.object(r, 'command', fake), self.assertRaises(RuntimeError):
             r.release({'local_tests': [['false']]}, time.time() + 10)
         self.assertFalse(any('push' in c for c in calls))
@@ -60,7 +63,7 @@ class RunnerTests(unittest.TestCase):
     def test_interruption_retains_release_phase_and_resumes(self):
         config = dict(window_seconds=100, tasks=[dict(id='DBL-test', authorization='test',
                       prompt='no gameplay', local_tests=[['true']], hosted_tests=[['true']],
-                      hosted_url='https://example.test')], max_attempts=3,
+                      hosted_url='https://example.test', specification='approved test fixture')], max_attempts=3,
                       model='gpt-6.1-sol', reasoning='high', escalation_model='gpt-6-astra',
                       escalation_reasoning='max')
         with patch.object(r.subprocess, 'check_output', return_value=b''), \
@@ -115,6 +118,62 @@ class RunnerTests(unittest.TestCase):
         with patch.object(hosted, 'urlopen', return_value=io.BytesIO(b'stale')):
             with self.assertRaisesRegex(RuntimeError, 'mismatch'):
                 hosted.verify('https://example.test', r.STATE)
+
+    def test_retry_evidence_and_cumulative_history(self):
+        state = dict(index=0, attempts=2, total_attempts=5, failures=[], history=[], deadline=42)
+        config = dict(max_total_attempts=24)
+        r.record_failure(state, r.Repairable('first', 'test-a', 'evidence-a'), config)
+        r.record_failure(state, r.Repairable('progress', 'test-a', 'evidence-b'), config)
+        self.assertEqual(state['sequence_attempts'], 2)
+        r.record_failure(state, r.Repairable('new condition', 'test-b', 'evidence-c'), config)
+        self.assertEqual(state['sequence_attempts'], 1)
+        self.assertEqual(state['total_attempts'], 5)
+        self.assertEqual(state['deadline'], 42)
+        with self.assertRaisesRegex(RuntimeError, 'identical'):
+            r.record_failure(state, r.Repairable('again', 'test-a', 'evidence-a'), config)
+        self.assertEqual(len(state['history']), 4)
+
+    def test_diagnostic_ignores_timing_noise(self):
+        self.assertEqual(r.diagnostic('FAIL foo 32ms'), r.diagnostic('FAIL foo 99ms'))
+        self.assertNotEqual(r.diagnostic('FAIL foo'), r.diagnostic('FAIL bar'))
+
+    def test_ci_pages_and_hosted_gates_are_mandatory(self):
+        task = dict(local_tests=[['targeted']], hosted_url='https://example.test',
+                    hosted_tests=[['hosted-smoke']])
+        for failure in ('wrong-sha', 'ci', 'pages', 'artifact', 'smoke', None):
+            calls = []
+            def fake(argv, deadline, env=None):
+                calls.append(argv)
+                if argv[:2] == ['git', 'status']:
+                    return ''
+                if argv[:2] == ['git', 'rev-parse']:
+                    return 'candidate'
+                if argv[:2] == ['git', 'ls-remote']:
+                    return 'candidate refs/heads/main'
+                if argv[:3] == ['gh', 'run', 'list']:
+                    return json.dumps([dict(headSha='other' if failure == 'wrong-sha' else 'candidate',
+                                           databaseId=1, status='completed',
+                                           conclusion='failure' if failure == 'ci' else 'success')])
+                if argv[:3] == ['gh', 'run', 'view']:
+                    if '--log-failed' in argv:
+                        return 'FAIL real test'
+                    return json.dumps(dict(jobs=[dict(name='deploy',
+                            conclusion='skipped' if failure == 'pages' else 'success')]))
+                if 'verify_hosted.py' in ' '.join(argv) and failure == 'artifact':
+                    raise RuntimeError('stale artifact')
+                if argv == ['hosted-smoke'] and failure == 'smoke':
+                    raise RuntimeError('hosted smoke failed')
+                if failure == 'wrong-sha' and 'import time; time.sleep(15)' in argv:
+                    raise RuntimeError('correct commit unavailable')
+                return ''
+            with patch.object(r, 'command', fake):
+                if failure:
+                    with self.assertRaises(RuntimeError):
+                        r.release(task, time.time() + 10)
+                else:
+                    self.assertEqual(r.release(task, time.time() + 10), 'candidate')
+            if failure in ('ci', 'pages', 'wrong-sha', 'artifact'):
+                self.assertNotIn(['hosted-smoke'], calls)
 
     def test_empty_authorization_queue_blocks(self):
         with self.assertRaises(RuntimeError):

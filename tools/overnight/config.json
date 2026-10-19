@@ -4,6 +4,97 @@
   "escalation_model": "gpt-6-astra",
   "escalation_reasoning": "max",
   "window_seconds": 28800,
-  "max_attempts": 3,
-  "tasks": []
+  "tasks": [
+    {
+      "id": "D00",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D01",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D02",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D03",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D04",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D05",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D06",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D07",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D08",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D09",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D10",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D11",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D12",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D13",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    },
+    {
+      "id": "D14",
+      "authorization": "User explicitly authorized D00\u2013D14 during final overnight activation.",
+      "specification": null,
+      "blocked": "Approved D00\u2013D14 specifications not found; do not infer scope."
+    }
+  ],
+  "max_total_attempts": 24
 }

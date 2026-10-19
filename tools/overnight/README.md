@@ -1,99 +1,126 @@
-# Hollowbane overnight preflight
+# Overnight activation checkpoint
 
-Status: NOT READY for development. No overnight development has started.
-W4 quality review remains pending; W5 is not authorized. The checked-in queue
-is deliberately empty. Existing BACKLOG.md, STATUS.md and docs/items/l3.md edits
-are unrelated and must be preserved.
+NOT READY. No gameplay or unattended development has started.
+The user authorized D00–D14, but the approved specifications are absent from the
+repository and available conversation. Configuration contains 15 blocked slots,
+zero executable deliverables. Do not infer their scope from W5 or other backlog
+records. Supply each approved specification, acceptance criteria, DBL mapping,
+local tests and hosted smoke commands before unblocking the queue.
 
-## Commands
+Activation changes live in the isolated `overnight/activation` branch/worktree:
+`/Users/tobiasbertilsson/kod/hallowbane/.local/overnight-activation`.
+The original BACKLOG.md, STATUS.md and docs/items/l3.md edits remain untouched.
+The parent checkout's main branch must be reconciled normally after publication;
+never reset it, stash, or discard those documents to start the runner.
 
-From the repository root, after explicit scope approval, a populated reviewed
-queue, a clean worktree and successful preflight publication:
+## Exact commands
+
+These commands are documented only; setup does not run them. They currently
+stop at the missing-specification guard. Start only after all activation and
+permission checks pass, from this directory:
 
 ```sh
-python3 tools/overnight/runner.py start
-python3 tools/overnight/runner.py status
-python3 tools/overnight/runner.py stop
-python3 tools/overnight/runner.py resume
+cd /Users/tobiasbertilsson/kod/hallowbane/.local/overnight-activation
+mkdir -p .local
+(umask 077; nohup python3 tools/overnight/runner.py start </dev/null >.local/overnight-launch.log 2>&1 &)
 ```
 
-Run `start` in a terminal that will remain open. No daemon/service is installed.
-`stop` requests graceful termination, also supported by Ctrl-C/SIGTERM. Resume
-keeps the original eight-hour deadline, task index, attempt count and release
-phase. It starts a fresh Codex session using disk checkpoints rather than relying
-on model conversation memory. Codex CLI also supports `exec resume SESSION_ID`.
-A completed/expired window requires explicitly archiving `.local/overnight/`
-before starting a new one. Never remove a lock file to unlock a live runner.
+`nohup` handles terminal closure; ordinary foreground execution does not.
+The computer must remain awake and connected. No daemon, login service or
+scheduled task is installed. Do not confuse shell launch success with readiness:
+inspect status and the launch log immediately. Missing approvals stop execution.
+
+Monitor:
 
 ```sh
+python3 tools/overnight/runner.py status
+tail -n 20 .local/overnight/events.jsonl
+```
+
+Stop safely:
+
+```sh
+python3 tools/overnight/runner.py stop
+```
+
+Resume the same window after inspecting its checkpoint and failures:
+
+```sh
+(umask 077; nohup python3 tools/overnight/runner.py resume </dev/null >.local/overnight-launch.log 2>&1 &)
+```
+
+Dry run, with no Codex invocation, Git mutation, publication or gameplay:
+
+```sh
+python3 tools/overnight/runner.py dry-run
 python3 -m unittest discover -s tools/overnight -p 'test_*.py'
 ```
 
-Nine tests use disposable state and mocked release operations; they never develop,
-push or claim hosted evidence. They cover checkpoint restoration, real
-cross-process lock exclusion, failed gate preventing push, interruption/resume,
-active child termination, deadline and permission/model flags.
+Dry run intentionally exits nonzero until every specification is resolved.
+It reports model strategy, deliverable slots, deadline and the first blocker.
 
-## Configuration and limits
+## Models, permissions and limits
 
-Local runner defaults only: `gpt-6.1-sol`, `high`; escalation after two failed
-attempts to `gpt-6-astra`, `max`, at most three development sessions per issue.
-No global Codex settings are changed. The installed 0.163.0 catalog lists
-Sol 6.1, Astra 6, Sol 6, Sol/Terra 5.6 with low/medium/high/xhigh/max/ultra;
-Luna 6, Reserve and Auto Review list low/medium/high/xhigh/max. This is local
-catalog evidence, not proof of account access to every model. Astra Max is a
-configured complex-problem escalation candidate; its live read-only probe returned `ESCALATION_OK`. Ultra is avoided because it enables automatic delegation.
+Default `gpt-6.1-sol` / `high`; escalation after two unsuccessful development
+sessions to `gpt-6-astra` / `max`. Both model/effort pairs are present in the
+installed CLI catalog and passed real read-only probes in the original preflight.
+No global model configuration changes. No Ultra/automatic delegation.
 
-The eight-hour limit includes gates and repair. Each development session is
-bounded to ten minutes. Existing account quotas and approval controls remain
-in force; no paid service, full-access mode or approval bypass is added.
-Noninteractive permissions that need a human may block; that is a stop condition.
-The runner uses `on-request` and `workspace-write`, retaining existing config and
-rules. It does not grant itself network or filesystem permissions.
+Existing sandbox/rules and `on-request` approvals are retained with
+`workspace-write`. No full-access or approval-bypass flags. Authentication is not
+proof of permission: unattended Git commit/push, network, and Codex tool access
+must be verified in this worktree before activation. An approval request that
+cannot be handled unattended is a blocker, not a reason to weaken protections.
 
-Each task needs `id`, `authorization` (exact approved scope and stop gate),
-`prompt`, nonempty `local_tests` and `hosted_tests` arrays of argument arrays,
-and `hosted_url`. Use relevant local and hosted Playwright checks for UI changes,
-and explicit hosted smoke checks even for tooling-only deliverables. Never add
-W5 or infer authorization from dependency readiness. No shell command strings.
+The original eight-hour deadline persists through interruption and retry. Each
+Codex development session has a ten-minute bound; the entire run has a cumulative
+24-session resource cap. Account usage/quota controls still apply.
 
-## Release and recovery
+## Evidence-driven repair and release gates
 
-The agent commits one authorized task; the runner independently checks clean Git
-state, relevant tests, typecheck, lint, formatting and build, pushes with a dry
-run first, compares remote SHA, checks the exact-SHA workflow and successful
-Pages deploy job, then runs required hosted checks. Only then advances the queue.
-Hosted tests must assert the deployed runtime identity, not merely HTTP 200.
-The runner compares every built publication file with its hosted bytes before smoke tests.
+Failures retain stable command/CI condition IDs and normalized diagnostic hashes,
+not timestamped log filenames. A new condition resets only the short sequence
+counter. New diagnostics within a condition permit continued investigation;
+identical diagnostic recurrence stops, even after intervening different failures.
+Cumulative history/session usage/deadline never reset. Two failed development
+sessions select Astra Max. Quota, permission and network blockers stop; cancelled
+CI is not treated as a gameplay defect. No manual retry command can clear history.
 
-Local test/CI failures trigger bounded repair sessions with prior evidence and
-instructions to change approach. CI failed-job output is captured. Infrastructure,
-permission and usage failures stop for inspection; no gate is skipped. There is
-no unbounded retry. `retry` can explicitly queue repair after two recorded
-failures, without resetting the attempt or time limits. Green gates are recomputed
-on recovery rather than trusted from an agent statement.
+The existing runner architecture independently gates each candidate: clean
+scoped commit, relevant local tests, TypeScript, lint, formatting, production
+build, push dry-run/push, remote SHA equality, exact-commit successful workflow,
+successful Pages deploy job, byte-for-byte identity of every built published file,
+and required hosted smoke checks. Remote and local candidate identity/cleanliness
+are checked again afterward. Queue advancement follows only a complete release.
+Tests explicitly cover wrong-SHA CI, failed CI, skipped Pages, stale artifact and
+failed hosted smoke blocking release; mocked passes are not deployment evidence.
 
-State lives under ignored `.local/overnight/`: atomic fsynced checkpoint JSON,
-structured `events.jsonl`, command output and active-child record. The status
-command gives a concise checkpoint summary. Logs are private local files and
-are never committed; do not ask agents to print credentials. Only one runner
-can hold the OS lock, which is released on process exit. SIGTERM terminates the
-child process group, escalating to SIGKILL after ten seconds. A hard crash may
-leave a child; resume detects its PID and stops for inspection. Verify that
-process and terminate it safely before recovery; never kill a reused PID based
-only on the record. Power-loss directory-fsync guarantees are not claimed.
+Every task needs `id`, `authorization`, `specification`, `prompt`, nonempty
+`local_tests`/`hosted_tests` arrays of argv arrays, and HTTPS `hosted_url`.
+Resolve the Dxx-to-DBL mapping explicitly in its specification and prompt; scoped
+commits must include the configured task ID. No shell command strings.
 
-## Evidence and remaining preflight gates
+## Checkpoints and recovery
 
-A real read-only `codex exec` with Sol 6.1 High returned `PREFLIGHT_OK`.
-Nested sandbox startup was denied; a separately approved probe retained Codex's
-read-only sandbox. Persistent resume returned `RESUME_OK`. No real gameplay development was permitted.
+Private ignored `.local/overnight/` stores atomic fsynced checkpoint JSON,
+structured event history and command logs. OS `flock` excludes concurrent runners in this execution worktree and a second
+shared lock derived from the Git common directory excludes runners in sibling
+worktrees using this runner version. Never delete a live lock.
+SIGTERM/Ctrl-C/stop file terminate the active child process group and retain state;
+SIGKILL follows after ten seconds only if graceful termination fails. A hard crash
+can leave a child: resume detects its PID and blocks for inspection. Never kill a
+reused PID based only on a stale record. Resume recomputes release evidence rather
+than trusting model claims. Config changes require explicit checkpoint review;
+expired/completed windows require deliberate archival before a new run.
 
-Before READY: run repository release checks, commit/push only tooling, verify that exact commit's
-CI/Pages and hosted smoke. Keep unrelated local edits intact. A clean isolated
-checkout may be used for release verification. Existing W4 publication evidence
-cannot substitute for the preflight commit's release gate. Actual overnight
-work also requires explicit scoped queue authorization after W4 review.
+## Publication evidence
+
+Commit `35ab99bfb11c26e06c43dcac3857ab3abc7b6da6` was pushed.
+Workflow `39326566635` passed repository checks/formatting and was still running
+browser tests at activation inspection; do not claim its Pages release yet.
+Source tooling is published in Git, not served directly by Vite/Pages. Pages
+publishes the game build; verify source Git blob identities and Pages build
+identities separately. This activation update also needs its own commit release
+verification before READY. No previous runtime deployment substitutes for it.
 
 Official CLI guidance: [Non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode).
-Installed `codex --help` and `codex exec --help` are the source of verified flags.
