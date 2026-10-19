@@ -88,3 +88,30 @@ test("Forgotten Graveyard scenery preserves controller travel to forest", async 
     .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
     .toBe("haunted-forest");
 });
+
+test("Ancient Crypt stone rooms preserve controller passage to graveyard", async ({
+  page,
+}) => {
+  test.setTimeout(120000);
+  const { installVirtualController } = await import("./virtual-controller");
+  const { walkEnvironmentExit } = await import("./world-environment-travel");
+  await installVirtualController(page, "Xbox 360 Controller");
+  await page.goto("?world=1&developer=1&worldArea=ancient-crypt");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await page.locator("#combat-world").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+    .toBe(true);
+  expect(await page.evaluate(() => window.hollowbaneWorld!.fingerprint)).toBe(
+    "460eb973",
+  );
+  await page.screenshot({ path: "test-results/w3-ancient-crypt.png" });
+  await walkEnvironmentExit(page, "ancient-crypt", "graveyard");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+    .toBe("forgotten-graveyard");
+});

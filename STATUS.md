@@ -1,5 +1,12 @@
 # Status
 
+## DBL-377 / scoped W3 environment review candidate (2026-10-19)
+
+- DBL-375 forest committed4d6995a;376 graveyard committed88bc39c.377 crypt now renders textured modular stone walls on existing solid boundary cells, original-footprint pillars, floor variations, torch-bearing arches and bounded static lantern pools. Existing generated rooms/corridors, exits and collision remain authoritative; no seeds/fingerprints/save contracts changed.
+- Targeted appearance tests cover four seeds, legacy/current dispatch and all three biomes, scenery placement and unchanged fingerprints. TypeScript/relevant lint/build and21 asset records/alpha/pivots/budgets pass. One representative browser travel case per new environment passes; screenshots reviewed. No unrelated simulations, broad regression, physical-controller or GPU benchmark claim. Art provenance/budgets: docs/art/w3.md.
+- Browser default timeout60s and slow world roundtrip unit timeout15s replace30s/5s; assertions unchanged. No remote timeout fix is claimed before CI evidence.
+- Stop for scoped374–377 W3 environment quality review; user approval pending. Dedicated378–379 follow-ups remain open, not silently closed. No W4/W5 begun. CI/Pages check once after push; do not claim hosted verification without success evidence. Unrelated local documentation preserved.
+
 ## DBL-376 graveyard checkpoint (2026-10-19)
 
 - Generated graveyard now renders gothic monuments, dead trees, fallen masonry, iron fence details, mist and labelled forest/crypt connections. Original transparent torch-lit crypt portal is anchored to existing solid terrain near the exit. Foot depth/occlusion shared with forest; no maps/seeds/navigation/fingerprints changed.

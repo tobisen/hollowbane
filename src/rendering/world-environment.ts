@@ -20,8 +20,10 @@ export class WorldEnvironment {
     this.objects = [];
     this.props = [];
     const graveyard = layout.map.area === "forgotten-graveyard";
-    if (layout.map.area !== "haunted-forest" && !graveyard) return;
+    const dungeon = layout.map.area === "ancient-crypt";
+    if (layout.map.area !== "haunted-forest" && !graveyard && !dungeon) return;
     this.floorTexture();
+    if (dungeon) this.wallTexture();
     const t = layout.map.terrain;
     for (let y = 0; y < t.height; y++)
       for (let x = 0; x < t.width; x++) {
@@ -46,11 +48,15 @@ export class WorldEnvironment {
             .image(p.x, p.y, "world-earth")
             .setDisplaySize(128 * t.cellSize, 64 * t.cellSize)
             .setTint(
-              ground
-                ? edge
-                  ? 0x788567
-                  : [0x9e9779, 0x8d8b6c, 0xa2997c][h % 3]!
-                : 0x384f37,
+              dungeon
+                ? ground
+                  ? [0xaba7a8, 0x969aab, 0x9c9aa1][h % 3]!
+                  : 0x252930
+                : ground
+                  ? edge
+                    ? 0x788567
+                    : [0x9e9779, 0x8d8b6c, 0xa2997c][h % 3]!
+                  : 0x384f37,
             )
             .setDepth(-998),
         );
@@ -60,7 +66,14 @@ export class WorldEnvironment {
     for (const [index, prop] of environmentProps(layout).entries()) {
       const p = onGround(prop),
         oak = prop.kind === "oak" || prop.kind === "arch",
-        frame = prop.kind === "tree" ? 1 : prop.kind === "monument" ? 0 : 2;
+        frame =
+          prop.kind === "tree"
+            ? 1
+            : prop.kind === "monument" || prop.kind === "pillar"
+              ? 0
+              : prop.kind === "lamp"
+                ? 3
+                : 2;
       detail
         .fillStyle(0x040b08, 0.35)
         .fillEllipse(p.x, p.y, prop.width * 0.65, prop.width * 0.18);
@@ -68,15 +81,23 @@ export class WorldEnvironment {
         .image(
           p.x,
           p.y,
-          oak
-            ? prop.kind === "arch"
-              ? "world-arch"
-              : "world-oak"
-            : "world-props",
-          oak ? 0 : frame,
+          prop.kind === "wall"
+            ? "world-wall"
+            : oak
+              ? prop.kind === "arch"
+                ? "world-arch"
+                : "world-oak"
+              : "world-props",
+          oak || prop.kind === "wall" ? 0 : frame,
         )
-        .setOrigin(0.5, oak ? 984 / 1024 : 496 / 512)
-        .setDisplaySize(prop.width, prop.width)
+        .setOrigin(
+          0.5,
+          prop.kind === "wall" ? 120 / 128 : oak ? 984 / 1024 : 496 / 512,
+        )
+        .setDisplaySize(
+          prop.width,
+          prop.kind === "pillar" ? prop.width * 1.7 : prop.width,
+        )
         .setDepth(footDepth(p.y, index));
       if (prop.kind === "rock")
         image.setTint(0x969c8c).setScale(image.scaleX, image.scaleY * 0.55);
@@ -86,11 +107,17 @@ export class WorldEnvironment {
         x: p.x,
         y: p.y,
         width: prop.width,
-        height: prop.width,
+        height: prop.kind === "pillar" ? prop.width * 1.7 : prop.width,
       });
+      if (dungeon && (prop.kind === "lamp" || prop.kind === "arch")) {
+        for (let ring = 2; ring > 0; ring--)
+          detail
+            .fillStyle(0xe3a257, 0.065)
+            .fillEllipse(p.x, p.y + 4, ring * 100, ring * 50);
+      }
       // Fine rooted vegetation and sparse ground mist; static and locally bounded.
       detail.lineStyle(1, 0x5c7050, 0.7);
-      for (let stem = 0; stem < 5; stem++)
+      for (let stem = 0; stem < (dungeon ? 0 : 5); stem++)
         detail.lineBetween(
           p.x + (stem - 2) * 5,
           p.y,
@@ -108,7 +135,7 @@ export class WorldEnvironment {
           );
         detail.lineBetween(p.x - 24, p.y - 19, p.x + 24, p.y - 19);
       }
-      if (index % 18 === 0)
+      if (index % (dungeon ? 60 : 18) === 0)
         detail
           .fillStyle(0xa7b8ad, 0.035)
           .fillEllipse(p.x + 45, p.y + 15, 180, 35);
@@ -120,13 +147,15 @@ export class WorldEnvironment {
           .text(
             p.x,
             p.y + 38,
-            graveyard
-              ? exit.id === "crypt"
-                ? "ANCIENT CRYPT"
-                : "HAUNTED FOREST"
-              : exit.id === "camp"
-                ? "ASHEN REFUGE"
-                : "GRAVEYARD",
+            dungeon
+              ? "FORGOTTEN GRAVEYARD"
+              : graveyard
+                ? exit.id === "crypt"
+                  ? "ANCIENT CRYPT"
+                  : "HAUNTED FOREST"
+                : exit.id === "camp"
+                  ? "ASHEN REFUGE"
+                  : "GRAVEYARD",
             {
               fontFamily: "Georgia",
               fontSize: "12px",
@@ -144,6 +173,64 @@ export class WorldEnvironment {
     const actor = onGround(position);
     for (const prop of this.props)
       prop.image.setAlpha(isOccluding(actor, prop) ? 0.32 : 1);
+  }
+  private wallTexture(): void {
+    if (this.scene.textures.exists("world-wall")) return;
+    const texture = this.scene.textures.createCanvas("world-wall", 128, 128);
+    if (!texture) throw Error("Cannot create stone wall texture");
+    const ctx = texture.context,
+      source = this.scene.textures
+        .get("arena-plate")
+        .getSourceImage() as HTMLImageElement;
+    const face = (points: number[][], shade: string) => {
+      ctx.save();
+      ctx.beginPath();
+      points.forEach(([x, y], i) =>
+        i ? ctx.lineTo(x!, y!) : ctx.moveTo(x!, y!),
+      );
+      ctx.closePath();
+      ctx.clip();
+      ctx.drawImage(source, 650, 365, 128, 64, 0, 0, 128, 128);
+      ctx.fillStyle = shade;
+      ctx.fillRect(0, 0, 128, 128);
+      ctx.strokeStyle = "rgba(15,20,27,0.6)";
+      ctx.lineWidth = 2;
+      for (let y = 45; y < 128; y += 18) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(128, y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    };
+    face(
+      [
+        [0, 40],
+        [64, 72],
+        [64, 120],
+        [0, 88],
+      ],
+      "rgba(12,20,29,0.32)",
+    );
+    face(
+      [
+        [64, 72],
+        [128, 40],
+        [128, 88],
+        [64, 120],
+      ],
+      "rgba(6,12,20,0.58)",
+    );
+    face(
+      [
+        [0, 40],
+        [64, 8],
+        [128, 40],
+        [64, 72],
+      ],
+      "rgba(69,75,87,0.15)",
+    );
+    texture.refresh();
   }
   private floorTexture(): void {
     if (this.scene.textures.exists("world-earth")) return;
