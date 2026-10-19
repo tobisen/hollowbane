@@ -238,8 +238,12 @@ def prerequisites(task, state):
 
 
 def model_for(config, state):
-    history = [entry for entry in state.get('history', [])
-               if entry['task'] == state['index'] and entry.get('complex')]
+    current = [entry for entry in state.get('history', []) if entry['task'] == state['index']]
+    history = []
+    for entry in reversed(current):
+        if not entry.get('complex') or entry.get('condition') != current[-1].get('condition'):
+            break
+        history.append(entry)
     approaches = {entry.get('candidate') for entry in history if entry.get('candidate')}
     evidence = {entry['evidence'] for entry in history}
     escalate = len(approaches) >= 2 and len(evidence) >= 2

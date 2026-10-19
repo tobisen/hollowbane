@@ -211,6 +211,11 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(r.model_for(config, state), ('gpt-6-astra', 'max'))
         state['index'] = 1
         self.assertEqual(r.model_for(config, state), ('gpt-6.1-sol', 'high'))
+        state['index'] = 0
+        state['history'].append(dict(task=0, complex=False, candidate='c', evidence='format', condition='format'))
+        self.assertEqual(r.model_for(config, state), ('gpt-6.1-sol', 'high'))
+        state['history'].append(dict(task=0, complex=True, candidate='d', evidence='new', condition='new-test'))
+        self.assertEqual(r.model_for(config, state), ('gpt-6.1-sol', 'high'))
 
     def test_activation_branch_cannot_pass_execution_guard(self):
         self.execution_guard.stop()
