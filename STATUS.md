@@ -1,5 +1,11 @@
 # Status
 
+## DBL-375 forest checkpoint (2026-10-19)
+
+- Original leafy oak plus reused dead trees/fallen masonry, mossy path edges, rooted vegetation, bounded mist, foot-depth sorting and near-player canopy fading decorate existing generated forest cells. No navigation, seed or saved fingerprint changes. Sources/exports/provenance retained in docs/art/w3.md.
+- Three focused environment/world-layout cases, TypeScript/relevant lint/build and alpha/pivot asset validation pass. Forest mouse travel/return passes; screenshot reviewed at test-results/w3-haunted-forest.png. No broad simulations or benchmark claim.
+- Standard browser timeout60s; slow world roundtrip unit case15s, with assertions unchanged. Next376 graveyard then377 crypt remain authorized; W3 review pending. No W4/W5. CI/Pages check deferred until publication as requested. Unrelated edits preserved.
+
 ## W3 / DBL-374 checkpoint (2026-10-19)
 
 - W2 approved; W3 DBL-374–377 authorized.374 camp technical candidate delivered: textured paving/apron, original transparent shelters/fire, reused ruins/trees/lanterns, static amber pools, exit sign and foot-depth layering. No generator/map/navigation/save changes; legacy/current camp fingerprint preserved.

@@ -4214,7 +4214,7 @@
     "deliveryPhase": "world-exploration",
     "priority": "p1",
     "dependencies": ["DBL-374"],
-    "status": "planned",
+    "status": "completed",
     "body": "## Acceptance criteria\nW3: Haunted Forest environment and depth integration. Preserve character ownership, deterministic simulation and original parent dependencies. See docs/world/expedition.md for integration contracts.\n\n## Non-goals\nNo campaign, NPC dialogue, vendors, crafting, new classes or engine migration; broader parent remains partial.\n\n## Test requirements\nAffected unit tests, TypeScript and relevant lint; browser checks only for browser changes. Reuse prior evidence.\n\n## Definition of done\nVerified increment committed with evidence and STATUS checkpoint; stop at World quality review."
   },
   {

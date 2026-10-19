@@ -42,6 +42,7 @@ for (const [file, cell, count, foot] of [
   ["props", 512, 4, 496],
   ["camp-shelter", 1024, 1, 984],
   ["camp-fire", 1024, 1, 984],
+  ["forest-oak", 1024, 1, 984],
 ]) {
   const { data, info } = await sharp(`public/assets/${file}.webp`)
     .ensureAlpha()

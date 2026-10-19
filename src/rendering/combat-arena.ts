@@ -1,3 +1,4 @@
+import { WorldEnvironment } from "./world-environment";
 import { CampEnvironment } from "./camp-environment";
 import { drawWorldFloor } from "./world-floor";
 import { AREA_IDS, type AreaId } from "../simulation/world";
@@ -316,6 +317,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private worldFloor: Phaser.GameObjects.Graphics | null = null;
     private drawnLayout: unknown = null;
     private campEnvironment: CampEnvironment | null = null;
+    private environment: WorldEnvironment | null = null;
     private ink!: Phaser.GameObjects.Graphics;
     private effect!: Phaser.GameObjects.Graphics;
     private keys = new Set<string>();
@@ -369,6 +371,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         });
         this.load.image("world-camp-shelter", base + "camp-shelter.webp");
         this.load.image("world-camp-fire", base + "camp-fire.webp");
+        this.load.image("world-oak", base + "forest-oak.webp");
       }
       this.load.spritesheet("arena-wanderer", base + "wanderer.webp", {
         frameWidth: 128,
@@ -480,6 +483,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       else if (travel) {
         this.worldFloor = this.add.graphics().setDepth(-999);
         this.campEnvironment = new CampEnvironment(this);
+        this.environment = new WorldEnvironment(this);
       } else {
         this.add
           .image(0, 0, "arena-plate")
@@ -1458,8 +1462,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
         if (this.worldFloor && this.drawnLayout !== travel.layout) {
           drawWorldFloor(this.worldFloor, travel.layout);
           this.campEnvironment?.draw(travel.layout);
+          this.environment?.draw(travel.layout);
           this.drawnLayout = travel.layout;
         }
+        this.environment?.update(player.controller.walker.position);
         const framing = arenaView(
           { x: innerWidth, y: innerHeight },
           root.querySelector(".skill-bar")!.getBoundingClientRect().top,

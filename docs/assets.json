@@ -146,5 +146,14 @@
     "placeholder": false,
     "type": "environment-prop",
     "provenance": "docs/art/w3.md"
+  },
+  {
+    "id": "forest-oak",
+    "source": "assets/source/forest-oak.png",
+    "runtime": "public/assets/forest-oak.webp",
+    "rights": "Original project prompt; built-in AI-generated art; release provenance review pending",
+    "placeholder": false,
+    "type": "environment-prop",
+    "provenance": "docs/art/w3.md"
   }
 ]

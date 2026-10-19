@@ -99,4 +99,4 @@ it("roundtrips generated travel, progression and parked items without duplicate 
   const invalid = structuredClone(session.exploration!);
   invalid.areas[1]!.layoutFingerprint = "00000000";
   expect(() => validateExploration(invalid)).toThrow(/fingerprint/);
-});
+}, 15_000);

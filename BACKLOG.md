@@ -371,7 +371,7 @@ W1–W5 authorized after technical C13 verification. Thirty sequential scoped in
 - DBL-372 / W2: Bounded generation retries and safe fallback (completed).
 - DBL-373 / W2: Representative seed reproducibility integration (completed).
 - DBL-374 / W3: Ashen Refuge safe camp environment (completed).
-- DBL-375 / W3: Haunted Forest environment and depth integration (planned).
+- DBL-375 / W3: Haunted Forest environment and depth integration (completed).
 - DBL-376 / W3: Forgotten Graveyard environment (planned).
 - DBL-377 / W3: Ancient Crypt environment and passages (planned).
 - DBL-378 / W3: Environment asset provenance and detail budgets (planned).
