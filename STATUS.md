@@ -1,5 +1,11 @@
 # Status
 
+## W4 / DBL-382 browser travel CI follow-up (2026-10-19)
+
+- CI39311124008 at542b4af passes check and formatting;118 browser cases pass, only generated forest travel exhausts its total120s budget. The failure is not the historical unit timeout or formatting. Public annotations identify world.spec.ts:101; full log access requires authentication.
+- Forest pointer travel retains every pathfinder turn but uses three-unit rather than1.5-unit subdivisions, reducing repeated stop/project/click/wait work on straight segments. Existing arrival, transition, atomic reload and isolated restart assertions and per-hop10s timeout are unchanged. Only this full-trip case receives180s total CI headroom; global settings remain unchanged. No runtime/save/seed changes.
+- Local baseline passes49.9s; reduced-stop route passes46.3s with identical assertions. TypeScript/relevant lint/format and build pass. No full regression repeated. Publication is a candidate fix pending CI; no W4 hosted claim. W4 remains380–382 delivered,383–385 pending; W5 untouched.
+
 ## W4 / DBL-382 reward context and safe checkpoint (2026-10-19)
 
 -380/381 delivered as0831dff/363e1c5.382 binds future generated-world loot levels1/3/5 on load/restore/travel, retaining content tables, global seed/sequence, reserved/parked ownership and existing pickup transactions. Legacy content1 loot policy, item rolls, maps/fingerprints and character save schema remain unchanged. Version1 encounter plan checksum is pinned against accidental identity drift.

@@ -4,7 +4,8 @@ import { installVirtualController } from "./virtual-controller";
 test("generated forest supports mouse travel, atomic reload and isolated developer restart", async ({
   page,
 }) => {
-  test.setTimeout(120000);
+  // Full-area walking plus two reloads needs headroom on software-rendered CI.
+  test.setTimeout(180000);
   await page.goto(
     "?world=1&developer=1&worldPeaceful=1&worldArea=haunted-forest&worldSeed=42",
   );
@@ -48,14 +49,15 @@ test("generated forest supports mouse travel, atomic reload and isolated develop
   await page.keyboard.up("d");
   await page.keyboard.press("Space");
 
-  // Walk along real pathfinder waypoints using pointer projection and the moving camera.
+  // Keep every pathfinder turn, subdividing only to keep clicks within the viewport.
+  // Nearby three-unit hops avoid redundant stops on the same straight segment.
   const route = await page.evaluate(() => {
     const w = window.hollowbaneWorld!;
     const points = w.routeToExit!("camp");
     const result: { x: number; y: number }[] = [];
     let from = w.position;
     for (const to of points) {
-      const steps = Math.ceil(Math.hypot(to.x - from.x, to.y - from.y) / 1.5);
+      const steps = Math.ceil(Math.hypot(to.x - from.x, to.y - from.y) / 3);
       for (let i = 1; i <= steps; i++)
         result.push({
           x: from.x + ((to.x - from.x) * i) / steps,
