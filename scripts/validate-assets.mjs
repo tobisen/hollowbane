@@ -1,3 +1,4 @@
+import { validateWorldArtInventory } from "./validate-world-art.mjs";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import sharp from "sharp";
 const assets = JSON.parse(readFileSync("docs/assets.json", "utf8"));
@@ -69,3 +70,5 @@ for (const [file, cell, count, foot] of [
 console.log(
   `Validated ${assets.length} asset records, 64 character frames, 4 atlas props, 2 camp props, alpha/pivots and budgets.`,
 );
+
+validateWorldArtInventory(assets);

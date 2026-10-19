@@ -1,5 +1,11 @@
 # Status
 
+## DBL-378 asset/detail audit (2026-10-19)
+
+- Exact CI39290173775 failed on533740e: first world-layout case omitted a per-test timeout and inherited Vitest5s; only the second case then had15s. Existing6bccd6f minimally corrected the first case, preserving assertions/global unit settings. Reran affected file2/2 plus two appearance/camp cases:4 focused tests pass. Later runtime7b268e8 passed complete CI/Pages39302518214; no duplicate timeout fix introduced.
+- DBL-378 now pins seven original source/export pairs by SHA256 and byte size, registers native world/camp code provenance and verifies per-file/aggregate/nominal decoded texture budgets through existing asset validation. Source art unchanged. Four-seed static scene counts/bounds and remaining release/hardware limitations recorded in docs/art/w3.md and w3-inventory.json.23 asset records and alpha/pivots/budgets pass; relevant lint/format pass.
+- Next379 connected visual/navigation and hosted verification only. Preserve original IDs/dependencies and unrelated local edits. W3 review remains pending; no W4/W5.
+
 ## DBL-114/004 skill confirmation CI repair (2026-10-19)
 
 - Quick mouse→Tab→Enter confirmation could be canceled by the click callback's device handoff before it read pending state. The callback now matches prompt policy: mouse/keyboard preserve pending confirmation; transitions to/from gamepad cancel. Added explicit focus assertions to legacy discipline/keyboard allocation browser coverage. No timeout/skill/save rule changes.

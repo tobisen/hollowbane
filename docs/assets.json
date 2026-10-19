@@ -164,5 +164,21 @@
     "placeholder": false,
     "type": "environment-prop",
     "provenance": "docs/art/w3.md"
+  },
+  {
+    "id": "w3-camp-presentation",
+    "source": "src/rendering/camp-environment.ts",
+    "rights": "Original project rendering code; texture samples reuse the original G1 cloister asset",
+    "placeholder": false,
+    "type": "geometry",
+    "provenance": "docs/art/w3.md"
+  },
+  {
+    "id": "w3-world-presentation",
+    "source": "src/rendering/world-environment.ts",
+    "rights": "Original project rendering code; texture samples reuse the original G1 cloister asset",
+    "placeholder": false,
+    "type": "geometry",
+    "provenance": "docs/art/w3.md"
   }
 ]

@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "assetBasis": "G1 original kit and W3 original additions; no regenerated assets in DBL-378",
+  "budgets": {
+    "runtimeFileBytes": 3145728,
+    "runtimeTotalBytes": 12582912,
+    "nominalRgbaTextureBytes": 33554432
+  },
+  "assets": [
+    {
+      "id": "cloister",
+      "provenance": "docs/art/prompts.md",
+      "source": {
+        "path": "assets/source/cloister.png",
+        "bytes": 3683133,
+        "sha256": "02ff80debc9c4865798b1b19e1b95b62632d7a01ee356b78ce29d71b7262c1c2"
+      },
+      "runtime": {
+        "path": "public/assets/cloister.webp",
+        "bytes": 631876,
+        "sha256": "dd9aa678e697433f56b8935d19298904a1be95ee470c2e253954e4c7458fe3e5"
+      }
+    },
+    {
+      "id": "wanderer",
+      "provenance": "docs/art/prompts.md",
+      "source": {
+        "path": "assets/source/wanderer.png",
+        "bytes": 1429845,
+        "sha256": "e5985fdf595167543b4c9959dacfcf96516bab6dc7a342bf2901895e560302ae"
+      },
+      "runtime": {
+        "path": "public/assets/wanderer.webp",
+        "bytes": 511732,
+        "sha256": "6ec182b0ad21d97a3531ac6d54c694c84e9f4b01516c331e331b75d80d854762"
+      }
+    },
+    {
+      "id": "cloister-props",
+      "provenance": "docs/art/prompts.md",
+      "source": {
+        "path": "assets/source/props.png",
+        "bytes": 1609147,
+        "sha256": "3d331744bb65fa10fde18bfce665921e1d5b479ecdf2de278fec6bcb4a65a211"
+      },
+      "runtime": {
+        "path": "public/assets/props.webp",
+        "bytes": 608438,
+        "sha256": "60f48f8cf0e05ad364e1cef606dbce795806f5b71336f2bb9b780bee6be848bd"
+      }
+    },
+    {
+      "id": "camp-shelter",
+      "provenance": "docs/art/w3.md",
+      "source": {
+        "path": "assets/source/camp-shelter.png",
+        "bytes": 1942694,
+        "sha256": "effbd2ee9529a72858fc44d7c69a7a83f6c0b24c74d8c131ac4297ea32bda166"
+      },
+      "runtime": {
+        "path": "public/assets/camp-shelter.webp",
+        "bytes": 518808,
+        "sha256": "37674429b860e44ed88d8386824f6953cf49de453571bdd173032c4435801a3a"
+      }
+    },
+    {
+      "id": "camp-fire",
+      "provenance": "docs/art/w3.md",
+      "source": {
+        "path": "assets/source/camp-fire.png",
+        "bytes": 1252725,
+        "sha256": "f8d19000b63bfc27318511425184257469e2c06718d571beec8a555d365f81b6"
+      },
+      "runtime": {
+        "path": "public/assets/camp-fire.webp",
+        "bytes": 815858,
+        "sha256": "47503006311156fcf88eea3566570385a71aa83fc32048af31319ae8f0338cf9"
+      }
+    },
+    {
+      "id": "forest-oak",
+      "provenance": "docs/art/w3.md",
+      "source": {
+        "path": "assets/source/forest-oak.png",
+        "bytes": 2032823,
+        "sha256": "a64a0f588b6f500a790000f5b2623b6e4687cb7882cf525c62482ec5977ff10c"
+      },
+      "runtime": {
+        "path": "public/assets/forest-oak.webp",
+        "bytes": 509818,
+        "sha256": "10ba0ce06aaf5e14276c5b365ff760f0c904b9c20588e03309026c6fc7bd03af"
+      }
+    },
+    {
+      "id": "crypt-arch",
+      "provenance": "docs/art/w3.md",
+      "source": {
+        "path": "assets/source/crypt-arch.png",
+        "bytes": 905595,
+        "sha256": "8a9c6d9c5495df64e5f3c3027100fd75f97b8793f50dcc5b75bb561bc880e5bf"
+      },
+      "runtime": {
+        "path": "public/assets/crypt-arch.webp",
+        "bytes": 619946,
+        "sha256": "5cd513c3c1338addff676e8233f02d048bafda1364a06f8ed38acdac180e4ec3"
+      }
+    }
+  ],
+  "sceneEnvelopes": {
+    "ashen-refuge": {
+      "terrainSprites": 196,
+      "scenerySprites": 9,
+      "lightPools": 3
+    },
+    "haunted-forest": {
+      "terrainSprites": 980,
+      "sceneryRule": "at most 140 solid-cell trees (or 8 historical perimeter trees) plus existing map objects"
+    },
+    "forgotten-graveyard": {
+      "terrainSprites": 980,
+      "sceneryRule": "at most 140 solid-cell props (or 8 historical perimeter props) plus existing map objects and one portal"
+    },
+    "ancient-crypt": {
+      "terrainSprites": 1225,
+      "sceneryRule": "at most two props per existing cell plus original pillars and spawn/exit arches"
+    }
+  },
+  "sampleCounts": {
+    "seeds": [0, 1, 42, 4294967295],
+    "forestProps": [139, 130, 137, 138],
+    "graveyardProps": [123, 148, 152, 127],
+    "cryptProps": [283, 274, 291, 250]
+  },
+  "limitations": [
+    "Static detail counts are not frame-time or native GPU measurements.",
+    "Nominal decoded RGBA excludes driver allocation, mipmaps and buffers.",
+    "Generated-art release rights review and physical-controller follow-ups remain separate."
+  ]
+}
