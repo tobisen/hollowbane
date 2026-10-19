@@ -1,5 +1,12 @@
 # Status
 
+## DBL-379 / W3 final technical review (2026-10-19)
+
+- DBL-378 committedfb24201.379 connected review complete: four existing hosted environment cases4/4 (48.9s), one inspected screenshot per area, exact fingerprint/camera/real input/travel checks. Reused successful broad CI and earlier ownership/save/transition evidence; no unrelated regression, benchmarks or regenerated art.
+- Exact public runtime7b268e87f5d7985de3d27f65f682cf6580fc760d verified: CI39302518214 verify/deploy success; Pages deployment7181832950 success, public index-DjRiEKMB.js matches local build, all7 bitmap hashes match audited source/exports. Evidence and screenshot hashes: docs/world/w3-review.md; review copies /private/tmp/hollowbane-w3-final-review/.
+- Failed39290173775 tested533740e with a missing first-case local timeout; existing6bccd6f fixed it minimally. Both affected unit cases pass locally; no global timeout/assertion changes now. Asset/detail audit validates23 records,7 hashes and4.216MB transfer budget; native GPU/physical controller/release rights limits remain open.
+- Stop at W3 quality gate: scoped374–379 technically complete, user visual approval pending. No W4/W5. Audit commits change validation/docs only; their post-push CI/Pages outcome must be recorded separately, not claimed from the deployed runtime's success. Preserve unrelated local edits.
+
 ## DBL-378 asset/detail audit (2026-10-19)
 
 - Exact CI39290173775 failed on533740e: first world-layout case omitted a per-test timeout and inherited Vitest5s; only the second case then had15s. Existing6bccd6f minimally corrected the first case, preserving assertions/global unit settings. Reran affected file2/2 plus two appearance/camp cases:4 focused tests pass. Later runtime7b268e8 passed complete CI/Pages39302518214; no duplicate timeout fix introduced.
