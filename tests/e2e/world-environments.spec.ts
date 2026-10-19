@@ -47,7 +47,7 @@ test("Ashen Refuge scenery preserves spawn, mouse travel and return", async ({
 test("Haunted Forest environment preserves generated arrival and mouse return", async ({
   page,
 }) => {
-  await page.goto("?world=1&developer=1&worldSeed=42");
+  await page.goto("?world=1&developer=1&worldPeaceful=1&worldSeed=42");
   await expect(page.locator("html")).toHaveAttribute(
     "data-combat-ready",
     "true",
@@ -82,7 +82,9 @@ test("Forgotten Graveyard scenery preserves controller travel to forest", async 
   const { installVirtualController } = await import("./virtual-controller");
   const { walkEnvironmentExit } = await import("./world-environment-travel");
   await installVirtualController(page, "Xbox 360 Controller");
-  await page.goto("?world=1&developer=1&worldArea=forgotten-graveyard");
+  await page.goto(
+    "?world=1&developer=1&worldPeaceful=1&worldArea=forgotten-graveyard",
+  );
   await expect(page.locator("html")).toHaveAttribute(
     "data-combat-ready",
     "true",
@@ -109,7 +111,9 @@ test("Ancient Crypt stone rooms preserve controller passage to graveyard", async
   const { installVirtualController } = await import("./virtual-controller");
   const { walkEnvironmentExit } = await import("./world-environment-travel");
   await installVirtualController(page, "Xbox 360 Controller");
-  await page.goto("?world=1&developer=1&worldArea=ancient-crypt");
+  await page.goto(
+    "?world=1&developer=1&worldPeaceful=1&worldArea=ancient-crypt",
+  );
   await expect(page.locator("html")).toHaveAttribute(
     "data-combat-ready",
     "true",

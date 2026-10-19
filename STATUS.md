@@ -1,5 +1,11 @@
 # Status
 
+## W4 / DBL-381 encounter lifecycle (2026-10-19)
+
+- Existing AI/skills/lifecycle now run in generated world scenes, retaining the one player/progression authority. Packs defer within9 units of a restored player, use existing50-actor/path limits and champion mechanics, with provisional area/elite stat scaling. Camp/legacy small floors stay safe; survivors reset home, defeated IDs remain defeated.
+- Existing per-area death snapshots and global loot sequence/ownership are reused; XP death ledger restores all area-namespaced IDs. Two lifecycle/reward replay tests plus four save cases pass,380 placement case passes. One Chromium live-ID save/reload case passes; screenshot reviewed. TypeScript/relevant lint/build pass. No schema, map seed or fingerprint changes.
+-380 committed0831dff. Next382 area-level loot binding before publication, then383–385 containers/discovery. Developer-only peaceful option isolates old visual/navigation scenarios, never default gameplay. W4 is incomplete; no hosted completion claim or W5 work. Unrelated edits preserved.
+
 ## W4 / DBL-380 seeded encounters (2026-10-19)
 
 - User approves W3 and authorizes W4 DBL-380–385 only; stop before W5 IDs386+. Outstanding audit CI39307638495 inspected once:still in_progress, no new deployment claim.

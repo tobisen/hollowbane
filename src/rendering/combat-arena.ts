@@ -1,3 +1,4 @@
+import { WorldEncounterRuntime } from "../simulation/world-encounter-runtime";
 import { WorldEnvironment } from "./world-environment";
 import { CampEnvironment } from "./camp-environment";
 import { drawWorldFloor } from "./world-floor";
@@ -175,6 +176,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
   const exploring = query.has("world");
   const developerWorld = exploring && query.get("developer") === "1";
+  const peacefulWorld = developerWorld && query.get("worldPeaceful") === "1";
   const requestedSeed = Number(query.get("worldSeed") ?? 42);
   const testSeed =
     Number.isInteger(requestedSeed) &&
@@ -288,6 +290,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     root.append(controls);
   }
   class Arena extends Phaser.Scene {
+    private worldEncounter: WorldEncounterRuntime | null = null;
     private encounter: Encounter | null = monsters
       ? createEncounter(initialCount)
       : null;
@@ -331,6 +334,21 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private previousFrame = 0;
     private balancedDetail = false;
     private startedAt = 0;
+    private installWorldEncounter(deaths: ReadonlySet<number>): void {
+      if (!travel || peacefulWorld) {
+        this.worldEncounter = null;
+        return;
+      }
+      this.worldEncounter = new WorldEncounterRuntime(
+        this.world,
+        travel.layout,
+        deaths,
+      );
+      this.encounter = this.worldEncounter.plan.length
+        ? this.worldEncounter.encounter
+        : null;
+      this.worldEncounter.activate();
+    }
     /** Publish only after camera preRender has produced the displayed view. */
     private publishWorld(): void {
       if (!travel) return;
@@ -471,7 +489,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
                     this.world.actors = [player];
                     this.world.projectiles = [];
                     this.world.events = [];
-                    restored.restoreDeaths(session.loot);
+                    restored.restoreDeaths(session.loot, this.world);
+                    this.installWorldEncounter(session.loot.deaths);
                     if (this.abilities) {
                       this.abilities.pending = [];
                       this.abilities.effects.bolts = [];
@@ -552,6 +571,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         root.querySelector(".arena-footer")!.textContent =
           "Walk to the glowing exits to travel. Seeded expedition · world and character share one checkpoint.";
       }
+      if (travel) this.installWorldEncounter(this.lootView!.world.deaths);
       this.prepareShowcase();
       this.prepareBenchmark();
       this.syncActors();
@@ -738,7 +758,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         pause.setAttribute("aria-pressed", String(this.paused));
       };
       hostile.onchange = () => {
-        this.world.hostilesActive = !monsters && hostile.checked;
+        this.world.hostilesActive = !monsters && !exploring && hostile.checked;
         if (!hostile.checked)
           for (const a of this.world.actors.filter((a) => a.kind === "hostile"))
             a.controller = commandCombat(a.controller, { kind: "stop" });
@@ -1260,7 +1280,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         player.attackSpeed = Number(speed.value);
         player.recoveryBonus = Number(recovery.value);
       }
-      this.world.hostilesActive = !monsters && hostile.checked;
+      this.world.hostilesActive = !monsters && !exploring && hostile.checked;
       const keys = {
         x:
           Number(this.keys.has("d") || this.keys.has("arrowright")) -
@@ -1378,6 +1398,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         while (this.accumulator >= 1000 / 60) {
           const tickStart = performance.now(),
             oldSequence = player.controller.timeline.sequence;
+          this.worldEncounter?.activate();
           if (this.encounter) {
             const aiStart = performance.now();
             this.encounter.work = {
@@ -1388,7 +1409,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
             };
             this.record(this.aiCosts, performance.now() - aiStart);
             if (
-              document.querySelector<HTMLInputElement>("#ai-practice")!.checked
+              document.querySelector<HTMLInputElement>("#ai-practice")?.checked
             )
               player.invulnerableUntil = this.world.tick + 2;
           }
@@ -1505,6 +1526,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           worldSession!.transition(this.world, this.lootView!.world)
         ) {
           Object.assign(nav, areaNavigation(travel.layout.map));
+          this.installWorldEncounter(this.lootView!.world.deaths);
           this.inventoryView?.changed();
           this.keys.clear();
           if (this.abilities) {
@@ -1540,7 +1562,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         ).name;
         const versionOutput = document.querySelector("#world-version");
         if (versionOutput)
-          versionOutput.textContent = ` ${travel.state.area} · seed ${travel.state.seed} · layout ${worldSession!.contentVersion} / generator 1 · isolated test save`;
+          versionOutput.textContent = ` ${travel.state.area} · seed ${travel.state.seed} · layout ${worldSession!.contentVersion} / generator 1 · isolated test save${peacefulWorld ? " · peaceful" : ""}`;
       }
       const updateAt = performance.now();
       this.ink.clear();

@@ -72,10 +72,15 @@ export class WorldSession {
       ),
     });
   }
-  restoreDeaths(loot: LootWorld): void {
+  restoreDeaths(loot: LootWorld, world?: CombatWorld): void {
     loot.deaths = new Set(
       this.snapshot.areas.find((a) => a.id === this.travel.state.area)!.deaths,
     );
+    if (world) {
+      world.experience.deaths.clear();
+      for (const area of this.snapshot.areas)
+        for (const id of area.deaths) world.experience.deaths.add(id);
+    }
   }
   transition(world: CombatWorld, loot: LootWorld): boolean {
     const before = this.travel.state.area;

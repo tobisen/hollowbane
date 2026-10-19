@@ -5,7 +5,9 @@ test("generated forest supports mouse travel, atomic reload and isolated develop
   page,
 }) => {
   test.setTimeout(120000);
-  await page.goto("?world=1&developer=1&worldArea=haunted-forest&worldSeed=42");
+  await page.goto(
+    "?world=1&developer=1&worldPeaceful=1&worldArea=haunted-forest&worldSeed=42",
+  );
   await expect(page.locator("html")).toHaveAttribute(
     "data-combat-ready",
     "true",
@@ -128,7 +130,9 @@ test("virtual controller traverses generated crypt rooms and corridors to the gr
 }) => {
   test.setTimeout(120000);
   await installVirtualController(page, "Xbox 360 Controller");
-  await page.goto("?world=1&developer=1&worldArea=ancient-crypt&worldSeed=42");
+  await page.goto(
+    "?world=1&developer=1&worldPeaceful=1&worldArea=ancient-crypt&worldSeed=42",
+  );
   await expect(page.locator("html")).toHaveAttribute(
     "data-combat-ready",
     "true",
