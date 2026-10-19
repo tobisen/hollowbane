@@ -1,3 +1,5 @@
+import { planWorldContainers, openWorldContainer } from "./world-containers";
+import type { ItemContent } from "./item-content";
 import { configureWorldRewards } from "./world-rewards";
 import {
   worldLayout,
@@ -29,7 +31,8 @@ export class WorldSession {
     this.snapshot = snapshot
       ? validateExploration(snapshot)
       : {
-          version: 1,
+          version: 2,
+          containers: { version: 1, gold: 0, opened: [] },
           contentVersion,
           seed,
           area: initialArea,
@@ -49,12 +52,52 @@ export class WorldSession {
             deaths: [],
           })),
         };
+    // Explicit nested-state migration; saved map versions/fingerprints are retained.
+    if (this.snapshot.version === 1)
+      this.snapshot = {
+        ...this.snapshot,
+        version: 2,
+        containers: { version: 1, gold: 0, opened: [] },
+      };
     const s = this.snapshot;
     this.travel = new WorldTravel(
       s.seed,
       worldLayout(s.area, s.seed, s.contentVersion),
     );
     this.travel.setPosition(restoredPosition(s));
+  }
+  get containerState() {
+    return this.snapshot.containers!;
+  }
+  private containerLayout: typeof this.travel.layout | undefined;
+  private containerPlan: ReturnType<typeof planWorldContainers> = [];
+  get containers() {
+    if (this.containerLayout !== this.travel.layout) {
+      this.containerLayout = this.travel.layout;
+      this.containerPlan = planWorldContainers(this.travel.layout);
+    }
+    return this.containerPlan;
+  }
+  openContainer(
+    id: number,
+    player: WorldPoint,
+    loot: LootWorld,
+    tick: number,
+    content: ItemContent,
+  ): boolean {
+    const container = this.containers.find((c) => c.id === id);
+    return (
+      !!container &&
+      openWorldContainer(
+        this.travel.layout,
+        container,
+        player,
+        this.containerState,
+        loot,
+        tick,
+        content,
+      )
+    );
   }
   get contentVersion(): number {
     return this.snapshot.contentVersion;

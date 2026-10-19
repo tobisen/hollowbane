@@ -1,5 +1,11 @@
 # Status
 
+## W4 / DBL-383 seeded one-time containers (2026-10-19)
+
+- Prior checkpoint1e77cd7 CI39314212850 completed success.383 adds container-rule1: up to six deterministic reachable nonblocking chest/barrel/crate positions outside safe camp/anchors, common/rare gold amounts and existing item generator/table rewards. No layout/encounter seeds, fingerprints or character schema changes.
+- Exploration state2 explicitly migrates state1 with zero gold/no opened containers while preserving original layout rules. Gold, opened identity and ground rewards share the existing atomic character checkpoint. Drop-capacity/placement failure commits nothing; duplicate opening/reload cannot repeat rewards. Old snapshots remain accepted; malformed/duplicate opened identities rejected.
+- Three container cases plus four existing save cases pass; reachability/repeatability/seed variation, ownership/reload and full-drop rollback covered. TypeScript/relevant lint pass. Runtime controls/rendering are next384;385 discovery/minimap remains. W4 incomplete; no new hosted claim or W5 work. Unrelated edits preserved.
+
 ## W4 / DBL-382 browser travel CI follow-up (2026-10-19)
 
 - CI39311124008 at542b4af passes check and formatting;118 browser cases pass, only generated forest travel exhausts its total120s budget. The failure is not the historical unit timeout or formatting. Public annotations identify world.spec.ts:101; full log access requires authentication.

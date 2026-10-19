@@ -1,11 +1,13 @@
 import { AREA_IDS, areaSeed, type AreaId, type WorldPoint } from "./world";
+import { planWorldContainers } from "./world-containers";
 import { worldLayout, layoutFingerprint } from "./world-layout";
 import { areaWalkable } from "./area-map";
 import { WORLD_ACTOR_RADIUS, exitNear } from "./area-anchors";
 import type { WorldDrop } from "./world-loot";
 import { validateGeneratedItem } from "./item-save";
 export interface ExplorationSnapshot {
-  version: 1;
+  version: 1 | 2;
+  containers?: import("./world-containers").ContainerState;
   contentVersion: number;
   seed: number;
   area: AreaId;
@@ -62,8 +64,12 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     "position",
     "visited",
     "areas",
+    ...(w.version === 2 ? ["containers"] : []),
   ]);
-  if (w.version !== 1 || (w.contentVersion !== 1 && w.contentVersion !== 2))
+  if (
+    (w.version !== 1 && w.version !== 2) ||
+    (w.contentVersion !== 1 && w.contentVersion !== 2)
+  )
     throw Error("Unsupported exploration version");
   const contentVersion = w.contentVersion as number;
   const seed = integer(w.seed, 0, 0xffffffff),
@@ -143,8 +149,30 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     )
   )
     throw Error("Invalid exploration layout or position");
+  let containers: ExplorationSnapshot["containers"];
+  if (w.version === 2) {
+    const c = record(w.containers);
+    keys(c, ["version", "gold", "opened"]);
+    if (c.version !== 1 || !Array.isArray(c.opened) || c.opened.length > 24)
+      throw Error("Invalid container state");
+    const valid = new Set(
+      AREA_IDS.flatMap((id) =>
+        planWorldContainers(worldLayout(id, seed, contentVersion)).map(
+          (c) => c.id,
+        ),
+      ),
+    );
+    const opened = c.opened.map((v) => integer(v));
+    if (
+      new Set(opened).size !== opened.length ||
+      opened.some((id) => !valid.has(id))
+    )
+      throw Error("Invalid opened container identity");
+    containers = { version: 1, gold: integer(c.gold), opened };
+  }
   return {
-    version: 1,
+    version: w.version,
+    ...(containers ? { containers } : {}),
     contentVersion,
     seed,
     area: current,
