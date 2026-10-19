@@ -1,5 +1,12 @@
 # Status
 
+## W4 / DBL-385 persistent automap checkpoint (2026-10-19)
+
+- DBL-384 runtime dce178e CI/Pages workflow39317420535 completed success (checked once). DBL-385 adds bounded radial terrain-cell reveal and a cached isometric minimap: unexplored cells remain dark; player, discovered spawn/exits and treasure are marked. Tab or controller Map toggles without modal/combat capture; existing M menu/V inventory and non-world routes retain their behavior.
+- Exploration state3 explicitly migrates state1/2 with empty discovery per area. Each discovery record binds to the saved area seed/content/layout fingerprint; unknown versions, stale fingerprints, duplicate/out-of-range cells reject safely. Existing character/items/gold/deaths, map fingerprints and generators remain unchanged. Reveal updates only on cell changes; terrain redraw only on layout/discovery/container changes; stop/manual/transition checkpoints reuse atomic persistence.
+- Ten focused discovery/container/save cases pass, including wilderness/crypt, repeat reveal, seed/layout isolation and legacy migration. One critical Chromium map-toggle/movement/save-reload case passes6.6s; screenshot test-results/w4-minimap.png reviewed. TypeScript/relevant lint/format/build pass. Reused prior integration evidence; no long route, full regression, loot simulations or GPU claim.
+- DBL-385 is the last W4 backlog issue; dependency-ready386 belongs to W5 and is not started. Stop at session budget/W4 review checkpoint: technical380–385 delivered, but new CI/deployment and hosted W4 gameplay gate evidence remain pending. Do not mark W4 quality approved or start W5. Preserve unrelated local edits.
+
 ## W4 / DBL-384 container interaction checkpoint (2026-10-19)
 
 - DBL-383 committed f802e61. DBL-384 renders original code-drawn chest/crate/barrel wood/iron props with world depth/occlusion, rare trim, opened lids and nearby highlight. Pointer click or nearby button, keyboard E and existing controller Interact share the validated transaction; dead/paused/modal input is blocked. Existing automatic safe exit travel remains unchanged. Gold/opened HUD and reward sound/state feedback trigger existing atomic autosave.

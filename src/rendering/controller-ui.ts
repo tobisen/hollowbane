@@ -151,7 +151,13 @@ export function installControllerUI(): void {
       if (menu.open) close();
       else open();
     }
-    if (hub.take("map")) {
+    if (
+      hub.take("map") &&
+      (hub.frame.device !== "gamepad" ||
+        window.dispatchEvent(
+          new Event("hollowbane-map-toggle", { cancelable: true }),
+        ))
+    ) {
       if (
         window.dispatchEvent(
           new Event("hollowbane-inventory-toggle", { cancelable: true }),

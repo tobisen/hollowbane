@@ -67,6 +67,7 @@ it("atomically preserves opened state, gold and item ownership across checkpoint
   expect(() => validateExploration(invalid)).toThrow();
   const legacy = structuredClone(saved.exploration!);
   legacy.version = 1;
+  for (const area of legacy.areas) delete area.discovery;
   delete legacy.containers;
   const migrated = new WorldSession(validateExploration(legacy));
   expect(migrated.containerState).toEqual({ version: 1, gold: 0, opened: [] });

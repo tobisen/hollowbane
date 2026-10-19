@@ -1,3 +1,4 @@
+import { discoveryCell, revealDiscovery } from "./world-discovery";
 import { planWorldContainers, openWorldContainer } from "./world-containers";
 import type { ItemContent } from "./item-content";
 import { configureWorldRewards } from "./world-rewards";
@@ -59,12 +60,56 @@ export class WorldSession {
         version: 2,
         containers: { version: 1, gold: 0, opened: [] },
       };
+    if (this.snapshot.version === 2)
+      this.snapshot = {
+        ...this.snapshot,
+        version: 3,
+        areas: this.snapshot.areas.map((a) => ({
+          ...a,
+          discovery: {
+            version: 1,
+            fingerprint: layoutFingerprint(
+              worldLayout(
+                a.id,
+                this.snapshot.seed,
+                this.snapshot.contentVersion,
+              ),
+            ),
+            cells: [],
+          },
+        })),
+      };
     const s = this.snapshot;
     this.travel = new WorldTravel(
       s.seed,
       worldLayout(s.area, s.seed, s.contentVersion),
     );
     this.travel.setPosition(restoredPosition(s));
+  }
+  private lastReveal = "";
+  private knownCells = new Map<AreaId, Set<number>>();
+  discoveryRevision = 0;
+  get discovery() {
+    return this.snapshot.areas.find((a) => a.id === this.travel.state.area)!
+      .discovery!;
+  }
+  reveal(position: WorldPoint): boolean {
+    const area = this.travel.state.area,
+      t = this.travel.layout.map.terrain;
+    const cell = discoveryCell(t, position),
+      key = `${area}:${cell}`;
+    if (cell < 0 || key === this.lastReveal) return false;
+    this.lastReveal = key;
+    let known = this.knownCells.get(area);
+    if (!known) {
+      known = new Set(this.discovery.cells);
+      this.knownCells.set(area, known);
+    }
+    const added = revealDiscovery(t, cell, known);
+    if (!added.length) return false;
+    this.discovery.cells.push(...added);
+    this.discoveryRevision++;
+    return true;
   }
   get containerState() {
     return this.snapshot.containers!;

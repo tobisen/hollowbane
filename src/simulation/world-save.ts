@@ -6,7 +6,7 @@ import { WORLD_ACTOR_RADIUS, exitNear } from "./area-anchors";
 import type { WorldDrop } from "./world-loot";
 import { validateGeneratedItem } from "./item-save";
 export interface ExplorationSnapshot {
-  version: 1 | 2;
+  version: 1 | 2 | 3;
   containers?: import("./world-containers").ContainerState;
   contentVersion: number;
   seed: number;
@@ -19,6 +19,7 @@ export interface ExplorationSnapshot {
     drops: WorldDrop[];
     deaths: number[];
     layoutFingerprint?: string;
+    discovery?: import("./world-discovery").AreaDiscovery;
   }[];
 }
 function record(v: unknown): Record<string, unknown> {
@@ -64,10 +65,10 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     "position",
     "visited",
     "areas",
-    ...(w.version === 2 ? ["containers"] : []),
+    ...(w.version === 2 || w.version === 3 ? ["containers"] : []),
   ]);
   if (
-    (w.version !== 1 && w.version !== 2) ||
+    (w.version !== 1 && w.version !== 2 && w.version !== 3) ||
     (w.contentVersion !== 1 && w.contentVersion !== 2)
   )
     throw Error("Unsupported exploration version");
@@ -98,6 +99,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       "drops",
       "deaths",
       ...(contentVersion === 2 ? ["layoutFingerprint"] : []),
+      ...(w.version === 3 ? ["discovery"] : []),
     ]);
     const id = area(a.id);
     if (
@@ -112,6 +114,24 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     const fingerprint = layoutFingerprint(layout);
     if (contentVersion === 2 && a.layoutFingerprint !== fingerprint)
       throw Error("World layout fingerprint mismatch; original retained");
+    let discovery: ExplorationSnapshot["areas"][number]["discovery"];
+    if (w.version === 3) {
+      const d = record(a.discovery);
+      keys(d, ["version", "fingerprint", "cells"]);
+      if (
+        d.version !== 1 ||
+        d.fingerprint !== fingerprint ||
+        !Array.isArray(d.cells) ||
+        d.cells.length > layout.map.terrain.cells.length
+      )
+        throw Error("Discovery layout mismatch");
+      const cells = d.cells.map((v) =>
+        integer(v, 0, layout.map.terrain.cells.length - 1),
+      );
+      if (new Set(cells).size !== cells.length)
+        throw Error("Duplicate discovery cell");
+      discovery = { version: 1, fingerprint, cells };
+    }
     const map = layout.map;
     const drops = a.drops.map((value) => {
       const d = record(value);
@@ -134,6 +154,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       throw Error("Duplicate exploration state");
     return {
       id,
+      ...(discovery ? { discovery } : {}),
       seed: areaSeed(seed, id),
       drops,
       deaths,
@@ -150,7 +171,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   )
     throw Error("Invalid exploration layout or position");
   let containers: ExplorationSnapshot["containers"];
-  if (w.version === 2) {
+  if (w.version === 2 || w.version === 3) {
     const c = record(w.containers);
     keys(c, ["version", "gold", "opened"]);
     if (c.version !== 1 || !Array.isArray(c.opened) || c.opened.length > 24)

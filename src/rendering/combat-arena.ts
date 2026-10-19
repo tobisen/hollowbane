@@ -1,3 +1,4 @@
+import { WorldMinimap } from "./world-minimap";
 import { ContainerView } from "./world-containers";
 import { canOpenContainer } from "../simulation/world-containers";
 import { registeredItemContent } from "../simulation/item-registry";
@@ -301,6 +302,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
       ? createEncounter(initialCount)
       : null;
     private world = this.encounter?.combat ?? createCombat();
+    private minimap: WorldMinimap | null = null;
+    private discoveryDirty = false;
     private containerView: ContainerView | null = null;
     private lootView: LootView | null = null;
     private inventoryView: InventoryView | null = null;
@@ -617,6 +620,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
       }
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
+      if (travel) {
+        this.minimap = new WorldMinimap(root);
+        this.events.once("shutdown", () => this.minimap?.destroy());
+      }
       if (travel)
         this.containerView = new ContainerView(this, root, (id) =>
           this.openContainer(id),
@@ -1630,6 +1637,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.drawnLayout = travel.layout;
         }
         this.environment?.update(player.controller.walker.position);
+        if (worldSession!.reveal(player.controller.walker.position))
+          this.discoveryDirty = true;
+        if (this.discoveryDirty && !player.controller.walker.walking) {
+          this.discoveryDirty = false;
+          this.inventoryView?.changed();
+        }
+        this.minimap?.update(worldSession!, player.controller.walker.position);
         this.containerView?.update(
           worldSession!,
           player.controller.walker.position,
