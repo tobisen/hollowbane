@@ -1,5 +1,11 @@
 # Status
 
+## DBL-376 graveyard checkpoint (2026-10-19)
+
+- Generated graveyard now renders gothic monuments, dead trees, fallen masonry, iron fence details, mist and labelled forest/crypt connections. Original transparent torch-lit crypt portal is anchored to existing solid terrain near the exit. Foot depth/occlusion shared with forest; no maps/seeds/navigation/fingerprints changed.
+- Focused appearance/placement test across both biomes and legacy/current rules, TypeScript/relevant lint/build and asset alpha/pivot validation pass. One virtual-controller graveyard→forest browser case passes; screenshot reviewed at test-results/w3-forgotten-graveyard.png. No unrelated simulations or performance benchmark.
+- DBL-375 committed4d6995a. Next377 crypt remains authorized. W3 quality review pending; no W4/W5. CI/Pages check after publication only; unrelated edits preserved.
+
 ## DBL-375 forest checkpoint (2026-10-19)
 
 - Original leafy oak plus reused dead trees/fallen masonry, mossy path edges, rooted vegetation, bounded mist, foot-depth sorting and near-player canopy fading decorate existing generated forest cells. No navigation, seed or saved fingerprint changes. Sources/exports/provenance retained in docs/art/w3.md.

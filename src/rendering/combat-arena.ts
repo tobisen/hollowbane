@@ -372,6 +372,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         this.load.image("world-camp-shelter", base + "camp-shelter.webp");
         this.load.image("world-camp-fire", base + "camp-fire.webp");
         this.load.image("world-oak", base + "forest-oak.webp");
+        this.load.image("world-arch", base + "crypt-arch.webp");
       }
       this.load.spritesheet("arena-wanderer", base + "wanderer.webp", {
         frameWidth: 128,

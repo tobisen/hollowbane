@@ -1,6 +1,6 @@
 import sharp from "sharp";
 /** Deterministic packaging only: preserve generated alpha and aspect; common foot pivot. */
-for (const name of ["forest-oak"]) {
+for (const name of ["forest-oak", "crypt-arch"]) {
   const trimmed = await sharp(`assets/source/${name}.png`).trim().toBuffer();
   const { data, info } = await sharp(trimmed)
     .resize({ width: 920, height: 920, fit: "inside" })

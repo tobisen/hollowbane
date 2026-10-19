@@ -155,5 +155,14 @@
     "placeholder": false,
     "type": "environment-prop",
     "provenance": "docs/art/w3.md"
+  },
+  {
+    "id": "crypt-arch",
+    "source": "assets/source/crypt-arch.png",
+    "runtime": "public/assets/crypt-arch.webp",
+    "rights": "Original project prompt; built-in AI-generated art; release provenance review pending",
+    "placeholder": false,
+    "type": "environment-prop",
+    "provenance": "docs/art/w3.md"
   }
 ]

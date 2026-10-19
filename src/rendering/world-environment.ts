@@ -19,7 +19,8 @@ export class WorldEnvironment {
     for (const object of this.objects) object.destroy();
     this.objects = [];
     this.props = [];
-    if (layout.map.area !== "haunted-forest") return;
+    const graveyard = layout.map.area === "forgotten-graveyard";
+    if (layout.map.area !== "haunted-forest" && !graveyard) return;
     this.floorTexture();
     const t = layout.map.terrain;
     for (let y = 0; y < t.height; y++)
@@ -58,13 +59,22 @@ export class WorldEnvironment {
     this.objects.push(detail);
     for (const [index, prop] of environmentProps(layout).entries()) {
       const p = onGround(prop),
-        oak = prop.kind === "oak",
-        frame = prop.kind === "tree" ? 1 : 2;
+        oak = prop.kind === "oak" || prop.kind === "arch",
+        frame = prop.kind === "tree" ? 1 : prop.kind === "monument" ? 0 : 2;
       detail
         .fillStyle(0x040b08, 0.35)
         .fillEllipse(p.x, p.y, prop.width * 0.65, prop.width * 0.18);
       const image = this.scene.add
-        .image(p.x, p.y, oak ? "world-oak" : "world-props", oak ? 0 : frame)
+        .image(
+          p.x,
+          p.y,
+          oak
+            ? prop.kind === "arch"
+              ? "world-arch"
+              : "world-oak"
+            : "world-props",
+          oak ? 0 : frame,
+        )
         .setOrigin(0.5, oak ? 984 / 1024 : 496 / 512)
         .setDisplaySize(prop.width, prop.width)
         .setDepth(footDepth(p.y, index));
@@ -87,6 +97,17 @@ export class WorldEnvironment {
           p.x + (stem - 2) * 8,
           p.y - 5 - ((index + stem) % 7),
         );
+      if (graveyard && prop.kind === "monument" && index % 4 === 0) {
+        detail.lineStyle(2, 0x6c7374, 0.85);
+        for (let rail = 0; rail < 5; rail++)
+          detail.lineBetween(
+            p.x - 24 + rail * 12,
+            p.y - 3,
+            p.x - 24 + rail * 12,
+            p.y - 27,
+          );
+        detail.lineBetween(p.x - 24, p.y - 19, p.x + 24, p.y - 19);
+      }
       if (index % 18 === 0)
         detail
           .fillStyle(0xa7b8ad, 0.035)
@@ -99,7 +120,13 @@ export class WorldEnvironment {
           .text(
             p.x,
             p.y + 38,
-            exit.id === "camp" ? "ASHEN REFUGE" : "GRAVEYARD",
+            graveyard
+              ? exit.id === "crypt"
+                ? "ANCIENT CRYPT"
+                : "HAUNTED FOREST"
+              : exit.id === "camp"
+                ? "ASHEN REFUGE"
+                : "GRAVEYARD",
             {
               fontFamily: "Georgia",
               fontSize: "12px",

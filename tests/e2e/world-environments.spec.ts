@@ -61,3 +61,30 @@ test("Haunted Forest environment preserves generated arrival and mouse return", 
     }
   }
 });
+
+test("Forgotten Graveyard scenery preserves controller travel to forest", async ({
+  page,
+}) => {
+  test.setTimeout(120000);
+  const { installVirtualController } = await import("./virtual-controller");
+  const { walkEnvironmentExit } = await import("./world-environment-travel");
+  await installVirtualController(page, "Xbox 360 Controller");
+  await page.goto("?world=1&developer=1&worldArea=forgotten-graveyard");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await page.locator("#combat-world").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+    .toBe(true);
+  await page.screenshot({ path: "test-results/w3-forgotten-graveyard.png" });
+  expect(await page.evaluate(() => window.hollowbaneWorld!.fingerprint)).toBe(
+    "ca81079f",
+  );
+  await walkEnvironmentExit(page, "forgotten-graveyard", "forest");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+    .toBe("haunted-forest");
+});

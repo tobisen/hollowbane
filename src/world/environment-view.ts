@@ -1,6 +1,6 @@
 import type { AreaLayout } from "../simulation/area-anchors";
 export interface EnvironmentProp {
-  kind: "oak" | "tree" | "ruin" | "rock";
+  kind: "oak" | "tree" | "ruin" | "rock" | "monument" | "arch";
   x: number;
   y: number;
   width: number;
@@ -13,7 +13,8 @@ export function appearanceHash(seed: number, x: number, y: number): number {
   return (n ^ (n >>> 16)) >>> 0;
 }
 export function environmentProps(layout: AreaLayout): EnvironmentProp[] {
-  if (layout.map.area !== "haunted-forest") return [];
+  const graveyard = layout.map.area === "forgotten-graveyard";
+  if (layout.map.area !== "haunted-forest" && !graveyard) return [];
   const t = layout.map.terrain,
     props: EnvironmentProp[] = [];
   for (let y = 0; y < t.height; y++)
@@ -26,10 +27,22 @@ export function environmentProps(layout: AreaLayout): EnvironmentProp[] {
       )
         continue;
       props.push({
-        kind: h % 5 === 0 ? "tree" : "oak",
+        kind: graveyard
+          ? h % 5 === 0
+            ? "tree"
+            : "monument"
+          : h % 5 === 0
+            ? "tree"
+            : "oak",
         x: t.origin.x + (x + 0.5) * t.cellSize,
         y: t.origin.y + (y + 0.5) * t.cellSize,
-        width: h % 5 === 0 ? 240 + (h % 50) : 420 + (h % 90),
+        width: graveyard
+          ? h % 5 === 0
+            ? 250
+            : 85 + (h % 45)
+          : h % 5 === 0
+            ? 240 + (h % 50)
+            : 420 + (h % 90),
       });
     }
   for (const object of layout.map.objects)
@@ -38,5 +51,26 @@ export function environmentProps(layout: AreaLayout): EnvironmentProp[] {
       ...object.position,
       width: Math.max(48, object.radius * 180),
     });
+  if (graveyard) {
+    const exit = layout.exits.find((e) => e.id === "crypt");
+    let nearest: { x: number; y: number; distance: number } | undefined;
+    if (exit)
+      for (let y = 0; y < t.height; y++)
+        for (let x = 0; x < t.width; x++) {
+          if (t.cells[y * t.width + x] !== "solid") continue;
+          const p = {
+            x: t.origin.x + (x + 0.5) * t.cellSize,
+            y: t.origin.y + (y + 0.5) * t.cellSize,
+          };
+          const distance = Math.hypot(
+            p.x - exit.trigger.x,
+            p.y - exit.trigger.y,
+          );
+          if (!nearest || distance < nearest.distance)
+            nearest = { ...p, distance };
+        }
+    if (nearest)
+      props.push({ kind: "arch", x: nearest.x, y: nearest.y, width: 200 });
+  }
   return props;
 }
