@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 D00–D14 activation specification checkpoint (2026-10-19)
+
+- Supplied user specifications now define all15 D00–D14 tasks in tools/overnight/tasks.json; runner loads the versioned queue. Dry-run: D00 eligible, D01–D14 pending predecessor release evidence. Existing DBL numbering/parent edges preserved through explicit narrow slices. No gameplay/D00 executed.
+- Fifteen offline tests pass; task prerequisites, exact release gates, isolated branch guards, history/deadline preservation, cancellation/lock/resume and evidence-based model selection verified. Sol6.1 High escalates only after two distinct complex failures to Astra6 Max, returning to Sol after resolution. Static/build verification and real implementation-worktree permission/publication checks are recorded separately below/in activation-evidence.json.
+- Original checkout edits remain untouched. Activation branch cannot publish itself through the runner; integration into origin/main and actual implementation-worktree Git/network/Codex permissions are required before READY.
+
 ## DBL-010 overnight activation checkpoint (2026-10-19)
 
 - Setup only; no gameplay/unattended execution. Isolated overnight/activation worktree preserves original modified BACKLOG.md, STATUS.md and docs/items/l3.md. D00–D14 authorized, but exact approved specifications unavailable: 15 blocked slots, zero executable deliverables. Dry-run stops safely at D00.

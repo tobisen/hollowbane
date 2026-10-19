@@ -1,0 +1,949 @@
+[
+  {
+    "id": "D00",
+    "title": "W4 release gate",
+    "objective": "Verify the shipped W4 candidate before adding expedition gameplay.",
+    "included_scope": [
+      "Exercise minimap reveal and persisted discovery in each generated environment",
+      "Exercise live encounters, treasure opening, XP/loot ownership and atomic save/load; fix genuine regressions only"
+    ],
+    "backlog_ids": ["DBL-385"],
+    "backlog_dependencies": [
+      "DBL-381",
+      "DBL-382",
+      "DBL-383",
+      "DBL-384",
+      "DBL-385"
+    ],
+    "original_parent_dependencies": {
+      "DBL-385": ["DBL-384"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": [],
+    "acceptance_criteria": [
+      "Discovery survives reload with matching seed/layout fingerprint",
+      "A monster/container cannot award XP, gold or items twice after reload",
+      "Publish a scoped verification commit and verify its exact CI/Pages and hosted W4 tests"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/world-discovery.test.ts",
+        "src/simulation/world-encounter-runtime.test.ts",
+        "src/simulation/world-containers.test.ts",
+        "src/simulation/world-save.test.ts",
+        "src/simulation/world-rewards.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Discovery survives reload with matching seed/layout fingerprint",
+      "A monster/container cannot award XP, gold or items twice after reload",
+      "Publish a scoped verification commit and verify its exact CI/Pages and hosted W4 tests",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      [
+        "npx",
+        "playwright",
+        "test",
+        "tests/e2e/world-minimap.spec.ts",
+        "tests/e2e/world-containers.spec.ts",
+        "tests/e2e/world-encounters.spec.ts"
+      ]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d00.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "New expedition objectives",
+      "NPCs, quests, bosses and economy changes"
+    ],
+    "next_deliverable_id": "D01",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D01",
+    "title": "Complete expedition",
+    "objective": "Make camp → forest → graveyard → Ancient Crypt → camp a complete playable expedition.",
+    "included_scope": [
+      "Expose a deliberate camp expedition start and connected forward/return travel",
+      "Add one crypt completion objective, completion identity and a safe return through existing travel transactions"
+    ],
+    "backlog_ids": ["DBL-386"],
+    "backlog_dependencies": ["DBL-385"],
+    "original_parent_dependencies": {
+      "DBL-386": ["DBL-385"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D00"],
+    "acceptance_criteria": [
+      "Real input can start at camp, reach each area in order and return after completion",
+      "Revisiting an exit cannot double-complete an expedition",
+      "Transitions preserve player, item ownership and existing controls"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d01.test.ts",
+        "src/simulation/world-travel.test.ts",
+        "src/simulation/world-save.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Real input can start at camp, reach each area in order and return after completion",
+      "Revisiting an exit cannot double-complete an expedition",
+      "Transitions preserve player, item ownership and existing controls",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d01.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d01.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "New biome generation",
+      "Boss/quest engine or merchant systems"
+    ],
+    "next_deliverable_id": "D02",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D02",
+    "title": "Expedition difficulty and rewards",
+    "objective": "Scale expedition challenge and existing rewards without repeatable completion exploits.",
+    "included_scope": [
+      "Tune existing encounter/area levels and XP, item, gold rewards along the expedition",
+      "Integrate a ledger-bound crypt completion reward and deterministic Warrior/Sorcerer/Ranger completion fixtures"
+    ],
+    "backlog_ids": ["DBL-382", "DBL-116"],
+    "backlog_dependencies": ["DBL-381", "DBL-382", "DBL-383", "DBL-109"],
+    "original_parent_dependencies": {
+      "DBL-382": ["DBL-381"],
+      "DBL-116": ["DBL-115"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D01"],
+    "acceptance_criteria": [
+      "All three existing classes can complete equivalent seeded expedition fixtures",
+      "Completion/reload/re-entry produces exactly one completion reward",
+      "Reward level and encounter difficulty rise through forest, graveyard and crypt without rewriting item rules"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d02.test.ts",
+        "src/simulation/world-rewards.test.ts",
+        "src/simulation/world-encounters.test.ts",
+        "src/simulation/character-classes.test.ts",
+        "src/simulation/progression-quality.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "All three existing classes can complete equivalent seeded expedition fixtures",
+      "Completion/reload/re-entry produces exactly one completion reward",
+      "Reward level and encounter difficulty rise through forest, graveyard and crypt without rewriting item rules",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d02.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d02.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "New classes or skill trees",
+      "Global loot-table rewrite or repeatable reward farming"
+    ],
+    "next_deliverable_id": "D03",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D03",
+    "title": "Expedition persistence",
+    "objective": "Atomically restore the complete expedition and character without breaking legacy saves.",
+    "included_scope": [
+      "Version objective/encounter/discovery/area-seed/position state in the existing atomic character checkpoint",
+      "Preserve progression, inventory, equipped/ground rewards and historical saves; exercise backup/recovery"
+    ],
+    "backlog_ids": ["DBL-387", "DBL-135", "DBL-211"],
+    "backlog_dependencies": ["DBL-332", "DBL-367", "DBL-385"],
+    "original_parent_dependencies": {
+      "DBL-387": ["DBL-386"],
+      "DBL-135": ["DBL-134"],
+      "DBL-211": ["DBL-210"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D02"],
+    "acceptance_criteria": [
+      "Reload during travel and after objective completion restores coherent world and character state",
+      "Legacy snapshots migrate without item loss, duplicate ownership or new rewards",
+      "Malformed/partial writes retain a recoverable previous checkpoint"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d03.test.ts",
+        "src/simulation/world-save.test.ts",
+        "src/simulation/inventory-save.test.ts",
+        "src/simulation/progression-save.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Reload during travel and after objective completion restores coherent world and character state",
+      "Legacy snapshots migrate without item loss, duplicate ownership or new rewards",
+      "Malformed/partial writes retain a recoverable previous checkpoint",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d03.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d03.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Cloud sync or account services",
+      "Replacing IndexedDB or discarding old saves"
+    ],
+    "next_deliverable_id": "D04",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D04",
+    "title": "NPC foundation",
+    "objective": "Add original camp NPCs with reusable data-driven dialogue and accessible interactions.",
+    "included_scope": [
+      "Define original camp NPC identities, positions and dialogue nodes as content data",
+      "Bind proximity/interact intent to readable dialogue with keyboard/mouse and controller focus/back navigation"
+    ],
+    "backlog_ids": ["DBL-131"],
+    "backlog_dependencies": ["DBL-384", "DBL-332"],
+    "original_parent_dependencies": {
+      "DBL-131": ["DBL-130"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D03"],
+    "acceptance_criteria": [
+      "At least two distinct original NPCs can be approached, opened and dismissed using existing intents",
+      "Dialogue text is rendered safely and cannot capture movement after dismissal",
+      "Save/load retains valid dialogue flags with explicit migration defaults"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d04.test.ts",
+        "src/simulation/world-runtime.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "At least two distinct original NPCs can be approached, opened and dismissed using existing intents",
+      "Dialogue text is rendered safely and cannot capture movement after dismissal",
+      "Save/load retains valid dialogue flags with explicit migration defaults",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d04.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d04.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Quest rewards or vendors before their deliverables",
+      "Copied dialogue, characters, assets or voice acting"
+    ],
+    "next_deliverable_id": "D05",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D05",
+    "title": "Quest engine",
+    "objective": "Provide deterministic persistent quest state and exactly-once reward eligibility.",
+    "included_scope": [
+      "Implement definitions, prerequisites, counters, transitions and an accessible journal",
+      "Handle existing kill/explore/treasure/NPC triggers with reward eligibility and atomic persistence"
+    ],
+    "backlog_ids": [
+      "DBL-136",
+      "DBL-137",
+      "DBL-138",
+      "DBL-139",
+      "DBL-140",
+      "DBL-141"
+    ],
+    "backlog_dependencies": ["DBL-332", "DBL-367", "DBL-109"],
+    "original_parent_dependencies": {
+      "DBL-136": ["DBL-135"],
+      "DBL-137": ["DBL-136"],
+      "DBL-138": ["DBL-137"],
+      "DBL-139": ["DBL-138"],
+      "DBL-140": ["DBL-139"],
+      "DBL-141": ["DBL-140"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D04"],
+    "acceptance_criteria": [
+      "Prerequisite locks, objective counters and completion transitions reject invalid/replayed events",
+      "Quest rewards atomically commit once with XP/gold/item ownership",
+      "Journal and active objective survive reload and controller navigation"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d05.test.ts",
+        "src/simulation/progression-save.test.ts",
+        "src/simulation/world-save.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Prerequisite locks, objective counters and completion transitions reject invalid/replayed events",
+      "Quest rewards atomically commit once with XP/gold/item ownership",
+      "Journal and active objective survive reload and controller navigation",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d05.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d05.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Escort AI, reputation simulation and procedural quest generation",
+      "Act 1 quest content beyond engine fixtures"
+    ],
+    "next_deliverable_id": "D06",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D06",
+    "title": "Act 1 questline",
+    "objective": "Author three to five connected original quests across the existing camp and expedition areas.",
+    "included_scope": [
+      "Write original NPC dialogue and 3–5 linked quest definitions using the quest engine",
+      "Connect combat, exploration and treasure objectives to clear journal/map hints and meaningful existing rewards"
+    ],
+    "backlog_ids": ["DBL-145"],
+    "backlog_dependencies": ["DBL-381", "DBL-383", "DBL-385"],
+    "original_parent_dependencies": {
+      "DBL-145": ["DBL-144"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D05"],
+    "acceptance_criteria": [
+      "A fresh character can follow the linked quests without sequence breaks or softlocks",
+      "Out-of-order exploration and reload cannot skip prerequisites or duplicate rewards",
+      "Every objective names a reachable environment/action and a valid return/completion step"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d06.test.ts",
+        "src/simulation/world-travel.test.ts",
+        "src/simulation/world-containers.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "A fresh character can follow the linked quests without sequence breaks or softlocks",
+      "Out-of-order exploration and reload cannot skip prerequisites or duplicate rewards",
+      "Every objective names a reachable environment/action and a valid return/completion step",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d06.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d06.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "New environments or extra campaign acts",
+      "Five-to-eight quest parent completion claims"
+    ],
+    "next_deliverable_id": "D07",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D07",
+    "title": "Boss foundation",
+    "objective": "Build reusable deterministic boss/elite encounter configuration with safe arenas.",
+    "included_scope": [
+      "Add readable windup/active/recovery attacks and configurable health-threshold phases",
+      "Reuse damage/status/movement systems, arena reset/safety rules and deterministic one-time completion rewards"
+    ],
+    "backlog_ids": ["DBL-069", "DBL-070"],
+    "backlog_dependencies": ["DBL-381", "DBL-383"],
+    "original_parent_dependencies": {
+      "DBL-069": ["DBL-068"],
+      "DBL-070": ["DBL-069"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D06"],
+    "acceptance_criteria": [
+      "Telegraphs precede damage and phase transitions cannot double-fire events",
+      "Arena entry/death/reset/return cannot trap the player or duplicate rewards",
+      "Elite/miniboss configuration and seeded replay are exercised by pure fixtures"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d07.test.ts",
+        "src/simulation/world-encounter-runtime.test.ts",
+        "src/simulation/world-rewards.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Telegraphs precede damage and phase transitions cannot double-fire events",
+      "Arena entry/death/reset/return cannot trap the player or duplicate rewards",
+      "Elite/miniboss configuration and seeded replay are exercised by pure fixtures",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d07.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d07.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Final Act 1 boss content until D08",
+      "Advanced new AI framework or protected attack designs"
+    ],
+    "next_deliverable_id": "D08",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D08",
+    "title": "Act 1 final boss",
+    "objective": "Finish the Act 1 story with an original Ancient Crypt boss and safe camp return.",
+    "included_scope": [
+      "Author an original named crypt finale using boss phases/telegraphs and the questline",
+      "Persist finale defeat, campaign conclusion, deterministic reward eligibility and return-to-camp interaction"
+    ],
+    "backlog_ids": ["DBL-146", "DBL-147"],
+    "backlog_dependencies": ["DBL-381", "DBL-367"],
+    "original_parent_dependencies": {
+      "DBL-146": ["DBL-145"],
+      "DBL-147": ["DBL-146"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D07"],
+    "acceptance_criteria": [
+      "Final quest unlocks a distinct reachable boss encounter in Ancient Crypt",
+      "Warrior, Sorcerer and Ranger have viable attack/recovery opportunities",
+      "Defeat concludes Act 1 once, survives reload and allows safe return to camp"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d08.test.ts",
+        "src/simulation/world-save.test.ts",
+        "src/simulation/character-classes.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Final quest unlocks a distinct reachable boss encounter in Ancient Crypt",
+      "Warrior, Sorcerer and Ranger have viable attack/recovery opportunities",
+      "Defeat concludes Act 1 once, survives reload and allows safe return to camp",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d08.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d08.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Act II or cinematic/voice asset production",
+      "Three-miniboss original-parent completion claims"
+    ],
+    "next_deliverable_id": "D09",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D09",
+    "title": "Vendors",
+    "objective": "Add atomic camp merchant buying/selling with validated prices, gold and inventory ownership.",
+    "included_scope": [
+      "Define original camp merchant offers and bounded deterministic purchase/sale prices",
+      "Validate item placement, funds, ownership and atomic gold/item transfers through existing persistence and controller UI"
+    ],
+    "backlog_ids": ["DBL-117", "DBL-118"],
+    "backlog_dependencies": ["DBL-332", "DBL-383", "DBL-344"],
+    "original_parent_dependencies": {
+      "DBL-117": ["DBL-116"],
+      "DBL-118": ["DBL-117"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D08"],
+    "acceptance_criteria": [
+      "Insufficient funds/full inventory/invalid ownership commit no changes",
+      "Buying/selling/reload cannot duplicate items or gold and sell price cannot create a buy/sell loop",
+      "Keyboard/mouse and controller can inspect, confirm and cancel transactions"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d09.test.ts",
+        "src/simulation/inventory-grid.test.ts",
+        "src/simulation/inventory-save.test.ts",
+        "src/simulation/advanced-item-save.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Insufficient funds/full inventory/invalid ownership commit no changes",
+      "Buying/selling/reload cannot duplicate items or gold and sell price cannot create a buy/sell loop",
+      "Keyboard/mouse and controller can inspect, confirm and cancel transactions",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d09.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d09.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Repair, gambling, restock economy, crafting or inflation simulation",
+      "Completing all broader vendor/build-benchmark parents"
+    ],
+    "next_deliverable_id": "D10",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D10",
+    "title": "Shared camp stash",
+    "objective": "Provide persistent safe camp item storage, restricting to one character unless sharing is proven atomic.",
+    "included_scope": [
+      "Implement stash footprints/grid placement and atomic inventory↔stash transfers",
+      "Add save/load/controller navigation and explicit ownership validation; choose current-character scope if cross-character CAS cannot be proven"
+    ],
+    "backlog_ids": ["DBL-085"],
+    "backlog_dependencies": ["DBL-332", "DBL-344"],
+    "original_parent_dependencies": {
+      "DBL-085": ["DBL-084"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D09"],
+    "acceptance_criteria": [
+      "Full-grid/rejected transfer leaves source and destination unchanged",
+      "Repeated input/reload/recovery cannot duplicate or lose any item including embedded components",
+      "UI and evidence clearly label whether stash is character-local or safely shared"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d10.test.ts",
+        "src/simulation/inventory-grid.test.ts",
+        "src/simulation/inventory-save.test.ts",
+        "src/simulation/advanced-item-save.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Full-grid/rejected transfer leaves source and destination unchanged",
+      "Repeated input/reload/recovery cannot duplicate or lose any item including embedded components",
+      "UI and evidence clearly label whether stash is character-local or safely shared",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d10.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d10.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Unproven cross-character sharing",
+      "Cloud stash, trading or new equipment mechanics"
+    ],
+    "next_deliverable_id": "D11",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D11",
+    "title": "Waypoints",
+    "objective": "Add discovered-and-unlocked waypoint fast travel through atomic world transitions.",
+    "included_scope": [
+      "Define reachable waypoint anchors in existing areas and saved discovery/unlock identity",
+      "Expose valid destinations in map UI with controller focus and reuse safe travel/checkpoint transactions"
+    ],
+    "backlog_ids": ["DBL-132"],
+    "backlog_dependencies": ["DBL-367", "DBL-385"],
+    "original_parent_dependencies": {
+      "DBL-132": ["DBL-131"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D10"],
+    "acceptance_criteria": [
+      "Undiscovered/locked/invalid destinations are rejected without state changes",
+      "Valid travel preserves character/items/progression and survives reload mid-transition",
+      "Current destination, unavailable destinations and return-to-camp are readable without controller traps"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d11.test.ts",
+        "src/simulation/world-travel.test.ts",
+        "src/simulation/world-save.test.ts",
+        "src/simulation/world-discovery.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Undiscovered/locked/invalid destinations are rejected without state changes",
+      "Valid travel preserves character/items/progression and survives reload mid-transition",
+      "Current destination, unavailable destinations and return-to-camp are readable without controller traps",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d11.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d11.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Town-portal consumables or new regions",
+      "Travel to undiscovered destinations"
+    ],
+    "next_deliverable_id": "D12",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D12",
+    "title": "Act 1 balance",
+    "objective": "Correct substantial Act 1 difficulty/reward/progression outliers for all three classes.",
+    "included_scope": [
+      "Run representative seeded encounter, quest and boss fixtures for Warrior/Sorcerer/Ranger",
+      "Compare XP/gold/items and class survival/resource budgets; apply bounded configuration corrections with recorded before/after metrics"
+    ],
+    "backlog_ids": ["DBL-148", "DBL-116"],
+    "backlog_dependencies": ["DBL-109", "DBL-382"],
+    "original_parent_dependencies": {
+      "DBL-148": ["DBL-147"],
+      "DBL-116": ["DBL-115"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D11"],
+    "acceptance_criteria": [
+      "All classes complete the expedition and finale fixtures within documented reasonable budgets",
+      "No outlier rewards or vendor loops bypass progression or ownership invariants",
+      "Balance evidence records seeds, configurations and class outcomes rather than unsupported hardware claims"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d12.test.ts",
+        "src/simulation/progression-quality.test.ts",
+        "src/simulation/character-classes.test.ts",
+        "src/simulation/world-rewards.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "All classes complete the expedition and finale fixtures within documented reasonable budgets",
+      "No outlier rewards or vendor loops bypass progression or ownership invariants",
+      "Balance evidence records seeds, configurations and class outcomes rather than unsupported hardware claims",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d12.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d12.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Large combat rewrite, new classes or item system redesign",
+      "Additional difficulty modes or campaign acts"
+    ],
+    "next_deliverable_id": "D13",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D13",
+    "title": "Gameplay and UX polish",
+    "objective": "Resolve critical Act 1 interaction/readability/controller and measured performance defects.",
+    "included_scope": [
+      "Polish HUD/map/controller prompts, NPC/quest presentation, boss/combat feedback and focus recovery",
+      "Profile important regressions against existing baselines and address measured bottlenecks without changing scope"
+    ],
+    "backlog_ids": ["DBL-204", "DBL-205", "DBL-208"],
+    "backlog_dependencies": ["DBL-385", "DBL-384"],
+    "original_parent_dependencies": {
+      "DBL-204": ["DBL-203"],
+      "DBL-205": ["DBL-204"],
+      "DBL-208": ["DBL-207"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D12"],
+    "acceptance_criteria": [
+      "Important actions have readable feedback and correct active-device prompts",
+      "Dialogue/quest/vendor/stash/waypoint/boss flows dismiss and restore gameplay focus correctly",
+      "Screenshots and focused performance evidence substantiate visible changes and remaining limitations"
+    ],
+    "local_tests": [
+      [
+        "npx",
+        "vitest",
+        "run",
+        "src/simulation/overnight-d13.test.ts",
+        "src/simulation/inventory-navigation.test.ts",
+        "src/simulation/world-discovery.test.ts"
+      ]
+    ],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "Important actions have readable feedback and correct active-device prompts",
+      "Dialogue/quest/vendor/stash/waypoint/boss flows dismiss and restore gameplay focus correctly",
+      "Screenshots and focused performance evidence substantiate visible changes and remaining limitations",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      ["npx", "playwright", "test", "tests/e2e/overnight-d13.spec.ts"]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d13.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Unrelated redesign or speculative optimization",
+      "New gameplay mechanics, audio/art replacement campaign"
+    ],
+    "next_deliverable_id": "D14",
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  },
+  {
+    "id": "D14",
+    "title": "Act 1 release",
+    "objective": "Publish the integrated verified Act 1 campaign and record honest limitations.",
+    "included_scope": [
+      "Run final integrated regression for expedition/classes/quests/boss/vendors/stash/waypoints/save migrations",
+      "Publish exact-SHA CI/Pages release, execute hosted campaign and controller compatibility checks and write reproducible release evidence/guide"
+    ],
+    "backlog_ids": [
+      "DBL-148",
+      "DBL-220",
+      "DBL-226",
+      "DBL-227",
+      "DBL-228",
+      "DBL-388",
+      "DBL-389",
+      "DBL-390",
+      "DBL-391"
+    ],
+    "backlog_dependencies": ["DBL-385", "DBL-332", "DBL-344"],
+    "original_parent_dependencies": {
+      "DBL-148": ["DBL-147"],
+      "DBL-220": ["DBL-219"],
+      "DBL-226": ["DBL-225"],
+      "DBL-227": ["DBL-226"],
+      "DBL-228": ["DBL-227"],
+      "DBL-388": ["DBL-387"],
+      "DBL-389": ["DBL-388"],
+      "DBL-390": ["DBL-389"],
+      "DBL-391": ["DBL-390"]
+    },
+    "dependency_policy": "Authorized narrow slices only; completed listed foundation IDs and prior deliverable releases are required. Preserve original parent edges/status; do not mark broader parents complete or implement excluded prerequisites.",
+    "dependencies": ["D13"],
+    "acceptance_criteria": [
+      "All three classes can finish Act 1 with coherent XP/items/quest/boss/reward state across reloads",
+      "Atomic merchant/stash/waypoint transactions and keyboard/mouse/virtual-controller campaign flows pass",
+      "Exact commit is pushed, CI and Pages pass, hosted campaign smoke passes and deployed SHA is checkpointed; physical controller limits remain explicit"
+    ],
+    "local_tests": [["npm", "test"]],
+    "ci_pages_requirements": [
+      "Relevant targeted tests and required TypeScript/lint/format/production build pass",
+      "Scoped commit is pushed by the release runner from overnight/development only",
+      "Exact SHA workflow verify-deploy.yml and Pages deploy job both succeed",
+      "Hosted artifact bytes match local production build and every required hosted smoke passes",
+      "Record verified SHA/run/deployment evidence before the next deliverable; red/pending/unverifiable blocks advancement"
+    ],
+    "hosted_smoke_requirements": [
+      "All three classes can finish Act 1 with coherent XP/items/quest/boss/reward state across reloads",
+      "Atomic merchant/stash/waypoint transactions and keyboard/mouse/virtual-controller campaign flows pass",
+      "Exact commit is pushed, CI and Pages pass, hosted campaign smoke passes and deployed SHA is checkpointed; physical controller limits remain explicit",
+      "Use real inputs/browser storage with no debug completion shortcuts; virtual controller evidence is not physical verification"
+    ],
+    "hosted_tests": [
+      [
+        "npx",
+        "playwright",
+        "test",
+        "tests/e2e/world.spec.ts",
+        "tests/e2e/world-minimap.spec.ts",
+        "tests/e2e/world-containers.spec.ts",
+        "tests/e2e/class-gameplay.spec.ts",
+        "tests/e2e/inventory-storage.spec.ts",
+        "tests/e2e/gamepad.spec.ts",
+        "tests/e2e/overnight-d14.spec.ts"
+      ]
+    ],
+    "hosted_url": "https://tobisen.github.io/hollowbane/",
+    "expected_evidence": [
+      "docs/overnight/d14.md: acceptance results, exact commands, relevant seeds and honest limits",
+      "Machine checkpoint with exact verified deployment SHA and CI run",
+      "Save compatibility/ownership regression results; reviewed screenshots for visible work"
+    ],
+    "excluded_scope": [
+      "Starting Act II, multiplayer, paid services or unrelated backlog work",
+      "Claiming physical-controller/native-GPU verification from browser tests"
+    ],
+    "next_deliverable_id": null,
+    "authorization": "User FINAL OVERNIGHT ACTIVATION explicitly authorizes this D00–D14 scope sequentially; stop after D14. No gameplay during activation preflight."
+  }
+]

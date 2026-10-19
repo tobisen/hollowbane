@@ -23,8 +23,11 @@ class RunnerTests(unittest.TestCase):
         r.STOP = False
         self.repo_lock = patch.object(r, 'repository_lock', return_value=r.STATE / 'repository')
         self.repo_lock.start()
+        self.execution_guard = patch.object(r, 'execution_worktree')
+        self.execution_guard.start()
 
     def tearDown(self):
+        self.execution_guard.stop()
         self.repo_lock.stop()
         r.STATE = self.old
         r.STOP = False
@@ -146,6 +149,8 @@ class RunnerTests(unittest.TestCase):
                 calls.append(argv)
                 if argv[:2] == ['git', 'status']:
                     return ''
+                if argv[:3] == ['git', 'branch', '--show-current']:
+                    return 'overnight/development'
                 if argv[:2] == ['git', 'rev-parse']:
                     return 'candidate'
                 if argv[:2] == ['git', 'ls-remote']:
@@ -174,6 +179,42 @@ class RunnerTests(unittest.TestCase):
                     self.assertEqual(r.release(task, time.time() + 10), 'candidate')
             if failure in ('ci', 'pages', 'wrong-sha', 'artifact'):
                 self.assertNotIn(['hosted-smoke'], calls)
+
+    def test_real_queue_is_complete_and_prerequisites_are_evaluated(self):
+        config = r.load_config()
+        self.assertEqual([t['id'] for t in config['tasks']], [f'D{i:02}' for i in range(15)])
+        required = ('title', 'objective', 'included_scope', 'backlog_ids',
+                    'backlog_dependencies', 'original_parent_dependencies', 'acceptance_criteria',
+                    'local_tests', 'ci_pages_requirements', 'hosted_smoke_requirements',
+                    'hosted_tests', 'expected_evidence', 'excluded_scope')
+        for task in config['tasks']:
+            for key in required:
+                self.assertTrue(task[key], (task['id'], key))
+            self.assertFalse(task.get('blocked'))
+        self.assertEqual(r.prerequisites(config['tasks'][0], {}), [])
+        self.assertEqual(r.prerequisites(config['tasks'][1], {}), ['D00'])
+        self.assertEqual(r.prerequisites(config['tasks'][1], {'completed': {'D00': 'verified-sha'}}), [])
+        self.assertIsNone(config['tasks'][-1]['next_deliverable_id'])
+
+    def test_escalation_requires_distinct_complex_approaches(self):
+        config = r.load_config()
+        state = dict(index=0, history=[dict(task=0, complex=False, candidate='a', evidence='x'),
+                                      dict(task=0, complex=False, candidate='b', evidence='y')])
+        self.assertEqual(r.model_for(config, state), ('gpt-6.1-sol', 'high'))
+        for entry in state['history']:
+            entry['complex'] = True
+        self.assertEqual(r.model_for(config, state), ('gpt-6-astra', 'max'))
+        state['index'] = 1
+        self.assertEqual(r.model_for(config, state), ('gpt-6.1-sol', 'high'))
+
+    def test_activation_branch_cannot_pass_execution_guard(self):
+        self.execution_guard.stop()
+        try:
+            with patch.object(r, 'command', return_value='overnight/activation'):
+                with self.assertRaisesRegex(RuntimeError, 'activation'):
+                    r.execution_worktree(r.load_config(), time.time() + 5)
+        finally:
+            self.execution_guard.start()
 
     def test_empty_authorization_queue_blocks(self):
         with self.assertRaises(RuntimeError):

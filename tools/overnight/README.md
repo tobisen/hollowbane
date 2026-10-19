@@ -1,126 +1,133 @@
-# Overnight activation checkpoint
+# Hollowbane overnight activation
 
-NOT READY. No gameplay or unattended development has started.
-The user authorized D00–D14, but the approved specifications are absent from the
-repository and available conversation. Configuration contains 15 blocked slots,
-zero executable deliverables. Do not infer their scope from W5 or other backlog
-records. Supply each approved specification, acceptance criteria, DBL mapping,
-local tests and hosted smoke commands before unblocking the queue.
+The queue is configured; activation remains NOT READY until integration,
+publication and real implementation-worktree permissions are verified.
+No D00 or other gameplay development is performed during activation.
 
-Activation changes live in the isolated `overnight/activation` branch/worktree:
+## Queue and dependencies
+
+`config.json` names `tasks.json`; `runner.load_config()` loads all fifteen detailed
+specifications. Each includes original DBL aliases/parent edges, scoped foundation
+prerequisites, acceptance criteria, local/hosted checks, evidence and exclusions.
+D00 validates the existing W4 release. D01–D14 depend on the preceding deliverable's
+verified deployment SHA. Only D00 is initially eligible. Raw backlog numbering,
+original dependency edges and broader partial/planned parent statuses are preserved.
+These are explicitly authorized narrow slices: e.g. vendor buying/selling does not
+claim repair/restock or the entire build benchmark prerequisite complete. The
+`backlog_dependencies` list names the actual completed foundations needed by each
+slice; `original_parent_dependencies` retains broader roadmap context unchanged.
+The runner checks both scoped foundations and predecessor release evidence before
+starting a task. No alias is a new DBL issue or authority to complete broader scope.
+
+D01–D14 require task-specific unit and browser tests named in their specifications.
+Those tests must be implemented alongside the deliverable; missing test files fail
+the gate. They are not pre-created empty fixtures. Tests must assert the stated
+acceptance criteria using real browser inputs and storage, with no completion
+shortcuts. Screenshot review is required for visible changes. Physical controller
+and native GPU limits remain explicit. D14 runs the integrated regression.
+
+## Worktrees and publication safety
+
+Activation branch/worktree:
+`overnight/activation` at
 `/Users/tobiasbertilsson/kod/hallowbane/.local/overnight-activation`.
-The original BACKLOG.md, STATUS.md and docs/items/l3.md edits remain untouched.
-The parent checkout's main branch must be reconciled normally after publication;
-never reset it, stash, or discard those documents to start the runner.
 
-## Exact commands
+Implementation branch/worktree:
+`overnight/development` at
+`/Users/tobiasbertilsson/kod/hallowbane/.local/overnight-development`.
 
-These commands are documented only; setup does not run them. They currently
-stop at the missing-specification guard. Start only after all activation and
-permission checks pass, from this directory:
+Activation is tooling, never a gameplay candidate. The runner rejects execution
+and release from any branch except `overnight/development`. Before starting it
+fetches main, requires origin/main to be an ancestor, and requires its orchestrator
+files to match origin/main. Thus activation tooling must first be reviewed and
+integrated into main using a non-destructive fast-forward or merge. Inspect remote
+divergence and preserve the original checkout's dirty documents; do not force,
+reset, stash, clean, or merge through that dirty checkout. A safe fast-forward
+push from a reviewed integration worktree is distinct from the runner publishing
+an activation branch. Never publish an unreviewed activation candidate as gameplay.
+
+Before unattended execution a verified local permissions receipt bound to this
+worktree and configuration is also required under `.local/overnight/permissions.json`.
+No receipt is manufactured from unit mocks or push dry-runs. A failed probe blocks
+readiness. A branch permission probe cannot prove protected-main push permission;
+that must be established by the actual authorized integration push and repository
+policy inspection. No one-off approval here implies future unattended approval.
+
+## Exact commands (after READY only)
 
 ```sh
-cd /Users/tobiasbertilsson/kod/hallowbane/.local/overnight-activation
+cd /Users/tobiasbertilsson/kod/hallowbane/.local/overnight-development
 mkdir -p .local
 (umask 077; nohup python3 tools/overnight/runner.py start </dev/null >.local/overnight-launch.log 2>&1 &)
 ```
 
-`nohup` handles terminal closure; ordinary foreground execution does not.
-The computer must remain awake and connected. No daemon, login service or
-scheduled task is installed. Do not confuse shell launch success with readiness:
-inspect status and the launch log immediately. Missing approvals stop execution.
-
-Monitor:
+Monitor, stop and resume from that directory:
 
 ```sh
 python3 tools/overnight/runner.py status
-tail -n 20 .local/overnight/events.jsonl
-```
-
-Stop safely:
-
-```sh
 python3 tools/overnight/runner.py stop
-```
-
-Resume the same window after inspecting its checkpoint and failures:
-
-```sh
 (umask 077; nohup python3 tools/overnight/runner.py resume </dev/null >.local/overnight-launch.log 2>&1 &)
 ```
 
-Dry run, with no Codex invocation, Git mutation, publication or gameplay:
+`nohup` handles terminal closure; the computer must remain awake and connected.
+No daemon, login service or scheduled task is installed. Shell launch success is
+not readiness: inspect status and `.local/overnight-launch.log` immediately.
+
+Harmless preflight (does not invoke an agent or mutate gameplay/Git/publication):
 
 ```sh
 python3 tools/overnight/runner.py dry-run
 python3 -m unittest discover -s tools/overnight -p 'test_*.py'
 ```
 
-Dry run intentionally exits nonzero until every specification is resolved.
-It reports model strategy, deliverable slots, deadline and the first blocker.
+The dry run loads every deliverable, evaluates prerequisites, reports D00 next,
+and selects Sol High. Tests cover invalid/wrong-SHA CI, skipped Pages, stale
+artifacts and failed hosted smoke blocking release, checkpoint resume, actual
+cross-process lock exclusion, cancellation, child termination and deadline.
+Mocks are not deployment or network permission evidence.
 
-## Models, permissions and limits
+## Models and resilience
 
-Default `gpt-6.1-sol` / `high`; escalation after two unsuccessful development
-sessions to `gpt-6-astra` / `max`. Both model/effort pairs are present in the
-installed CLI catalog and passed real read-only probes in the original preflight.
-No global model configuration changes. No Ultra/automatic delegation.
+Exact locally supported identifiers: `gpt-6.1-sol` with `high`, escalating to
+`gpt-6-astra` with `max` only after two distinct evidence-bearing complex failed
+approaches with different candidate commits. Formatting/configuration work does
+not qualify. Resolution returns the next task to Sol High. Both pairs passed
+real read-only CLI probes; permissions evidence must additionally exercise actual
+tool use. No global model changes or Ultra/automatic delegation.
 
-Existing sandbox/rules and `on-request` approvals are retained with
-`workspace-write`. No full-access or approval-bypass flags. Authentication is not
-proof of permission: unattended Git commit/push, network, and Codex tool access
-must be verified in this worktree before activation. An approval request that
-cannot be handled unattended is a blocker, not a reason to weaken protections.
+Existing rules, sandbox and `on-request` approvals remain in force;
+`workspace-write` never becomes full access. Permission/quota/network failures
+stop for inspection. Do not suppress approvals to make unattended execution work.
 
-The original eight-hour deadline persists through interruption and retry. Each
-Codex development session has a ten-minute bound; the entire run has a cumulative
-24-session resource cap. Account usage/quota controls still apply.
+The original eight-hour deadline persists across sessions; a sixty-second shutdown
+margin prevents starting new work near expiry. Codex sessions are bounded to ten
+minutes, with a cumulative 24-session cap. Stable diagnostic hashes exclude timing
+noise. New conditions reset only the short sequence count; new diagnostics permit
+continued investigation. Identical diagnostic recurrence stops. Cumulative history,
+usage and deadline never reset. Config changes invalidate checkpoint/permission
+bindings. Account limits remain in force; no paid services are introduced.
 
-## Evidence-driven repair and release gates
+Private ignored `.local/overnight/` holds atomic checkpoints, structured logs and
+active-child records. Worktree and common-repository OS locks enforce one writer.
+Stop/SIGTERM/Ctrl-C terminate the active child group and checkpoint; SIGKILL follows
+only after ten seconds without graceful exit. A crash may leave a child: resume
+checks the recorded PID and blocks for inspection rather than risking a second
+writer or killing a reused PID. Resume recomputes release gates. Completed/expired
+windows require deliberate archival; never delete a live lock to start another run.
 
-Failures retain stable command/CI condition IDs and normalized diagnostic hashes,
-not timestamped log filenames. A new condition resets only the short sequence
-counter. New diagnostics within a condition permit continued investigation;
-identical diagnostic recurrence stops, even after intervening different failures.
-Cumulative history/session usage/deadline never reset. Two failed development
-sessions select Astra Max. Quota, permission and network blockers stop; cancelled
-CI is not treated as a gameplay defect. No manual retry command can clear history.
+## Strict release evidence
 
-The existing runner architecture independently gates each candidate: clean
-scoped commit, relevant local tests, TypeScript, lint, formatting, production
-build, push dry-run/push, remote SHA equality, exact-commit successful workflow,
-successful Pages deploy job, byte-for-byte identity of every built published file,
-and required hosted smoke checks. Remote and local candidate identity/cleanliness
-are checked again afterward. Queue advancement follows only a complete release.
-Tests explicitly cover wrong-SHA CI, failed CI, skipped Pages, stale artifact and
-failed hosted smoke blocking release; mocked passes are not deployment evidence.
+Only the runner advances the queue, after relevant tests, TypeScript/lint/format,
+production build, committed/pushed candidate, exact-SHA successful CI and successful
+Pages deploy job, byte-identical hosted build and all specified hosted tests.
+Remote/local SHA and clean state are checked again after hosted tests. The verified
+SHA is stored under the completed Dxx checkpoint before the next task.
+Pending, red, mismatched or unverifiable CI/Pages never advances. Documentation-only
+main pushes follow the actual existing verify/deploy workflow, which also redeploys
+the unchanged game; no fictitious tooling files are claimed as Pages artifacts.
+Source tooling is verified through Git blobs separately from hosted game bytes.
 
-Every task needs `id`, `authorization`, `specification`, `prompt`, nonempty
-`local_tests`/`hosted_tests` arrays of argv arrays, and HTTPS `hosted_url`.
-Resolve the Dxx-to-DBL mapping explicitly in its specification and prompt; scoped
-commits must include the configured task ID. No shell command strings.
+See `activation-evidence.json` and STATUS.md for actual checks and remaining
+blockers. These records must not be interpreted as a successful release gate.
 
-## Checkpoints and recovery
-
-Private ignored `.local/overnight/` stores atomic fsynced checkpoint JSON,
-structured event history and command logs. OS `flock` excludes concurrent runners in this execution worktree and a second
-shared lock derived from the Git common directory excludes runners in sibling
-worktrees using this runner version. Never delete a live lock.
-SIGTERM/Ctrl-C/stop file terminate the active child process group and retain state;
-SIGKILL follows after ten seconds only if graceful termination fails. A hard crash
-can leave a child: resume detects its PID and blocks for inspection. Never kill a
-reused PID based only on a stale record. Resume recomputes release evidence rather
-than trusting model claims. Config changes require explicit checkpoint review;
-expired/completed windows require deliberate archival before a new run.
-
-## Publication evidence
-
-Commit `35ab99bfb11c26e06c43dcac3857ab3abc7b6da6` was pushed.
-Workflow `39326566635` passed repository checks/formatting and was still running
-browser tests at activation inspection; do not claim its Pages release yet.
-Source tooling is published in Git, not served directly by Vite/Pages. Pages
-publishes the game build; verify source Git blob identities and Pages build
-identities separately. This activation update also needs its own commit release
-verification before READY. No previous runtime deployment substitutes for it.
-
-Official CLI guidance: [Non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode).
+Official CLI reference: [Non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode).

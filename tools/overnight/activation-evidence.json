@@ -7,19 +7,21 @@
   "pages_deployment": 7184782837,
   "hosted_artifacts_matched": 26,
   "hosted_smoke": "world-minimap.spec.ts: 1 passed (7.1s)",
-  "offline_tests": 12,
+  "offline_tests": 15,
   "queue_slots": 15,
-  "executable_deliverables": 0,
+  "executable_deliverables": 1,
   "blockers": [
-    "D00\u2013D14 approved specifications unavailable; blocked slots must not execute",
-    "35ab99b CI/Pages workflow 39326566635 still in progress at inspection",
-    "Activation changes require their own exact-commit CI/Pages release gate",
-    "Unattended Codex Git/network permission checks in isolated worktree pending"
+    "35ab99b CI/Pages workflow 39326566635 pending at inspection",
+    "Activation tooling requires reviewed integration and its own exact-commit CI/Pages/hosted gate",
+    "Actual overnight/development worktree Codex/Git/network permission probe pending"
   ],
   "models": {
     "default": "gpt-6.1-sol/high",
     "escalation": "gpt-6-astra/max",
     "catalog_supported": true,
     "prior_read_only_probes_passed": true
-  }
+  },
+  "pending_deliverables": 14,
+  "next_task": "D00",
+  "queue_file": "tools/overnight/tasks.json"
 }
