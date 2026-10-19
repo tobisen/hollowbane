@@ -4080,8 +4080,9 @@
     "deliveryPhase": "world-exploration",
     "priority": "p1",
     "dependencies": ["DBL-363"],
-    "status": "planned",
-    "body": "## Acceptance criteria\nW1: Spawn and entrance placement validation. Preserve character ownership, deterministic simulation and original parent dependencies. See docs/world/expedition.md for integration contracts.\n\n## Non-goals\nNo campaign, NPC dialogue, vendors, crafting, new classes or engine migration; broader parent remains partial.\n\n## Test requirements\nAffected unit tests, TypeScript and relevant lint; browser checks only for browser changes. Reuse prior evidence.\n\n## Definition of done\nVerified increment committed with evidence and STATUS checkpoint; stop at World quality review."
+    "status": "completed",
+    "body": "## Acceptance criteria\nW1: Spawn and entrance placement validation. Preserve character ownership, deterministic simulation and original parent dependencies. See docs/world/expedition.md for integration contracts.\n\n## Non-goals\nNo campaign, NPC dialogue, vendors, crafting, new classes or engine migration; broader parent remains partial.\n\n## Test requirements\nAffected unit tests, TypeScript and relevant lint; browser checks only for browser changes. Reuse prior evidence.\n\n## Definition of done\nVerified increment committed with evidence and STATUS checkpoint; stop at World quality review.",
+    "evidence": "DBL-364 validates exact registered exits, clear actor-radius spawns/triggers/arrivals and separation from every exit interaction zone. Two focused tests, TypeScript and relevant lint pass. Logical anchors only; runtime integration follows DBL-366."
   },
   {
     "id": "DBL-365",

@@ -1,5 +1,11 @@
 # Status
 
+## World & Exploration checkpoint — DBL-364 (2026-10-19)
+
+- DBL-364 validates exact registered exits, clear actor-radius spawns/triggers/arrivals and separation from every exit interaction zone. Two focused tests, TypeScript and relevant lint pass. Logical anchors only; runtime integration follows DBL-366.
+- Next: DBL-365 prepared atomic transition domain; then366 runtime prototype and367 save binding.
+- W1–W5 remains authorized; stop at World quality review. No complete expedition or new hosted claim. Preserve pre-existing L3 changes; physical-controller evidence remains open.
+
 ## World & Exploration checkpoint — DBL-362–363 (2026-10-19)
 
 - User authorizes autonomous W1–W5 through World quality review. C13 technical prerequisite complete: CI39165184187 / e14335fad98afbc7464ae2c2a0505ce465af619b verify+Pages success; public index-DBDMEo57.js matches; three hosted class cases pass, Warrior screenshot reviewed. No physical-controller/balance claim.

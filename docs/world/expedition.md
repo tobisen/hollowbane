@@ -19,3 +19,9 @@ DBL-362: three focused domain cases cover reciprocal connected registry, invalid
 DBL-363: two focused map validation/clearance cases pass (five combined world tests), TypeScript/relevant lint pass. Test-only appearance ID test-only-rock is a fixture, not a runtime asset/placeholder. No production assets added.
 
 Next DBL-364: authored spawn/entrance anchors validated against logical clearance and registry arrival names. Then DBL-365 prepared transitions, DBL-366 runtime prototype, DBL-367 atomic world persistence. Continue sequentially under user W1–W5 authorization; no routine approval stops. Preserve unrelated L3 edits and original parent dependencies. Final broad suite only at W5 or meaningful shared-system risk.
+
+## DBL-364 checkpoint
+
+DBL-364 validates exact registered exits, clear actor-radius spawns/triggers/arrivals and separation from every exit interaction zone. Two focused tests, TypeScript and relevant lint pass. Logical anchors only; runtime integration follows DBL-366.
+
+Next: DBL-365 prepared atomic transition domain; then366 runtime prototype and367 save binding.
