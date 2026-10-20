@@ -41,6 +41,17 @@ export const BIOME_ENCOUNTERS: Readonly<Record<AreaId, BiomeEncounters>> = {
     groupSize: 4,
   },
 };
+/** Rule-one identity bounds; no layout regeneration or random draws on save. */
+export function validWorldMonsterIdentity(area: AreaId, id: number): boolean {
+  const local = id - (AREA_IDS.indexOf(area) + 1) * 1000;
+  const table = BIOME_ENCOUNTERS[area];
+  return (
+    Number.isSafeInteger(id) &&
+    local >= 0 &&
+    Math.floor(local / 10) < table.packs &&
+    local % 10 < table.groupSize
+  );
+}
 /** Version-one encounter identities/stream are separate from map and loot RNG. */
 export function planWorldEncounters(
   layout: AreaLayout,

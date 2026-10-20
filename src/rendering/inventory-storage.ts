@@ -10,17 +10,23 @@ interface StoredSnapshot {
   text: string;
 }
 export type StorageLoad = SnapshotPair & { revision: number };
-function stored(value: unknown): StoredSnapshot | null {
+function stored(
+  value: unknown,
+  recoverMalformedText = false,
+): StoredSnapshot | null {
   if (value === undefined) return null;
   if (!value || typeof value !== "object")
     throw Error("Invalid storage record; original retained");
   const v = value as Partial<StoredSnapshot>;
-  if (
-    !Number.isSafeInteger(v.revision) ||
-    (v.revision ?? -1) < 1 ||
-    typeof v.text !== "string"
-  )
+  if (!Number.isSafeInteger(v.revision) || (v.revision ?? -1) < 1)
     throw Error("Invalid storage record; original retained");
+  if (typeof v.text !== "string") {
+    if (!recoverMalformedText)
+      throw Error("Invalid storage record; original retained");
+    // Invalid snapshot text offers the valid backup; the original record is
+    // retained verbatim in quarantine only after explicit recovery and CAS.
+    return { revision: v.revision!, text: "" };
+  }
   return v as StoredSnapshot;
 }
 /** Single transaction writes current + previous; compare-and-swap prevents stale tabs overwriting saves. */
@@ -82,8 +88,8 @@ export class InventoryStorage {
       tx.oncomplete = () => {
         try {
           resolve({
-            current: stored(current.result),
-            previous: stored(previous.result),
+            current: stored(current.result, true),
+            previous: stored(previous.result, true),
           });
         } catch (e) {
           reject(e);
@@ -137,12 +143,13 @@ export class InventoryStorage {
       const get = store.get("current");
       get.onsuccess = () => {
         try {
-          const current = stored(get.result);
+          const current = stored(get.result, recovery);
           if ((current?.revision ?? 0) !== expected)
             throw Error(
               "Character storage changed in another tab; local items retained, reload required",
             );
-          if (current) store.put(current, recovery ? "quarantine" : "previous");
+          if (current)
+            store.put(get.result, recovery ? "quarantine" : "previous");
           store.put(
             { revision: expected + 1, text } satisfies StoredSnapshot,
             "current",

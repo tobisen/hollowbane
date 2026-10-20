@@ -1,4 +1,5 @@
 import { validateExploration } from "./world-save";
+import { EXPEDITION_REWARD } from "./world-expedition";
 import { worldLayout } from "./world-layout";
 import { areaNavigation } from "../world/navigation";
 import { progressionAtLevel, validateProgression } from "./progression-save";
@@ -189,6 +190,14 @@ function validateBody(
     throw Error("Unsupported content registry");
   if (progression) {
     session.progression = validateProgression(b.progression);
+    if (
+      world?.expedition?.version === 2 &&
+      world.expedition.reward === "claimed" &&
+      session.progression.character.totalXp < EXPEDITION_REWARD.xp
+    )
+      throw Error(
+        "Incomplete expedition reward transaction; original retained",
+      );
     session.requirements = {
       attributes: attributeValues(session.progression.attributes),
     };

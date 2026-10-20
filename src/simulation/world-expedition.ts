@@ -11,6 +11,7 @@ export interface ExpeditionState extends ExpeditionProgress {
 export interface LegacyExpeditionState extends ExpeditionProgress {
   version: 1;
 }
+/** Expedition state2 reward contract; retuning requires explicit migration. */
 export const EXPEDITION_REWARD = Object.freeze({ xp: 250, gold: 120 });
 /** Do not retrospectively reward a previously attuned or completed objective. */
 export function migrateExpedition(

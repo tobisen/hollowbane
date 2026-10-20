@@ -1,5 +1,20 @@
 # Status
 
+## D03 local persistence candidate (2026-10-20)
+
+- D03/DBL-387,135,211 validates generated death-area/member identities and claimed-reward XP coherence; existing schemas/seeds/items retained. Valid-revision records with malformed/missing text can explicitly recover the validated backup with raw quarantine and CAS intact. Unsupported revision metadata stays locked with originals retained. No new storage engine.
+- 27 focused cases pass across runs, including final nine D03 cases: mixed/embedded ownership, all route checkpoints, character1–4/exploration1–3 migrations, corruption/backup and duplicate reward protection. Browser3/3 passes including outbound/attuned/completed reloads; exact quarantine2/2 rerun passes. TypeScript/relevant lint/format/build pass; screenshots reviewed. Evidence docs/overnight/d03.md. Ready for scoped commit/push; no D04 until exact CI/Pages, artifact identity and hosted route + encounter checks pass.
+
+## D02 verified release / D03 active (2026-10-20)
+
+- D02 deployedfe895909f8e266f92d5b3a91428283868e535cd3: exact CI39375269166 and Pages7192683755 success; all26 hosted files match. Hosted full-expedition reward/point/ownership/reload/repeat scenario passes2.5min; both screenshots reviewed. Evidence docs/overnight/d02.md and /private/tmp/hollowbane-d02-hosted/.
+- D03/DBL-387,135,211 now active: validate existing atomic expedition/character persistence across travel/objective/reload, old snapshots, corruption and backup recovery. Reuse IndexedDB/CAS/ownership architecture; no new storage engine or D04 before D03 exact release gate. Preserve unrelated edits and worktrees.
+
+## D02 exact release pending (2026-10-20)
+
+- Verified D02 committed/pushedfe895909f8e266f92d5b3a91428283868e535cd3. Normal main equals origin/main; original three unrelated documentation edits remain uncommitted and backed up in /private/tmp/hollowbane-workspace-reconcile/d02-publication-local.patch plus retained stash.
+- Exact workflow39375269166 and Pages7192683755 succeeded for the exact SHA; all26 hosted files match. Hosted strengthened full-expedition acceptance is currently running. Release reference: https://github.com/tobisen/hollowbane/actions/runs/39375269166 . Stay on D02 until hosted acceptance succeeds. Required hosted check: `PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/ npx playwright test tests/e2e/overnight-d01.spec.ts` (strengthened D02 rewards/reload/repeat protection), review screenshots and record deployed SHA. Do not start D03 with pending/red/unverified release. No overnight orchestrator.
+
 ## D02 local candidate (2026-10-20)
 
 - D02/DBL-382,116 adds generated area/tier XP and atomic once-only250 XP/120 gold at crypt attunement. Existing difficulty/composition, level1/3/5 loot, map/encounter identities and item ownership retained. Expedition2 ledger explicitly migrates legacy ready/outbound versus already-attuned/completed states without retroactive rewards; exploration4/character schema unchanged.

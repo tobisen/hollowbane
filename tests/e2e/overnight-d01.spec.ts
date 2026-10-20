@@ -62,6 +62,28 @@ test("real input completes camp forest graveyard crypt camp once with atomic own
       .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
       .toBe(destination);
   }
+  // D03: interrupt outbound travel at the crypt arrival, using only the real
+  // checkpoint UI and reload. The URL still owns the original camp save slot.
+  await saveWorldCheckpoint(page);
+  const outbound = await readWorldCheckpoint(page, "ashen-refuge");
+  expect(outbound.exploration!.area).toBe("ancient-crypt");
+  expect(outbound.exploration!.expedition).toMatchObject({
+    stage: "outbound",
+    reward: "pending",
+  });
+  await page.reload();
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint restored.",
+  );
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+    .toBe("ancient-crypt");
+  await readyController();
+  const resumed = await readWorldCheckpoint(page, "ashen-refuge");
+  expect(resumed.character).toEqual(outbound.character);
+  expect(resumed.progression).toEqual(outbound.progression);
+  expect(resumed.exploration).toEqual(outbound.exploration);
+  expect(resumed.loot).toEqual(outbound.loot);
   // The helper only reads pathfinding; every step still goes through controller input.
   const route = await page.evaluate(() => {
     const w = window.hollowbaneWorld!;
@@ -112,7 +134,23 @@ test("real input completes camp forest graveyard crypt camp once with atomic own
     "Beacon attuned",
   );
   await page.screenshot({ path: "test-results/d01-crypt-beacon.png" });
+  await saveWorldCheckpoint(page);
+  const attuned = await readWorldCheckpoint(page, "ashen-refuge");
+  await page.reload();
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint restored.",
+  );
+  await expect(page.locator("#expedition-status")).toContainText(
+    "Beacon attuned",
+  );
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+    .toBe("ancient-crypt");
   await readyController();
+  const attunedReload = await readWorldCheckpoint(page, "ashen-refuge");
+  expect(attunedReload.progression).toEqual(attuned.progression);
+  expect(attunedReload.exploration).toEqual(attuned.exploration);
+  expect(attunedReload.loot).toEqual(attuned.loot);
   for (const [source, exit, destination] of [
     ["ancient-crypt", "graveyard", "forgotten-graveyard"],
     ["forgotten-graveyard", "forest", "haunted-forest"],

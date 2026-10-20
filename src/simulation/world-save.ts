@@ -5,6 +5,7 @@ import { areaWalkable } from "./area-map";
 import { WORLD_ACTOR_RADIUS, exitNear } from "./area-anchors";
 import type { WorldDrop } from "./world-loot";
 import { validateGeneratedItem } from "./item-save";
+import { validWorldMonsterIdentity } from "./world-encounters";
 import {
   expeditionIdentity,
   type ExpeditionState,
@@ -159,6 +160,13 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       };
     });
     const deaths = a.deaths.map((v) => integer(v));
+    if (
+      contentVersion === 2 &&
+      deaths.some((death) => !validWorldMonsterIdentity(id, death))
+    )
+      throw Error(
+        "Encounter identity does not match saved area; original retained",
+      );
     if (
       new Set(deaths).size !== deaths.length ||
       (id === current && drops.length)
