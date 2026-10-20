@@ -762,7 +762,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
             else
               message = (
                 action === "accept"
-                  ? worldSession!.acceptQuest(id)
+                  ? worldSession!.acceptQuest(id, this.lootView!.world)
                   : worldSession!.trackQuest(id)
               )
                 ? action === "accept"

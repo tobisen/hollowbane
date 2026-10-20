@@ -136,10 +136,23 @@ export class WorldSession {
   get quests() {
     return structuredClone(this.snapshot.quests!);
   }
-  acceptQuest(id: string): boolean {
+  acceptQuest(id: string, liveLoot?: LootWorld): boolean {
     const next = acceptQuest(this.snapshot.quests!, id);
     if (next === this.snapshot.quests) return false;
     this.snapshot.quests = next;
+    // Travel and finite encounters are durable world facts. Reconcile them on
+    // acceptance so clearing an area early cannot require impossible respawns.
+    // This grants objective progress only, never another monster XP/loot reward.
+    for (const area of this.snapshot.areas) {
+      if (!this.snapshot.visited.includes(area.id)) continue;
+      this.questEvent({ kind: "travel", area: area.id, id: area.id });
+      const deaths =
+        area.id === this.travel.state.area && liveLoot
+          ? liveLoot.deaths
+          : area.deaths;
+      for (const death of deaths)
+        this.questEvent({ kind: "defeat", area: area.id, id: String(death) });
+    }
     return true;
   }
   trackQuest(id: string): boolean {

@@ -1,5 +1,20 @@
 # Status
 
+## D05 sequence correction verified locally (2026-10-20)
+
+- Corrected late-acceptance finite encounter handling passes10/10 new units plus final live/restored case rerun, TypeScript/relevant lint/format/build and journal browser1/1 (21.9s). No current kill-source or replay assertions removed; no duplicate XP/loot. Two engine fixtures remain; no D06 content.
+- Publish scoped correction, then verify its exact CI/Pages, all hosted artifacts and NPC/journal smoke before D06. Previous bcea516 release candidate is superseded; last verified deployed remains D04/e21dc00. Original three local docs remain retained.
+
+## D05 pre-publication sequence correction (2026-10-20)
+
+- Final review reproduced late-acceptance softlock against a saved, already defeated forest encounter. Added regression before correction; acceptance now reconciles durable visits/deaths, including uncheckpointed live deaths, without issuing kill XP/loot or changing current death source checks. Repeatable NPC/pickup events still require acceptance.
+- Verify10 D05 cases, TypeScript/relevant lint/format and production browser flow, commit/push correction, then require its new exact CI/Pages/artifact/hosted gates. Prior bcea516/39391716134 is superseded as release candidate; no D06. Original local docs/stash/worktrees retained.
+
+## D05 exact release pending (2026-10-20)
+
+- D05 committed/pushed `bcea516ac6208c2fd3f6f6dc87ee6febb234a17a`; main equals origin/main. Exact workflow39391716134 in_progress: https://github.com/tobisen/hollowbane/actions/runs/39391716134 . Last verified deployed remains D04/e21dc00 until this gate passes. Original three local docs remain unstaged; backup /private/tmp/hollowbane-workspace-reconcile/d05-publication-local.patch, stash and all historical worktrees retained.
+- Stay on D05: require exact verify/deploy success and Pages identity; compare every hosted production file with current dist; run `PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/ npx playwright test tests/e2e/overnight-d05.spec.ts tests/e2e/overnight-d04.spec.ts`; immediately retain screenshots /private/tmp/hollowbane-d05-hosted/, review and record deployed SHA. Fix any CI/hosted failure on D05; no D06 while pending/red/unverified. Continue the normal live session after this gate; no overnight runner.
+
 ## D05 local quest-engine candidate (2026-10-20)
 
 - Scoped DBL-136–141 engine: two original fixtures, explicit acceptance/prerequisites, bounded identity counters for travel/interact/defeat/collect, current-player kill credit, tracked journal, keyboard/mouse/virtual-controller menu access and atomic once-only XP/gold/nearby-item claims. Exploration6/quests1 defaults older saves to empty quest state; semantic visit/meeting/death and XP validation retains original ownership/seeds/character5.

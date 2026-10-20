@@ -248,6 +248,33 @@ it("migrates exploration5 with empty quests while retaining meetings, expedition
   void _oldVersion;
   expect(rest).toEqual(original);
 }, 15000);
+it("accepts after a previously cleared forest without requiring a dead encounter to respawn or repeating XP", () => {
+  const { session, world, inventory } = readyIntro();
+  session.claimQuest(intro.id, world, inventory.loot);
+  world.actors[0]!.controller.walker.position = {
+    ...session.travel.layout.exits.find((e) => e.id === "forest")!.trigger,
+  };
+  expect(session.transition(world, inventory.loot)).toBe(true);
+  inventory.loot.deaths.add(2000);
+  const saved = session.capture(
+      world.actors[0]!.controller.walker.position,
+      inventory.loot,
+    ),
+    restored = new WorldSession(saved);
+  const beforeXp = structuredClone(world.experience);
+  expect(restored.acceptQuest(field.id)).toBe(true);
+  expect(restored.quests.entries[1]!.seen.slice(0, 2)).toEqual([
+    ["haunted-forest"],
+    ["2000"],
+  ]);
+  expect(world.experience).toEqual(beforeXp);
+  expect(restored.acceptQuest(field.id)).toBe(false);
+  expect(session.acceptQuest(field.id, inventory.loot)).toBe(true);
+  expect(session.quests.entries[1]!.seen.slice(0, 2)).toEqual([
+    ["haunted-forest"],
+    ["2000"],
+  ]);
+}, 15000);
 it("credits only current player hostile deaths, preserving source and replay policy", () => {
   const { session, world } = readyIntro();
   // Activate the fixture after the first reward; an actual area transition is covered in route/browser tests.
