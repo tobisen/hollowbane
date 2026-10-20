@@ -6,10 +6,22 @@ import { createMonster } from "./monsters";
 import { areaNavigation, canWalk } from "../world/navigation";
 import { planWorldEncounters, ENCOUNTER_SAFE_RADIUS } from "./world-encounters";
 import { MONSTER_XP } from "./monster-experience";
+import { createBoss, type BossArena, type BossState } from "./boss";
+import {
+  CAIRNWARDEN,
+  CAIRNWARDEN_XP,
+  cairnwardenSpawn,
+} from "./stonebound-miniboss";
 /** Surviving packs restart on area load; defeated identities never restart or earn again. */
 export class WorldEncounterRuntime {
   readonly encounter: Encounter;
   readonly plan: ReturnType<typeof planWorldEncounters>;
+  boss: {
+    definition: typeof CAIRNWARDEN;
+    state: BossState;
+    arena: BossArena;
+  } | null = null;
+  private miniboss;
   private activated = new Set<number>();
   private nav;
   private level: number;
@@ -19,6 +31,7 @@ export class WorldEncounterRuntime {
     private deaths: ReadonlySet<number>,
   ) {
     this.plan = planWorldEncounters(layout);
+    this.miniboss = cairnwardenSpawn(layout, this.plan);
     this.nav = areaNavigation(layout.map);
     this.level = areaDefinition(layout.map.area).level;
     this.encounter = {
@@ -93,9 +106,22 @@ export class WorldEncounterRuntime {
           actor.name = actor.name.replace("Champion ", "Elite ");
           actor.defense.armor += 20;
         }
+        if (spawn.id === this.miniboss?.id) {
+          const arena = {
+            center: { ...spawn.position },
+            home: { ...spawn.position },
+            radius: 6,
+          };
+          this.boss = {
+            definition: CAIRNWARDEN,
+            state: createBoss(actor, CAIRNWARDEN, arena, this.nav),
+            arena,
+          };
+          actor.xpReward = CAIRNWARDEN_XP;
+        }
         brain.previousHp = actor.hp;
         e.combat.actors.push(actor);
-        e.brains.push(brain);
+        if (spawn.id !== this.miniboss?.id) e.brains.push(brain);
         e.spawned++;
       }
       this.activated.add(pack);

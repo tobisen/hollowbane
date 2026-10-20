@@ -7,7 +7,7 @@
   width: min(420px, 55vw);
   padding: 10px 18px;
   border: 1px solid #9e8253;
-  background: #151515eb;
+  background: #151515;
   color: #e8d5ac;
   text-align: center;
   pointer-events: none;
@@ -33,4 +33,17 @@
   min-height: 20px;
   margin-top: 5px;
   color: #ffc68c;
+}
+
+/* Keep campaign warnings clear of the header navigation and expedition prose. */
+.combat-arena:has(.world-expedition) #boss-hud {
+  top: 12px;
+  right: 24px;
+  left: auto;
+  transform: none;
+  width: min(420px, 42vw);
+}
+.combat-arena:has(#boss-hud:not([hidden])) .world-expedition,
+.combat-arena:has(#boss-hud:not([hidden])) .world-developer {
+  visibility: hidden;
 }

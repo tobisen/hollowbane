@@ -50,3 +50,5 @@ L1 item content/ground labels/triangle markers and four synthesized quality cues
 ## D07 boss engine trial
 
 The developer-only Boundary Sentinel reuses the original wanderer atlas and existing combat hit/death transforms as a provisional boss silhouette (DBL-069). `src/rendering/boss-view.ts` draws original projected circle/cone/line telegraphs and a text/progress health/phase HUD. No raster, font or audio assets were added; no production miniboss art is claimed. D07-B must distinguish its original Stonebound-related miniboss and document the reused asset treatment before release.
+
+D07-B Cairnwarden Rhusk is an original Stonebound-related miniboss. Its enlarged silhouette, original three-stone crown geometry and jade-to-gold phase palette distinguish it from ordinary Stonebound. It reuses the project wanderer atlas, existing procedural impact/death animation and synthesized combat sounds; these remain provisional creature art/animation/audio. The crown collapses on death and warnings reuse the shared projected shapes with named counterplay. No third-party or newly generated raster assets were added. Record: `d07-cairnwarden-silhouette` in docs/assets.json.

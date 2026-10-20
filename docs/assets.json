@@ -188,5 +188,13 @@
     "placeholder": true,
     "type": "geometry",
     "provenance": "docs/overnight/d04.md"
+  },
+  {
+    "id": "d07-cairnwarden-silhouette",
+    "source": "src/rendering/combat-arena.ts",
+    "rights": "Original three-stone crown geometry and phase palettes; shared original wanderer atlas; inherited source-rights review pending",
+    "placeholder": true,
+    "type": "geometry",
+    "provenance": "docs/overnight/d07.md"
   }
 ]

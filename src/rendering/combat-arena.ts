@@ -446,6 +446,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         configureWorldRewards(loot, travel.state.area);
       if (!travel || peacefulWorld) {
         this.worldEncounter = null;
+        if (travel) this.boss = null;
         return;
       }
       this.worldEncounter = new WorldEncounterRuntime(
@@ -457,6 +458,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         ? this.worldEncounter.encounter
         : null;
       this.worldEncounter.activate();
+      this.boss = this.worldEncounter.boss;
     }
     /** Publish only after camera preRender has produced the displayed view. */
     private publishWorld(): void {
@@ -1385,6 +1387,31 @@ export function startCombatArena(monsters = false): Phaser.Game {
                 )[brain.role],
           );
       }
+      if (
+        this.boss?.definition.id === "cairnwarden-rhusk" &&
+        this.boss.state.actor === a.id
+      ) {
+        sprite.setScale(1.25, dead ? 0.7 : 1.2);
+        if (!flash)
+          sprite.setTint(this.boss.state.phase === 0 ? 0x92c6bc : 0xe9c68a);
+        // Original three-stone crown: silhouette remains distinct without color.
+        this.ink.lineStyle(3, flash ? 0xffedbb : 0x9ac5ba, dead ? 0.25 : 1);
+        for (const [dx, height] of [
+          [-18, 9],
+          [0, 17],
+          [18, 9],
+        ]) {
+          const y = p.y - (dead ? 12 : 62);
+          this.ink.strokeTriangle(
+            p.x + dx! - 6,
+            y,
+            p.x + dx!,
+            y - height!,
+            p.x + dx! + 6,
+            y,
+          );
+        }
+      }
       if (!polish)
         this.ink.fillStyle(0x03070a, 0.5).fillEllipse(p.x, p.y + 3, 34, 12);
       const selected = this.world.actors[0]!.controller.selected === a.id;
@@ -1668,6 +1695,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           const tickStart = performance.now(),
             oldSequence = player.controller.timeline.sequence;
           this.worldEncounter?.activate();
+          if (this.worldEncounter) this.boss = this.worldEncounter.boss;
           if (this.encounter) {
             const aiStart = performance.now();
             this.encounter.work = {

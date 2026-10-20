@@ -1,5 +1,12 @@
 # Status
 
+## D07-B miniboss candidate — release gate pending (2026-10-20)
+
+- Extended user assignment authorizes sequential D07-B, D08-A/B, D09 and D10, then conditional existing D11–D14; no old orchestrator. Rechecked D07-A exact workflow39486202514: successful ec9aa2babe9e5bbbce7a5eed2ec2fb2f95f1e37b. That remains the last verified deployed runtime at https://tobisen.github.io/hollowbane/ .
+- Cairnwarden Rhusk upgrades one existing graveyard Stonebound identity, with original crown silhouette, three locked telegraphs, two different phase pools, shared combat/navigation/controls, fixed160 XP and existing seeded loot. Saved deaths prevent respawn/repeated rewards, including already defeated legacy identities. No map/save version or D06 quest changes. Original DBL-069/070 parents/dependencies remain partial; physical controllers and production creature art remain unverified.
+- Local:28 focused units (including D06/save/encounter compatibility), TypeScript/scoped lint/format/assets and production build pass; four Chromium campaign/engine cases pass. Genuine strike/player damage, mouse fight, phase transition, virtual target lock/assigned skill, exact XP, atomic save/reload and duplicate prevention verified. Screenshots exposed/fixed campaign HUD overlap. Evidence and commands: docs/overnight/d07.md.
+- Next commit/push the verified candidate after dry-run; require exact successful CI/Pages, matching hosted build bytes and hosted D07-A/B cases before marking D07-B complete or starting D08-A. Preserve unrelated BACKLOG/L3/D05 and historical STATUS changes. D08–D14 have not started.
+
 ## D07-A CI recovery — correction verified locally (2026-10-20)
 
 - Candidatef14788e failed CI39484783592 only on D01 ordered-expedition unit5308ms/default5000ms;455 other tests passed. Pages skipped. No D01-specific timeout or CI override exists.
