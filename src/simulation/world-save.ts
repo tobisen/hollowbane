@@ -5,8 +5,10 @@ import { areaWalkable } from "./area-map";
 import { WORLD_ACTOR_RADIUS, exitNear } from "./area-anchors";
 import type { WorldDrop } from "./world-loot";
 import { validateGeneratedItem } from "./item-save";
+import { expeditionIdentity, type ExpeditionState } from "./world-expedition";
 export interface ExplorationSnapshot {
-  version: 1 | 2 | 3;
+  version: 1 | 2 | 3 | 4;
+  expedition?: ExpeditionState;
   containers?: import("./world-containers").ContainerState;
   contentVersion: number;
   seed: number;
@@ -65,10 +67,16 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     "position",
     "visited",
     "areas",
-    ...(w.version === 2 || w.version === 3 ? ["containers"] : []),
+    ...(w.version === 2 || w.version === 3 || w.version === 4
+      ? ["containers"]
+      : []),
+    ...(w.version === 4 ? ["expedition"] : []),
   ]);
   if (
-    (w.version !== 1 && w.version !== 2 && w.version !== 3) ||
+    (w.version !== 1 &&
+      w.version !== 2 &&
+      w.version !== 3 &&
+      w.version !== 4) ||
     (w.contentVersion !== 1 && w.contentVersion !== 2)
   )
     throw Error("Unsupported exploration version");
@@ -99,7 +107,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       "drops",
       "deaths",
       ...(contentVersion === 2 ? ["layoutFingerprint"] : []),
-      ...(w.version === 3 ? ["discovery"] : []),
+      ...(w.version === 3 || w.version === 4 ? ["discovery"] : []),
     ]);
     const id = area(a.id);
     if (
@@ -115,7 +123,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     if (contentVersion === 2 && a.layoutFingerprint !== fingerprint)
       throw Error("World layout fingerprint mismatch; original retained");
     let discovery: ExplorationSnapshot["areas"][number]["discovery"];
-    if (w.version === 3) {
+    if (w.version === 3 || w.version === 4) {
       const d = record(a.discovery);
       keys(d, ["version", "fingerprint", "cells"]);
       if (
@@ -171,7 +179,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   )
     throw Error("Invalid exploration layout or position");
   let containers: ExplorationSnapshot["containers"];
-  if (w.version === 2 || w.version === 3) {
+  if (w.version === 2 || w.version === 3 || w.version === 4) {
     const c = record(w.containers);
     keys(c, ["version", "gold", "opened"]);
     if (c.version !== 1 || !Array.isArray(c.opened) || c.opened.length > 24)
@@ -191,8 +199,34 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       throw Error("Invalid opened container identity");
     containers = { version: 1, gold: integer(c.gold), opened };
   }
+  let expedition: ExpeditionState | undefined;
+  if (w.version === 4) {
+    const e = record(w.expedition);
+    keys(e, ["version", "id", "stage", "reached"]);
+    const reached = integer(e.reached, 0, 3);
+    if (
+      e.version !== 1 ||
+      e.id !== expeditionIdentity(seed, contentVersion) ||
+      typeof e.stage !== "string" ||
+      !["ready", "outbound", "returning", "complete"].includes(e.stage) ||
+      (e.stage === "ready" && reached !== 0) ||
+      ((e.stage === "returning" || e.stage === "complete") && reached !== 3) ||
+      (e.stage === "complete" && !visited.includes("ashen-refuge")) ||
+      ["haunted-forest", "forgotten-graveyard", "ancient-crypt"]
+        .slice(0, reached)
+        .some((id) => !visited.includes(id as AreaId))
+    )
+      throw Error("Invalid expedition state");
+    expedition = {
+      version: 1,
+      id: e.id as string,
+      stage: e.stage as ExpeditionState["stage"],
+      reached,
+    };
+  }
   return {
     version: w.version,
+    ...(expedition ? { expedition } : {}),
     ...(containers ? { containers } : {}),
     contentVersion,
     seed,

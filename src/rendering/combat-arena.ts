@@ -126,6 +126,7 @@ declare global {
       contentVersion: number;
       fingerprint: string;
       routeToExit?: (id: string) => Point[];
+      routeToObjective?: () => Point[];
       containers?: { id: number; position: Point; opened: boolean }[];
       routeToContainer?: (id: number) => Point[];
       camera: { x: number; y: number; zoom: number };
@@ -344,6 +345,21 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private previousFrame = 0;
     private balancedDetail = false;
     private startedAt = 0;
+    private interactExpedition(): boolean {
+      if (
+        !worldSession ||
+        this.paused ||
+        controllerInput.blockGameplay ||
+        this.abilities?.users.some((u) => u.cast) ||
+        !worldSession.interactExpedition(this.world)
+      )
+        return false;
+      const player = this.world.actors[0]!;
+      player.controller = commandCombat(player.controller, { kind: "stop" });
+      this.inventoryView?.changed();
+      field.focus();
+      return true;
+    }
     private openContainer(id?: number): boolean {
       if (
         !worldSession ||
@@ -428,6 +444,31 @@ export function startCombatArena(monsters = false): Phaser.Game {
                       c.position,
                     )
                   : [];
+              },
+              routeToObjective: () => {
+                const p = worldSession!.objectivePosition;
+                if (!p) return [];
+                // Navigation observation only: do not steer through a travel trigger
+                // when the requested destination is the beacon in this area.
+                const map = travel!.layout.map;
+                const objectiveNav = areaNavigation({
+                  ...map,
+                  objects: [
+                    ...map.objects,
+                    ...travel!.layout.exits.map((exit) => ({
+                      id: `navigation-exit-${exit.id}`,
+                      position: exit.trigger,
+                      radius: 0.75,
+                      blocking: true,
+                      appearance: "navigation-only",
+                    })),
+                  ],
+                });
+                return worldPath(
+                  objectiveNav,
+                  player.controller.walker.position,
+                  p,
+                );
               },
               routeToExit: (id: string) => {
                 const exit = travel!.layout.exits.find((e) => e.id === id);
@@ -643,6 +684,16 @@ export function startCombatArena(monsters = false): Phaser.Game {
         root.querySelector(".arena-footer")!.textContent =
           "Walk to the glowing exits to travel. Seeded expedition · world and character share one checkpoint.";
       }
+      if (travel) {
+        const panel = document.createElement("section");
+        panel.className = "world-expedition";
+        panel.setAttribute("aria-label", "Expedition");
+        panel.innerHTML =
+          '<p id="expedition-status" role="status"></p><button id="expedition-action" type="button">Begin expedition</button>';
+        root.append(panel);
+        panel.querySelector<HTMLButtonElement>("button")!.onclick = () =>
+          this.interactExpedition();
+      }
       if (travel) this.installWorldEncounter(this.lootView!.world);
       this.prepareShowcase();
       this.prepareBenchmark();
@@ -746,7 +797,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         if (event.target !== field) return;
         if (travel && event.key.toLowerCase() === "e" && !event.repeat) {
           event.preventDefault();
-          this.openContainer();
+          if (!this.interactExpedition()) this.openContainer();
           return;
         }
         if (polish && sound.checked && !event.repeat)
@@ -1453,6 +1504,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           }
           if (
             controllerInput.take("interact") &&
+            !this.interactExpedition() &&
             !this.openContainer() &&
             !this.lootView?.interact()
           )
@@ -1636,6 +1688,28 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.environment?.draw(travel.layout);
           this.drawnLayout = travel.layout;
         }
+        const expedition = worldSession!.expedition;
+        const messages = {
+          ready:
+            "Expedition: begin at camp. Travel forest → graveyard → Ancient Crypt.",
+          outbound:
+            "Expedition: forest → graveyard → Ancient Crypt. Attune the beacon in the far chamber (E / Interact).",
+          returning:
+            "Beacon attuned. Return through graveyard → forest → camp to finish.",
+          complete:
+            "Expedition complete · Crypt beacon secured · Returned safely to camp.",
+        };
+        const status = root.querySelector<HTMLElement>("#expedition-status")!;
+        if (status.textContent !== messages[expedition.stage])
+          status.textContent = messages[expedition.stage];
+        const action =
+          root.querySelector<HTMLButtonElement>("#expedition-action")!;
+        action.hidden = !worldSession!.canInteractExpedition(this.world);
+        action.disabled = this.paused || controllerInput.blockGameplay;
+        action.textContent =
+          expedition.stage === "ready"
+            ? "Begin expedition"
+            : "Attune crypt beacon · E / Interact";
         this.environment?.update(player.controller.walker.position);
         if (worldSession!.reveal(player.controller.walker.position))
           this.discoveryDirty = true;
@@ -1674,6 +1748,15 @@ export function startCombatArena(monsters = false): Phaser.Game {
           0.9,
         );
         this.ink.fillTriangle(p.x, p.y - 5, p.x - 4, p.y + 2, p.x + 4, p.y + 2);
+      }
+      if (
+        worldSession?.objectivePosition &&
+        worldSession.expedition.stage === "outbound" &&
+        worldSession.expedition.reached === 3
+      ) {
+        const p = onGround(worldSession.objectivePosition);
+        this.ink.lineStyle(3, 0x8cdddc, 1).strokeCircle(p.x, p.y, 18);
+        this.ink.lineBetween(p.x, p.y - 35, p.x, p.y + 8);
       }
       if (travel)
         for (const exit of travel.layout.exits) {

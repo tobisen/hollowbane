@@ -1,5 +1,15 @@
 # Status
 
+## D01 / DBL-386 continuation (2026-10-20)
+
+- Existing implementation recovered into synchronized normal main; expedition start, ordered travel, crypt attunement, once-only completion and nested exploration4 migration reviewed. Strict stage validation now rejects non-string data. Standard check394 tests passes;17 focused cases and final three-case validator rerun pass. TypeScript/lint/build and scoped format pass.
+- Real-input browser acceptance passes (2.4min): deliberate mouse start, ordered outbound/controller travel, keyboard crypt attunement, return to camp, atomic checkpoint/reload, unchanged character/loot and repeated exit protection. Crypt and completed-camp screenshots reviewed. Pointer-driver failure retained in D01 evidence; established controller driver passes both legs. Ready for scoped D01 commit/push; exact-SHA CI/Pages and hosted acceptance remain pending. No D02 until release gates pass.
+
+## VS Code workflow reconciliation (2026-10-20)
+
+- Normal main fast-forwarded from35ab99b to origin/main312182a; overnight/development shares that base. D00 exact workflow39343312275 verify and Pages deploy independently confirmed successful. Original local documentation retained, with backup patch in /private/tmp/hollowbane-workspace-reconcile and retained Git stash. STATUS top-section overlap resolved by preserving both histories.
+- No active overnight runner found by process inspection. Overnight worktrees/tooling retained. Existing unfinished D01 files copied unchanged into normal workspace for review and continuation; original worktree preserved. D01 is not verified or published. Continue approved D01/DBL-386 specification in tools/overnight/tasks.json; use normal main commit/push and exact CI/Pages gates, superseding runner-only publication wording.
+
 ## D00 / DBL-385 exact-CI retry (2026-10-20)
 
 - Exact candidate0f86c38 workflow39341023318 failed:123 browser cases pass; live-kill assertion inspected actors before asynchronous IndexedDB restoration. Pages did not deploy it. Captured log/source diagnosis recorded in docs/overnight/d00.md.

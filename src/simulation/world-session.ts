@@ -1,3 +1,4 @@
+import { advanceExpedition, newExpedition } from "./world-expedition";
 import { discoveryCell, revealDiscovery } from "./world-discovery";
 import { planWorldContainers, openWorldContainer } from "./world-containers";
 import type { ItemContent } from "./item-content";
@@ -79,12 +80,55 @@ export class WorldSession {
           },
         })),
       };
+    if (this.snapshot.version === 3)
+      this.snapshot = {
+        ...this.snapshot,
+        version: 4,
+        expedition: newExpedition(
+          this.snapshot.seed,
+          this.snapshot.contentVersion,
+        ),
+      };
     const s = this.snapshot;
     this.travel = new WorldTravel(
       s.seed,
       worldLayout(s.area, s.seed, s.contentVersion),
     );
     this.travel.setPosition(restoredPosition(s));
+  }
+  get expedition() {
+    return { ...this.snapshot.expedition! };
+  }
+  /** Existing generated crypt spawn is a reachable chamber, clear of exit triggers. */
+  get objectivePosition(): WorldPoint | null {
+    return this.travel.state.area === "ancient-crypt"
+      ? this.travel.layout.spawn
+      : null;
+  }
+  canInteractExpedition(world: CombatWorld): boolean {
+    const player = world.actors[0]!;
+    if (player.hp <= 0 || player.controller.timeline.phase !== "idle")
+      return false;
+    if (this.expedition.stage === "ready")
+      return this.travel.state.area === "ashen-refuge";
+    const p = this.objectivePosition;
+    return (
+      this.expedition.stage === "outbound" &&
+      this.expedition.reached === 3 &&
+      !!p &&
+      Math.hypot(
+        player.controller.walker.position.x - p.x,
+        player.controller.walker.position.y - p.y,
+      ) <= 1
+    );
+  }
+  interactExpedition(world: CombatWorld): boolean {
+    if (!this.canInteractExpedition(world)) return false;
+    this.snapshot.expedition = {
+      ...this.expedition,
+      stage: this.expedition.stage === "ready" ? "outbound" : "returning",
+    };
+    return true;
   }
   private lastReveal = "";
   private knownCells = new Map<AreaId, Set<number>>();
@@ -181,6 +225,7 @@ export class WorldSession {
     const destination = this.snapshot.areas.find((a) => a.id === after)!;
     this.snapshot = {
       ...this.snapshot,
+      expedition: advanceExpedition(this.expedition, before, after),
       area: after,
       position: this.travel.state.position,
       visited: [...new Set([...this.snapshot.visited, after])],
