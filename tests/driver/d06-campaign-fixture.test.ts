@@ -32,6 +32,11 @@ it("constructs replayable campaign checkpoints using actual vulnerable combat an
       (area) => area.id === "haunted-forest",
     )!.deaths,
   ).toHaveLength(15);
+  const returning = deserializeCharacter(checkpoints.forestReturn);
+  expect(returning.exploration!.area).toBe("forgotten-graveyard");
+  expect(returning.progression).toEqual(
+    deserializeCharacter(checkpoints.forestNavigation).progression,
+  );
   expect(checkpoints.provenance.damageEvents).toBeGreaterThan(0);
   expect(checkpoints.provenance.playerDamage).toBeGreaterThan(0);
   expect(createD06Checkpoints()).toEqual(checkpoints);

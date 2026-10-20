@@ -365,6 +365,8 @@ export function createD06Checkpoints() {
   f.travel("forest");
   f.defeat(13); // The other thirteen authored forest identities, through combat.
   const forestNavigation = f.checkpoint().text;
+  f.travel("graveyard");
+  const forestReturn = f.checkpoint().text;
   return {
     firstReady,
     firstClaimed,
@@ -373,6 +375,7 @@ export function createD06Checkpoints() {
     thirdReady,
     complete,
     forestNavigation,
+    forestReturn,
     graveyard,
     cryptBeacon,
     provenance: f.provenance,

@@ -14,6 +14,21 @@ import { loadD06Checkpoint } from "./d06-checkpoint";
 import { createD06Checkpoints } from "../fixtures/d06-campaign";
 import { deserializeCharacter } from "../../src/simulation/inventory-save";
 
+// Share immutable fixture text only. Each test still owns a fresh browser
+// context and its own IndexedDB; no mutable campaign state crosses tests.
+const checkpoints = (() => {
+  const generated = createD06Checkpoints();
+  return Object.freeze({
+    firstReady: generated.firstReady,
+    secondReady: generated.secondReady,
+    thirdReady: generated.thirdReady,
+    forestNavigation: generated.forestNavigation,
+    forestReturn: generated.forestReturn,
+    graveyard: generated.graveyard,
+    cryptBeacon: generated.cryptBeacon,
+  });
+})();
+
 async function travel(page: Page, source: string, exit: string) {
   await followQuestPath(page, "exit", exit);
   await expect
@@ -44,12 +59,11 @@ async function claim(page: Page, npc: string, title: string) {
   await close(page);
 }
 
-test("forest navigation rearms after UI ownership and reaches both area transitions from a cleared checkpoint", async ({
+test("forest navigation rearms after UI ownership and reaches the graveyard from a cleared checkpoint", async ({
   page,
 }) => {
-  const fixture = createD06Checkpoints();
   await installVirtualController(page, "Xbox 360 Controller");
-  await loadD06Checkpoint(page, fixture.forestNavigation);
+  await loadD06Checkpoint(page, checkpoints.forestNavigation);
   await page.keyboard.press("r");
   // Real UI ownership handoff used to leave held axes permanently unarmed.
   await page.locator('[data-skill="0"]').click();
@@ -70,20 +84,39 @@ test("forest navigation rearms after UI ownership and reaches both area transiti
     0, 0, 0, 0,
   ]);
   await travel(page, "haunted-forest", "graveyard");
+  await saveWorldCheckpoint(page);
+  const saved = await readWorldCheckpoint(page, "ashen-refuge");
+  expect(saved.progression).toEqual(
+    deserializeCharacter(checkpoints.forestNavigation).progression,
+  );
+  expect(
+    await page.evaluate(() => window.hollowbaneCombat!.actors[0]!.hp),
+  ).toBeGreaterThan(0);
+});
+
+test("forest return checkpoint preserves navigation through graveyard, forest and camp", async ({
+  page,
+}) => {
+  await installVirtualController(page, "Xbox 360 Controller");
+  await loadD06Checkpoint(page, checkpoints.forestReturn);
+  await page.keyboard.press("r");
   await travel(page, "forgotten-graveyard", "forest");
   await travel(page, "haunted-forest", "camp");
   await saveWorldCheckpoint(page);
   const saved = await readWorldCheckpoint(page, "ashen-refuge");
   expect(saved.progression).toEqual(
-    deserializeCharacter(fixture.forestNavigation).progression,
+    deserializeCharacter(checkpoints.forestReturn).progression,
   );
+  expect(
+    await page.evaluate(() => window.hollowbaneCombat!.actors[0]!.hp),
+  ).toBeGreaterThan(0);
 });
 
 test("earned Warrior defeats Stonebound through real browser targeting and normal hostile AI", async ({
   page,
 }) => {
   await installVirtualController(page, "Xbox 360 Controller");
-  await loadD06Checkpoint(page, createD06Checkpoints().graveyard);
+  await loadD06Checkpoint(page, checkpoints.graveyard);
   await expect(page.locator('[data-skill="0"] .slot-name')).toHaveText(
     "Sundering Fan",
   );
@@ -169,37 +202,37 @@ test("earned Warrior defeats Stonebound through real browser targeting and norma
   await page.screenshot({ path: "test-results/d06-stonebound.png" });
 });
 
-test("constructed campaign checkpoints preserve all three NPC rewards, equipment, progression and duplicate prevention", async ({
-  page,
-}) => {
-  const fixture = createD06Checkpoints();
-  await installVirtualController(page, "Xbox 360 Controller");
-  const stages = [
-    {
-      text: fixture.firstReady,
-      npc: "edda-vey",
-      title: "Embers on the Road",
-      xp: 80,
-      gold: 25,
-    },
-    {
-      text: fixture.secondReady,
-      npc: "orren-thale",
-      title: "Names Beneath the Ash",
-      xp: 150,
-      gold: 40,
-    },
-    {
-      text: fixture.thirdReady,
-      npc: "edda-vey",
-      title: "The Light Below",
-      xp: 220,
-      gold: 60,
-    },
-  ];
-  for (const [index, stage] of stages.entries()) {
-    const before = deserializeCharacter(stage.text);
-    await loadD06Checkpoint(page, stage.text);
+const campaignReturns = [
+  {
+    checkpoint: "firstReady",
+    npc: "edda-vey",
+    title: "Embers on the Road",
+    xp: 80,
+    gold: 25,
+  },
+  {
+    checkpoint: "secondReady",
+    npc: "orren-thale",
+    title: "Names Beneath the Ash",
+    xp: 150,
+    gold: 40,
+  },
+  {
+    checkpoint: "thirdReady",
+    npc: "edda-vey",
+    title: "The Light Below",
+    xp: 220,
+    gold: 60,
+  },
+] as const;
+for (const [index, stage] of campaignReturns.entries()) {
+  test(`constructed campaign return ${index + 1} preserves ${stage.title} rewards, equipment, progression and duplicate prevention`, async ({
+    page,
+  }) => {
+    const text = checkpoints[stage.checkpoint];
+    await installVirtualController(page, "Xbox 360 Controller");
+    const before = deserializeCharacter(text);
+    await loadD06Checkpoint(page, text);
     await claim(page, stage.npc, stage.title);
     if (index === 0) {
       await expect(page.locator(".loot-label")).toHaveCount(1);
@@ -251,13 +284,13 @@ test("constructed campaign checkpoints preserve all three NPC rewards, equipment
       expect(loaded.progression!.character.totalXp).toBeGreaterThanOrEqual(700);
       await page.screenshot({ path: "test-results/d06-camp-report.png" });
     }
-  }
-});
+  });
+}
 
 test("crypt checkpoint attunes the real beacon once and preserves its reward through reload", async ({
   page,
 }) => {
-  const text = createD06Checkpoints().cryptBeacon,
+  const text = checkpoints.cryptBeacon,
     before = deserializeCharacter(text);
   await installVirtualController(page, "Xbox 360 Controller");
   await loadD06Checkpoint(page, text);

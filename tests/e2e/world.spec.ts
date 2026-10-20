@@ -48,6 +48,9 @@ test("generated forest supports mouse travel, atomic reload and isolated develop
     .toBeGreaterThan(0.2);
   await page.keyboard.up("d");
   await page.keyboard.press("Space");
+  // Trace shows full-area walking dominates this navigation/reload contract.
+  // Use the player's normal run toggle while retaining every route waypoint.
+  await page.keyboard.press("r");
 
   // Keep every pathfinder turn, subdividing only to keep clicks within the viewport.
   // Nearby three-unit hops avoid redundant stops on the same straight segment.

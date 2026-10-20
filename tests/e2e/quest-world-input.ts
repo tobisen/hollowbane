@@ -4,6 +4,7 @@ declare global {
   interface Window {
     hollowbaneQuestNavigation?: {
       arrived: boolean;
+      completed: number;
       frame: number;
       path: Point[];
       sourceArea: string | null;
@@ -127,28 +128,15 @@ export async function followQuestPath(
             y: endpoint.y + ((from.y - endpoint.y) / distance) * gap,
           };
         }
-        const steps = Math.ceil(Math.hypot(to.x - from.x, to.y - from.y) / 1.5);
-        const points = Array.from({ length: steps }, (_, i) => ({
-          x: from.x + ((to.x - from.x) * (i + 1)) / steps,
-          y: from.y + ((to.y - from.y) * (i + 1)) / steps,
-        }));
+        // Stick steering does not need viewport-sized subdivisions. Keep each
+        // actual pathfinder turn without braking at artificial collinear stops.
         from = to;
-        return points;
+        return [to];
       });
     },
     { kind, id },
   );
-  for (const p of points) {
-    if (
-      await page.evaluate((area) => window.hollowbaneWorld!.area !== area, area)
-    )
-      return;
-    await driveQuestPoint(page, p, kind === "exit" ? area : undefined, points);
-    if (
-      await page.evaluate((area) => window.hollowbaneWorld!.area !== area, area)
-    )
-      return;
-  }
+  await driveQuestPoints(page, points, kind === "exit" ? area : undefined);
 }
 export async function driveQuestPoint(
   page: Page,
@@ -156,12 +144,23 @@ export async function driveQuestPoint(
   sourceArea?: string,
   activePath: Point[] = [p],
 ) {
+  await driveQuestPoints(page, [p], sourceArea, activePath);
+}
+async function driveQuestPoints(
+  page: Page,
+  points: Point[],
+  sourceArea?: string,
+  activePath: Point[] = points,
+) {
+  if (!points.length) return;
   // Host polling can miss arrival while a stale held direction overshoots.
-  // Steer and latch arrival beside rendering; the host only observes outcomes.
+  // Advance waypoints beside rendering too: host round trips must not insert
+  // idle time between every short segment on a slower browser.
   await page.evaluate(
-    ({ p, sourceArea, activePath }) => {
+    ({ points, sourceArea, activePath }) => {
       const state = {
         arrived: false,
+        completed: 0,
         frame: 0,
         path: activePath,
         sourceArea: sourceArea ?? null,
@@ -181,11 +180,21 @@ export async function driveQuestPoint(
       const steer = () => {
         const w = window.hollowbaneWorld!,
           player = window.hollowbaneCombat!.actors[0]!;
+        while (
+          state.completed < points.length &&
+          Math.hypot(
+            points[state.completed]!.x - w.position.x,
+            points[state.completed]!.y - w.position.y,
+          ) < 0.1
+        )
+          state.completed++;
+        const p = points[Math.min(state.completed, points.length - 1)]!;
         const dx = p.x - w.position.x,
           dy = p.y - w.position.y;
         const distance = Math.hypot(dx, dy);
         state.arrived ||=
-          (!!sourceArea && w.area !== sourceArea) || distance < 0.1;
+          (!!sourceArea && w.area !== sourceArea) ||
+          state.completed === points.length;
         const sx = dx - dy,
           sy = (dx + dy) / 2,
           length = Math.hypot(sx, sy);
@@ -222,21 +231,24 @@ export async function driveQuestPoint(
       };
       steer();
     },
-    { p, sourceArea, activePath },
+    { points, sourceArea, activePath },
   );
   try {
-    await expect
-      .poll(
-        async () => {
-          return page.evaluate(() => {
-            if (window.hollowbaneCombat!.actors[0]!.hp <= 0)
-              throw Error("Player died while navigating the active expedition");
-            return window.hollowbaneQuestNavigation!.arrived;
-          });
-        },
-        { timeout: 10000, intervals: [30] },
-      )
-      .toBe(true);
+    for (let index = 0; index < points.length; index++)
+      await expect
+        .poll(
+          () =>
+            page.evaluate((index) => {
+              if (window.hollowbaneCombat!.actors[0]!.hp <= 0)
+                throw Error(
+                  "Player died while navigating the active expedition",
+                );
+              const state = window.hollowbaneQuestNavigation!;
+              return state.arrived || state.completed > index;
+            }, index),
+          { timeout: 10000, intervals: [30] },
+        )
+        .toBe(true);
   } catch (error) {
     const diagnostic = await page.evaluate(() => ({
       navigation: window.hollowbaneQuestNavigation,

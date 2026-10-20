@@ -7,6 +7,14 @@ test("real input completes camp forest graveyard crypt camp once with atomic own
   page,
 }) => {
   test.setTimeout(300000);
+  const navigationFixture = async () => {
+    // Preserve this expedition/ownership test's original AI-off fixture while
+    // retaining generated enemies. D06 separately verifies normal-AI combat.
+    await page.locator(".arena-panel summary").press("Space");
+    await page.locator("#combat-hostile").uncheck();
+    await page.locator(".arena-panel summary").press("Space");
+    await page.locator("#combat-world").focus();
+  };
   const readyController = async () => {
     const samples = await page.evaluate(() => {
       window.virtualPads[0]!.axes = [0, 0, 0, 0];
@@ -29,6 +37,7 @@ test("real input completes camp forest graveyard crypt camp once with atomic own
     "Ready · no character checkpoint yet.",
   );
   await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await navigationFixture();
   await page
     .getByRole("button", { name: "Begin expedition", exact: true })
     .click();
@@ -75,6 +84,7 @@ test("real input completes camp forest graveyard crypt camp once with atomic own
   await expect(page.locator("#inventory-status")).toHaveText(
     "Character checkpoint restored.",
   );
+  await navigationFixture();
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
     .toBe("ancient-crypt");
@@ -140,6 +150,7 @@ test("real input completes camp forest graveyard crypt camp once with atomic own
   await expect(page.locator("#inventory-status")).toHaveText(
     "Character checkpoint restored.",
   );
+  await navigationFixture();
   await expect(page.locator("#expedition-status")).toContainText(
     "Beacon attuned",
   );
@@ -200,6 +211,7 @@ test("real input completes camp forest graveyard crypt camp once with atomic own
   await expect(page.locator("#inventory-status")).toHaveText(
     "Character checkpoint restored.",
   );
+  await navigationFixture();
   await expect(page.locator("#expedition-status")).toContainText(
     "Expedition complete",
   );
