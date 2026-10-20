@@ -2,10 +2,13 @@
 
 ## D06 release CI correction verified locally — exact release pending (2026-10-20)
 
+- Exact correction run39476628948 for `9041a1ed3a38220baf59b37d359909bdff413434` passed `npm run check`, then failed only `format:check`: the committed STATUS section lacked one blank line before its next heading. No browser test or Pages deployment ran. This follow-up fixes that formatting error only; a new exact CI/Pages/hosted gate is required.
+- Verified correction `9041a1ed3a38220baf59b37d359909bdff413434` was committed and safely pushed after a fast-forward dry-run. Failed exact workflow: https://github.com/tobisen/hollowbane/actions/runs/39476628948 . D06 remains incomplete until CI, matching Pages and hosted D06 acceptance pass; D07 has not started.
 - Exact run39467714491 for `8ea7531c092fcb3f1e542be4efffc53fc53ceb11` failed four browser contracts after130 passes; Pages was skipped. D01 died on its historical navigation-only route after D06 enabled normal AI. D06 forest and three-return cases exhausted whole-test60s limits. The legacy world case exhausted180s during final restart after its long mouse route. No gameplay defect was demonstrated in these failures.
 - Test-only corrections make D01's prior AI-off fixture explicit through its existing control; keep generated enemies and all original assertions. D06 shares immutable fixture text, runs native path turns in one frame-driven route, and separates full outbound/return navigation and the three already-independent reward checkpoints. The legacy world route uses ordinary Run input. No gameplay rules, assertion or timeout limits changed.
 - Final local evidence: D06 acceptance9/9 (1.6min), affected D01 route pass (2.4min), legacy world route pass (57.3s), six focused driver/fixture units, TypeScript, relevant lint/format and production build pass. Reviewed final Stonebound, quest journal and crypt screenshots. Continuous three-quest player-driven combat survival is not claimed; real Stonebound combat is verified separately. Artifacts: `/private/tmp/hollowbane-d06-release-candidate/`, `/private/tmp/hollowbane-d06-ci-corrections-final.log`, `/private/tmp/hollowbane-d06-world-run/`.
 - Next commit/push only these reviewed corrections; require successful exact new CI, matching Pages deployment and hosted D06 acceptance before marking D06 complete. Until then verified hosted release is D05 `2eda0e7`; do not start D07. Preserve unrelated working edits.
+
 ## D06 acceptance stabilized — local release candidate (2026-10-20)
 
 - D01–D05 remain verified at `2eda0e7adbac7ec2079c5c6d0b8803019bfa8cfc`. D06 local acceptance passes; exact candidate CI/Pages and hosted verification remain required before completion. No D07. Unrelated files and historical STATUS edits are preserved separately.
