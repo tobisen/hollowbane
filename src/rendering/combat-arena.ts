@@ -1,3 +1,6 @@
+import { bossHooks } from "../simulation/boss";
+import { installBossTrial } from "../simulation/boss-trial";
+import { BossView, type BossEncounterView } from "./boss-view";
 import { WorldMinimap } from "./world-minimap";
 import { CampDialogueView } from "./camp-dialogue";
 import { QuestJournal } from "./quest-journal";
@@ -223,7 +226,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
     CLASS_IDS.includes(labId as ClassId)
       ? (labId as ClassId)
       : null;
-  if (classLab || exploring) monsters = false;
+  const bossTrial =
+    !exploring && query.get("developer") === "1" && query.has("bossTrial");
+  if (classLab || exploring || bossTrial) monsters = false;
   const inventory = (exploring || query.has("inventory")) && !classLab;
   const advanced = inventory && (exploring || query.has("advanced"));
   const itemLab = !exploring && advanced && query.has("itemLab");
@@ -309,6 +314,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
       ? createEncounter(initialCount)
       : null;
     private world = this.encounter?.combat ?? createCombat();
+    private boss: BossEncounterView | null = bossTrial
+      ? installBossTrial(this.world)
+      : null;
+    private bossView: BossView | null = null;
     private minimap: WorldMinimap | null = null;
     private discoveryDirty = false;
     private containerView: ContainerView | null = null;
@@ -703,6 +712,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         for (let y = 260; y < 830; y += 32) floor.lineBetween(230, y, 1300, y);
         floor.lineStyle(2, 0xb19a62, 0.6).strokeRect(230, 260, 1070, 570);
       }
+      this.bossView = new BossView(this, root);
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
       if (travel) {
@@ -978,6 +988,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               )
             : null;
           this.world = this.encounter?.combat ?? createCombat();
+          this.boss = bossTrial ? installBossTrial(this.world) : null;
           this.prepareShowcase();
           this.prepareBenchmark();
           this.abilities = classLab
@@ -1706,7 +1717,18 @@ export function startCombatArena(monsters = false): Phaser.Game {
             nav,
             direct.vector,
             direct.scale,
-            this.abilities ? skillHooks(this.abilities, nav) : {},
+            this.boss
+              ? bossHooks(
+                  this.world,
+                  this.boss.definition,
+                  this.boss.state,
+                  this.boss.arena,
+                  nav,
+                  this.abilities ? skillHooks(this.abilities, nav) : {},
+                )
+              : this.abilities
+                ? skillHooks(this.abilities, nav)
+                : {},
           );
           if (this.abilities) {
             this.record(this.skillCosts, performance.now() - skillStart);
@@ -1914,6 +1936,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               obstacle.ry * 2,
             );
         }
+      this.bossView?.draw(this.boss, this.world);
       for (const actor of this.world.actors) this.drawActor(actor);
       for (const projectile of this.world.projectiles) {
         const p = onGround(projectile.position);

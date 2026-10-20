@@ -1,5 +1,11 @@
 # Status
 
+## D07-A engine local candidate (2026-10-20)
+
+- DBL-069/070 scoped engine candidate: seeded attack pools, locked cone/circle/line warnings, shared combat timing/damage/stagger, health/encounter phases, escape/reset/death/completion and health/phase HUD. Developer trial only; no campaign boss or D08. Original dependencies/broader parents stay partial.
+-32 focused units, TypeScript/scoped lint/format/build and2 Chromium warning/damage/mouse/virtual-controller cases pass; warning screenshot reviewed. Physical controller verification is not claimed. Provenance and continuation: docs/overnight/d07.md.
+- Exact new CI/Pages, hosted artifact identity and hosted boss smoke remain required. D07-A release is incomplete; D07-B has not started. D06 remains verified at50bd6a5. Preserve unrelated working documentation. Publish the reviewed candidate, verify its exact release gate, then implement D07-B.
+
 ## D06 complete — verified release (2026-10-20)
 
 - Exact release `50bd6a580bf7d3fdcae7e32f15f8a1bca75ede87` passed both verify and deploy jobs in CI run39477757637: https://github.com/tobisen/hollowbane/actions/runs/39477757637 . GitHub Pages deployment7208853800 reports success for that same full SHA at https://tobisen.github.io/hollowbane/ . All26 hosted publication files match the local production build byte for byte.

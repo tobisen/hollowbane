@@ -46,3 +46,7 @@ The polish HUD ability icons are original inline SVG paths in polish-hud.ts. Com
 Polish ground/contact artwork is original code in polish-ground.ts: stone seams, court inlay, restrained baked light pools, depth-sorted obstacle caps and a 64x32 contact-shadow texture. The 1070x570 floor is generated once per scene (~2.4 MB RGBA), shadows ~8 KB, with no added download. Backdrop crops reuse the approved cloister only outside the opaque court; no per-frame mist/lighting shader is added. Existing actor atlas remains unchanged; role/champion proportions and event-driven poses share fixed foot anchors. These refinements do not complete original character/monster sprite-sheet art requirements.
 
 L1 item content/ground labels/triangle markers and four synthesized quality cues are original project work (src/simulation/item-content.ts, src/rendering/loot-view.ts, combat-arena.ts, combat-audio.ts). No external artwork/audio, item icons or new raster downloads. Labels/markers are the scoped L1 presentation; detailed item art remains unimplemented.
+
+## D07 boss engine trial
+
+The developer-only Boundary Sentinel reuses the original wanderer atlas and existing combat hit/death transforms as a provisional boss silhouette (DBL-069). `src/rendering/boss-view.ts` draws original projected circle/cone/line telegraphs and a text/progress health/phase HUD. No raster, font or audio assets were added; no production miniboss art is claimed. D07-B must distinguish its original Stonebound-related miniboss and document the reused asset treatment before release.
