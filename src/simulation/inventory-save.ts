@@ -1,5 +1,6 @@
 import { validateExploration } from "./world-save";
 import { EXPEDITION_REWARD } from "./world-expedition";
+import { QUESTS } from "./quests";
 import { worldLayout } from "./world-layout";
 import { areaNavigation } from "../world/navigation";
 import { progressionAtLevel, validateProgression } from "./progression-save";
@@ -190,6 +191,25 @@ function validateBody(
     throw Error("Unsupported content registry");
   if (progression) {
     session.progression = validateProgression(b.progression);
+    const claimedQuestXp =
+      world?.quests?.entries.reduce(
+        (sum, entry) =>
+          sum +
+          (entry.status === "claimed"
+            ? QUESTS.find((q) => q.id === entry.id)!.reward.xp
+            : 0),
+        0,
+      ) ?? 0;
+    if (
+      claimedQuestXp > 0 &&
+      session.progression.character.totalXp <
+        claimedQuestXp +
+          (world?.expedition?.version === 2 &&
+          world.expedition.reward === "claimed"
+            ? EXPEDITION_REWARD.xp
+            : 0)
+    )
+      throw Error("Incomplete quest reward transaction; original retained");
     if (
       world?.expedition?.version === 2 &&
       world.expedition.reward === "claimed" &&

@@ -1,5 +1,6 @@
 import { WorldMinimap } from "./world-minimap";
 import { CampDialogueView } from "./camp-dialogue";
+import { QuestJournal } from "./quest-journal";
 import { CAMP_NPCS, nearbyCampNpc } from "../simulation/camp-dialogue";
 import { ContainerView } from "./world-containers";
 import { canOpenContainer } from "../simulation/world-containers";
@@ -337,6 +338,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private drawnLayout: unknown = null;
     private campEnvironment: CampEnvironment | null = null;
     private campDialogue: CampDialogueView | null = null;
+    private questJournal: QuestJournal | null = null;
     private environment: WorldEnvironment | null = null;
     private ink!: Phaser.GameObjects.Graphics;
     private effect!: Phaser.GameObjects.Graphics;
@@ -741,6 +743,60 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.interactNpc(id),
         );
         this.events.once("shutdown", () => this.campDialogue?.destroy());
+        this.questJournal = new QuestJournal(
+          root,
+          () => worldSession!,
+          () =>
+            !!this.inventoryView?.worldReady &&
+            !this.paused &&
+            this.world.actors[0]!.hp > 0 &&
+            !this.abilities?.users.some((u) => u.cast),
+          (action, id) => {
+            let message: string;
+            if (action === "claim")
+              message = worldSession!.claimQuest(
+                id,
+                this.world,
+                this.lootView!.world,
+              );
+            else
+              message = (
+                action === "accept"
+                  ? worldSession!.acceptQuest(id)
+                  : worldSession!.trackQuest(id)
+              )
+                ? action === "accept"
+                  ? "Quest accepted."
+                  : "Quest tracked."
+                : "Quest action unavailable.";
+            this.inventoryView?.changed();
+            return message;
+          },
+          () => {
+            this.keys.clear();
+            this.world.actors[0]!.controller = commandCombat(
+              this.world.actors[0]!.controller,
+              { kind: "stop" },
+            );
+          },
+        );
+        const collected = (event: Event) => {
+          const id: unknown = (event as CustomEvent<unknown>).detail;
+          if (
+            typeof id === "string" &&
+            worldSession!.questEvent({
+              kind: "collect",
+              area: worldSession!.travel.state.area,
+              id,
+            })
+          )
+            this.inventoryView?.changed();
+        };
+        window.addEventListener("hollowbane-item-collected", collected);
+        this.events.once("shutdown", () => {
+          this.questJournal?.destroy();
+          window.removeEventListener("hollowbane-item-collected", collected);
+        });
       }
       if (travel) this.installWorldEncounter(this.lootView!.world);
       this.prepareShowcase();
@@ -1670,6 +1726,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
                 `${SKILLS.find((s) => s.id === event.skill)?.name}: ${event.reason ?? event.kind}`;
             }
           }
+          if (worldSession?.consumeQuestDeaths(this.world))
+            this.inventoryView?.changed();
           this.lootView?.advance(this.world);
           if (this.encounter) finishEncounter(this.encounter, nav);
           const aim = controllerInput.frame.aim;
@@ -1781,6 +1839,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.inventoryView?.changed();
         }
         this.minimap?.update(worldSession!, player.controller.walker.position);
+        this.questJournal?.update();
         this.campDialogue?.update(
           travel.state.area,
           player.controller.walker.position,

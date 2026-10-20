@@ -1,0 +1,50 @@
+[
+  {
+    "id": "camp-introductions",
+    "title": "Camp introductions",
+    "description": "Meet the two keepers of Ashen Refuge. Speak to each after accepting this task.",
+    "requires": [],
+    "objectives": [
+      {
+        "kind": "interact",
+        "target": "edda-vey",
+        "label": "Speak to Edda Vey",
+        "count": 1
+      },
+      {
+        "kind": "interact",
+        "target": "orren-thale",
+        "label": "Speak to Orren Thale",
+        "count": 1
+      }
+    ],
+    "reward": { "xp": 25, "gold": 5, "itemSeed": 1364525057 }
+  },
+  {
+    "id": "field-practice",
+    "title": "Field practice",
+    "description": "Explore the forest, defeat one hostile and recover one item there. Return to camp to claim your reward.",
+    "requires": ["camp-introductions"],
+    "objectives": [
+      {
+        "kind": "travel",
+        "target": "haunted-forest",
+        "label": "Enter the Haunted Forest",
+        "count": 1
+      },
+      {
+        "kind": "defeat",
+        "target": "haunted-forest",
+        "label": "Defeat a forest hostile",
+        "count": 1
+      },
+      {
+        "kind": "collect",
+        "target": "haunted-forest",
+        "label": "Pick up a forest item",
+        "count": 1
+      }
+    ],
+    "reward": { "xp": 50, "gold": 15, "itemSeed": null }
+  }
+]

@@ -43,6 +43,15 @@ export function installControllerUI(): void {
   };
   widget.onclick = open;
   menu.querySelector<HTMLButtonElement>("#controller-resume")!.onclick = close;
+  const journal = document.createElement("button");
+  journal.id = "controller-journal";
+  journal.textContent = "Quest journal";
+  journal.hidden = true;
+  menu.querySelector("#controller-resume")!.after(journal);
+  journal.onclick = () => {
+    close();
+    window.dispatchEvent(new Event("hollowbane-journal-toggle"));
+  };
   menu.querySelector<HTMLButtonElement>("#controller-movement")!.onclick =
     () => {
       close();
@@ -252,6 +261,7 @@ export function installControllerUI(): void {
     }
     if (now - refreshedAt > 100) {
       refreshedAt = now;
+      journal.hidden = !document.querySelector("#quest-journal-open");
       widget.textContent =
         hub.apiStatus === "blocked" || hub.apiStatus === "unavailable"
           ? "Controller access unavailable · Settings"

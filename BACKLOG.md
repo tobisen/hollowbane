@@ -389,4 +389,6 @@ W1–W5 authorized after technical C13 verification. Thirty sequential scoped in
 - DBL-390 / W5: Public expedition publication and hosted verification (planned).
 - DBL-391 / W5: World quality evidence and review checkpoint (planned).
 
-D04 / DBL-131: scoped original two-NPC camp/dialogue foundation locally verified, including versioned meeting flags and keyboard/mouse/virtual-controller focus/cancel. Shared original sprite costumes remain art placeholders; no quest/vendor scope or broad-parent closure. Exact publication pending.
+D04 / DBL-131: scoped original two-NPC camp/dialogue foundation verified at e21dc00, with exact CI/Pages, hosted artifact identity and NPC/controller/save smoke. Shared original sprite costumes remain art placeholders; broader parent remains partial.
+
+D05 / DBL-136–141: scoped deterministic quest definitions/prerequisites, travel/interact/defeat/collect ledgers, journal/controller UI, atomic once-only XP/gold/item rewards and exploration6 migration locally verified. Two engine fixtures only; Act1 story follows in D06. Broader map/reputation/escort/reward-unlock requirements remain partial. Exact publication pending.

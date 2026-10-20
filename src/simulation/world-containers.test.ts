@@ -69,6 +69,7 @@ it("atomically preserves opened state, gold and item ownership across checkpoint
   legacy.version = 1;
   delete legacy.expedition;
   delete legacy.dialogue;
+  delete legacy.quests;
   for (const area of legacy.areas) delete area.discovery;
   delete legacy.containers;
   const migrated = new WorldSession(validateExploration(legacy));

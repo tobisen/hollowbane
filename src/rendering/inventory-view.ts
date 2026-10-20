@@ -330,9 +330,20 @@ export class InventoryView {
       if (!this.ready)
         return "Character storage is still loading or requires recovery.";
       const p = this.player();
-      return this.perform(
-        pickupDrop(runtime.session(), id, p.position, nav, undefined, p.alive),
+      const result = pickupDrop(
+        runtime.session(),
+        id,
+        p.position,
+        nav,
+        undefined,
+        p.alive,
       );
+      const message = this.perform(result);
+      if (result.ok)
+        window.dispatchEvent(
+          new CustomEvent("hollowbane-item-collected", { detail: id }),
+        );
+      return message;
     };
     loot.onChange = () => this.changed();
     this.render();

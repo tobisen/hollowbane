@@ -195,7 +195,12 @@ test("camp NPC dialogue uses real mouse keyboard and controller input, restores 
   await pressVirtualButton(page, 1);
   await saveWorldCheckpoint(page);
   const saved = await readWorldCheckpoint(page, "ashen-refuge");
-  expect(saved.exploration!.version).toBe(5);
+  expect(saved.exploration!.version).toBe(6);
+  expect(saved.exploration!.quests).toEqual({
+    version: 1,
+    tracked: null,
+    entries: [],
+  });
   expect(saved.exploration!.dialogue).toEqual({
     version: 1,
     met: ["edda-vey", "orren-thale"],

@@ -1,5 +1,20 @@
 # Status
 
+## D05 local quest-engine candidate (2026-10-20)
+
+- Scoped DBL-136–141 engine: two original fixtures, explicit acceptance/prerequisites, bounded identity counters for travel/interact/defeat/collect, current-player kill credit, tracked journal, keyboard/mouse/virtual-controller menu access and atomic once-only XP/gold/nearby-item claims. Exploration6/quests1 defaults older saves to empty quest state; semantic visit/meeting/death and XP validation retains original ownership/seeds/character5.
+- 45 unique scoped units pass across runs (final new9/9); TypeScript/relevant lint/format/build and backlog validation pass. Final NPC/journal browser2/2 passes28.4s; three journal screenshots and camp launcher reviewed under /private/tmp/hollowbane-d05-local/. Evidence docs/overnight/d05.md. Commit/push and exact CI/Pages/hosted gate remain; no D06 until verified. Original three local docs/stash/worktrees preserved.
+
+## D04 verified release / D05 active (2026-10-20)
+
+- D04 deployed `e21dc00979ba56d0a5b4ea97de06d931a0ff3c03`: exact CI39386922407 verify/deploy success,127 browser/15 final cross-browser; Pages7194535597 success. All26 hosted files match; hosted NPC scenario1/1 passes9.0s. Three screenshots reviewed and retained /private/tmp/hollowbane-d04-hosted/. Evidence docs/overnight/d04.md.
+- D05 quest-engine slice now active: data-driven prerequisites/objectives/counters/journal, once-only atomic rewards and versioned persistence, reusing existing systems. D06 story content remains gated on D05 exact release. Original local docs/stash/worktrees preserved; normal main equals origin/main. No orchestrator.
+
+## D04 exact release pending (2026-10-20)
+
+- D04 committed/pushede21dc00979ba56d0a5b4ea97de06d931a0ff3c03; main equals origin/main. Exact workflow39386922407 in_progress: https://github.com/tobisen/hollowbane/actions/runs/39386922407 . Last verified deployed release remains D03/6b61be0 until this gate passes. Original three local docs remain unstaged with backup /private/tmp/hollowbane-workspace-reconcile/d04-publication-local.patch and retained stash/worktrees.
+- Stay on D04: exact verify/deploy success, Pages identity, compare all hosted files with current dist, hosted `PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/ npx playwright test tests/e2e/overnight-d04.spec.ts`, review/copy three screenshots to /private/tmp/hollowbane-d04-hosted/, record deployed SHA. Then begin approved D05 quest-engine slice. No D05 while pending/red/unverified; no overnight runner.
+
 ## D04 local NPC/dialogue candidate (2026-10-20)
 
 - D04/DBL-131 delivers original Edda Vey/Orren Thale data-driven camp dialogue, validated proximity/alive/idle intents, safe text/native modal focus and keyboard/mouse/virtual-controller cancel/navigation. Exploration5 dialogue1 flags explicitly migrate1–4 with empty meetings, preserving maps/items/expedition/character5. No NPC quest reward/vendor functionality.

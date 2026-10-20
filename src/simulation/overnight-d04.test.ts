@@ -198,6 +198,7 @@ it.each([1, 2, 3, 4])(
       legacy = structuredClone(original);
     legacy.version = version as 1 | 2 | 3 | 4;
     delete legacy.dialogue;
+    delete legacy.quests;
     if (version < 4) delete legacy.expedition;
     if (version < 3) for (const area of legacy.areas) delete area.discovery;
     if (version < 2) delete legacy.containers;

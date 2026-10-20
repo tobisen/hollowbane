@@ -5,6 +5,18 @@ import {
   EXPEDITION_REWARD,
 } from "./world-expedition";
 import { grantCharacterXp } from "./monster-experience";
+import {
+  QUESTS,
+  newQuestState,
+  acceptQuest,
+  trackQuest,
+  advanceQuests,
+  claimedQuest,
+  type QuestEvent,
+} from "./quests";
+import { questRewardItem } from "./quest-rewards";
+import { placeLoot } from "./world-loot";
+import { areaNavigation } from "../world/navigation";
 import { beginCampDialogue, newCampConversations } from "./camp-dialogue";
 import { discoveryCell, revealDiscovery } from "./world-discovery";
 import { planWorldContainers, openWorldContainer } from "./world-containers";
@@ -102,6 +114,8 @@ export class WorldSession {
         version: 5,
         dialogue: newCampConversations(),
       };
+    if (this.snapshot.version === 5)
+      this.snapshot = { ...this.snapshot, version: 6, quests: newQuestState() };
     const s = this.snapshot;
     s.expedition = migrateExpedition(s.expedition!);
     this.travel = new WorldTravel(
@@ -119,6 +133,102 @@ export class WorldSession {
       met: [...this.snapshot.dialogue!.met],
     };
   }
+  get quests() {
+    return structuredClone(this.snapshot.quests!);
+  }
+  acceptQuest(id: string): boolean {
+    const next = acceptQuest(this.snapshot.quests!, id);
+    if (next === this.snapshot.quests) return false;
+    this.snapshot.quests = next;
+    return true;
+  }
+  trackQuest(id: string): boolean {
+    const next = trackQuest(this.snapshot.quests!, id);
+    if (next === this.snapshot.quests) return false;
+    this.snapshot.quests = next;
+    return true;
+  }
+  questEvent(event: QuestEvent): boolean {
+    const next = advanceQuests(this.snapshot.quests!, event);
+    if (next === this.snapshot.quests) return false;
+    this.snapshot.quests = next;
+    return true;
+  }
+  consumeQuestDeaths(world: CombatWorld): boolean {
+    let changed = false;
+    for (const event of world.events) {
+      if (
+        event.kind !== "death" ||
+        event.tick !== world.tick ||
+        event.actor !== world.experience.player
+      )
+        continue;
+      const target = world.actors.find((a) => a.id === event.target);
+      if (world.actors.find((a) => a.id === event.actor)?.kind !== "player")
+        continue;
+      if (
+        !target ||
+        target.kind !== "hostile" ||
+        !target.monsterRole ||
+        target.hp !== 0
+      )
+        continue;
+      changed =
+        this.questEvent({
+          kind: "defeat",
+          area: this.travel.state.area,
+          id: String(target.id),
+        }) || changed;
+    }
+    return changed;
+  }
+  claimQuest(id: string, world: CombatWorld, loot: LootWorld): string {
+    const q = QUESTS.find((q) => q.id === id),
+      player = world.actors[0]!;
+    if (
+      !q ||
+      this.travel.state.area !== "ashen-refuge" ||
+      player.hp <= 0 ||
+      player.controller.timeline.phase !== "idle"
+    )
+      return "Return safely to camp to claim rewards.";
+    const quests = claimedQuest(this.snapshot.quests!, id);
+    if (quests === this.snapshot.quests)
+      return "Quest reward is not available.";
+    const gold = this.containerState.gold + q.reward.gold;
+    if (!Number.isSafeInteger(gold))
+      return "Gold limit reached; reward retained.";
+    const xp = { ...world.experience },
+      staged = { ...loot, drops: [...loot.drops] };
+    try {
+      grantCharacterXp(xp, q.reward.xp);
+      const item = questRewardItem(q.reward);
+      if (
+        item &&
+        !placeLoot(
+          staged,
+          item,
+          player.controller.walker.position,
+          world.tick,
+          -2,
+          areaNavigation(this.travel.layout.map),
+        )
+      )
+        return "No safe space for the reward item; make room and retry.";
+      // Prepare everything before committing; the existing atomic snapshot owns all halves.
+      world.experience.character = xp.character;
+      world.experience.attributes = xp.attributes;
+      world.experience.skills = xp.skills;
+      loot.drops = staged.drops;
+      this.containerState.gold = gold;
+      this.snapshot.quests = quests;
+      return item
+        ? "Reward claimed. Your item is on the ground nearby."
+        : "Reward claimed.";
+    } catch {
+      return "Reward could not be prepared; state unchanged.";
+    }
+  }
   beginDialogue(id: string, world: CombatWorld) {
     const player = world.actors[0]!;
     const result = beginCampDialogue(
@@ -129,7 +239,15 @@ export class WorldSession {
       player.hp > 0,
       player.controller.timeline.phase === "idle",
     );
-    if (result) this.snapshot.dialogue = result.state;
+    if (result) {
+      this.snapshot.dialogue = result.state;
+      const changed = this.questEvent({
+        kind: "interact",
+        area: this.travel.state.area,
+        id,
+      });
+      return { ...result, changed: result.changed || changed };
+    }
     return result;
   }
   /** Existing generated crypt spawn is a reachable chamber, clear of exit triggers. */
@@ -266,6 +384,7 @@ export class WorldSession {
     if (!stepWorldTravel(this.travel, world, this.snapshot.contentVersion))
       return false;
     const after = this.travel.state.area;
+    this.questEvent({ kind: "travel", area: after, id: after });
     const destination = this.snapshot.areas.find((a) => a.id === after)!;
     this.snapshot = {
       ...this.snapshot,

@@ -76,6 +76,7 @@ it("migrates prior discovery snapshots without awarding completion and rejects f
   legacy.version = 3;
   delete legacy.expedition;
   delete legacy.dialogue;
+  delete legacy.quests;
   expect(new WorldSession(legacy).expedition.stage).toBe("ready");
   for (const change of [
     { id: "forged" },

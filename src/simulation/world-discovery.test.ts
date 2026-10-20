@@ -75,6 +75,7 @@ it("explicitly migrates pre-discovery versions without revealing unrelated cells
     legacy.version = version;
     delete legacy.expedition;
     delete legacy.dialogue;
+    delete legacy.quests;
     for (const a of legacy.areas) delete a.discovery;
     if (version === 1) delete legacy.containers;
     const restored = new WorldSession(validateExploration(legacy));

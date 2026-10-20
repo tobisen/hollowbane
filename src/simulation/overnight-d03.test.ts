@@ -297,6 +297,7 @@ it.each([1, 2, 3])(
     old.version = version;
     delete old.expedition;
     delete old.dialogue;
+    delete old.quests;
     if (version === 1) delete old.containers;
     if (version < 3) for (const area of old.areas) delete area.discovery;
     root.checksum = snapshotChecksum(JSON.stringify(root.body));

@@ -6,6 +6,7 @@ import { WORLD_ACTOR_RADIUS, exitNear } from "./area-anchors";
 import type { WorldDrop } from "./world-loot";
 import { validateGeneratedItem } from "./item-save";
 import { validWorldMonsterIdentity } from "./world-encounters";
+import { QUESTS, validateQuestState, type QuestState } from "./quests";
 import {
   validateCampConversations,
   type CampConversationState,
@@ -16,7 +17,8 @@ import {
   type LegacyExpeditionState,
 } from "./world-expedition";
 export interface ExplorationSnapshot {
-  version: 1 | 2 | 3 | 4 | 5;
+  version: 1 | 2 | 3 | 4 | 5 | 6;
+  quests?: QuestState;
   dialogue?: CampConversationState;
   expedition?: ExpeditionState | LegacyExpeditionState;
   containers?: import("./world-containers").ContainerState;
@@ -77,18 +79,26 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     "position",
     "visited",
     "areas",
-    ...(w.version === 2 || w.version === 3 || w.version === 4 || w.version === 5
+    ...(w.version === 2 ||
+    w.version === 3 ||
+    w.version === 4 ||
+    w.version === 5 ||
+    w.version === 6
       ? ["containers"]
       : []),
-    ...(w.version === 4 || w.version === 5 ? ["expedition"] : []),
-    ...(w.version === 5 ? ["dialogue"] : []),
+    ...(w.version === 4 || w.version === 5 || w.version === 6
+      ? ["expedition"]
+      : []),
+    ...(w.version === 5 || w.version === 6 ? ["dialogue"] : []),
+    ...(w.version === 6 ? ["quests"] : []),
   ]);
   if (
     (w.version !== 1 &&
       w.version !== 2 &&
       w.version !== 3 &&
       w.version !== 4 &&
-      w.version !== 5) ||
+      w.version !== 5 &&
+      w.version !== 6) ||
     (w.contentVersion !== 1 && w.contentVersion !== 2)
   )
     throw Error("Unsupported exploration version");
@@ -119,7 +129,10 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       "drops",
       "deaths",
       ...(contentVersion === 2 ? ["layoutFingerprint"] : []),
-      ...(w.version === 3 || w.version === 4 || w.version === 5
+      ...(w.version === 3 ||
+      w.version === 4 ||
+      w.version === 5 ||
+      w.version === 6
         ? ["discovery"]
         : []),
     ]);
@@ -137,7 +150,12 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     if (contentVersion === 2 && a.layoutFingerprint !== fingerprint)
       throw Error("World layout fingerprint mismatch; original retained");
     let discovery: ExplorationSnapshot["areas"][number]["discovery"];
-    if (w.version === 3 || w.version === 4 || w.version === 5) {
+    if (
+      w.version === 3 ||
+      w.version === 4 ||
+      w.version === 5 ||
+      w.version === 6
+    ) {
       const d = record(a.discovery);
       keys(d, ["version", "fingerprint", "cells"]);
       if (
@@ -204,7 +222,8 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     w.version === 2 ||
     w.version === 3 ||
     w.version === 4 ||
-    w.version === 5
+    w.version === 5 ||
+    w.version === 6
   ) {
     const c = record(w.containers);
     keys(c, ["version", "gold", "opened"]);
@@ -226,7 +245,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     containers = { version: 1, gold: integer(c.gold), opened };
   }
   let expedition: ExpeditionState | LegacyExpeditionState | undefined;
-  if (w.version === 4 || w.version === 5) {
+  if (w.version === 4 || w.version === 5 || w.version === 6) {
     const e = record(w.expedition);
     keys(e, [
       "version",
@@ -266,11 +285,36 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       expedition = { ...progress, version: 2, reward: e.reward };
     } else expedition = { ...progress, version: 1 };
   }
+  const dialogue =
+    w.version === 5 || w.version === 6
+      ? validateCampConversations(w.dialogue)
+      : undefined;
+  const quests = w.version === 6 ? validateQuestState(w.quests) : undefined;
+  for (const entry of quests?.entries ?? []) {
+    const q = QUESTS.find((q) => q.id === entry.id)!;
+    entry.seen.forEach((ids, index) => {
+      const objective = q.objectives[index]!;
+      if (!ids.length) return;
+      if (objective.kind === "interact") {
+        if (ids.some((id) => !dialogue!.met.some((npc) => npc === id)))
+          throw Error("Quest meeting evidence missing");
+      } else if (
+        !visited.includes(objective.target as AreaId) ||
+        (objective.kind === "defeat" &&
+          ids.some(
+            (id) =>
+              !areas
+                .find((a) => a.id === objective.target)!
+                .deaths.includes(Number(id)),
+          ))
+      )
+        throw Error("Quest world evidence missing");
+    });
+  }
   return {
     version: w.version,
-    ...(w.version === 5
-      ? { dialogue: validateCampConversations(w.dialogue) }
-      : {}),
+    ...(quests ? { quests } : {}),
+    ...(dialogue ? { dialogue } : {}),
     ...(expedition ? { expedition } : {}),
     ...(containers ? { containers } : {}),
     contentVersion,
