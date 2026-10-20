@@ -1,5 +1,11 @@
 # Status
 
+## D06 complete — verified release (2026-10-20)
+
+- Exact release `50bd6a580bf7d3fdcae7e32f15f8a1bca75ede87` passed both verify and deploy jobs in CI run39477757637: https://github.com/tobisen/hollowbane/actions/runs/39477757637 . GitHub Pages deployment7208853800 reports success for that same full SHA at https://tobisen.github.io/hollowbane/ . All26 hosted publication files match the local production build byte for byte.
+- Hosted D06 acceptance passed9/9 in1.6min: forest input handoff and both transitions; genuine normal-AI Stonebound combat with player damage and survival; all three quest claims, exact rewards, equipment, save/reload and duplicate prevention; crypt beacon attunement/reload; briefing and fresh quest prerequisites. Stonebound, final journal and beacon screenshots reviewed. Evidence: `/private/tmp/hollowbane-d06-hosted-50bd6a5.log` and `/private/tmp/hollowbane-d06-hosted-50bd6a5/`.
+- D06/DBL-145 release gate is complete. Constructed legitimate intermediate checkpoints verify campaign progression; uninterrupted three-quest player-driven combat survival is not claimed. The pending sections below record earlier checkpoints and are superseded by this verified release. D07 has not started. Unrelated working edits remain preserved.
+
 ## D06 release CI correction verified locally — exact release pending (2026-10-20)
 
 - Run39477131491 for `fabb06421bad6d9cb65da423ce0cfb9fd822a376` failed only the D06 fixture unit timeout: two full deterministic builds took27.04s in CI against the unchanged25s case limit;113 other unit files passed. No browser or Pages job ran. The first fixture build now runs as immutable module setup; the timed test retains an independent full rebuild and complete equality assertion. Focused local test passes (8.17s test time;14.87s total), TypeScript, scoped lint and formatting pass. The next release commit/push and exact CI/Pages/hosted verification remain required.
