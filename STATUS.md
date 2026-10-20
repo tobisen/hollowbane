@@ -1,9 +1,15 @@
 # Status
 
+## D07-A CI recovery — correction verified locally (2026-10-20)
+
+- Candidatef14788e failed CI39484783592 only on D01 ordered-expedition unit5308ms/default5000ms;455 other tests passed. Pages skipped. No D01-specific timeout or CI override exists.
+- Root cause:99 real layout generations for four identical seeded fixtures across travel/save/reload. Test-local memoization with independent cloned outputs retains every assertion and all real validators. Three affected tests now pass in105ms total; TypeScript/scoped lint/format pass. No production/boss/gameplay/global-timeout changes; no local broad regression rerun.
+- Next publish correction and require exact CI/Pages, hosted artifact identity and both hosted boss smoke cases. D07-A remains incomplete; D07-B has not started and is excluded from this recovery session. Last verified runtime remains D06/50bd6a5. Details: docs/overnight/d07.md. Unrelated working edits remain preserved.
+
 ## D07-A engine local candidate (2026-10-20)
 
 - DBL-069/070 scoped engine candidate: seeded attack pools, locked cone/circle/line warnings, shared combat timing/damage/stagger, health/encounter phases, escape/reset/death/completion and health/phase HUD. Developer trial only; no campaign boss or D08. Original dependencies/broader parents stay partial.
--32 focused units, TypeScript/scoped lint/format/build and2 Chromium warning/damage/mouse/virtual-controller cases pass; warning screenshot reviewed. Physical controller verification is not claimed. Provenance and continuation: docs/overnight/d07.md.
+- 32 focused units, TypeScript/scoped lint/format/build and2 Chromium warning/damage/mouse/virtual-controller cases pass; warning screenshot reviewed. Physical controller verification is not claimed. Provenance and continuation: docs/overnight/d07.md.
 - Exact new CI/Pages, hosted artifact identity and hosted boss smoke remain required. D07-A release is incomplete; D07-B has not started. D06 remains verified at50bd6a5. Preserve unrelated working documentation. Publish the reviewed candidate, verify its exact release gate, then implement D07-B.
 
 ## D06 complete — verified release (2026-10-20)

@@ -1,10 +1,31 @@
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { createCombat } from "./combat";
 import { createInventorySession } from "./inventory-world";
 import { inventoryItem } from "./inventory-test-helper";
 import { deserializeCharacter, serializeCharacter } from "./inventory-save";
 import { WorldSession } from "./world-session";
 import { validateExploration } from "./world-save";
+
+// This tests expedition transactions, not generator replay. Save validation and
+// travel request the same four layouts repeatedly (99 calls in the first case).
+// Generate each real seeded fixture once; clone it so every caller still owns
+// independent data. Generator determinism remains covered in world-layout.test.ts.
+vi.mock(import("./world-layout"), async (importOriginal) => {
+  const original = await importOriginal();
+  const layouts = new Map<string, ReturnType<typeof original.worldLayout>>();
+  return {
+    ...original,
+    worldLayout: (...args: Parameters<typeof original.worldLayout>) => {
+      const key = args.join(":");
+      let layout = layouts.get(key);
+      if (!layout) {
+        layout = original.worldLayout(...args);
+        layouts.set(key, layout);
+      }
+      return structuredClone(layout);
+    },
+  };
+});
 
 it("completes the ordered expedition once and preserves player and item ownership through travel/reload", () => {
   let session = createInventorySession();
