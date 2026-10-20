@@ -63,9 +63,15 @@ export class CampDialogueView {
     this.dialog.id = "camp-dialogue";
     this.dialog.setAttribute("aria-labelledby", "camp-speaker");
     this.dialog.innerHTML =
-      '<p id="camp-speaker-role"></p><h2 id="camp-speaker"></h2><p id="camp-speech"></p><div id="camp-choices"></div><button id="camp-dialogue-close" type="button">End conversation</button><p class="camp-dialogue-help">Choose a reply · Esc / Back: leave</p>';
+      '<p id="camp-speaker-role"></p><h2 id="camp-speaker"></h2><p id="camp-speech"></p><div id="camp-choices"></div><button id="camp-quest-journal" type="button">Quest journal</button><button id="camp-dialogue-close" type="button">End conversation</button><p class="camp-dialogue-help">Choose a reply · Esc / Back: leave</p>';
     root.append(this.dialog);
     this.help = this.dialog.querySelector<HTMLElement>(".camp-dialogue-help")!;
+    this.dialog.querySelector<HTMLButtonElement>(
+      "#camp-quest-journal",
+    )!.onclick = () => {
+      this.close();
+      window.dispatchEvent(new Event("hollowbane-journal-toggle"));
+    };
     this.dialog.querySelector<HTMLButtonElement>(
       "#camp-dialogue-close",
     )!.onclick = () => this.close();

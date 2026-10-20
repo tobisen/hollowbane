@@ -1,6 +1,6 @@
 import type { Point } from "../world/isometric";
 import { worldToScreen } from "../world/isometric";
-import { segmentWalkable, type Navigation } from "../world/navigation";
+import { canWalk, segmentWalkable, type Navigation } from "../world/navigation";
 import {
   createTimeline,
   stepTimeline,
@@ -187,10 +187,15 @@ export function stepController(
           dy = target.position.y - next.walker.position.y,
           d = Math.hypot(dx, dy);
         const inset = Math.max(0, range - 0.2);
-        const goal = {
+        const stoppingPoint = {
           x: target.position.x - (dx / d) * inset,
           y: target.position.y - (dy / d) * inset,
         };
+        // Terrain can obstruct the ideal standoff point while the target itself
+        // is reachable. Follow that valid route; the range/LOS gate stops us.
+        const goal = canWalk(nav, stoppingPoint)
+          ? stoppingPoint
+          : target.position;
         const end = next.walker.route.at(-1);
         if (!end || Math.hypot(end.x - goal.x, end.y - goal.y) > 0.15)
           next.walker = retarget(next.walker, nav, goal);

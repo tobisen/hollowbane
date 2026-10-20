@@ -1,5 +1,13 @@
 # Status
 
+## D06 acceptance stabilized — local release candidate (2026-10-20)
+
+- D01–D05 remain verified at `2eda0e7adbac7ec2079c5c6d0b8803019bfa8cfc`. D06 local acceptance passes; exact candidate CI/Pages and hosted verification remain required before completion. No D07. Unrelated files and historical STATUS edits are preserved separately.
+- Forest root cause: mouse/keyboard ownership disarms the virtual gamepad; held axes cannot rearm. The test driver now releases while unarmed and cancels stale movement. No shared mutable browser state/order dependency was found. Each test has a fresh context and seeded checkpoint. Restored live class/level/area replace a transient autosave-status readiness assumption.
+- Removed automatic tactical targeting, pursuit, retreat and cast scheduling. Separate contracts cover forest transitions, real generated Stonebound combat, quest objectives, reward persistence/duplicates and all four campaign areas. Seeded intermediate checkpoints use actual combat/death/world transactions, normal derived resources and unmodified enemies. They do not claim uninterrupted campaign survival. A genuine browser attack defeats full-health Stonebound with all normal graveyard enemies/AI retained and positive damage received.
+- Final local checks:23 focused units; D06 browser group6/6 in one complete run (1.7min); directly affected D05 browser1/1; TypeScript, relevant lint/format and production build pass. Stonebound, final quest journal and crypt beacon screenshots reviewed. Existing timeouts preserved. A stale beacon-copy assertion was corrected only after evidence, retaining exact XP/gold, save and duplicate checks; equivalent previous progression assertions remain across the separated contracts.
+- Review includes intended three-quest D06 content/UI/persistence and the previously demonstrated normal-AI/obstructed-melee-approach repairs. No gameplay changes during this stabilization. Evidence: docs/overnight/d06.md and `/private/tmp/hollowbane-d06-acceptance-local/`. Next commit/push this verified candidate, require exact CI/Pages identity, compare hosted artifacts and run the same six hosted acceptance scenarios. Keep D06 incomplete until those release gates pass.
+
 ## D05 sequence correction verified locally (2026-10-20)
 
 - Corrected late-acceptance finite encounter handling passes10/10 new units plus final live/restored case rerun, TypeScript/relevant lint/format/build and journal browser1/1 (21.9s). No current kill-source or replay assertions removed; no duplicate XP/loot. Two engine fixtures remain; no D06 content.

@@ -10,14 +10,16 @@
         "text": "Another traveller at the fire. I am Edda. We keep a lantern for every soul who has not found the road home.",
         "choices": [
           { "label": "Tell me about the refuge.", "next": "refuge" },
-          { "label": "I should keep moving.", "next": null }
+          { "label": "I should keep moving.", "next": null },
+          { "label": "Tell me about the unlit road.", "next": "unlit-road" }
         ]
       },
       "return": {
         "text": "Your lantern is still burning. Rest your eyes a moment; the forest asks enough of them.",
         "choices": [
           { "label": "Remind me about the refuge.", "next": "refuge" },
-          { "label": "Farewell, Edda.", "next": null }
+          { "label": "Farewell, Edda.", "next": null },
+          { "label": "Tell me about the unlit road.", "next": "unlit-road" }
         ]
       },
       "refuge": {
@@ -25,6 +27,13 @@
         "choices": [
           { "label": "Back to the fire.", "next": "return" },
           { "label": "I will remember that.", "next": null }
+        ]
+      },
+      "unlit-road": {
+        "text": "The missing followed three signs: a scorched forest cache, the waykeeper marks among the graves, and a light beneath the crypt. My task is called Embers on the Road. Read its steps in your quest journal. Come back to my lantern when the forest is safe enough to search; I will see your journey supplied. The deeper light is a beginning, not an ending.",
+        "choices": [
+          { "label": "I will consult my quest journal.", "next": null },
+          { "label": "Back to the fire.", "next": "return" }
         ]
       }
     }
@@ -40,14 +49,16 @@
         "text": "Orren Thale. I used to record the names of roads. These days I record who returns from them.",
         "choices": [
           { "label": "What lies beyond the forest?", "next": "roads" },
-          { "label": "We will speak another time.", "next": null }
+          { "label": "We will speak another time.", "next": null },
+          { "label": "Tell me about the unlit road.", "next": "unlit-road" }
         ]
       },
       "return": {
         "text": "A returning face is better than any mark in my ledger. Which road troubles you?",
         "choices": [
           { "label": "Tell me the route again.", "next": "roads" },
-          { "label": "Farewell, Orren.", "next": null }
+          { "label": "Farewell, Orren.", "next": null },
+          { "label": "Tell me about the unlit road.", "next": "unlit-road" }
         ]
       },
       "roads": {
@@ -62,6 +73,13 @@
         "choices": [
           { "label": "I know the way now.", "next": null },
           { "label": "Tell me the route again.", "next": "roads" }
+        ]
+      },
+      "unlit-road": {
+        "text": "When Edda has heard your forest report, follow Names Beneath the Ash in your journal. Search the graveyard caches, quiet its guard and bring the road back to me. I can point you to the crypt beacon after that. Keep what you find; we need no token torn out of your pack. A report and a safe return will do.",
+        "choices": [
+          { "label": "I will consult my quest journal.", "next": null },
+          { "label": "Back to the fire.", "next": "return" }
         ]
       }
     }

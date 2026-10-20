@@ -8,6 +8,8 @@ import {
   stepController,
 } from "./combat-targeting";
 import type { Navigation } from "../world/navigation";
+import { areaNavigation, canWalk, findPath } from "../world/navigation";
+import { worldLayout } from "./world-layout";
 const nav: Navigation = {
   boundary: [
     { x: -2000, y: -2000 },
@@ -19,6 +21,43 @@ const nav: Navigation = {
 };
 const target = { id: 1, position: { x: 3, y: 0 }, alive: true };
 describe("targeting and commitment", () => {
+  it("approaches a reachable graveyard target when its ideal melee stopping point is obstructed", () => {
+    const navigation = areaNavigation(
+      worldLayout("forgotten-graveyard", 42, 2).map,
+    );
+    const start = { x: -12.616476576618242, y: -2.604491011487777 },
+      position = { x: -6.6469931795384145, y: -3.187432468835193 };
+    const distance = Math.hypot(position.x - start.x, position.y - start.y),
+      range = 1.05;
+    const goal = {
+      x: position.x - ((position.x - start.x) / distance) * (range - 0.2),
+      y: position.y - ((position.y - start.y) / distance) * (range - 0.2),
+    };
+    expect(canWalk(navigation, goal)).toBe(false);
+    expect(findPath(navigation, start, position).length).toBeGreaterThan(0);
+    let controller = commandCombat(createController(createWalker(start)), {
+        kind: "attack",
+        target: 3012,
+        repeat: true,
+      }),
+      strikes = 0;
+    for (let tick = 0; tick < 300; tick++) {
+      const result = stepController(
+        controller,
+        [{ id: 3012, position, alive: true }],
+        navigation,
+        range,
+      );
+      controller = result.controller;
+      strikes += result.events.filter(
+        (event) => event.kind === "strike",
+      ).length;
+    }
+    expect(strikes).toBeGreaterThan(0);
+    expect(
+      inAttackRange(controller.walker.position, position, range, navigation),
+    ).toBe(true);
+  });
   it("approaches, faces and attacks without movement oscillation", () => {
     let c = commandCombat(createController(createWalker({ x: 0, y: 0 })), {
       kind: "attack",

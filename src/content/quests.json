@@ -18,7 +18,11 @@
         "count": 1
       }
     ],
-    "reward": { "xp": 25, "gold": 5, "itemSeed": 1364525057 }
+    "reward": {
+      "xp": 25,
+      "gold": 5,
+      "itemSeed": 1364525057
+    }
   },
   {
     "id": "field-practice",
@@ -45,6 +49,109 @@
         "count": 1
       }
     ],
-    "reward": { "xp": 50, "gold": 15, "itemSeed": null }
+    "reward": {
+      "xp": 50,
+      "gold": 15,
+      "itemSeed": null
+    }
+  },
+  {
+    "id": "embers-on-the-road",
+    "title": "Embers on the Road",
+    "chapter": "act1",
+    "returnTo": "edda-vey",
+    "description": "Edda keeps lamps for the travellers who never returned. Follow the Haunted Forest trail, break the gathering hostiles and search a roadside cache for signs of the lost. Return to Edda at the Ashen Refuge fire.",
+    "requires": [],
+    "objectives": [
+      {
+        "kind": "travel",
+        "target": "haunted-forest",
+        "label": "Follow the forest exit from Ashen Refuge",
+        "count": 1
+      },
+      {
+        "kind": "defeat",
+        "target": "haunted-forest",
+        "label": "Defeat forest hostiles",
+        "count": 2
+      },
+      {
+        "kind": "interact",
+        "target": "treasure:haunted-forest",
+        "label": "Open a forest chest, barrel or crate",
+        "count": 1
+      }
+    ],
+    "reward": {
+      "xp": 80,
+      "gold": 25,
+      "itemSeed": 1364525058
+    }
+  },
+  {
+    "id": "names-beneath-the-ash",
+    "title": "Names Beneath the Ash",
+    "chapter": "act1",
+    "returnTo": "orren-thale",
+    "description": "The forest caches carry the same weathered waykeeper marks as Orren’s ledger. Follow the graveyard exit deeper into the road of the missing. Break its restless guard and search a graveyard cache, then return to Orren in Ashen Refuge.",
+    "requires": ["embers-on-the-road"],
+    "objectives": [
+      {
+        "kind": "travel",
+        "target": "forgotten-graveyard",
+        "label": "Take the forest passage to the Forgotten Graveyard",
+        "count": 1
+      },
+      {
+        "kind": "defeat",
+        "target": "forgotten-graveyard",
+        "label": "Defeat graveyard hostiles",
+        "count": 2
+      },
+      {
+        "kind": "interact",
+        "target": "treasure:forgotten-graveyard",
+        "label": "Open a graveyard chest, barrel or crate",
+        "count": 1
+      }
+    ],
+    "reward": {
+      "xp": 150,
+      "gold": 40,
+      "itemSeed": null
+    }
+  },
+  {
+    "id": "the-light-below",
+    "title": "The Light Below",
+    "chapter": "act1",
+    "returnTo": "edda-vey",
+    "description": "Orren’s marks point beneath the graves. Enter the Ancient Crypt, break its sentries and attune the old beacon in the crypt chamber. Follow graveyard, forest and camp exits home to Edda. The returning light may reveal what still waits below.",
+    "requires": ["names-beneath-the-ash"],
+    "objectives": [
+      {
+        "kind": "travel",
+        "target": "ancient-crypt",
+        "label": "Descend through the graveyard crypt passage",
+        "count": 1
+      },
+      {
+        "kind": "defeat",
+        "target": "ancient-crypt",
+        "label": "Defeat crypt hostiles",
+        "count": 2
+      },
+      {
+        "kind": "interact",
+        "target": "crypt-beacon",
+        "label": "Attune the Ancient Crypt beacon",
+        "count": 1
+      }
+    ],
+    "reward": {
+      "xp": 220,
+      "gold": 60,
+      "itemSeed": null
+    }
   }
 ]

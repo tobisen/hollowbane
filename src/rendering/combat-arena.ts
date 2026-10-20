@@ -132,6 +132,7 @@ declare global {
       routeToExit?: (id: string) => Point[];
       routeToObjective?: () => Point[];
       routeToNpc?: (id: string) => Point[];
+      routeToHostile?: (id: number) => Point[];
       containers?: { id: number; position: Point; opened: boolean }[];
       routeToContainer?: (id: number) => Point[];
       camera: { x: number; y: number; zoom: number };
@@ -452,6 +453,28 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private publishWorld(): void {
       if (!travel) return;
       const player = this.world.actors[0]!;
+      // Read-only navigation observations for goals in this area. Actual travel
+      // observations retain exit triggers, and the live simulation nav is untouched.
+      const routeInsideArea = (target: Point) => {
+        const map = travel!.layout.map;
+        return worldPath(
+          areaNavigation({
+            ...map,
+            objects: [
+              ...map.objects,
+              ...travel!.layout.exits.map((exit) => ({
+                id: `navigation-exit-${exit.id}`,
+                position: exit.trigger,
+                radius: 0.75,
+                blocking: true,
+                appearance: "navigation-only",
+              })),
+            ],
+          }),
+          player.controller.walker.position,
+          target,
+        );
+      };
       window.hollowbaneWorld = {
         area: travel.state.area,
         seed: travel.state.seed,
@@ -470,51 +493,26 @@ export function startCombatArena(monsters = false): Phaser.Game {
               })),
               routeToContainer: (id: number) => {
                 const c = worldSession!.containers.find((c) => c.id === id);
-                return c
-                  ? worldPath(
-                      nav,
-                      player.controller.walker.position,
-                      c.position,
-                    )
-                  : [];
+                return c ? routeInsideArea(c.position) : [];
               },
               routeToNpc: (id: string) => {
                 const npc =
                   travel!.state.area === "ashen-refuge"
                     ? CAMP_NPCS.find((n) => n.id === id)
                     : undefined;
-                return npc
-                  ? worldPath(
-                      nav,
-                      player.controller.walker.position,
-                      npc.position,
-                    )
+                return npc ? routeInsideArea(npc.position) : [];
+              },
+              routeToHostile: (id: number) => {
+                const hostile = this.world.actors.find(
+                  (a) => a.id === id && a.kind === "hostile" && a.hp > 0,
+                );
+                return hostile
+                  ? routeInsideArea(hostile.controller.walker.position)
                   : [];
               },
               routeToObjective: () => {
                 const p = worldSession!.objectivePosition;
-                if (!p) return [];
-                // Navigation observation only: do not steer through a travel trigger
-                // when the requested destination is the beacon in this area.
-                const map = travel!.layout.map;
-                const objectiveNav = areaNavigation({
-                  ...map,
-                  objects: [
-                    ...map.objects,
-                    ...travel!.layout.exits.map((exit) => ({
-                      id: `navigation-exit-${exit.id}`,
-                      position: exit.trigger,
-                      radius: 0.75,
-                      blocking: true,
-                      appearance: "navigation-only",
-                    })),
-                  ],
-                });
-                return worldPath(
-                  objectiveNav,
-                  player.controller.walker.position,
-                  p,
-                );
+                return p ? routeInsideArea(p) : [];
               },
               routeToExit: (id: string) => {
                 const exit = travel!.layout.exits.find((e) => e.id === id);
@@ -724,7 +722,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.abilities.users = this.abilities.users.filter(
             (u) => u.actor === 0,
           );
-        hostile.checked = false;
+        // This flag gates modern monster AI as well as the legacy sentinel.
+        // CombatWorld.hostilesActive separately disables only the old arena AI.
+        hostile.checked = !peacefulWorld;
         document.querySelector<HTMLButtonElement>("#combat-reset")!.disabled =
           true;
         root.querySelector(".arena-footer")!.textContent =

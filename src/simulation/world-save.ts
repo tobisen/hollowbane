@@ -292,11 +292,27 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   const quests = w.version === 6 ? validateQuestState(w.quests) : undefined;
   for (const entry of quests?.entries ?? []) {
     const q = QUESTS.find((q) => q.id === entry.id)!;
+    if (q.chapter === "act1" && contentVersion !== 2)
+      throw Error(
+        "Act 1 is unavailable in this saved world version; original retained",
+      );
     entry.seen.forEach((ids, index) => {
       const objective = q.objectives[index]!;
       if (!ids.length) return;
       if (objective.kind === "interact") {
-        if (ids.some((id) => !dialogue!.met.some((npc) => npc === id)))
+        if (objective.target.startsWith("treasure:")) {
+          if (
+            ids.some((id) => !containers!.opened.includes(Number(id.slice(10))))
+          )
+            throw Error("Quest treasure evidence missing");
+        } else if (objective.target === "crypt-beacon") {
+          if (
+            !expedition ||
+            (expedition.stage !== "returning" &&
+              expedition.stage !== "complete")
+          )
+            throw Error("Quest beacon evidence missing");
+        } else if (ids.some((id) => !dialogue!.met.some((npc) => npc === id)))
           throw Error("Quest meeting evidence missing");
       } else if (
         !visited.includes(objective.target as AreaId) ||

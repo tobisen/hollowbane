@@ -58,6 +58,7 @@ test("quest journal locks prerequisites, commits one reward and retains tracked 
     "Ready · no character checkpoint yet.",
   );
   await page.keyboard.press("j");
+  await page.locator("#quest-practice").click();
   await expect(page.locator("#quest-title")).toHaveText("Camp introductions");
   await page.locator("#quest-next").click();
   await expect(page.locator("#quest-status")).toHaveText("Status: locked");

@@ -1,0 +1,38 @@
+import { expect, it } from "vitest";
+import { createD06Checkpoints } from "../fixtures/d06-campaign";
+import { deserializeCharacter } from "../../src/simulation/inventory-save";
+
+it("constructs replayable campaign checkpoints using actual vulnerable combat and preserves three claims and earned progression", () => {
+  const checkpoints = createD06Checkpoints();
+  const first = deserializeCharacter(checkpoints.firstClaimed);
+  expect(first.progression!.skills.classId).toBe("warrior");
+  expect(first.character.equipment.boots?.base).toBe("trail-boots");
+  expect(first.progression!.skills.ranks["warrior-arms-foundation"]).toBe(1);
+  expect(first.progression!.skills.bar?.[0]).toBe("iron-fan");
+  expect(first.exploration!.quests!.entries[0]!.status).toBe("claimed");
+  const complete = deserializeCharacter(checkpoints.complete);
+  expect(complete.exploration!.visited).toEqual([
+    "ashen-refuge",
+    "haunted-forest",
+    "forgotten-graveyard",
+    "ancient-crypt",
+  ]);
+  expect(complete.exploration!.quests!.entries.map((q) => q.status)).toEqual([
+    "claimed",
+    "claimed",
+    "claimed",
+  ]);
+  expect(complete.exploration!.expedition).toMatchObject({
+    stage: "complete",
+    reward: "claimed",
+  });
+  expect(complete.progression!.character.totalXp).toBeGreaterThanOrEqual(700);
+  expect(
+    deserializeCharacter(checkpoints.forestNavigation).exploration!.areas.find(
+      (area) => area.id === "haunted-forest",
+    )!.deaths,
+  ).toHaveLength(15);
+  expect(checkpoints.provenance.damageEvents).toBeGreaterThan(0);
+  expect(checkpoints.provenance.playerDamage).toBeGreaterThan(0);
+  expect(createD06Checkpoints()).toEqual(checkpoints);
+}, 25000);

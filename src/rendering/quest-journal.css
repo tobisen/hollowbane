@@ -31,6 +31,14 @@
   gap: 10px;
   flex-wrap: wrap;
 }
+#quest-journal p {
+  margin: 10px 0;
+  line-height: 1.5;
+}
+#quest-journal button[aria-pressed="true"] {
+  border-color: #efd17c;
+  background: #34443a;
+}
 #quest-journal button {
   padding: 10px 14px;
   color: #e6d6ad;

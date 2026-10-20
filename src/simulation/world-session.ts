@@ -17,7 +17,11 @@ import {
 import { questRewardItem } from "./quest-rewards";
 import { placeLoot } from "./world-loot";
 import { areaNavigation } from "../world/navigation";
-import { beginCampDialogue, newCampConversations } from "./camp-dialogue";
+import {
+  CAMP_NPCS,
+  beginCampDialogue,
+  newCampConversations,
+} from "./camp-dialogue";
 import { discoveryCell, revealDiscovery } from "./world-discovery";
 import { planWorldContainers, openWorldContainer } from "./world-containers";
 import type { ItemContent } from "./item-content";
@@ -137,6 +141,9 @@ export class WorldSession {
     return structuredClone(this.snapshot.quests!);
   }
   acceptQuest(id: string, liveLoot?: LootWorld): boolean {
+    const definition = QUESTS.find((q) => q.id === id);
+    if (definition?.chapter === "act1" && this.contentVersion !== 2)
+      return false;
     const next = acceptQuest(this.snapshot.quests!, id);
     if (next === this.snapshot.quests) return false;
     this.snapshot.quests = next;
@@ -152,7 +159,25 @@ export class WorldSession {
           : area.deaths;
       for (const death of deaths)
         this.questEvent({ kind: "defeat", area: area.id, id: String(death) });
+      const base = 50000 + AREA_IDS.indexOf(area.id) * 100;
+      for (const id of this.containerState.opened.filter(
+        (id) => id >= base && id < base + 6,
+      ))
+        this.questEvent({
+          kind: "interact",
+          area: area.id,
+          id: `container:${id}`,
+        });
     }
+    if (
+      this.expedition.stage === "returning" ||
+      this.expedition.stage === "complete"
+    )
+      this.questEvent({
+        kind: "interact",
+        area: "ancient-crypt",
+        id: "crypt-beacon",
+      });
     return true;
   }
   trackQuest(id: string): boolean {
@@ -202,9 +227,23 @@ export class WorldSession {
       !q ||
       this.travel.state.area !== "ashen-refuge" ||
       player.hp <= 0 ||
+      ![
+        player.controller.walker.position.x,
+        player.controller.walker.position.y,
+      ].every(Number.isFinite) ||
       player.controller.timeline.phase !== "idle"
     )
       return "Return safely to camp to claim rewards.";
+    if (q.returnTo) {
+      const npc = CAMP_NPCS.find((npc) => npc.id === q.returnTo)!;
+      if (
+        Math.hypot(
+          npc.position.x - player.controller.walker.position.x,
+          npc.position.y - player.controller.walker.position.y,
+        ) > 1.2
+      )
+        return `Return to ${npc.name} in Ashen Refuge to claim this reward.`;
+    }
     const quests = claimedQuest(this.snapshot.quests!, id);
     if (quests === this.snapshot.quests)
       return "Quest reward is not available.";
@@ -303,6 +342,12 @@ export class WorldSession {
       stage: this.expedition.stage === "ready" ? "outbound" : "returning",
       reward: objective ? "claimed" : this.expedition.reward,
     };
+    if (objective)
+      this.questEvent({
+        kind: "interact",
+        area: "ancient-crypt",
+        id: "crypt-beacon",
+      });
     return true;
   }
   private lastReveal = "";
@@ -350,7 +395,7 @@ export class WorldSession {
     content: ItemContent,
   ): boolean {
     const container = this.containers.find((c) => c.id === id);
-    return (
+    const opened =
       !!container &&
       openWorldContainer(
         this.travel.layout,
@@ -360,8 +405,14 @@ export class WorldSession {
         loot,
         tick,
         content,
-      )
-    );
+      );
+    if (opened)
+      this.questEvent({
+        kind: "interact",
+        area: this.travel.state.area,
+        id: `container:${id}`,
+      });
+    return opened;
   }
   get contentVersion(): number {
     return this.snapshot.contentVersion;

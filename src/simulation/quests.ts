@@ -7,6 +7,8 @@ export interface QuestDefinition {
   id: string;
   title: string;
   description: string;
+  chapter?: "act1";
+  returnTo?: (typeof CAMP_NPC_IDS)[number];
   requires: string[];
   objectives: {
     kind: QuestKind;
@@ -56,6 +58,8 @@ export function validateQuestDefinitions(value: unknown): QuestDefinition[] {
   if (!Array.isArray(value) || value.length > 32)
     throw Error("Invalid quest catalog");
   const definitions = value.map((raw): QuestDefinition => {
+    const metadata =
+      raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
     const q = object(raw, [
       "id",
       "title",
@@ -63,7 +67,15 @@ export function validateQuestDefinitions(value: unknown): QuestDefinition[] {
       "requires",
       "objectives",
       "reward",
+      ...(Object.hasOwn(metadata, "chapter") ? ["chapter"] : []),
+      ...(Object.hasOwn(metadata, "returnTo") ? ["returnTo"] : []),
     ]);
+    if (
+      (Object.hasOwn(q, "chapter") && q.chapter !== "act1") ||
+      (Object.hasOwn(q, "returnTo") &&
+        !CAMP_NPC_IDS.includes(q.returnTo as (typeof CAMP_NPC_IDS)[number]))
+    )
+      throw Error("Invalid quest chapter or return NPC");
     const id = text(q.id, 64),
       r = object(q.reward, ["xp", "gold", "itemSeed"]);
     if (
@@ -80,6 +92,10 @@ export function validateQuestDefinitions(value: unknown): QuestDefinition[] {
       id,
       title: text(q.title, 80),
       description: text(q.description),
+      ...(q.chapter === "act1" ? { chapter: "act1" as const } : {}),
+      ...(q.returnTo
+        ? { returnTo: q.returnTo as (typeof CAMP_NPC_IDS)[number] }
+        : {}),
       requires: q.requires.map((v) => text(v, 64)),
       objectives: q.objectives.map((raw) => {
         const o = object(raw, ["kind", "target", "label", "count"]);
@@ -88,10 +104,16 @@ export function validateQuestDefinitions(value: unknown): QuestDefinition[] {
             o.kind as string,
           ) ||
           !(o.kind === "interact"
-            ? CAMP_NPC_IDS.includes(o.target as (typeof CAMP_NPC_IDS)[number])
+            ? interactionArea(o.target as string) !== null
             : AREA_IDS.includes(o.target as AreaId)) ||
           !integer(o.count, 20) ||
-          ((o.kind === "travel" || o.kind === "interact") && o.count !== 1)
+          ((o.kind === "travel" ||
+            (o.kind === "interact" &&
+              !(o.target as string).startsWith("treasure:"))) &&
+            o.count !== 1) ||
+          (o.kind === "interact" &&
+            (o.target as string).startsWith("treasure:") &&
+            (o.count as number) > 6)
         )
           throw Error("Invalid quest objective");
         return {
@@ -130,6 +152,16 @@ export function validateQuestDefinitions(value: unknown): QuestDefinition[] {
     throw Error("Duplicate quest reward seed");
   return definitions;
 }
+export function interactionArea(target: string): AreaId | null {
+  if (CAMP_NPC_IDS.includes(target as (typeof CAMP_NPC_IDS)[number]))
+    return "ashen-refuge";
+  if (target === "crypt-beacon") return "ancient-crypt";
+  if (typeof target === "string" && target.startsWith("treasure:")) {
+    const area = target.slice(9) as AreaId;
+    if (AREA_IDS.includes(area) && area !== "ashen-refuge") return area;
+  }
+  return null;
+}
 export const QUESTS = validateQuestDefinitions(data);
 export function newQuestState(): QuestState {
   return { version: 1, tracked: null, entries: [] };
@@ -153,6 +185,17 @@ function validEvent(e: QuestEvent): boolean {
     case "travel":
       return e.id === e.area;
     case "interact":
+      if (e.id === "crypt-beacon") return e.area === "ancient-crypt";
+      if (e.id.startsWith("container:")) {
+        const id = Number(e.id.slice(10)),
+          base = 50000 + AREA_IDS.indexOf(e.area) * 100;
+        return (
+          /^container:\d{5}$/.test(e.id) &&
+          e.area !== "ashen-refuge" &&
+          id >= base &&
+          id < base + 6
+        );
+      }
       return (
         e.area === "ashen-refuge" &&
         CAMP_NPC_IDS.includes(e.id as (typeof CAMP_NPC_IDS)[number])
@@ -173,7 +216,12 @@ function matches(
 ): boolean {
   return (
     o.kind === event.kind &&
-    o.target === (event.kind === "interact" ? event.id : event.area)
+    o.target ===
+      (event.kind === "interact"
+        ? event.id.startsWith("container:")
+          ? `treasure:${event.area}`
+          : event.id
+        : event.area)
   );
 }
 export function acceptQuest(
@@ -271,13 +319,25 @@ export function validateQuestState(
             !validEvent({
               kind: o.kind,
               area:
-                o.kind === "interact" ? "ashen-refuge" : (o.target as AreaId),
+                o.kind === "interact"
+                  ? interactionArea(o.target)!
+                  : (o.target as AreaId),
               id,
             }),
         )
       )
         throw Error("Invalid quest progress");
-      if (o.kind === "interact" && raw.some((id) => id !== o.target))
+      if (
+        o.kind === "interact" &&
+        raw.some(
+          (id) =>
+            !matches(o, {
+              kind: "interact",
+              area: interactionArea(o.target)!,
+              id,
+            }),
+        )
+      )
         throw Error("Mismatched quest interaction");
       return [...raw] as string[];
     });

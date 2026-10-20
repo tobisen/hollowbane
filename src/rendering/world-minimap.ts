@@ -81,7 +81,7 @@ export class WorldMinimap {
       this.layout = layout;
       this.lastCell = -1;
     }
-    const key = `${layout.map.area}:${world.discoveryRevision}:${world.containerState.opened.length}`;
+    const key = `${layout.map.area}:${world.discoveryRevision}:${world.containerState.opened.length}:${world.expedition.stage}`;
     const scale = Math.min(
       232 / (t.width + t.height),
       288 / (t.width + t.height),
@@ -126,8 +126,14 @@ export class WorldMinimap {
         ctx.textAlign = "center";
         ctx.fillText(text, q.x, q.y);
       };
-      mark(layout.spawn, "⌂", "#b6ceb9");
+      if (!world.objectivePosition) mark(layout.spawn, "⌂", "#b6ceb9");
       for (const e of layout.exits) mark(e.trigger, `◇ ${e.id}`, "#9ccfbd");
+      if (world.objectivePosition)
+        mark(
+          world.objectivePosition,
+          "◉ beacon",
+          world.expedition.stage === "outbound" ? "#efd17c" : "#a8c0c1",
+        );
       for (const c of world.containers)
         mark(
           c.position,
@@ -135,7 +141,7 @@ export class WorldMinimap {
           c.rare ? "#ecd48c" : "#bdb294",
         );
       const name = areaDefinition(layout.map.area).name;
-      this.label.textContent = `${name} · ${known.size}/${t.cells.length} explored · ◆ you · ◇ exit · □ treasure`;
+      this.label.textContent = `${name} · ${known.size}/${t.cells.length} explored · ◆ you · ◇ exit · □ treasure${world.objectivePosition ? " · ◉ beacon" : ""}`;
       this.canvas.setAttribute("aria-label", this.label.textContent);
       this.canvas.dataset.explored = String(known.size);
       this.canvas.dataset.fingerprint = world.discovery.fingerprint;
