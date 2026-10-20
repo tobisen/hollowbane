@@ -2,8 +2,14 @@ import { expect, it } from "vitest";
 import { createD06Checkpoints } from "../fixtures/d06-campaign";
 import { deserializeCharacter } from "../../src/simulation/inventory-save";
 
+// Construct the immutable reference once during module setup. The timed case
+// independently rebuilds the campaign and still compares every checkpoint.
+const baselineText = JSON.stringify(createD06Checkpoints());
+
 it("constructs replayable campaign checkpoints using actual vulnerable combat and preserves three claims and earned progression", () => {
-  const checkpoints = createD06Checkpoints();
+  const checkpoints = JSON.parse(baselineText) as ReturnType<
+    typeof createD06Checkpoints
+  >;
   const first = deserializeCharacter(checkpoints.firstClaimed);
   expect(first.progression!.skills.classId).toBe("warrior");
   expect(first.character.equipment.boots?.base).toBe("trail-boots");
