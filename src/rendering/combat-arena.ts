@@ -1,4 +1,6 @@
 import { WorldMinimap } from "./world-minimap";
+import { CampDialogueView } from "./camp-dialogue";
+import { CAMP_NPCS, nearbyCampNpc } from "../simulation/camp-dialogue";
 import { ContainerView } from "./world-containers";
 import { canOpenContainer } from "../simulation/world-containers";
 import { registeredItemContent } from "../simulation/item-registry";
@@ -128,6 +130,7 @@ declare global {
       fingerprint: string;
       routeToExit?: (id: string) => Point[];
       routeToObjective?: () => Point[];
+      routeToNpc?: (id: string) => Point[];
       containers?: { id: number; position: Point; opened: boolean }[];
       routeToContainer?: (id: number) => Point[];
       camera: { x: number; y: number; zoom: number };
@@ -333,6 +336,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private worldFloor: Phaser.GameObjects.Graphics | null = null;
     private drawnLayout: unknown = null;
     private campEnvironment: CampEnvironment | null = null;
+    private campDialogue: CampDialogueView | null = null;
     private environment: WorldEnvironment | null = null;
     private ink!: Phaser.GameObjects.Graphics;
     private effect!: Phaser.GameObjects.Graphics;
@@ -346,6 +350,32 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private previousFrame = 0;
     private balancedDetail = false;
     private startedAt = 0;
+    private interactNpc(id?: string): boolean {
+      if (
+        !worldSession ||
+        !this.campDialogue ||
+        !this.inventoryView?.worldReady ||
+        this.paused ||
+        document.querySelector("dialog[open]") ||
+        this.abilities?.users.some((u) => u.cast)
+      )
+        return false;
+      const player = this.world.actors[0]!;
+      const chosen =
+        id ??
+        nearbyCampNpc(
+          worldSession.travel.state.area,
+          player.controller.walker.position,
+        )?.id;
+      if (!chosen) return false;
+      const result = worldSession.beginDialogue(chosen, this.world);
+      if (!result) return false;
+      player.controller = commandCombat(player.controller, { kind: "stop" });
+      this.keys.clear();
+      this.campDialogue.open(result.cursor);
+      if (result.changed) this.inventoryView.changed();
+      return true;
+    }
     private interactExpedition(): boolean {
       if (
         !worldSession ||
@@ -443,6 +473,19 @@ export function startCombatArena(monsters = false): Phaser.Game {
                       nav,
                       player.controller.walker.position,
                       c.position,
+                    )
+                  : [];
+              },
+              routeToNpc: (id: string) => {
+                const npc =
+                  travel!.state.area === "ashen-refuge"
+                    ? CAMP_NPCS.find((n) => n.id === id)
+                    : undefined;
+                return npc
+                  ? worldPath(
+                      nav,
+                      player.controller.walker.position,
+                      npc.position,
                     )
                   : [];
               },
@@ -694,6 +737,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
         root.append(panel);
         panel.querySelector<HTMLButtonElement>("button")!.onclick = () =>
           this.interactExpedition();
+        this.campDialogue = new CampDialogueView(this, root, (id) =>
+          this.interactNpc(id),
+        );
+        this.events.once("shutdown", () => this.campDialogue?.destroy());
       }
       if (travel) this.installWorldEncounter(this.lootView!.world);
       this.prepareShowcase();
@@ -754,6 +801,17 @@ export function startCombatArena(monsters = false): Phaser.Game {
           target = pick(p);
         this.inputAt = performance.now();
         const player = this.world.actors[0]!;
+        const npc =
+          travel?.state.area === "ashen-refuge"
+            ? CAMP_NPCS.find(
+                (n) =>
+                  Math.hypot(
+                    n.position.x - fromGround(p).x,
+                    n.position.y - fromGround(p).y,
+                  ) < 0.6,
+              )
+            : undefined;
+        if (npc && this.interactNpc(npc.id)) return;
         const container = worldSession?.containers.find(
           (c) =>
             Math.hypot(
@@ -798,7 +856,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
         if (event.target !== field) return;
         if (travel && event.key.toLowerCase() === "e" && !event.repeat) {
           event.preventDefault();
-          if (!this.interactExpedition()) this.openContainer();
+          if (!this.interactNpc() && !this.interactExpedition())
+            this.openContainer();
           return;
         }
         if (polish && sound.checked && !event.repeat)
@@ -1505,6 +1564,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           }
           if (
             controllerInput.take("interact") &&
+            !this.interactNpc() &&
             !this.interactExpedition() &&
             !this.openContainer() &&
             !this.lootView?.interact()
@@ -1721,6 +1781,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.inventoryView?.changed();
         }
         this.minimap?.update(worldSession!, player.controller.walker.position);
+        this.campDialogue?.update(
+          travel.state.area,
+          player.controller.walker.position,
+          !this.paused &&
+            !!this.inventoryView?.worldReady &&
+            player.hp > 0 &&
+            !document.querySelector("dialog[open]"),
+        );
         this.containerView?.update(
           worldSession!,
           player.controller.walker.position,

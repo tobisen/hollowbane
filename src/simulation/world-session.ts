@@ -5,6 +5,7 @@ import {
   EXPEDITION_REWARD,
 } from "./world-expedition";
 import { grantCharacterXp } from "./monster-experience";
+import { beginCampDialogue, newCampConversations } from "./camp-dialogue";
 import { discoveryCell, revealDiscovery } from "./world-discovery";
 import { planWorldContainers, openWorldContainer } from "./world-containers";
 import type { ItemContent } from "./item-content";
@@ -95,6 +96,12 @@ export class WorldSession {
           this.snapshot.contentVersion,
         ),
       };
+    if (this.snapshot.version === 4)
+      this.snapshot = {
+        ...this.snapshot,
+        version: 5,
+        dialogue: newCampConversations(),
+      };
     const s = this.snapshot;
     s.expedition = migrateExpedition(s.expedition!);
     this.travel = new WorldTravel(
@@ -105,6 +112,25 @@ export class WorldSession {
   }
   get expedition() {
     return { ...migrateExpedition(this.snapshot.expedition!) };
+  }
+  get conversations() {
+    return {
+      ...this.snapshot.dialogue!,
+      met: [...this.snapshot.dialogue!.met],
+    };
+  }
+  beginDialogue(id: string, world: CombatWorld) {
+    const player = world.actors[0]!;
+    const result = beginCampDialogue(
+      this.snapshot.dialogue!,
+      id,
+      this.travel.state.area,
+      player.controller.walker.position,
+      player.hp > 0,
+      player.controller.timeline.phase === "idle",
+    );
+    if (result) this.snapshot.dialogue = result.state;
+    return result;
   }
   /** Existing generated crypt spawn is a reachable chamber, clear of exit triggers. */
   get objectivePosition(): WorldPoint | null {

@@ -86,6 +86,10 @@ export class InventoryView {
   private socketHost: string | null = null;
   private componentChoice: string | null = null;
   private ready = false;
+  /** World interactions wait until initial storage inspection has settled. */
+  get worldReady(): boolean {
+    return this.ready;
+  }
   private saving = false;
   private dirty = false;
   private timer = 0;

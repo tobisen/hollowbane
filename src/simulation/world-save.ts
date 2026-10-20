@@ -7,12 +7,17 @@ import type { WorldDrop } from "./world-loot";
 import { validateGeneratedItem } from "./item-save";
 import { validWorldMonsterIdentity } from "./world-encounters";
 import {
+  validateCampConversations,
+  type CampConversationState,
+} from "./camp-dialogue";
+import {
   expeditionIdentity,
   type ExpeditionState,
   type LegacyExpeditionState,
 } from "./world-expedition";
 export interface ExplorationSnapshot {
-  version: 1 | 2 | 3 | 4;
+  version: 1 | 2 | 3 | 4 | 5;
+  dialogue?: CampConversationState;
   expedition?: ExpeditionState | LegacyExpeditionState;
   containers?: import("./world-containers").ContainerState;
   contentVersion: number;
@@ -72,16 +77,18 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     "position",
     "visited",
     "areas",
-    ...(w.version === 2 || w.version === 3 || w.version === 4
+    ...(w.version === 2 || w.version === 3 || w.version === 4 || w.version === 5
       ? ["containers"]
       : []),
-    ...(w.version === 4 ? ["expedition"] : []),
+    ...(w.version === 4 || w.version === 5 ? ["expedition"] : []),
+    ...(w.version === 5 ? ["dialogue"] : []),
   ]);
   if (
     (w.version !== 1 &&
       w.version !== 2 &&
       w.version !== 3 &&
-      w.version !== 4) ||
+      w.version !== 4 &&
+      w.version !== 5) ||
     (w.contentVersion !== 1 && w.contentVersion !== 2)
   )
     throw Error("Unsupported exploration version");
@@ -112,7 +119,9 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       "drops",
       "deaths",
       ...(contentVersion === 2 ? ["layoutFingerprint"] : []),
-      ...(w.version === 3 || w.version === 4 ? ["discovery"] : []),
+      ...(w.version === 3 || w.version === 4 || w.version === 5
+        ? ["discovery"]
+        : []),
     ]);
     const id = area(a.id);
     if (
@@ -128,7 +137,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     if (contentVersion === 2 && a.layoutFingerprint !== fingerprint)
       throw Error("World layout fingerprint mismatch; original retained");
     let discovery: ExplorationSnapshot["areas"][number]["discovery"];
-    if (w.version === 3 || w.version === 4) {
+    if (w.version === 3 || w.version === 4 || w.version === 5) {
       const d = record(a.discovery);
       keys(d, ["version", "fingerprint", "cells"]);
       if (
@@ -191,7 +200,12 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   )
     throw Error("Invalid exploration layout or position");
   let containers: ExplorationSnapshot["containers"];
-  if (w.version === 2 || w.version === 3 || w.version === 4) {
+  if (
+    w.version === 2 ||
+    w.version === 3 ||
+    w.version === 4 ||
+    w.version === 5
+  ) {
     const c = record(w.containers);
     keys(c, ["version", "gold", "opened"]);
     if (c.version !== 1 || !Array.isArray(c.opened) || c.opened.length > 24)
@@ -212,7 +226,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     containers = { version: 1, gold: integer(c.gold), opened };
   }
   let expedition: ExpeditionState | LegacyExpeditionState | undefined;
-  if (w.version === 4) {
+  if (w.version === 4 || w.version === 5) {
     const e = record(w.expedition);
     keys(e, [
       "version",
@@ -254,6 +268,9 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   }
   return {
     version: w.version,
+    ...(w.version === 5
+      ? { dialogue: validateCampConversations(w.dialogue) }
+      : {}),
     ...(expedition ? { expedition } : {}),
     ...(containers ? { containers } : {}),
     contentVersion,

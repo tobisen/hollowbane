@@ -1,0 +1,78 @@
+#camp-talk {
+  position: fixed;
+  bottom: 250px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 14;
+  min-height: 40px;
+  padding: 8px 18px;
+  color: #ead8ad;
+  background: #182725f2;
+  border: 1px solid #b39a64;
+  font:
+    15px Georgia,
+    serif;
+  cursor: pointer;
+}
+#camp-dialogue {
+  width: min(490px, calc(100vw - 64px));
+  max-height: calc(100vh - 80px);
+  overflow: auto;
+  padding: 24px;
+  color: #e9dfc9;
+  background: #101b20;
+  border: 1px solid #b39a64;
+  box-shadow: 0 16px 70px #000b;
+}
+#camp-dialogue::backdrop {
+  background: #04090ccc;
+}
+#camp-dialogue h2 {
+  margin: 4px 0 18px;
+  color: #e4c58c;
+  font:
+    28px Georgia,
+    serif;
+}
+#camp-speaker-role {
+  margin: 0;
+  color: #abbdba;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+#camp-speech {
+  font:
+    17px/1.6 Georgia,
+    serif;
+  white-space: pre-line;
+}
+#camp-choices {
+  display: grid;
+  gap: 8px;
+  margin: 22px 0 16px;
+}
+#camp-dialogue button {
+  min-height: 40px;
+  padding: 9px 14px;
+  text-align: left;
+  color: #e9dfc9;
+  background: #24322f;
+  border: 1px solid #758375;
+  cursor: pointer;
+  font:
+    15px/1.4 Georgia,
+    serif;
+}
+#camp-dialogue button:focus-visible {
+  outline: 2px solid #e6c777;
+  outline-offset: 2px;
+}
+#camp-dialogue #camp-dialogue-close {
+  width: 100%;
+  background: #20282b;
+}
+.camp-dialogue-help {
+  font-size: 12px;
+  color: #a7b7b5;
+  margin-bottom: 0;
+}

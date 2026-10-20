@@ -74,6 +74,7 @@ it("explicitly migrates pre-discovery versions without revealing unrelated cells
     const legacy = structuredClone(snapshot);
     legacy.version = version;
     delete legacy.expedition;
+    delete legacy.dialogue;
     for (const a of legacy.areas) delete a.discovery;
     if (version === 1) delete legacy.containers;
     const restored = new WorldSession(validateExploration(legacy));

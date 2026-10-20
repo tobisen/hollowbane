@@ -180,5 +180,13 @@
     "placeholder": false,
     "type": "geometry",
     "provenance": "docs/art/w3.md"
+  },
+  {
+    "id": "d04-camp-npc-palettes",
+    "source": "src/rendering/camp-dialogue.ts",
+    "rights": "Original NPC identities/dialogue and project presentation code; shared original wanderer artwork; inherited source-rights review pending",
+    "placeholder": true,
+    "type": "geometry",
+    "provenance": "docs/overnight/d04.md"
   }
 ]

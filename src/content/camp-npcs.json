@@ -1,0 +1,69 @@
+[
+  {
+    "id": "edda-vey",
+    "name": "Edda Vey",
+    "title": "Lantern keeper",
+    "position": { "x": 1.75, "y": 1.25 },
+    "tint": 14269053,
+    "nodes": {
+      "welcome": {
+        "text": "Another traveller at the fire. I am Edda. We keep a lantern for every soul who has not found the road home.",
+        "choices": [
+          { "label": "Tell me about the refuge.", "next": "refuge" },
+          { "label": "I should keep moving.", "next": null }
+        ]
+      },
+      "return": {
+        "text": "Your lantern is still burning. Rest your eyes a moment; the forest asks enough of them.",
+        "choices": [
+          { "label": "Remind me about the refuge.", "next": "refuge" },
+          { "label": "Farewell, Edda.", "next": null }
+        ]
+      },
+      "refuge": {
+        "text": "Ashen Refuge was a watch post before the roads fell silent. Now we shelter whoever reaches its stones. Beyond the forest lies the old graveyard, and beneath it a crypt that should have stayed quiet.",
+        "choices": [
+          { "label": "Back to the fire.", "next": "return" },
+          { "label": "I will remember that.", "next": null }
+        ]
+      }
+    }
+  },
+  {
+    "id": "orren-thale",
+    "name": "Orren Thale",
+    "title": "Path recorder",
+    "position": { "x": 1, "y": 3 },
+    "tint": 10273735,
+    "nodes": {
+      "welcome": {
+        "text": "Orren Thale. I used to record the names of roads. These days I record who returns from them.",
+        "choices": [
+          { "label": "What lies beyond the forest?", "next": "roads" },
+          { "label": "We will speak another time.", "next": null }
+        ]
+      },
+      "return": {
+        "text": "A returning face is better than any mark in my ledger. Which road troubles you?",
+        "choices": [
+          { "label": "Tell me the route again.", "next": "roads" },
+          { "label": "Farewell, Orren.", "next": null }
+        ]
+      },
+      "roads": {
+        "text": "Follow the forest trail to the Forgotten Graveyard. Its broken passage leads down into the Ancient Crypt. Keep the return path in mind; a brave journey still needs a safe ending.",
+        "choices": [
+          { "label": "What is the crypt beacon?", "next": "beacon" },
+          { "label": "Back to your ledger.", "next": "return" }
+        ]
+      },
+      "beacon": {
+        "text": "There is an old light in the far chamber. Attune it, then return through the graveyard and forest. Edda will want to see your lantern beside the fire again.",
+        "choices": [
+          { "label": "I know the way now.", "next": null },
+          { "label": "Tell me the route again.", "next": "roads" }
+        ]
+      }
+    }
+  }
+]

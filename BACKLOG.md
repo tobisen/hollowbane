@@ -383,8 +383,10 @@ W1–W5 authorized after technical C13 verification. Thirty sequential scoped in
 - DBL-384 / W4: Controller-compatible container and exit interaction (completed).
 - DBL-385 / W4: Persistent exploration reveal and minimap markers (completed).
 - DBL-386 / W5: Scoped D01 camp forest graveyard crypt objective/return delivered; runtime6b7cbce exact CI/Pages and hosted acceptance verified. Broader W5 remains partial.
-- DBL-387 / W5: Scoped D03 expedition/character migration, corruption coherence and explicit IndexedDB recovery locally verified; exact publication pending.
+- DBL-387 / W5: Scoped D03 expedition/character migration, corruption coherence and explicit recovery delivered at6b61be0; exact CI/Pages and three hosted scenarios verified.
 - DBL-388 / W5: Three-class keyboard mouse virtual-controller expedition checks (planned).
 - DBL-389 / W5: Representative world performance and regression gate (planned).
 - DBL-390 / W5: Public expedition publication and hosted verification (planned).
 - DBL-391 / W5: World quality evidence and review checkpoint (planned).
+
+D04 / DBL-131: scoped original two-NPC camp/dialogue foundation locally verified, including versioned meeting flags and keyboard/mouse/virtual-controller focus/cancel. Shared original sprite costumes remain art placeholders; no quest/vendor scope or broad-parent closure. Exact publication pending.

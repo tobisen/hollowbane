@@ -1,5 +1,20 @@
 # Status
 
+## D04 local NPC/dialogue candidate (2026-10-20)
+
+- D04/DBL-131 delivers original Edda Vey/Orren Thale data-driven camp dialogue, validated proximity/alive/idle intents, safe text/native modal focus and keyboard/mouse/virtual-controller cancel/navigation. Exploration5 dialogue1 flags explicitly migrate1–4 with empty meetings, preserving maps/items/expedition/character5. No NPC quest reward/vendor functionality.
+- 31 focused cases pass across runs, final NPC8/8 and browser1/1 (8.1s); held-stick isolation, field focus, both greetings/reload, no XP/gold/expedition side effects and explicit controller focus verified. TypeScript/relevant lint/format/build and asset24-record validation pass. Three reviewed screenshots retained /private/tmp/hollowbane-d04-local/. Original shared-sheet NPC costume placeholders tracked in docs/assets.json and docs/overnight/d04.md. Ready for scoped commit/push; no D05 until exact CI/Pages/artifact/hosted NPC gate.
+
+## D03 verified release / D04 active (2026-10-20)
+
+- D03 deployed6b61be0d4f4c524f8c00d381beb8a0bd3027dee8: exact CI39379908466 and Pages7193421628 success; all26 hosted files match. Hosted3/3 route/encounter cases pass2.9min; screenshots reviewed and retained /private/tmp/hollowbane-d03-hosted/. Initial637f02b was not deployed; measured integration-budget correction preserves every assertion. Evidence docs/overnight/d03.md.
+- D04/DBL-131 now active: two original camp NPCs, data-driven dialogue/proximity interactions, safe text presentation, keyboard/mouse and controller focus/cancel, versioned conversation flags. Reuse simulation/save/modal systems; no quests/rewards/vendors in D04. D05 remains blocked until D04 exact release gate. Preserve original local docs and worktrees; continue normal live session through approved D14 scope.
+
+## D03 corrected exact release pending (2026-10-20)
+
+- Correction6b61be0d4f4c524f8c00d381beb8a0bd3027dee8 pushed; main equals origin/main. New exact workflow39379908466 verify/deploy and Pages7193421628 succeeded for6b61be0; hosted gates are running: https://github.com/tobisen/hollowbane/actions/runs/39379908466 . Prior637f02b/39379427445 failed only two new15s integration budgets (408pass;19.244/17.279s cases), no Pages. Correction uses measured25s budgets only for these cases; all assertions and runtime unchanged.
+- Continue D03 gate: require replacement exact verify/deploy success, record Pages identity, compare26 hosted bytes, run hosted overnight-d01 + world-encounters (3 cases), review/copy screenshots, record deployed SHA, then begin authorized D04. No D04 while pending/red/unverified. Original local docs retained; backup d03-correction-local.patch and stash under prior reconciliation checkpoint.
+
 ## D03 CI correction (2026-10-20)
 
 - Exact637f02b workflow39379427445 failed standard check:408 pass; only two new complete-checkpoint integration cases exceeded15s (19.244/17.279s), with no assertion failures. No Pages deployment. Log /private/tmp/hollowbane-workspace-reconcile/d03-ci-failed.log.
