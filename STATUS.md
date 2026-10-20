@@ -1,5 +1,15 @@
 # Status
 
+## D03 CI correction (2026-10-20)
+
+- Exact637f02b workflow39379427445 failed standard check:408 pass; only two new complete-checkpoint integration cases exceeded15s (19.244/17.279s), with no assertion failures. No Pages deployment. Log /private/tmp/hollowbane-workspace-reconcile/d03-ci-failed.log.
+- Scoped measured25s budgets for those two cases preserve every check and all global/browser limits. Runtime unchanged. Verify targeted cases, commit/push correction, then require new exact SHA CI/Pages,26 hosted files and3 route/encounter cases before D04.
+
+## D03 exact release pending (2026-10-20)
+
+- Verified D03 committed/pushed637f02b081bfeff5a040eae60fe45428043e3e33; main equals origin/main. Exact workflow39379427445 in_progress: https://github.com/tobisen/hollowbane/actions/runs/39379427445 . Original three documentation edits retained with backup /private/tmp/hollowbane-workspace-reconcile/d03-publication-local.patch and stash; all historical worktrees remain.
+- Continue normal session through this gate; do not start D04 while pending/red/unverified. After exact verify/deploy success, record Pages deployment, compare26 public files via read-only verify_hosted helper and run `PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/ npx playwright test tests/e2e/overnight-d01.spec.ts tests/e2e/world-encounters.spec.ts` (3 real deployed route/encounter cases). Review/copy screenshots immediately to /private/tmp/hollowbane-d03-hosted/ before another Playwright run clears them. Then record deployed SHA and begin approved D04 NPC/dialogue slice from tools/overnight/tasks.json and the extended-day request. No orchestrator.
+
 ## D03 local persistence candidate (2026-10-20)
 
 - D03/DBL-387,135,211 validates generated death-area/member identities and claimed-reward XP coherence; existing schemas/seeds/items retained. Valid-revision records with malformed/missing text can explicitly recover the validated backup with raw quarantine and CAS intact. Unsupported revision metadata stays locked with originals retained. No new storage engine.

@@ -209,7 +209,7 @@ it("resumes every expedition leg with mixed/embedded ownership, treasure, discov
         EQUIPMENT_CONTENT,
       ),
   ).toBe(false);
-}, 15000);
+}, 25000);
 
 function alter(text: string, change: (body: InventorySession) => void) {
   const root = JSON.parse(text) as { body: InventorySession; checksum: string };
@@ -261,7 +261,7 @@ it("offers the unchanged previous snapshot for cross-area deaths, partial reward
     /Incomplete expedition reward/,
   );
   expect(inspectSnapshots(partial, claimed).kind).toBe("recoverable");
-}, 15000);
+}, 25000);
 
 it.each([1, 2, 3, 4])(
   "explicitly migrates character schema%i without losing supported legacy items or inventing world rewards",
