@@ -1,5 +1,11 @@
 # Status
 
+## D07-B CI correction — successor release required (2026-10-20)
+
+- Runtime candidate23314be failed exact CI39496483195 solely on new miniboss save/reload unit6066ms/default5000ms;458 other units passed. Pages skipped. D07-B remains incomplete; D08 has not started. Last verified deployed SHA remains ec9aa2babe9e5bbbce7a5eed2ec2fb2f95f1e37b.
+- Profile demonstrated102 layout generations/four inputs,1594ms of1625ms locally. Test-local real-fixture cache now returns independent clones without changing assertions, validators, gameplay or timeouts. All three affected cases pass in228ms total (reward/save case25ms); TypeScript/scoped lint/format pass. Prior local browser evidence is reused because production code is unchanged. Details/logs: docs/overnight/d07.md.
+- Next publish this verified correction after dry-run, require its exact successful CI/Pages, hosted byte identity and hosted D07-A/B cases before D08-A. Preserve unrelated local documentation. No release success is inferred from partial tests.
+
 ## D07-B miniboss candidate — release gate pending (2026-10-20)
 
 - Extended user assignment authorizes sequential D07-B, D08-A/B, D09 and D10, then conditional existing D11–D14; no old orchestrator. Rechecked D07-A exact workflow39486202514: successful ec9aa2babe9e5bbbce7a5eed2ec2fb2f95f1e37b. That remains the last verified deployed runtime at https://tobisen.github.io/hollowbane/ .

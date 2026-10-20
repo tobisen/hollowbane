@@ -1,4 +1,4 @@
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import {
   CAIRNWARDEN,
   CAIRNWARDEN_XP,
@@ -16,6 +16,26 @@ import { createInventorySession } from "./inventory-world";
 import { serializeCharacter, deserializeCharacter } from "./inventory-save";
 import { consumeMonsterDeathXp } from "./monster-experience";
 import { itemContentForVersion } from "./item-content";
+
+// Save/reload requests 102 real generations for four identical seeded layouts.
+// Reuse each real fixture with independent clones; keep all combat/save assertions.
+// Generator replay has independent coverage in world-layout.test.ts.
+vi.mock(import("./world-layout"), async (importOriginal) => {
+  const original = await importOriginal();
+  const layouts = new Map<string, ReturnType<typeof original.worldLayout>>();
+  return {
+    ...original,
+    worldLayout: (...args: Parameters<typeof original.worldLayout>) => {
+      const key = args.join(":");
+      let layout = layouts.get(key);
+      if (!layout) {
+        layout = original.worldLayout(...args);
+        layouts.set(key, layout);
+      }
+      return structuredClone(layout);
+    },
+  };
+});
 
 function fixture() {
   const session = new WorldSession(undefined, 42, 2, "forgotten-graveyard");
