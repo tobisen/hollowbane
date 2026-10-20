@@ -11,6 +11,7 @@ import { AREA_IDS, type AreaId } from "../simulation/world";
 import { layoutFingerprint } from "../simulation/world-layout";
 import { findPath as worldPath } from "../world/navigation";
 import { WorldSession } from "../simulation/world-session";
+import { EXPEDITION_REWARD } from "../simulation/world-expedition";
 import { validateSession } from "../simulation/inventory-world";
 import { commandCombat as stopCombat } from "../simulation/combat-targeting";
 import { areaDefinition } from "../simulation/world";
@@ -1695,7 +1696,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
           outbound:
             "Expedition: forest → graveyard → Ancient Crypt. Attune the beacon in the far chamber (E / Interact).",
           returning:
-            "Beacon attuned. Return through graveyard → forest → camp to finish.",
+            expedition.reward === "claimed"
+              ? `Beacon attuned · +${EXPEDITION_REWARD.xp} XP · +${EXPEDITION_REWARD.gold} gold. Return through graveyard → forest → camp to finish.`
+              : "Beacon attuned. Return through graveyard → forest → camp to finish.",
           complete:
             "Expedition complete · Crypt beacon secured · Returned safely to camp.",
         };

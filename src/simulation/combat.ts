@@ -51,6 +51,8 @@ export const ARENA_NAV: Navigation = {
 export type Weapon = "melee" | "projectile";
 export interface CombatActor {
   monsterRole?: MonsterRole;
+  /** Generated-area reward context; legacy encounters retain their role reward. */
+  xpReward?: number;
   id: number;
   powerMultiplier?: number;
   effectStatuses?: string[];

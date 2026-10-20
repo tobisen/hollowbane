@@ -81,7 +81,7 @@ it("migrates prior discovery snapshots without awarding completion and rejects f
     { stage: ["ready"] },
     { stage: "complete", reached: 0 },
     { reached: 3 },
-    { version: 2 },
+    { version: 3 },
   ]) {
     const invalid = structuredClone(saved);
     Object.assign(invalid.expedition!, change);

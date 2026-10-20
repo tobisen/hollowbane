@@ -1,9 +1,31 @@
 import type { AreaId } from "./world";
-export interface ExpeditionState {
-  version: 1;
+interface ExpeditionProgress {
   id: string;
   stage: "ready" | "outbound" | "returning" | "complete";
   reached: number;
+}
+export interface ExpeditionState extends ExpeditionProgress {
+  version: 2;
+  reward: "pending" | "claimed" | "legacy";
+}
+export interface LegacyExpeditionState extends ExpeditionProgress {
+  version: 1;
+}
+export const EXPEDITION_REWARD = Object.freeze({ xp: 250, gold: 120 });
+/** Do not retrospectively reward a previously attuned or completed objective. */
+export function migrateExpedition(
+  state: ExpeditionState | LegacyExpeditionState,
+): ExpeditionState {
+  return state.version === 2
+    ? state
+    : {
+        ...state,
+        version: 2,
+        reward:
+          state.stage === "returning" || state.stage === "complete"
+            ? "legacy"
+            : "pending",
+      };
 }
 export function expeditionIdentity(
   seed: number,
@@ -16,7 +38,8 @@ export function newExpedition(
   contentVersion: number,
 ): ExpeditionState {
   return {
-    version: 1,
+    version: 2,
+    reward: "pending",
     id: expeditionIdentity(seed, contentVersion),
     stage: "ready",
     reached: 0,

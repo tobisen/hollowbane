@@ -79,11 +79,12 @@ export function consumeMonsterDeathXp(
     !target.monsterRole
   )
     return;
-  const character = addExperience(
-    xp.character.totalXp,
-    xp.rewards[target.monsterRole],
-    xp.curve,
-  );
+  grantCharacterXp(xp, target.xpReward ?? xp.rewards[target.monsterRole]);
+}
+
+/** Shared immutable preparation before committing XP and both point budgets. */
+export function grantCharacterXp(xp: MonsterExperience, amount: number): void {
+  const character = addExperience(xp.character.totalXp, amount, xp.curve);
   const attributes = rewardAttributeLevels(xp.attributes, character.level);
   const skills = rewardSkillLevels(xp.skills, character.level);
   xp.skills = skills;

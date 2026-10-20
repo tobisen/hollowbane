@@ -1,4 +1,10 @@
-import { advanceExpedition, newExpedition } from "./world-expedition";
+import {
+  advanceExpedition,
+  newExpedition,
+  migrateExpedition,
+  EXPEDITION_REWARD,
+} from "./world-expedition";
+import { grantCharacterXp } from "./monster-experience";
 import { discoveryCell, revealDiscovery } from "./world-discovery";
 import { planWorldContainers, openWorldContainer } from "./world-containers";
 import type { ItemContent } from "./item-content";
@@ -90,6 +96,7 @@ export class WorldSession {
         ),
       };
     const s = this.snapshot;
+    s.expedition = migrateExpedition(s.expedition!);
     this.travel = new WorldTravel(
       s.seed,
       worldLayout(s.area, s.seed, s.contentVersion),
@@ -97,7 +104,7 @@ export class WorldSession {
     this.travel.setPosition(restoredPosition(s));
   }
   get expedition() {
-    return { ...this.snapshot.expedition! };
+    return { ...migrateExpedition(this.snapshot.expedition!) };
   }
   /** Existing generated crypt spawn is a reachable chamber, clear of exit triggers. */
   get objectivePosition(): WorldPoint | null {
@@ -124,9 +131,20 @@ export class WorldSession {
   }
   interactExpedition(world: CombatWorld): boolean {
     if (!this.canInteractExpedition(world)) return false;
+    const objective = this.expedition.stage === "outbound";
+    if (objective) {
+      const gold = this.containerState.gold + EXPEDITION_REWARD.gold;
+      if (this.expedition.reward !== "pending" || !Number.isSafeInteger(gold))
+        return false;
+      // XP/point arithmetic prepares all values before mutation. The ledger, gold,
+      // XP and objective are then captured by the existing atomic checkpoint.
+      grantCharacterXp(world.experience, EXPEDITION_REWARD.xp);
+      this.containerState.gold = gold;
+    }
     this.snapshot.expedition = {
       ...this.expedition,
       stage: this.expedition.stage === "ready" ? "outbound" : "returning",
+      reward: objective ? "claimed" : this.expedition.reward,
     };
     return true;
   }

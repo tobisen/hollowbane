@@ -140,7 +140,23 @@ test("real input completes camp forest graveyard crypt camp once with atomic own
   await saveWorldCheckpoint(page);
   const completed = await readWorldCheckpoint(page, "ashen-refuge");
   expect(completed.exploration!.expedition!.stage).toBe("complete");
-  expect(completed.character).toEqual(initial.character);
+  expect(completed.character).toEqual({ ...initial.character, level: 2 });
+  expect(completed.progression!.character.totalXp).toBe(
+    initial.progression!.character.totalXp + 250,
+  );
+  expect(completed.progression!.attributes.available).toBe(
+    initial.progression!.attributes.available + 5,
+  );
+  expect(completed.progression!.skills.available).toBe(
+    initial.progression!.skills.available + 1,
+  );
+  expect(completed.exploration!.containers!.gold).toBe(
+    initial.exploration!.containers!.gold + 120,
+  );
+  expect(completed.exploration!.expedition).toMatchObject({
+    version: 2,
+    reward: "claimed",
+  });
   expect(completed.loot.sequence).toBe(initial.loot.sequence);
   await page.reload();
   await expect(page.locator("#inventory-status")).toHaveText(
@@ -159,6 +175,11 @@ test("real input completes camp forest graveyard crypt camp once with atomic own
     completed.exploration!.expedition,
   );
   expect(repeated.character).toEqual(completed.character);
+  expect(repeated.progression).toEqual(completed.progression);
+  expect(repeated.exploration!.containers).toEqual(
+    completed.exploration!.containers,
+  );
+  expect(repeated.loot).toEqual(completed.loot);
   await page.keyboard.press("Escape");
   await page.screenshot({ path: "test-results/d01-camp-complete.png" });
 });

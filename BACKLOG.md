@@ -382,7 +382,7 @@ W1–W5 authorized after technical C13 verification. Thirty sequential scoped in
 - DBL-383 / W4: Seeded containers and atomic one-time rewards (completed).
 - DBL-384 / W4: Controller-compatible container and exit interaction (completed).
 - DBL-385 / W4: Persistent exploration reveal and minimap markers (completed).
-- DBL-386 / W5: Complete camp forest graveyard crypt return flow (planned).
+- DBL-386 / W5: Scoped D01 camp forest graveyard crypt objective/return delivered; runtime6b7cbce exact CI/Pages and hosted acceptance verified. Broader W5 remains partial.
 - DBL-387 / W5: Character inventory and world save reload recovery (planned).
 - DBL-388 / W5: Three-class keyboard mouse virtual-controller expedition checks (planned).
 - DBL-389 / W5: Representative world performance and regression gate (planned).

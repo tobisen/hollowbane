@@ -1,5 +1,26 @@
 # Status
 
+## D02 local candidate (2026-10-20)
+
+- D02/DBL-382,116 adds generated area/tier XP and atomic once-only250 XP/120 gold at crypt attunement. Existing difficulty/composition, level1/3/5 loot, map/encounter identities and item ownership retained. Expedition2 ledger explicitly migrates legacy ready/outbound versus already-attuned/completed states without retroactive rewards; exploration4/character schema unchanged.
+- 27 focused tests pass, including all nine class/biome live-AI fights, gold overflow rollback, XP/point budgets, ledger corruption and legacy/replay protection. Strengthened browser expedition passes2.5min; rewards, reload, ownership and repeated return verified; screenshots reviewed. TypeScript/relevant lint/format/build pass. See docs/overnight/d02.md for configurations, metrics and fixture diagnoses. Ready for scoped commit/push and exact CI/Pages/hosted gates; no D03.
+
+## D01 verified release / D02 active (2026-10-20)
+
+- D01 deployed6b7cbce786fb0ee664c167494907a6f73a6f1b42: exact CI39371839831 verify/deploy success,394 unit/125 browser/15 final cross-browser; Pages7192178220 success. All26 hosted files match; hosted full-expedition acceptance passes2.4min and screenshots reviewed. Original local documentation/worktrees retained.
+- D02/DBL-382,116 now active: preserve existing area1/3/5 loot context, encounter composition/identity and scaling; add area/tier XP and one ledger-bound crypt-objective XP/gold transaction with explicit old-state migration. No new balance engine, class or reward-item ownership path. D03 remains blocked until D02 exact release gates pass.
+
+## Extended day authorization (2026-10-20)
+
+- User authorizes sequential normal-workspace D01–D14 through Act1 release, continuing while the live session/permissions/capacity support it; supersedes soft-budget/one-task stops for this batch. Do not invoke overnight orchestrator or change models automatically. Preserve original IDs, prior worktrees and unrelated local edits.
+- Mandatory per-deliverable boundary: targeted checks → commit/push → exact-SHA CI and successful Pages → relevant hosted acceptance and deployed-SHA record → next deliverable. Pending/failed/unverified release blocks advancement. D01 exact run39371839831 for6b7cbce completed success:394 unit/125 browser/15 final cross-browser cases; Pages deployment7192178220 succeeds. Hosted artifact/full-expedition gates are running; no D02 work begun. Prior394-test local evidence remains valid; do not repeat unchanged unit suite.
+
+## D01 publication checkpoint (2026-10-20)
+
+- Verified local D01 committed and pushed as6b7cbce786fb0ee664c167494907a6f73a6f1b42. Normal main equals origin/main. Exact workflow39371839831 and Pages deployment7192178220 completed success; hosted acceptance remains pending. No D02 started.
+- Repository soft-session-budget checkpoint: next inspect https://github.com/tobisen/hollowbane/actions/runs/39371839831 for that exact SHA; fix any failing CI before advancing. After successful verify/deploy, compare all production bytes with `python3 tools/overnight/verify_hosted.py https://tobisen.github.io/hollowbane/`, then run `PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/ npx playwright test tests/e2e/overnight-d01.spec.ts` and review hosted screenshots. Only then advance approved D02. Continue normal VS Code workflow; do not restart overnight runner.
+- Original BACKLOG.md/STATUS.md/docs/items/l3.md edits remain uncommitted and retained in stash plus /private/tmp/hollowbane-workspace-reconcile/main-local.patch. This publication note is an additional uncommitted continuation checkpoint. All original worktrees/D01 source retained; no reset/clean/force push.
+
 ## D01 / DBL-386 continuation (2026-10-20)
 
 - Existing implementation recovered into synchronized normal main; expedition start, ordered travel, crypt attunement, once-only completion and nested exploration4 migration reviewed. Strict stage validation now rejects non-string data. Standard check394 tests passes;17 focused cases and final three-case validator rerun pass. TypeScript/lint/build and scoped format pass.

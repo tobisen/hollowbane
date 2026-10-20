@@ -5,6 +5,7 @@ import type { Encounter } from "./encounter";
 import { createMonster } from "./monsters";
 import { areaNavigation, canWalk } from "../world/navigation";
 import { planWorldEncounters, ENCOUNTER_SAFE_RADIUS } from "./world-encounters";
+import { MONSTER_XP } from "./monster-experience";
 /** Surviving packs restart on area load; defeated identities never restart or earn again. */
 export class WorldEncounterRuntime {
   readonly encounter: Encounter;
@@ -79,6 +80,11 @@ export class WorldEncounterRuntime {
         );
         const levelScale = 1 + (this.level - 1) * 0.12,
           elite = spawn.tier === "elite";
+        actor.xpReward = Math.round(
+          MONSTER_XP[spawn.role] *
+            (1 + (this.level - 1) * 0.25) *
+            (elite ? 1.5 : spawn.tier === "champion" ? 1.25 : 1),
+        );
         actor.hp = actor.maxHp = Math.round(
           actor.maxHp * levelScale * (elite ? 1.5 : 1),
         );

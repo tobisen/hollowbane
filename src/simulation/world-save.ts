@@ -5,10 +5,14 @@ import { areaWalkable } from "./area-map";
 import { WORLD_ACTOR_RADIUS, exitNear } from "./area-anchors";
 import type { WorldDrop } from "./world-loot";
 import { validateGeneratedItem } from "./item-save";
-import { expeditionIdentity, type ExpeditionState } from "./world-expedition";
+import {
+  expeditionIdentity,
+  type ExpeditionState,
+  type LegacyExpeditionState,
+} from "./world-expedition";
 export interface ExplorationSnapshot {
   version: 1 | 2 | 3 | 4;
-  expedition?: ExpeditionState;
+  expedition?: ExpeditionState | LegacyExpeditionState;
   containers?: import("./world-containers").ContainerState;
   contentVersion: number;
   seed: number;
@@ -199,13 +203,19 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       throw Error("Invalid opened container identity");
     containers = { version: 1, gold: integer(c.gold), opened };
   }
-  let expedition: ExpeditionState | undefined;
+  let expedition: ExpeditionState | LegacyExpeditionState | undefined;
   if (w.version === 4) {
     const e = record(w.expedition);
-    keys(e, ["version", "id", "stage", "reached"]);
+    keys(e, [
+      "version",
+      "id",
+      "stage",
+      "reached",
+      ...(e.version === 2 ? ["reward"] : []),
+    ]);
     const reached = integer(e.reached, 0, 3);
     if (
-      e.version !== 1 ||
+      (e.version !== 1 && e.version !== 2) ||
       e.id !== expeditionIdentity(seed, contentVersion) ||
       typeof e.stage !== "string" ||
       !["ready", "outbound", "returning", "complete"].includes(e.stage) ||
@@ -217,12 +227,22 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
         .some((id) => !visited.includes(id as AreaId))
     )
       throw Error("Invalid expedition state");
-    expedition = {
-      version: 1,
+    const progress = {
       id: e.id as string,
       stage: e.stage as ExpeditionState["stage"],
       reached,
     };
+    if (e.version === 2) {
+      if (
+        (e.reward !== "pending" &&
+          e.reward !== "claimed" &&
+          e.reward !== "legacy") ||
+        (e.stage === "ready" || e.stage === "outbound") !==
+          (e.reward === "pending")
+      )
+        throw Error("Invalid expedition reward ledger");
+      expedition = { ...progress, version: 2, reward: e.reward };
+    } else expedition = { ...progress, version: 1 };
   }
   return {
     version: w.version,
