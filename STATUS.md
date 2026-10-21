@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 prototype input correction — local checks pass, release pending (2026-10-21)
+
+- 883431a88d8ab78bdd9d3ad32ab9e6ec55f7cd9f / CI39628338010 failed only legacy prototype retargeting: actual destination12.557 pixels from requested point versus existing<12 requirement, then arrival cleared destination.475 units,15 compatibility and142 other Chromium cases pass, including all25 controller corrections. Aggregate verify blocked Pages/hosted. Last verified deployed runtime remains41e35912782e8f335aaab6327469ed4e702d0969 / CI39620543633 (20m37s including hosted). Failed19m49s is not a successful speed sample.
+- Trace shows57ms locator-click delay after a moving-camera screen projection. Test-only ground-click helper now sends actual mouse input directly after sampling, avoiding actionability waits. Original12-pixel precision,0.5 arrival, retarget/direction/collision/zoom/depth/snapshot assertions and all deadlines remain. All five prototype cases pass three traced repetitions15/15 in56.574s; TypeScript/scoped lint/format pass. No gameplay, dependency, snapshot, test retry or simulation-state changes.
+- Next commit/push this verified correction, require exact CI/Pages/manifest/all26 production files/three hosted cases, record the second successful sample and STOP. No further measurement-only source commit or gameplay/D08-B. Source/failed-run/trace evidence: docs/ci/release-pipeline.md and /private/tmp/hollowbane-ci-optimized-4-*; preserve unrelated edits and all earlier failure evidence.
+
 ## DBL-010 controller harness correction — local checks pass, external gate pending (2026-10-21)
 
 - Evidence-only85a4d7b59ecd885420d820948e3035ea805e525c / CI39624226982 failed two legacy gamepad cases;475 units,15 compatibility and141 other Chromium cases passed, including the prior expedition acquisition correction. Aggregate verify blocked Pages/hosted. Last verified deployed SHA remains41e35912782e8f335aaab6327469ed4e702d0969 / CI39620543633 (20m37s including hosted).85a4d7b is not released; failed timings are not successful performance evidence.

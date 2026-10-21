@@ -19,7 +19,10 @@ async function clickGround(page: Page, x: number, y: number) {
     },
     { x, y },
   );
-  await page.locator("#world").click({ position: screen });
+  // The full-viewport canvas is ready before projection is sampled. Locator
+  // actionability waits add camera motion after this moving-view coordinate;
+  // send the actual mouse click directly, retaining the existing precision.
+  await page.mouse.click(screen.x, screen.y);
 }
 test("detailed cloister renders without errors and preserves its visual reference", async ({
   page,
