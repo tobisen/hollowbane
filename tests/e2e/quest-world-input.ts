@@ -1,4 +1,6 @@
 import { expect, type Page } from "@playwright/test";
+import { DEFAULT_STICK } from "../../src/simulation/analog";
+import { MOVEMENT } from "../../src/simulation/locomotion";
 export type Point = { x: number; y: number };
 declare global {
   interface Window {
@@ -157,7 +159,7 @@ async function driveQuestPoints(
   // Advance waypoints beside rendering too: host round trips must not insert
   // idle time between every short segment on a slower browser.
   await page.evaluate(
-    ({ points, sourceArea, activePath }) => {
+    ({ points, sourceArea, activePath, steering }) => {
       const state = {
         arrived: false,
         completed: 0,
@@ -198,7 +200,14 @@ async function driveQuestPoints(
         const sx = dx - dy,
           sy = (dx + dy) / 2,
           length = Math.hypot(sx, sy);
-        const scale = Math.min(1, distance * 4);
+        // A rendered update can consume six ticks (100ms). Aim to cover at
+        // most half the remaining distance in that update, then invert the
+        // actual stick curve/deadzone to request that speed through real input.
+        const amount = Math.min(1, distance / steering.maxFrameTravel / 2);
+        const scale =
+          steering.deadzone +
+          (steering.outer - steering.deadzone) *
+            Math.pow(amount / steering.sensitivity, 1 / steering.curve);
         // Mouse/keyboard activity releases controller ownership. Holding the
         // stick while disarmed cannot rearm it; supply a real neutral sample.
         const armed = window.hollowbaneInput?.armed ?? false;
@@ -231,7 +240,12 @@ async function driveQuestPoints(
       };
       steer();
     },
-    { points, sourceArea, activePath },
+    {
+      points,
+      sourceArea,
+      activePath,
+      steering: { ...DEFAULT_STICK, maxFrameTravel: MOVEMENT.runSpeed * 0.1 },
+    },
   );
   try {
     for (let index = 0; index < points.length; index++)

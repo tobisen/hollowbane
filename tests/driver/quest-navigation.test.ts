@@ -8,11 +8,12 @@ import {
   segmentWalkable,
 } from "../../src/world/navigation";
 import {
+  MOVEMENT,
   createWalker,
   moveTick,
   type Walker,
 } from "../../src/simulation/locomotion";
-import { processStick } from "../../src/simulation/analog";
+import { DEFAULT_STICK, processStick } from "../../src/simulation/analog";
 
 const layout = worldLayout("haunted-forest", 42, 2);
 const nav = areaNavigation(layout.map);
@@ -26,22 +27,42 @@ function replay(
   frameControl: boolean,
   interrupt = false,
   frameCadence = 1,
+  recording?: {
+    position: { x: number; y: number };
+    destination: { x: number; y: number };
+    speed: number;
+  },
+  legacyGain = false,
 ) {
-  let walker: Walker = { ...createWalker({ x: 0, y: 6 }), gait: "run" };
+  const target = recording?.destination ?? destination;
+  let walker: Walker = {
+    ...createWalker(recording?.position ?? { x: 0, y: 6 }),
+    gait: "run",
+    speed: recording?.speed ?? 0,
+  };
   let arrived = false;
   let raw = { x: 0, y: 0 };
   const trace = [];
   for (let tick = 0; tick < 600; tick++) {
     const paused = interrupt && tick >= 8 && tick < 38;
     if (tick % (frameControl ? frameCadence : hostCadence) === 0) {
-      const dx = destination.x - walker.position.x;
-      const dy = destination.y - walker.position.y;
+      const dx = target.x - walker.position.x;
+      const dy = target.y - walker.position.y;
       const distance = Math.hypot(dx, dy);
       arrived ||= distance < 0.1;
       const sx = dx - dy,
         sy = (dx + dy) / 2;
-      const length = Math.hypot(sx, sy),
-        scale = Math.min(1, distance * 4);
+      const length = Math.hypot(sx, sy);
+      const amount = Math.min(1, distance / (MOVEMENT.runSpeed * 0.1) / 2);
+      const scale =
+        !frameControl || legacyGain
+          ? Math.min(1, distance * 4)
+          : DEFAULT_STICK.deadzone +
+            (DEFAULT_STICK.outer - DEFAULT_STICK.deadzone) *
+              Math.pow(
+                amount / DEFAULT_STICK.sensitivity,
+                1 / DEFAULT_STICK.curve,
+              );
       raw =
         arrived || paused
           ? { x: 0, y: 0 }
@@ -53,7 +74,7 @@ function replay(
     trace.push({
       tick,
       position: walker.position,
-      destination,
+      destination: target,
       raw,
       blocked: !segmentWalkable(nav, previous, walker.position),
       arrived,
@@ -108,4 +129,27 @@ it("resumes the clear segment after a neutral-input interruption without changin
       result.walker.position.y - destination.y,
     ),
   ).toBeLessThan(0.1);
+});
+
+it("replays the recorded running six-tick oscillation and brakes inside the unchanged arrival threshold", () => {
+  const recording = {
+    position: { x: 6.749375791498417, y: -3.5031643662944667 },
+    destination: { x: 7, y: -3.5 },
+    speed: MOVEMENT.runSpeed,
+  };
+  const old = replay(12, true, false, 6, recording, true);
+  expect(old.arrived).toBe(false);
+  expect(old.trace.every((step) => !step.blocked)).toBe(true);
+  for (const cadence of [1, 2, 3, 4, 5, 6]) {
+    const corrected = replay(12, true, false, cadence, recording);
+    expect(corrected.arrived).toBe(true);
+    expect(
+      Math.hypot(
+        corrected.walker.position.x - recording.destination.x,
+        corrected.walker.position.y - recording.destination.y,
+      ),
+    ).toBeLessThan(0.1);
+    expect(corrected.trace.every((step) => !step.blocked)).toBe(true);
+    expect(corrected.trace.at(-1)!.raw).toEqual({ x: 0, y: 0 });
+  }
 });

@@ -1,5 +1,12 @@
 # Status
 
+## DBL-010 controller navigation driver repair — local checks pass, release pending (2026-10-21)
+
+- Candidatee694a1d /CI39660428508 failed one legacy D06 forest navigation case;481 units/142 Chromium/15 compatibility passed. Both verify and new final Release acceptance rejected it, Pages/hosted skipped: actual critical-failure blocking proof. Last accepted deployment remainse356700 /39656421994 /Pages7234892160. Earlier13f82fe green CI with skipped publication remains unaccepted.
+- Trace/screenshot show alive player oscillating0.250644/0.289356 around clear waypoint after six-tick/0.54-unit full-stick updates. Test-only driver now brakes for the existing100ms bound and inverts existing stick deadzone/curve. Same real virtual input, exact path,0.1 precision,10s waypoint/60s case deadlines, progression/health/reward/save checks; no gameplay/snapshot/dependency changes.
+- Four navigation replay units pass, including captured old oscillation versus corrected arrival at every1–6tick cadence. Three traced real repetitions pass82.540s; remaining ten affected D06/D07-B browser cases pass124.475s, including boss death/one-time rewards/save reload. TypeScript/scoped lint/format pass. Full now482 units; original143 Chromium/15 compatibility retained. Core29/Python9/Deep7 unchanged. Evidence: docs/ci/measurements.md and /private/tmp/hollowbane-fast-d06-braking-browser.json and /private/tmp/hollowbane-fast-navigation-affected-browser.json.
+- Next require exact corrected Full+Pages+hosted+final acceptance; then ordinary Fast proof with Full skipped, record measured timings, commit evidence and verify final exact source. No local Full rerun, gameplay or advancement while pending/failed. Preserve unrelated edits.
+
 ## DBL-010 Fast skip-propagation failure — release blocked and repaired locally (2026-10-21)
 
 - Ordinary candidate13f82fee03f58fee375213643cf162cae4b7a256 /39659571759 correctly selected Fast, skipped Full and passed verify; GitHub implicit transitive success then skipped Pages/hosted. Overall CI green did NOT satisfy the release gate. No Fast release/timing success is claimed. Last accepted deployment remains Full-verifiede356700 /39656421994 /Pages7234892160.
