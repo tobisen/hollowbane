@@ -4,7 +4,11 @@ import type { CombatWorld } from "./combat";
 import type { Encounter } from "./encounter";
 import { createMonster } from "./monsters";
 import { areaNavigation, canWalk } from "../world/navigation";
-import { planWorldEncounters, ENCOUNTER_SAFE_RADIUS } from "./world-encounters";
+import {
+  planWorldEncounters,
+  ENCOUNTER_SAFE_RADIUS,
+  CRYPT_FINALE_ACTOR,
+} from "./world-encounters";
 import { MONSTER_XP } from "./monster-experience";
 import { cryptBossSpawn, installCryptBoss } from "./crypt-boss";
 import { createBoss, type BossArena, type BossState } from "./boss";
@@ -32,12 +36,26 @@ export class WorldEncounterRuntime {
     world: CombatWorld,
     layout: AreaLayout,
     private deaths: ReadonlySet<number>,
+    finaleUnlocked?: boolean,
   ) {
     this.layout = layout;
     const plan = planWorldEncounters(layout);
-    this.cryptBoss = cryptBossSpawn(layout, plan);
-    this.plan = plan.map((spawn) =>
-      spawn.id === this.cryptBoss?.id ? this.cryptBoss : spawn,
+    const crypt = cryptBossSpawn(layout, plan);
+    this.cryptBoss =
+      crypt &&
+      (finaleUnlocked === undefined
+        ? crypt
+        : finaleUnlocked
+          ? { ...crypt, id: CRYPT_FINALE_ACTOR, pack: CRYPT_FINALE_ACTOR }
+          : undefined);
+    // The mechanics fixture keeps its original identity. Campaign sessions reserve
+    // this arena and use a new identity, preserving every legacy death/loot ledger.
+    this.plan = plan.flatMap((spawn) =>
+      spawn.id === crypt?.id
+        ? this.cryptBoss
+          ? [this.cryptBoss]
+          : []
+        : [spawn],
     );
     this.miniboss = cairnwardenSpawn(layout, this.plan);
     this.nav = areaNavigation(layout.map);

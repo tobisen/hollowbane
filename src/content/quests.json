@@ -153,5 +153,26 @@
       "gold": 60,
       "itemSeed": null
     }
+  },
+  {
+    "id": "a-lantern-unbound",
+    "title": "A Lantern Unbound",
+    "chapter": "act1",
+    "returnTo": "edda-vey",
+    "description": "The beacon has broken Sevra’s seal. Accept this final task in Ashen Refuge after reporting The Light Below. Return to the Ancient Crypt and defeat Sevra, the Vaultbound. Follow the crypt, graveyard and forest exits home to Edda to free the lanterns and conclude Act 1.",
+    "requires": ["the-light-below"],
+    "objectives": [
+      {
+        "kind": "boss",
+        "target": "ancient-crypt",
+        "label": "Defeat Sevra, the Vaultbound",
+        "count": 1
+      }
+    ],
+    "reward": {
+      "xp": 360,
+      "gold": 120,
+      "itemSeed": 1364525059
+    }
   }
 ]

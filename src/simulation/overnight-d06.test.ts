@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { QUESTS, validateQuestDefinitions } from "./quests";
+import { ACT1_FINALE, QUESTS, validateQuestDefinitions } from "./quests";
 import { WorldSession } from "./world-session";
 import { createInventorySession } from "./inventory-world";
 import { snapshotChecksum, inspectSnapshots } from "./inventory-save";
@@ -8,7 +8,10 @@ import { createD06CampaignFixture as fixture } from "../../tests/fixtures/d06-ca
 import { planWorldEncounters } from "./world-encounters";
 import { planWorldContainers } from "./world-containers";
 import { worldLayout } from "./world-layout";
-const story = QUESTS.filter((q) => q.chapter === "act1");
+// D06's three original chapters remain pinned; D08 tests the additive finale.
+const story = QUESTS.filter(
+  (q) => q.chapter === "act1" && q.id !== ACT1_FINALE,
+);
 function survey(f: ReturnType<typeof fixture>) {
   f.travel("forest");
   f.defeat();

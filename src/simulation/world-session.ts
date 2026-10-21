@@ -7,6 +7,7 @@ import {
 import { grantCharacterXp } from "./monster-experience";
 import {
   QUESTS,
+  ACT1_FINALE,
   newQuestState,
   acceptQuest,
   trackQuest,
@@ -15,6 +16,7 @@ import {
   type QuestEvent,
 } from "./quests";
 import { questRewardItem } from "./quest-rewards";
+import { CRYPT_FINALE_ACTOR } from "./world-encounters";
 import { placeLoot } from "./world-loot";
 import { areaNavigation } from "../world/navigation";
 import {
@@ -140,7 +142,17 @@ export class WorldSession {
   get quests() {
     return structuredClone(this.snapshot.quests!);
   }
+  get finaleUnlocked(): boolean {
+    return this.snapshot.quests!.entries.some((e) => e.id === ACT1_FINALE);
+  }
+  get campaignComplete(): boolean {
+    return this.snapshot.quests!.entries.some(
+      (e) => e.id === ACT1_FINALE && e.status === "claimed",
+    );
+  }
   acceptQuest(id: string, liveLoot?: LootWorld): boolean {
+    if (id === ACT1_FINALE && this.travel.state.area !== "ashen-refuge")
+      return false;
     const definition = QUESTS.find((q) => q.id === id);
     if (definition?.chapter === "act1" && this.contentVersion !== 2)
       return false;
@@ -158,7 +170,11 @@ export class WorldSession {
           ? liveLoot.deaths
           : area.deaths;
       for (const death of deaths)
-        this.questEvent({ kind: "defeat", area: area.id, id: String(death) });
+        this.questEvent({
+          kind: death === CRYPT_FINALE_ACTOR ? "boss" : "defeat",
+          area: area.id,
+          id: String(death),
+        });
       const base = 50000 + AREA_IDS.indexOf(area.id) * 100;
       for (const id of this.containerState.opened.filter(
         (id) => id >= base && id < base + 6,
@@ -213,7 +229,7 @@ export class WorldSession {
         continue;
       changed =
         this.questEvent({
-          kind: "defeat",
+          kind: target.id === CRYPT_FINALE_ACTOR ? "boss" : "defeat",
           area: this.travel.state.area,
           id: String(target.id),
         }) || changed;
@@ -292,6 +308,8 @@ export class WorldSession {
       player.controller.timeline.phase === "idle",
     );
     if (result) {
+      if (id === "edda-vey" && this.campaignComplete)
+        result.cursor.node = "conclusion";
       this.snapshot.dialogue = result.state;
       const changed = this.questEvent({
         kind: "interact",

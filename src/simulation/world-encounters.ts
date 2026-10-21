@@ -10,6 +10,8 @@ import { wildernessRandom } from "./wilderness-modules";
 import type { MonsterRole } from "./monsters";
 export const WORLD_ENCOUNTER_VERSION = 1;
 export const ENCOUNTER_SAFE_RADIUS = 9;
+/** New campaign identity; never aliases a hostile killed in pre-finale saves. */
+export const CRYPT_FINALE_ACTOR = 4090;
 export type EncounterTier = "normal" | "champion" | "elite";
 export interface WorldMonsterSpawn {
   readonly id: number;
@@ -43,6 +45,7 @@ export const BIOME_ENCOUNTERS: Readonly<Record<AreaId, BiomeEncounters>> = {
 };
 /** Rule-one identity bounds; no layout regeneration or random draws on save. */
 export function validWorldMonsterIdentity(area: AreaId, id: number): boolean {
+  if (area === "ancient-crypt" && id === CRYPT_FINALE_ACTOR) return true;
   const local = id - (AREA_IDS.indexOf(area) + 1) * 1000;
   const table = BIOME_ENCOUNTERS[area];
   return (

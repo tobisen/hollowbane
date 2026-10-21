@@ -35,6 +35,13 @@
           { "label": "I will consult my quest journal.", "next": null },
           { "label": "Back to the fire.", "next": "return" }
         ]
+      },
+      "conclusion": {
+        "text": "The lanterns are quiet. Sevra bound their light to names that could never leave the vault; you have opened the road for them. Tonight we burn one lamp for the living. Ashen Refuge will remember who brought the dawn back. Act 1 complete.",
+        "choices": [
+          { "label": "Keep a light for those still travelling.", "next": null },
+          { "label": "I will rest by the fire.", "next": null }
+        ]
       }
     }
   },

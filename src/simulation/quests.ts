@@ -1,8 +1,12 @@
 import data from "../content/quests.json" with { type: "json" };
 import { AREA_IDS, type AreaId } from "./world";
 import { CAMP_NPC_IDS } from "./camp-dialogue";
-import { validWorldMonsterIdentity } from "./world-encounters";
-export type QuestKind = "travel" | "interact" | "defeat" | "collect";
+import {
+  CRYPT_FINALE_ACTOR,
+  validWorldMonsterIdentity,
+} from "./world-encounters";
+export const ACT1_FINALE = "a-lantern-unbound";
+export type QuestKind = "travel" | "interact" | "defeat" | "collect" | "boss";
 export interface QuestDefinition {
   id: string;
   title: string;
@@ -100,12 +104,14 @@ export function validateQuestDefinitions(value: unknown): QuestDefinition[] {
       objectives: q.objectives.map((raw) => {
         const o = object(raw, ["kind", "target", "label", "count"]);
         if (
-          !["travel", "interact", "defeat", "collect"].includes(
+          !["travel", "interact", "defeat", "collect", "boss"].includes(
             o.kind as string,
           ) ||
           !(o.kind === "interact"
             ? interactionArea(o.target as string) !== null
-            : AREA_IDS.includes(o.target as AreaId)) ||
+            : o.kind === "boss"
+              ? o.target === "ancient-crypt" && o.count === 1
+              : AREA_IDS.includes(o.target as AreaId)) ||
           !integer(o.count, 20) ||
           ((o.kind === "travel" ||
             (o.kind === "interact" &&
@@ -204,6 +210,8 @@ function validEvent(e: QuestEvent): boolean {
       return (
         /^\d{4}$/.test(e.id) && validWorldMonsterIdentity(e.area, Number(e.id))
       );
+    case "boss":
+      return e.area === "ancient-crypt" && e.id === String(CRYPT_FINALE_ACTOR);
     case "collect":
       return /^l[2-8]-[0-9a-f]{1,8}-[0-9a-f]{1,8}$/.test(e.id);
     default:

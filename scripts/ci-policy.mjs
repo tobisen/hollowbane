@@ -26,6 +26,7 @@ export const groups = {
       "overnight-d07.spec.ts",
       "overnight-d07b.spec.ts",
       "overnight-d08.spec.ts",
+      "overnight-d08b.spec.ts",
     ],
   },
   persistence: {
@@ -43,8 +44,8 @@ export const groups = {
   },
   quest: {
     match: /(?:quest|camp-dialogue)/,
-    unit: /(?:quest|overnight-d06|world-rewards|world-save).*\.test\.ts$/,
-    browser: ["overnight-d06.spec.ts"],
+    unit: /(?:quest|overnight-d0[68]|world-rewards|world-save).*\.test\.ts$/,
+    browser: ["overnight-d06.spec.ts", "overnight-d08b.spec.ts"],
   },
 };
 export function filesIn(root) {

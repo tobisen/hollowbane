@@ -104,6 +104,7 @@ export async function followQuestPath(
   page: Page,
   kind: "npc" | "treasure" | "objective" | "exit",
   id = "",
+  precision = 0.1,
 ) {
   await neutralQuestController(page);
   const area = await page.evaluate(() => window.hollowbaneWorld!.area);
@@ -138,7 +139,13 @@ export async function followQuestPath(
     },
     { kind, id },
   );
-  await driveQuestPoints(page, points, kind === "exit" ? area : undefined);
+  await driveQuestPoints(
+    page,
+    points,
+    kind === "exit" ? area : undefined,
+    points,
+    precision,
+  );
 }
 export async function driveQuestPoint(
   page: Page,
@@ -153,13 +160,14 @@ async function driveQuestPoints(
   points: Point[],
   sourceArea?: string,
   activePath: Point[] = points,
+  precision = 0.1,
 ) {
   if (!points.length) return;
   // Host polling can miss arrival while a stale held direction overshoots.
   // Advance waypoints beside rendering too: host round trips must not insert
   // idle time between every short segment on a slower browser.
   await page.evaluate(
-    ({ points, sourceArea, activePath, steering }) => {
+    ({ points, sourceArea, activePath, steering, precision }) => {
       const state = {
         arrived: false,
         completed: 0,
@@ -187,7 +195,7 @@ async function driveQuestPoints(
           Math.hypot(
             points[state.completed]!.x - w.position.x,
             points[state.completed]!.y - w.position.y,
-          ) < 0.1
+          ) < precision
         )
           state.completed++;
         const p = points[Math.min(state.completed, points.length - 1)]!;
@@ -244,6 +252,7 @@ async function driveQuestPoints(
       points,
       sourceArea,
       activePath,
+      precision,
       steering: { ...DEFAULT_STICK, maxFrameTravel: MOVEMENT.runSpeed * 0.1 },
     },
   );

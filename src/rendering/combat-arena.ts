@@ -469,6 +469,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         this.world,
         travel.layout,
         loot.deaths,
+        worldSession!.finaleUnlocked,
       );
       this.encounter = this.worldEncounter.plan.length
         ? this.worldEncounter.encounter

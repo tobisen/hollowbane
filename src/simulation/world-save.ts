@@ -316,7 +316,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
           throw Error("Quest meeting evidence missing");
       } else if (
         !visited.includes(objective.target as AreaId) ||
-        (objective.kind === "defeat" &&
+        ((objective.kind === "defeat" || objective.kind === "boss") &&
           ids.some(
             (id) =>
               !areas

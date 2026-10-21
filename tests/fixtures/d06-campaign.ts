@@ -111,7 +111,7 @@ export function createD06CampaignFixture(classId: ClassId = "warrior") {
     session.restoreDeaths(inventory.loot, world);
     return { text, loaded };
   };
-  const defeat = (count = 2) => {
+  const defeat = (count = 2, beforeDuel?: () => void) => {
     const generated = createCombat(42);
     generated.actors = [generated.actors[0]!];
     generated.actors[0]!.controller.walker.position = {
@@ -133,6 +133,7 @@ export function createD06CampaignFixture(classId: ClassId = "warrior") {
       "enough surviving generated encounters",
     );
     for (const target of targets) {
+      beforeDuel?.();
       const duel = createCombat(42);
       duel.experience = world.experience;
       const player = duel.actors[0]!;
@@ -269,7 +270,7 @@ export function createD06CampaignFixture(classId: ClassId = "warrior") {
       `duplicate reward totals ${index}`,
     );
   };
-  const prepareWarrior = () => {
+  const prepareBoots = () => {
     const item = inventory.loot.drops.find(
       (d) => d.item.base === "trail-boots",
     );
@@ -292,6 +293,9 @@ export function createD06CampaignFixture(classId: ClassId = "warrior") {
     });
     requireFixture(result.ok, "equip reward");
     inventory = result.value;
+  };
+  const prepareWarrior = () => {
+    prepareBoots();
     world.experience.attributes = allocateAttributes(
       world.experience.attributes,
       { vitality: world.experience.attributes.available },
@@ -321,6 +325,7 @@ export function createD06CampaignFixture(classId: ClassId = "warrior") {
     claim,
     checkpoint,
     prepareWarrior,
+    prepareBoots,
     idleAt,
   };
 }

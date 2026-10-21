@@ -74,6 +74,7 @@
     "src/simulation/overnight-d04.test.ts",
     "src/simulation/overnight-d05.test.ts",
     "src/simulation/overnight-d06.test.ts",
+    "src/simulation/overnight-d08.test.ts",
     "src/simulation/progression-quality.test.ts",
     "src/simulation/progression-save.test.ts",
     "src/simulation/projectiles.test.ts",
@@ -144,6 +145,7 @@
     "tests/e2e/overnight-d07.spec.ts",
     "tests/e2e/overnight-d07b.spec.ts",
     "tests/e2e/overnight-d08.spec.ts",
+    "tests/e2e/overnight-d08b.spec.ts",
     "tests/e2e/polish.spec.ts",
     "tests/e2e/prototype.spec.ts",
     "tests/e2e/skill-tree.spec.ts",
@@ -171,7 +173,8 @@
       "browser": [
         "overnight-d07.spec.ts",
         "overnight-d07b.spec.ts",
-        "overnight-d08.spec.ts"
+        "overnight-d08.spec.ts",
+        "overnight-d08b.spec.ts"
       ]
     },
     "persistence": {
@@ -189,8 +192,8 @@
     },
     "quest": {
       "match": "(?:quest|camp-dialogue)",
-      "unit": "(?:quest|overnight-d06|world-rewards|world-save).*\\.test\\.ts$",
-      "browser": ["overnight-d06.spec.ts"]
+      "unit": "(?:quest|overnight-d0[68]|world-rewards|world-save).*\\.test\\.ts$",
+      "browser": ["overnight-d06.spec.ts", "overnight-d08b.spec.ts"]
     }
   },
   "full": "All unit + all Chromium + existing 15 compatibility + validators + tooling",

@@ -1,4 +1,4 @@
-import { QUESTS, questStatus } from "../simulation/quests";
+import { ACT1_FINALE, QUESTS, questStatus } from "../simulation/quests";
 import type { WorldSession } from "../simulation/world-session";
 import { controllerInput as hub } from "./controller-input";
 import { contextPrompt } from "../simulation/prompts";
@@ -148,7 +148,9 @@ export class QuestJournal {
     text("quest-description", q.description);
     text(
       "quest-status",
-      legacy ? "Status: unavailable on this route" : `Status: ${status}`,
+      legacy
+        ? "Status: unavailable on this route"
+        : `Status: ${status}${q.id === ACT1_FINALE && this.world().campaignComplete ? " · Act 1 complete" : ""}`,
     );
     text(
       "quest-requires",
