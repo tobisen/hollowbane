@@ -152,9 +152,40 @@ test("real expedition kill persists XP and loot ownership without respawning aft
   });
   const target = await visibleEnemy();
   expect(target).not.toBeNull();
-  await page.mouse.move(target!.x, target!.y);
-  await page.mouse.down();
+  await page.locator("#combat-world").focus();
+  await page.keyboard.press("Space");
   try {
+    // Camera follow and enemy movement continue between protocol calls. A
+    // stale click can hit ground; reacquire through real input and confirm the
+    // chosen identity before waiting for the original kill/save assertions.
+    await expect
+      .poll(async () => {
+        const point = await page.evaluate((id) => {
+          const actor = window.hollowbaneCombat!.actors.find(
+              (a) => a.id === id,
+            )!,
+            camera = window.hollowbaneWorld!.camera;
+          return {
+            x: (actor.x - camera.x) * camera.zoom,
+            y: (actor.y - 28 - camera.y) * camera.zoom,
+          };
+        }, target!.id);
+        await page.mouse.move(point.x, point.y);
+        await page.mouse.down();
+        const selected = await page.evaluate(async () => {
+          // Presentation is published on a render frame, after input dispatch.
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          );
+          return window.hollowbaneCombat!.actors[0]!.selected;
+        });
+        if (selected !== target!.id) {
+          await page.mouse.up();
+          await page.keyboard.press("Space");
+        }
+        return selected;
+      })
+      .toBe(target!.id);
     await expect
       .poll(
         () =>

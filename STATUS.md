@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 CI optimization — failure isolated, deployment blocked (2026-10-21)
+
+- Exact candidate8ae450197c41ee23a8da638420e08b6b1928051e / CI39616857577 failed only the existing expedition kill case (world-encounters.spec.ts:168): target90 HP unchanged, player dead.475 units,83 other shard1 cases,59 shard2 and15 compatibility cases pass. New aggregate verify correctly failed and Pages/hosted were skipped; no release claim. Verified deployed runtime remains D08-A5f086ef9aecc01fe5d9758ea85c9fd65f3c368bc. No new gameplay.
+- Retained screenshot/trace show stale screen-point mouse input while camera/enemy moved and no target acquired. Driver-only correction confirms the same target through real mouse input/presentation frames, keeping every kill/XP/loot/save/reload assertion and25s/90s deadlines. Three traced repetitions pass; final frame-synchronized case passes1/1 in22.4s. No runtime, snapshots, dependency, test retry or timeout change.
+- Required next: finish focused correction/static checks, commit/push, exact successor CI/Pages/full artifact/hosted verification. Do not advance on this failed run. Its16m41s is not a valid successful-release timing sample. Keep unrelated documentation preserved. Details and diagnostics: docs/ci/release-pipeline.md; /private/tmp/hollowbane-ci-optimized-1-{run.json,log,results,failure}.
+
 ## DBL-010 CI optimization — local candidate, external release pending (2026-10-21)
 
 - User authorizes CI/deployment optimization only; no gameplay or D08-B. D07-B gate is complete at6729315c887a51a736cc91247b0da1783e11f142 (CI39497061101/Pages7211673339/hosted), and D08-A at5f086ef9aecc01fe5d9758ea85c9fd65f3c368bc (CI39548208049/Pages7218647544/two hosted cases). Existing post-release evidence and unrelated local documentation are preserved.
