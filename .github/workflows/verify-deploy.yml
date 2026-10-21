@@ -2,129 +2,103 @@ name: Verify and deploy
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
+    inputs:
+      tier:
+        description: "auto uses impact; full is required for milestones"
+        type: choice
+        options: [auto, full]
+        default: auto
 permissions:
   contents: read
 concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  checks:
-    name: Static, unit and single production build
+  fast:
+    name: Fast static, contracts and Chromium smoke
     runs-on: ubuntu-24.04
+    outputs:
+      tier: ${{ steps.plan.outputs.tier }}
+    env:
+      PLAYWRIGHT_REUSE_BUILD: "1"
+      RELEASE_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Release tooling and existing orchestrator contracts (no execution)
+      - name: Classify content and transitive imports; unknown means Full
+        id: plan
+        env:
+          CI_RELEASE: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
+          CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before || github.event.repository.default_branch }}
+          CI_TIER: ${{ startsWith(github.ref, 'refs/tags/') && 'full' || inputs.tier || 'auto' }}
+        run: node scripts/ci-policy.mjs plan
+      - name: Static, critical and affected contracts; one production build
         run: |
+          node scripts/validate-ci-workflows.mjs
+          npm run typecheck
+          npm run lint
+          npm run format:check
           python3 -m unittest discover -s tools/ci -p 'test_*.py'
-          python3 -m unittest discover -s tools/overnight -p 'test_*.py'
-          python3 tools/overnight/runner.py dry-run
-      - name: TypeScript, lint, all units, validators and one build
-        run: npm run check
-      - run: npm run format:check
-      - name: Prove shards cover the full release collection exactly once
-        run: npm run test:release:coverage
-      - name: Seal exact commit and production bytes
-        run: python3 tools/ci/release_artifact.py seal --sha "$GITHUB_SHA"
+          node scripts/ci-policy.mjs unit
+          npm run build
+      - run: python3 tools/ci/release_artifact.py seal --sha "$GITHUB_SHA"
+      - run: npx playwright install --with-deps chromium
+      - name: Stable core smoke and required affected integration
+        run: node scripts/ci-policy.mjs browser
       - uses: actions/upload-artifact@v4
         with:
           name: release-bundle
           path: dist/
           retention-days: 14
           if-no-files-found: error
-
-  chromium:
-    name: Chromium shard ${{ matrix.shard }}/2
-    needs: checks
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [1, 2]
-    env:
-      PLAYWRIGHT_CI_SHARD: ${{ matrix.shard }}
-      PLAYWRIGHT_REUSE_BUILD: "1"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - uses: actions/download-artifact@v4
-        with:
-          name: release-bundle
-          path: dist
-      - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
-      - run: npx playwright install --with-deps chromium
-      - name: Mandatory Chromium regression, balanced by recorded duration
-        run: npm run test:e2e
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: chromium-${{ matrix.shard }}-results
+          name: release-plan
+          path: ci-plan.json
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fast-results
           path: playwright-report/results.json
           retention-days: 14
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: chromium-${{ matrix.shard }}-failure
+          name: fast-failure
           path: test-results/
           retention-days: 10
 
-  compatibility:
-    name: Required Chromium, Firefox and WebKit inventory contracts
-    needs: checks
-    runs-on: ubuntu-24.04
-    env:
-      PLAYWRIGHT_REUSE_BUILD: "1"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - uses: actions/download-artifact@v4
-        with:
-          name: release-bundle
-          path: dist
-      - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
-      - run: npx playwright install --with-deps chromium firefox webkit
-      - name: All existing 15 required cross-browser cases
-        run: npm run test:release:compat
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: compatibility-results
-          path: playwright-report/results.json
-          retention-days: 14
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: compatibility-failure
-          path: test-results/
-          retention-days: 10
+  full:
+    name: Required Full Regression
+    needs: fast
+    if: needs.fast.outputs.tier == 'full'
+    uses: ./.github/workflows/full-regression.yml
+    with:
+      artifact-ready: true
 
-  # Keep the existing "verify" check identity and require every regression job.
   verify:
-    needs: [checks, chromium, compatibility]
+    needs: [fast, full]
     if: always()
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Reject failed, canceled or skipped required jobs
+      - name: Enforce the selected risk gate including skipped/cancelled failures
         env:
-          CHECKS_RESULT: ${{ needs.checks.result }}
-          CHROMIUM_RESULT: ${{ needs.chromium.result }}
-          COMPATIBILITY_RESULT: ${{ needs.compatibility.result }}
-        run: bash tools/ci/required_checks.sh
+          FAST_RESULT: ${{ needs.fast.result }}
+          FULL_RESULT: ${{ needs.full.result }}
+          REQUIRED_TIER: ${{ needs.fast.outputs.tier }}
+        run: bash tools/ci/risk_gate.sh
       - uses: actions/download-artifact@v4
         with:
           name: release-bundle
@@ -152,7 +126,7 @@ jobs:
         id: deployment
 
   hosted-smoke:
-    name: Exact deployed SHA and current deliverable smoke
+    name: Hosted exact SHA and selected critical flow
     needs: deploy
     runs-on: ubuntu-24.04
     env:
@@ -169,11 +143,14 @@ jobs:
         with:
           name: release-bundle
           path: dist
-      - name: Verify hosted manifest, SHA and every tested artifact byte
-        run: python3 tools/ci/release_artifact.py hosted --sha "$RELEASE_SHA" --url "$PLAYWRIGHT_BASE_URL"
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-plan
+      - run: python3 tools/ci/release_artifact.py hosted --sha "$RELEASE_SHA" --url "$PLAYWRIGHT_BASE_URL"
       - run: npx playwright install --with-deps chromium
-      - name: Application load and genuine D08 boss/input/save-isolation smoke
-        run: npm run test:release:hosted
+      - run: node scripts/ci-policy.mjs hosted
+      - name: Record the tier that authorized this exact release
+        run: node -e 'const p=JSON.parse(require("fs").readFileSync("ci-plan.json")); require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Released "+process.env.RELEASE_SHA+" through "+p.tier+" plus Pages and hosted smoke.\n")'
       - uses: actions/upload-artifact@v4
         if: always()
         with:

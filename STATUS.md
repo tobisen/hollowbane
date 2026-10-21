@@ -1,5 +1,12 @@
 # Status
 
+## DBL-010 Fast/Full/Deep policy — local candidate, release pending (2026-10-21)
+
+- User explicitly authorizes risk-based Fast default and retained Full/Deep tiers; no gameplay changes. Last verified runtime remains80185a6183370995869348f95a754027715a1c11 / CI39632464485 (20m23s). New policy changes require Full before activation; ordinary Fast duration is not measured yet.
+- Added reviewable domain/content/transitive-import planning, deployed-SHA baseline (failed prior changes cannot be bypassed), selected unit/integration groups and fail-closed Full fallback. Fast retains static/build/core contracts and two real browser cases; Full retains all480 units/143 Chromium/15 compatibility; manual Deep adds broader compatibility,64-seed/two-area generation,3x50000 loot reports and performance measurements. Old workflow remains a manual rollback.
+- Local28 Fast units/eight Python gate-integrity checks/seven additive Deep cases/strict TypeScript/scoped lint/build/143-case shard coverage and2 real browser cases (8.4s) pass. Actual wrong-SHA browser failure must reject the Pages gate; evidence in /private/tmp/hollowbane-fast-negative-*. Full GitHub, exact Pages and hosted acceptance remain required, then one ordinary Fast evidence release. No local Full rerun or gameplay. Preserve all preexisting documentation edits.
+- Resume: inspect exact pushed candidate run, fix demonstrated relevant failures without weakening assertions; require Full+Pages+two hosted checks before ordinary Fast proof. Record both actual durations/tier/SHA in docs/ci/measurements.md, final checkpoint in STATUS and stop. See docs/ci/fast-policy.md and test-inventory.json.
+
 ## DBL-010 prototype input correction — local checks pass, release pending (2026-10-21)
 
 - 883431a88d8ab78bdd9d3ad32ab9e6ec55f7cd9f / CI39628338010 failed only legacy prototype retargeting: actual destination12.557 pixels from requested point versus existing<12 requirement, then arrival cleared destination.475 units,15 compatibility and142 other Chromium cases pass, including all25 controller corrections. Aggregate verify blocked Pages/hosted. Last verified deployed runtime remains41e35912782e8f335aaab6327469ed4e702d0969 / CI39620543633 (20m37s including hosted). Failed19m49s is not a successful speed sample.

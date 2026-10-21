@@ -1,0 +1,122 @@
+name: Full Regression
+on:
+  workflow_call:
+    inputs:
+      artifact-ready:
+        type: boolean
+        default: false
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    if: ${{ !inputs.artifact-ready }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck && npm run lint && npm run format:check && npm run build
+      - run: python3 tools/ci/release_artifact.py seal --sha "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-bundle
+          path: dist/
+  checks:
+    needs: prepare
+    if: always() && (needs.prepare.result == 'success' || (needs.prepare.result == 'skipped' && inputs.artifact-ready))
+    name: Complete unit, validators and tooling
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Release tooling and existing orchestrator contracts (no execution)
+        run: |
+          python3 -m unittest discover -s tools/ci -p 'test_*.py'
+          python3 -m unittest discover -s tools/overnight -p 'test_*.py'
+          python3 tools/overnight/runner.py dry-run
+      - run: npm test
+      - run: npm run validate:assets && npm run validate:backlog
+      - run: npm run test:release:coverage
+
+  chromium:
+    needs: prepare
+    if: always() && (needs.prepare.result == 'success' || (needs.prepare.result == 'skipped' && inputs.artifact-ready))
+    name: Chromium shard ${{ matrix.shard }}/2
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    env:
+      PLAYWRIGHT_CI_SHARD: ${{ matrix.shard }}
+      PLAYWRIGHT_REUSE_BUILD: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: dist
+      - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
+      - run: npx playwright install --with-deps chromium
+      - name: Mandatory Chromium regression, balanced by recorded duration
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chromium-${{ matrix.shard }}-results
+          path: playwright-report/results.json
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: chromium-${{ matrix.shard }}-failure
+          path: test-results/
+          retention-days: 10
+
+  compatibility:
+    needs: prepare
+    if: always() && (needs.prepare.result == 'success' || (needs.prepare.result == 'skipped' && inputs.artifact-ready))
+    name: Required Chromium, Firefox and WebKit inventory contracts
+    runs-on: ubuntu-24.04
+    env:
+      PLAYWRIGHT_REUSE_BUILD: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: dist
+      - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: All existing 15 required cross-browser cases
+        run: npm run test:release:compat
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: compatibility-results
+          path: playwright-report/results.json
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: compatibility-failure
+          path: test-results/
+          retention-days: 10

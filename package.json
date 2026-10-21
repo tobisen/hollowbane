@@ -16,7 +16,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "test:fast": "vitest run",
+    "test:fast": "node scripts/ci-policy.mjs unit",
     "test:release:coverage": "node scripts/check-ci-coverage.mjs",
     "test:release:compat": "playwright test --config playwright.inventory.config.ts --grep 'advanced unique inspection|component grades|explicit socket preview|controller-only ordered socket lifecycle'",
     "test:release:hosted": "playwright test --config playwright.release.config.ts",
@@ -29,7 +29,10 @@
     "assets:export": "node scripts/package-assets.mjs && node scripts/export-sprites.mjs",
     "benchmark": "node scripts/benchmark.mjs",
     "test:browsers": "node scripts/browser-smoke.mjs",
-    "test:movement": "playwright test --config playwright.movement.config.ts"
+    "test:movement": "playwright test --config playwright.movement.config.ts",
+    "ci:plan": "node scripts/ci-policy.mjs plan",
+    "validate:ci": "node scripts/validate-ci-workflows.mjs",
+    "test:deep:domains": "vitest run --config vitest.deep.config.ts"
   },
   "dependencies": {
     "phaser": "4.2.1"
