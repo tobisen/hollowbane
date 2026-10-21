@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 new policy Full gate passed — ordinary Fast proof next (2026-10-21)
+
+- Exacte356700a035f7cbb6229873bd152d3f5e0263a77 / CI39656421994 SUCCESS in19m41s including Full, Pages7234892160 and hosted acceptance.481 units/143 Chromium/15 compatibility retained; two Fast and two hosted cases pass, zero browser skips/flakes/unexpected failures. Hosted full SHA/all26 application files verified; one Vite build. All production bytes match prior baseline. This validates the new testing policy through Full; it is not an ordinary Fast duration.
+- Corrected accepted-history planning requires all unaccepted prior changes; cancellation guards permit obsolete Full runs to stop. Actual wrong-SHA browser failure rejected the deployment gate. Local29 core units/eight Python gate-integrity/seven additive Deep domain checks and unchanged-runtime assertions pass. Complete Deep browser/performance QA was not run or claimed.
+- Next evidence-only increment (this STATUS section plus docs/ci/measurements.md) must select Fast, skip optional Full without pending verify status, pass exact CI/Pages/two hosted checks, and record the actual total duration/source SHA. No gameplay. Preserve unrelated edits and stop after the verified Fast policy is active.
+
 ## DBL-010 cancellation repair — final policy validation pending (2026-10-21)
 
 - Reusable Full jobs now use !cancelled() guards instead of always(), preserving skipped-prepare reuse while permitting obsolete expensive runs to stop. The final short verify aggregate remains always() and rejects cancellation/failure. Workflow/DAG/permissions/cancellation validation and scoped lint pass; no runtime/test assertion changes.
