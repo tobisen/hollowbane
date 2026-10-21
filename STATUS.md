@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 Fast policy verified active — final evidence source gate pending (2026-10-21)
+
+- Ordinary source955d696af2b6a641756e3ce3c9b49713b26887d8 /CI39667084907 SUCCESS through actual Fast, Pages7236077171, two hosted cases and final Release acceptance in4m09s. Optional Full skipped intentionally; stable verify completed without pending checks.29 core units/Python9/two Chromium16.127s pass; hosted full SHA/all26 application bytes and two cases12.060s pass. One Vite build; no browser skipped/flaky/unexpected results. Fast job1m35s, Pages1m10s; full end-to-end249s is measured, not predicted.
+- Risk-based policy now technically verified: parsed import dependencies+changed-content/domain rules; unknown/shared/high-risk policy changes require Full; actual critical failure blocks publication. Full-verified7b46263 retains482 units/143 Chromium/15 compatibility; all original scenario/assertion coverage preserved. Manual Deep adds extended generation/loot/compatibility/performance; complete Deep not run/claimed. No gameplay/lock/snapshot changes; unrelated edits preserved.
+- This final evidence-only STATUS/measurements commit must receive exact Fast+Pages+hosted+final acceptance. Record its deployed SHA/actual total as a second successful Fast sample, then STOP. No further gameplay, CI redesign or source increments beyond final release evidence. Current last accepted source955d696; source/evidence: docs/ci/measurements.md and /private/tmp/hollowbane-fast-verified-proof-summary.json.
+
 ## DBL-010 corrected Full release accepted — ordinary Fast proof next (2026-10-21)
 
 - Exact7b462637722af4c922a2608f4f35233164cca698 /CI39664666807 SUCCESS in14m22s, including482 units/all143 Chromium/all15 compatibility, verify, Pages7235958766, two hosted cases10.857s and final Release acceptance. Zero browser skips/flakes/failures; hosted full SHA/all26 app bytes verified; one Vite build and all app bytes match baseline. Navigation repair passes Linux without assertion/deadline/gameplay changes. Last accepted release is now7b46263.
