@@ -14,7 +14,7 @@ The exact new Full source passed CI39656421994, Pages deployment7234892160 and h
 
 No ordinary Fast-only release has been measured yet. Comparing the74-second Fast component to a complete20-minute release would overstate improvement. The first new policy candidate39655244274 was cancelled during Full to repair accepted-history and cancellation semantics; successor39656274265 was cancelled before Full. Neither counts as a speed sample or accepted release.
 
-Local validation retained all143 Chromium identities and all15 required compatibility cases. The existing broader Deep compatibility configuration collects162 cases. All prior runtime source, public assets, browser tests/snapshots and dependency lockfile remain byte-identical. Full now includes481 units (473 original, two existing shard cases, six policy cases); Fast selects29 core unit cases plus affected units. Eight Python integrity/gate cases run in Fast. Seven additive Deep domain cases pass locally in6.81s; complete Deep browser/performance QA has not been run for this change and is not claimed.
+Local validation retained all143 Chromium identities and all15 required compatibility cases. The existing broader Deep compatibility configuration collects162 cases. All prior runtime source, public assets, browser tests/snapshots and dependency lockfile remain byte-identical. Full now includes481 units (473 original, two existing shard cases, six policy cases); Fast selects29 core unit cases plus affected units. Nine Python integrity/gate cases run in Fast. Seven additive Deep domain cases pass locally in6.81s; complete Deep browser/performance QA has not been run for this change and is not claimed.
 
 ## Review of long integration cases
 
@@ -39,3 +39,9 @@ The cost comes from real travel, combat and save transitions that the scenarios 
 - Main plans from the last successful complete Verify-and-deploy workflow, so a failed hosted deployment cannot become the baseline for a later docs push. Missing history/API access fails closed to Full.
 
 Policy and complete retained file assignments: [fast-policy.md](fast-policy.md), [test-inventory.json](test-inventory.json). Raw prior baseline measurements remain in [release-pipeline.md](release-pipeline.md).
+
+## Fast proof revealed a blocking skip-propagation defect
+
+Candidate13f82fee03f58fee375213643cf162cae4b7a256 /39659571759 selected Fast and correctly skipped Full; static/unit/browser and verify passed. However, implicit success conditions then skipped Pages and hosted through the skipped Full ancestor. The overall Actions result was green, but the required release gate failed and this is not a successful release timing sample. No subsequent deliverable was started.
+
+Repair: explicit !cancelled()/successful-predecessor conditions on deploy/hosted, plus an always-run final Release acceptance that requires CI, Pages and hosted success on main. PR/tag verification may intentionally omit publication. Accepted-history lookup also verifies the actual verify/Pages/hosted job conclusions, rejecting a historic green run with skipped publication. Added a Python negative matrix for skipped/failed/cancelled/missing verification/deploy/hosted results and workflow assertions for these job conditions/dependencies. This relevant workflow failure requires another Full policy gate before activation; browser/gameplay/assertion/environment changes remain zero.

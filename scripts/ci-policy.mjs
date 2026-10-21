@@ -217,6 +217,27 @@ export async function acceptedBaseline(repository, token, fetcher = fetch) {
     !/^[a-f0-9]{40}$/.test(run.head_sha)
   )
     throw new Error("No fully accepted release baseline");
+  if (!Number.isSafeInteger(run.id)) throw new Error("Invalid release run");
+  const jobsResponse = await fetcher(
+    `https://api.github.com/repos/${repository}/actions/runs/${run.id}/jobs?per_page=100`,
+    {
+      signal: globalThis.AbortSignal.timeout(15000),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json",
+      },
+    },
+  );
+  if (!jobsResponse.ok) throw new Error("Release job history unavailable");
+  const jobs = (await jobsResponse.json()).jobs ?? [];
+  for (const name of [
+    "verify",
+    "deploy",
+    "Hosted exact SHA and selected critical flow",
+  ]) {
+    if (!jobs.some((job) => job.name === name && job.conclusion === "success"))
+      throw new Error("Release publication/hosted history incomplete");
+  }
   return run.head_sha;
 }
 async function main() {

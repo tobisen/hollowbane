@@ -26,6 +26,20 @@ const release = workflow["verify-deploy.yml"];
 assert.equal(release.jobs.verify.if, "always()");
 assert.deepEqual(release.jobs.verify.needs, ["fast", "full"]);
 assert.equal(release.jobs.deploy.needs, "verify");
+assert(release.jobs.deploy.if.includes("!cancelled()"));
+assert(release.jobs.deploy.if.includes("needs.verify.result == 'success'"));
+assert(release.jobs["hosted-smoke"].if.includes("!cancelled()"));
+assert.equal(release.jobs.release.if, "always()");
+assert.deepEqual(release.jobs.release.needs, [
+  "verify",
+  "deploy",
+  "hosted-smoke",
+]);
+assert(
+  release.jobs.release.steps.some(
+    (s) => s.run === "bash tools/ci/accept_release.sh",
+  ),
+);
 assert.equal(release.jobs["hosted-smoke"].needs, "deploy");
 assert.equal(release.jobs.full.if, "needs.fast.outputs.tier == 'full'");
 assert(

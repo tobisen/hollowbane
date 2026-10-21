@@ -73,15 +73,32 @@ describe("risk-based release policy", () => {
       classify([{ path: "README.md", patch: "" }], new Map(), all, "full").tier,
     ).toBe("full");
   });
-  it("uses only a completed successful main release, never a deployed but failed candidate", async () => {
+  it("requires successful main CI, Pages and hosted jobs in its accepted history", async () => {
     const sha = "a".repeat(40);
+    const names = [
+      "verify",
+      "deploy",
+      "Hosted exact SHA and selected critical flow",
+    ];
     const fetcher = async (url: string) => {
+      if (url.includes("/jobs?"))
+        return {
+          ok: true,
+          json: async () => ({
+            jobs: names.map((name) => ({ name, conclusion: "success" })),
+          }),
+        };
       expect(url).toContain("status=success");
       return {
         ok: true,
         json: async () => ({
           workflow_runs: [
-            { head_sha: sha, conclusion: "success", head_branch: "main" },
+            {
+              id: 9,
+              head_sha: sha,
+              conclusion: "success",
+              head_branch: "main",
+            },
           ],
         }),
       };
@@ -94,10 +111,29 @@ describe("risk-based release policy", () => {
         acceptedBaseline("owner/repo", "test-token", async () => ({
           ok: true,
           json: async () => ({
-            workflow_runs: [{ head_sha: sha, conclusion, head_branch: "main" }],
+            workflow_runs: [
+              { id: 9, head_sha: sha, conclusion, head_branch: "main" },
+            ],
           }),
         })),
       ).rejects.toThrow("No fully accepted");
+    }
+    for (const failedJob of names) {
+      await expect(
+        acceptedBaseline("owner/repo", "test-token", async (url: string) =>
+          url.includes("/jobs?")
+            ? {
+                ok: true,
+                json: async () => ({
+                  jobs: names.map((name) => ({
+                    name,
+                    conclusion: name === failedJob ? "skipped" : "success",
+                  })),
+                }),
+              }
+            : fetcher(url),
+        ),
+      ).rejects.toThrow("history incomplete");
     }
     await expect(
       acceptedBaseline("owner/repo", "test-token", async () => ({ ok: false })),

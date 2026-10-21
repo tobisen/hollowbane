@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 Fast skip-propagation failure — release blocked and repaired locally (2026-10-21)
+
+- Ordinary candidate13f82fee03f58fee375213643cf162cae4b7a256 /39659571759 correctly selected Fast, skipped Full and passed verify; GitHub implicit transitive success then skipped Pages/hosted. Overall CI green did NOT satisfy the release gate. No Fast release/timing success is claimed. Last accepted deployment remains Full-verifiede356700 /39656421994 /Pages7234892160.
+- Deploy/hosted now use explicit !cancelled()/successful-predecessor guards. Added always-run final Release acceptance requiring verify+Pages+hosted success on main, permitting intentional nonpublishing PR/tag gates. New negative matrix rejects every skipped/failed/cancelled/missing required release result. Workflow/DAG/permission/guard validation, lint and all nine Python tooling tests pass. Accepted-history lookup also rejects green workflows with skipped verify/Pages/hosted jobs. No gameplay/browser/assertion/timeout changes.
+- Corrected workflow requires a fresh exact Full+Pages+hosted+final acceptance gate before another ordinary Fast-only proof. Repeat Full is justified solely by this demonstrated release-policy failure; do not rerun locally or start gameplay. Keep docs/ci/measurements.md failure evidence, preserve unrelated edits, and stop only once Fast is verified active.
+
 ## DBL-010 new policy Full gate passed — ordinary Fast proof next (2026-10-21)
 
 - Exacte356700a035f7cbb6229873bd152d3f5e0263a77 / CI39656421994 SUCCESS in19m41s including Full, Pages7234892160 and hosted acceptance.481 units/143 Chromium/15 compatibility retained; two Fast and two hosted cases pass, zero browser skips/flakes/unexpected failures. Hosted full SHA/all26 application files verified; one Vite build. All production bytes match prior baseline. This validates the new testing policy through Full; it is not an ordinary Fast duration.

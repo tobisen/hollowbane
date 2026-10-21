@@ -115,7 +115,7 @@ jobs:
           path: dist
 
   deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: ${{ !cancelled() && needs.verify.result == 'success' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
     needs: verify
     runs-on: ubuntu-24.04
     permissions:
@@ -132,6 +132,7 @@ jobs:
 
   hosted-smoke:
     name: Hosted exact SHA and selected critical flow
+    if: ${{ !cancelled() && needs.deploy.result == 'success' }}
     needs: deploy
     runs-on: ubuntu-24.04
     env:
@@ -168,3 +169,18 @@ jobs:
           name: hosted-smoke-failure
           path: test-results/
           retention-days: 10
+
+  release:
+    name: Release acceptance
+    needs: [verify, deploy, hosted-smoke]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject missing CI, Pages or hosted acceptance on main
+        env:
+          VERIFY_RESULT: ${{ needs.verify.result }}
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+          HOSTED_RESULT: ${{ needs.hosted-smoke.result }}
+          PUBLISH_RELEASE: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+        run: bash tools/ci/accept_release.sh
