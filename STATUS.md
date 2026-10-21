@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 accepted-release baseline correction — verification pending (2026-10-21)
+
+- Review found that a Pages SHA can precede a failed hosted gate. Planner now reads the last successful main Verify-and-deploy run (including hosted acceptance), validates its full SHA/ancestor, and compares all changes since that accepted release. Missing/invalid history requires Full. Only Fast receives additional Actions read permission. No gameplay/browser assertion changes.
+- Added a sixth policy case proving failed/cancelled/pending candidates cannot establish the baseline;29 selected core units, strict TypeScript/scoped lint and workflow/DAG/permission validation pass. Full retains481 units/143 Chromium/15 compatibility; Deep remains manual. Candidatefeab0ac /39655244274 was deliberately cancelled before release to correct this policy; it is not a successful timing sample. Last accepted runtime remains80185a6.
+- Next require the corrected candidate's exact Full+Pages+hosted gate, then an ordinary Fast-only measurement. No new deliverable while this release gate is pending. Prior baseline/local/negative-failure and unchanged-runtime evidence remain valid; preserve unrelated edits.
+
 ## DBL-010 Fast/Full/Deep policy — local candidate, release pending (2026-10-21)
 
 - User explicitly authorizes risk-based Fast default and retained Full/Deep tiers; no gameplay changes. Last verified runtime remains80185a6183370995869348f95a754027715a1c11 / CI39632464485 (20m23s). New policy changes require Full before activation; ordinary Fast duration is not measured yet.

@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
-// @ts-expect-error Executable JS policy has no TypeScript build step.
-import { classify, importGraph } from "../scripts/ci-policy.mjs";
+import {
+  classify,
+  importGraph,
+  acceptedBaseline,
+} from "../scripts/ci-policy.mjs";
 
 describe("risk-based release policy", () => {
   const all = [
@@ -34,7 +37,7 @@ describe("risk-based release policy", () => {
     };
     const graph = importGraph(
       Object.keys(sources),
-      (path: string) => sources[path],
+      (path: string) => sources[path]!,
     );
     expect(plan("src/boss.ts", "+const internal = 2;", graph).unit).toContain(
       "src/contract.test.ts",
@@ -69,5 +72,35 @@ describe("risk-based release policy", () => {
     expect(
       classify([{ path: "README.md", patch: "" }], new Map(), all, "full").tier,
     ).toBe("full");
+  });
+  it("uses only a completed successful main release, never a deployed but failed candidate", async () => {
+    const sha = "a".repeat(40);
+    const fetcher = async (url: string) => {
+      expect(url).toContain("status=success");
+      return {
+        ok: true,
+        json: async () => ({
+          workflow_runs: [
+            { head_sha: sha, conclusion: "success", head_branch: "main" },
+          ],
+        }),
+      };
+    };
+    expect(await acceptedBaseline("owner/repo", "test-token", fetcher)).toBe(
+      sha,
+    );
+    for (const conclusion of ["failure", "cancelled", "in_progress"]) {
+      await expect(
+        acceptedBaseline("owner/repo", "test-token", async () => ({
+          ok: true,
+          json: async () => ({
+            workflow_runs: [{ head_sha: sha, conclusion, head_branch: "main" }],
+          }),
+        })),
+      ).rejects.toThrow("No fully accepted");
+    }
+    await expect(
+      acceptedBaseline("owner/repo", "test-token", async () => ({ ok: false })),
+    ).rejects.toThrow("unavailable");
   });
 });

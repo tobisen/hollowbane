@@ -196,31 +196,45 @@ function run(args, env = {}) {
   });
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
+export async function acceptedBaseline(repository, token, fetcher = fetch) {
+  if (!token || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository ?? ""))
+    throw new Error("Missing release history access");
+  const response = await fetcher(
+    `https://api.github.com/repos/${repository}/actions/workflows/verify-deploy.yml/runs?branch=main&status=success&per_page=1`,
+    {
+      signal: globalThis.AbortSignal.timeout(15000),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json",
+      },
+    },
+  );
+  if (!response.ok) throw new Error("Release history unavailable");
+  const run = (await response.json()).workflow_runs?.[0];
+  if (
+    run?.conclusion !== "success" ||
+    run.head_branch !== "main" ||
+    !/^[a-f0-9]{40}$/.test(run.head_sha)
+  )
+    throw new Error("No fully accepted release baseline");
+  return run.head_sha;
+}
 async function main() {
   const command = process.argv[2];
   if (command === "plan") {
     let base = process.env.CI_BASE;
     if (process.env.CI_RELEASE === "1") {
       try {
-        const response = await fetch(
-          "https://tobisen.github.io/hollowbane/release.json?policy=" +
-            Date.now(),
-          {
-            signal: globalThis.AbortSignal.timeout(15000),
-            headers: { "Cache-Control": "no-cache" },
-          },
+        base = await acceptedBaseline(
+          process.env.CI_REPOSITORY,
+          process.env.CI_HISTORY_TOKEN,
         );
-        if (!response.ok) throw new Error("Missing deployed baseline");
-        const manifest = await response.json();
-        if (!/^[a-f0-9]{40}$/.test(manifest.sha))
-          throw new Error("Invalid deployed SHA");
         execFileSync("git", [
           "merge-base",
           "--is-ancestor",
-          manifest.sha,
+          base,
           process.env.GITHUB_SHA ?? "HEAD",
         ]);
-        base = manifest.sha;
       } catch {
         base = undefined;
       }

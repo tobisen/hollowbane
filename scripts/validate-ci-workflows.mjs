@@ -10,8 +10,15 @@ for (const file of readdirSync(".github/workflows")) {
   for (const [id, job] of Object.entries(parsed.jobs)) {
     for (const dependency of [job.needs ?? []].flat())
       assert(parsed.jobs[dependency], `${file}/${id}: invalid dependency`);
-    for (const permission of Object.keys(job.permissions ?? {}))
-      assert(["pages", "id-token"].includes(permission) && id === "deploy");
+    for (const [permission, level] of Object.entries(job.permissions ?? {}))
+      assert(
+        (id === "deploy" &&
+          ["pages", "id-token"].includes(permission) &&
+          level === "write") ||
+          (id === "fast" &&
+            ["contents", "actions"].includes(permission) &&
+            level === "read"),
+      );
   }
   workflow[file] = parsed;
 }
