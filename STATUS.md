@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 corrected Full release accepted — ordinary Fast proof next (2026-10-21)
+
+- Exact7b462637722af4c922a2608f4f35233164cca698 /CI39664666807 SUCCESS in14m22s, including482 units/all143 Chromium/all15 compatibility, verify, Pages7235958766, two hosted cases10.857s and final Release acceptance. Zero browser skips/flakes/failures; hosted full SHA/all26 app bytes verified; one Vite build and all app bytes match baseline. Navigation repair passes Linux without assertion/deadline/gameplay changes. Last accepted release is now7b46263.
+- Current implementation is technically validated through Full. Previous accepted Full19m41s remains historical; failed/skipped/cancelled samples are excluded from speed claims. Core29, Python9 and all original deeper tests retained; complete Deep QA not run/claimed. Measurements/evidence: docs/ci/measurements.md and /private/tmp/hollowbane-fast-navigation-release-summary.json.
+- Next this evidence-only STATUS/measurements increment must select Fast, intentionally skip Full, complete verify→Pages→two hosted cases→final acceptance, then record actual elapsed time. Commit measured results and verify final exact source before stopping. No gameplay or unrelated work; preserve preexisting edits.
+
 ## DBL-010 controller navigation driver repair — local checks pass, release pending (2026-10-21)
 
 - Candidatee694a1d /CI39660428508 failed one legacy D06 forest navigation case;481 units/142 Chromium/15 compatibility passed. Both verify and new final Release acceptance rejected it, Pages/hosted skipped: actual critical-failure blocking proof. Last accepted deployment remainse356700 /39656421994 /Pages7234892160. Earlier13f82fe green CI with skipped publication remains unaccepted.
