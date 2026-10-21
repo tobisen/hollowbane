@@ -1,6 +1,6 @@
 # DBL-010 — measured release pipeline
 
-The D07-B and D08-A release gates were complete before this work. This increment changes release infrastructure only; gameplay, existing assertions, snapshots, timeouts, Phaser 4.2.1 and lockfile dependencies are unchanged. One existing encounter driver now confirms real mouse acquisition before its unchanged kill/save assertions, following the failure documented below.
+The D07-B and D08-A release gates were complete before this work. This increment changes release infrastructure only; gameplay, existing assertions, snapshots, timeouts, Phaser 4.2.1 and lockfile dependencies are unchanged. Existing browser drivers now confirm real mouse acquisition and observe short controller states/taps at consumption, following the failures documented below. Their original gameplay assertions and deadlines are retained.
 
 ## Baseline
 
@@ -95,3 +95,13 @@ The profile refresh uses 31 completely successful files from run39616857577; onl
 Observed workflow wall time is lower than both recorded baselines (26m02s and34m14s), while this new total additionally includes automatic hosted acceptance. The failed16m41s run is excluded. This is an observed comparison, not a controlled percentage guarantee: test counts differed in the older D07-B baseline, baseline hosted work was separate, runner speed varies, tracing adds overhead, and Pages alone took85s here versus22s/33s before. The two shard jobs overlap; adding their durations does not give workflow wall time. More concurrent jobs also add setup/transfer/runner usage; billed minutes were not measured.
 
 No further functional tuning is planned. A documentation-only evidence commit will retain this first result and run the unchanged workflow again for a second representative successful sample. Its exact CI/Pages/hosted gate must pass before the infrastructure task is complete. Browser caches remain intentionally omitted; system dependency installation and hosted availability remain external costs. Ubuntu24.04 pins the OS family, not every future hosted-runner image revision. Broader milestone browser/campaign compatibility and physical hardware checks remain separate; no previously required release case moved there.
+
+## Second measurement attempt — controller observation failures, release blocked
+
+Documentation-only `85a4d7b59ecd885420d820948e3035ea805e525c`, [run39624226982](https://github.com/tobisen/hollowbane/actions/runs/39624226982), failed two legacy gamepad cases. All475 units,15 compatibility,141 other main cases (including the corrected expedition kill/save case) passed. `verify` rejected the failure and skipped Pages/hosted; verified deployed SHA remains41e3591. This is not a successful-release timing sample.
+
+The retained timed-combat trace shows an actual attack/kill, not missing gameplay: while the host polled for a12-frame windup, a held primary completed repeated attacks and the dummy died. The test driver now latches the real windup phase and its pre-strike160HP together on a browser frame, releases the virtual button, retains the5s observation deadline, and still requires subsequent real damage after release. No simulation state is changed.
+
+The menu trace shows D-pad down held from110684ms to111940ms (1.26s), crossing the real400ms/150ms repeat thresholds and moving focus twice. The legacy tap helper now runs press/sample/release within one browser evaluation and releases navigation immediately on the actual focus/input/change consumption event. It retains sample synchronization before completing each tap, while explicit held-button tests retain their held behavior. No artificial sleeps, global timeout changes, test retries, disabled checks or gameplay changes. Focused complete gamepad-file verification passed25/25 with tracing in35.670s, without skips/flakes/failures. TypeScript, scoped lint and143-case shard collection pass; the successful menu focus screenshot was reviewed. No full local regression was repeated.
+
+The final correction run will serve as the second successful representative sample if its entire unchanged workflow/Pages/hosted gate passes. The two failed diagnostic attempts remain excluded from successful speed comparisons; harness repairs and runner variability mean no controlled percentage guarantee is claimed.

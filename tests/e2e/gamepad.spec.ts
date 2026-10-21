@@ -12,6 +12,8 @@ declare global {
   interface Window {
     virtualPads: VirtualPad[];
     savedVirtualPad?: VirtualPad;
+    gamepadWindup?: { phase: string; hp: number } | null;
+    stopGamepadWindup?: () => void;
   }
 }
 async function ready(
@@ -166,31 +168,84 @@ test("semantic primary drives existing timed combat without new mechanics", asyn
   await page.locator("#combat-hostile").uncheck();
   await page.locator("#combat-world").focus();
   await axes(page, [0, 0, 0, 0]);
-  await button(page, 2, true);
   await expect
-    .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase))
-    .toBe("windup");
-  expect(
-    await page.evaluate(() => window.hollowbaneCombat!.actors[1]!.hp),
-  ).toBe(160);
-  await button(page, 2, false);
-  await expect
-    .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[1]!.hp))
-    .toBeLessThan(160);
+    .poll(() => page.evaluate(() => window.hollowbaneInput!.armed))
+    .toBe(true);
+  await page.evaluate(() => {
+    window.gamepadWindup = null;
+    let frame = 0;
+    window.stopGamepadWindup = () => cancelAnimationFrame(frame);
+    const observe = () => {
+      const combat = window.hollowbaneCombat!;
+      if (combat.actors[0]!.phase === "windup") {
+        // Latch the real transient phase and untouched HP together. Host-side
+        // polling can miss 12 simulation frames under trace/runner latency.
+        window.gamepadWindup = {
+          phase: combat.actors[0]!.phase,
+          hp: combat.actors[1]!.hp,
+        };
+        window.virtualPads[0]!.buttons[2] = {
+          pressed: false,
+          touched: false,
+          value: 0,
+        };
+      } else frame = requestAnimationFrame(observe);
+    };
+    window.virtualPads[0]!.buttons[2] = {
+      pressed: true,
+      touched: true,
+      value: 1,
+    };
+    frame = requestAnimationFrame(observe);
+  });
+  try {
+    await expect
+      .poll(() => page.evaluate(() => window.gamepadWindup?.phase))
+      .toBe("windup");
+    expect(await page.evaluate(() => window.gamepadWindup!.hp)).toBe(160);
+    await button(page, 2, false);
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[1]!.hp))
+      .toBeLessThan(160);
+  } finally {
+    await page.evaluate(() => window.stopGamepadWindup?.());
+    await button(page, 2, false);
+  }
 });
 async function tap(page: Page, index: number) {
-  let samples = await page.evaluate(() => window.hollowbaneInput!.samples);
-  await button(page, index, true);
-  await page.waitForFunction(
-    (n) => window.hollowbaneInput!.samples > n + 2,
-    samples,
-  );
-  samples = await page.evaluate(() => window.hollowbaneInput!.samples);
-  await button(page, index, false);
-  await page.waitForFunction(
-    (n) => window.hollowbaneInput!.samples > n + 2,
-    samples,
-  );
+  await page.evaluate(async (index) => {
+    const set = (held: boolean) => {
+      window.virtualPads[0]!.buttons[index] = {
+        pressed: held,
+        touched: held,
+        value: Number(held),
+      };
+    };
+    const sampled = async () => {
+      const before = window.hollowbaneInput!.samples;
+      while (window.hollowbaneInput!.samples <= before + 2)
+        await new Promise<void>((resolve) =>
+          requestAnimationFrame(() => resolve()),
+        );
+    };
+    // A short navigation tap ends at actual UI consumption. Three slow RAFs
+    // plus protocol round trips can otherwise cross the 400 ms repeat delay.
+    const navigation = index >= 12 && index <= 15;
+    const consumed = () => set(false);
+    const events = ["focusin", "input", "change"];
+    if (navigation)
+      for (const event of events)
+        document.addEventListener(event, consumed, true);
+    try {
+      set(true);
+      await sampled();
+    } finally {
+      set(false);
+      for (const event of events)
+        document.removeEventListener(event, consumed, true);
+    }
+    await sampled();
+  }, index);
 }
 
 test("controller pause/menu navigation opens settings and cancel returns safely", async ({

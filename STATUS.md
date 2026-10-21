@@ -1,5 +1,11 @@
 # Status
 
+## DBL-010 controller harness correction — local checks pass, external gate pending (2026-10-21)
+
+- Evidence-only85a4d7b59ecd885420d820948e3035ea805e525c / CI39624226982 failed two legacy gamepad cases;475 units,15 compatibility and141 other Chromium cases passed, including the prior expedition acquisition correction. Aggregate verify blocked Pages/hosted. Last verified deployed SHA remains41e35912782e8f335aaab6327469ed4e702d0969 / CI39620543633 (20m37s including hosted).85a4d7b is not released; failed timings are not successful performance evidence.
+- Trace proves short windup was missed while held attacks actually killed the dummy, and a D-pad "tap" lasted1.26s, triggering repeat/focus twice. Test-only repair latches actual windup/untouched160HP on render frames and releases a navigation tap on real UI consumption. Original damage/focus/menu/held-input assertions and deadlines retained; no gameplay/dependency/snapshot/test-retry changes. Full affected gamepad file passes25/25 with tracing in35.670s; TypeScript/scoped lint/full143-case shard collection pass. Successful menu screenshot reviewed; no full local regression repeated.
+- Next commit/push this verified test-only correction, and require exact CI/Pages/manifest/all26 production bytes/three hosted cases. Its green run supplies the second successful sample; no further measurement-only source commit is needed. Keep all failed-run evidence, unrelated edits and soft-budget checkpoint intact. Stop only after CI optimization release verification; no gameplay/D08-B.
+
 ## DBL-010 CI optimization — first full optimized release verified (2026-10-21)
 
 - Exact41e35912782e8f335aaab6327469ed4e702d0969 / CI39620543633 succeeded through all regression, Pages deployment7229523464 and hosted acceptance. Hosted manifest/full SHA plus26 production files verified; all3 application/boss/controller/save-isolation smoke cases pass42.920s.475 units (473 retained+2),143 Chromium (72+71),15 compatibility, seven integrity/gate cases and existing static/Python/dry-run coverage retained. Corrected real expedition kill/save scenario passes Linux50.550s. No gameplay/dependency/snapshot/timeout changes.
