@@ -33,6 +33,11 @@ assert(
 );
 assert.equal(release.jobs.full.with["artifact-ready"], true);
 assert(workflow["full-regression.yml"].on.workflow_call);
+for (const job of ["checks", "chromium", "compatibility"])
+  assert(
+    workflow["full-regression.yml"].jobs[job].if.includes("!cancelled()"),
+    "Long Full jobs must be cancellable",
+  );
 assert(!workflow["full-regression.yml"].on.push);
 assert(!workflow["deep-qa.yml"].on.push);
 assert(!workflow["legacy-full.yml"].on.push);

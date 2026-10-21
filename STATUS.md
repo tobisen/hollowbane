@@ -1,5 +1,10 @@
 # Status
 
+## DBL-010 cancellation repair — final policy validation pending (2026-10-21)
+
+- Reusable Full jobs now use !cancelled() guards instead of always(), preserving skipped-prepare reuse while permitting obsolete expensive runs to stop. The final short verify aggregate remains always() and rejects cancellation/failure. Workflow/DAG/permissions/cancellation validation and scoped lint pass; no runtime/test assertion changes.
+- Unaccepted39655244274 required force-cancel because its old always guards resisted ordinary cancellation; queued39656274265 was cancelled before its Full run. Neither authorizes release or a speed claim. Read-only accepted-history correction and six policy cases remain intact. Last accepted runtime stays80185a6; corrected final candidate still requires Full+Pages+hosted before the ordinary Fast proof.
+
 ## DBL-010 accepted-release baseline correction — verification pending (2026-10-21)
 
 - Review found that a Pages SHA can precede a failed hosted gate. Planner now reads the last successful main Verify-and-deploy run (including hosted acceptance), validates its full SHA/ancestor, and compares all changes since that accepted release. Missing/invalid history requires Full. Only Fast receives additional Actions read permission. No gameplay/browser assertion changes.
