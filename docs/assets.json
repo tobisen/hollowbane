@@ -196,5 +196,13 @@
     "placeholder": true,
     "type": "geometry",
     "provenance": "docs/overnight/d07.md"
+  },
+  {
+    "id": "d08-sevra-silhouette",
+    "source": "src/rendering/combat-arena.ts",
+    "rights": "Original cloak, lantern and arch geometry and phase palettes; shared original wanderer atlas; inherited source-rights review pending",
+    "placeholder": true,
+    "type": "geometry",
+    "provenance": "docs/overnight/d08.md"
   }
 ]

@@ -1,5 +1,6 @@
 import { bossHooks } from "../simulation/boss";
 import { installBossTrial } from "../simulation/boss-trial";
+import { installCryptBossTrial } from "../simulation/crypt-boss";
 import { BossView, type BossEncounterView } from "./boss-view";
 import { WorldMinimap } from "./world-minimap";
 import { CampDialogueView } from "./camp-dialogue";
@@ -193,17 +194,22 @@ export function startCombatArena(monsters = false): Phaser.Game {
   const query = new URLSearchParams(location.search);
   const exploring = query.has("world");
   const developerWorld = exploring && query.get("developer") === "1";
-  const peacefulWorld = developerWorld && query.get("worldPeaceful") === "1";
+  const cryptBossTrial = developerWorld && query.has("cryptBossTrial");
+  const peacefulWorld =
+    developerWorld && !cryptBossTrial && query.get("worldPeaceful") === "1";
   const requestedSeed = Number(query.get("worldSeed") ?? 42);
-  const testSeed =
-    Number.isInteger(requestedSeed) &&
-    requestedSeed >= 0 &&
-    requestedSeed <= 0xffffffff
+  const testSeed = cryptBossTrial
+    ? 42
+    : Number.isInteger(requestedSeed) &&
+        requestedSeed >= 0 &&
+        requestedSeed <= 0xffffffff
       ? requestedSeed
       : 42;
-  const testArea = AREA_IDS.includes(query.get("worldArea") as AreaId)
-    ? (query.get("worldArea") as AreaId)
-    : "ashen-refuge";
+  const testArea = cryptBossTrial
+    ? "ancient-crypt"
+    : AREA_IDS.includes(query.get("worldArea") as AreaId)
+      ? (query.get("worldArea") as AreaId)
+      : "ashen-refuge";
   const testRun = /^\d{1,9}$/.test(query.get("expedition") ?? "")
     ? query.get("expedition")!
     : "0";
@@ -229,10 +235,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
   const bossTrial =
     !exploring && query.get("developer") === "1" && query.has("bossTrial");
   if (classLab || exploring || bossTrial) monsters = false;
-  const inventory = (exploring || query.has("inventory")) && !classLab;
+  const inventory =
+    (exploring || query.has("inventory")) && !classLab && !cryptBossTrial;
   const advanced = inventory && (exploring || query.has("advanced"));
   const itemLab = !exploring && advanced && query.has("itemLab");
-  const loot = !classLab && (query.has("loot") || inventory);
+  const loot = !classLab && (query.has("loot") || inventory || cryptBossTrial);
   const polish = exploring || query.has("polish") || loot || classLab !== null;
   const skills = query.has("skills") || polish;
   const requested = Number(query.get("count") ?? 5);
@@ -447,6 +454,15 @@ export function startCombatArena(monsters = false): Phaser.Game {
       if (!travel || peacefulWorld) {
         this.worldEncounter = null;
         if (travel) this.boss = null;
+        return;
+      }
+      if (cryptBossTrial) {
+        this.worldEncounter = null;
+        this.encounter = null;
+        this.boss = installCryptBossTrial(this.world, travel.layout);
+        worldSession!.travel.setPosition(
+          this.world.actors[0]!.controller.walker.position,
+        );
         return;
       }
       this.worldEncounter = new WorldEncounterRuntime(
@@ -811,6 +827,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
         });
       }
       if (travel) this.installWorldEncounter(this.lootView!.world);
+      if (cryptBossTrial) {
+        root.querySelector(".arena-header p")!.textContent =
+          "DEVELOPER CRYPT BOSS · MEMORY ONLY · NO PLAYER SAVES";
+        document.title = "Hollowbane · Sevra trial";
+      }
       this.prepareShowcase();
       this.prepareBenchmark();
       this.syncActors();
@@ -1412,6 +1433,38 @@ export function startCombatArena(monsters = false): Phaser.Game {
           );
         }
       }
+      if (
+        this.boss?.definition.id === "sevra-vaultbound" &&
+        this.boss.state.actor === a.id
+      ) {
+        const color = flash
+          ? 0xffedc9
+          : this.boss.state.phase === 0
+            ? 0x91d9e0
+            : 0xf3bb79;
+        const height = dead ? 12 : 62;
+        sprite.setScale(1.15, dead ? 0.7 : 1.25).setTint(color);
+        // Original lantern/arch silhouette; no creature artwork imported.
+        this.ink
+          .fillStyle(0x152d3b, dead ? 0.3 : 0.95)
+          .fillTriangle(
+            p.x - 18,
+            p.y - 4,
+            p.x,
+            p.y - height,
+            p.x + 18,
+            p.y - 4,
+          );
+        this.ink
+          .lineStyle(3, color, dead ? 0.3 : 1)
+          .strokeEllipse(p.x, p.y - height * 0.55, 48, height);
+        this.ink
+          .fillStyle(color, dead ? 0.3 : 1)
+          .fillCircle(p.x, p.y - height * 0.7, 7);
+        this.ink
+          .lineStyle(2, 0xfff0ce, dead ? 0.2 : 1)
+          .lineBetween(p.x, p.y - height * 0.85, p.x, p.y - height * 0.48);
+      }
       if (!polish)
         this.ink.fillStyle(0x03070a, 0.5).fillEllipse(p.x, p.y + 3, 34, 12);
       const selected = this.world.actors[0]!.controller.selected === a.id;
@@ -1830,6 +1883,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       }
       if (travel) {
         if (
+          !cryptBossTrial &&
           !this.paused &&
           !controllerInput.blockGameplay &&
           !this.abilities?.users.some((u) => u.cast) &&
@@ -1917,7 +1971,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
         ).name;
         const versionOutput = document.querySelector("#world-version");
         if (versionOutput)
-          versionOutput.textContent = ` ${travel.state.area} · seed ${travel.state.seed} · layout ${worldSession!.contentVersion} / generator 1 · isolated test save${peacefulWorld ? " · peaceful" : ""}`;
+          versionOutput.textContent = cryptBossTrial
+            ? " Ancient Crypt · seed 42 · memory-only boss fixture · no character storage"
+            : ` ${travel.state.area} · seed ${travel.state.seed} · layout ${worldSession!.contentVersion} / generator 1 · isolated test save${peacefulWorld ? " · peaceful" : ""}`;
       }
       const updateAt = performance.now();
       this.ink.clear();

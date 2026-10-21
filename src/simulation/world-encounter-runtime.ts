@@ -6,6 +6,7 @@ import { createMonster } from "./monsters";
 import { areaNavigation, canWalk } from "../world/navigation";
 import { planWorldEncounters, ENCOUNTER_SAFE_RADIUS } from "./world-encounters";
 import { MONSTER_XP } from "./monster-experience";
+import { cryptBossSpawn, installCryptBoss } from "./crypt-boss";
 import { createBoss, type BossArena, type BossState } from "./boss";
 import {
   CAIRNWARDEN,
@@ -22,6 +23,8 @@ export class WorldEncounterRuntime {
     arena: BossArena;
   } | null = null;
   private miniboss;
+  private cryptBoss;
+  private layout;
   private activated = new Set<number>();
   private nav;
   private level: number;
@@ -30,7 +33,12 @@ export class WorldEncounterRuntime {
     layout: AreaLayout,
     private deaths: ReadonlySet<number>,
   ) {
-    this.plan = planWorldEncounters(layout);
+    this.layout = layout;
+    const plan = planWorldEncounters(layout);
+    this.cryptBoss = cryptBossSpawn(layout, plan);
+    this.plan = plan.map((spawn) =>
+      spawn.id === this.cryptBoss?.id ? this.cryptBoss : spawn,
+    );
     this.miniboss = cairnwardenSpawn(layout, this.plan);
     this.nav = areaNavigation(layout.map);
     this.level = areaDefinition(layout.map.area).level;
@@ -119,9 +127,12 @@ export class WorldEncounterRuntime {
           };
           actor.xpReward = CAIRNWARDEN_XP;
         }
+        if (spawn.id === this.cryptBoss?.id)
+          this.boss = installCryptBoss(actor, spawn.position, this.layout);
         brain.previousHp = actor.hp;
         e.combat.actors.push(actor);
-        if (spawn.id !== this.miniboss?.id) e.brains.push(brain);
+        if (spawn.id !== this.miniboss?.id && spawn.id !== this.cryptBoss?.id)
+          e.brains.push(brain);
         e.spawned++;
       }
       this.activated.add(pack);

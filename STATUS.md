@@ -1,5 +1,18 @@
 # Status
 
+## D08-A local candidate — exact release gate pending (2026-10-21)
+
+- DBL-146 scoped finale mechanics implemented: Sevra, the Vaultbound in Ancient Crypt, four elemental/physical telegraphs, two different attack pools at50% HP,150-frame transition safety, existing damage/resistance/status/interrupt rules, reachable clear chamber and freely escapable arena. Original parent dependencies and broader three-miniboss scope remain unchanged/partial. D08-B campaign conclusion is excluded.
+- `?world=1&developer=1&cryptBossTrial=1` is deterministic seed42, boss-only and memory-only: inventory/storage construction and area travel disabled even with conflicting parameters. No permanent character save is read or written. Normal world uses the existing identity/death/XP/loot persistence path; no quest/save/map schema change. Original lantern/arch/cloak geometry and inherited provisional artwork/audio are tracked in ASSET_MANIFEST.md and docs/assets.json.
+- Local28 unique focused units pass (14 crypt placement/mechanics,11 engine,3 miniboss); TypeScript/relevant lint/format/assets and production build pass. Two genuine Chromium scenarios pass in39.9s: keyboard movement, mouse fight, real hostile damage, phase change and phase-two strike, survival/death, virtual target lock/assigned-skill damage, unchanged permanent IndexedDB sentinel/no new database and reload resetting the isolated fixture. Warning/phase screenshots reviewed. No full CI was repeated locally; physical controllers remain unverified.
+- Next commit/push after normal fast-forward dry-run; require exact successful CI/Pages, full-SHA hosted file identity and focused hosted D08 scenarios before marking released. Stop after D08-A release verification; no D08-B. Details/commands/evidence: docs/overnight/d08.md. Preserve unrelated working documentation.
+
+## D07-B complete — hosted release verified (2026-10-21)
+
+- Exact deployed SHA `6729315c887a51a736cc91247b0da1783e11f142`; CI39497061101 verify/deploy succeeded, Pages deployment7211673339 succeeded for that full SHA. All26 hosted files match the reviewed build byte for byte. Public demo: https://tobisen.github.io/hollowbane/ .
+- Existing hosted D07-A/B tests passed4/4 in46.3s: genuine strikes/player damage, mouse combat and keyboard Run, virtual stick/target lock/assigned skill, two phases, death/completion, exact160 XP, one additional seeded loot roll, unchanged quests, atomic save/reload and no repeated reward/respawn. Read-only fight observations confirm all three telegraphs: cairn-cleave, oath-fault, broken-binding. Warning/phase screenshots reviewed. Evidence: docs/overnight/d07.md and /private/tmp/hollowbane-d07b-hosted-6729315.json.
+- D07-B release gate is complete. Current user authorizes D08-A final-boss mechanics only after this gate, then exact CI/Pages/hosted release and STOP. D08-B campaign conclusion is excluded. Preserve original dependencies, broad partial parents, unrelated local edits and physical/art follow-ups. CI459 units/141 Chromium/15 cross-browser passed; no full local CI repetition.
+
 ## D07-B CI correction — successor release required (2026-10-20)
 
 - Runtime candidate23314be failed exact CI39496483195 solely on new miniboss save/reload unit6066ms/default5000ms;458 other units passed. Pages skipped. D07-B remains incomplete; D08 has not started. Last verified deployed SHA remains ec9aa2babe9e5bbbce7a5eed2ec2fb2f95f1e37b.
