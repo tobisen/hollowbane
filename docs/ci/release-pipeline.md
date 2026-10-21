@@ -58,7 +58,7 @@ Use one `gh run watch <id> --interval 60 --exit-status` monitor, then fetch the 
 
 ## Optimization release evidence
 
-Local validation passed: TypeScript, lint, scoped format, build, two shard units, seven Python integrity/gate cases, unchanged 143/15 collection and three real release smoke cases in 35.6s. A deliberately wrong SHA fails the smoke and retains screenshot/trace diagnostics; no passing trace is retained. Exact candidate CI/Pages/hosted verification and a second representative optimized run are pending. This section must not be read as release success until those external checks pass. No gameplay work is authorized by this infrastructure task.
+Local validation passed: TypeScript, lint, scoped format, build, two shard units, seven Python integrity/gate cases, unchanged 143/15 collection and three real release smoke cases in 35.6s. A deliberately wrong SHA fails the smoke and retains screenshot/trace diagnostics; no passing trace is retained. Exact correction CI/Pages/hosted verification passed as recorded below; a second successful representative sample is still required. This section must not be read as release success until those external checks pass. No gameplay work is authorized by this infrastructure task.
 
 ## First diagnostic run — release correctly blocked
 
@@ -69,3 +69,29 @@ Trace evidence: the target screen point was sampled around 633992ms, followed by
 The failed sample also measured 4s npm installation, 127s check, 10s format, 39s actual collection validation, 26s/21s Chromium installation, 56s three-browser installation and 1s bundle upload. Unit execution was 100.77s (runner variation); only one production Vite build appears in the entire run. Passing images/traces were not uploaded. The failed workflow demonstrates the gate and diagnostic behavior, but cannot establish a release speed improvement. Required correction CI/Pages/hosted and representative successful samples remain pending.
 
 The profile refresh uses 31 completely successful files from run39616857577; only `world-encounters.spec.ts` retains its prior successful baseline weight. Current predicted shard totals: 654.061s / 655.876s. This is a balance estimate, not a measured release speedup.
+
+## First successful optimized release
+
+[Run39620543633](https://github.com/tobisen/hollowbane/actions/runs/39620543633) passed for full SHA `41e35912782e8f335aaab6327469ed4e702d0969`. Pages deployment7229523464 reports success for that same SHA. Hosted verification matched the manifest plus all26 production files byte for byte, and all3 smoke cases passed without skips/flakes/failures. Both runtime bundles match the originally reviewed production files; only release metadata identifies the new source commit. All475 units (473 retained +2 shard checks), seven new Python integrity/gate cases, existing Python/dry-run contracts,143 Chromium (72+71),15 compatibility and static/format/validators pass. The corrected real expedition kill/save case passes on Linux in50.550s; its original assertions/deadlines remain intact.
+
+| Measurement                                                 | Optimized successful run39620543633 |
+| ----------------------------------------------------------- | ----------------------------------: |
+| Workflow creation → completion, including hosted acceptance |                          **20m37s** |
+| npm ci, static job (other Node jobs)                        |                           6s (4–5s) |
+| check: static, all units, validators, one build             |                                116s |
+| Unit execution within check                                 |                              87.45s |
+| Format / actual shard-coverage collection                   |                            10s /34s |
+| Production Vite build within check                          |             8.72s (one build total) |
+| Bundle upload / Pages upload                                |                              2s /2s |
+| Browser/system install: shards / compatibility / hosted     |                23s and21s /43s /26s |
+| Chromium browser steps: shard1 / shard2                     |                          703s /807s |
+| Full Chromium jobs: shard1 / shard2                         |                      12m24s /14m06s |
+| Required compatibility browser step                         |                                100s |
+| Pages deployment step (full job)                            |                           85s (88s) |
+| Hosted artifact identity / browser smoke step               |                             5s /44s |
+| Hosted Playwright report (3 cases)                          |                             42.920s |
+| Full hosted job including setup/install                     |                                 93s |
+
+Observed workflow wall time is lower than both recorded baselines (26m02s and34m14s), while this new total additionally includes automatic hosted acceptance. The failed16m41s run is excluded. This is an observed comparison, not a controlled percentage guarantee: test counts differed in the older D07-B baseline, baseline hosted work was separate, runner speed varies, tracing adds overhead, and Pages alone took85s here versus22s/33s before. The two shard jobs overlap; adding their durations does not give workflow wall time. More concurrent jobs also add setup/transfer/runner usage; billed minutes were not measured.
+
+No further functional tuning is planned. A documentation-only evidence commit will retain this first result and run the unchanged workflow again for a second representative successful sample. Its exact CI/Pages/hosted gate must pass before the infrastructure task is complete. Browser caches remain intentionally omitted; system dependency installation and hosted availability remain external costs. Ubuntu24.04 pins the OS family, not every future hosted-runner image revision. Broader milestone browser/campaign compatibility and physical hardware checks remain separate; no previously required release case moved there.

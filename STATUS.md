@@ -1,5 +1,12 @@
 # Status
 
+## DBL-010 CI optimization — first full optimized release verified (2026-10-21)
+
+- Exact41e35912782e8f335aaab6327469ed4e702d0969 / CI39620543633 succeeded through all regression, Pages deployment7229523464 and hosted acceptance. Hosted manifest/full SHA plus26 production files verified; all3 application/boss/controller/save-isolation smoke cases pass42.920s.475 units (473 retained+2),143 Chromium (72+71),15 compatibility, seven integrity/gate cases and existing static/Python/dry-run coverage retained. Corrected real expedition kill/save scenario passes Linux50.550s. No gameplay/dependency/snapshot/timeout changes.
+- Measured workflow20m37s including hosted, versus baseline26m02s/34m14s excluding then-manual hosted. Browser steps703s/807s overlap; npm ci6s, check116s (units87.45s), format10s, actual collection34s, one Vite build8.72s, bundle/Pages uploads2s each, deploy85s and hosted identity5s/browser44s. These are observed timings with runner/deployment variance, not predicted or guaranteed gains. Full table/caveats: docs/ci/release-pipeline.md.
+- Failed diagnostic8ae4501/39616857577 remains explicit: one stale mouse-acquisition case failed and verify blocked deployment; trace/screenshot retained. Driver-only correction preserves all original kill/XP/loot/save assertions/deadlines and adds acquisition confirmation. No test retries or assertions removed. Unrelated documentation preserved byte for byte.
+- Next publish documentation-only measured evidence and require that exact commit's unchanged CI/Pages/hosted gate for a second representative sample. Do not start another deliverable while pending. Stop after optimization verification; no D08-B or unrelated gameplay. Post-release source/artifact evidence is under /private/tmp/hollowbane-ci-optimized-2-*.
+
 ## DBL-010 CI optimization — failure isolated, deployment blocked (2026-10-21)
 
 - Exact candidate8ae450197c41ee23a8da638420e08b6b1928051e / CI39616857577 failed only the existing expedition kill case (world-encounters.spec.ts:168): target90 HP unchanged, player dead.475 units,83 other shard1 cases,59 shard2 and15 compatibility cases pass. New aggregate verify correctly failed and Pages/hosted were skipped; no release claim. Verified deployed runtime remains D08-A5f086ef9aecc01fe5d9758ea85c9fd65f3c368bc. No new gameplay.
