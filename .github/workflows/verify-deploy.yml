@@ -10,8 +10,9 @@ concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  verify:
-    runs-on: ubuntu-latest
+  checks:
+    name: Static, unit and single production build
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,34 +20,169 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: python3 -m unittest discover -s tools/overnight -p 'test_*.py'
-      - run: python3 tools/overnight/runner.py dry-run
-      - run: npm run check
+      - name: Release tooling and existing orchestrator contracts (no execution)
+        run: |
+          python3 -m unittest discover -s tools/ci -p 'test_*.py'
+          python3 -m unittest discover -s tools/overnight -p 'test_*.py'
+          python3 tools/overnight/runner.py dry-run
+      - name: TypeScript, lint, all units, validators and one build
+        run: npm run check
       - run: npm run format:check
-      - run: npx playwright install --with-deps chromium firefox webkit
-      - run: npm run test:e2e
-      - run: npx playwright test --config playwright.inventory.config.ts --grep 'advanced unique inspection|component grades|explicit socket preview|controller-only ordered socket lifecycle'
+      - name: Prove shards cover the full release collection exactly once
+        run: npm run test:release:coverage
+      - name: Seal exact commit and production bytes
+        run: python3 tools/ci/release_artifact.py seal --sha "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-bundle
+          path: dist/
+          retention-days: 14
+          if-no-files-found: error
+
+  chromium:
+    name: Chromium shard ${{ matrix.shard }}/2
+    needs: checks
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    env:
+      PLAYWRIGHT_CI_SHARD: ${{ matrix.shard }}
+      PLAYWRIGHT_REUSE_BUILD: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: dist
+      - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
+      - run: npx playwright install --with-deps chromium
+      - name: Mandatory Chromium regression, balanced by recorded duration
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chromium-${{ matrix.shard }}-results
+          path: playwright-report/results.json
+          retention-days: 14
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: test-evidence
-          path: |
-            test-results/
-            playwright-report/
+          name: chromium-${{ matrix.shard }}-failure
+          path: test-results/
+          retention-days: 10
+
+  compatibility:
+    name: Required Chromium, Firefox and WebKit inventory contracts
+    needs: checks
+    runs-on: ubuntu-24.04
+    env:
+      PLAYWRIGHT_REUSE_BUILD: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: dist
+      - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: All existing 15 required cross-browser cases
+        run: npm run test:release:compat
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: compatibility-results
+          path: playwright-report/results.json
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: compatibility-failure
+          path: test-results/
+          retention-days: 10
+
+  # Keep the existing "verify" check identity and require every regression job.
+  verify:
+    needs: [checks, chromium, compatibility]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject failed, canceled or skipped required jobs
+        env:
+          CHECKS_RESULT: ${{ needs.checks.result }}
+          CHROMIUM_RESULT: ${{ needs.chromium.result }}
+          COMPATIBILITY_RESULT: ${{ needs.compatibility.result }}
+        run: bash tools/ci/required_checks.sh
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: dist
+      - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           path: dist
+
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/deploy-pages@v4
         id: deployment
+
+  hosted-smoke:
+    name: Exact deployed SHA and current deliverable smoke
+    needs: deploy
+    runs-on: ubuntu-24.04
+    env:
+      PLAYWRIGHT_BASE_URL: ${{ needs.deploy.outputs.page_url }}
+      RELEASE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: dist
+      - name: Verify hosted manifest, SHA and every tested artifact byte
+        run: python3 tools/ci/release_artifact.py hosted --sha "$RELEASE_SHA" --url "$PLAYWRIGHT_BASE_URL"
+      - run: npx playwright install --with-deps chromium
+      - name: Application load and genuine D08 boss/input/save-isolation smoke
+        run: npm run test:release:hosted
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hosted-smoke-results
+          path: playwright-report/results.json
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: hosted-smoke-failure
+          path: test-results/
+          retention-days: 10

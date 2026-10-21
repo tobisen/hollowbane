@@ -1,5 +1,12 @@
 # Status
 
+## DBL-010 CI optimization — local candidate, external release pending (2026-10-21)
+
+- User authorizes CI/deployment optimization only; no gameplay or D08-B. D07-B gate is complete at6729315c887a51a736cc91247b0da1783e11f142 (CI39497061101/Pages7211673339/hosted), and D08-A at5f086ef9aecc01fe5d9758ea85c9fd65f3c368bc (CI39548208049/Pages7218647544/two hosted cases). Existing post-release evidence and unrelated local documentation are preserved.
+- Measured baseline workflow34m14s/26m02s; main Chromium1702s/1252s dominates, npm ci5s/4s. New candidate retains every143 Chromium/15 compatibility/473 existing unit case and all static/format/validator/orchestrator checks. Two duration-balanced, isolated one-worker Chromium jobs (84+59 cases) and parallel compatibility consume one sealed production bundle; exact full SHA and every file are validated before testing/deployment and hosted. Ubuntu24.04 matches baseline snapshots, npm caching retained, lockfile-matched browser install retained after evaluation. No dependency/gameplay/snapshot/assertion/timeout changes.
+- Local two shard units, seven Python integrity/gate cases, unchanged actual test collection, TypeScript/full lint/scoped format/build pass. Three release-smoke cases pass35.6s with genuine boss fight/controller/save isolation and application/SHA load; phase screenshot reviewed. Wrong-SHA smoke intentionally fails with screenshot/trace, and gate tests reject failed/canceled/skipped jobs. Full local regression was not repeated.
+- Exact candidate CI/Pages/hosted gate and representative timing comparison remain PENDING. Do not claim predicted602s shard weights as measured speedup. Next commit/push this scoped increment, watch exact run once, resolve relevant failures, verify Pages full SHA/all artifact bytes/hosted smoke, then obtain a second representative sample when practical. Stop after optimization release verification. Details: docs/ci/release-pipeline.md.
+
 ## D08-A local candidate — exact release gate pending (2026-10-21)
 
 - DBL-146 scoped finale mechanics implemented: Sevra, the Vaultbound in Ancient Crypt, four elemental/physical telegraphs, two different attack pools at50% HP,150-frame transition safety, existing damage/resistance/status/interrupt rules, reachable clear chamber and freely escapable arena. Original parent dependencies and broader three-miniboss scope remain unchanged/partial. D08-B campaign conclusion is excluded.
