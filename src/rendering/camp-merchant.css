@@ -1,0 +1,62 @@
+#camp-merchant {
+  width: min(48rem, calc(100vw - 3rem));
+  max-height: 88vh;
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding: 1.5rem;
+  color: #ead8ad;
+  background: #111b1e;
+  border: 1px solid #9e8050;
+  font:
+    1rem/1.5 Georgia,
+    serif;
+}
+#camp-merchant::backdrop {
+  background: #05090dcc;
+}
+.merchant-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+#merchant-offers,
+#merchant-backpack {
+  display: grid;
+  gap: 0.5rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  padding: 0.25rem;
+}
+#camp-merchant button {
+  min-height: 2.75rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #817451;
+  border-radius: 3px;
+  background: #243238;
+  color: #f0dfb9;
+  font: inherit;
+  cursor: pointer;
+}
+#camp-merchant button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+#camp-merchant button:focus-visible {
+  outline: 3px solid #e7c36e;
+  outline-offset: 2px;
+}
+#merchant-feedback {
+  min-height: 1.5em;
+  color: #f5d487;
+}
+#merchant-details {
+  white-space: pre-wrap;
+}
+#merchant-gold {
+  font-weight: bold;
+}
+@media (max-width: 600px) {
+  .merchant-columns {
+    grid-template-columns: 1fr;
+  }
+}

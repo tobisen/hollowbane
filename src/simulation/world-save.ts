@@ -8,6 +8,10 @@ import { validateGeneratedItem } from "./item-save";
 import { validWorldMonsterIdentity } from "./world-encounters";
 import { QUESTS, validateQuestState, type QuestState } from "./quests";
 import {
+  validateMerchantState,
+  type MerchantState,
+} from "./camp-merchant-state";
+import {
   validateCampConversations,
   type CampConversationState,
 } from "./camp-dialogue";
@@ -18,6 +22,8 @@ import {
 } from "./world-expedition";
 export interface ExplorationSnapshot {
   version: 1 | 2 | 3 | 4 | 5 | 6;
+  /** Absent in historical snapshots; finite merchant ledger starts on first trade. */
+  merchant?: MerchantState;
   quests?: QuestState;
   dialogue?: CampConversationState;
   expedition?: ExpeditionState | LegacyExpeditionState;
@@ -91,6 +97,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       : []),
     ...(w.version === 5 || w.version === 6 ? ["dialogue"] : []),
     ...(w.version === 6 ? ["quests"] : []),
+    ...(w.version === 6 && Object.hasOwn(w, "merchant") ? ["merchant"] : []),
   ]);
   if (
     (w.version !== 1 &&
@@ -329,6 +336,9 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   }
   return {
     version: w.version,
+    ...(Object.hasOwn(w, "merchant")
+      ? { merchant: validateMerchantState(w.merchant) }
+      : {}),
     ...(quests ? { quests } : {}),
     ...(dialogue ? { dialogue } : {}),
     ...(expedition ? { expedition } : {}),

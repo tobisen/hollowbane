@@ -8,7 +8,9 @@ let flow = {
   file: "overnight-d08.spec.ts",
   title: "virtual controller locks Sevra",
 };
-if (hosted && groups.includes("quest"))
+if (hosted && groups.includes("merchant"))
+  flow = { file: "overnight-d09.spec.ts", title: "merchant " };
+else if (hosted && groups.includes("quest"))
   flow = { file: "overnight-d08b.spec.ts", title: "campaign finale" };
 else if (hosted && groups.includes("persistence"))
   flow = { file: "inventory-storage.spec.ts", title: "corrupt-save.*recovery" };

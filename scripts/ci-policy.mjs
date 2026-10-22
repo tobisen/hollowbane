@@ -19,6 +19,11 @@ export const coreUnits = [
   "tests/ci-policy.test.ts",
 ];
 export const groups = {
+  merchant: {
+    match: /(?:camp-merchant|overnight-d09)/,
+    unit: /(?:overnight-d09|inventory|world-save).*\.test\.ts$/,
+    browser: ["overnight-d09.spec.ts"],
+  },
   boss: {
     match: /(?:boss|stonebound)/,
     unit: /(?:boss|stonebound|combat|damage|status).*\.test\.ts$/,

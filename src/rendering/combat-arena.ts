@@ -4,6 +4,8 @@ import { installCryptBossTrial } from "../simulation/crypt-boss";
 import { BossView, type BossEncounterView } from "./boss-view";
 import { WorldMinimap } from "./world-minimap";
 import { CampDialogueView } from "./camp-dialogue";
+import { CampMerchantView } from "./camp-merchant";
+import { canTradeAtCamp, tradeWithMerchant } from "../simulation/camp-merchant";
 import { QuestJournal } from "./quest-journal";
 import { CAMP_NPCS, nearbyCampNpc } from "../simulation/camp-dialogue";
 import { ContainerView } from "./world-containers";
@@ -355,6 +357,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private drawnLayout: unknown = null;
     private campEnvironment: CampEnvironment | null = null;
     private campDialogue: CampDialogueView | null = null;
+    private campMerchant: CampMerchantView | null = null;
     private questJournal: QuestJournal | null = null;
     private environment: WorldEnvironment | null = null;
     private ink!: Phaser.GameObjects.Graphics;
@@ -768,8 +771,44 @@ export function startCombatArena(monsters = false): Phaser.Game {
         root.append(panel);
         panel.querySelector<HTMLButtonElement>("button")!.onclick = () =>
           this.interactExpedition();
-        this.campDialogue = new CampDialogueView(this, root, (id) =>
-          this.interactNpc(id),
+        const merchantReady = () => {
+          const p = this.world.actors[0]!;
+          return (
+            !!this.inventoryView?.worldReady &&
+            !this.paused &&
+            !this.abilities?.users.some((u) => u.cast) &&
+            canTradeAtCamp(
+              worldSession!.travel.state.area,
+              p.controller.walker.position,
+              p.hp > 0,
+              p.controller.timeline.phase === "idle",
+            )
+          );
+        };
+        this.campMerchant = new CampMerchantView(
+          root,
+          () => this.inventoryRuntime!.session(),
+          merchantReady,
+          (intent) => {
+            if (!merchantReady())
+              return "Return safely to Orren Thale to trade.";
+            const result = tradeWithMerchant(
+              this.inventoryRuntime!.session(),
+              intent,
+            );
+            if (!result.ok) return result.reason;
+            // Restore prepares and validates every half before applying the candidate.
+            this.inventoryRuntime!.restore(result.value);
+            this.inventoryView!.changed();
+            return "Trade complete. Saving gold and items together; check the save status before leaving.";
+          },
+        );
+        this.events.once("shutdown", () => this.campMerchant?.destroy());
+        this.campDialogue = new CampDialogueView(
+          this,
+          root,
+          (id) => this.interactNpc(id),
+          () => this.campMerchant?.open(),
         );
         this.events.once("shutdown", () => this.campDialogue?.destroy());
         this.questJournal = new QuestJournal(
@@ -1945,6 +1984,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
         this.minimap?.update(worldSession!, player.controller.walker.position);
         this.questJournal?.update();
+        this.campMerchant?.update();
         this.campDialogue?.update(
           travel.state.area,
           player.controller.walker.position,

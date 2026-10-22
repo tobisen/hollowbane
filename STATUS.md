@@ -1,3 +1,10 @@
+## D09 / DBL-117–118 merchant candidate (2026-10-22)
+
+- Current overnight request authorizes D09–D14 sequentially, with exact required CI/Pages/hosted acceptance after each deliverable; no old orchestrator. Reconciled local/remote main and public release at fefb9725bbfb2575031705c05f6ce3979610e2c3; previous workflow39672422197 independently succeeds. D07/D08 remain complete and are not repeated.
+- D09 delivers finite original Orren stock, configurable bounded prices, immutable gold/item/ledger trades, stale-quote/ownership/capacity/proximity/overflow rejection, permanent sold/embedded identity reservation and mouse/keyboard/controller inspection/confirm/cancel/focus. Existing atomic character persistence saves every half together; optional exploration6 merchant1 ledger preserves legacy saves, item identities and procedural/RNG state. Broader DBL-116/117/118 parents remain partial; dependencies unchanged.
+- Seven new units plus21 existing focused contracts pass, strict TypeScript/scoped ESLint/format/build and asset/backlog/workflow validators pass;150 Chromium cases partition exactly. Final merchant4 + existing NPC1 Chromium cases pass in35.7s; screenshots reviewed. Virtual controller and constructed pre-game fixtures do not claim physical hardware or a continuous fresh-character campaign.
+- Candidate source is ready for commit/push and exact required Full CI, matching Pages and hosted application/SHA + all four merchant scenarios. D09 is NOT released yet; do not start D10 while any required gate is pending/failed. Latest verified deployed SHA remains fefb9725bbfb2575031705c05f6ce3979610e2c3. Evidence: docs/overnight/d09.md. Pre-existing BACKLOG/STATUS/CI/L3/D05/D07/D08 documentation edits are preserved separately.
+
 ## DBL-147 / D08-B campaign conclusion candidate (2026-10-21)
 
 - Current Act 1 continuation authorizes D08-B through D11 and conditional approved D12–D14, superseding historical D08-A/CI-only stops. Reconciled main/origin at4fe55bd8de70dffbeddc29ce18a7a5f790bdb883, exact accepted CI39668112453 and public full-SHA manifest. Preserve existing local BACKLOG/L3/D05/D07/D08/CI measurement evidence.

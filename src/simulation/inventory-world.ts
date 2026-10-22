@@ -1,4 +1,5 @@
 import type { ExplorationSnapshot } from "./world-save";
+import { validateMerchantState } from "./camp-merchant-state";
 import {
   validateProgression,
   type ProgressionSnapshot,
@@ -48,7 +49,9 @@ export function reserveOwned(s: InventorySession): InventorySession {
         ...ownedItems(s.character),
         ...(s.exploration?.areas.flatMap((a) => a.drops.map((d) => d.item)) ??
           []),
-      ]).map((i) => i.id),
+      ])
+        .map((i) => i.id)
+        .concat(s.exploration?.merchant?.retired ?? []),
     },
   };
 }
@@ -64,6 +67,12 @@ export function validateSession(s: InventorySession, nav?: Navigation): void {
     ...s.loot.drops.map((d) => d.item),
     ...(s.exploration?.areas.flatMap((a) => a.drops.map((d) => d.item)) ?? []),
   ]);
+  if (s.exploration?.merchant) {
+    const merchant = validateMerchantState(s.exploration.merchant);
+    const retired = new Set(merchant.retired);
+    if (all.some((i) => retired.has(i.id)))
+      throw Error("Sold item identity is still owned; original retained");
+  }
   if (
     s.loot.drops.length > s.loot.capacity ||
     s.loot.capacity < 1 ||

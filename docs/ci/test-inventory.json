@@ -75,6 +75,7 @@
     "src/simulation/overnight-d05.test.ts",
     "src/simulation/overnight-d06.test.ts",
     "src/simulation/overnight-d08.test.ts",
+    "src/simulation/overnight-d09.test.ts",
     "src/simulation/progression-quality.test.ts",
     "src/simulation/progression-save.test.ts",
     "src/simulation/projectiles.test.ts",
@@ -146,6 +147,7 @@
     "tests/e2e/overnight-d07b.spec.ts",
     "tests/e2e/overnight-d08.spec.ts",
     "tests/e2e/overnight-d08b.spec.ts",
+    "tests/e2e/overnight-d09.spec.ts",
     "tests/e2e/polish.spec.ts",
     "tests/e2e/prototype.spec.ts",
     "tests/e2e/skill-tree.spec.ts",
@@ -167,6 +169,11 @@
     "tests/ci-policy.test.ts"
   ],
   "groups": {
+    "merchant": {
+      "match": "(?:camp-merchant|overnight-d09)",
+      "unit": "(?:overnight-d09|inventory|world-save).*\\.test\\.ts$",
+      "browser": ["overnight-d09.spec.ts"]
+    },
     "boss": {
       "match": "(?:boss|stonebound)",
       "unit": "(?:boss|stonebound|combat|damage|status).*\\.test\\.ts$",
