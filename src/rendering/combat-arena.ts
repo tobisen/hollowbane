@@ -5,6 +5,8 @@ import { BossView, type BossEncounterView } from "./boss-view";
 import { WorldMinimap } from "./world-minimap";
 import { CampDialogueView } from "./camp-dialogue";
 import { CampMerchantView } from "./camp-merchant";
+import { CampStashView } from "./camp-stash";
+import { transferCampStash } from "../simulation/camp-stash";
 import { canTradeAtCamp, tradeWithMerchant } from "../simulation/camp-merchant";
 import { QuestJournal } from "./quest-journal";
 import { CAMP_NPCS, nearbyCampNpc } from "../simulation/camp-dialogue";
@@ -358,6 +360,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private campEnvironment: CampEnvironment | null = null;
     private campDialogue: CampDialogueView | null = null;
     private campMerchant: CampMerchantView | null = null;
+    private campStash: CampStashView | null = null;
     private questJournal: QuestJournal | null = null;
     private environment: WorldEnvironment | null = null;
     private ink!: Phaser.GameObjects.Graphics;
@@ -804,11 +807,30 @@ export function startCombatArena(monsters = false): Phaser.Game {
           },
         );
         this.events.once("shutdown", () => this.campMerchant?.destroy());
+        this.campStash = new CampStashView(
+          root,
+          () => this.inventoryRuntime!.session(),
+          merchantReady,
+          (intent) => {
+            if (!merchantReady())
+              return "Return safely to Orren Thale to use your camp stash.";
+            const result = transferCampStash(
+              this.inventoryRuntime!.session(),
+              intent,
+            );
+            if (!result.ok) return result.reason;
+            this.inventoryRuntime!.restore(result.value);
+            this.inventoryView!.changed();
+            return "Transferred. Saving both grids together; check the save status before leaving.";
+          },
+        );
+        this.events.once("shutdown", () => this.campStash?.destroy());
         this.campDialogue = new CampDialogueView(
           this,
           root,
           (id) => this.interactNpc(id),
           () => this.campMerchant?.open(),
+          () => this.campStash?.open(),
         );
         this.events.once("shutdown", () => this.campDialogue?.destroy());
         this.questJournal = new QuestJournal(
@@ -1985,6 +2007,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         this.minimap?.update(worldSession!, player.controller.walker.position);
         this.questJournal?.update();
         this.campMerchant?.update();
+        this.campStash?.update();
         this.campDialogue?.update(
           travel.state.area,
           player.controller.walker.position,

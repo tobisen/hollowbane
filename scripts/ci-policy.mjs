@@ -19,6 +19,11 @@ export const coreUnits = [
   "tests/ci-policy.test.ts",
 ];
 export const groups = {
+  stash: {
+    match: /(?:camp-stash|overnight-d10)/,
+    unit: /(?:overnight-d10|inventory|world-save).*\.test\.ts$/,
+    browser: ["overnight-d10.spec.ts"],
+  },
   merchant: {
     match: /(?:camp-merchant|overnight-d09)/,
     unit: /(?:overnight-d09|inventory|world-save).*\.test\.ts$/,

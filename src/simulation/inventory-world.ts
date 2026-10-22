@@ -1,5 +1,6 @@
 import type { ExplorationSnapshot } from "./world-save";
 import { validateMerchantState } from "./camp-merchant-state";
+import { validateCampStash } from "./camp-stash-state";
 import {
   validateProgression,
   type ProgressionSnapshot,
@@ -47,6 +48,7 @@ export function reserveOwned(s: InventorySession): InventorySession {
       ...s.loot,
       reserved: itemTree([
         ...ownedItems(s.character),
+        ...(s.exploration?.stash?.grid.items.map((e) => e.item) ?? []),
         ...(s.exploration?.areas.flatMap((a) => a.drops.map((d) => d.item)) ??
           []),
       ])
@@ -62,8 +64,10 @@ export function validateSession(s: InventorySession, nav?: Navigation): void {
   )
     throw Error("Inventory and progression level mismatch");
   validateCharacter(s.character, s.requirements);
+  if (s.exploration?.stash) validateCampStash(s.exploration.stash);
   const all = itemTree([
     ...ownedItems(s.character),
+    ...(s.exploration?.stash?.grid.items.map((e) => e.item) ?? []),
     ...s.loot.drops.map((d) => d.item),
     ...(s.exploration?.areas.flatMap((a) => a.drops.map((d) => d.item)) ?? []),
   ]);

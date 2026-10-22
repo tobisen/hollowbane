@@ -11,6 +11,7 @@ import {
   validateMerchantState,
   type MerchantState,
 } from "./camp-merchant-state";
+import { validateCampStash, type CampStashState } from "./camp-stash-state";
 import {
   validateCampConversations,
   type CampConversationState,
@@ -24,6 +25,7 @@ export interface ExplorationSnapshot {
   version: 1 | 2 | 3 | 4 | 5 | 6;
   /** Absent in historical snapshots; finite merchant ledger starts on first trade. */
   merchant?: MerchantState;
+  stash?: CampStashState;
   quests?: QuestState;
   dialogue?: CampConversationState;
   expedition?: ExpeditionState | LegacyExpeditionState;
@@ -98,6 +100,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     ...(w.version === 5 || w.version === 6 ? ["dialogue"] : []),
     ...(w.version === 6 ? ["quests"] : []),
     ...(w.version === 6 && Object.hasOwn(w, "merchant") ? ["merchant"] : []),
+    ...(w.version === 6 && Object.hasOwn(w, "stash") ? ["stash"] : []),
   ]);
   if (
     (w.version !== 1 &&
@@ -339,6 +342,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     ...(Object.hasOwn(w, "merchant")
       ? { merchant: validateMerchantState(w.merchant) }
       : {}),
+    ...(Object.hasOwn(w, "stash") ? { stash: validateCampStash(w.stash) } : {}),
     ...(quests ? { quests } : {}),
     ...(dialogue ? { dialogue } : {}),
     ...(expedition ? { expedition } : {}),

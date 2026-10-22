@@ -185,6 +185,7 @@ function validateBody(
       ...session.character.grid.items.map((p) => p.item),
       ...Object.values(session.character.equipment),
       ...session.loot.drops.map((d) => d.item),
+      ...(world?.stash?.grid.items.map((e) => e.item) ?? []),
       ...(world?.areas.flatMap((a) => a.drops.map((d) => d.item)) ?? []),
     ]).some((i) => !versions.includes(i.contentVersion))
   )
@@ -241,6 +242,7 @@ export function serializeCharacter(
       ...s.character.grid.items.map((p) => p.item),
       ...Object.values(s.character.equipment),
       ...s.loot.drops.map((d) => d.item),
+      ...(s.exploration?.stash?.grid.items.map((e) => e.item) ?? []),
       ...(s.exploration?.areas.flatMap((a) => a.drops.map((d) => d.item)) ??
         []),
     ].some((i) => i.contentVersion >= 4) ||

@@ -25,6 +25,7 @@ export class CampDialogueView {
     root: HTMLElement,
     interact: (id?: string) => boolean,
     browseMerchant?: () => void,
+    browseStash?: () => void,
   ) {
     for (const [index, npc] of CAMP_NPCS.entries()) {
       const p = onGround(npc.position);
@@ -66,16 +67,20 @@ export class CampDialogueView {
     this.dialog.innerHTML =
       '<p id="camp-speaker-role"></p><h2 id="camp-speaker"></h2><p id="camp-speech"></p><div id="camp-choices"></div><button id="camp-quest-journal" type="button">Quest journal</button><button id="camp-dialogue-close" type="button">End conversation</button><p class="camp-dialogue-help">Choose a reply · Esc / Back: leave</p>';
     root.append(this.dialog);
-    if (browseMerchant) {
+    for (const [id, label, browseService] of [
+      ["camp-merchant-open", "Browse road supplies", browseMerchant],
+      ["camp-stash-open", "Open character camp stash", browseStash],
+    ] as const) {
+      if (!browseService) continue;
       const browse = document.createElement("button");
-      browse.id = "camp-merchant-open";
+      browse.id = id;
       browse.type = "button";
-      browse.textContent = "Browse road supplies";
+      browse.textContent = label;
       browse.hidden = true;
       browse.onclick = () => {
         if (this.cursor?.npc !== "orren-thale") return;
         this.close();
-        browseMerchant();
+        browseService();
       };
       this.dialog.querySelector("#camp-dialogue-close")!.before(browse);
     }
@@ -159,10 +164,10 @@ export class CampDialogueView {
     this.dialog.querySelector("#camp-speaker")!.textContent = npc.name;
     this.dialog.querySelector("#camp-speaker-role")!.textContent = npc.title;
     this.dialog.querySelector("#camp-speech")!.textContent = node.text;
-    const browse = this.dialog.querySelector<HTMLButtonElement>(
-      "#camp-merchant-open",
-    );
-    if (browse) browse.hidden = this.cursor.npc !== "orren-thale";
+    for (const id of ["camp-merchant-open", "camp-stash-open"]) {
+      const browse = this.dialog.querySelector<HTMLButtonElement>(`#${id}`);
+      if (browse) browse.hidden = this.cursor.npc !== "orren-thale";
+    }
     const list = this.dialog.querySelector("#camp-choices")!;
     list.replaceChildren();
     node.choices.forEach((choice, index) => {
