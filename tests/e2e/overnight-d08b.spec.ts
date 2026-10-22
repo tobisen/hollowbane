@@ -17,7 +17,10 @@ import { readWorldCheckpoint, saveWorldCheckpoint } from "./world-checkpoint";
 import { CRYPT_FINALE_ACTOR } from "../../src/simulation/world-encounters";
 import { CRYPT_BOSS_XP } from "../../src/simulation/crypt-boss";
 import { ACT1_FINALE, QUESTS } from "../../src/simulation/quests";
-import { deserializeCharacter } from "../../src/simulation/inventory-save";
+import {
+  deserializeCharacter,
+  serializeCharacter,
+} from "../../src/simulation/inventory-save";
 
 // Immutable fixture text only; each browser context owns its real IndexedDB.
 let checkpoints: { fight: string; returning: string; camp: string };
@@ -126,40 +129,51 @@ test("campaign finale genuine mouse fight persists Sevra defeat and never grants
   expect(restored.loot.sequence).toBe(saved.loot.sequence);
 });
 
-test("campaign finale safe return follows real crypt, graveyard and forest exits with persistent readiness", async ({
-  page,
-}, testInfo) => {
-  await installVirtualController(page, "Xbox 360 Controller");
-  await loadD06Checkpoint(page, checkpoints.returning);
-  await page.keyboard.press("r");
+test.describe.serial("persisted campaign return journey", () => {
+  let returning: string;
+  test.beforeAll(() => {
+    returning = checkpoints.returning;
+  });
   for (const [source, exit, destination] of [
     ["ancient-crypt", "graveyard", "forgotten-graveyard"],
     ["forgotten-graveyard", "forest", "haunted-forest"],
     ["haunted-forest", "camp", "ashen-refuge"],
-  ]) {
-    expect(await page.evaluate(() => window.hollowbaneWorld!.area)).toBe(
-      source,
-    );
-    // Finish each turn closely before changing direction around graveyard props.
-    await followQuestPath(page, "exit", exit!, 0.01);
-    await expect
-      .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
-      .toBe(destination);
-    expect(
-      await page.evaluate(() => window.hollowbaneCombat!.actors[0]!.hp),
-    ).toBeGreaterThan(0);
-  }
-  await saveWorldCheckpoint(page);
-  const saved = await readWorldCheckpoint(page, "ashen-refuge"),
-    prior = deserializeCharacter(checkpoints.returning);
-  expect(saved.progression).toEqual(prior.progression);
-  expect(saved.character).toEqual(prior.character);
-  expect(saved.exploration!.quests).toEqual(prior.exploration!.quests);
-  expect(saved.exploration!.containers).toEqual(prior.exploration!.containers);
-  expect(saved.loot.sequence).toBe(prior.loot.sequence);
-  await page.screenshot({
-    path: testInfo.outputPath("campaign-safe-return.png"),
-  });
+  ] as const)
+    test(`campaign finale safe return ${source} to ${destination} preserves the chained checkpoint`, async ({
+      page,
+    }, testInfo) => {
+      // Each leg starts from the preceding leg's actual browser save. This keeps
+      // every route and state assertion inside the unchanged per-case deadline.
+      await installVirtualController(page, "Xbox 360 Controller");
+      await loadD06Checkpoint(page, returning);
+      await page.keyboard.press("r");
+      expect(await page.evaluate(() => window.hollowbaneWorld!.area)).toBe(
+        source,
+      );
+      // Finish each turn closely before changing direction around graveyard props.
+      await followQuestPath(page, "exit", exit, 0.01);
+      await expect
+        .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+        .toBe(destination);
+      expect(
+        await page.evaluate(() => window.hollowbaneCombat!.actors[0]!.hp),
+      ).toBeGreaterThan(0);
+      await saveWorldCheckpoint(page);
+      const saved = await readWorldCheckpoint(page, "ashen-refuge"),
+        prior = deserializeCharacter(checkpoints.returning);
+      expect(saved.progression).toEqual(prior.progression);
+      expect(saved.character).toEqual(prior.character);
+      expect(saved.exploration!.quests).toEqual(prior.exploration!.quests);
+      expect(saved.exploration!.containers).toEqual(
+        prior.exploration!.containers,
+      );
+      expect(saved.loot.sequence).toBe(prior.loot.sequence);
+      expect(saved.exploration!.area).toBe(destination);
+      returning = serializeCharacter(saved);
+      await page.screenshot({
+        path: testInfo.outputPath(`campaign-safe-return-${destination}.png`),
+      });
+    });
 });
 
 test("campaign finale controller conclusion claim preserves one-time rewards, dialogue and save ownership", async ({

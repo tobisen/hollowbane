@@ -1,3 +1,9 @@
+## D09 / DBL-117, DBL-147 return-test budget repair (2026-10-22)
+
+- Corrected0ba2033 /CI39858590307 passed static/contracts/build and26/27 Chromium, including all4 merchant cases. The existing composed three-area return case exceeded its60-second total budget while alive/moving on forest waypoint8/13; crypt18.744s +graveyard16.813s already completed. Reviewed Linux screenshot/navigation/Playwright traces; no blocked waypoint or merchant regression. Full/Pages/hosted correctly skipped; verified deployment remains fefb9725bbfb2575031705c05f6ce3979610e2c3.
+- Required return coverage is now three serial real-input cases chained through actual browser saves/reloads. Every route,0.01 precision,60-second case/10-second waypoint deadline and original progression/gear/quest/gold/loot/survival assertion is retained; save/reload checks run after each leg. This follows existing resource-restart policy, not uninterrupted combat survival. No runtime, steering, retry, timeout enlargement or assertion relaxation.
+- Three traced local legs pass18.5s/17.2s/22.9s; final camp screenshot reviewed. TypeScript/scoped lint/format and full152-case shard collection pass. Commit/push this verified test-only repair, require exact Full/Pages/hosted application+four merchant cases, then D10. No gameplay beyond D09 has started. Evidence: docs/overnight/d09.md and /private/tmp/hollowbane-d09-return-failure/; preserve unrelated edits.
+
 ## D09 / DBL-117–118 CI fixture correction (2026-10-22)
 
 - Candidate7ad36d2 /workflow39857920886 failed three new merchant unit cases at the unchanged5-second deadline;76 other selected files/281 cases passed. Required Full/Pages/hosted skipped and release blocked. Latest verified deployed source remains fefb9725bbfb2575031705c05f6ce3979610e2c3; D10 has not started.
