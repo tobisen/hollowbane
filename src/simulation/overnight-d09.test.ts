@@ -28,9 +28,10 @@ import { identifyItem } from "./item-save";
 import { placeLoot } from "./world-loot";
 import { ARENA_NAV } from "./combat";
 
-function fixture(gold = 500): InventorySession {
+/** Domain cases use the retained static layout; generated-world persistence has its own case below. */
+function fixture(gold = 500, layoutVersion = 1): InventorySession {
   const s = createInventorySession(900);
-  const world = new WorldSession();
+  const world = new WorldSession(undefined, 42, layoutVersion);
   s.exploration = world.capture({ x: 1, y: 3 }, s.loot);
   s.exploration.containers!.gold = gold;
   return s;
@@ -59,11 +60,11 @@ function rejected(
   alive = true,
   idle = true,
 ) {
-  const before = serializeCharacter(s);
+  const before = structuredClone(s);
   const result = tradeWithMerchant(s, action, alive, idle);
   expect(result.ok).toBe(false);
   if (!result.ok) expect(result.reason).toMatch(match);
-  expect(serializeCharacter(s)).toBe(before);
+  expect(s).toEqual(before);
 }
 it("offers are finite original replay-valid stock, with deterministic identities and loss-making resale", () => {
   const items = MERCHANT_OFFERS.map(merchantItem);
@@ -155,7 +156,7 @@ it("stale inventory/merchant quotes, invalid offers, death, active attacks, dist
   distant.exploration!.position = { x: 0, y: 0 };
   rejected(distant, intent(distant, "buy", "ash-blade"), /safely/);
   const remote = fixture();
-  const forest = new WorldSession(undefined, 42, 2, "haunted-forest");
+  const forest = new WorldSession(undefined, 42, 1, "haunted-forest");
   remote.exploration = forest.capture(
     forest.travel.state.position,
     remote.loot,
@@ -234,4 +235,19 @@ it("selling socketed gear retires every embedded identity and restores none on r
   expect(
     placeLoot(loaded.loot, gem, { x: 0, y: 0 }, 0, -1, ARENA_NAV),
   ).toBeNull();
+});
+it("generated layout seeds fingerprints and discovery survive the complete merchant checkpoint", () => {
+  const s = fixture(500, 2);
+  const bought = trade(s, "buy", "trail-boots");
+  const loaded = deserializeCharacter(serializeCharacter(bought));
+  expect(loaded.exploration!.contentVersion).toBe(2);
+  expect(loaded.exploration!.areas).toEqual(s.exploration!.areas);
+  expect(loaded.exploration!.visited).toEqual(s.exploration!.visited);
+  expect(loaded.exploration!.position).toEqual(s.exploration!.position);
+  expect(loaded.exploration!.quests).toEqual(s.exploration!.quests);
+  expect(loaded.character.grid.items[0]!.item).toEqual(
+    merchantItem("trail-boots"),
+  );
+  expect(loaded.exploration!.containers!.gold).toBe(470);
+  expect(loaded.exploration!.merchant!.purchased).toEqual(["trail-boots"]);
 });

@@ -1,3 +1,9 @@
+## D09 / DBL-117–118 CI fixture correction (2026-10-22)
+
+- Candidate7ad36d2 /workflow39857920886 failed three new merchant unit cases at the unchanged5-second deadline;76 other selected files/281 cases passed. Required Full/Pages/hosted skipped and release blocked. Latest verified deployed source remains fefb9725bbfb2575031705c05f6ce3979610e2c3; D10 has not started.
+- Root cause: repeated complete generated-map serialization in rejection assertions. Full cloned-session equality now verifies no mutation directly; static-layout domain fixtures retain all real save/reload/corruption/ownership assertions. One additional generated-layout save case explicitly preserves seeds/fingerprints/discovery/position/quests and trade state; all four browser scenarios still cover generated worlds. No deadline, runtime, browser assertion or generator change.
+- Eight corrected units pass in496ms versus9.66s before; TypeScript/scoped lint/format pass. Existing production build and final5 browser cases remain applicable because runtime/browser sources are unchanged. Commit/push this verified test-only correction, then require its exact Full CI, Pages and hosted application/SHA + four merchant cases before D10. Evidence: docs/overnight/d09.md and /private/tmp/hollowbane-d09-failed-static.log. Preserve all unrelated documentation edits.
+
 ## D09 / DBL-117–118 merchant candidate (2026-10-22)
 
 - Current overnight request authorizes D09–D14 sequentially, with exact required CI/Pages/hosted acceptance after each deliverable; no old orchestrator. Reconciled local/remote main and public release at fefb9725bbfb2575031705c05f6ce3979610e2c3; previous workflow39672422197 independently succeeds. D07/D08 remain complete and are not repeated.
