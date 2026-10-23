@@ -61,6 +61,14 @@ assert.deepEqual(
   workflow["full-regression.yml"].jobs.chromium.strategy.matrix.shard,
   [1, 2, 3, 4],
 );
+for (const [file, parsed] of Object.entries(workflow))
+  for (const job of Object.values(parsed.jobs))
+    if (job.env?.PLAYWRIGHT_CI_SHARD)
+      assert.deepEqual(
+        job.strategy.matrix.shard,
+        [1, 2, 3, 4],
+        `${file}: every runtime shard must be launched`,
+      );
 assert(workflow["full-regression.yml"].on.workflow_call);
 for (const job of ["checks", "chromium", "compatibility"])
   assert(

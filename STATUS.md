@@ -1,3 +1,9 @@
+## DBL-010 manual shard caller correction — final verification pending (2026-10-23)
+
+- First CI candidate dd71234 passed Full39909032779,535 units/175 Chromium/15 compatibility/2 hosted and Pages7271643471 in17m15s, versus45m13s prior Full. All26 application bytes remain unchanged.
+- Final caller audit found manual rollback still launched2 of the new4 shards. Aligned its matrix/name and added a validator for every executable sharded workflow; a deliberately truncated matrix is rejected. No gameplay or assertions changed. This necessary CI-only correction requires a second Full; first evidence is retained honestly.
+- Next verify corrected exact-SHA Full/Pages/hosted, then additive inventory-UI gameplay Integration replay and final evidence publication. Preserve unrelated local documentation; no new gameplay.
+
 ## DBL-010 CI latency repair — local verification, publication pending (2026-10-23)
 
 - User authorized CI/tooling only; gameplay remains stopped. Latest10 Actions audited with exact plans/attempt/job/step times in docs/ci/2026-10-23-run-audit.json. Latest Full45m13s duplicated affected→Full→44 hosted cases; slow active Ubuntu mirror downloads caused an independent retry outlier.

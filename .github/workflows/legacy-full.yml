@@ -36,13 +36,13 @@ jobs:
           if-no-files-found: error
 
   chromium:
-    name: Chromium shard ${{ matrix.shard }}/2
+    name: Chromium shard ${{ matrix.shard }}/4
     needs: checks
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2]
+        shard: [1, 2, 3, 4]
     env:
       PLAYWRIGHT_CI_SHARD: ${{ matrix.shard }}
       PLAYWRIGHT_REUSE_BUILD: "1"
