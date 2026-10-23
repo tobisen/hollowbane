@@ -8,11 +8,10 @@ investigation; broader original requirements remain partial.
 ## Current result
 
 **Q1 is in progress. Q2 and Q3 have not started.** Q1-B learned-primary combat is
-now verified for all three classes. Each actual character has traversed the
-active forest, entered the graveyard and defeated Stonebound. The remaining
-graveyard quest/miniboss, crypt/finale and waypoint travel are still open. The
-newest earned checkpoints and exact next action are below; do not replay the
-completed opening.
+now verified for all three classes. All three have also defeated Cairnwarden,
+claimed the graveyard quest and passed camp/graveyard controller waypoint
+roundtrips and reloads. Graveyard ground-loot pickup, crypt/finale and remaining
+waypoint coverage are still open. Resume the newest saves below.
 
 Evaluated public runtime:
 `8c25b2f405a918d2960a7f38f42c6c0e22e0990d`. Exact CI39913610805 succeeded;
@@ -20,7 +19,83 @@ the public manifest and all 26 application files were independently checked
 against its sealed artifact. All 26 application hashes equal the Full-accepted
 D14 runtime `80871d0d869c77ff9b1062b928233e9e4a153ae6`.
 
-## Q1-B–E continuation checkpoint — 2026-10-23
+## Q1 graveyard earned continuation — 2026-10-23
+
+Reviewed local evidence commit `2086820`. All three Stonebound input saves
+matched the historical Stonebound SHA256 values before restoration. Actual earned saves were
+restored verbatim; no fixtures, artificial progression, difficulty, production
+code, assets or regression tests changed. Public runtime remains the previously
+verified `904dfa399ce3d55a855112835111cef8bbd34c4d`; no deployment was triggered.
+
+All three defeated the actual 360-HP **Cairnwarden Rhusk3050** using ordinary
+held mouse attacks, active normal AI and genuine incoming/outgoing damage.
+Both phases were observed; completion/zero boss HP and the persisted death
+ledger were verified. Each earned160 XP, providing the second recorded
+Names Beneath the Ash kill. No extra graveyard kill was fabricated. All opened
+actual cache50204, receiving28 gold and the genuine cache roll. Each walked to
+the graveyard entrance waypoint, attuned it, travelled to Ashen Refuge, spoke
+to Orren and claimed the legitimate150 XP/40 gold quest reward exactly once.
+Quest transition active → ready → claimed and save/reload passed for all3.
+
+| Class    | Level / XP | HP boss victory | HP quest claim | Gold |
+| -------- | ---------- | --------------- | -------------- | ---- |
+| Warrior  | 3 / 500    | 142 /325        | 88 /325        | 86   |
+| Sorcerer | 3 / 525    | 220 /325        | 149 /325       | 86   |
+| Ranger   | 3 / 525    | 226 /325        | 165 /325       | 86   |
+
+All retain original equipped Trail Boots `l3-51550002-1`, five allocated
+Vitality and their original learned primary rank. Level3 awards remain unspent:
+five attribute points and one skill point per class. Warrior picked up its
+earned Stonebound Iron Cap `l8-2a-3`; Sorcerer/Ranger retain that item on the
+graveyard ground. **Loot pickup is not complete:** all3 also retain cache50204's
+unidentified Warded Bark Guard `l8-7aa676b-0` on the graveyard ground at(7,7.5).
+These identities/positions remain in the actual saves; no item was lost or
+regenerated. Do not claim full graveyard reward collection before picking up
+the preserved drops. Cairnwarden's roll did not add another dropped item.
+
+Three additional focused virtual-controller cases travelled camp → graveyard
+→ camp using Start menu/D-pad/A selection and confirmation/B close. Both
+endpoints remained unlocked through save/reload. Character/equipment, XP,
+quest/container state, all area seeds/layout fingerprints/death ledgers and
+item ownership were checked unchanged across travel. Discovery expands normally.
+Only camp/graveyard are unlocked; forest/crypt attunement remains open.
+This is browser API emulation, not physical-controller verification.
+
+HP after each explicit reload follows the existing300-current-HP policy;
+these are real persisted campaign legs, not uninterrupted-health or matched
+class-balance evidence. All3 remain max325 HP. Screenshots of phases/victories
+and the reloaded camp were reviewed. No gameplay defect was established here.
+The prior Sundering Fan / Iron Fan feedback mismatch remains a **Q2 candidate**;
+no nonblocking presentation repair was started.
+
+Driver-only failure: sandboxed Chromium failed Mach-port initialization before
+any game loaded. Retained `sandbox-launch-results.json` and traces are not green
+evidence. The approved outside-sandbox run passed3/3 graveyard cases in2.3m;
+controller waypoint cases passed3/3 in32.8s. No tactical-player AI was added.
+Raw scripts/results/screenshots/saves and machine checkpoint are outside Git at
+`/private/tmp/hollowbane-q1-completion/`. No ordinary CI inventory was expanded.
+
+### Current continuation saves — do not replay completed encounters
+
+All files below are under `/private/tmp/hollowbane-q1-completion/`:
+
+- Warrior latest `warrior-graveyard-waypoint-verified.save` SHA256: `a09509d573ecdf23e34242e3f728d67442938716cc577af6cc6698610a8f9e93`.
+  Boss checkpoint `warrior-cairnwarden-defeated.save` SHA256: `392fc304c5ca4a2ae7b97a2567c667af59ecb1e582cc3b5ac5da18ef212ace64`.
+- Sorcerer latest `sorcerer-graveyard-waypoint-verified.save` SHA256: `9d52c864d74eb9eb895a6690edf0af0e4068371e58357e5e8cbbb7dba010e498`.
+  Boss checkpoint `sorcerer-cairnwarden-defeated.save` SHA256: `ddc168af7a9c81e27d1d3334b025fd6f6416475c4cca1851aa27def02ec38659`.
+- Ranger latest `ranger-graveyard-waypoint-verified.save` SHA256: `5459028c7abc6992915750de70448ad3d60fa7a1dc5f6366b9b0c5a61bf03184`.
+  Boss checkpoint `ranger-cairnwarden-defeated.save` SHA256: `0cca07833d9ea48671066fc87cabff8397ba799a8990de37419002b8a92ecb82`.
+
+Latest checkpoints are at Ashen Refuge after quest claim, a controller waypoint
+roundtrip and successful reload. Resume **CLASS-graveyard-waypoint-verified.save**,
+collect the preserved graveyard items, spend/equip only earned resources as
+appropriate, accept **The Light Below**, and continue into Ancient Crypt.
+The crypt objectives/mandatory encounters, beacon/return/claim, finale
+acceptance/Sevra phases/final return/reward, forest/crypt waypoints and late/permanent
+save coverage remain unverified in this actual lineage. Q1 remains incomplete;
+stop at this safe session boundary. No Q2/Q3 or Act2.
+
+## Historical Q1-B–E continuation checkpoint — 2026-10-23
 
 Reconfirmed public `904dfa399ce3d55a855112835111cef8bbd34c4d` against its sealed
 manifest and all26 hosted application files. Its successful CI39948803361 /

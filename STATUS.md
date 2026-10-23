@@ -1,3 +1,10 @@
+## Q1 graveyard checkpoint — Cairnwarden/quest complete; crypt/finale pending (2026-10-23)
+
+- Reviewed2086820 and independently checksum-verified all3 original Stonebound saves. Restored actual characters; no progression construction or production/difficulty/asset changes and no deployment. Unrelated local edits preserved.
+- All3 defeated360-HP Cairnwarden3050 through both phases with normal AI/real damage;160 earned XP each. Opened50204, returned via newly attuned graveyard waypoint and claimed Names Beneath the Ash150 XP/40 gold. Warrior level3/500 XP, Sorcerer/Ranger3/525; all86 gold/original boots/rank1. Victory HP142/220/226; quest-claim HP88/149/165. Reload uses existing300/325 restart policy.
+-3/3 actual graveyard cases and3/3 controller camp↔graveyard/reload cases pass; seeds/layouts/deaths/items/quests/progression preserved. Screenshots reviewed. Sandbox Chromium startup failure retained separately; no gameplay defect established. Sundering Fan/Iron Fan mismatch stays Q2 candidate; Q2/Q3 not started.
+- Resume only /private/tmp/hollowbane-q1-completion/CLASS-graveyard-waypoint-verified.save; exact SHA256/boss saves/state docs/quality/act1-q1.md and checkpoint.json. Ground loot still needs pickup: cache50204 Bark Guard all3; Stonebound Iron Cap Sorcerer/Ranger. Then earned upgrades/The Light Below acceptance, actual crypt/beacon/return/claim, finale acceptance/Sevra/return/reward. Forest/crypt waypoints and permanent namespace remain. Q1 INCOMPLETE; safe session boundary, no completed gameplay replay.
+
 ## Q1 continuation — earned skills/Stonebound checkpoint; Q1-C/D/E remain open (2026-10-23)
 
 - Current user continuation stops at Q1 quality review only; do not start Q2/Q3 or Act2. Original camp-upgraded saves/checksums were available and preserved. Public904dfa399ce3d55a855112835111cef8bbd34c4d and all26 sealed files independently reverified. No production/CI/asset change and no new deployment for this evidence-only continuation.
