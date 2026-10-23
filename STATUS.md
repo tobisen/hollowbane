@@ -1,3 +1,10 @@
+## Q2-A.1 fullscreen/right-click candidate — release pending (2026-10-23)
+
+- Previous Q2-A release5692f4e7dc4d6fb99fa2d50143b5bf7230cf4775 passed CI39968800858 attempt2, Pages/hosted; independently verified26 files and3 hosted class cases before implementation. Original formatting/navigation failures retained; unchanged isolated Cairnwarden passed and only failed CI jobs reran.
+- DBL-004/028: main-container fullscreen button/icons, native activation/state/error handling, Escape preserving dialog cancel, game-contained controller menu, scoped contextmenu cancellation including loot overlays and lifecycle cleanup/bfcache restore. Both FIT scenes use setGameSize to prevent confirmed buffer/display stretching. No simulation/save/balance/dependency change; Phaser4.2.1 preserved.
+- Local TypeScript/lint/format/build,6 resize/camera units,7 focused Chromium and3 existing cloister visual/viewport cases pass. Screenshots reviewed; no security bypass or physical evidence. Classifier dry-run requires Full for shared scene resize/new stylesheet; no local Full or CI-policy weakening.
+- Commit/push candidate, then require exact CI/Pages/artifact and hosted fullscreen/right-click smoke. Stop after Q2-A.1 verification; no Q2-B. Evidence/resume docs/quality/q2-a1.md. Unrelated local edits preserved.
+
 ## Q2-A class feedback candidate — release gate pending (2026-10-23)
 
 - User authorizes Q2-A–B/Q3-A–E sequentially through Q3 review; no Act2. Q1 is functionally verified with outstanding automated playthrough limitations and user-reported good gameplay. None of the three earned characters completed Act1; preserve their actual saves/evidence.

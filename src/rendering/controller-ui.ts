@@ -2,6 +2,7 @@ import { installCalibration } from "./controller-calibration";
 import { installControllerSettings } from "./controller-settings";
 import { contextPrompt } from "../simulation/prompts";
 import "./controller.css";
+import "./controller-ui-surface.css";
 import { controllerInput as hub } from "./controller-input";
 import type { Action } from "../simulation/actions";
 export function controllerPage(): void {
@@ -14,17 +15,22 @@ export function controllerPage(): void {
   document.documentElement.dataset.controllerReady = "true";
 }
 export function installControllerUI(): void {
+  const surface = document.querySelector<HTMLElement>(
+    "main.prototype,main.combat-arena",
+  );
+  const host = surface ?? document.body;
+  if (surface) installGameSurfaceLifecycle(surface);
   const widget = document.createElement("button");
   widget.id = "controller-open";
   widget.type = "button";
   widget.hidden = true;
   widget.textContent = "Controller menu · Menu / Options";
-  document.body.append(widget);
+  host.append(widget);
   const menu = document.createElement("dialog");
   menu.id = "controller-menu";
   menu.setAttribute("aria-labelledby", "controller-menu-title");
   menu.innerHTML = `<h2 id="controller-menu-title">Paused · Controller menu</h2><p id="controller-context">Choose a screen or resume gameplay.</p><div class="controller-menu-list"><button id="controller-resume">Resume</button><a href="?controller=1">Controller settings & calibration</a><button id="controller-movement">Movement controls</button><a href="./">Cloister</a><a href="?gallery=1">Art atelier</a><a href="?combat=1">Combat arena</a><a href="?engine=4">Phaser 4 observatory</a><a href="?engine=3">Phaser 3 observatory</a><a href="?monsters=1">Monster encounters</a><a href="?skills=1">Skill laboratory</a><a href="?polish=1">The Sable Court</a><a href="?loot=1">L1 world loot</a><a href="?inventory=1">L2 inventory & equipment</a><a href="?inventory=1&advanced=1">L3 advanced items</a><a href="?inventory=1&advanced=1&itemLab=1">L3 separate item laboratory</a></div><p id="controller-prompts">A / Cross: choose · B / Circle: back · D-pad: navigate</p>`;
-  document.body.append(menu);
+  host.append(menu);
   const world = () =>
     document.querySelector<HTMLElement>("#world,#combat-world");
   const close = () => {
@@ -306,4 +312,132 @@ export function installControllerUI(): void {
     requestAnimationFrame(loop);
   };
   requestAnimationFrame(loop);
+}
+
+/** Page-owned UI: release listeners on navigation and remount on bfcache restore. */
+function installGameSurfaceLifecycle(root: HTMLElement): void {
+  let dispose = mountGameSurface(root);
+  const show = (event: PageTransitionEvent) => {
+    if (event.persisted) dispose = mountGameSurface(root);
+  };
+  const hide = (event: PageTransitionEvent) => {
+    dispose();
+    if (!event.persisted) {
+      window.removeEventListener("pageshow", show);
+      window.removeEventListener("pagehide", hide);
+    }
+  };
+  window.addEventListener("pageshow", show);
+  window.addEventListener("pagehide", hide);
+}
+
+function mountGameSurface(root: HTMLElement): () => void {
+  const listeners = new AbortController();
+  const controls = document.createElement("div");
+  controls.className = "game-surface-controls";
+  controls.innerHTML = `<p id="fullscreen-status" role="status"></p><button id="game-fullscreen" type="button" aria-label="Enter fullscreen" aria-pressed="false"><svg data-fullscreen-icon="enter" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10V4h6m4 0h6v6m0 4v6h-6m-4 0H4v-6"/></svg><svg data-fullscreen-icon="exit" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M3 21l7-7m-6 0h6v6M21 3l-7 7m0-6v6h6"/></svg></button>`;
+  root.classList.add("game-surface");
+  root.append(controls);
+  const button = controls.querySelector<HTMLButtonElement>("button")!;
+  const status = controls.querySelector<HTMLElement>("[role=status]")!;
+  let pending = false;
+  let wasFullscreen = document.fullscreenElement === root;
+  const supported = () =>
+    Boolean(
+      document.fullscreenEnabled &&
+      typeof root.requestFullscreen === "function" &&
+      typeof document.exitFullscreen === "function",
+    );
+  const sync = () => {
+    const active = document.fullscreenElement === root;
+    const label = active ? "Exit fullscreen" : "Enter fullscreen";
+    button.setAttribute("aria-label", label);
+    button.setAttribute("aria-pressed", String(active));
+    button.title = supported()
+      ? label
+      : "Fullscreen is unavailable in this browser";
+    button.disabled = pending || !supported();
+    controls
+      .querySelector<SVGElement>('[data-fullscreen-icon="enter"]')!
+      .toggleAttribute("hidden", active);
+    controls
+      .querySelector<SVGElement>('[data-fullscreen-icon="exit"]')!
+      .toggleAttribute("hidden", !active);
+  };
+  const failed = () => {
+    if (!listeners.signal.aborted) {
+      status.textContent =
+        "Fullscreen could not be changed. Try your browser’s fullscreen control.";
+      sync();
+    }
+  };
+  const changed = () => {
+    const active = document.fullscreenElement === root;
+    sync();
+    if (active || wasFullscreen) {
+      status.textContent = "";
+      // Reuse each renderer's existing resolution/camera/HUD resize path.
+      window.dispatchEvent(new Event("resize"));
+      if (!document.querySelector("dialog[open]"))
+        root
+          .querySelector<HTMLElement>("#world,#combat-world")
+          ?.focus({ preventScroll: true });
+    }
+    wasFullscreen = active;
+  };
+  button.addEventListener(
+    "click",
+    async () => {
+      if (pending || !supported()) return;
+      pending = true;
+      status.textContent = "";
+      sync();
+      try {
+        // Invoke the API in the click handler, before any asynchronous work.
+        if (document.fullscreenElement === root)
+          await document.exitFullscreen();
+        else await root.requestFullscreen();
+      } catch {
+        failed();
+      } finally {
+        pending = false;
+        if (!listeners.signal.aborted) sync();
+      }
+    },
+    { signal: listeners.signal },
+  );
+  // Native browsers normally consume Escape themselves. Also handle browsers
+  // that deliver it to the page, without consuming existing cancel mappings.
+  window.addEventListener(
+    "keydown",
+    (event) => {
+      if (
+        event.key === "Escape" &&
+        document.fullscreenElement === root &&
+        !document.querySelector("dialog[open]")
+      )
+        void document.exitFullscreen().catch(failed);
+    },
+    { signal: listeners.signal },
+  );
+  document.addEventListener("fullscreenchange", changed, {
+    signal: listeners.signal,
+  });
+  document.addEventListener("fullscreenerror", failed, {
+    signal: listeners.signal,
+  });
+  // Capture includes sibling loot labels/overlays even when they stop bubbling.
+  // Only cancel the browser menu; pointer, click and targeting events still flow.
+  root.addEventListener("contextmenu", (event) => event.preventDefault(), {
+    capture: true,
+    signal: listeners.signal,
+  });
+  sync();
+  return () => {
+    listeners.abort();
+    controls.remove();
+    root.classList.remove("game-surface");
+    if (document.fullscreenElement === root)
+      void document.exitFullscreen().catch(() => {});
+  };
 }

@@ -115,7 +115,7 @@ export function startPrototype(): Phaser.Game {
       );
       const previousRatio = this.resolutionRatio;
       this.resolutionRatio = size.ratio;
-      this.scale.resize(size.x, size.y);
+      this.scale.setGameSize(size.x, size.y);
       if (this.cameras?.main)
         this.cameras.main.setZoom(
           (this.cameras.main.zoom * this.resolutionRatio) / previousRatio,

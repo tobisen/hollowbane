@@ -1,0 +1,69 @@
+.game-surface:fullscreen {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0c1217;
+}
+.game-surface-controls {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  z-index: 20001;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+#game-fullscreen {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 1px solid #8f815e;
+  background: #111c24ed;
+  color: #e6d3aa;
+  cursor: pointer;
+}
+#game-fullscreen:hover,
+#game-fullscreen:focus-visible {
+  border-color: #ecd4a1;
+  outline: 2px solid #ecd4a1;
+  outline-offset: 2px;
+}
+#game-fullscreen:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+#game-fullscreen svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+#game-fullscreen svg[hidden] {
+  display: none;
+}
+#fullscreen-status {
+  margin: 0;
+  max-width: min(280px, calc(100vw - 90px));
+  padding: 10px;
+  background: #111c24;
+  color: #eee5d2;
+  font: 12px/1.5 system-ui;
+}
+#fullscreen-status:empty {
+  display: none;
+}
+/* Reserve the control's corner without changing game framing or HUD size. */
+.game-surface.combat-arena .arena-panel {
+  top: 72px;
+}
+.game-surface.prototype .world-header {
+  padding-right: 88px;
+}
+.game-surface .world-developer {
+  right: 76px !important;
+  max-width: calc(100vw - 100px);
+}

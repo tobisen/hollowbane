@@ -65,3 +65,10 @@ for cone/chain effects, and each skill's existing authored palette for bolts.
 Ranger physical shots have a narrower silhouette than fire lances. No new
 raster/audio assets, downloads or dependencies; existing bounded effect limits
 and provisional animation/art status remain. DBL-042/057 scoped quality slice.
+
+## Q2-A.1 fullscreen control
+
+Two original procedural SVG line icons (enter/exit fullscreen) and scoped
+stone/bronze control styling live in controller-ui.ts/controller-ui-surface.css.
+No third-party glyphs, fonts, raster/audio downloads or dependencies. Existing
+character/monster art and animation limitations remain unchanged. DBL-004/028.

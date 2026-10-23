@@ -587,7 +587,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         { x: innerWidth, y: innerHeight },
         this.balancedDetail,
       );
-      this.scale.resize(size.x, size.y);
+      this.scale.setGameSize(size.x, size.y);
       const framing = arenaView(
         { x: innerWidth, y: innerHeight },
         polish
