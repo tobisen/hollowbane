@@ -25,6 +25,11 @@ import {
   newCampConversations,
 } from "./camp-dialogue";
 import { discoveryCell, revealDiscovery } from "./world-discovery";
+import {
+  newWaypoints,
+  nearWaypoint,
+  waypointAreaAvailable,
+} from "./world-waypoint-state";
 import { planWorldContainers, openWorldContainer } from "./world-containers";
 import type { ItemContent } from "./item-content";
 import { configureWorldRewards } from "./world-rewards";
@@ -434,6 +439,38 @@ export class WorldSession {
   }
   get contentVersion(): number {
     return this.snapshot.contentVersion;
+  }
+  get waypoints() {
+    const state = this.snapshot.waypoints ?? newWaypoints();
+    return { ...state, unlocked: [...state.unlocked] };
+  }
+  attuneWaypoint(
+    position: WorldPoint,
+    alive: boolean,
+    idle: boolean,
+    safe: boolean,
+  ): string {
+    const area = this.travel.state.area,
+      state = this.waypoints;
+    if (
+      !alive ||
+      !idle ||
+      !safe ||
+      !nearWaypoint(this.travel.layout, position) ||
+      !waypointAreaAvailable(area, this.contentVersion)
+    )
+      return "Approach the waypoint while clear of enemies and projectiles.";
+    if (state.unlocked.includes(area))
+      return "This waypoint is already attuned.";
+    if (state.revision >= Number.MAX_SAFE_INTEGER)
+      return "Waypoint revision limit reached.";
+    this.reveal(this.travel.layout.spawn);
+    this.snapshot.waypoints = {
+      version: 1,
+      revision: state.revision + 1,
+      unlocked: [...state.unlocked, area],
+    };
+    return "Waypoint attuned. This destination is now available.";
   }
   capture(position: WorldPoint, loot: LootWorld): ExplorationSnapshot {
     if (!this.travel.setPosition(position))

@@ -1,0 +1,43 @@
+#world-waypoints {
+  width: min(32rem, calc(100vw - 3rem));
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background: #111b1e;
+  color: #ead8ad;
+  border: 1px solid #9e8050;
+  font:
+    1rem/1.5 Georgia,
+    serif;
+}
+#world-waypoints::backdrop {
+  background: #05090dcc;
+}
+#world-waypoints button {
+  min-height: 2.75rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #817451;
+  border-radius: 3px;
+  background: #243238;
+  color: #f0dfb9;
+  font: inherit;
+  cursor: pointer;
+}
+#world-waypoints button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+#world-waypoints button:focus-visible {
+  outline: 3px solid #e7c36e;
+  outline-offset: 2px;
+}
+#waypoint-destinations {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+#waypoint-feedback {
+  min-height: 1.5em;
+  color: #f5d487;
+}

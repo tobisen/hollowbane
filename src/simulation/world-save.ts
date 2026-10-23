@@ -13,6 +13,12 @@ import {
 } from "./camp-merchant-state";
 import { validateCampStash, type CampStashState } from "./camp-stash-state";
 import {
+  validateWaypoints,
+  waypointAreaAvailable,
+  type WaypointState,
+} from "./world-waypoint-state";
+import { discoveryCell } from "./world-discovery";
+import {
   validateCampConversations,
   type CampConversationState,
 } from "./camp-dialogue";
@@ -26,6 +32,7 @@ export interface ExplorationSnapshot {
   /** Absent in historical snapshots; finite merchant ledger starts on first trade. */
   merchant?: MerchantState;
   stash?: CampStashState;
+  waypoints?: WaypointState;
   quests?: QuestState;
   dialogue?: CampConversationState;
   expedition?: ExpeditionState | LegacyExpeditionState;
@@ -101,6 +108,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
     ...(w.version === 6 ? ["quests"] : []),
     ...(w.version === 6 && Object.hasOwn(w, "merchant") ? ["merchant"] : []),
     ...(w.version === 6 && Object.hasOwn(w, "stash") ? ["stash"] : []),
+    ...(w.version === 6 && Object.hasOwn(w, "waypoints") ? ["waypoints"] : []),
   ]);
   if (
     (w.version !== 1 &&
@@ -113,6 +121,9 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   )
     throw Error("Unsupported exploration version");
   const contentVersion = w.contentVersion as number;
+  const waypoints = Object.hasOwn(w, "waypoints")
+    ? validateWaypoints(w.waypoints)
+    : undefined;
   const seed = integer(w.seed, 0, 0xffffffff),
     current = area(w.area),
     position = point(w.position);
@@ -129,6 +140,15 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   const visited = w.visited.map(area);
   if (new Set(visited).size !== visited.length || !visited.includes(current))
     throw Error("Invalid exploration discovery");
+  if (
+    waypoints?.unlocked.some(
+      (id) =>
+        !visited.includes(id) || !waypointAreaAvailable(id, contentVersion),
+    )
+  )
+    throw Error(
+      "Waypoint destination is undiscovered or unavailable; original retained",
+    );
   if (!Array.isArray(w.areas) || w.areas.length !== 4)
     throw Error("Invalid exploration areas");
   const areas = w.areas.map((value) => {
@@ -183,6 +203,11 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       discovery = { version: 1, fingerprint, cells };
     }
     const map = layout.map;
+    if (
+      waypoints?.unlocked.includes(id) &&
+      !discovery?.cells.includes(discoveryCell(map.terrain, layout.spawn))
+    )
+      throw Error("Waypoint discovery evidence missing; original retained");
     const drops = a.drops.map((value) => {
       const d = record(value);
       keys(d, ["item", "position", "tick", "source"]);
@@ -343,6 +368,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       ? { merchant: validateMerchantState(w.merchant) }
       : {}),
     ...(Object.hasOwn(w, "stash") ? { stash: validateCampStash(w.stash) } : {}),
+    ...(waypoints ? { waypoints } : {}),
     ...(quests ? { quests } : {}),
     ...(dialogue ? { dialogue } : {}),
     ...(expedition ? { expedition } : {}),

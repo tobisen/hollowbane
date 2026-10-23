@@ -19,6 +19,11 @@ export const coreUnits = [
   "tests/ci-policy.test.ts",
 ];
 export const groups = {
+  waypoint: {
+    match: /(?:world-waypoint|overnight-d11)/,
+    unit: /(?:overnight-d11|world-save|world-travel|world-discovery|inventory-save).*\.test\.ts$/,
+    browser: ["overnight-d11.spec.ts"],
+  },
   stash: {
     match: /(?:camp-stash|overnight-d10)/,
     unit: /(?:overnight-d10|inventory|world-save).*\.test\.ts$/,

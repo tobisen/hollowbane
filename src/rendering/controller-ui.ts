@@ -52,6 +52,15 @@ export function installControllerUI(): void {
     close();
     window.dispatchEvent(new Event("hollowbane-journal-toggle"));
   };
+  const waypoints = document.createElement("button");
+  waypoints.id = "controller-waypoints";
+  waypoints.textContent = "Waypoints";
+  waypoints.hidden = true;
+  journal.after(waypoints);
+  waypoints.onclick = () => {
+    close();
+    window.dispatchEvent(new Event("hollowbane-waypoints-toggle"));
+  };
   menu.querySelector<HTMLButtonElement>("#controller-movement")!.onclick =
     () => {
       close();
@@ -262,6 +271,7 @@ export function installControllerUI(): void {
     if (now - refreshedAt > 100) {
       refreshedAt = now;
       journal.hidden = !document.querySelector("#quest-journal-open");
+      waypoints.hidden = !document.querySelector("#world-waypoints-open");
       widget.textContent =
         hub.apiStatus === "blocked" || hub.apiStatus === "unavailable"
           ? "Controller access unavailable · Settings"

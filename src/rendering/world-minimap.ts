@@ -30,7 +30,10 @@ export class WorldMinimap {
     event.preventDefault();
     this.toggle();
   };
-  constructor(private root: HTMLElement) {
+  constructor(
+    private root: HTMLElement,
+    openWaypoints?: () => void,
+  ) {
     this.panel.className = "world-minimap";
     this.panel.setAttribute("aria-label", "Exploration map");
     this.panel.style.cssText =
@@ -54,6 +57,15 @@ export class WorldMinimap {
     viewport.append(this.canvas, this.marker);
     this.body.append(viewport, this.label);
     this.panel.append(this.button, this.body);
+    if (openWaypoints) {
+      const waypoints = document.createElement("button");
+      waypoints.type = "button";
+      waypoints.id = "world-waypoints-open";
+      waypoints.textContent = "Waypoints · N";
+      waypoints.style.pointerEvents = "auto";
+      waypoints.onclick = openWaypoints;
+      this.button.after(waypoints);
+    }
     root.append(this.panel);
     window.addEventListener("hollowbane-map-toggle", this.mapEvent);
     window.addEventListener("keydown", this.keyEvent);
@@ -81,7 +93,7 @@ export class WorldMinimap {
       this.layout = layout;
       this.lastCell = -1;
     }
-    const key = `${layout.map.area}:${world.discoveryRevision}:${world.containerState.opened.length}:${world.expedition.stage}`;
+    const key = `${layout.map.area}:${world.discoveryRevision}:${world.containerState.opened.length}:${world.expedition.stage}:${world.waypoints.revision}`;
     const scale = Math.min(
       232 / (t.width + t.height),
       288 / (t.width + t.height),
@@ -118,15 +130,27 @@ export class WorldMinimap {
         ctx.lineWidth = 0.4;
         ctx.stroke();
       }
-      const mark = (p: WorldPoint, text: string, color: string) => {
+      const mark = (
+        p: WorldPoint,
+        text: string,
+        color: string,
+        offsetY = 0,
+      ) => {
         if (!known.has(discoveryCell(t, p))) return;
         const q = project(p);
         ctx.fillStyle = color;
         ctx.font = "10px serif";
         ctx.textAlign = "center";
-        ctx.fillText(text, q.x, q.y);
+        ctx.fillText(text, q.x, q.y + offsetY);
       };
-      if (!world.objectivePosition) mark(layout.spawn, "⌂", "#b6ceb9");
+      mark(
+        layout.spawn,
+        "◈ waypoint",
+        world.waypoints.unlocked.includes(layout.map.area)
+          ? "#efd17c"
+          : "#9ccfdf",
+        world.objectivePosition ? 12 : 0,
+      );
       for (const e of layout.exits) mark(e.trigger, `◇ ${e.id}`, "#9ccfbd");
       if (world.objectivePosition)
         mark(
@@ -141,7 +165,7 @@ export class WorldMinimap {
           c.rare ? "#ecd48c" : "#bdb294",
         );
       const name = areaDefinition(layout.map.area).name;
-      this.label.textContent = `${name} · ${known.size}/${t.cells.length} explored · ◆ you · ◇ exit · □ treasure${world.objectivePosition ? " · ◉ beacon" : ""}`;
+      this.label.textContent = `${name} · ${known.size}/${t.cells.length} explored · ◆ you · ◇ exit · □ treasure · ◈ waypoint${world.objectivePosition ? " · ◉ beacon" : ""}`;
       this.canvas.setAttribute("aria-label", this.label.textContent);
       this.canvas.dataset.explored = String(known.size);
       this.canvas.dataset.fingerprint = world.discovery.fingerprint;

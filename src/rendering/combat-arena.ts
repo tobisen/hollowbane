@@ -6,6 +6,12 @@ import { WorldMinimap } from "./world-minimap";
 import { CampDialogueView } from "./camp-dialogue";
 import { CampMerchantView } from "./camp-merchant";
 import { CampStashView } from "./camp-stash";
+import { WaypointView } from "./world-waypoints";
+import {
+  travelByWaypoint,
+  waypointDeparture,
+  type WaypointContext,
+} from "../simulation/world-waypoints";
 import { transferCampStash } from "../simulation/camp-stash";
 import { canTradeAtCamp, tradeWithMerchant } from "../simulation/camp-merchant";
 import { QuestJournal } from "./quest-journal";
@@ -139,6 +145,8 @@ declare global {
       fingerprint: string;
       routeToExit?: (id: string) => Point[];
       routeToObjective?: () => Point[];
+      routeToWaypoint?: () => Point[];
+      waypoint?: Point;
       routeToNpc?: (id: string) => Point[];
       routeToHostile?: (id: number) => Point[];
       containers?: { id: number; position: Point; opened: boolean }[];
@@ -361,6 +369,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private campDialogue: CampDialogueView | null = null;
     private campMerchant: CampMerchantView | null = null;
     private campStash: CampStashView | null = null;
+    private waypointView: WaypointView | null = null;
+    private waypointInk: Phaser.GameObjects.Graphics | null = null;
+    private waypointInkKey = "";
     private questJournal: QuestJournal | null = null;
     private environment: WorldEnvironment | null = null;
     private ink!: Phaser.GameObjects.Graphics;
@@ -536,6 +547,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
                     : undefined;
                 return npc ? routeInsideArea(npc.position) : [];
               },
+              waypoint: { ...travel.layout.spawn },
+              routeToWaypoint: () => routeInsideArea(travel!.layout.spawn),
               routeToHostile: (id: number) => {
                 const hostile = this.world.actors.find(
                   (a) => a.id === id && a.kind === "hostile" && a.hp > 0,
@@ -741,7 +754,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
       if (travel) {
-        this.minimap = new WorldMinimap(root);
+        this.minimap = new WorldMinimap(root, () => this.waypointView?.open());
+        this.waypointInk = this.add.graphics().setDepth(1);
         this.events.once("shutdown", () => this.minimap?.destroy());
       }
       if (travel)
@@ -825,6 +839,65 @@ export function startCombatArena(monsters = false): Phaser.Game {
           },
         );
         this.events.once("shutdown", () => this.campStash?.destroy());
+        const waypointContext = (): WaypointContext =>
+          waypointDeparture(
+            this.world,
+            Boolean(
+              this.abilities?.pending.length ||
+              this.abilities?.effects.bolts.length ||
+              this.abilities?.users.some((u) => u.cast),
+            ),
+          );
+        this.waypointView = new WaypointView(
+          root,
+          () => worldSession!,
+          waypointContext,
+          () =>
+            !!this.inventoryView?.worldReady &&
+            !this.paused &&
+            waypointContext().alive &&
+            waypointContext().idle &&
+            !this.abilities?.users.some((u) => u.cast),
+          () => {
+            this.keys.clear();
+            const p = this.world.actors[0]!;
+            p.controller = commandCombat(p.controller, { kind: "stop" });
+          },
+          () => {
+            const before = worldSession!.waypoints.revision,
+              c = waypointContext();
+            const message = worldSession!.attuneWaypoint(
+              this.world.actors[0]!.controller.walker.position,
+              c.alive,
+              c.idle,
+              c.safe,
+            );
+            if (worldSession!.waypoints.revision !== before)
+              this.inventoryView!.changed();
+            return message;
+          },
+          (intent) => {
+            const result = travelByWaypoint(
+              this.inventoryRuntime!.session(),
+              intent,
+              waypointContext(),
+            );
+            if (!result.ok) return { ok: false, message: result.reason };
+            // Keep the same self-applied effects as ordinary area transitions.
+            const retained = this.abilities?.effects.statuses.filter(
+              (s) => s.actor === 0 && s.source === 0,
+            );
+            this.inventoryRuntime!.restore(result.value);
+            if (this.abilities && retained)
+              this.abilities.effects.statuses = retained;
+            this.inventoryView!.changed();
+            return {
+              ok: true,
+              message: `Arrived at ${areaDefinition(intent.destination).name}. Saving progress…`,
+            };
+          },
+        );
+        this.events.once("shutdown", () => this.waypointView?.destroy());
         this.campDialogue = new CampDialogueView(
           this,
           root,
@@ -2008,6 +2081,29 @@ export function startCombatArena(monsters = false): Phaser.Game {
         this.questJournal?.update();
         this.campMerchant?.update();
         this.campStash?.update();
+        this.waypointView?.update();
+        const waypointKey = `${travel.state.seed}:${travel.state.area}:${worldSession!.contentVersion}:${worldSession!.waypoints.revision}`;
+        if (this.waypointInk && this.waypointInkKey !== waypointKey) {
+          this.waypointInkKey = waypointKey;
+          const p = onGround(travel.layout.spawn),
+            color = worldSession!.waypoints.unlocked.includes(travel.state.area)
+              ? 0xe0c878
+              : 0x86c5d9;
+          this.waypointInk
+            .clear()
+            .fillStyle(color, 0.1)
+            .fillEllipse(p.x, p.y, 68, 30)
+            .lineStyle(2, color, 0.9)
+            .strokeEllipse(p.x, p.y, 68, 30);
+          this.waypointInk
+            .beginPath()
+            .moveTo(p.x, p.y - 14)
+            .lineTo(p.x + 20, p.y)
+            .lineTo(p.x, p.y + 14)
+            .lineTo(p.x - 20, p.y)
+            .closePath()
+            .strokePath();
+        }
         this.campDialogue?.update(
           travel.state.area,
           player.controller.walker.position,
