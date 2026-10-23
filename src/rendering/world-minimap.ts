@@ -13,6 +13,7 @@ export class WorldMinimap {
   private lastCell = -1;
   private visible = true;
   private layout: WorldSession["travel"]["layout"] | undefined;
+  private waypointsEnabled: boolean;
   private mapEvent = (event: Event) => {
     event.preventDefault();
     if (!document.querySelector("dialog[open]")) this.toggle();
@@ -34,6 +35,7 @@ export class WorldMinimap {
     private root: HTMLElement,
     openWaypoints?: () => void,
   ) {
+    this.waypointsEnabled = Boolean(openWaypoints);
     this.panel.className = "world-minimap";
     this.panel.setAttribute("aria-label", "Exploration map");
     this.panel.style.cssText =
@@ -143,14 +145,15 @@ export class WorldMinimap {
         ctx.textAlign = "center";
         ctx.fillText(text, q.x, q.y + offsetY);
       };
-      mark(
-        layout.spawn,
-        "◈ waypoint",
-        world.waypoints.unlocked.includes(layout.map.area)
-          ? "#efd17c"
-          : "#9ccfdf",
-        world.objectivePosition ? 12 : 0,
-      );
+      if (this.waypointsEnabled)
+        mark(
+          layout.spawn,
+          "◈ waypoint",
+          world.waypoints.unlocked.includes(layout.map.area)
+            ? "#efd17c"
+            : "#9ccfdf",
+          world.objectivePosition ? 12 : 0,
+        );
       for (const e of layout.exits) mark(e.trigger, `◇ ${e.id}`, "#9ccfbd");
       if (world.objectivePosition)
         mark(
@@ -165,7 +168,7 @@ export class WorldMinimap {
           c.rare ? "#ecd48c" : "#bdb294",
         );
       const name = areaDefinition(layout.map.area).name;
-      this.label.textContent = `${name} · ${known.size}/${t.cells.length} explored · ◆ you · ◇ exit · □ treasure · ◈ waypoint${world.objectivePosition ? " · ◉ beacon" : ""}`;
+      this.label.textContent = `${name} · ${known.size}/${t.cells.length} explored · ◆ you · ◇ exit · □ treasure${this.waypointsEnabled ? " · ◈ waypoint" : ""}${world.objectivePosition ? " · ◉ beacon" : ""}`;
       this.canvas.setAttribute("aria-label", this.label.textContent);
       this.canvas.dataset.explored = String(known.size);
       this.canvas.dataset.fingerprint = world.discovery.fingerprint;

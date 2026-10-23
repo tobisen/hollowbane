@@ -321,8 +321,9 @@ export class InventoryView {
       this.socketHost = null;
       this.componentChoice = null;
       this.cancelDrag();
-      hub.blockGameplay = false;
-      root.querySelector<HTMLElement>("#combat-world")?.focus();
+      hub.blockGameplay = Boolean(document.querySelector("dialog[open]"));
+      if (!hub.blockGameplay)
+        root.querySelector<HTMLElement>("#combat-world")?.focus();
     });
     window.addEventListener("keydown", this.keydown);
     runtime.listeners.add(this.listen);
@@ -357,7 +358,14 @@ export class InventoryView {
     if (
       e.code === "KeyV" &&
       !e.repeat &&
-      !(e.target instanceof HTMLInputElement)
+      !e.ctrlKey &&
+      !e.metaKey &&
+      !e.altKey &&
+      !(
+        e.target instanceof HTMLElement &&
+        (e.target.isContentEditable ||
+          ["INPUT", "SELECT", "TEXTAREA"].includes(e.target.tagName))
+      )
     ) {
       e.preventDefault();
       this.toggle();
@@ -462,6 +470,7 @@ export class InventoryView {
   toggle(): void {
     if (this.dialog.open) this.close();
     else {
+      if (document.querySelector("dialog[open]")) return;
       this.render();
       hub.clear();
       this.dialog.showModal();

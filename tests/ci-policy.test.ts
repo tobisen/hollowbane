@@ -44,6 +44,9 @@ describe("risk-based release policy", () => {
     );
   });
   it("maps boss, quest and navigation to domain/browser contracts", () => {
+    expect(plan("src/rendering/inventory-view.ts").browser).toContain(
+      "overnight-d13.spec.ts",
+    );
     expect(plan("src/simulation/crypt-boss.ts").browser).toContain(
       "overnight-d12.spec.ts",
     );

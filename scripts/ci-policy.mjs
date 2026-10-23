@@ -19,6 +19,12 @@ export const coreUnits = [
   "tests/ci-policy.test.ts",
 ];
 export const groups = {
+  act1polish: {
+    match:
+      /(?:overnight-d13|boss-presentation|boss-view|world-minimap|inventory-view)/,
+    unit: /(?:overnight-d13|inventory-navigation|world-discovery|combat-audio).*\.test\.ts$/,
+    browser: ["overnight-d13.spec.ts"],
+  },
   balance: {
     match: /(?:overnight-d12|d12-balance|crypt-boss|class-abilities)/,
     unit: /(?:overnight-d12|overnight-d02|class-abilities|character-classes|progression-quality|world-rewards|boss).*\.test\.ts$/,

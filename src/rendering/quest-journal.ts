@@ -20,6 +20,7 @@ export class QuestJournal {
       id: string,
     ) => string,
     private stop: () => void,
+    available = true,
   ) {
     this.button.id = "quest-journal-open";
     this.button.textContent = "Quest journal · J";
@@ -28,7 +29,8 @@ export class QuestJournal {
     this.dialog.setAttribute("aria-labelledby", "quest-journal-title");
     this.dialog.innerHTML =
       '<h2 id="quest-journal-title">Quest journal</h2><p id="quest-tracked"></p><nav aria-label="Quest category and selection"><button id="quest-act1">Act 1</button><button id="quest-practice">Camp tasks</button><button id="quest-previous">Previous quest</button><button id="quest-next">Next quest</button></nav><h3 id="quest-title"></h3><p id="quest-description"></p><p id="quest-status"></p><ul id="quest-objectives"></ul><p id="quest-reward"></p><p id="quest-requires"></p><div id="quest-actions"></div><p id="quest-feedback" role="status"></p><button id="quest-journal-close">Close journal</button><p id="quest-help"></p>';
-    root.append(this.button, this.dialog);
+    if (available) root.append(this.button);
+    root.append(this.dialog);
     for (const category of ["act1", "practice"] as const)
       this.dialog.querySelector<HTMLButtonElement>(
         `#quest-${category}`,

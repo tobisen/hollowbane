@@ -754,8 +754,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
       this.ink = this.add.graphics().setDepth(2000);
       this.effect = this.add.graphics().setDepth(2001);
       if (travel) {
-        this.minimap = new WorldMinimap(root, () => this.waypointView?.open());
-        this.waypointInk = this.add.graphics().setDepth(1);
+        this.minimap = new WorldMinimap(
+          root,
+          inventory ? () => this.waypointView?.open() : undefined,
+        );
+        if (inventory) this.waypointInk = this.add.graphics().setDepth(1);
         this.events.once("shutdown", () => this.minimap?.destroy());
       }
       if (travel)
@@ -942,6 +945,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               { kind: "stop" },
             );
           },
+          inventory,
         );
         const collected = (event: Event) => {
           const id: unknown = (event as CustomEvent<unknown>).detail;

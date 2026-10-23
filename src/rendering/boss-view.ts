@@ -8,6 +8,7 @@ import type {
   BossTelegraph,
 } from "../simulation/boss";
 import "./boss.css";
+import { bossPresentation } from "./boss-presentation";
 export interface BossEncounterView {
   definition: BossDefinition;
   state: BossState;
@@ -53,11 +54,21 @@ function outline(t: BossTelegraph): { x: number; y: number }[] {
 export class BossView {
   private element = document.createElement("section");
   private graphics: Phaser.GameObjects.Graphics;
+  private name: HTMLElement;
+  private health: HTMLElement;
+  private phase: HTMLElement;
+  private warning: HTMLElement;
+  private progress: HTMLProgressElement;
   constructor(scene: Phaser.Scene, root: HTMLElement) {
     this.element.id = "boss-hud";
     this.element.hidden = true;
     this.element.innerHTML =
-      '<strong id="boss-name"></strong><progress id="boss-health" aria-label="Boss health"></progress><span id="boss-phase"></span><span id="boss-warning" role="status"></span>';
+      '<strong><span id="boss-name"></span> <span id="boss-vitality"></span></strong><progress id="boss-health" aria-label="Boss health"></progress><span id="boss-phase"></span><span id="boss-warning" role="status"></span>';
+    this.name = this.element.querySelector("#boss-name")!;
+    this.health = this.element.querySelector("#boss-vitality")!;
+    this.phase = this.element.querySelector("#boss-phase")!;
+    this.warning = this.element.querySelector("#boss-warning")!;
+    this.progress = this.element.querySelector("progress")!;
     root.append(this.element);
     this.graphics = scene.add.graphics().setDepth(-5);
     scene.events.once("shutdown", () => {
@@ -69,10 +80,11 @@ export class BossView {
     this.graphics.clear();
     const actor =
       encounter && world.actors.find((a) => a.id === encounter.state.actor);
-    this.element.hidden =
+    const hidden =
       !actor ||
       !encounter ||
       (!encounter.state.engaged && !encounter.state.complete);
+    if (this.element.hidden !== hidden) this.element.hidden = hidden;
     if (!actor || !encounter) {
       window.hollowbaneBoss = null;
       return;
@@ -84,23 +96,17 @@ export class BossView {
       health: actor.hp,
       maxHealth: actor.maxHp,
     };
-    this.element.querySelector("#boss-name")!.textContent = definition.name;
-    const progress =
-      this.element.querySelector<HTMLProgressElement>("progress")!;
-    progress.max = actor.maxHp;
-    progress.value = actor.hp;
-    this.element.querySelector("#boss-phase")!.textContent = state.complete
-      ? "Encounter complete"
-      : `Phase ${state.phase + 1} · ${definition.phases[state.phase]!.name}`;
+    const presentation = bossPresentation(definition, state, actor, world.tick);
+    for (const [element, value] of [
+      [this.name, presentation.name],
+      [this.health, presentation.health],
+      [this.phase, presentation.phase],
+      [this.warning, presentation.warning],
+    ] as const)
+      if (element.textContent !== value) element.textContent = value;
+    if (this.progress.max !== actor.maxHp) this.progress.max = actor.maxHp;
+    if (this.progress.value !== actor.hp) this.progress.value = actor.hp;
     const telegraph = state.telegraph;
-    const warning = this.element.querySelector("#boss-warning")!;
-    warning.textContent = state.complete
-      ? "The binding is broken."
-      : world.tick < state.transitionUntil
-        ? "The stone shifts · prepare"
-        : telegraph && actor.controller.timeline.phase === "windup"
-          ? definition.attacks.find((a) => a.id === telegraph.attack)!.name
-          : "";
     if (
       telegraph &&
       ["windup", "active"].includes(actor.controller.timeline.phase)
