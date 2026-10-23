@@ -11,8 +11,9 @@ investigation; broader original requirements remain partial.
 now verified for all three classes. All three have also defeated Cairnwarden,
 claimed the graveyard quest and passed camp/graveyard controller waypoint
 roundtrips and reloads. Graveyard loot is collected/equipped; all three have
-entered the crypt, with partial earned progress below. Crypt completion/finale
-and remaining waypoint coverage are still open. Resume the newest saves below.
+entered the crypt. Sorcerer has claimed the crypt quest and attempted Sevra
+twice without victory; Warrior/Ranger have their kills/treasure but need the
+beacon. No Act1 completion. Resume the newest earned saves below.
 
 Evaluated public runtime:
 `8c25b2f405a918d2960a7f38f42c6c0e22e0990d`. Exact CI39913610805 succeeded;
@@ -20,7 +21,107 @@ the public manifest and all 26 application files were independently checked
 against its sealed artifact. All 26 application hashes equal the Full-accepted
 D14 runtime `80871d0d869c77ff9b1062b928233e9e4a153ae6`.
 
-## Q1 crypt attempt and safe session checkpoint — 2026-10-23
+## Q1 Sorcerer finale attempts and remaining crypt checkpoint — 2026-10-23
+
+Reviewed local evidence `bfe7e6c`; independently verified all three recorded
+crypt input SHA256 values before restoration. Sorcerer was evaluated first.
+No original checkpoint was overwritten; new saves use exclusive creation.
+No production/difficulty/HP/AI/content/CI change or deployment. Public release
+remains previously verified904dfa3. All changes here are scoped DBL-220 evidence.
+
+### Sorcerer: crypt claimed, finale attempted twice, not completed
+
+From the ready actual save, walked to the anchor and observed “Waypoint within
+reach. Choose an attuned destination.” Attuned Ancient Crypt, travelled to camp,
+reported to Edda and claimed The Light Below (+220XP/+60gold), accepted
+A Lantern Unbound, then travelled back to the crypt. Actual camp acceptance
+and pre-Sevra checkpoints remain preserved. This focused case passed10.8s.
+Level3/1115XP/310gold; original boots, Iron Cap, Bark Guard and Ember Lance rank1
+remain. The earlier blocked attunement did not reproduce as a defect.
+
+First genuine attempt crossed the active crypt, reached the boss with36HP,
+cast Ember Lance from idle, and died after97 total recorded boss damage.
+Second genuine attempt restored the earned living approach checkpoint under
+the documented restart policy, moved normally until the surviving encounter
+reactivated, reapproached with154HP, cast Ember Lance again and died after161
+recorded boss damage. Both have actual actor0 start/effect/projectile-hit events
+and positive basic damage against4090; monster casts are excluded. Phase0
+seal-rake/cold-edict telegraphs and interrupts were observed. Death resets
+living Sevra to840HP, so terminal840 is not evidence of zero inflicted damage.
+Neither attempt reached phase2 or boss death; no kill XP, finale reward or
+Act1 completion is claimed. Both failed combat reports remain failures.
+
+A separate retry stopped before combat because its driver assumed the living
+boss existed immediately after a nearby reload. Source confirms the existing
+nine-unit spawn safety radius defers surviving packs, including Sevra. Normal
+movement away reactivated the same unmodified840HP encounter. This failure is
+not an extra combat attempt or proof of a defeated boss. Initial temporary
+syntax discovery failure was also corrected before browser execution.
+
+### Warrior and Ranger: kills and treasure saved, beacon pending
+
+Warrior legitimately killed4051 (+60XP;4042 already saved), opened actual50305
+(+44gold), and subsequently picked up/equipped its earned Ash Blade `l8-2a-5`.
+Two normal-input walks toward the beacon ended in actual player deaths under
+active crypt-pack pressure; no further objective was forced. Latest living
+save: level3/620XP/130gold, both required kills and treasure complete.
+
+Ranger collected/equipped its saved Ash Blade `l8-2a-5`, opened50304 (+46gold),
+and collected the real cache Copper Band `l8-38eb5d7c-0`, now in the backpack.
+Both required kills remain4042/4043. First beacon navigation stalled alive at
+248HP with a repeated simulation tick; it is an unresolved driver/runtime
+observation, not a proven game defect. The continuation then picked up the
+band but incorrectly tried to select an already equipped blade in the backpack.
+That selector failed; the actual living state including the new band was saved.
+Latest living save: level3/635XP/132gold. Beacon, Edda return/claim, finale
+acceptance and boss attempt are still pending for both Warrior/Ranger. Do not
+call them failed Sevra fights or replay their saved kills/chests.
+
+### Quality assessment and verification
+
+- Confirmed gameplay defects: none newly established. The earlier skill-feedback
+  naming mismatch remains a Q2 candidate and is not repaired here.
+- Difficulty/balance observations: normal crypt pack pressure repeatedly killed
+  a walking/held-attack driver, including Sorcerer en route/near Sevra. This is
+  not a matched human class-balance study or proof that the boss is unbeatable.
+- Driver limits: route-only navigation ignores remaining threats; a single cast
+  then stationary basic attacks does not supply authored counterplay. Nearby
+  reload activation, an equipped-item selector and one stalled live navigation
+  need correct handling. Stop escalating tactical automation; use bounded normal
+  skill-first pack clearing or manual play from these earned checkpoints.
+
+Original equipment/stash/quest claims and earned progression remain; Warrior
+and Ranger legitimately add their blades, Ranger its band. Three narrow final
+checkpoint reload cases passed3/3 in8.8s. Independent saved-domain comparisons
+confirm equipment/progression, quest/gold/stash/waypoint state and all area
+seeds/layout fingerprints/deaths/drop identities. Restored300/350HP/100mana
+follows the previously reviewed policy, not continuous survival. All three
+continuation screenshots were reviewed. No full regression or release needed.
+Raw scripts, failures, traces and prior/new earned saves are outside Git at
+`/private/tmp/hollowbane-q1-sevra/`, including `attempt2/` (pre-combat driver
+failure), `attempt3/` (second combat attempt), `crypt-resume/` and reload results.
+The initial one-class prep result and later two-class prep failures use the same
+report filename; final `prep-results.json` is the failed two-class report, not
+proof that all prep cases passed. Sorcerer's passing checkpoint/log is retained.
+
+### Exact continuation: stop at session boundary
+
+All latest files are under `/private/tmp/hollowbane-q1-sevra/`:
+
+- Sorcerer `sorcerer-continuation.save` SHA256 `8412c5e68e2d52874e00d2632e6d859d1b3430816635feb69c0e5fb9a4680ace`; level3/1115 XP, 310 gold; restored300/350HP,100mana.
+- Warrior `warrior-continuation.save` SHA256 `307f1affe22dba1f062a07c132405c02ba743f29effdf6bab48c06cd463c78c4`; level3/620 XP, 130 gold; restored300/350HP,100mana.
+- Ranger `ranger-continuation.save` SHA256 `fd900eedf30c97c317c94758f40f62210a77bf224034a63fbde40148b3b71f10`; level3/635 XP, 132 gold; restored300/350HP,100mana.
+
+Restore these newest real saves, not dead captures or earlier killed-hostile
+checkpoints. Sorcerer is at the saved living boss approach with finale active;
+its unpicked earlier Ash Blade remains in the crypt. Surviving nearby actors
+may be deferred until normal movement leaves the safety radius. Warrior/Ranger
+need beacon/quiet return/quest claim/finale acceptance before legitimate Sevra
+attempts. No character has completed Act1; no final reward identity exists yet.
+Q1 remains INCOMPLETE, not an approved gate. No Q2/Q3/Act2. Preserve all earlier
+lineage and do not repeat completed claims, kills, treasure or travel checks.
+
+## Historical Q1 crypt attempt and safe session checkpoint — 2026-10-23
 
 Reviewed local `2ad174a`; all three graveyard input saves matched their recorded
 SHA256 before restoration. No production code, difficulty, item generation,
