@@ -56,3 +56,12 @@ D07-B Cairnwarden Rhusk is an original Stonebound-related miniboss. Its enlarged
 ## D08-A crypt boss
 
 Sevra, the Vaultbound is an original crypt custodian. Original triangular cloak, surrounding arch and lantern core geometry establish a different silhouette from Rhusk; blue-white and amber phase palettes accompany explicit text. Source: src/rendering/combat-arena.ts. It reuses the original wanderer atlas, shared attack/hit/death transforms, projected danger shapes and synthesized combat audio. These are provisional creature art/animation/audio, not dedicated production sprite sheets or recordings. No external art, names, glyphs, fonts, textures or audio were imported. Record: `d08-sevra-silhouette` in docs/assets.json; mechanics/provenance: docs/overnight/d08.md.
+
+## Q2-A class feedback correction
+
+Original procedural code in `src/rendering/skill-visuals.ts` now uses the
+actor's class-derived range/shape for aim previews, the recorded release shape
+for cone/chain effects, and each skill's existing authored palette for bolts.
+Ranger physical shots have a narrower silhouette than fire lances. No new
+raster/audio assets, downloads or dependencies; existing bounded effect limits
+and provisional animation/art status remain. DBL-042/057 scoped quality slice.

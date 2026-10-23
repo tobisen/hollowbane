@@ -1,11 +1,7 @@
 import { SKILL_ICONS as ICONS } from "./skill-icons";
 import { skillBar } from "../simulation/skill-progression";
 import { SKILL_ACTIONS, SKILL_SLOTS } from "../simulation/skill-input";
-import {
-  activeSkill,
-  actorSkill,
-  type SkillRuntime,
-} from "../simulation/skills";
+import { actorSkill, type SkillRuntime } from "../simulation/skills";
 import { actionPrompt } from "../simulation/prompts";
 import type { ControllerSettings } from "../simulation/controller-settings";
 import type { GlyphFamily } from "../simulation/gamepad-profile";
@@ -116,7 +112,7 @@ export class PolishHUD {
     const t = a.controller.timeline;
     text(
       this.root.querySelector("#skill-resource")!,
-      `${u.cast ? activeSkill(r, u.cast.skill)!.name : "Ready"} · ${t.phase}${t.remaining ? ` · ${t.remaining} frames` : ""}`,
+      `${u.cast ? ((u.cast.definition ?? actorSkill(r, a.id, u.cast.skill))?.name ?? u.cast.skill) : "Ready"} · ${t.phase}${t.remaining ? ` · ${t.remaining} frames` : ""}`,
     );
     text(
       this.root.querySelector("#skill-prompts")!,

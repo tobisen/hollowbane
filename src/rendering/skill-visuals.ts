@@ -1,6 +1,6 @@
 import type Phaser from "phaser";
 import type { SkillRuntime } from "../simulation/skills";
-import { activeSkill } from "../simulation/skills";
+import { activeSkill, actorSkill } from "../simulation/skills";
 import {
   onGround,
   type Navigation,
@@ -71,7 +71,7 @@ export function drawSkillVisuals(
 ): SpellVisualStats {
   const tick = r.combat.tick,
     player = r.combat.actors[0]!,
-    s = activeSkill(r, selected)!,
+    s = actorSkill(r, player.id, selected),
     style = SPELL_STYLE[selected]!,
     origin = player.controller.walker.position,
     p = onGround(origin),
@@ -147,26 +147,29 @@ export function drawSkillVisuals(
       dx = v.x / n,
       dy = v.y / n,
       px = -dy,
-      py = dx;
-    g.fillStyle(0xb64d24, 0.45).fillTriangle(
-      q.x - dx * 30 + px * 5,
-      q.y - 24 - dy * 30 + py * 5,
+      py = dx,
+      palette = SPELL_STYLE[b.skill]!,
+      fire = b.element === "fire",
+      width = fire ? 5 : 2;
+    g.fillStyle(palette.color, 0.45).fillTriangle(
+      q.x - dx * 30 + px * width,
+      q.y - 24 - dy * 30 + py * width,
       q.x + dx * 7,
       q.y - 24 + dy * 7,
-      q.x - dx * 30 - px * 5,
-      q.y - 24 - dy * 30 - py * 5,
+      q.x - dx * 30 - px * width,
+      q.y - 24 - dy * 30 - py * width,
     );
-    g.fillStyle(0xf7a650, 0.9)
+    g.fillStyle(palette.color, 0.9)
       .fillTriangle(
-        q.x - dx * 19 + px * 4,
-        q.y - 24 - dy * 19 + py * 4,
+        q.x - dx * 19 + px * (fire ? 4 : 1),
+        q.y - 24 - dy * 19 + py * (fire ? 4 : 1),
         q.x + dx * 10,
         q.y - 24 + dy * 10,
-        q.x - dx * 19 - px * 4,
-        q.y - 24 - dy * 19 - py * 4,
+        q.x - dx * 19 - px * (fire ? 4 : 1),
+        q.y - 24 - dy * 19 - py * (fire ? 4 : 1),
       )
-      .fillStyle(0xffeab2, 1)
-      .fillCircle(q.x, q.y - 24, 3);
+      .fillStyle(palette.core, 1)
+      .fillCircle(q.x, q.y - 24, fire ? 3 : 2);
   }
   const events = r.effects.events
     .filter(
@@ -206,7 +209,7 @@ export function drawSkillVisuals(
           y - 12 * fade - 3,
         );
       }
-    } else if (e.skill === "storm-thread" && release && e.target !== null) {
+    } else if (e.shape === "chain" && release && e.target !== null) {
       const dx = end.x - q.x,
         dy = end.y - q.y,
         n = Math.hypot(dx, dy);
@@ -224,18 +227,19 @@ export function drawSkillVisuals(
         last = next;
       }
     } else if (e.skill === "iron-fan" && release) {
-      const def = activeSkill(r, e.skill)!;
-      polygon(
-        g,
-        conePoints(
-          e.from,
-          { x: e.to.x - e.from.x, y: e.to.y - e.from.y },
-          def.range,
-          def.radius,
-        ),
-        palette.color,
-        fade * 0.9,
-      );
+      const def = actorSkill(r, e.actor, e.skill) ?? activeSkill(r, e.skill)!;
+      if (e.shape === "cone")
+        polygon(
+          g,
+          conePoints(
+            e.from,
+            { x: e.to.x - e.from.x, y: e.to.y - e.from.y },
+            def.range,
+            def.radius,
+          ),
+          palette.color,
+          fade * 0.9,
+        );
       const v = worldToScreen({ x: e.to.x - e.from.x, y: e.to.y - e.from.y }),
         angle = Math.atan2(v.y, v.x);
       g.lineStyle(3, palette.core, fade)

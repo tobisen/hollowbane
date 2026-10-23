@@ -1972,7 +1972,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               }
               if (event.kind === "rejected") this.skillInputAt = null;
               document.querySelector("#skill-status")!.textContent =
-                `${SKILLS.find((s) => s.id === event.skill)?.name}: ${event.reason ?? event.kind}`;
+                `${actorSkill(this.abilities, event.actor, event.skill)?.name ?? this.abilities.definitions.find((s) => s.id === event.skill)?.name ?? event.skill}: ${event.reason ?? event.kind}`;
             }
           }
           if (worldSession?.consumeQuestDeaths(this.world))

@@ -55,6 +55,9 @@ for (const classId of ["warrior", "sorcerer", "ranger"] as const)
         ),
       )
       .toBe(true);
+    await expect(page.locator("#skill-status")).toContainText(
+      `${classId === "warrior" ? "Oath Echo" : classId === "sorcerer" ? "Rime Ring" : "Thorn Flight"}: effect`,
+    );
     if (classId === "warrior")
       await expect
         .poll(() =>
@@ -128,8 +131,20 @@ for (const classId of ["warrior", "sorcerer", "ranger"] as const)
         ),
       )
       .toBe(true);
+    const primaryName =
+      classId === "warrior"
+        ? "Sundering Fan"
+        : classId === "ranger"
+          ? "Briar Needle"
+          : "Ember Lance";
+    await expect(page.locator('[data-skill="0"]')).toContainText(primaryName);
+    await expect(page.locator("#skill-status")).toContainText(
+      `${primaryName}: effect`,
+    );
+    await page.screenshot({ path: `test-results/q2-a-${classId}.png` });
     if (classId === "warrior")
       await page.screenshot({ path: "test-results/class-warrior.png" });
+
     await expect
       .poll(() =>
         page.evaluate((skill) => {

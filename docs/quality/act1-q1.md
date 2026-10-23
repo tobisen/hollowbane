@@ -1,19 +1,21 @@
 # Act 1 gameplay quality — Q1 checkpoint
 
-Current continuation authorization: finish Q1-B–E from actual earned saves and
-stop at the Q1 quality gate. Q2/Q3 and Act 2 are excluded. The earlier broader
-quality mission remains historical context. This is a scoped DBL-005 / DBL-220
-investigation; broader original requirements remain partial.
+Current authorization (2026-10-23): Q1 is functionally verified with outstanding
+automated playthrough limitations. The user manually tested the published game
+and reports that gameplay feels good. This authorizes Q2-A through Q3-E in
+release-gated increments; see [quality delivery](q2-q3.md). Earlier stop notes
+below are historical. Act 2 remains excluded.
 
 ## Current result
 
-**Q1 is in progress. Q2 and Q3 have not started.** Q1-B learned-primary combat is
-now verified for all three classes. All three have also defeated Cairnwarden,
-claimed the graveyard quest and passed camp/graveyard controller waypoint
-roundtrips and reloads. Graveyard loot is collected/equipped; all three have
-entered the crypt. Sorcerer has claimed the crypt quest and attempted Sevra
-twice without victory; Warrior/Ranger have their kills/treasure but need the
-beacon. No Act1 completion. Resume the newest earned saves below.
+**Q1 functional verification is complete; genuine all-class campaign completion
+is not established.** Existing constructed D06/D08/crypt-boss fixtures passed
+26 cases, and D14 finale/return/reload passed six browser cases. These establish
+functional behavior, not an earned campaign completion or class-balance result.
+All three genuine characters remain level 3: Warrior 620 XP/130 gold, Ranger
+635 XP/132 gold, Sorcerer 1115 XP/310 gold. None defeated Sevra or completed
+Act 1. Their saves and all earlier failure/coverage records remain preserved.
+No further tactical playthrough automation is required for Q2/Q3.
 
 Evaluated public runtime:
 `8c25b2f405a918d2960a7f38f42c6c0e22e0990d`. Exact CI39913610805 succeeded;

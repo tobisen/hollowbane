@@ -1,3 +1,10 @@
+## Q2-A class feedback candidate — release gate pending (2026-10-23)
+
+- User authorizes Q2-A–B/Q3-A–E sequentially through Q3 review; no Act2. Q1 is functionally verified with outstanding automated playthrough limitations and user-reported good gameplay. None of the three earned characters completed Act1; preserve their actual saves/evidence.
+- DBL-042/057 scoped fixes: class-derived event/casting names, class-correct aim shapes/ranges/release effects, narrow Ranger projectiles in existing skill palettes. No balance/save/simulation/dependency change. Original procedural geometry provenance recorded; dedicated action/monster artwork/audio remains open.
+- Local20 focused units, TypeScript/scoped ESLint/format/build and3 existing all-class Chromium cases pass; screenshots reviewed. Initial sandbox preview port restriction is separate from passing browser evidence. No tactical automation expanded.
+- Commit/push this candidate; require policy-selected CI, Pages/exact-artifact hosted checks and relevant hosted class scenarios before Q2-B. Release status not yet verified. Resume docs/quality/q2-q3.md; unrelated local edits preserved. Q2-B/Q3 remain pending.
+
 ## Q1 functional review complete — local manual finale support ready (2026-10-23)
 
 - Reused existing constructed functional fixtures:26 deterministic D06/D08/crypt-boss cases pass32.74s;6 existing D14 browser finale/return/reload cases pass2.9m. Covers generated crypt reachability/objectives/beacon/prerequisites, phases/telegraphs/real damage/death, one-time rewards/campaign return/persistence. These are functional fixture results, never genuine Q1 character completion or balance evidence. Screenshots reviewed.
