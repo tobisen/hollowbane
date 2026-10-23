@@ -21,6 +21,78 @@ the public manifest and all 26 application files were independently checked
 against its sealed artifact. All 26 application hashes equal the Full-accepted
 D14 runtime `80871d0d869c77ff9b1062b928233e9e4a153ae6`.
 
+## Q1 functional review complete; manual finale ready — 2026-10-23
+
+Scope: functional verification and local manual support only. **Q1 genuine-character
+completion remains open. No class has defeated Sevra or completed Act1.**
+Original evidence14d5b95 and its three earned save SHA256 values were rechecked;
+no saved character data, difficulty, production source or public release changed.
+
+### Verified functional behavior — constructed fixtures only
+
+Reused26 existing deterministic tests in `overnight-d06.test.ts`,
+`overnight-d08.test.ts` and `crypt-boss.test.ts`: all pass32.74s. They exercise
+linked crypt objectives/beacon/quest prerequisites, generated navigation and
+reachable encounters/treasure/exits, NPC return requirements, finale unlock,
+all four telegraph/damage/escape rules, both attack pools/phase transition,
+reaction guard/resistances, genuine combat terminal death/XP, one-time boss
+roll and quest item/reward, campaign conclusion and validated persistence.
+Fixtures may establish preconditions and positions; these are **functional
+system tests, not uninterrupted earned-character gameplay or balance proof**.
+
+Reused the existing six D14 finale/return cases, unmodified, against the local
+runtime:6/6 pass2.9m. Each constructed class fixture uses actual browser input
+and normal boss combat through both phases/death, persists the kill, walks to
+its saved waypoint, returns to Edda, claims once and reloads completion. The
+Ranger return uses the existing virtual-controller menu. No economy/stash extra
+case, new tactical player, new full campaign automation, loot simulation, full
+regression, assertion weakening or duplicate functional coverage was added.
+Reviewed fixture victory/conclusion screenshots. Evidence:
+`/private/tmp/hollowbane-q1-functional-units.log` and
+`/private/tmp/hollowbane-q1-functional/browser-results.json` plus screenshots.
+
+### Manual support prepared and checked
+
+See [local manual guide](q1-manual.md). Launch from the repository root:
+
+```sh
+Q1_CLASS=sorcerer npx playwright test --config playwright.manual.config.ts
+```
+
+The launcher starts/reuses loopback Vite, opens headed Chromium and waits for
+the human. It never navigates/fights/spends points for the player. Three private
+per-class persistent profiles are prepared under `.local/q1-manual/CLASS/`.
+First import uses the existing Inventory file input and verifies the source
+checksum plus unchanged persistent domains. Subsequent launches resume that
+profile without reimporting. Unmarked existing profiles are rejected/retained.
+No private save is copied to public assets, committed, pushed or deployed.
+The normal permanent namespace remains separate and unverified.
+
+All3 existing UI imports passed with full persistent-state comparisons; originals
+remain byte-identical. Sorcerer additionally passed a clean server startup/profile
+resume check with **no reimport**. Launcher verification is headless setup/integrity
+verification, not human play or hardware evidence. Strict TypeScript and scoped
+ESLint pass. Manual launcher lives outside ordinary E2E/unit discovery and refuses
+CI; no extra ordinary regression inventory is introduced. Read-only terminal
+capture provides browser errors, area/seed/position/combat/skills/quest context,
+screenshot and last persisted checkpoint. Supported exports are retained privately.
+
+### Human observations, balance and automation limits
+
+No new human manual playtest occurred this session. Preserve prior real-character
+browser observations: Sorcerer died twice during Sevra attempts before phase2;
+Warrior died on beacon routes; Ranger had a live navigation stall and equipped-item
+selector failure. These are not three failed boss fights. Normal crypt pressure
+is a concern for manual evidence, not an established balance or software defect.
+The earlier feedback-name mismatch remains a Q2 candidate. No new confirmed
+functional defect. Physical controllers, human counterplay, uninterrupted survival
+and genuine-character finale completion remain open.
+
+Next: a human plays the prepared characters using normal combat, captures actual
+blockers and exports each important checkpoint. Original continuation paths and
+checksums below remain valid; manual profiles form separate advancing branches.
+Stop this automated task now. No Q2, Q3, Act2 or unnecessary deployment.
+
 ## Q1 Sorcerer finale attempts and remaining crypt checkpoint — 2026-10-23
 
 Reviewed local evidence `bfe7e6c`; independently verified all three recorded
