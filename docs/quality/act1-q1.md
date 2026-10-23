@@ -10,8 +10,9 @@ investigation; broader original requirements remain partial.
 **Q1 is in progress. Q2 and Q3 have not started.** Q1-B learned-primary combat is
 now verified for all three classes. All three have also defeated Cairnwarden,
 claimed the graveyard quest and passed camp/graveyard controller waypoint
-roundtrips and reloads. Graveyard ground-loot pickup, crypt/finale and remaining
-waypoint coverage are still open. Resume the newest saves below.
+roundtrips and reloads. Graveyard loot is collected/equipped; all three have
+entered the crypt, with partial earned progress below. Crypt completion/finale
+and remaining waypoint coverage are still open. Resume the newest saves below.
 
 Evaluated public runtime:
 `8c25b2f405a918d2960a7f38f42c6c0e22e0990d`. Exact CI39913610805 succeeded;
@@ -19,7 +20,109 @@ the public manifest and all 26 application files were independently checked
 against its sealed artifact. All 26 application hashes equal the Full-accepted
 D14 runtime `80871d0d869c77ff9b1062b928233e9e4a153ae6`.
 
-## Q1 graveyard earned continuation — 2026-10-23
+## Q1 crypt attempt and safe session checkpoint — 2026-10-23
+
+Reviewed local `2ad174a`; all three graveyard input saves matched their recorded
+SHA256 before restoration. No production code, difficulty, item generation,
+assertion in ordinary regression suites or deployed runtime changed. Public
+release remains previously verified904dfa3. No new deployment.
+
+### Ground loot completed for all three
+
+All preserved eligible graveyard ground loot was picked up through normal
+navigation and item-label interaction. Original Iron Cap `l8-2a-3` and cache50204
+Warded Bark Guard `l8-7aa676b-0` now belong exactly once to each character,
+equipped as helmet/offhand after normal identification. Original quest boots
+`l3-51550002-1` remain equipped. Graveyard ground ledgers are empty. Gold86,
+stash, pre-existing quest claims, XP and primary ranks were preserved. Five
+actually available level3 attribute points were allocated to Vitality, now10
+allocated/max350HP; one earned skill point remains unspent. The Light Below
+was accepted normally at camp. Separate ground/equipment saves remain intact:
+
+- Warrior `warrior-ground-equipped.save` SHA256 `edef60a4691eb8f27f8568c5f524965b8d3751e3a90cf1d76e8b22a7d5ddd934`.
+- Sorcerer `sorcerer-ground-equipped.save` SHA256 `3a61ad7c122f67a8cb38b62ea3ff3a9c20bf6f4ce0989ff3c09292139459dd2b`.
+- Ranger `ranger-ground-equipped.save` SHA256 `f59f147c5c823bf2fdd49e6a8261110cd6cedf7caf8e0abb6d54a6957e3a3cc3`.
+
+### Genuine crypt progress, not a completed run
+
+All3 entered seed42/content2 Ancient Crypt with fingerprint460eb973 and normal
+active monsters/damage. Warrior defeated4042 (+60 XP), saved alive at163HP, then
+died fighting4043 (8HP remaining) under continued multi-enemy pressure. Ranger
+defeated4042/4043 (+60/+50 XP), saved alive at35HP, then died walking toward a
+cache while other monsters remained active. These deaths are genuine failed
+tactics, not evidence of a combat defect. Resume the last living saves below;
+do not resume the later stopped/dead captures or repeat saved kills.
+
+Sorcerer's first interrupted attempt already saved4042; its continuation skipped
+that kill, defeated4051, opened cache50305 (+44 gold), and genuinely attuned the
+beacon (+250 XP/+120 gold). The Light Below is **ready**, not claimed. Saved
+beacon completion at20HP; attempted crypt waypoint attunement was disabled at
+the anchor while other monsters remained alive. UI source explicitly requires
+a quiet departure. The exact UI condition text was not captured, so distinguish
+this unverified safety-condition failure from an established waypoint defect.
+No endpoint unlock, Edda return/claim or finale acceptance is claimed.
+
+Right-click was attempted while holding basic attack, but the retained skill
+histories contain **no player actor0 primary start/effect**. Monster Ember Lance
+events must not count as player skill evidence. Correct that driver ordering
+through normal inputs in the next bounded encounter; crypt skill usage remains
+open. Actual crypt item rolls remain on the ground (one each for
+Sorcerer/Ranger); no crypt pickup or artificially granted gear is claimed.
+Sevra4090 has not been fought by any of these actual characters.
+
+### Save resource policy reviewed
+
+This is the documented current runtime rule, not an established restoration bug:
+[Act 1 guide](../overnight/act1-guide.md) explicitly excludes health/mana and
+temporary effects from the saved continuous-combat timeline. The strict
+`inventory-save.ts` body persists character/items/progression/exploration, not
+current resources. `combat.ts` creates a new actor at300 current/base maximumHP;
+`InventoryRuntime.restore` restores the persistent domains, and
+`equipment-stats.ts` `applyEquipment` retains absolute HP/mana and clamps to
+restored maxima, explicitly never healing when maxima increase. Thus the prior
+five Vitality produced300/325 after reload; ten Vitality now produces300/350.
+These reload legs are not uninterrupted survival or continuous-health proof.
+Three existing focused equipment/runtime tests passed (six unrelated cases
+intentionally unselected). No gameplay rule was changed.
+
+### Driver findings and verification
+
+Ground audit initially expected “Picked up” instead of actual “Success”; two
+failed cases/one interrupted case remain separate. Corrected ground cases pass3/3
+in1.3m. Warrior crypt entry initially stalled after a coarse0.1 turn cut a path
+corner; existing0.01 turn precision reached the crypt from the preserved stopped
+position. The first crypt run was interrupted after Sorcerer's saved first kill;
+its continuation consumed that real checkpoint. First/continuation crypt reports
+are failed/incomplete, never green full-campaign evidence. No tactical AI or
+production navigation repair was introduced.
+
+Three narrow actual-checkpoint reload cases pass3/3 in8.9s. Independent captured
+save comparison confirms progression/equipment, quests, stash/gold, waypoint
+state, all area seeds/fingerprints/deaths and ground item identities preserved;
+only normal discovery/autosave bookkeeping may advance. All3 restored screenshots
+were reviewed. Prior original saves and every important earned stage remain
+outside Git at `/private/tmp/hollowbane-q1-crypt/`, including ground results,
+crypt attempt/resume failure reports, stopped observations and reload results.
+The Sundering Fan/Iron Fan feedback mismatch stays a Q2 candidate, unfixed.
+
+### Exact next earned checkpoints
+
+All files below are under `/private/tmp/hollowbane-q1-crypt/`:
+
+- Warrior: `warrior-crypt-resume-verified.save` SHA256 `1ad018c1ba07cef3d353376552cb3e73c6f3c3d9dc4ae2b9850674a93771634f`; level3/560 XP, 86 gold, 300/350 HP, 100 mana after reload. Source `warrior-crypt-kill-1.save` SHA256 `1ad018c1ba07cef3d353376552cb3e73c6f3c3d9dc4ae2b9850674a93771634f`.
+- Sorcerer: `sorcerer-crypt-resume-verified.save` SHA256 `3b0a5400f7c287644b8b14c2b91a1ffed9e66e8e2e0aa6bcae9151074349c69e`; level3/895 XP, 250 gold, 300/350 HP, 100 mana after reload. Source `sorcerer-crypt-ready.save` SHA256 `3b0a5400f7c287644b8b14c2b91a1ffed9e66e8e2e0aa6bcae9151074349c69e`.
+- Ranger: `ranger-crypt-resume-verified.save` SHA256 `7cc1665f95b2001007474846a120363ca8c86ac57c4d12081991df9768912c45`; level3/635 XP, 86 gold, 300/350 HP, 100 mana after reload. Source `ranger-crypt-kill-2.save` SHA256 `7cc1665f95b2001007474846a120363ca8c86ac57c4d12081991df9768912c45`.
+
+All are actual restored Ancient Crypt states. Warrior has1/2 required kills;
+Ranger2/2, with treasure/beacon pending. Sorcerer has2/2 plus beacon/ready quest;
+return to Edda/claim remains. Inspect recorded position/remaining threats, collect
+the existing crypt drops and use correctly ordered genuine player skill input.
+Then finish objectives/quiet waypoint discovery/return, claim The Light Below,
+accept A Lantern Unbound at camp, fight Sevra through both phases, collect real
+rewards and return/claim/save/reload. Forest/crypt waypoint and permanent-namespace
+coverage remain open. Q1 INCOMPLETE; stop at session boundary, no Q2/Q3/Act2.
+
+## Historical Q1 graveyard earned continuation — 2026-10-23
 
 Reviewed local evidence commit `2086820`. All three Stonebound input saves
 matched the historical Stonebound SHA256 values before restoration. Actual earned saves were

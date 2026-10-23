@@ -1,3 +1,10 @@
+## Q1 partial crypt checkpoint — ground loot complete; finale not reached (2026-10-23)
+
+- All3 graveyard input checksums match2ad174a evidence. Preserved actual ground Iron Cap/Bark Guard picked up, identified/equipped with original boots;86gold/stash/prior claims/ranks preserved. Spent5 earned Vitality each (10total/max350); The Light Below accepted. Ground3/3 passes; no production/deployment change.
+- All3 legitimately entered crypt seed42/content2/fingerprint460eb973. Last living Warrior checkpoint560XP/4042dead/1of2kills; Ranger635XP/4042+4043dead/2kills; Sorcerer895XP/250gold/4042+4051dead/cache50305/beacon done/quest ready. Warrior later died fighting4043; Ranger later died navigating under active threats. Sorcerer waypoint attunement disabled at anchor; safety condition needs exact capture. No Sevra/finale/crypt quest claim, no player primary cast or crypt pickup pass.
+- Reload3/3 passes; independent saved-domain comparison and screenshots reviewed. Restarts intentionally use300currentHP and restored350max; documented HP/mana transient policy/source plus3 focused existing resource tests pass. Failed/interrupted drivers/deaths remain separate; no new game defect established. Feedback-name mismatch remains Q2 candidate.
+- Resume /private/tmp/hollowbane-q1-crypt/CLASS-crypt-resume-verified.save only; checksums/state/limitations docs/quality/act1-q1.md and checkpoint.json. Preserve saved kills; Warrior secondkill, Ranger treasure/beacon, Sorcerer return/Edda claim remain. Collect actual crypt drops, order skill input correctly, inspect waypoint safety, then claim Light Below/accept finale/Sevra/return/reward/reload. Q1 INCOMPLETE at session boundary; no Q2/Q3/Act2.
+
 ## Q1 graveyard checkpoint — Cairnwarden/quest complete; crypt/finale pending (2026-10-23)
 
 - Reviewed2086820 and independently checksum-verified all3 original Stonebound saves. Restored actual characters; no progression construction or production/difficulty/asset changes and no deployment. Unrelated local edits preserved.
