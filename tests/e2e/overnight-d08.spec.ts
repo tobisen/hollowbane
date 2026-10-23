@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { CRYPT_BOSS } from "../../src/simulation/crypt-boss";
 import {
   installVirtualController,
   pressVirtualButton,
@@ -175,7 +176,9 @@ test("Sevra genuine keyboard and mouse fight reaches both phases and death witho
   });
   await page.reload();
   await ready(page);
-  expect(await page.evaluate(() => window.hollowbaneBoss!.health)).toBe(480);
+  expect(await page.evaluate(() => window.hollowbaneBoss!.health)).toBe(
+    CRYPT_BOSS.health,
+  );
   expect(await permanentRecord(page)).toEqual(sentinel);
   expect(errors).toEqual([]);
 });
@@ -204,7 +207,7 @@ test("virtual controller locks Sevra and deals actual assigned-skill damage in t
     .poll(() => page.evaluate(() => window.hollowbaneBoss!.health), {
       timeout: 15000,
     })
-    .toBeLessThan(480);
+    .toBeLessThan(CRYPT_BOSS.health);
   expect(
     await page.evaluate(() =>
       window.hollowbaneSkills!.events.some(

@@ -13,7 +13,8 @@ export const CRYPT_BOSS_XP = 240;
 export const CRYPT_BOSS: BossDefinition = {
   id: "sevra-vaultbound",
   name: "Sevra, the Vaultbound",
-  health: 480,
+  health: 840,
+  interruptGuardFrames: 180,
   defense: {
     defense: 8,
     armor: 30,

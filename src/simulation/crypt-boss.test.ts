@@ -151,7 +151,7 @@ it("changes both attack pools at half health and grants the complete preparation
   f.tick();
   f.player.offense.criticalChance = 0;
   applyCombatHit(f.world, f.player, f.actor, f.nav, {
-    damage: 400,
+    damage: CRYPT_BOSS.health,
     element: "physical",
     guaranteed: true,
   });
@@ -179,13 +179,13 @@ it("uses existing elemental resistance, vulnerability, slow expiration and stagg
     element: "fire",
     guaranteed: true,
   });
-  expect(f.actor.hp).toBe(370);
+  expect(f.actor.hp).toBe(CRYPT_BOSS.health - 110);
   applyCombatHit(f.world, f.player, f.actor, f.nav, {
     damage: 100,
     element: "cold",
     guaranteed: true,
   });
-  expect(f.actor.hp).toBe(295);
+  expect(f.actor.hp).toBe(CRYPT_BOSS.health - 185);
   const base = f.actor.movement!.walkSpeed;
   const rime = SKILLS.find((s) => s.id === "rime-ring")!;
   if (rime.kind !== "active") throw Error("Expected active Rime Ring");
@@ -209,6 +209,42 @@ it("uses existing elemental resistance, vulnerability, slow expiration and stagg
   f.world.tick = 181;
   stepStatuses(f.skills, f.nav);
   expect(f.actor.movement!.walkSpeed).toBe(base);
+});
+
+it("allows the first interruption then completes a readable warning during Sevra's bounded reaction guard", () => {
+  const f = fixture();
+  f.until(() => !!f.boss.state.telegraph);
+  const interrupt = () =>
+    applyCombatHit(f.world, f.player, f.actor, f.nav, {
+      damage: 1,
+      element: "fire",
+      guaranteed: true,
+      stagger: true,
+    });
+  interrupt();
+  f.tick();
+  expect(f.boss.state.telegraph).toBeNull();
+  expect(
+    f.boss.state.events.filter((e) => e.kind === "interrupt"),
+  ).toHaveLength(1);
+  const guardedUntil = f.actor.reactionGuardUntil;
+  expect(guardedUntil - f.world.tick).toBe(CRYPT_BOSS.interruptGuardFrames);
+  f.until(() => !!f.boss.state.telegraph);
+  const warning = structuredClone(f.boss.state.telegraph!),
+    hp = f.player.hp,
+    bossHp = f.actor.hp;
+  expect(f.world.tick).toBeLessThan(guardedUntil);
+  interrupt();
+  expect(f.actor.hp).toBeLessThan(bossHp);
+  expect(f.actor.controller.timeline.phase).toBe("windup");
+  f.until(() => f.world.tick > warning.strikeAt);
+  expect(f.player.hp).toBeLessThan(hp);
+  expect(
+    f.boss.state.events.filter((e) => e.kind === "interrupt"),
+  ).toHaveLength(1);
+  while (f.world.tick < guardedUntil) f.tick();
+  interrupt();
+  expect(f.actor.controller.timeline.phase).toBe("hitstun");
 });
 
 it("resets living encounters on escape/death and emits one terminal completion with normal XP", () => {

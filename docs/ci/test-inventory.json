@@ -78,6 +78,7 @@
     "src/simulation/overnight-d09.test.ts",
     "src/simulation/overnight-d10.test.ts",
     "src/simulation/overnight-d11.test.ts",
+    "src/simulation/overnight-d12.test.ts",
     "src/simulation/progression-quality.test.ts",
     "src/simulation/progression-save.test.ts",
     "src/simulation/projectiles.test.ts",
@@ -152,6 +153,7 @@
     "tests/e2e/overnight-d09.spec.ts",
     "tests/e2e/overnight-d10.spec.ts",
     "tests/e2e/overnight-d11.spec.ts",
+    "tests/e2e/overnight-d12.spec.ts",
     "tests/e2e/polish.spec.ts",
     "tests/e2e/prototype.spec.ts",
     "tests/e2e/skill-tree.spec.ts",
@@ -173,6 +175,11 @@
     "tests/ci-policy.test.ts"
   ],
   "groups": {
+    "balance": {
+      "match": "(?:overnight-d12|d12-balance|crypt-boss|class-abilities)",
+      "unit": "(?:overnight-d12|overnight-d02|class-abilities|character-classes|progression-quality|world-rewards|boss).*\\.test\\.ts$",
+      "browser": ["overnight-d12.spec.ts"]
+    },
     "waypoint": {
       "match": "(?:world-waypoint|overnight-d11)",
       "unit": "(?:overnight-d11|world-save|world-travel|world-discovery|inventory-save).*\\.test\\.ts$",
@@ -209,7 +216,7 @@
     "world": {
       "match": "(?:world|navigation|generation|wilderness|area-|dungeon)",
       "unit": "(?:world|navigation|generation|wilderness|area-|dungeon).*\\.test\\.ts$",
-      "browser": ["world.spec.ts"]
+      "browser": ["world.spec.ts", "world-minimap.spec.ts"]
     },
     "quest": {
       "match": "(?:quest|camp-dialogue)",

@@ -37,6 +37,8 @@ export interface BossDefinition {
   id: string;
   name: string;
   health: number;
+  /** Recovery after an interruption; the first stagger still interrupts normally. */
+  interruptGuardFrames?: number;
   defense: Defense;
   attacks: readonly BossAttack[];
   phases: readonly BossPhase[];
@@ -84,6 +86,13 @@ const reach = (shape: BossShape) =>
   shape.kind === "line" ? shape.length : shape.radius;
 
 export function validateBoss(definition: BossDefinition): void {
+  if (
+    definition.interruptGuardFrames !== undefined &&
+    (!Number.isSafeInteger(definition.interruptGuardFrames) ||
+      definition.interruptGuardFrames < 0 ||
+      definition.interruptGuardFrames > 600)
+  )
+    throw Error("Invalid boss interruption guard");
   if (
     !definition.id ||
     !definition.name ||
@@ -390,6 +399,10 @@ export function bossHooks(
         emit(world, state, "complete");
       } else if (a.controller.timeline.phase === "hitstun" && state.telegraph) {
         emit(world, state, "interrupt", state.telegraph.attack);
+        a.reactionGuardUntil = Math.max(
+          a.reactionGuardUntil,
+          world.tick + (definition.interruptGuardFrames ?? 0),
+        );
         state.telegraph = null;
       } else if (a.controller.timeline.phase === "idle") state.telegraph = null;
     },
