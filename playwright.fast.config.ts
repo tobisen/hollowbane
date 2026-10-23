@@ -8,7 +8,9 @@ let flow = {
   file: "overnight-d08.spec.ts",
   title: "virtual controller locks Sevra",
 };
-if (hosted && groups.includes("act1polish"))
+if (hosted && groups.includes("act1release"))
+  flow = { file: "overnight-d14.spec.ts", title: "Act1 release " };
+else if (hosted && groups.includes("act1polish"))
   flow = { file: "overnight-d13.spec.ts", title: "Act1 polish " };
 else if (hosted && groups.includes("balance"))
   flow = { file: "overnight-d12.spec.ts", title: "Act1 balance " };

@@ -19,6 +19,19 @@ export const coreUnits = [
   "tests/ci-policy.test.ts",
 ];
 export const groups = {
+  act1release: {
+    match: /(?:overnight-d14|d14-campaign)/,
+    unit: /(?:overnight-d14|progression-quality|character-classes|world-rewards|inventory-save|world-save).*\.test\.ts$/,
+    browser: [
+      "world.spec.ts",
+      "world-minimap.spec.ts",
+      "world-containers.spec.ts",
+      "class-gameplay.spec.ts",
+      "inventory-storage.spec.ts",
+      "gamepad.spec.ts",
+      "overnight-d14.spec.ts",
+    ],
+  },
   act1polish: {
     match:
       /(?:overnight-d13|boss-presentation|boss-view|world-minimap|inventory-view)/,
@@ -150,6 +163,11 @@ export function classify(changes, graph, all, requested = "auto") {
   }
   for (const change of changes) {
     const path = change.path;
+    if (/(?:overnight-d14|d14-campaign)\./.test(path)) {
+      selected.add("act1release");
+      full = true;
+      reasons.push(`Act 1 release acceptance milestone: ${path}`);
+    }
     if (
       /\.md$/.test(path) &&
       !/^docs\/ci\/(?:fast-policy|test-inventory)\.md$/.test(path)
@@ -344,7 +362,9 @@ async function main() {
         CI_HOSTED: command === "hosted" ? "1" : "0",
         CI_SMOKE_GROUPS: JSON.stringify(plan.groups),
         CI_AFFECTED_BROWSER:
-          command === "browser" ? JSON.stringify(plan.browser) : "[]",
+          command === "browser" || plan.groups.includes("act1release")
+            ? JSON.stringify(plan.browser)
+            : "[]",
       },
     );
   } else if (command === "inventory") {

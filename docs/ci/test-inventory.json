@@ -80,6 +80,7 @@
     "src/simulation/overnight-d11.test.ts",
     "src/simulation/overnight-d12.test.ts",
     "src/simulation/overnight-d13.test.ts",
+    "src/simulation/overnight-d14.test.ts",
     "src/simulation/progression-quality.test.ts",
     "src/simulation/progression-save.test.ts",
     "src/simulation/projectiles.test.ts",
@@ -156,6 +157,7 @@
     "tests/e2e/overnight-d11.spec.ts",
     "tests/e2e/overnight-d12.spec.ts",
     "tests/e2e/overnight-d13.spec.ts",
+    "tests/e2e/overnight-d14.spec.ts",
     "tests/e2e/polish.spec.ts",
     "tests/e2e/prototype.spec.ts",
     "tests/e2e/skill-tree.spec.ts",
@@ -177,6 +179,19 @@
     "tests/ci-policy.test.ts"
   ],
   "groups": {
+    "act1release": {
+      "match": "(?:overnight-d14|d14-campaign)",
+      "unit": "(?:overnight-d14|progression-quality|character-classes|world-rewards|inventory-save|world-save).*\\.test\\.ts$",
+      "browser": [
+        "world.spec.ts",
+        "world-minimap.spec.ts",
+        "world-containers.spec.ts",
+        "class-gameplay.spec.ts",
+        "inventory-storage.spec.ts",
+        "gamepad.spec.ts",
+        "overnight-d14.spec.ts"
+      ]
+    },
     "act1polish": {
       "match": "(?:overnight-d13|boss-presentation|boss-view|world-minimap|inventory-view)",
       "unit": "(?:overnight-d13|inventory-navigation|world-discovery|combat-audio).*\\.test\\.ts$",

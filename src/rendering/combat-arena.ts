@@ -21,6 +21,7 @@ import { canOpenContainer } from "../simulation/world-containers";
 import { registeredItemContent } from "../simulation/item-registry";
 import { configureWorldRewards } from "../simulation/world-rewards";
 import { WorldEncounterRuntime } from "../simulation/world-encounter-runtime";
+import { CRYPT_FINALE_ACTOR } from "../simulation/world-encounters";
 import { WorldEnvironment } from "./world-environment";
 import { CampEnvironment } from "./camp-environment";
 import { drawWorldFloor } from "./world-floor";
@@ -1400,8 +1401,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
       } else if (event.kind === "death") {
         this.deathAt.set(event.target, this.world.tick);
         if (polish) this.soundBank.play({ kind: "death" });
+        const guidance =
+          exploring && !cryptBossTrial && event.target !== 0
+            ? event.target === CRYPT_FINALE_ACTOR
+              ? "Return safely to Edda Vey in camp to claim your reward."
+              : "Continue the expedition."
+            : "Reset the trial to restore all targets.";
         document.querySelector("#combat-log")!.textContent =
-          `${this.world.actors.find((a) => a.id === event.target)?.name ?? "Departed target"} has fallen. Reset the trial to restore all targets.`;
+          `${this.world.actors.find((a) => a.id === event.target)?.name ?? "Departed target"} has fallen. ${guidance}`;
       }
     }
     private tone(): void {

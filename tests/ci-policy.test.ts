@@ -44,6 +44,17 @@ describe("risk-based release policy", () => {
     );
   });
   it("maps boss, quest and navigation to domain/browser contracts", () => {
+    const release = plan("src/simulation/overnight-d14.test.ts");
+    expect(release.tier).toBe("full");
+    expect(release.browser).toEqual([
+      "world.spec.ts",
+      "world-minimap.spec.ts",
+      "world-containers.spec.ts",
+      "class-gameplay.spec.ts",
+      "inventory-storage.spec.ts",
+      "gamepad.spec.ts",
+      "overnight-d14.spec.ts",
+    ]);
     expect(plan("src/rendering/inventory-view.ts").browser).toContain(
       "overnight-d13.spec.ts",
     );

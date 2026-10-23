@@ -108,8 +108,8 @@ export function fightD08Finale(f: ReturnType<typeof createD08CampaignFixture>) {
     player,
   );
   player.hp = player.maxHp;
-  // Fresh load resources/stats are the browser's normal policy. Domain fixtures
-  // retain already-earned stats; this test adds no damage, healing or invulnerability.
+  // Explicit full derived resources for this isolated domain duel. Browser
+  // acceptance separately covers actual restart defaults; no mid-fight healing.
   f.session.restoreDeaths(f.inventory.loot, world);
   world.actors = [player];
   const runtime = new WorldEncounterRuntime(

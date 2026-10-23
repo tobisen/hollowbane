@@ -54,8 +54,8 @@ function requireFixture(value: unknown, message: string): asserts value {
  * Constructs domain checkpoints, not a continuous survivor/pack-AI playthrough.
  * Each recorded kill comes from a vulnerable player's timed basic attacks in an
  * isolated duel, using the generated encounter's unmodified health/damage/XP.
- * Positions and normal full resources are explicitly constructed per duel;
- * saved checkpoints do not store HP, matching the application's load policy.
+ * Positions and full derived resources are explicitly constructed per duel;
+ * saved checkpoints do not store HP. Browser tests cover actual restart defaults.
  * Browser combat separately covers live AI and continuous survival.
  */
 export function createD06CampaignFixture(classId: ClassId = "warrior") {
@@ -144,7 +144,7 @@ export function createD06CampaignFixture(classId: ClassId = "warrior") {
         }),
         player,
       );
-      // Resources are restored on loading a checkpoint in the actual app too.
+      // Explicit full resources for this isolated duel; reload defaults are tested in browsers.
       player.hp = player.maxHp;
       const center = session.travel.layout.spawn;
       const offset = [

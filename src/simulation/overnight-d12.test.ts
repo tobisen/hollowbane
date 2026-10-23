@@ -1,4 +1,4 @@
-import { expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { CLASS_IDS } from "./character-classes";
 import {
   createD12Fixture,
@@ -17,63 +17,71 @@ import {
 import { tradeWithMerchant } from "./camp-merchant";
 import { validateBoss } from "./boss";
 
-it.each(CLASS_IDS)(
-  "%s completes earned expedition/finale with bounded skill pacing, resources and one-time rewards",
+describe.each(CLASS_IDS)(
+  "%s earned finale balance and persistence",
   (classId) => {
-    const f = createD12Fixture(classId),
-      before = structuredClone(f.checkpoint().loaded),
-      metrics = measureD12Finale(f);
-    const evidence = JSON.stringify(metrics);
-    expect(metrics.complete, evidence).toBe(true);
-    // Six to forty-five seconds: preserve a readable multi-phase fight, reject stalls.
-    expect(metrics.ticks, evidence).toBeGreaterThanOrEqual(360);
-    expect(metrics.ticks, evidence).toBeLessThanOrEqual(2700);
-    expect(metrics.phaseTicks).toHaveLength(2);
-    expect(
-      metrics.ticks - metrics.phaseTicks[1]!,
-      evidence,
-    ).toBeGreaterThanOrEqual(CRYPT_BOSS.phases[1]!.transitionFrames + 84);
-    expect(new Set(metrics.warnings)).toEqual(
-      new Set(CRYPT_BOSS.attacks.map((a) => a.id)),
-    );
-    expect(metrics.strikes, evidence).toBeGreaterThan(0);
-    expect(metrics.interrupts, evidence).toBeGreaterThan(0);
-    expect(metrics.casts, evidence).toBeGreaterThan(0);
-    expect(metrics.hp, evidence).toBeGreaterThan(metrics.maxHp / 2);
-    expect(metrics.hp, evidence).toBeLessThan(metrics.maxHp);
-    expect(metrics.lowestMana, evidence).toBeGreaterThanOrEqual(0);
-    expect(metrics.mana, evidence).toBeLessThanOrEqual(metrics.maxMana);
-    expect(metrics.xp).toBe(CRYPT_BOSS_XP);
-    expect(metrics.lootRolls).toBe(1);
-    for (const exit of ["graveyard", "forest", "camp"]) f.travel(exit);
-    f.claim(3);
-    const finished = f.checkpoint();
-    expect(f.session.campaignComplete).toBe(true);
-    expect(finished.loaded.progression!.skills.classId).toBe(classId);
-    expect(finished.loaded.progression!.character.level).toBeGreaterThanOrEqual(
-      5,
-    );
-    expect(finished.loaded.progression!.character.level).toBeLessThanOrEqual(7);
-    const reward = QUESTS.find((q) => q.id === ACT1_FINALE)!.reward;
-    expect(finished.loaded.progression!.character.totalXp).toBe(
-      before.progression!.character.totalXp + CRYPT_BOSS_XP + reward.xp,
-    );
-    expect(finished.loaded.exploration!.containers!.gold).toBe(
-      before.exploration!.containers!.gold + reward.gold,
-    );
-    expect(finished.loaded.loot.sequence).toBe(before.loot.sequence + 1);
-    const stable = structuredClone(finished.loaded);
-    expect(
-      f.session.claimQuest(ACT1_FINALE, f.world, f.inventory.loot),
-    ).not.toContain("Reward claimed");
-    expect(f.checkpoint().loaded).toEqual(stable);
-    expect(
-      new WorldSession(deserializeCharacter(finished.text).exploration)
-        .campaignComplete,
-    ).toBe(true);
-    console.log("D12 finale", evidence);
+    let f: ReturnType<typeof createD12Fixture>;
+    let before: ReturnType<typeof deserializeCharacter>;
+    it("completes the finale within skill pacing and resource budgets", () => {
+      f = createD12Fixture(classId);
+      before = structuredClone(f.checkpoint().loaded);
+      const metrics = measureD12Finale(f);
+      const evidence = JSON.stringify(metrics);
+      expect(metrics.complete, evidence).toBe(true);
+      // Six to forty-five seconds: preserve a readable multi-phase fight, reject stalls.
+      expect(metrics.ticks, evidence).toBeGreaterThanOrEqual(360);
+      expect(metrics.ticks, evidence).toBeLessThanOrEqual(2700);
+      expect(metrics.phaseTicks).toHaveLength(2);
+      expect(
+        metrics.ticks - metrics.phaseTicks[1]!,
+        evidence,
+      ).toBeGreaterThanOrEqual(CRYPT_BOSS.phases[1]!.transitionFrames + 84);
+      expect(new Set(metrics.warnings)).toEqual(
+        new Set(CRYPT_BOSS.attacks.map((a) => a.id)),
+      );
+      expect(metrics.strikes, evidence).toBeGreaterThan(0);
+      expect(metrics.interrupts, evidence).toBeGreaterThan(0);
+      expect(metrics.casts, evidence).toBeGreaterThan(0);
+      expect(metrics.hp, evidence).toBeGreaterThan(metrics.maxHp / 2);
+      expect(metrics.hp, evidence).toBeLessThan(metrics.maxHp);
+      expect(metrics.lowestMana, evidence).toBeGreaterThanOrEqual(0);
+      expect(metrics.mana, evidence).toBeLessThanOrEqual(metrics.maxMana);
+      expect(metrics.xp).toBe(CRYPT_BOSS_XP);
+      expect(metrics.lootRolls).toBe(1);
+      console.log("D12 finale", evidence);
+      f.checkpoint();
+    }, 25000);
+    it("returns claims once and preserves the completed reward checkpoint on reload", () => {
+      for (const exit of ["graveyard", "forest", "camp"]) f.travel(exit);
+      f.claim(3);
+      const finished = f.checkpoint();
+      expect(f.session.campaignComplete).toBe(true);
+      expect(finished.loaded.progression!.skills.classId).toBe(classId);
+      expect(
+        finished.loaded.progression!.character.level,
+      ).toBeGreaterThanOrEqual(5);
+      expect(finished.loaded.progression!.character.level).toBeLessThanOrEqual(
+        7,
+      );
+      const reward = QUESTS.find((q) => q.id === ACT1_FINALE)!.reward;
+      expect(finished.loaded.progression!.character.totalXp).toBe(
+        before.progression!.character.totalXp + CRYPT_BOSS_XP + reward.xp,
+      );
+      expect(finished.loaded.exploration!.containers!.gold).toBe(
+        before.exploration!.containers!.gold + reward.gold,
+      );
+      expect(finished.loaded.loot.sequence).toBe(before.loot.sequence + 1);
+      const stable = structuredClone(finished.loaded);
+      expect(
+        f.session.claimQuest(ACT1_FINALE, f.world, f.inventory.loot),
+      ).not.toContain("Reward claimed");
+      expect(f.checkpoint().loaded).toEqual(stable);
+      expect(
+        new WorldSession(deserializeCharacter(finished.text).exploration)
+          .campaignComplete,
+      ).toBe(true);
+    }, 25000);
   },
-  25000,
 );
 
 it("all finite merchant offers lose gold on complete buy/sell/reload cycles without XP or loot-stream farming", () => {
