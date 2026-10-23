@@ -1,3 +1,9 @@
+## Q2-A.1 toolbar refinement — final candidate (2026-10-23)
+
+- Final UI placement keeps desktop diagnostics in their existing position, with fullscreen beside them and a corner reservation on narrow screens. This resolves the initial candidate's three local combat/HUD visual differences without changing snapshots or tolerances.
+- All14 unique affected browser cases pass across focused reruns, including7 fullscreen/context/lifecycle cases,6 existing visual/viewport cases and resized-ground targeting;6 unit/static/build checks remain verified. Final screenshots reviewed. No new gameplay scope.
+- Initialf7715eb candidate is superseded by this CSS refinement. Push final candidate and require classifier-selected exact CI, Pages/artifact and hosted7-case smoke before stopping. No Q2-B. Prior Q2-A5692f4e/CI39968800858 attempt2 remains the last accepted release until then.
+
 ## Q2-A.1 fullscreen/right-click candidate — release pending (2026-10-23)
 
 - Previous Q2-A release5692f4e7dc4d6fb99fa2d50143b5bf7230cf4775 passed CI39968800858 attempt2, Pages/hosted; independently verified26 files and3 hosted class cases before implementation. Original formatting/navigation failures retained; unchanged isolated Cairnwarden passed and only failed CI jobs reran.

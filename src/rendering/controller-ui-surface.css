@@ -56,14 +56,18 @@
 #fullscreen-status:empty {
   display: none;
 }
-/* Reserve the control's corner without changing game framing or HUD size. */
-.game-surface.combat-arena .arena-panel {
-  top: 72px;
+/* Place the control beside the existing upper-right diagnostics panel. */
+.game-surface.combat-arena .game-surface-controls {
+  right: 288px;
+}
+@media (max-width: 540px) {
+  .game-surface.combat-arena .game-surface-controls {
+    right: max(16px, env(safe-area-inset-right));
+  }
+  .game-surface.combat-arena .arena-panel {
+    top: 72px;
+  }
 }
 .game-surface.prototype .world-header {
   padding-right: 88px;
-}
-.game-surface .world-developer {
-  right: 76px !important;
-  max-width: calc(100vw - 100px);
 }
