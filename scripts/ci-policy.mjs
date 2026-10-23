@@ -55,7 +55,7 @@ export const groups = {
   world: {
     match: /(?:world|navigation|generation|wilderness|area-|dungeon)/,
     unit: /(?:world|navigation|generation|wilderness|area-|dungeon).*\.test\.ts$/,
-    browser: ["world.spec.ts"],
+    browser: ["world.spec.ts", "world-minimap.spec.ts"],
   },
   quest: {
     match: /(?:quest|camp-dialogue)/,

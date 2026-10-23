@@ -1,3 +1,9 @@
+## D11 / DBL-132 required minimap regression repair (2026-10-23)
+
+- Candidate6a064d7 /Full39876272799 failed three original minimap cases: old `.world-minimap button` now matches map-toggle and Waypoints. Reviewed retained screenshot/trace confirms Tab correctly collapsed map; selector ambiguity blocked assertions. Full509 units/123 files and initial15 affected cases passed; other Full jobs still pending. No D11 release, no D12; latest verified deployed SHA remains c1ead8c0b7e1e2f99d2ddbba5698e639b813f3f7.
+- Focused repair selects `.world-minimap button[aria-expanded]`; every original assertion/deadline retained. All3 cases pass20.0s;6 policy units/typecheck/scoped lint/format/workflow validator/160-case exact shards pass. World/map classifier now selects original minimap coverage early. Runtime/production bytes unchanged. Evidence docs/overnight/d11.md and /private/tmp/hollowbane-d11-failed-shard1*, -shard1-traces, -full-unit.log.
+- Commit repair, inspect dry-run/push, require exact fresh Full→Pages→public SHA/bytes→5 hosted→final acceptance; record verified SHA before D12. Preserve unrelated local edits and original dependencies.
+
 ## D11 / DBL-132 waypoint candidate (2026-10-23)
 
 - D10 accepted first at c1ead8c0b7e1e2f99d2ddbba5698e639b813f3f7 /Full39868300701 /Pages7266255356 /hosted5. Latest verified deployment remains that SHA. Only then D11 began under current autonomous D09–D14 authorization.

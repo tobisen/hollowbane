@@ -19,7 +19,7 @@ for (const [area, exit] of [
       "true",
     );
     const map = page.locator(".world-minimap canvas"),
-      toggle = page.locator(".world-minimap button");
+      toggle = page.locator(".world-minimap button[aria-expanded]");
     await expect(map).toBeVisible();
     const initial = Number(await map.getAttribute("data-explored"));
     expect(initial).toBeGreaterThan(0);

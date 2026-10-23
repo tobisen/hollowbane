@@ -44,6 +44,9 @@ describe("risk-based release policy", () => {
     );
   });
   it("maps boss, quest and navigation to domain/browser contracts", () => {
+    expect(plan("src/rendering/world-minimap.ts").browser).toContain(
+      "world-minimap.spec.ts",
+    );
     expect(plan("src/simulation/world-waypoints.ts").browser).toContain(
       "overnight-d11.spec.ts",
     );
