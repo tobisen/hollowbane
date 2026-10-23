@@ -81,6 +81,8 @@ export class ControllerInput {
     window.addEventListener("keydown", (e) => {
       if (e.repeat || !e.isTrusted) return;
       this.activity = "keyboard";
+      // Modified browser/editor shortcuts must not become semantic gameplay pulses.
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
       const target = e.target;
       if (
         target instanceof HTMLElement &&

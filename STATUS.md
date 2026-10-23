@@ -1,3 +1,9 @@
+## D13 / DBL-204 required shared modifier capture repair (2026-10-23)
+
+- Candidatea615c2a /CI39892008162 failed1 of36 affected Chromium cases;35 passed. Ctrl+V filtered by Inventory DOM handler still entered shared ControllerInput as semantic V/inventory pulse. Reviewed Linux screenshot/trace; deterministically reproduced locally holding the chord through two real input frames. Full/Pages/hosted skipped, verify/final acceptance failed; latest accepted deployment remains808781b4be15ac10c49141a31f9a7820793b7d7b. No D14.
+- Focused2-line shared-capture modifier filter preserves ordinary bindings/device activity. Strengthened browser chord case checks both event paths without sleeps, deadline enlargement or relaxed assertions.11 action/presentation/policy tests/TypeScript/scoped lint/build pass;all4 D13 browser cases pass21.0s. Linux HUD count1/30 frames versus150 baseline, valid warning update. Evidence docs/overnight/d13.md and /private/tmp/hollowbane-d13-failed-initial-results, -failed-traces, -local-modifier-repro, -modifier-build.log.
+- Commit verified repair, inspect dry-run/push, require fresh exact Full→Pages→public SHA/all bytes→5 hosted→final acceptance before D14. Preserve unrelated edits and original parent edges.
+
 ## D13 / DBL-204, DBL-205, DBL-208 polish candidate (2026-10-23)
 
 - D12 accepted first at808781b4be15ac10c49141a31f9a7820793b7d7b /Full39884455837 attempt2 /Pages7268760961 /hosted5. Latest verified deployment remains that SHA. Only then D13 began; no D14 yet.

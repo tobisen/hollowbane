@@ -173,9 +173,22 @@ test("Act1 polish inventory shortcut respects modifier keys and returns focus af
 }) => {
   await loadD06Checkpoint(page, camp());
   await page.locator("#combat-world").focus();
-  for (const key of ["Control+v", "Meta+v", "Alt+v"]) {
-    await page.keyboard.press(key);
-    await expect(page.locator("dialog[open]")).toHaveCount(0);
+  for (const modifier of ["Control", "Meta", "Alt"]) {
+    await page.keyboard.down(modifier);
+    await page.keyboard.down("v");
+    try {
+      // Let the shared input frame consume the chord as well as DOM handlers.
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          ),
+      );
+      await expect(page.locator("dialog[open]")).toHaveCount(0);
+    } finally {
+      await page.keyboard.up("v");
+      await page.keyboard.up(modifier);
+    }
   }
   await page.keyboard.press("v");
   await expect(page.locator("#inventory-dialog")).toBeVisible();
