@@ -34,10 +34,15 @@ if (query.has("controller")) {
       : (await import("phaser")).default;
   const { startObservatory } = await import("./rendering/observatory");
   startObservatory(Phaser, engine);
-} else {
+} else if (
+  ["cloister", "metrics", "quality", "noMist"].some((key) => query.has(key))
+) {
   await import("./prototype.css");
   const { startPrototype } = await import("./rendering/prototype");
   startPrototype();
+} else {
+  const { startMainMenu } = await import("./rendering/main-menu");
+  await startMainMenu();
 }
 
-installControllerUI();
+if (!document.querySelector("main.main-menu")) installControllerUI();

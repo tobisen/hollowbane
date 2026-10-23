@@ -408,3 +408,5 @@ W1–W5 authorized after technical C13 verification. Thirty sequential scoped in
 D04 / DBL-131: scoped original two-NPC camp/dialogue foundation verified at e21dc00, with exact CI/Pages, hosted artifact identity and NPC/controller/save smoke. Shared original sprite costumes remain art placeholders; broader parent remains partial.
 
 D05 / DBL-136–141: scoped deterministic quest definitions/prerequisites, travel/interact/defeat/collect ledgers, journal/controller UI, atomic once-only XP/gold/item rewards and exploration6 migration locally verified. Two engine fixtures only; Act1 story follows in D06. Broader map/reputation/escort/reward-unlock requirements remain partial. Exact publication pending.
+
+DBL-004 / M1-A (2026-10-23): authorized menu foundation candidate: accessible root title, safe read-only legacy continue/selection/recovery, existing controller settings and semantic navigation.36 focused Chromium/8 save units/static/build pass; screenshots reviewed. Full CI/Pages/hosted pending. Multi-character architecture DBL-210 and later named creation/art/pause/Save-and-Exit releases remain pending; broader parents partial. Evidence docs/menu/experience.md.

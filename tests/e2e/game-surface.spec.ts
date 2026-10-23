@@ -309,7 +309,7 @@ test("surface listeners are released on pagehide and restored after bfcache page
 test("cloister uses the same fullscreen control and scoped context menu", async ({
   page,
 }) => {
-  await page.goto("./");
+  await page.goto("./?cloister=1");
   await expect(page.locator("html")).toHaveAttribute(
     "data-prototype-ready",
     "true",

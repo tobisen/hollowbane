@@ -1,5 +1,10 @@
 # Asset manifest
 
+M1-A menu foundation temporarily reuses the G1-approved cloister plate (existing
+record/source below), with original CSS frames and accessible system Georgia
+title text. No new raster art or audio. Dedicated sanctuary background and
+consistent class portraits remain pending M1-D; see docs/menu/experience.md.
+
 | ID              | Source                                 | Rights                             | Type     | Status / replacement     |
 | --------------- | -------------------------------------- | ---------------------------------- | -------- | ------------------------ |
 | courtyard-tiles | observatory.ts procedural polygons     | original project code              | geometry | placeholder; DBL-026     |

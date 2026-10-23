@@ -1,3 +1,10 @@
+## Menu M1-A foundation — local candidate (2026-10-23)
+
+- User authorizes sequential M1-A–D/M2-A–B through final menu/character review; no Act2. Reconciled HEAD/cached/live main at43b2c2c288a2a37e0f4f293d3e4bfc107807e7b3 and exact accepted CI39977726854. Fullscreen/context-menu work preserved; unrelated local documentation edits excluded.
+- DBL-004 scoped root title/navigation, read-only legacy validation/selection, explicit corruption recovery, retry/loading states, existing global controller settings and keyboard/mouse/virtual-pad focus. Empty storage opens existing camp; occupied storage hides creation until independent slots. Explicit cloister route preserves existing assertions. No save/schema/simulation/engine change.
+- TypeScript/lint/format/build,8 existing save units and36 focused Chromium cases pass; desktop/small/ultrawide screenshots reviewed. Temporary approved cloister artwork reused; new sanctuary/class portraits pending M1-D. No physical evidence. New-test status/footprint mistakes corrected without changing existing assertions.
+- Classifier dry-run requires Full. Commit/push and exact CI/Pages/artifact/hosted M1-A gate remain pending. Do not start M1-B before acceptance. Last verified deployed SHA remains43b2c2c. Resume docs/menu/experience.md; entire assignment INCOMPLETE. Preserve multi-slot/migration/name/class/deletion/pause/Save-and-Exit/settings/art follow-ups.
+
 ## Q2-A.1 reviewed cloister references — release repair (2026-10-23)
 
 - CI39975020980 for135efbf failed two Linux cloister image comparisons (10370/10398 pixels vs unchanged1% threshold); shard4 otherwise41 passes. Reviewed expected/actual/diffs: fullscreen control/header spacing and platform text, no world/occlusion change. Exactly two existing references refreshed from that sealed-source CI capture; both pass on Darwin too. No tolerance/assertion/timeout change and no runtime change in this repair.

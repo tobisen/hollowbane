@@ -1,5 +1,11 @@
 # Roadmap
 
+Current priority (October23): complete main menu/character experience M1-A–D,
+then M2-A–B through final review, sequentially with CI/Pages/hosted acceptance
+before each next release. Supersedes the Q2/Q3 continuation only for this scope;
+no Act2. Preserve accepted fullscreen/context-menu work. Scoped DBL-004/210 and
+relevant class/art parents remain partial. See docs/menu/experience.md.
+
 The initialization directive supplies the following 36 target phases. The imported backlog has a different topic ordering; its phase metadata is deliberately retained rather than silently renumbered. Use requirements/DBL IDs to plan against this target roadmap. Current authorization: Act 1 Q2-A–B gameplay/interaction and Q3-A–E visual/animation/audio quality, sequentially through Q3 review. Q1 is functionally verified with automated playthrough limitations and user-reported good gameplay; no all-class earned campaign completion claim. Each deliverable requires exact CI/Pages/hosted acceptance before advancing. No Act 2. Original topic numbering and broader partial parents are preserved. Delivery gate names do not rename the original G0–G6 definitions.
 
 - **00 — Project Foundation**

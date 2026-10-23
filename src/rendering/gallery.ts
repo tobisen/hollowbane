@@ -1,7 +1,7 @@
 export async function startGallery(): Promise<void> {
   document.title = "Hollowbane · Asset atelier";
   const root = document.querySelector("main")!;
-  root.innerHTML = `<header><p class="eyebrow">HOLLOWBANE / ART ATELIER</p><h1>The Cloister Wanderer</h1><p>Eight directions. Two idle frames and six walking frames per direction. Original reference kit for G1 review.</p></header><nav><a href="./">Return to the cloister</a><button id="gallery-motion" aria-pressed="false">Play walk cycle</button></nav><section id="direction-gallery" class="direction-gallery" aria-label="Eight direction animation review"></section><p class="gallery-note">Foot pivot: 64,112 · 128px cells · fixed scale · transparent alpha · generated sources preserved</p>`;
+  root.innerHTML = `<header><p class="eyebrow">HOLLOWBANE / ART ATELIER</p><h1>The Cloister Wanderer</h1><p>Eight directions. Two idle frames and six walking frames per direction. Original reference kit for G1 review.</p></header><nav><a href="?cloister=1">Return to the cloister</a><button id="gallery-motion" aria-pressed="false">Play walk cycle</button></nav><section id="direction-gallery" class="direction-gallery" aria-label="Eight direction animation review"></section><p class="gallery-note">Foot pivot: 64,112 · 128px cells · fixed scale · transparent alpha · generated sources preserved</p>`;
   const atlas = new Image();
   atlas.src = `${import.meta.env.BASE_URL}assets/wanderer.webp`;
   await atlas.decode();

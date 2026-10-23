@@ -1,0 +1,98 @@
+# Menu and character experience
+
+User-authorized October23: sequential autonomous M1/M2 releases through final
+menu/character review. No Act2 or unrelated Q2/Q3 expansion. Preserve Phaser4.2.1,
+existing characters/items and the accepted fullscreen/context-menu implementation.
+Original DBL requirements remain stable and broader parents remain partial.
+
+## Reconciliation
+
+Local main, HEAD, cached origin/main and live remote main matched
+`43b2c2c288a2a37e0f4f293d3e4bfc107807e7b3`. Exact
+[CI39977726854](https://github.com/tobisen/hollowbane/actions/runs/39977726854)
+succeeded including Full/Pages/hosted acceptance. Independently verified the
+public manifest and all26 sealed files. Prior fullscreen/context-menu
+release evidence remains in docs/quality/q2-a1.md. Existing unrelated local
+documentation changes are preserved and excluded from menu commits.
+
+Before this assignment, root launched the cloister prototype. Explicit world
+routes start CombatArena/WorldSession; InventoryView owns InventoryStorage.
+`hollowbane-character-v1` contains atomic current/previous snapshots and explicit
+quarantine recovery. Revision CAS protects stale-tab writes. Schema5 supports
+validated historical character schemas through existing deserialization, with
+progression, skills, items, equipment and embedded world/quest/stash state.
+There is no existing character-slot registry, display-name identity or menu.
+Some inventory/developer routes currently share the legacy database; M1-B must
+isolate these before creating real slots. Do not claim this isolation is finished.
+
+## Release sequence
+
+| Gate                   | Scope                                                                                                                  | State                |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| M1-A / DBL-004         | Root title, navigation, validated legacy entry, focus/error/loading states                                             | Local candidate      |
+| M1-B / DBL-210         | Eight stable-ID IndexedDB slots, metadata/CAS transactions, validated idempotent legacy migration, developer isolation | Pending M1-A release |
+| M1-C / DBL-004/112/210 | Named class creation, preview, selection/deletion, successful activation/last played                                   | Pending M1-B release |
+| M1-D / DBL-023/026/028 | Original background/consistent class portraits, manifest and final UI polish                                           | Pending M1-C release |
+| M2-A / DBL-004         | Semantic pause/resume lifecycle and responsive UI                                                                      | Pending M1-D release |
+| M2-B / DBL-210/004     | Awaited Save & Exit and complete existing settings integration                                                         | Pending M2-A release |
+
+Each gate requires local relevant/static verification, commit/push, automatically
+required CI tier, exact Pages artifact/hosted verification and recorded SHA before
+the next release. No old overnight orchestrator. Split oversized persistence
+work safely; no automatic deletion or silent recovery, and no unsupported legacy
+compatibility claims.
+
+## M1-A foundation
+
+Root now renders an accessible title, with read-only validation through the
+existing storage API. Continue and single legacy character selection resume the
+validated save; a corrupt current never auto-selects its backup. Review recovery
+opens the existing explicit recovery UI. Storage failure disables character
+entry and offers Retry while Settings remains usable. No snapshot is written by
+the menu. Settings embeds the existing controller settings form and uses its
+existing global storage. Rendering/simulation and save contracts are unchanged.
+
+During this foundation release New Game opens the existing Ashen Refuge entry
+only when legacy storage is empty; it is hidden for an occupied/unreadable save.
+Eight slots and named/class creation are deliberately later gates, and the whole
+assignment is incomplete until they replace this single-character bridge. No
+occupied-slot replacement or deletion is introduced here.
+
+Native buttons/dialogs support mouse, Tab/Enter, arrow navigation and Escape;
+semantic gamepad actions support D-pad/left stick, confirm/back and settings
+adjustments, including remapped bindings. Menu navigation does not install the
+in-game developer pause widget. Pagehide clears inputs/listeners; bfcache return
+reloads and revalidates storage. Fullscreen/context handlers remain untouched.
+
+Existing query modes remain available. `?cloister=1` explicitly preserves the old
+root prototype. Existing cloister links and browser helper/navigation routes now
+use that route; all original assertions remain. `?metrics=1`, quality/noMist,
+world, controller, gallery, engine and combat/skill/inventory routes are retained.
+
+The background temporarily reuses the original G1-approved cloister source,
+`assets/source/cloister.png` via `public/assets/cloister.webp`; provenance remains
+docs/art/prompts.md and the existing manifest record. CSS frames and system
+Georgia title text are original lightweight styling. No new raster art/audio is
+claimed; dedicated sanctuary artwork/three portraits and ambience remain M1-D.
+
+## Verification / continuation
+
+TypeScript, ESLint and production build pass. Eight focused existing
+inventory/progression serialization units pass. Menu browser checks cover fresh
+storage, exact legacy item identity/entry, corrupt current with valid backup,
+unavailable storage/retry, virtual Xbox/PlayStation navigation, and360/2560-width
+layout/settings. Existing cloister fullscreen/context compatibility is retained.
+Screenshots are local test artifacts, never committed. No physical-controller
+evidence. Initial browser startup hit sandbox EPERM; authorized elevated preview
+ran normally. Initial new test failures were an ephemeral autosave-status
+assertion and an incorrect one-cell assumption for a three-cell sword; tests now
+check the anchored item's exact identity. No existing assertion was weakened.
+
+All36 targeted Chromium cases pass (seven menu plus25 existing gamepad and
+four fullscreen/cloister compatibility cases). Desktop,360px and2560px title/settings screenshots reviewed.
+Classifier dry-run requires Full for shared root entry and new module/CSS;
+policy is unchanged. No local Full run claimed.
+
+Required CI tier and publication are pending until recorded below. Do not begin
+M1-B before this release gate passes. Last accepted deployed SHA remains
+`43b2c2c288a2a37e0f4f293d3e4bfc107807e7b3`.

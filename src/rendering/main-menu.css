@@ -1,0 +1,136 @@
+main.main-menu {
+  min-height: 100svh;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 6vw, 100px);
+  background:
+    linear-gradient(90deg, #080e12f5 2%, #0b1219df 36%, #0b121966 78%),
+    url("/assets/cloister.webp") center / cover;
+}
+.main-menu .menu-panel {
+  width: min(100%, 580px);
+  padding-block: 40px;
+}
+.main-menu h1 {
+  font-size: clamp(32px, 6.5vw, 86px);
+  letter-spacing: 0.055em;
+  color: #e3d1aa;
+  text-shadow:
+    0 2px 1px #000,
+    0 0 40px #d19e5b25;
+}
+.main-menu .menu-subtitle {
+  font-style: italic;
+  color: #c5c3b7;
+  margin-bottom: 44px;
+}
+.main-menu nav {
+  display: grid;
+  width: min(100%, 340px);
+  gap: 12px;
+}
+.main-menu button {
+  min-height: 48px;
+  background: linear-gradient(110deg, #292b29ed, #151c21ed);
+  border-color: #796444;
+  color: #e8d9bb;
+}
+.main-menu nav button {
+  text-align: left;
+  padding-inline: 24px;
+  font:
+    16px Georgia,
+    serif;
+  letter-spacing: 0.03em;
+}
+.main-menu button:hover {
+  border-color: #d2b47f;
+  background: #34362e;
+}
+.main-menu button:focus-visible,
+.main-menu[data-menu-pad="true"] :focus,
+.main-menu input:focus-visible,
+.main-menu select:focus-visible {
+  outline: 2px solid #ffcf88;
+  outline-offset: 4px;
+}
+.main-menu button:disabled {
+  color: #a5a79e;
+  border-color: #42483f;
+  cursor: default;
+  opacity: 0.65;
+}
+.main-menu [hidden] {
+  display: none !important;
+}
+.main-menu #menu-status {
+  min-height: 54px;
+  max-width: 430px;
+  color: #c8c5b9;
+  font: 14px/1.7 system-ui;
+}
+.main-menu .menu-controls {
+  font: 12px/1.7 system-ui;
+  color: #a5aaa7;
+}
+.main-menu .menu-footer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  border-top: 1px solid #a58a5138;
+  color: #a9aaa0;
+  margin-top: auto;
+}
+.main-menu .menu-footer span {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+}
+.main-menu dialog {
+  width: min(760px, calc(100% - 32px));
+  max-height: calc(100svh - 32px);
+  padding: clamp(20px, 4vw, 36px);
+  color: #e3d1aa;
+  background: #101a20;
+  border: 1px solid #8a704c;
+  overflow: auto;
+}
+.main-menu dialog::backdrop {
+  background: #04090dd9;
+}
+.main-menu dialog h2 {
+  font-weight: normal;
+  font-size: 28px;
+}
+.main-menu .settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 16px;
+  margin-block: 20px;
+}
+.main-menu label {
+  display: grid;
+  gap: 6px;
+  font: 13px/1.6 system-ui;
+  margin-block: 10px;
+}
+.main-menu input,
+.main-menu select {
+  min-height: 36px;
+  max-width: 100%;
+}
+.main-menu fieldset {
+  min-width: 0;
+  border: 1px solid #534c3d;
+}
+@media (max-width: 600px) {
+  .main-menu .menu-panel {
+    padding-block: 32px;
+  }
+  .main-menu .menu-subtitle {
+    margin-bottom: 20px;
+  }
+}

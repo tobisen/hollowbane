@@ -18,7 +18,7 @@ declare global {
 }
 async function ready(
   page: Page,
-  url = "./",
+  url = "./?cloister=1",
   profile = { id: "Xbox virtual standard", mapping: "standard" },
 ) {
   await page.addInitScript((profile) => {
@@ -55,7 +55,7 @@ async function ready(
       .poll(() => page.evaluate(() => window.hollowbaneCombat?.tick ?? 0))
       .toBeGreaterThan(2);
   }
-  if (url === "./")
+  if (url === "./?cloister=1")
     await expect
       .poll(() => page.evaluate(() => window.hollowbanePrototype?.tick ?? 0))
       .toBeGreaterThan(2);
@@ -528,7 +528,7 @@ test("one explicitly selected controller owns movement and selection persists", 
   await expect(page.locator('#pad-selected option[value="1"]')).toHaveCount(1);
   await page.locator("#pad-selected").selectOption("1");
   await page.locator("#pad-save").click();
-  await page.goto("./");
+  await page.goto("./?cloister=1");
   await page.evaluate(() => {
     window.virtualPads.push({
       ...window.virtualPads[0]!,
@@ -601,7 +601,7 @@ test("native Tab navigation and custom keyboard movement bindings retain priorit
       document.activeElement?.matches("a,input,select,button"),
     ),
   ).toBe(true);
-  await page.goto("./");
+  await page.goto("./?cloister=1");
   await expect(page.locator("html")).toHaveAttribute(
     "data-prototype-ready",
     "true",
@@ -645,12 +645,12 @@ test("brief keyboard attack taps survive between input polls", async ({
     .toBeGreaterThan(0);
 });
 
-for (const url of ["./", "./?combat=1", "./?monsters=1"]) {
+for (const url of ["./?cloister=1", "./?combat=1", "./?monsters=1"]) {
   test(`gameplay D-pad preserves focus and movement in ${url}`, async ({
     page,
   }) => {
     await ready(page, url);
-    const combat = url !== "./";
+    const combat = url !== "./?cloister=1";
     if (combat) {
       await expect(page.locator("html")).toHaveAttribute(
         "data-combat-ready",
@@ -690,7 +690,7 @@ test("controller returns from diagnostics to gameplay without a mouse focus clic
   page,
 }) => {
   await ready(page, "./?controller=1");
-  const cloister = page.locator('a[href="./"]').first();
+  const cloister = page.locator('a[href="?cloister=1"]').first();
   for (
     let i = 0;
     i < 64 && !(await cloister.evaluate((e) => e === document.activeElement));
@@ -741,7 +741,7 @@ for (const selection of ["auto", "0"]) {
       window.savedVirtualPad = window.virtualPads[0]!;
       window.virtualPads = [];
     });
-    await page.goto("./");
+    await page.goto("./?cloister=1");
     await expect(page.locator("html")).toHaveAttribute(
       "data-prototype-ready",
       "true",
@@ -803,7 +803,7 @@ test("blocked Gamepad API reports its cause and leaves keyboard gameplay availab
       configurable: true,
     });
   });
-  await page.goto("./");
+  await page.goto("./?cloister=1");
   await expect(page.locator("html")).toHaveAttribute(
     "data-prototype-ready",
     "true",
