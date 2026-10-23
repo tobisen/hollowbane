@@ -1,3 +1,9 @@
+## DBL-010 CI repair verified — final evidence metadata release pending (2026-10-23)
+
+- Corrected core 9951c44afb32cb7f063fc42ab1ac93e3888258fd passed Full 39911008639 / Pages 7271892702 in 14m26s,535 units/175 Chromium/15 compatibility/2 hosted. Prior Full 45m13s; first candidate 17m15s also retained. Manual rollback now launches all 4 shards and the validator rejects omitted callers.
+- Same core's actual inventory-UI gameplay Integration replay 39912637080 / Pages 7272002951 passed 29 affected cases/2 initial/2 hosted in 6m40s; Full intentionally skipped only after this SHA's accepted Full. One build / all 26 application hashes unchanged/zero browser skips or flakes. Relevant suites, API timing and limits in docs/ci/2026-10-23-ci-improvement.md.
+- Publish only this evidence/STATUS prose through final Fast CI/Pages/hosted; verify exact final SHA and unchanged app bytes, then STOP. No gameplay or next phase; preserve unrelated local documentation.
+
 ## DBL-010 manual shard caller correction — final verification pending (2026-10-23)
 
 - First CI candidate dd71234 passed Full39909032779,535 units/175 Chromium/15 compatibility/2 hosted and Pages7271643471 in17m15s, versus45m13s prior Full. All26 application bytes remain unchanged.
