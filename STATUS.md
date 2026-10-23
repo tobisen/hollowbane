@@ -1,3 +1,8 @@
+## Q2-A.1 reviewed cloister references — release repair (2026-10-23)
+
+- CI39975020980 for135efbf failed two Linux cloister image comparisons (10370/10398 pixels vs unchanged1% threshold); shard4 otherwise41 passes. Reviewed expected/actual/diffs: fullscreen control/header spacing and platform text, no world/occlusion change. Exactly two existing references refreshed from that sealed-source CI capture; both pass on Darwin too. No tolerance/assertion/timeout change and no runtime change in this repair.
+- Local15 unique affected browser cases and6 units/static/build now verified. All other Full Chromium cases, including all7 new UI cases, units/tooling and15 compatibility passed; final run failed only these2 references. Do not claim release acceptance or hosted fullscreen yet. Publish this reference repair after collecting the remaining gate result; then verify exact CI/Pages/artifact/hosted7-case smoke. No Q2-B.
+
 ## Q2-A.1 toolbar refinement — final candidate (2026-10-23)
 
 - Final UI placement keeps desktop diagnostics in their existing position, with fullscreen beside them and a corner reservation on narrow screens. This resolves the initial candidate's three local combat/HUD visual differences without changing snapshots or tolerances.
