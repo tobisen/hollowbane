@@ -1,3 +1,9 @@
+## DBL-010 CI latency repair — local verification, publication pending (2026-10-23)
+
+- User authorized CI/tooling only; gameplay remains stopped. Latest10 Actions audited with exact plans/attempt/job/step times in docs/ci/2026-10-23-run-audit.json. Latest Full45m13s duplicated affected→Full→44 hosted cases; slow active Ubuntu mirror downloads caused an independent retry outlier.
+- Candidate adds automatic required Integration, parsed public-contract comparisons, affected fixture consumers, four isolated Full shards, stable two-case hosted smoke, locked browser caching/primary HTTPS dependency mirror, and real IndexedDB setup without an unused game boot. No gameplay source/version/assertion/deadline changes; all175 Chromium/15 compatibility cases retained.
+- Policy/gate/type/lint/coverage checks underway. Next commit verified DBL-010 increment, push after dry-run, require one Full exact-SHA CI/Pages/hosted, then measure additive historical inventory-UI gameplay Integration replay on the accepted SHA. Record results before stopping; preserve unrelated local documentation edits.
+
 ## D14 complete — next-stage proposal prepared, final metadata publication next (2026-10-23)
 
 - Mandatory Full Act1 core80871d0d869c77ff9b1062b928233e9e4a153ae6 /CI39900956136 /Pages7270728696 is fully accepted:530 units/126 files,175 Chromium,15 compatibility,46 initial and44 hosted, zero browser skips/flakes/unexpected results; independent public SHA/all26 sealed bytes match. Latest verified deployment remains this core SHA. Gameplay implementation is stopped.

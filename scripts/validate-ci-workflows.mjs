@@ -24,7 +24,7 @@ for (const file of readdirSync(".github/workflows")) {
 }
 const release = workflow["verify-deploy.yml"];
 assert.equal(release.jobs.verify.if, "always()");
-assert.deepEqual(release.jobs.verify.needs, ["fast", "full"]);
+assert.deepEqual(release.jobs.verify.needs, ["fast", "integration", "full"]);
 assert.equal(release.jobs.deploy.needs, "verify");
 assert(release.jobs.deploy.if.includes("!cancelled()"));
 assert(release.jobs.deploy.if.includes("needs.verify.result == 'success'"));
@@ -46,6 +46,21 @@ assert(
   release.jobs.verify.steps.some((s) => s.run === "bash tools/ci/risk_gate.sh"),
 );
 assert.equal(release.jobs.full.with["artifact-ready"], true);
+assert.equal(release.jobs.integration.needs, "fast");
+assert.equal(
+  release.jobs.integration.if,
+  "needs.fast.outputs.tier == 'integration'",
+);
+assert.equal(release.jobs.integration.strategy["fail-fast"], false);
+assert(
+  release.jobs.verify.steps.some(
+    (s) => s.env?.INTEGRATION_RESULT === "${{ needs.integration.result }}",
+  ),
+);
+assert.deepEqual(
+  workflow["full-regression.yml"].jobs.chromium.strategy.matrix.shard,
+  [1, 2, 3, 4],
+);
 assert(workflow["full-regression.yml"].on.workflow_call);
 for (const job of ["checks", "chromium", "compatibility"])
   assert(

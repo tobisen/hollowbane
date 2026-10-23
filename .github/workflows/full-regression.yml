@@ -49,12 +49,12 @@ jobs:
   chromium:
     needs: prepare
     if: ${{ !cancelled() && (needs.prepare.result == 'success' || (needs.prepare.result == 'skipped' && inputs.artifact-ready)) }}
-    name: Chromium shard ${{ matrix.shard }}/2
+    name: Chromium shard ${{ matrix.shard }}/4
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2]
+        shard: [1, 2, 3, 4]
     env:
       PLAYWRIGHT_CI_SHARD: ${{ matrix.shard }}
       PLAYWRIGHT_REUSE_BUILD: "1"
@@ -70,9 +70,10 @@ jobs:
           name: release-bundle
           path: dist
       - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
-      - run: npx playwright install --with-deps chromium
+      - uses: ./.github/actions/setup-browser
       - name: Mandatory Chromium regression, balanced by recorded duration
         run: npm run test:e2e
+      - run: node scripts/check-browser-results.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -105,9 +106,12 @@ jobs:
           name: release-bundle
           path: dist
       - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
-      - run: npx playwright install --with-deps chromium firefox webkit
+      - uses: ./.github/actions/setup-browser
+        with:
+          browsers: chromium firefox webkit
       - name: All existing 15 required cross-browser cases
         run: npm run test:release:compat
+      - run: node scripts/check-browser-results.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

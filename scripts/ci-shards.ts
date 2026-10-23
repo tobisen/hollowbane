@@ -20,14 +20,17 @@ export function specFiles(directory: string, prefix = ""): string[] {
 export function balancedShards(
   files: readonly string[],
   durations: Readonly<Record<string, number>> = timings.secondsByFile,
+  count = 2,
 ): string[][] {
-  const shards: string[][] = [[], []];
-  const totals = [0, 0];
+  if (!Number.isSafeInteger(count) || count < 1)
+    throw Error("Invalid shard count");
+  const shards: string[][] = Array.from({ length: count }, () => []);
+  const totals = Array.from({ length: count }, () => 0);
   const weight = (file: string) => durations[file] ?? 60;
   for (const file of [...files].sort(
     (a, b) => weight(b) - weight(a) || a.localeCompare(b),
   )) {
-    const index = totals[0]! <= totals[1]! ? 0 : 1;
+    const index = totals.indexOf(Math.min(...totals));
     shards[index]!.push(file);
     totals[index]! += weight(file);
   }
@@ -35,8 +38,10 @@ export function balancedShards(
 }
 
 export function selectedShard(directory: string, shard: string): string[] {
-  if (shard !== "1" && shard !== "2") {
-    throw new Error("PLAYWRIGHT_CI_SHARD must be 1 or 2");
+  if (!["1", "2", "3", "4"].includes(shard)) {
+    throw new Error("PLAYWRIGHT_CI_SHARD must be 1 through 4");
   }
-  return balancedShards(specFiles(directory))[Number(shard) - 1]!;
+  return balancedShards(specFiles(directory), timings.secondsByFile, 4)[
+    Number(shard) - 1
+  ]!;
 }

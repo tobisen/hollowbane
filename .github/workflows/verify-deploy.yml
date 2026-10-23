@@ -11,6 +11,11 @@ on:
         type: choice
         options: [auto, full]
         default: auto
+      integration-probe:
+        description: "Add the recorded inventory UI gameplay integration replay; never lowers actual risk"
+        type: choice
+        options: [none, inventory-ui]
+        default: none
 permissions:
   contents: read
 concurrency:
@@ -25,6 +30,7 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       tier: ${{ steps.plan.outputs.tier }}
+      integration-shards: ${{ steps.plan.outputs.integration-shards }}
     env:
       PLAYWRIGHT_REUSE_BUILD: "1"
       RELEASE_SHA: ${{ github.sha }}
@@ -44,21 +50,25 @@ jobs:
           CI_HISTORY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CI_RELEASE: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
           CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before || github.event.repository.default_branch }}
+          CI_INTEGRATION_PROBE: ${{ inputs.integration-probe == 'inventory-ui' && 'inventory-ui' || '' }}
           CI_TIER: ${{ startsWith(github.ref, 'refs/tags/') && 'full' || inputs.tier || 'auto' }}
         run: node scripts/ci-policy.mjs plan
-      - name: Static, critical and affected contracts; one production build
+      - name: Static and release tooling contracts
         run: |
           node scripts/validate-ci-workflows.mjs
           npm run typecheck
           npm run lint
           npm run format:check
           python3 -m unittest discover -s tools/ci -p 'test_*.py'
-          node scripts/ci-policy.mjs unit
-          npm run build
+      - name: Critical and affected unit contracts
+        run: node scripts/ci-policy.mjs unit
+      - name: One production build
+        run: npm run build
       - run: python3 tools/ci/release_artifact.py seal --sha "$GITHUB_SHA"
-      - run: npx playwright install --with-deps chromium
-      - name: Stable core smoke and required affected integration
+      - uses: ./.github/actions/setup-browser
+      - name: Stable exact-artifact and genuine controller smoke
         run: node scripts/ci-policy.mjs browser
+      - run: node scripts/check-browser-results.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: release-bundle
@@ -92,8 +102,52 @@ jobs:
     with:
       artifact-ready: true
 
+  integration:
+    name: Required affected gameplay integration ${{ matrix.shard }}
+    needs: fast
+    if: needs.fast.outputs.tier == 'integration'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.fast.outputs.integration-shards) }}
+    env:
+      PLAYWRIGHT_REUSE_BUILD: "1"
+      CI_INTEGRATION_SHARD: ${{ matrix.shard }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-plan
+      - run: python3 tools/ci/release_artifact.py verify --sha "$GITHUB_SHA"
+      - uses: ./.github/actions/setup-browser
+      - name: Required affected scenarios; whole files preserve serial journeys
+        run: node scripts/ci-policy.mjs integration
+      - run: node scripts/check-browser-results.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-${{ matrix.shard }}-results
+          path: playwright-report/results.json
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: integration-${{ matrix.shard }}-failure
+          path: test-results/
+          retention-days: 10
+
   verify:
-    needs: [fast, full]
+    needs: [fast, integration, full]
     if: always()
     runs-on: ubuntu-24.04
     steps:
@@ -101,6 +155,7 @@ jobs:
       - name: Enforce the selected risk gate including skipped/cancelled failures
         env:
           FAST_RESULT: ${{ needs.fast.result }}
+          INTEGRATION_RESULT: ${{ needs.integration.result }}
           FULL_RESULT: ${{ needs.full.result }}
           REQUIRED_TIER: ${{ needs.fast.outputs.tier }}
         run: bash tools/ci/risk_gate.sh
@@ -153,8 +208,9 @@ jobs:
         with:
           name: release-plan
       - run: python3 tools/ci/release_artifact.py hosted --sha "$RELEASE_SHA" --url "$PLAYWRIGHT_BASE_URL"
-      - run: npx playwright install --with-deps chromium
+      - uses: ./.github/actions/setup-browser
       - run: node scripts/ci-policy.mjs hosted
+      - run: node scripts/check-browser-results.mjs
       - name: Record the tier that authorized this exact release
         run: node -e 'const p=JSON.parse(require("fs").readFileSync("ci-plan.json")); require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, "Released "+process.env.RELEASE_SHA+" through "+p.tier+" plus Pages and hosted smoke.\n")'
       - uses: actions/upload-artifact@v4

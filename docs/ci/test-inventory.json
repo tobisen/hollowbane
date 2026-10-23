@@ -119,6 +119,7 @@
     "src/world/render-size.test.ts",
     "src/world/view.test.ts",
     "tests/ci-policy.test.ts",
+    "tests/ci-results.test.ts",
     "tests/ci-shards.test.ts",
     "tests/driver/d06-campaign-fixture.test.ts",
     "tests/driver/quest-combat.test.ts",
@@ -176,7 +177,8 @@
     "src/simulation/inventory-save.test.ts",
     "src/simulation/item-save.test.ts",
     "tests/ci-shards.test.ts",
-    "tests/ci-policy.test.ts"
+    "tests/ci-policy.test.ts",
+    "tests/ci-results.test.ts"
   ],
   "groups": {
     "act1release": {
@@ -193,9 +195,9 @@
       ]
     },
     "act1polish": {
-      "match": "(?:overnight-d13|boss-presentation|boss-view|world-minimap|inventory-view)",
+      "match": "(?:overnight-d13|boss-presentation|boss-view)",
       "unit": "(?:overnight-d13|inventory-navigation|world-discovery|combat-audio).*\\.test\\.ts$",
-      "browser": ["overnight-d13.spec.ts"]
+      "browser": ["overnight-d13.spec.ts", "overnight-d08.spec.ts"]
     },
     "balance": {
       "match": "(?:overnight-d12|d12-balance|crypt-boss|class-abilities)",
@@ -218,7 +220,7 @@
       "browser": ["overnight-d09.spec.ts"]
     },
     "boss": {
-      "match": "(?:boss|stonebound)",
+      "match": "^src\\/simulation\\/.*(?:boss|stonebound)",
       "unit": "(?:boss|stonebound|combat|damage|status).*\\.test\\.ts$",
       "browser": [
         "overnight-d07.spec.ts",
@@ -228,7 +230,7 @@
       ]
     },
     "persistence": {
-      "match": "(?:save|inventory|item-|equipment|rune|socket|affix|loot)",
+      "match": "^src\\/simulation\\/.*(?:save|inventory|item-|equipment|rune|socket|affix|loot)",
       "unit": "(?:save|inventory|item-|equipment|rune|socket|affix|loot|world-rewards).*\\.test\\.ts$",
       "browser": [
         "inventory-storage.spec.ts",
@@ -236,7 +238,7 @@
       ]
     },
     "world": {
-      "match": "(?:world|navigation|generation|wilderness|area-|dungeon)",
+      "match": "^src\\/(?:simulation|world)\\/.*(?:world|navigation|generation|wilderness|area-|dungeon)",
       "unit": "(?:world|navigation|generation|wilderness|area-|dungeon).*\\.test\\.ts$",
       "browser": ["world.spec.ts", "world-minimap.spec.ts"]
     },
@@ -244,6 +246,37 @@
       "match": "(?:quest|camp-dialogue)",
       "unit": "(?:quest|overnight-d0[68]|world-rewards|world-save).*\\.test\\.ts$",
       "browser": ["overnight-d06.spec.ts", "overnight-d08b.spec.ts"]
+    },
+    "inventoryUI": {
+      "match": "^src\\/rendering\\/(?:inventory|advanced-inventory)",
+      "unit": "(?:inventory|equipment|socket|item-ownership).*\\.test\\.ts$",
+      "browser": [
+        "inventory.spec.ts",
+        "inventory-storage.spec.ts",
+        "advanced-inventory.spec.ts",
+        "advanced-inventory-sockets.spec.ts",
+        "advanced-inventory-laboratory.spec.ts",
+        "overnight-d13.spec.ts"
+      ]
+    },
+    "controller": {
+      "match": "^src\\/(?:rendering|simulation)\\/(?:controller-ui|gamepad|analog|input-context)",
+      "unit": "(?:controller|gamepad|analog|input-context|inventory-navigation).*\\.test\\.ts$",
+      "browser": [
+        "gamepad.spec.ts",
+        "character-controller.spec.ts",
+        "overnight-d13.spec.ts"
+      ]
+    },
+    "rendering": {
+      "match": "^src\\/rendering\\/(?:projection|camera|depth|sprite|animation|environment)",
+      "unit": "(?:projection|camera|depth|animation|environment).*\\.test\\.ts$",
+      "browser": ["prototype.spec.ts", "world-environments.spec.ts"]
+    },
+    "minimap": {
+      "match": "^src\\/rendering\\/world-minimap",
+      "unit": "(?:world-discovery|world-waypoint|world-save).*\\.test\\.ts$",
+      "browser": ["world-minimap.spec.ts", "overnight-d13.spec.ts"]
     }
   },
   "full": "All unit + all Chromium + existing 15 compatibility + validators + tooling",

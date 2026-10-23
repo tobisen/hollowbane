@@ -37,11 +37,10 @@ function collect(shard) {
   return identities;
 }
 const all = collect("");
-const first = collect("1");
-const second = collect("2");
+const shards = ["1", "2", "3", "4"].map(collect);
 assert(all.length > 0, "empty release suite");
-assert.deepEqual([...first, ...second].sort(), all.sort());
-assert.equal(new Set([...first, ...second]).size, all.length);
+assert.deepEqual(shards.flat().sort(), all.sort());
+assert.equal(new Set(shards.flat()).size, all.length);
 console.log(
-  `Release coverage: ${all.length} tests, ${first.length} + ${second.length}; no gaps or overlap`,
+  `Release coverage: ${all.length} tests, ${shards.map((s) => s.length).join(" + ")}; no gaps or overlap`,
 );

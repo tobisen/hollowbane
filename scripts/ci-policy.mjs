@@ -17,6 +17,7 @@ export const coreUnits = [
   "src/simulation/item-save.test.ts",
   "tests/ci-shards.test.ts",
   "tests/ci-policy.test.ts",
+  "tests/ci-results.test.ts",
 ];
 export const groups = {
   act1release: {
@@ -33,10 +34,9 @@ export const groups = {
     ],
   },
   act1polish: {
-    match:
-      /(?:overnight-d13|boss-presentation|boss-view|world-minimap|inventory-view)/,
+    match: /(?:overnight-d13|boss-presentation|boss-view)/,
     unit: /(?:overnight-d13|inventory-navigation|world-discovery|combat-audio).*\.test\.ts$/,
-    browser: ["overnight-d13.spec.ts"],
+    browser: ["overnight-d13.spec.ts", "overnight-d08.spec.ts"],
   },
   balance: {
     match: /(?:overnight-d12|d12-balance|crypt-boss|class-abilities)/,
@@ -59,7 +59,7 @@ export const groups = {
     browser: ["overnight-d09.spec.ts"],
   },
   boss: {
-    match: /(?:boss|stonebound)/,
+    match: /^src\/simulation\/.*(?:boss|stonebound)/,
     unit: /(?:boss|stonebound|combat|damage|status).*\.test\.ts$/,
     browser: [
       "overnight-d07.spec.ts",
@@ -69,7 +69,8 @@ export const groups = {
     ],
   },
   persistence: {
-    match: /(?:save|inventory|item-|equipment|rune|socket|affix|loot)/,
+    match:
+      /^src\/simulation\/.*(?:save|inventory|item-|equipment|rune|socket|affix|loot)/,
     unit: /(?:save|inventory|item-|equipment|rune|socket|affix|loot|world-rewards).*\.test\.ts$/,
     browser: [
       "inventory-storage.spec.ts",
@@ -77,7 +78,8 @@ export const groups = {
     ],
   },
   world: {
-    match: /(?:world|navigation|generation|wilderness|area-|dungeon)/,
+    match:
+      /^src\/(?:simulation|world)\/.*(?:world|navigation|generation|wilderness|area-|dungeon)/,
     unit: /(?:world|navigation|generation|wilderness|area-|dungeon).*\.test\.ts$/,
     browser: ["world.spec.ts", "world-minimap.spec.ts"],
   },
@@ -86,7 +88,124 @@ export const groups = {
     unit: /(?:quest|overnight-d0[68]|world-rewards|world-save).*\.test\.ts$/,
     browser: ["overnight-d06.spec.ts", "overnight-d08b.spec.ts"],
   },
+  inventoryUI: {
+    match: /^src\/rendering\/(?:inventory|advanced-inventory)/,
+    unit: /(?:inventory|equipment|socket|item-ownership).*\.test\.ts$/,
+    browser: [
+      "inventory.spec.ts",
+      "inventory-storage.spec.ts",
+      "advanced-inventory.spec.ts",
+      "advanced-inventory-sockets.spec.ts",
+      "advanced-inventory-laboratory.spec.ts",
+      "overnight-d13.spec.ts",
+    ],
+  },
+  controller: {
+    match:
+      /^src\/(?:rendering|simulation)\/(?:controller-ui|gamepad|analog|input-context)/,
+    unit: /(?:controller|gamepad|analog|input-context|inventory-navigation).*\.test\.ts$/,
+    browser: [
+      "gamepad.spec.ts",
+      "character-controller.spec.ts",
+      "overnight-d13.spec.ts",
+    ],
+  },
+  rendering: {
+    match:
+      /^src\/rendering\/(?:projection|camera|depth|sprite|animation|environment)/,
+    unit: /(?:projection|camera|depth|animation|environment).*\.test\.ts$/,
+    browser: ["prototype.spec.ts", "world-environments.spec.ts"],
+  },
+  minimap: {
+    match: /^src\/rendering\/world-minimap/,
+    unit: /(?:world-discovery|world-waypoint|world-save).*\.test\.ts$/,
+    browser: ["world-minimap.spec.ts", "overnight-d13.spec.ts"],
+  },
 };
+
+// Compare parsed public shapes, not the presence of "export" in changed lines.
+// Inferred return expressions remain conservative: changing one changes the
+// fingerprint. Explicitly typed implementations can change without an API change.
+export function publicContract(text) {
+  const source = ts.createSourceFile(
+    "contract.ts",
+    text,
+    ts.ScriptTarget.Latest,
+    true,
+  );
+  if (source.parseDiagnostics.length)
+    throw Error("Unparseable source contract");
+  const tokens = (text) => {
+    const scanner = ts.createScanner(
+      ts.ScriptTarget.Latest,
+      true,
+      ts.LanguageVariant.Standard,
+      text,
+    );
+    const result = [];
+    while (scanner.scan() !== ts.SyntaxKind.EndOfFileToken)
+      result.push(scanner.getTokenText());
+    return result.join(" ");
+  };
+  const shape = (node) => {
+    if (!node) return "missing";
+    if (ts.isNumericLiteral(node)) return "number";
+    if (ts.isObjectLiteralExpression(node))
+      return node.properties.map((p) =>
+        ts.isPropertyAssignment(p)
+          ? [p.name.getText(source), shape(p.initializer)]
+          : tokens(p.getText(source)),
+      );
+    if (ts.isArrayLiteralExpression(node)) return node.elements.map(shape);
+    return tokens(node.getText(source));
+  };
+  const signature = (node) => {
+    if (node.body) {
+      const returns = [];
+      const visit = (child) => {
+        if (child !== node.body && ts.isFunctionLike(child)) return;
+        if (ts.isReturnStatement(child))
+          returns.push(child.expression?.getText(source) ?? "void");
+        ts.forEachChild(child, visit);
+      };
+      if (!node.type && !ts.isConstructorDeclaration(node)) visit(node.body);
+      return [
+        tokens(text.slice(node.getStart(source), node.body.getStart(source))),
+        returns.map(tokens),
+      ];
+    }
+    if (ts.isClassDeclaration(node))
+      return [
+        tokens(text.slice(node.getStart(source), node.members.pos)),
+        node.members
+          .filter(
+            (m) =>
+              !m.modifiers?.some(
+                (v) => v.kind === ts.SyntaxKind.PrivateKeyword,
+              ),
+          )
+          .map(signature),
+      ];
+    if (ts.isVariableStatement(node))
+      return node.declarationList.declarations.map((d) => [
+        d.name.getText(source),
+        d.type ? tokens(d.type.getText(source)) : shape(d.initializer),
+      ]);
+    return tokens(node.getText(source));
+  };
+  return JSON.stringify(
+    source.statements
+      .filter(
+        (node) =>
+          ts.isInterfaceDeclaration(node) ||
+          ts.isTypeAliasDeclaration(node) ||
+          ts.isEnumDeclaration(node) ||
+          ts.isExportDeclaration(node) ||
+          node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword),
+      )
+      .map(signature),
+  );
+}
 export function filesIn(root) {
   return readdirSync(root, { withFileTypes: true }).flatMap((e) => {
     const path = `${root}/${e.name}`;
@@ -149,15 +268,26 @@ export function affectedFiles(changes, graph) {
   }
   return affected;
 }
-export function classify(changes, graph, all, requested = "auto") {
+export function classify(
+  changes,
+  graph,
+  all,
+  requested = "auto",
+  trustedEmpty = false,
+) {
   const reasons = [],
     selected = new Set(),
+    changedBrowser = new Set(),
     changed = changes.map((c) => c.path);
   const affected = affectedFiles(changed, graph),
     unit = new Set(coreUnits);
   let full = requested === "full";
   if (full) reasons.push("Explicit Full/milestone/tag request");
-  if (!changes.length) {
+  if (requested && !["auto", "full"].includes(requested)) {
+    full = true;
+    reasons.push("Invalid tier request; risk cannot be lowered by a caller");
+  }
+  if (!changes.length && !trustedEmpty) {
     full = true;
     reasons.push("No trustworthy change set");
   }
@@ -179,7 +309,7 @@ export function classify(changes, graph, all, requested = "auto") {
       continue;
     }
     if (
-      /^(?:\.github\/|scripts\/|tools\/|package|.*config\.|docs\/ci\/)/.test(
+      /^(?:\.github\/|scripts\/|tools\/|tests\/ci-[^/]+\.test\.ts$|package|.*config\.|docs\/ci\/)/.test(
         path,
       )
     ) {
@@ -191,13 +321,36 @@ export function classify(changes, graph, all, requested = "auto") {
       unit.add(path);
       continue;
     }
+    if (/^tests\//.test(path)) {
+      const consumers = [...affectedFiles([path], graph)];
+      const specs = consumers.filter((p) =>
+        /^tests\/e2e\/.*\.spec\.ts$/.test(p),
+      );
+      for (const file of specs)
+        changedBrowser.add(file.slice("tests/e2e/".length));
+      if (!specs.length && !consumers.some((p) => /\.test\.ts$/.test(p))) {
+        full = true;
+        reasons.push(`Unmapped test dependency: ${path}`);
+      }
+      continue;
+    }
     if (!/^src\//.test(path)) {
       full = true;
       reasons.push(`Unclassified input: ${path}`);
       continue;
     }
+    let contractChanged = true;
+    try {
+      if (typeof change.before === "string" && typeof change.after === "string")
+        contractChanged =
+          publicContract(change.before) !== publicContract(change.after);
+    } catch {
+      /* Missing or unparseable contracts fail closed. */
+    }
     if (
-      /^[+-](?![+-]).*\b(?:export|interface|type |schema|version|migrat|indexedDB|JSON\.(?:parse|stringify))\b/m.test(
+      contractChanged ||
+      /(?:^|\/)[^/]*(?:save|migration|schema)[^/]*\.ts$/.test(path) ||
+      /^[+-](?![+-]).*\b(?:indexedDB|JSON\.(?:parse|stringify)|version|schema|migrat\w*)\b/m.test(
         change.patch,
       )
     ) {
@@ -219,13 +372,29 @@ export function classify(changes, graph, all, requested = "auto") {
     full = true;
     reasons.push(`Broad import impact: ${impactedUnits.length} unit files`);
   }
+  if (selected.size > 3) {
+    full = true;
+    reasons.push(`Broad integration impact: ${selected.size} domain groups`);
+  }
   for (const name of selected)
     for (const file of all) if (groups[name].unit.test(file)) unit.add(file);
   const browser = [
-    ...new Set([...selected].flatMap((name) => groups[name].browser)),
-  ];
+    ...new Set(
+      [...selected]
+        .flatMap((name) => groups[name].browser)
+        .concat([...changedBrowser]),
+    ),
+  ].sort();
+  if (selected.size || browser.length)
+    reasons.push(
+      `Affected integration: ${[...selected].sort().join(", ") || "test dependency consumers"}`,
+    );
   return {
-    tier: full ? "full" : "fast",
+    tier: full
+      ? "full"
+      : selected.size || browser.length
+        ? "integration"
+        : "fast",
     reasons,
     groups: [...selected].sort(),
     unit: [...unit].sort(),
@@ -233,6 +402,15 @@ export function classify(changes, graph, all, requested = "auto") {
     changed,
     impactedUnits,
   };
+}
+export function addIntegrationReplay(plan, replay, reason) {
+  if (replay.tier !== "integration")
+    throw Error("Representative replay no longer selects Integration");
+  for (const key of ["groups", "unit", "browser"])
+    plan[key] = [...new Set([...plan[key], ...replay[key]])].sort();
+  if (plan.tier === "fast") plan.tier = "integration";
+  plan.reasons.push(reason);
+  return plan;
 }
 function run(args, env = {}) {
   const result = spawnSync(process.execPath, args, {
@@ -323,6 +501,20 @@ async function main() {
           return {
             path,
             deleted: status === "D",
+            before:
+              status === "A"
+                ? ""
+                : execFileSync("git", ["show", `${base}:${path}`], {
+                    encoding: "utf8",
+                    maxBuffer: 4 * 1024 * 1024,
+                  }),
+            after:
+              status === "D"
+                ? ""
+                : execFileSync("git", ["show", `${head}:${path}`], {
+                    encoding: "utf8",
+                    maxBuffer: 4 * 1024 * 1024,
+                  }),
             patch: execFileSync(
               "git",
               ["diff", "--unified=0", base, head, "--", path],
@@ -334,11 +526,47 @@ async function main() {
         /* Invalid history fails closed to Full. */
       }
     }
-    const plan = classify(changes, importGraph(all), all, process.env.CI_TIER);
+    const graph = importGraph(all);
+    const plan = classify(
+      changes,
+      graph,
+      all,
+      process.env.CI_TIER,
+      base === head,
+    );
+    // An additive, fixed historical application replay measures a real gameplay
+    // integration release without editing gameplay or allowing a lower risk gate.
+    if (process.env.CI_INTEGRATION_PROBE === "inventory-ui") {
+      const commit = "a615c2a70997246d767e6bacde518541bc52b017";
+      execFileSync("git", ["merge-base", "--is-ancestor", commit, head]);
+      const path = "src/rendering/inventory-view.ts";
+      const before = execFileSync("git", ["show", `${commit}^:${path}`], {
+        encoding: "utf8",
+      });
+      const after = execFileSync("git", ["show", `${commit}:${path}`], {
+        encoding: "utf8",
+      });
+      const patch = execFileSync(
+        "git",
+        ["diff", "--unified=0", `${commit}^`, commit, "--", path],
+        { encoding: "utf8" },
+      );
+      const replay = classify([{ path, before, after, patch }], graph, all);
+      addIntegrationReplay(
+        plan,
+        replay,
+        `Additive historical inventory UI gameplay replay: ${commit}, ${path}; actual change gate preserved`,
+      );
+    } else if (process.env.CI_INTEGRATION_PROBE)
+      throw Error("Unknown integration probe");
+    plan.integrationShards = plan.browser.length > 1 ? [1, 2] : [1];
     writeFileSync("ci-plan.json", JSON.stringify(plan, null, 2) + "\n");
     console.log(JSON.stringify(plan, null, 2));
     if (process.env.GITHUB_OUTPUT)
-      appendFileSync(process.env.GITHUB_OUTPUT, `tier=${plan.tier}\n`);
+      appendFileSync(
+        process.env.GITHUB_OUTPUT,
+        `tier=${plan.tier}\nintegration-shards=${JSON.stringify(plan.integrationShards)}\n`,
+      );
     if (process.env.GITHUB_STEP_SUMMARY)
       appendFileSync(
         process.env.GITHUB_STEP_SUMMARY,
@@ -346,10 +574,17 @@ async function main() {
       );
   } else if (command === "unit") {
     const plan = JSON.parse(readFileSync("ci-plan.json", "utf8"));
-    run(["node_modules/vitest/vitest.mjs", "run", ...plan.unit]);
-  } else if (command === "browser" || command === "hosted") {
-    const plan = JSON.parse(readFileSync("ci-plan.json", "utf8")),
-      boss = plan.groups.includes("boss");
+    run([
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      ...(plan.tier === "full" ? coreUnits : plan.unit),
+    ]);
+  } else if (
+    command === "browser" ||
+    command === "hosted" ||
+    command === "integration"
+  ) {
+    const plan = JSON.parse(readFileSync("ci-plan.json", "utf8"));
     run(
       [
         "node_modules/@playwright/test/cli.js",
@@ -358,13 +593,10 @@ async function main() {
         "playwright.fast.config.ts",
       ],
       {
-        CI_SMOKE_BOSS: boss ? "1" : "0",
         CI_HOSTED: command === "hosted" ? "1" : "0",
-        CI_SMOKE_GROUPS: JSON.stringify(plan.groups),
         CI_AFFECTED_BROWSER:
-          command === "browser" || plan.groups.includes("act1release")
-            ? JSON.stringify(plan.browser)
-            : "[]",
+          command === "integration" ? JSON.stringify(plan.browser) : "[]",
+        CI_INTEGRATION_ONLY: command === "integration" ? "1" : "0",
       },
     );
   } else if (command === "inventory") {

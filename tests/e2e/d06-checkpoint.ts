@@ -4,7 +4,20 @@ import { deserializeCharacter } from "../../src/simulation/inventory-save";
 /** Explicit constructed fixture, installed before the game loads; never a live gameplay hook. */
 export async function loadD06Checkpoint(page: Page, text: string) {
   const expected = deserializeCharacter(text);
-  await page.goto("./");
+  // Establish the real origin/IndexedDB without booting an unused Phaser game.
+  // Only this empty setup document is intercepted; the game and saves are real.
+  const setup = "**/__ci_checkpoint__";
+  await page.route(setup, (route) =>
+    route.fulfill({
+      contentType: "text/html",
+      body: "<!doctype html><title>Checkpoint setup</title>",
+    }),
+  );
+  try {
+    await page.goto("./__ci_checkpoint__");
+  } finally {
+    await page.unroute(setup);
+  }
   await page.evaluate(async (text) => {
     const db = await new Promise<IDBDatabase>((resolve, reject) => {
       const request = indexedDB.open(

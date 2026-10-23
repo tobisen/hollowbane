@@ -1,0 +1,28 @@
+name: Locked Playwright browsers and dependencies
+description: Cache browser binaries; retain dependency/font installation on an explicit Ubuntu mirror
+inputs:
+  browsers:
+    default: chromium
+    description: Space separated locked Playwright browser names
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-ubuntu24-${{ hashFiles('package-lock.json') }}-${{ inputs.browsers }}
+    - name: Use primary HTTPS Ubuntu archive for reproducible dependency setup
+      shell: bash
+      run: |
+        for source in /etc/apt/apt-mirrors.txt /etc/apt/sources.list.d/ubuntu.sources; do
+          if [[ -f "$source" ]]; then
+            sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' "$source"
+          fi
+        done
+    - name: Install locked browsers and all required libraries/fonts
+      shell: bash
+      env:
+        CI_BROWSERS: ${{ inputs.browsers }}
+      run: |
+        read -ra browsers <<< "$CI_BROWSERS"
+        npx playwright install --with-deps "${browsers[@]}"
