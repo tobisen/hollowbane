@@ -1,3 +1,10 @@
+## M1-B storage foundation candidate — release pending (2026-10-24)
+
+- Scoped DBL-210 only: eight stable UUID slots, version1 metadata registry, full per-character snapshots, CAS revisions and atomic creation/update/deletion/recovery/activation. Original item/save formats and local stash ownership preserved. No new character UI, art, pause, Save & Exit or fullscreen/context changes; Phaser4.2.1 retained.
+- Explicit legacy migration validates schemas1–5, retains original current/previous/quarantine, and commits copied snapshot/raw archive/receipt atomically. Concurrent retries create one slot; target edits/deletion are retained; changed/corrupt sources require explicit recovery/reconciliation. Missing registry fails closed. Production API entry ships without automatic live-menu migration.
+- Local16 focused registry/save units and21 affected Chromium cases pass (12 production-storage/2 existing persistence/7 menu); strict TypeScript/relevant lint/format/build pass. Quota faults are simulated; no campaign/loot distribution rerun or physical evidence. Full CI/Pages/hosted gate required before completion. Preserve unrelated local documentation edits; stage only this task's additions.
+- M1-A prerequisite2246206cc8c82935de36007e603a20e512762d20 / CI39985296668 accepted: required Full/Pages/hosted/release acceptance passed; independently verified all31 public bytes and10 hosted menu/recovery/input/developer cases17.5s; screenshots reviewed. Last verified deployed SHA2246206. Resume docs/menu/storage.md and docs/menu/experience.md. Stop after M1-B release verification; no M1-C/M2/Act2.
+
 ## Menu M1-A foundation — local candidate (2026-10-23)
 
 - User authorizes sequential M1-A–D/M2-A–B through final menu/character review; no Act2. Reconciled HEAD/cached/live main at43b2c2c288a2a37e0f4f293d3e4bfc107807e7b3 and exact accepted CI39977726854. Fullscreen/context-menu work preserved; unrelated local documentation edits excluded.

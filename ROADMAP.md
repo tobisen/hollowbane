@@ -1,5 +1,9 @@
 # Roadmap
 
+October24 continuation is limited to accepting M1-A, then M1-B multi-character
+storage/domain foundation (scoped DBL-210) and its exact CI/Pages/hosted release.
+Stop after M1-B; no creation UI, art, pause, Save & Exit or fullscreen changes.
+
 Current priority (October23): complete main menu/character experience M1-A–D,
 then M2-A–B through final review, sequentially with CI/Pages/hosted acceptance
 before each next release. Supersedes the Q2/Q3 continuation only for this scope;

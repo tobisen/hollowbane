@@ -71,6 +71,32 @@ export class InventoryStorage {
     this.db = null;
     this.writable = false;
   }
+  /** Read-only migration archive; callers retain all originals and do not unlock writes. */
+  async readArchive(): Promise<{
+    current: unknown;
+    previous: unknown;
+    quarantine: unknown;
+  }> {
+    await this.open();
+    return new Promise((resolve, reject) => {
+      const tx = this.db!.transaction("snapshots", "readonly"),
+        store = tx.objectStore("snapshots");
+      const current = store.get("current"),
+        previous = store.get("previous"),
+        quarantine = store.get("quarantine");
+      tx.onabort = () =>
+        reject(tx.error ?? Error("Legacy archive read failed"));
+      tx.onerror = () => {
+        /* onabort reports failure. */
+      };
+      tx.oncomplete = () =>
+        resolve({
+          current: current.result,
+          previous: previous.result,
+          quarantine: quarantine.result,
+        });
+    });
+  }
   private async read(): Promise<{
     current: StoredSnapshot | null;
     previous: StoredSnapshot | null;
