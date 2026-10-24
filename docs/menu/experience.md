@@ -157,3 +157,12 @@ busy/double-submit safety, failure retention/retry and root/Continue are locally
 verified; exact release gate remains pending in [exit.md](exit.md). Existing
 inventory-only legacy mode and source checkpoint remain preserved. M2-C settings
 begins only after acceptance, then M3 final Full review. No Act2.
+
+## M2-B accepted / M2-C Settings candidate — October24
+
+M2-B `eca7b7d` / Full40113225405 attempt2, Pages, all41 public files and five hosted
+cases accepted; retained first-attempt navigation failure in [exit.md](exit.md).
+Shared graphics/effects sound/keyboard/controller Settings and existing fullscreen
+interface are locally verified in [settings.md](settings.md). Music is unavailable;
+broader original settings parent remains partial. Exact release gate precedes M3
+final Full player-experience review and its stopping gate. No Act2.

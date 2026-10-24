@@ -31,6 +31,14 @@ import { findPath as worldPath } from "../world/navigation";
 import { WorldSession } from "../simulation/world-session";
 import { CharacterCheckpoint } from "./character-checkpoint";
 import { PlayerMenu } from "./player-menu";
+import {
+  loadPresentation,
+  readPresentation,
+  savePresentation,
+  safePlayerBindings,
+} from "./player-preferences";
+import { loadMovementPreferences } from "./movement-controls";
+import { movementVector } from "../simulation/input";
 import { EXPEDITION_REWARD } from "../simulation/world-expedition";
 import { validateSession } from "../simulation/inventory-world";
 import { commandCombat as stopCombat } from "../simulation/combat-targeting";
@@ -388,6 +396,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private latencies: number[] = [];
     private previousFrame = 0;
     private balancedDetail = false;
+    private automaticDetail = false;
+    private presentation = query.has("character")
+      ? loadPresentation()
+      : readPresentation(null);
+    private playerBindings = safePlayerBindings(
+      loadMovementPreferences().bindings,
+    );
     private startedAt = 0;
     private interactNpc(id?: string): boolean {
       if (
@@ -598,6 +613,29 @@ export function startCombatArena(monsters = false): Phaser.Game {
       );
       this.cameras.main.setZoom(framing.scale * size.ratio);
       this.cameras.main.centerOn(framing.center.x, framing.center.y);
+    };
+    private applyPlayerSettings = (): void => {
+      this.presentation = loadPresentation();
+      this.balancedDetail =
+        this.presentation.quality === "balanced" ||
+        (this.presentation.quality === "auto" && this.automaticDetail);
+      this.soundBank.setMuted(this.presentation.muted);
+      this.soundBank.setVolume(this.presentation.volume);
+      sound.checked = !this.presentation.muted;
+      this.syncResolution();
+    };
+    private applyKeyboardSettings = (): void => {
+      this.keys.clear();
+      this.playerBindings = safePlayerBindings(
+        loadMovementPreferences().bindings,
+      );
+      controllerInput.movementKeys = new Set([
+        ...["north", "south", "west", "east", "toggleRun", "stop"].flatMap(
+          (action) =>
+            this.playerBindings[action as keyof typeof this.playerBindings],
+        ),
+        "KeyR",
+      ]);
     };
     private renderAt = 0;
     private inputAt: number | null = null;
@@ -991,8 +1029,20 @@ export function startCombatArena(monsters = false): Phaser.Game {
             )
           : false;
       } else this.balancedDetail = true;
+      this.automaticDetail = this.balancedDetail;
       const resize = this.syncResolution;
-      resize();
+      if (query.has("character")) {
+        this.applyPlayerSettings();
+        this.applyKeyboardSettings();
+        window.addEventListener(
+          "hollowbane-presentation-change",
+          this.applyPlayerSettings,
+        );
+        window.addEventListener(
+          "hollowbane-keyboard-change",
+          this.applyKeyboardSettings,
+        );
+      } else resize();
       window.addEventListener("resize", resize);
       const point = (event: PointerEvent): Point =>
         clientToGround(
@@ -1096,6 +1146,29 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
         if (polish && sound.checked && !event.repeat)
           void this.soundBank.unlock();
+        if (query.has("character")) {
+          if (this.playerBindings.stop.includes(event.code)) {
+            event.preventDefault();
+            stop();
+          } else if (this.playerBindings.toggleRun.includes(event.code)) {
+            event.preventDefault();
+            if (!event.repeat) {
+              const walker = this.world.actors[0]!.controller.walker;
+              walker.gait = walker.gait === "walk" ? "run" : "walk";
+            }
+          } else if (
+            ["north", "south", "west", "east"].some((action) =>
+              this.playerBindings[
+                action as keyof typeof this.playerBindings
+              ].includes(event.code),
+            )
+          ) {
+            event.preventDefault();
+            this.keys.add(event.code);
+            release();
+          }
+          return;
+        }
         if (
           [
             "w",
@@ -1118,7 +1191,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
       };
       const keyup = (event: KeyboardEvent) =>
-        this.keys.delete(event.key.toLowerCase());
+        this.keys.delete(
+          query.has("character") ? event.code : event.key.toLowerCase(),
+        );
       const context = (e: Event) => {
         if (skills) e.preventDefault();
       };
@@ -1219,6 +1294,12 @@ export function startCombatArena(monsters = false): Phaser.Game {
         root.querySelector(".polish-navigation")!.append(audioButton);
         audioButton.onclick = () => {
           const status = this.soundBank.status();
+          if (query.has("character")) {
+            const muted = status.state === "running" && !status.muted;
+            savePresentation({ ...this.presentation, muted });
+            if (!muted) void this.soundBank.unlock();
+            return;
+          }
           if (status.state === "running" && !status.muted) {
             sound.checked = false;
             this.soundBank.setMuted(true);
@@ -1229,7 +1310,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
           }
         };
         sound.onchange = () => {
-          this.soundBank.setMuted(!sound.checked);
+          if (query.has("character"))
+            savePresentation({ ...this.presentation, muted: !sound.checked });
+          else this.soundBank.setMuted(!sound.checked);
           if (sound.checked) void this.soundBank.unlock();
         };
       }
@@ -1244,6 +1327,15 @@ export function startCombatArena(monsters = false): Phaser.Game {
       this.game.events.on(Phaser.Core.Events.POST_RENDER, postRender);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
         window.removeEventListener("resize", resize);
+        window.removeEventListener(
+          "hollowbane-presentation-change",
+          this.applyPlayerSettings,
+        );
+        window.removeEventListener(
+          "hollowbane-keyboard-change",
+          this.applyKeyboardSettings,
+        );
+        if (query.has("character")) controllerInput.movementKeys.clear();
         window.removeEventListener("keydown", keydown);
         window.removeEventListener("keyup", keyup);
         window.removeEventListener("blur", stop);
@@ -1769,9 +1861,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
       if (
         !this.balancedDetail &&
         this.game.loop.frame % 60 === 0 &&
-        shouldBalanceDetail(this.frames, start - this.startedAt, false)
+        shouldBalanceDetail(
+          this.frames,
+          start - this.startedAt,
+          query.has("character") && this.presentation.quality !== "auto",
+        )
       ) {
         this.balancedDetail = true;
+        this.automaticDetail = true;
         this.syncResolution();
       }
       const player = this.world.actors[0]!;
@@ -1792,14 +1889,16 @@ export function startCombatArena(monsters = false): Phaser.Game {
         player.recoveryBonus = Number(recovery.value);
       }
       this.world.hostilesActive = !monsters && !exploring && hostile.checked;
-      const keys = {
-        x:
-          Number(this.keys.has("d") || this.keys.has("arrowright")) -
-          Number(this.keys.has("a") || this.keys.has("arrowleft")),
-        y:
-          Number(this.keys.has("s") || this.keys.has("arrowdown")) -
-          Number(this.keys.has("w") || this.keys.has("arrowup")),
-      };
+      const keys = query.has("character")
+        ? movementVector(this.keys, this.playerBindings)
+        : {
+            x:
+              Number(this.keys.has("d") || this.keys.has("arrowright")) -
+              Number(this.keys.has("a") || this.keys.has("arrowleft")),
+            y:
+              Number(this.keys.has("s") || this.keys.has("arrowdown")) -
+              Number(this.keys.has("w") || this.keys.has("arrowup")),
+          };
       const direct = controllerInput.movement(keys);
       if (controllerInput.frame.device !== "gamepad" && this.padAttack) {
         player.controller = commandCombat(player.controller, { kind: "stop" });

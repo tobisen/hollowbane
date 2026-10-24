@@ -99,6 +99,7 @@ export class CombatAudio {
   private noise: AudioBuffer | null = null;
   private tails = new Map<OscillatorNode, () => void>();
   private muted = false;
+  private volume = 1;
   private unavailable = false;
   private played = 0;
   private dropped = 0;
@@ -123,9 +124,16 @@ export class CombatAudio {
     this.muted = value;
     if (value) this.silence();
   }
+  setVolume(value: number): void {
+    if (!Number.isFinite(value) || value < 0 || value > 1)
+      throw new RangeError("Sound volume must be between 0 and 1");
+    this.volume = value;
+    if (value === 0) this.silence();
+  }
   play(cue: SoundCue): void {
     if (
       this.muted ||
+      this.volume === 0 ||
       !this.ctx ||
       this.ctx.state !== "running" ||
       this.unavailable
@@ -148,7 +156,10 @@ export class CombatAudio {
         now + recipe.duration,
       );
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(recipe.gain, now + 0.006);
+      gain.gain.exponentialRampToValueAtTime(
+        recipe.gain * this.volume,
+        now + 0.006,
+      );
       gain.gain.exponentialRampToValueAtTime(0.0001, now + recipe.duration);
       let tail: (() => void) | null = null;
       if (
@@ -235,6 +246,7 @@ export class CombatAudio {
   status(): {
     state: string;
     muted: boolean;
+    volume: number;
     played: number;
     active: number;
     dropped: number;
@@ -246,6 +258,7 @@ export class CombatAudio {
           ? "muted"
           : (this.ctx?.state ?? "awaiting gesture"),
       muted: this.muted,
+      volume: this.volume,
       played: this.played,
       active: this.voices.size,
       dropped: this.dropped,

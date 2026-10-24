@@ -68,3 +68,44 @@ it("loot quality cues are distinct and remain within the shared audio budget", (
   expect(new Set(recipes.map((r) => r.from))).toHaveLength(4);
   expect(recipes.every((r) => r.gain <= 0.055 && r.duration < 0.4)).toBe(true);
 });
+it("effects volume scales actual gain, zero stays silent and invalid values are rejected", async () => {
+  const peaks: number[] = [];
+  let oscillators = 0;
+  const context = {
+    state: "running",
+    currentTime: 0,
+    destination: {},
+    createOscillator: () => {
+      oscillators++;
+      return {
+        frequency: { setValueAtTime() {}, exponentialRampToValueAtTime() {} },
+        connect() {},
+        disconnect() {},
+        start() {},
+        stop() {},
+      };
+    },
+    createGain: () => ({
+      gain: {
+        setValueAtTime() {},
+        exponentialRampToValueAtTime(value: number, time: number) {
+          if (time === 0.006) peaks.push(value);
+        },
+      },
+      connect() {},
+      disconnect() {},
+    }),
+  } as unknown as AudioContext;
+  const bank = new CombatAudio(() => context);
+  await bank.unlock();
+  bank.setVolume(0.35);
+  bank.play({ kind: "impact" });
+  expect(peaks).toEqual([soundRecipe({ kind: "impact" }).gain * 0.35]);
+  expect(bank.status().volume).toBe(0.35);
+  bank.setVolume(0);
+  bank.play({ kind: "impact" });
+  expect(oscillators).toBe(1);
+  expect(bank.status().active).toBe(0);
+  for (const v of [-0.1, 1.1, NaN, Infinity])
+    expect(() => bank.setVolume(v)).toThrow();
+});

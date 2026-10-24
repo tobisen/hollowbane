@@ -1,0 +1,45 @@
+.player-settings {
+  margin-top: 24px;
+}
+.player-settings form {
+  margin-block: 24px;
+}
+.player-settings .settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.player-settings input[type="checkbox"] {
+  justify-self: start;
+}
+.player-settings p {
+  font: 13px/1.7 system-ui;
+  overflow-wrap: anywhere;
+}
+.player-settings select,
+.player-settings input {
+  color: #eadcba;
+  background: #172128;
+  border: 1px solid #796444;
+  padding: 6px;
+}
+.player-settings legend {
+  font:
+    20px Georgia,
+    serif;
+}
+.player-settings [role="status"]:not(:empty) {
+  padding: 10px;
+  border-left: 2px solid #d9b275;
+  background: #080f1480;
+}
+.player-settings label:has(> input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+}
+.player-settings input[type="checkbox"] {
+  min-height: 0;
+  margin: 0;
+}

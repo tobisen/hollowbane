@@ -1,5 +1,5 @@
 import { controllerInput as hub } from "./controller-input";
-import { installControllerSettings } from "./controller-settings";
+import { installPlayerSettings } from "./player-settings";
 import "./player-menu.css";
 
 /** Player-session UI only. Simulation advancement remains owned by the scene. */
@@ -7,7 +7,7 @@ export class PlayerMenu {
   readonly dialog = document.createElement("dialog");
   private button = document.createElement("button");
   private abort = new AbortController();
-  private settingsInstalled = false;
+  private settingsView: ReturnType<typeof installPlayerSettings> | null = null;
   private busy = false;
   private exited = false;
   private home: HTMLElement;
@@ -25,7 +25,7 @@ export class PlayerMenu {
     this.dialog.id = "player-pause-dialog";
     this.dialog.className = "player-menu";
     this.dialog.setAttribute("aria-labelledby", "player-pause-title");
-    this.dialog.innerHTML = `<section data-pause-home><p class="eyebrow">HOLLOWBANE</p><h2 id="player-pause-title">A moment by the fire</h2><p>Gameplay is paused.</p><nav aria-label="Pause menu"><button id="player-resume">Resume Game</button><button id="player-settings">Settings</button><button id="player-save-exit">Save &amp; Exit</button></nav><p id="player-save-status" role="status" aria-live="polite"></p><p id="player-pause-prompts" class="pause-help">Enter: Choose · Escape: Back · Tab: Navigate</p></section><section data-pause-settings hidden><h2>Settings</h2><button id="player-settings-back">Back to Pause Menu</button><div id="controller-settings-host"></div></section>`;
+    this.dialog.innerHTML = `<section data-pause-home><p class="eyebrow">HOLLOWBANE</p><h2 id="player-pause-title">A moment by the fire</h2><p>Gameplay is paused.</p><nav aria-label="Pause menu"><button id="player-resume">Resume Game</button><button id="player-settings">Settings</button><button id="player-save-exit">Save &amp; Exit</button></nav><p id="player-save-status" role="status" aria-live="polite"></p><p id="player-pause-prompts" class="pause-help">Enter: Choose · Escape: Back · Tab: Navigate</p></section><section data-pause-settings hidden><h2>Settings</h2><button id="player-settings-back">Back to Pause Menu</button><div id="player-settings-host"></div></section>`;
     root.append(this.dialog);
     this.home = this.dialog.querySelector("[data-pause-home]")!;
     this.settings = this.dialog.querySelector("[data-pause-settings]")!;
@@ -45,10 +45,10 @@ export class PlayerMenu {
       () => {
         this.home.hidden = true;
         this.settings.hidden = false;
-        if (!this.settingsInstalled) {
-          installControllerSettings();
-          this.settingsInstalled = true;
-        }
+        this.settingsView ??= installPlayerSettings(
+          this.settings.querySelector("#player-settings-host")!,
+        );
+        this.settingsView.refresh();
         this.dialog
           .querySelector<HTMLButtonElement>("#player-settings-back")!
           .focus();
@@ -151,6 +151,7 @@ export class PlayerMenu {
     );
     const disabled = buttons.map((button) => button.disabled);
     for (const button of buttons) button.disabled = true;
+    this.dialog.setAttribute("aria-busy", "true");
     this.home.querySelector("nav")!.setAttribute("aria-busy", "true");
     const status = this.dialog.querySelector<HTMLElement>(
       "#player-save-status",
@@ -167,6 +168,7 @@ export class PlayerMenu {
       this.exited = false;
       this.busy = false;
       buttons.forEach((button, index) => (button.disabled = disabled[index]!));
+      this.dialog.setAttribute("aria-busy", "false");
       this.home.querySelector("nav")!.setAttribute("aria-busy", "false");
       status.textContent = `Saving failed: ${error instanceof Error ? error.message : "Storage unavailable"}. Your live progress is still here. Retry Save & Exit or resume and export from inventory.`;
       this.dialog
@@ -176,6 +178,7 @@ export class PlayerMenu {
   }
   dispose(): void {
     this.abort.abort();
+    this.settingsView?.dispose();
     this.button.remove();
     this.dialog.remove();
   }

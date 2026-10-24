@@ -1,3 +1,9 @@
+## M2-C Settings candidate — exact release pending (2026-10-24)
+
+- DBL-208/004: shared root/pause graphics resolution, effects volume/mute, six validated keyboard movement/run/stop bindings and unchanged existing controller form. Live settings preserve simulation pause and character snapshots; browser-global preferences stay separate. Fullscreen delegates only to existing public control; original fullscreen/context functions and Phaser4.2.1 preserved. No music backend exists; UI says unavailable and broader parent remains partial. Busy exit hints corrected.
+- 17 focused presentation/input/controller/audio/render-size units/nine unique local browsers/static/build pass; final two settings cases13.9s, seven affected regressions38.8s. Screenshots reviewed including narrow/keyboard/paused settings and busy saving. Initial ambiguous game/minimap canvas selector corrected with retained diagnostics; no assertion/deadline weakening. Full classifier required; commit/push/exact CI/Pages/sealed-byte/hosted gate next before M3.
+- Prerequisite M2-B eca7b7d7eb7fff527dedafefd96949de996def5e / Full40113225405 attempt2/Pages/all41 public bytes/five hosted cases42.5s accepted before work. Attempt1 navigation failure retained honestly. Continue authorized final M3 only after M2-C acceptance, then STOP at M3 quality gate; no Act2. Entire assignment INCOMPLETE. Evidence docs/menu/settings.md; preserve unrelated edits and broad partial parents/hardware follow-ups.
+
 ## M2-B Save & Exit candidate — release pending (2026-10-24)
 
 - DBL-210/004: awaited full runtime checkpoint, drain existing autosaves, confirm immutable owner/recent, then return root. Save & Exit blocks duplicate actions/resume while busy; write failure retains live progress/paused UI and allows retry/Resume/export. Existing atomic storage/CAS/schema/legacy source, resource restart policy, Phaser4.2.1 and fullscreen/context code preserved.

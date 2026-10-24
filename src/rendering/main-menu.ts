@@ -11,7 +11,7 @@ import {
 } from "../simulation/character-registry";
 import { newCharacter } from "../simulation/new-character";
 import { controllerInput as hub } from "./controller-input";
-import { installControllerSettings } from "./controller-settings";
+import { installPlayerSettings } from "./player-settings";
 import {
   CHARACTER_CLASSES,
   type ClassId,
@@ -49,7 +49,7 @@ export async function startMainMenu(entryError?: string): Promise<void> {
   <dialog id="menu-confirm-dialog" aria-labelledby="menu-confirm-title"><h2 id="menu-confirm-title">Begin this journey?</h2><p id="menu-confirm-detail"></p><p>Begin at level 1 in Ashen Refuge with a separate inventory, stash and campaign.</p><p data-menu-message role="status"></p><div class="menu-actions"><button id="menu-create-confirm">Confirm creation</button><button data-menu-back>Back</button></div></dialog>
   <dialog id="menu-delete-dialog" aria-labelledby="menu-delete-title"><h2 id="menu-delete-title">Delete character?</h2><p id="menu-delete-detail"></p><p>This removes only this character from selection. A recovery archive is retained locally. Other characters are untouched.</p><p data-menu-message role="status"></p><div class="menu-actions"><button data-menu-back>Keep character</button><button id="menu-delete-confirm">Confirm deletion</button></div></dialog>
   <dialog id="menu-legacy-dialog" aria-labelledby="menu-legacy-title"><h2 id="menu-legacy-title">Bring your saved adventure</h2><p id="menu-legacy-detail"></p><p>Import a validated copy into its own character slot. Original save and recovery records remain intact. Existing class, items and campaign are preserved.</p><p data-menu-message role="status"></p><div class="menu-actions"><button id="menu-migrate">Import and Play Legacy Adventurer</button><button data-menu-back>Back</button></div></dialog>
-  <dialog id="menu-settings-dialog" aria-labelledby="menu-settings-title"><h2 id="menu-settings-title">Settings</h2><button data-menu-back>Back to Main Menu</button><section id="controller-settings-host"></section></dialog>`;
+  <dialog id="menu-settings-dialog" aria-labelledby="menu-settings-title"><h2 id="menu-settings-title">Settings</h2><button data-menu-back>Back to Main Menu</button><section id="player-settings-host"></section></dialog>`;
   document.title = "Hollowbane · Main Menu";
   const button = (id: string) =>
     root.querySelector<HTMLButtonElement>(`#${id}`)!;
@@ -135,12 +135,12 @@ export async function startMainMenu(entryError?: string): Promise<void> {
       root.setAttribute("aria-busy", "false");
     }
   };
-  let settingsInstalled = false;
+  let settingsView: ReturnType<typeof installPlayerSettings> | null = null;
   button("menu-settings").onclick = () => {
-    if (!settingsInstalled) {
-      installControllerSettings();
-      settingsInstalled = true;
-    }
+    settingsView ??= installPlayerSettings(
+      root.querySelector("#player-settings-host")!,
+    );
+    settingsView.refresh();
     show(settings);
   };
   const updateSelection = () => {
@@ -532,6 +532,7 @@ export async function startMainMenu(entryError?: string): Promise<void> {
     () => {
       disposed = true;
       store.close();
+      settingsView?.dispose();
       abort.abort();
       cancelAnimationFrame(frame);
       hub.clear();

@@ -316,7 +316,11 @@ export function installControllerUI(): void {
           : "Enter: Choose · Escape: Back · Tab: Navigate";
       menu.querySelector("#controller-prompts")!.textContent = menuPrompts;
       const playerPrompts = document.querySelector("#player-pause-prompts");
-      if (playerPrompts) playerPrompts.textContent = menuPrompts;
+      if (playerPrompts)
+        playerPrompts.textContent =
+          playerPrompts.closest("dialog")?.getAttribute("aria-busy") === "true"
+            ? "Saving… Please wait."
+            : menuPrompts;
       const live = document.querySelector("#controller-live");
       if (live)
         live.textContent = JSON.stringify(window.hollowbaneInput, null, 2);
