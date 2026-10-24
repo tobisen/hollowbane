@@ -1,3 +1,10 @@
+## M1-C character experience candidate — release pending (2026-10-24)
+
+- User authorizes sequential M1-C/M1-D/M2-A/M2-B/M2-C/M3 through final review, with each exact CI/Pages/hosted gate before the next deliverable. This supersedes the historical M1-B stop. M1-B21f0f4863f7490c93703b1d52a70f54952dec0f5 / CI40081698959 and live main rechecked before work.
+- DBL-210/004: named permanent-class creation/preview/confirmation, eight-slot selection, named archived deletion, recent Continue, explicit retained legacy import/recovery, immutable per-owner gameplay/autosave CAS and developer-option rejection. Save formats, resource restart policy, fullscreen/context handling, Phaser4.2.1 and unrelated local documentation edits preserved.
+- Local19 focused units and34 unique Chromium storage/menu/session cases pass; strict TypeScript/relevant lint/format/build pass. Desktop/narrow/ultrawide screenshots reviewed; cramped empty labels corrected. Failed-write injection/duplicate confirmation and two-tab stale-save cases pass. No physical-controller, new raster artwork or full local regression claim. Emblems/background remain tracked M1-D placeholders.
+- Full classifier dry-run required. Commit/push and exact CI/Pages/sealed-byte/hosted verification are next; M1-C release not yet accepted. Do not start M1-D until acceptance. Detailed contracts/tests/failures/continuation docs/menu/characters.md. Last accepted deployed SHA remains21f0f48. Entire six-hour assignment remains INCOMPLETE.
+
 ## M1-B storage foundation candidate — release pending (2026-10-24)
 
 - Scoped DBL-210 only: eight stable UUID slots, version1 metadata registry, full per-character snapshots, CAS revisions and atomic creation/update/deletion/recovery/activation. Original item/save formats and local stash ownership preserved. No new character UI, art, pause, Save & Exit or fullscreen/context changes; Phaser4.2.1 retained.

@@ -123,3 +123,12 @@ Sixteen focused unit and21 affected browser cases, TypeScript/relevant lint,
 formatting and build pass. Full CI/Pages/independent hosted verification remain
 pending for this candidate. Last verified deployed SHA remains `2246206`.
 Stop after M1-B release verification; do not start M1-C or M2 in this continuation.
+
+## M1-C continuation — October24
+
+The new six-hour request authorizes sequential M1-C, M1-D, M2-A, M2-B, M2-C and
+M3 through final player-experience review. This supersedes the earlier M1-B stop;
+each deliverable still requires exact CI/Pages/hosted acceptance before the next.
+Current M1-C candidate/contracts and retained evidence: [characters.md](characters.md).
+Original requirement parents remain partial; no Act2. Settings integration is
+M2-C, separate from awaited Save & Exit in M2-B. No final artwork is claimed yet.

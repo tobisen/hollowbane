@@ -29,6 +29,7 @@ import { AREA_IDS, type AreaId } from "../simulation/world";
 import { layoutFingerprint } from "../simulation/world-layout";
 import { findPath as worldPath } from "../world/navigation";
 import { WorldSession } from "../simulation/world-session";
+import { CharacterCheckpoint } from "./character-checkpoint";
 import { EXPEDITION_REWARD } from "../simulation/world-expedition";
 import { validateSession } from "../simulation/inventory-world";
 import { commandCombat as stopCombat } from "../simulation/combat-targeting";
@@ -715,6 +716,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
           }),
           itemLab,
           testStorage,
+          query.has("character")
+            ? new CharacterCheckpoint(query.get("character")!)
+            : undefined,
         );
       controllerInput.movementKeys = new Set([
         "KeyW",

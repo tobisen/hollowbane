@@ -13,7 +13,10 @@ import {
   type GridDirection,
 } from "../simulation/inventory-navigation";
 import type { InventoryRuntime } from "./inventory-runtime";
-import { InventoryStorage } from "./inventory-storage";
+import {
+  InventoryStorage,
+  type InventoryCheckpoint,
+} from "./inventory-storage";
 import { controllerInput as hub } from "./controller-input";
 import { actionPrompt } from "../simulation/prompts";
 import {
@@ -78,7 +81,7 @@ function icon(item: GeneratedItem): string {
 }
 export class InventoryView {
   readonly dialog: HTMLDialogElement;
-  private storage: InventoryStorage;
+  private storage: InventoryCheckpoint;
   private characterPanel: CharacterPanel;
   private skillPanel: SkillTreePanel;
   private selected: string | null = null;
@@ -120,11 +123,15 @@ export class InventoryView {
     private player: () => { position: Point; alive: boolean; tick: number },
     laboratory = false,
     storageName?: string,
+    checkpoint?: InventoryCheckpoint,
   ) {
-    this.storage = new InventoryStorage(
-      nav,
-      storageName ?? (laboratory ? "hollowbane-l3-item-laboratory" : undefined),
-    );
+    this.storage =
+      checkpoint ??
+      new InventoryStorage(
+        nav,
+        storageName ??
+          (laboratory ? "hollowbane-l3-item-laboratory" : undefined),
+      );
     root.insertAdjacentHTML(
       "beforeend",
       '<button id="inventory-open" class="inventory-open">Inventory · V / View</button>',
@@ -136,8 +143,16 @@ export class InventoryView {
     this.dialog.id = "inventory-dialog";
     this.dialog.setAttribute("aria-labelledby", "inventory-title");
     this.dialog.innerHTML = `<header><p>HOLLOWBANE / L2</p><h2 id="inventory-title">The Wayfarer’s Kit</h2><button id="inventory-close" aria-label="Close inventory">Close ×</button></header><p id="inventory-prompts"></p><div class="inventory-layout"><section aria-label="Equipment"><h3>Equipment</h3><div id="inventory-gear"></div><output id="inventory-stats"></output></section><section aria-label="Backpack"><h3>Backpack <small>10 × 4 · fixed footprints</small></h3><div id="inventory-grid"></div><p id="inventory-held">Select an item to inspect or move.</p></section><section class="inventory-inspector" aria-label="Item inspection"><h3 id="inventory-name">No item selected</h3><pre id="inventory-details"></pre><pre id="inventory-compare"></pre><div class="inventory-actions"><button id="inventory-take">Select / carry</button><button id="inventory-equip">Equip</button><button id="inventory-identify">Identify</button><button id="inventory-drop">Drop nearby</button><button id="inventory-cancel">Cancel selection</button></div></section></div><footer><p id="inventory-status" role="status"></p><button id="inventory-save">Save now</button><button id="inventory-recover" hidden>Recover previous checkpoint</button><button id="inventory-export">Export snapshot</button><label>Import character snapshot <input id="inventory-import" type="file" accept="application/json,.json"></label><p>Progression, attributes, items and loot stream are saved. Combat, position and current resources restart. An L1 item archive is not a character save.</p></footer>`;
+    if (checkpoint) {
+      const link = document.createElement("a");
+      link.href = "./";
+      link.hidden = true;
+      link.dataset.characterReturn = "true";
+      link.textContent = "Return to character selection";
+      this.dialog.querySelector("footer")!.append(link);
+    }
     if (nav.logicalMap)
-      this.dialog.querySelector("footer p:last-child")!.textContent =
+      this.dialog.querySelector("footer > p:last-of-type")!.textContent =
         "World checkpoints restore area, position, progression, items and loot together. Combat and current resources restart.";
     if (loot.contentVersion >= 4)
       this.dialog.querySelector("header p")!.textContent = "HOLLOWBANE / L3";
@@ -378,9 +393,16 @@ export class InventoryView {
         this.storage.close();
         return;
       }
-      if (result.kind === "valid") this.runtime.restore(result.session);
+      if (result.kind === "valid") {
+        this.runtime.restore(result.session);
+        await this.storage.accepted?.();
+        if (this.disposed) {
+          this.storage.close();
+          return;
+        }
+      }
       if (result.kind === "invalid" || result.kind === "recoverable") {
-        this.ready = true;
+        this.ready = !this.storage.accepted;
         this.message(
           `${result.error}. Original retained. ${result.kind === "recoverable" ? "Recovering the previous checkpoint may omit later changes; use the explicit recovery button." : "No valid backup. Export current session; stored original is retained."}`,
         );
@@ -398,9 +420,13 @@ export class InventoryView {
       }
     } catch (e) {
       this.storage.lock();
-      this.ready = true;
+      this.ready = !this.storage.accepted;
       this.message(`${String(e)}. Session usable; export to retain items.`);
     }
+    const characterReturn = this.dialog.querySelector<HTMLAnchorElement>(
+      "[data-character-return]",
+    );
+    if (characterReturn) characterReturn.hidden = this.ready;
     this.render();
   }
   private async recover() {
@@ -408,7 +434,12 @@ export class InventoryView {
       const s = await this.storage.recover();
       if (this.disposed) return;
       this.runtime.restore(s);
+      await this.storage.accepted?.();
       this.ready = true;
+      const characterReturn = this.dialog.querySelector<HTMLAnchorElement>(
+        "[data-character-return]",
+      );
+      if (characterReturn) characterReturn.hidden = true;
       this.dialog.querySelector<HTMLButtonElement>(
         "#inventory-recover",
       )!.hidden = true;

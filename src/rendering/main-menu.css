@@ -134,3 +134,104 @@ main.main-menu {
     margin-bottom: 20px;
   }
 }
+.main-menu .menu-actions,
+.main-menu .menu-classes {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-block: 20px;
+}
+.main-menu .menu-slots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.main-menu .menu-slot {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 4px 12px;
+  padding: 16px;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.main-menu .menu-slot > :not(.menu-class-mark) {
+  grid-column: 2;
+}
+.main-menu .menu-slot small {
+  color: #b0b6ad;
+  font-size: 11px;
+}
+.main-menu .menu-slot[aria-pressed="true"],
+.main-menu [data-class][aria-pressed="true"] {
+  background: #36372d;
+  border-color: #e6bb79;
+  box-shadow: inset 3px 0 #e6bb79;
+}
+.main-menu .menu-class-mark {
+  grid-row: 1 / span 3;
+  font-size: 32px;
+  color: #d9b275;
+  align-self: center;
+}
+.main-menu #menu-class-preview {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  border-block: 1px solid #796444;
+  padding-block: 20px;
+}
+.main-menu .menu-preview-mark {
+  font-size: 90px;
+  color: #d9b275;
+  width: 120px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.main-menu .menu-attributes {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.main-menu .menu-attributes dt {
+  text-transform: capitalize;
+  font: 12px system-ui;
+}
+.main-menu .menu-attributes dd {
+  margin: 6px 0;
+  font-size: 22px;
+}
+.main-menu dialog p {
+  line-height: 1.6;
+}
+.main-menu [data-menu-message]:not(:empty) {
+  border-left: 2px solid #d9b275;
+  padding-left: 12px;
+}
+.main-menu #menu-name {
+  width: 100%;
+  padding: 10px;
+  color: #e8d9bb;
+  background: #081117;
+  border: 1px solid #796444;
+  font:
+    18px Georgia,
+    serif;
+}
+@media (max-width: 600px) {
+  .main-menu .menu-slots {
+    grid-template-columns: 1fr;
+  }
+  .main-menu .menu-preview-mark {
+    font-size: 56px;
+    width: 60px;
+  }
+  .main-menu #menu-class-preview {
+    gap: 16px;
+  }
+}
+
+.main-menu .menu-slot-empty {
+  display: flex;
+  align-items: center;
+  min-height: 88px;
+}

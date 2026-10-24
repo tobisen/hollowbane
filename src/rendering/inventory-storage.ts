@@ -10,6 +10,14 @@ interface StoredSnapshot {
   text: string;
 }
 export type StorageLoad = SnapshotPair & { revision: number };
+export interface InventoryCheckpoint {
+  load(): Promise<StorageLoad>;
+  save(session: InventorySession): Promise<number>;
+  recover(): Promise<InventorySession>;
+  accepted?(): Promise<void>;
+  lock(): void;
+  close(): void;
+}
 function stored(
   value: unknown,
   recoverMalformedText = false,

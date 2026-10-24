@@ -64,7 +64,7 @@ async function saved(page: Page) {
   });
 }
 
-test("fresh title screen supports keyboard, settings return and new adventure without writing a save", async ({
+test("fresh title screen supports keyboard, settings return and character setup without writing a save", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -90,11 +90,10 @@ test("fresh title screen supports keyboard, settings return and new adventure wi
   expect(await saved(page)).toEqual([]);
   await page.screenshot({ path: "test-results/m1-a-desktop.png" });
   await page.getByRole("button", { name: "New Game" }).click();
-  await expect(page).toHaveURL(/\?world=1$/);
-  await expect(page.locator("html")).toHaveAttribute(
-    "data-combat-ready",
-    "true",
-  );
+  await expect(page.locator("#menu-create-dialog")).toBeVisible();
+  expect(await saved(page)).toEqual([]);
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#menu-create-dialog")).not.toBeVisible();
   expect(errors).toEqual([]);
 });
 
@@ -117,22 +116,28 @@ test("validated legacy selection and continue preserve exact item identity and r
   await expect(
     page.getByRole("button", { name: "Continue Game" }),
   ).toBeEnabled();
-  await expect(page.getByRole("button", { name: "New Game" })).toBeHidden();
-  await page.getByRole("button", { name: "Load Character" }).click();
-  await expect(page.locator("#menu-character-detail")).toHaveText(
+  await expect(page.getByRole("button", { name: "New Game" })).toBeVisible();
+  await page.getByRole("button", { name: "Continue Game" }).click();
+  await expect(page.locator("#menu-legacy-detail")).toHaveText(
     "Adventurer · Level 12",
   );
   await page.getByRole("button", { name: "Back", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "Load Character" }),
+    page.getByRole("button", { name: "Continue Game" }),
   ).toBeFocused();
   expect(await saved(page)).toEqual(before);
   await page.getByRole("button", { name: "Continue Game" }).click();
-  await expect(page).toHaveURL(/\?world=1$/);
+  await page
+    .getByRole("button", { name: "Import and Play Legacy Adventurer" })
+    .click();
+  await expect(page).toHaveURL(
+    /\?world=1&character=00000000-0000-4000-8000-000000000001$/,
+  );
   await expect(page.locator("html")).toHaveAttribute(
     "data-combat-ready",
     "true",
   );
+  expect(await saved(page)).toEqual(before);
   await expect(
     page.locator('#inventory-grid button[data-focus="cell-0-0"]'),
   ).toHaveAttribute("data-item", session.character.grid.items[0]!.item.id);
