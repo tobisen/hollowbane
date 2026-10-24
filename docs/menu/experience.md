@@ -27,14 +27,16 @@ isolate these before creating real slots. Do not claim this isolation is finishe
 
 ## Release sequence
 
-| Gate                   | Scope                                                                                                                  | State                |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| M1-A / DBL-004         | Root title, navigation, validated legacy entry, focus/error/loading states                                             | Accepted2246206      |
-| M1-B / DBL-210         | Eight stable-ID IndexedDB slots, metadata/CAS transactions, validated idempotent legacy migration, developer isolation | Local candidate      |
-| M1-C / DBL-004/112/210 | Named class creation, preview, selection/deletion, successful activation/last played                                   | Pending M1-B release |
-| M1-D / DBL-023/026/028 | Original background/consistent class portraits, manifest and final UI polish                                           | Pending M1-C release |
-| M2-A / DBL-004         | Semantic pause/resume lifecycle and responsive UI                                                                      | Pending M1-D release |
-| M2-B / DBL-210/004     | Awaited Save & Exit and complete existing settings integration                                                         | Pending M2-A release |
+| Gate                   | Scope                                                  | State                      |
+| ---------------------- | ------------------------------------------------------ | -------------------------- |
+| M1-A / DBL-004         | Root title and safe legacy entry                       | Accepted2246206            |
+| M1-B / DBL-210         | Eight atomic UUID slots and retained migration         | Accepted21f0f48            |
+| M1-C / DBL-004/112/210 | Named classes, selection/deletion and owner activation | Accepted9e928a7            |
+| M1-D / DBL-023/026/028 | Original sanctuary/portraits and visual polish         | Accepted92df8c5            |
+| M2-A / DBL-004         | Real pause/resume and modal-aware input                | Acceptedbb045d9            |
+| M2-B / DBL-210/004     | Awaited full-owner Save & Exit                         | Acceptedeca7b7d            |
+| M2-C / DBL-208/004     | Shared graphics/audio/input Settings                   | Accepteddd45ecc            |
+| M3 / DBL-004/208/210   | Final Full player-experience review                    | Candidate; release pending |
 
 Each gate requires local relevant/static verification, commit/push, automatically
 required CI tier, exact Pages artifact/hosted verification and recorded SHA before
@@ -166,3 +168,12 @@ Shared graphics/effects sound/keyboard/controller Settings and existing fullscre
 interface are locally verified in [settings.md](settings.md). Music is unavailable;
 broader original settings parent remains partial. Exact release gate precedes M3
 final Full player-experience review and its stopping gate. No Act2.
+
+## M2-C accepted / final M3 candidate — October24
+
+M2-C `dd45ecc` / Full40117235307, Pages, all42 public files and seven hosted cases
+accepted; [settings.md](settings.md). Two final actual UI/three-owner scenarios pass
+locally with static/build and decoded screenshot review. Final evidence, prior
+gates, fixture boundaries and explicit Full milestone dispatch are in
+[milestone.md](milestone.md). Final exact Full/Pages/hosted acceptance remains
+pending. Stop at M3 quality review afterward; human approval is false. No Act2.

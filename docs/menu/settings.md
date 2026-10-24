@@ -59,3 +59,32 @@ exact required CI/Pages, sealed hosted byte verification and focused hosted sett
 pause/exit/fullscreen smoke must pass before M3. Then complete final new/returning/
 multiple-character/legacy/developer Full experience review and stop at its quality
 gate. No Act2; preserve unrelated local documentation and original partial parents.
+
+## Exact publication checkpoint
+
+Candidate `dd45ecc14de327b3b455e7b11eadf1dbc6e793ad` committed/pushed. Exact
+[CI40117235307](https://github.com/tobisen/hollowbane/actions/runs/40117235307)
+is running; required Full/Pages/hosted acceptance pending. Sealed artifact destination
+`/private/tmp/hollowbane-m2-c-dd45ecc`; compare its full SHA/all files with local
+tested dist and actual hosted bytes. Then hosted player-settings/player-pause/
+player-exit plus existing native fullscreen Escape (seven), review settings captures
+and record acceptance before M3. Last accepted deployment `eca7b7d`. Entire
+assignment remains incomplete; no new deliverable begins with pending checks.
+
+The first local watcher exited on a transient GitHub jobs-endpoint HTTP502; the
+run itself remained in progress and the artifact endpoint worked. Watch restarted;
+this was an API observation failure, not a failed test or accepted release.
+
+## Accepted release — October24
+
+Verified deployed SHA `dd45ecc14de327b3b455e7b11eadf1dbc6e793ad`. Exact
+[Full CI40117235307](https://github.com/tobisen/hollowbane/actions/runs/40117235307)
+passes units/tooling/all four Chromium shards/15 compatibility, verify, Pages,
+hosted smoke and Release acceptance. All42 public files independently match the
+sealed artifact. Seven hosted settings/pause/exit/native-fullscreen scenarios
+pass50.2s, zero skips/flaky. Hosted settings/keyboard screenshots reviewed; live
+main matches. Initial transient jobs API502 did not fail the CI run.
+
+M2-C is technically released. Continue authorized M3 final Full experience review
+and stop at its quality gate. Music, broader original settings/art/hardware
+follow-ups remain open. Machine evidence `/private/tmp/hollowbane-m2-c-release.json`.
