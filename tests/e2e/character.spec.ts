@@ -49,6 +49,10 @@ test("funded allocation, duplicate-click protection and IndexedDB progression su
   await page.goto("./?inventory=1&training=1");
   await expect(page.locator("#inventory-dialog")).not.toBeVisible();
   await page.locator("#inventory-open").click();
+  // Hold the normal autosave until after the rejected import, reproducing the
+  // older successful write overwriting the newer validation notice.
+  await page.clock.install();
+  await page.clock.pauseAt(Date.now() + 1000);
   await page.locator("#inventory-import").setInputFiles({
     name: "character.json",
     mimeType: "application/json",
@@ -72,7 +76,44 @@ test("funded allocation, duplicate-click protection and IndexedDB progression su
   await expect(page.locator("#inventory-status")).toContainText(
     "Existing session retained",
   );
+  await page.clock.runFor(300);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          new Promise<number>((resolve, reject) => {
+            const request = indexedDB.open("hollowbane-character-v1", 1);
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+              const db = request.result,
+                tx = db.transaction("snapshots", "readonly"),
+                current = tx.objectStore("snapshots").get("current");
+              tx.onabort = () => {
+                db.close();
+                reject(tx.error);
+              };
+              tx.oncomplete = () => {
+                db.close();
+                resolve(
+                  current.result
+                    ? JSON.parse(current.result.text).body.progression
+                        .attributes.available
+                    : -1,
+                );
+              };
+            };
+          }),
+      ),
+    )
+    .toBe(3);
+  await expect(page.locator("#inventory-status")).toContainText(
+    "Existing session retained",
+  );
   await expect(page.locator("#character-points")).toHaveText("3");
+  await page.locator("#inventory-status").screenshot({
+    path: "test-results/character-rejected-import.png",
+  });
+  await page.clock.resume();
   await page.locator("#inventory-save").click();
   await expect(page.locator("#inventory-status")).toHaveText(
     "Character checkpoint saved locally.",

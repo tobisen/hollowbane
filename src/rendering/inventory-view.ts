@@ -95,6 +95,7 @@ export class InventoryView {
   }
   private inFlight: Promise<boolean> | null = null;
   private dirty = false;
+  private importRejected = false;
   private timer = 0;
   private disposed = false;
   private drag: {
@@ -254,6 +255,7 @@ export class InventoryView {
       }
     });
     button("inventory-save", () => {
+      this.importRejected = false;
       this.dirty = true;
       void this.flush();
     });
@@ -469,11 +471,13 @@ export class InventoryView {
       this.changed();
       this.message("Validated snapshot imported; saving checkpoint…");
     } catch (e) {
+      this.importRejected = true;
       this.message(`${String(e)}. Existing session retained.`);
     }
   }
   changed(): void {
     if (!this.ready || this.disposed) return;
+    this.importRejected = false;
     this.dirty = true;
     this.message("Unsaved changes · saving checkpoint…");
     window.clearTimeout(this.timer);
@@ -491,12 +495,15 @@ export class InventoryView {
   }
   private async writeCheckpoint(): Promise<boolean> {
     this.dirty = false;
-    this.message("Saving character checkpoint…");
+    if (!this.importRejected) this.message("Saving character checkpoint…");
     let saved = false;
     try {
       await this.storage.save(this.runtime.session());
       saved = true;
-      this.message("Character checkpoint saved locally.");
+      // An older autosave may finish after a rejected import. Preserve the
+      // actionable validation notice until a new edit or explicit Save now.
+      if (!this.importRejected)
+        this.message("Character checkpoint saved locally.");
     } catch (e) {
       this.dirty = true;
       this.message(

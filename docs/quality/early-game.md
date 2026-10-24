@@ -82,3 +82,47 @@ Last accepted deployment before this increment:
 new hosted verification and user quality acceptance are not yet claimed.
 Dedicated art/animation, original recorded audio/ambience, physical controllers
 and native/reference GPU performance remain open.
+
+## Exact publication checkpoint
+
+Candidate `0939c1dd490b51cbd41d2be8fe22491b0cb80a6e` committed and pushed.
+[CI40142853050](https://github.com/tobisen/hollowbane/actions/runs/40142853050)
+was in progress at the soft-session checkpoint. The unchanged policy dry-run
+requires Full because shared combat/AI public contracts affect 71 unit files;
+Integration cannot safely replace that requirement. CI completion, Pages, exact
+sealed artifact/public bytes and relevant hosted smoke are pending. Resume those
+checks before another increment. Final new-character spell/mana/range guidance
+and B2/B3 verification are still required before Q3. No visual/audio assets were
+created in this increment. Post-push evidence remains local to preserve the
+candidate deployment identity; all implementation/tests are committed.
+
+## Release blocker: rejected-import feedback (DBL-210)
+
+CI40142853050's Chromium shard 3 reports 45 passed and one failure in the existing
+funded-allocation/import/reload scenario. Fast, complete units/tooling, 15 required
+compatibility cases and Chromium shard 2 passed; shards 1/4 were still pending at
+inspection. No release was accepted. The sealed full SHA and all 42 production
+files matched the locally tested build before the correction. Reports, trace and
+screenshot remain at `/private/tmp/hollowbane-b1-failure`.
+
+The trace/source identify a pending valid autosave overwriting a newer rejected
+import notice. The actual character keeps the valid allocated state. The existing
+case now controls browser time to run the 250ms autosave after the invalid import,
+then verifies the real IndexedDB checkpoint retains three available points and
+the validation notice stays visible. The old production build fails this stronger
+check (8.9s), retaining diagnostics at `/private/tmp/hollowbane-b1-import-before`.
+
+The focused correction preserves that notice through background save progress
+and success until the next edit or explicit Save now. Transactions, serialization,
+validation, failure reporting and forest mechanics are unchanged. All eight
+character/storage/exit browser cases pass in 1.0m, including atomic recovery,
+legacy upgrade, independent owners and failed-exit retry. Existing assertion
+values and deadlines are retained. TypeScript, affected ESLint/format and build
+pass; the preserved error notice capture was reviewed. No artifacts are committed.
+
+Publish this correction through the existing classifier, then require the new exact
+CI/Pages/artifact/hosted gate before starter skill implementation. The latest user
+request names remaining work B2 starter skills/resources, B3 contextual onboarding,
+B4 opening quality, followed by Q3 only after those releases pass. All remain
+incomplete. Fresh level-one empty skills/bar is confirmed; no speculative resource
+or progression changes were made while the release gate remained open.
