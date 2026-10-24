@@ -1,8 +1,8 @@
-## Starter equipment fix verified locally — publication next (2026-10-25)
+## Starter unit budget repair verified — corrected publication next (2026-10-25)
 
-- User authorizes only this focused DBL-113/210 repair atop verified414ee55. Fresh Warrior/Sorcerer/Ranger now equip Worn Shortsword/Apprentice Staff/Hunter's Bow once before atomic creation. Deterministic normal content9 reuses base types/icons, level-one requirements, shared derived stats and existing attacks; versions2–8 and unarmed existing saves remain unchanged. No recovery grants or new mechanics.
-- 46 focused units across10 files, six Chromium cases (three-class creation/exit/Continue/reload, real fresh Ranger forest damage, existing owner isolation, preview), TypeScript/affected lint/format/build pass. Equipped and combat screenshots reviewed. No physical hardware or full campaign claim.
-- Commit/push exact candidate, follow unchanged classifier-required Full for shared save/content contracts, verify exact CI/Pages/hosted starters and record SHA before release completion. Stop after this fix. Preserve all pre-existing local documentation edits. Evidence docs/menu/characters.md; final publication pending.
+- Focused DBL-113/210 starter repair only; no new phase. First6b2f319 / CI40139413066 failed one combined new-character unit at5000ms (5047ms);549 others, Fast smoke and15 compatibility passed. Never accepted/published. Remaining browser jobs may be superseded by the corrected push; do not count incomplete cases.
+- Same assertions split into10 bounded independent unit cases; all pass11.2s with unchanged5000ms deadlines. 52 distinct focused units across10 files, six Chromium/visual cases, TypeScript/affected lint/format/build verified. Application bytes unchanged from sealed42-file6b2f319 artifact. No runtime/CI policy change in this correction.
+- Commit/push this correction, then require exact automatic classifier-selected CI/Pages/hosted starter creation/combat acceptance and record SHA. Stop after this fix. Preserve all pre-existing local edits. Evidence docs/menu/characters.md and /private/tmp/hollowbane-starter-work; publication still pending.
 
 ## M3 bounded-case repair verified — new exact Full gate next (2026-10-24)
 

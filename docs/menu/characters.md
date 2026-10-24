@@ -19,7 +19,7 @@ including stash/other-area storage. Existing sale/quest ID validation accepts9.
 No combat rules or resource refill policy changed. The menu preview names the
 equipped weapon; inventory reuses the original base-specific SVG icons unchanged.
 
-Focused verification:46 distinct unit cases across10 files pass, including all
+Focused verification:52 distinct unit cases across10 files pass, including all
 three classes, requirements, derived stats, tamper rejection, repeated reload,
 unequipped/sold starter persistence, unchanged unarmed saves and legacy replay.
 Strict TypeScript, affected ESLint/Prettier and production build pass. Six focused
@@ -35,6 +35,13 @@ The unchanged CI classifier requires Full for shared save/content contracts.
 No policy override or local full campaign/distribution run. Exact CI, Pages and
 hosted starter creation/combat verification are required before release acceptance.
 Stop after this repair; no next-phase authorization.
+
+First candidate `6b2f319` / CI40139413066 failed one combined new-character unit
+at the unchanged5000ms budget (5047ms);549 other units passed. Its Fast smoke and
+15 cross-browser contracts passed. It is not an accepted release. The same unit
+assertions are now split into10 independent creation/stats, repeated reload and
+sale/legacy cases, all passing locally11.2s total. No application bytes, assertion
+deadlines or release policy changed. A new exact-commit CI/Pages gate is required.
 
 User-authorized October24: continue sequentially through M1-C, M1-D, M2-A,
 M2-B, M2-C and M3, with an exact CI/Pages/hosted gate between deliverables.

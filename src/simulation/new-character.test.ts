@@ -75,6 +75,18 @@ for (const definition of CHARACTER_CLASSES) {
       definition.id === "ranger" ? "projectile" : "melee",
     );
     expect(armed.range).toBe(definition.id === "ranger" ? 6 : 1.05);
+    expect(first.exploration).toMatchObject({
+      area: "ashen-refuge",
+      seed: 42,
+      containers: { gold: 0, opened: [] },
+    });
+    first.character.grid.columns = 1;
+    expect(second.character.grid.columns).toBe(10);
+  });
+
+  test(`${definition.id} reloads repeatedly without duplicating or re-equipping its starter`, () => {
+    const first = newCharacter(definition.id);
+    const weapon = first.character.equipment.main!;
     let restored = deserializeCharacter(serializeCharacter(first));
     for (let i = 0; i < 3; i++)
       restored = deserializeCharacter(serializeCharacter(restored));
@@ -86,6 +98,14 @@ for (const definition of CHARACTER_CLASSES) {
     const loaded = deserializeCharacter(serializeCharacter(restored));
     expect(loaded.character.equipment).toEqual({});
     expect(ownedItems(loaded.character)).toEqual([weapon]);
+  });
+
+  test(`${definition.id} retains a sold starter ledger and never grants gear to an existing unarmed save`, () => {
+    const loaded = newCharacter(definition.id);
+    const weapon = loaded.character.equipment.main!;
+    const unequipped = unequipItem(loaded.character, "main");
+    if (!unequipped.ok) throw Error(unequipped.reason);
+    loaded.character = unequipped.value;
     loaded.exploration!.position = {
       ...CAMP_NPCS.find((npc) => npc.id === "orren-thale")!.position,
     };
@@ -105,13 +125,6 @@ for (const definition of CHARACTER_CLASSES) {
     const oldText = serializeCharacter(oldUnarmed);
     expect(serializeCharacter(deserializeCharacter(oldText))).toBe(oldText);
     expect(deserializeCharacter(oldText).character.equipment).toEqual({});
-    expect(first.exploration).toMatchObject({
-      area: "ashen-refuge",
-      seed: 42,
-      containers: { gold: 0, opened: [] },
-    });
-    first.character.grid.columns = 1;
-    expect(second.character.grid.columns).toBe(10);
   });
 }
 
