@@ -102,3 +102,40 @@ now pass15.1s; static/build/format pass. Explicit Full40119514055 /7f5ee55 was
 cancelled before deployment; its completed unit/compatibility jobs passed, but
 interrupted browser jobs are not passes. No M3 release accepted yet. Commit/push
 the focused correction and require a new exact automatic Full release gate.
+
+## Corrected exact final release checkpoint
+
+Candidate `66df2b6bf579b05a7422c71d43cc5b6999c43326` committed/pushed; exact
+[CI40120254276](https://github.com/tobisen/hollowbane/actions/runs/40120254276)
+is running. The shared adapter correction automatically selects required Full;
+no policy edits/manual duplicate run are needed. Last accepted deployment remains
+`dd45ecc`. Sealed destination `/private/tmp/hollowbane-m3-66df2b6`; verify full SHA/
+all42 local/hosted bytes, then all eight relevant hosted suites listed in STATUS.
+Review final captures and record actual counts/SHA before declaring technical
+completion and stopping at M3 quality review. Original cancelled candidates remain
+historical evidence; no publication acceptance is claimed for them.
+
+## CI case-budget repair — original assertions retained
+
+Corrected runtime66df2b6 / Full40120254276 failed only the two new combined M3
+cases at their normal60s per-case limit. Traces show Warrior/Sorcerer completed,
+then the fresh case reached Ranger; the distinct-owner case completed all three
+saves/deletion and reached its final returning-owner export. No product assertion
+failed before expiry.43 other shard4 cases and all three other shards/units/15
+compatibility passed; Pages/hosted did not deploy. Reports/logs/traces/screenshots
+retained under `/private/tmp/hollowbane-menu-work/m3-ci-*`; both captures reviewed.
+
+Split the same two scenarios into seven bounded serial cases with the same real
+browser/owners and cross-owner canonical baselines. Every original assertion is
+retained (AST-expression audit with formatting normalized); normal per-case and
+poll deadlines/configuration are unchanged. Standard Playwright tracing remains
+in use; an initial redundant tracing-start driver mistake was removed before
+verification and its diagnostics retained separately. All seven pass59.0s total,
+each under12s locally. TypeScript/affected lint/format pass; all42 runtime bytes
+remain identical to the verified66df2b6 build, reused without a redundant build.
+This is a test-only repair, not a new gameplay/persistence change.
+
+Commit/push and explicitly dispatch existing `tier=full` again for the final
+milestone; record any superseded automatic Integration run. Require a new exact
+Full/Pages/sealed-hosted/complete relevant hosted gate before M3 acceptance. Last
+accepted deployment remainsdd45ecc. No interrupted/failed candidate is accepted.

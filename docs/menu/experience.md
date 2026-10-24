@@ -186,3 +186,11 @@ A focused adapter-only rebind/cleanup correction passes the unchanged contract
 plus surface/virtual navigation (three cases15.1s). New automatic Full is required;
 last accepted deployment remainsdd45ecc. See [milestone.md](milestone.md).
 No separate fullscreen/context behavior, gameplay or save-format changes.
+
+## M3 bounded verification repair — October24
+
+Full40120254276 /66df2b6 was blocked by two oversized final test-case budgets,
+not a failed product assertion. Seven bounded serial cases now retain the same
+browser/owners and every original assertion/deadline; all pass59s with static
+checks. Runtime bytes unchanged; a new explicit Full/Pages/hosted gate is required.
+See [milestone.md](milestone.md); no M3 deployment accepted yet.
