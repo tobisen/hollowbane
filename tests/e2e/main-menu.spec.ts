@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { characterApi } from "../fixtures/character-api";
 import { createInventorySession } from "../../src/simulation/inventory-world";
 import { serializeCharacter } from "../../src/simulation/inventory-save";
 import { inventoryItem } from "../../src/simulation/inventory-test-helper";
@@ -235,4 +236,66 @@ test("title and settings fit small and ultrawide windows", async ({ page }) => {
     ).toBe(true);
     await page.screenshot({ path: `test-results/m1-a-${size.width}.png` });
   }
+});
+
+test("inventory-only legacy character retains its original route and never acquires an invented campaign", async ({
+  page,
+}) => {
+  const session = createInventorySession(17);
+  session.character.grid.items.push({
+    item: inventoryItem("ash-blade"),
+    x: 0,
+    y: 0,
+  });
+  await seed(page, serializeCharacter(session));
+  const original = await saved(page);
+  await page.locator("#menu-continue").click();
+  await page
+    .getByRole("button", { name: "Import and Play Legacy Adventurer" })
+    .click();
+  await expect(page).toHaveURL(
+    /\?inventory=1&advanced=1&character=00000000-0000-4000-8000-000000000001$/,
+  );
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  expect(await page.evaluate(() => Boolean(window.hollowbaneWorld))).toBe(
+    false,
+  );
+  await page.locator("#inventory-open").click();
+  await expect(
+    page.locator('#inventory-grid button[data-focus="cell-0-0"]'),
+  ).toHaveAttribute("data-item", session.character.grid.items[0]!.item.id);
+  await page.locator("#inventory-save").click();
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint saved locally.",
+  );
+  expect(await saved(page)).toEqual(original);
+  await characterApi(page);
+  expect(
+    await page.evaluate(async () => {
+      const store = new window.characterStorageModule.CharacterStorage();
+      try {
+        const loaded = await store.load("00000000-0000-4000-8000-000000000001");
+        if (loaded.kind !== "valid") throw Error("Legacy slot invalid");
+        return loaded.session.exploration;
+      } finally {
+        store.close();
+      }
+    }),
+  ).toBeUndefined();
+  await page.goto("?world=1&character=00000000-0000-4000-8000-000000000001");
+  await expect(page.locator("#inventory-status")).toContainText(
+    "inventory route",
+  );
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#inventory-dialog")).toBeVisible();
+
+  await ready(page);
+  await page.locator("#menu-continue").click();
+  await expect(page).toHaveURL(
+    /\?inventory=1&advanced=1&character=00000000-0000-4000-8000-000000000001$/,
+  );
 });

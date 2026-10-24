@@ -264,8 +264,11 @@ test("invalid/developer character links and a missing owner cannot load or overw
   await expect(page.locator("#inventory-status")).toContainText(
     "no longer exists",
   );
+  await expect(page.locator("#inventory-save")).toBeDisabled();
+  await expect(page.locator("#inventory-export")).toBeDisabled();
   await page.keyboard.press("Escape");
   await expect(page.locator("#inventory-dialog")).toBeVisible();
+  await page.screenshot({ path: "test-results/m1-c-blocked-entry.png" });
   expect((await states(page)).saves).toEqual(before.saves);
   await page
     .getByRole("link", { name: "Return to character selection" })

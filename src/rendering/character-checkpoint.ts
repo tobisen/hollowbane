@@ -8,7 +8,10 @@ export class CharacterCheckpoint implements InventoryCheckpoint {
   private store = new CharacterStorage();
   private revision = 0;
   private writable = false;
-  constructor(private readonly id: string) {
+  constructor(
+    private readonly id: string,
+    private readonly world: boolean,
+  ) {
     characterId(id);
   }
   lock(): void {
@@ -22,6 +25,7 @@ export class CharacterCheckpoint implements InventoryCheckpoint {
     this.lock();
     const result = await this.store.load(this.id);
     this.revision = result.metadata.revision;
+    if (result.kind === "valid") this.checkRoute(result.session);
     return { ...result, revision: this.revision };
   }
   /** Called only after the runtime has accepted/prepared the complete snapshot. */
@@ -29,7 +33,14 @@ export class CharacterCheckpoint implements InventoryCheckpoint {
     await this.store.activate(this.id, this.revision);
     this.writable = true;
   }
+  private checkRoute(session: InventorySession): void {
+    if (Boolean(session.exploration) !== this.world)
+      throw Error(
+        `This character requires its ${session.exploration ? "world" : "inventory"} route. Return to character selection`,
+      );
+  }
   async save(session: InventorySession): Promise<number> {
+    this.checkRoute(session);
     if (!this.writable)
       throw Error("Character is not activated; return to character selection");
     const metadata = await this.store.update(this.id, this.revision, session);
@@ -41,6 +52,7 @@ export class CharacterCheckpoint implements InventoryCheckpoint {
     const result = await this.store.recover(this.id, this.revision);
     this.revision = result.metadata.revision;
     if (result.kind !== "valid") throw Error("No validated character backup");
+    this.checkRoute(result.session);
     return result.session;
   }
 }

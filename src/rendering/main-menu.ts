@@ -292,7 +292,10 @@ export async function startMainMenu(entryError?: string): Promise<void> {
     }
     message(`Opening ${loaded.metadata.name}…`);
     hub.clear();
-    location.assign(`?world=1&character=${encodeURIComponent(id)}`);
+    const route = loaded.session.exploration
+      ? "world=1"
+      : "inventory=1&advanced=1";
+    location.assign(`?${route}&character=${encodeURIComponent(id)}`);
   };
   const reviewLegacy = () => {
     if (busy || !legacyAvailable || checkpoint?.kind !== "valid") return;

@@ -717,7 +717,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           itemLab,
           testStorage,
           query.has("character")
-            ? new CharacterCheckpoint(query.get("character")!)
+            ? new CharacterCheckpoint(query.get("character")!, exploring)
             : undefined,
         );
       controllerInput.movementKeys = new Set([

@@ -3,17 +3,23 @@ import { controllerInput } from "./rendering/controller-input";
 controllerInput.start();
 import "./style.css";
 const query = new URLSearchParams(location.search);
-// Slot play accepts only the normal world route. Developer modifiers can never
-// operate on a real character, even when appended to a copied URL.
+// Only the existing world and inventory entry shapes can bind a real owner.
+// Developer modifiers and duplicate parameters fail closed before gameplay.
+const slotModes = [["world"], ["inventory", "advanced"]];
+const slotMode = slotModes.some(
+  (keys) =>
+    keys.every(
+      (key) => query.get(key) === "1" && query.getAll(key).length === 1,
+    ) &&
+    [...query.keys()].every((key) => key === "character" || keys.includes(key)),
+);
 const invalidCharacterRoute =
   query.has("character") &&
   (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(
     query.get("character") ?? "",
   ) ||
-    query.get("world") !== "1" ||
     query.getAll("character").length !== 1 ||
-    query.getAll("world").length !== 1 ||
-    [...query.keys()].some((key) => key !== "character" && key !== "world"));
+    !slotMode);
 if (invalidCharacterRoute) {
   const { startMainMenu } = await import("./rendering/main-menu");
   await startMainMenu(

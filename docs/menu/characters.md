@@ -28,8 +28,11 @@ slots disable further creation. Deletion explicitly names the character, default
 to Keep, archives only that owner through the M1-B transaction and frees a slot.
 No automatic archive eviction or permanent erase is added.
 
-Normal play uses `?world=1&character=UUID`. `CharacterCheckpoint` permanently binds
-one owner, adapting the existing load/save/recovery interface to M1-B operations.
+World characters use `?world=1&character=UUID`; inventory-only legacy characters
+retain `?inventory=1&advanced=1&character=UUID`. Startup rejects a mismatched mode
+before activation or saving, rather than inventing a campaign. `CharacterCheckpoint`
+permanently binds one owner, adapting the existing load/save/recovery interface
+to M1-B operations.
 The runtime prepares/restores the validated full session before activation records
 last played. Revision CAS remains active for every autosave/manual save. Loading,
 creation and listing alone never mark a character played. Duplicate confirmations
@@ -142,3 +145,43 @@ no application/engine/balance/save runtime change or redundant build. The existi
 build's34 files remain the same locally tested/sealed application. Local unique
 browser evidence is now36 cases; focused unit evidence remains19. Replacement
 exact Full/Pages/hosted gate remains mandatory before M1-D.
+
+Replacement test-only candidate `6177d740d5df2678df5131840292947434d46ddb`
+committed/pushed. Exact [CI40102170416](https://github.com/tobisen/hollowbane/actions/runs/40102170416)
+is running. Original40100847783 remains failed, not accepted or deployed. Download
+replacement `release-bundle` to `/private/tmp/hollowbane-m1-c-6177d74`; require
+Full/Pages/all34 hosted bytes/20 hosted menu-session cases before M1-D.
+
+## Inventory-only legacy compatibility correction
+
+A focused audit/reproduction found that the original M1-C world-only handoff
+would introduce a world session for an inventory-only historical character. The
+new regression first failed on6177d74's world URL. The corrected handoff chooses
+the existing route from the validated snapshot's exploration presence, preserving
+M1-A semantics. The slot adapter validates the mode before activation/saves and
+blocks manual wrong-mode URLs. Only the two exact normal route shapes are allowed;
+extra/developer/mixed/duplicate parameters still fail closed. No save schema or
+legacy-source mutation is introduced. Failed entry disables save/export/import/close
+until successful restoration, while explicit recovery/selection remain available.
+
+Cancelled superseded CI40102170416 before publication after establishing the
+compatibility issue. It is not accepted release evidence. Completed checks included
+Fast, Full units/tooling, all15 compatibility cases and Chromium shards2/3, including
+the repaired D08 isolation test; interrupted jobs are not passes. Last accepted
+public build remains21f0f48. Original failure trace/screenshot is retained under
+`/private/tmp/hollowbane-menu-work/inventory-route-failure`.
+
+All21 focused menu/session browser cases pass1.5m, including the new inventory-only
+legacy import/save/reload/Continue/mode-rejection case. Three final blocked-entry/
+legacy/creation reruns pass15.3s; TypeScript/scoped lint/format/production build pass.
+Local unique evidence is now37 browser cases plus19 focused units; unchanged
+M1-B storage and boss regression results are retained, not repeated. Require a new
+exact Full/Pages/34-file hosted verification and21 hosted menu/session cases before
+M1-D. The application bytes changed in this correction;6177d74's sealed build is
+retained for history and cannot stand in for the new candidate.
+
+Final blocked-entry capture exposed the footer below the initial scroll position.
+Failed startup now focuses its visible selection link, bringing the error/actions
+into view. The existing missing-owner/forbidden-mode case passes6.9s with disabled
+save/export controls; final screenshot reviewed. No normal-game return link is
+exposed before awaited Save & Exit.

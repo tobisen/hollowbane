@@ -404,7 +404,7 @@ export class InventoryView {
       if (result.kind === "invalid" || result.kind === "recoverable") {
         this.ready = !this.storage.accepted;
         this.message(
-          `${result.error}. Original retained. ${result.kind === "recoverable" ? "Recovering the previous checkpoint may omit later changes; use the explicit recovery button." : "No valid backup. Export current session; stored original is retained."}`,
+          `${result.error}. Original retained. ${result.kind === "recoverable" ? "Recovering the previous checkpoint may omit later changes; use the explicit recovery button." : this.storage.accepted ? "No valid backup. Return to character selection; stored original is retained." : "No valid backup. Export current session; stored original is retained."}`,
         );
         this.dialog.querySelector<HTMLButtonElement>(
           "#inventory-recover",
@@ -421,12 +421,19 @@ export class InventoryView {
     } catch (e) {
       this.storage.lock();
       this.ready = !this.storage.accepted;
-      this.message(`${String(e)}. Session usable; export to retain items.`);
+      this.message(
+        this.storage.accepted
+          ? `${String(e)}. Stored checkpoint retained. Return to character selection to retry.`
+          : `${String(e)}. Session usable; export to retain items.`,
+      );
     }
     const characterReturn = this.dialog.querySelector<HTMLAnchorElement>(
       "[data-character-return]",
     );
-    if (characterReturn) characterReturn.hidden = this.ready;
+    if (characterReturn) {
+      characterReturn.hidden = this.ready;
+      if (!this.ready) characterReturn.focus();
+    }
     this.render();
   }
   private async recover() {
@@ -693,6 +700,17 @@ ${lines.join("\n")}`;
         !item ||
         (id === "inventory-identify" && !!item.identified) ||
         (id === "inventory-equip" && !this.slotFor(item));
+    if (this.storage.accepted) {
+      for (const id of [
+        "inventory-export",
+        "inventory-save",
+        "inventory-import",
+        "inventory-close",
+      ])
+        this.dialog.querySelector<HTMLButtonElement | HTMLInputElement>(
+          `#${id}`,
+        )!.disabled = !this.ready;
+    }
     this.renderSockets();
     const advanced =
       this.loot.contentVersion >= 4 ||
