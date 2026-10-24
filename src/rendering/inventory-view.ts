@@ -93,7 +93,7 @@ export class InventoryView {
   get worldReady(): boolean {
     return this.ready;
   }
-  private saving = false;
+  private inFlight: Promise<boolean> | null = null;
   private dirty = false;
   private timer = 0;
   private disposed = false;
@@ -481,10 +481,16 @@ export class InventoryView {
       void this.flush();
     }, 250);
   }
-  private async flush() {
-    if (!this.dirty || this.saving || !this.ready || this.disposed) return;
+  private flush(): Promise<boolean> {
+    if (this.inFlight) return this.inFlight;
+    if (!this.dirty || !this.ready || this.disposed)
+      return Promise.resolve(this.ready && !this.disposed && !this.dirty);
+    // Install the promise before capture, including synchronous validation failures.
+    this.inFlight = Promise.resolve().then(() => this.writeCheckpoint());
+    return this.inFlight;
+  }
+  private async writeCheckpoint(): Promise<boolean> {
     this.dirty = false;
-    this.saving = true;
     this.message("Saving character checkpoint…");
     let saved = false;
     try {
@@ -497,8 +503,26 @@ export class InventoryView {
         `${String(e)}. Local items retained; export or retry Save now.`,
       );
     } finally {
-      this.saving = false;
-      if (saved && this.dirty) void this.flush();
+      this.inFlight = null;
+      if (saved && this.dirty && !this.disposed) void this.flush();
+    }
+    return saved;
+  }
+  /** Capture even position-only progress, drain older writes, then confirm this owner as recent. */
+  async persistForExit(): Promise<void> {
+    if (!this.ready || this.disposed)
+      throw Error("Character storage is not ready");
+    window.clearTimeout(this.timer);
+    this.dirty = true;
+    for (;;) {
+      do {
+        if (this.disposed)
+          throw Error("Character session closed before saving completed");
+        if (!(await this.flush())) throw Error(this.status);
+      } while (this.inFlight || this.dirty);
+      await this.storage.accepted?.();
+      if (this.disposed) throw Error("Character session closed before exit");
+      if (!this.inFlight && !this.dirty) return;
     }
   }
   private message(text: string) {

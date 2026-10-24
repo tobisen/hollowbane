@@ -72,3 +72,13 @@
 #player-pause-open {
   min-height: 36px;
 }
+
+.player-menu p {
+  overflow-wrap: anywhere;
+}
+#player-save-status:not(:empty) {
+  padding: 12px;
+  border-left: 2px solid #d9b275;
+  background: #080f1480;
+  font: 13px/1.7 system-ui;
+}

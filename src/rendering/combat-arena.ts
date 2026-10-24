@@ -1198,6 +1198,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               pause.textContent = value ? "Resume" : "Pause";
               pause.setAttribute("aria-pressed", String(value));
             },
+            () => this.inventoryView!.persistForExit(),
           )
         : null;
       if (playerMenu) pause.onclick = () => playerMenu.toggle();

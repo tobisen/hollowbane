@@ -1,3 +1,9 @@
+## M2-B Save & Exit candidate — release pending (2026-10-24)
+
+- DBL-210/004: awaited full runtime checkpoint, drain existing autosaves, confirm immutable owner/recent, then return root. Save & Exit blocks duplicate actions/resume while busy; write failure retains live progress/paused UI and allows retry/Resume/export. Existing atomic storage/CAS/schema/legacy source, resource restart policy, Phaser4.2.1 and fullscreen/context code preserved.
+- 16 focused save/progression/registry units, seven relevant browser cases (two exit, two storage, legacy, two pause), TypeScript/affected lint/format/build pass. Gated production write proves no early success and one double-submit write; injected quota failure leaves originals intact and live allocation exportable; complete canonical snapshot/two-owner/Continue and inventory-only legacy route verified. No physical or genuine campaign-completion claim. Full classifier required; CI/Pages/sealed-byte/hosted gate is next.
+- Prerequisite M2-A bb045d9365eff19e72b8d3d7a1de0ee995fdb8a8 / exact Full40110335417/Pages/all41 public bytes/four hosted cases15.4s accepted before work. Do not begin M2-C until M2-B release acceptance. Then continue authorized M2-C settings and M3 final Full review; no Act2. Entire assignment INCOMPLETE. Evidence docs/menu/exit.md; preserve unrelated local documentation edits.
+
 ## M2-A pause candidate — release pending (2026-10-24)
 
 - Scoped DBL-004 player-session pause dialog: Resume, current controller Settings and disabled Save & Exit pending M2-B. Escape/Menu/Options and mouse/keyboard/virtual-pad navigation reuse semantic routing. Existing inventory/recovery/modal ownership, developer menu, native fullscreen/context behavior and Phaser4.2.1 preserved. Existing scene paused flag freezes actual AI/combat/resources/projectiles/statuses/timers; input/reset/accumulator clear without cancelling committed phase timing.

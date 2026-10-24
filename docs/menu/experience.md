@@ -148,3 +148,12 @@ accepted; [art.md](art.md). Player-session pause and modal-aware semantic contro
 routing are locally verified; exact release gate remains pending in
 [pause.md](pause.md). Awaited Save & Exit remains M2-B; full settings M2-C; final M3
 is the stopping gate. No Act2.
+
+## M2-A accepted / M2-B Save & Exit candidate — October24
+
+M2-A `bb045d9` / Full40110335417, Pages, all41 public files and four hosted cases
+accepted; [pause.md](pause.md). Awaited complete active-owner save/recent activation,
+busy/double-submit safety, failure retention/retry and root/Continue are locally
+verified; exact release gate remains pending in [exit.md](exit.md). Existing
+inventory-only legacy mode and source checkpoint remain preserved. M2-C settings
+begins only after acceptance, then M3 final Full review. No Act2.

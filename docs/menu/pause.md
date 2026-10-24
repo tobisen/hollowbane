@@ -60,3 +60,29 @@ Exact required CI/Pages/sealed-hosted bytes and hosted pause/input verification
 must pass before M2-B. Preserve all unrelated local documentation edits, original
 requirement dependencies and broader partial parents. Continue only through the
 user-authorized M2-B/M2-C/M3 sequence; no Act2.
+
+## Publication checkpoint
+
+Candidate `bb045d9365eff19e72b8d3d7a1de0ee995fdb8a8` committed/pushed. Exact
+[CI40110335417](https://github.com/tobisen/hollowbane/actions/runs/40110335417)
+is running; required Full/Pages/hosted acceptance remains pending. Download the
+sealed `release-bundle` to `/private/tmp/hollowbane-m2-a-bb045d9`, verify full SHA
+and every public byte, then run hosted `player-pause.spec.ts` plus existing
+`controller pause/menu navigation` and `browser Escape exits fullscreen` cases
+(four). Review the hosted paused capture and record acceptance before M2-B.
+Last accepted deployment remains92df8c5. No candidate publication success yet.
+
+## Accepted release — October24
+
+Verified deployed SHA `bb045d9365eff19e72b8d3d7a1de0ee995fdb8a8`. Exact
+[CI40110335417](https://github.com/tobisen/hollowbane/actions/runs/40110335417)
+passed required Full units/tooling/four Chromium shards/all15 compatibility cases,
+verify, Pages, hosted smoke and Release acceptance. Independently matched all41
+public files. All4 hosted player pause/legacy controller/native fullscreen cases
+passed15.4s, zero skipped/flaky; hosted paused screenshot reviewed. HEAD/cached/live
+main agree. No physical-controller or genuine campaign-completion claim.
+
+M2-A is technically released. Continue authorized M2-B awaited Save & Exit, then
+M2-C settings and M3 final Full review, each gated. Entire assignment remains
+incomplete; Save & Exit is not implemented yet. Machine evidence
+`/private/tmp/hollowbane-m2-a-release.json`.

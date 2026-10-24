@@ -8,12 +8,15 @@ export class PlayerMenu {
   private button = document.createElement("button");
   private abort = new AbortController();
   private settingsInstalled = false;
+  private busy = false;
+  private exited = false;
   private home: HTMLElement;
   private settings: HTMLElement;
   constructor(
     root: HTMLElement,
     private ready: () => boolean,
     private paused: (value: boolean) => void,
+    private save: () => Promise<void>,
   ) {
     this.button.id = "player-pause-open";
     this.button.textContent = "Pause game";
@@ -22,11 +25,20 @@ export class PlayerMenu {
     this.dialog.id = "player-pause-dialog";
     this.dialog.className = "player-menu";
     this.dialog.setAttribute("aria-labelledby", "player-pause-title");
-    this.dialog.innerHTML = `<section data-pause-home><p class="eyebrow">HOLLOWBANE</p><h2 id="player-pause-title">A moment by the fire</h2><p>Gameplay is paused.</p><nav aria-label="Pause menu"><button id="player-resume">Resume Game</button><button id="player-settings">Settings</button><button id="player-save-exit" disabled>Save &amp; Exit</button></nav><p id="player-pause-prompts" class="pause-help">Enter: Choose · Escape: Back · Tab: Navigate</p></section><section data-pause-settings hidden><h2>Settings</h2><button id="player-settings-back">Back to Pause Menu</button><div id="controller-settings-host"></div></section>`;
+    this.dialog.innerHTML = `<section data-pause-home><p class="eyebrow">HOLLOWBANE</p><h2 id="player-pause-title">A moment by the fire</h2><p>Gameplay is paused.</p><nav aria-label="Pause menu"><button id="player-resume">Resume Game</button><button id="player-settings">Settings</button><button id="player-save-exit">Save &amp; Exit</button></nav><p id="player-save-status" role="status" aria-live="polite"></p><p id="player-pause-prompts" class="pause-help">Enter: Choose · Escape: Back · Tab: Navigate</p></section><section data-pause-settings hidden><h2>Settings</h2><button id="player-settings-back">Back to Pause Menu</button><div id="controller-settings-host"></div></section>`;
     root.append(this.dialog);
     this.home = this.dialog.querySelector("[data-pause-home]")!;
     this.settings = this.dialog.querySelector("[data-pause-settings]")!;
     this.button.onclick = () => this.toggle();
+    this.dialog.querySelector<HTMLButtonElement>("#player-save-exit")!.onclick =
+      () => void this.saveAndExit();
+    window.addEventListener(
+      "pageshow",
+      (event) => {
+        if (event.persisted && this.exited) location.replace("./");
+      },
+      { signal: this.abort.signal },
+    );
     this.dialog.querySelector<HTMLButtonElement>("#player-resume")!.onclick =
       () => this.close();
     this.dialog.querySelector<HTMLButtonElement>("#player-settings")!.onclick =
@@ -104,6 +116,7 @@ export class PlayerMenu {
     });
   }
   toggle(): void {
+    if (this.busy) return;
     if (this.dialog.open) {
       this.back();
       return;
@@ -119,6 +132,7 @@ export class PlayerMenu {
     this.dialog.querySelector<HTMLButtonElement>("#player-resume")!.focus();
   }
   private back(): void {
+    if (this.busy) return;
     hub.clear();
     if (!this.settings.hidden) {
       this.settings.hidden = true;
@@ -127,7 +141,38 @@ export class PlayerMenu {
     } else this.close();
   }
   private close(): void {
-    this.dialog.close();
+    if (!this.busy) this.dialog.close();
+  }
+  private async saveAndExit(): Promise<void> {
+    if (this.busy || !this.ready()) return;
+    this.busy = true;
+    const buttons = Array.from(
+      this.dialog.querySelectorAll<HTMLButtonElement>("button"),
+    );
+    const disabled = buttons.map((button) => button.disabled);
+    for (const button of buttons) button.disabled = true;
+    this.home.querySelector("nav")!.setAttribute("aria-busy", "true");
+    const status = this.dialog.querySelector<HTMLElement>(
+      "#player-save-status",
+    )!;
+    status.textContent = "Saving your adventure…";
+    hub.clear();
+    try {
+      await this.save();
+      if (this.abort.signal.aborted) return;
+      status.textContent = "Adventure saved. Returning to the main menu…";
+      this.exited = true;
+      location.assign("./");
+    } catch (error) {
+      this.exited = false;
+      this.busy = false;
+      buttons.forEach((button, index) => (button.disabled = disabled[index]!));
+      this.home.querySelector("nav")!.setAttribute("aria-busy", "false");
+      status.textContent = `Saving failed: ${error instanceof Error ? error.message : "Storage unavailable"}. Your live progress is still here. Retry Save & Exit or resume and export from inventory.`;
+      this.dialog
+        .querySelector<HTMLButtonElement>("#player-save-exit")!
+        .focus();
+    }
   }
   dispose(): void {
     this.abort.abort();

@@ -293,6 +293,22 @@ test("inventory-only legacy character retains its original route and never acqui
       }
     }),
   ).toBeUndefined();
+  await page.locator("#inventory-close").click();
+  await page.locator("#player-pause-open").click();
+  await page.locator("#player-save-exit").click();
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  expect(await saved(page)).toEqual(original);
+  await page.locator("#menu-continue").click();
+  await expect(page).toHaveURL(
+    /\?inventory=1&advanced=1&character=00000000-0000-4000-8000-000000000001$/,
+  );
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  expect(await page.evaluate(() => Boolean(window.hollowbaneWorld))).toBe(
+    false,
+  );
   await page.goto("?world=1&character=00000000-0000-4000-8000-000000000001");
   await expect(page.locator("#inventory-status")).toContainText(
     "inventory route",
