@@ -40,6 +40,12 @@ export function installControllerUI(): void {
     world()?.focus();
   };
   const open = () => {
+    if (
+      !window.dispatchEvent(
+        new Event("hollowbane-player-menu", { cancelable: true }),
+      )
+    )
+      return;
     if (menu.open) return;
     const existing = document.querySelector<HTMLDialogElement>("dialog[open]");
     existing?.close();
@@ -267,6 +273,9 @@ export function installControllerUI(): void {
             )
           ) {
             lastDirection = "";
+          } else if (modal.id === "player-pause-dialog") {
+            if (modal.dispatchEvent(new Event("cancel", { cancelable: true })))
+              modal.close();
           } else modal.close();
           hub.clear();
           if (!modal.open) world()?.focus();
@@ -301,10 +310,13 @@ export function installControllerUI(): void {
                         )
                       : "Unknown layout · F2: choose mapping in controller settings"
                     : "Controller menu · F2";
-      menu.querySelector("#controller-prompts")!.textContent =
+      const menuPrompts =
         hub.frame.device === "gamepad"
           ? contextPrompt("menu", hub.family, hub.settings.bindings)
           : "Enter: Choose · Escape: Back · Tab: Navigate";
+      menu.querySelector("#controller-prompts")!.textContent = menuPrompts;
+      const playerPrompts = document.querySelector("#player-pause-prompts");
+      if (playerPrompts) playerPrompts.textContent = menuPrompts;
       const live = document.querySelector("#controller-live");
       if (live)
         live.textContent = JSON.stringify(window.hollowbaneInput, null, 2);

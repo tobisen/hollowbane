@@ -30,6 +30,7 @@ import { layoutFingerprint } from "../simulation/world-layout";
 import { findPath as worldPath } from "../world/navigation";
 import { WorldSession } from "../simulation/world-session";
 import { CharacterCheckpoint } from "./character-checkpoint";
+import { PlayerMenu } from "./player-menu";
 import { EXPEDITION_REWARD } from "../simulation/world-expedition";
 import { validateSession } from "../simulation/inventory-world";
 import { commandCombat as stopCombat } from "../simulation/combat-targeting";
@@ -1187,6 +1188,22 @@ export function startCombatArena(monsters = false): Phaser.Game {
         pause.textContent = this.paused ? "Resume" : "Pause";
         pause.setAttribute("aria-pressed", String(this.paused));
       };
+      const playerMenu = query.has("character")
+        ? new PlayerMenu(
+            root,
+            () => Boolean(this.inventoryView?.worldReady),
+            (value) => {
+              stop();
+              this.paused = value;
+              pause.textContent = value ? "Resume" : "Pause";
+              pause.setAttribute("aria-pressed", String(value));
+            },
+          )
+        : null;
+      if (playerMenu) pause.onclick = () => playerMenu.toggle();
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () =>
+        playerMenu?.dispose(),
+      );
       hostile.onchange = () => {
         this.world.hostilesActive = !monsters && !exploring && hostile.checked;
         if (!hostile.checked)

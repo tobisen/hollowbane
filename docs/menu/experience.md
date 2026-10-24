@@ -140,3 +140,11 @@ cases accepted; details [characters.md](characters.md). M1-D adds four original
 generated menu sources, seven optimized WebPs and scoped visual polish; candidate
 and per-deliverable release gate [art.md](art.md). M2-A begins only after M1-D
 acceptance, followed by M2-B, M2-C and final M3. No Act2.
+
+## M1-D accepted / M2-A pause candidate — October24
+
+M1-D `92df8c5` / Full40106915374, Pages, all41 public files and six hosted cases
+accepted; [art.md](art.md). Player-session pause and modal-aware semantic controller
+routing are locally verified; exact release gate remains pending in
+[pause.md](pause.md). Awaited Save & Exit remains M2-B; full settings M2-C; final M3
+is the stopping gate. No Act2.

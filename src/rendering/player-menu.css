@@ -1,0 +1,74 @@
+.player-menu {
+  width: min(680px, calc(100% - 32px));
+  max-height: calc(100svh - 32px);
+  padding: clamp(20px, 4vw, 36px);
+  overflow: auto;
+  color: #e3d1aa;
+  border: 1px solid #8a704c;
+  background: linear-gradient(135deg, #172128, #0c151c);
+  box-shadow:
+    0 20px 100px #000c,
+    inset 0 0 0 5px #0a121780;
+}
+.player-menu::backdrop {
+  background: #04090de6;
+}
+.player-menu h2 {
+  font:
+    28px Georgia,
+    serif;
+}
+.player-menu nav {
+  display: grid;
+  gap: 12px;
+  margin-block: 24px;
+}
+.player-menu button {
+  min-height: 48px;
+  padding-inline: 20px;
+  color: #e8d9bb;
+  border: 1px solid #796444;
+  background: linear-gradient(110deg, #292b29, #151c21);
+}
+.player-menu button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.player-menu :focus-visible {
+  outline: 2px solid #ffcf88;
+  outline-offset: 3px;
+}
+.player-menu button:hover {
+  border-color: #d2b47f;
+}
+.player-menu [hidden] {
+  display: none !important;
+}
+.player-menu .pause-help {
+  font: 12px/1.7 system-ui;
+  color: #b0b6ad;
+}
+.player-menu .settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 16px;
+  margin-block: 20px;
+}
+.player-menu fieldset {
+  min-width: 0;
+  border: 1px solid #534c3d;
+}
+.player-menu label {
+  display: grid;
+  gap: 6px;
+  font: 13px/1.6 system-ui;
+  margin-block: 10px;
+}
+.player-menu input,
+.player-menu select {
+  min-height: 36px;
+  max-width: 100%;
+}
+#player-pause-open {
+  min-height: 36px;
+}

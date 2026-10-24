@@ -49,3 +49,30 @@ pass. No simulation change requires repeated domain units locally. Exact CI tier
 Pages, all hosted bytes and relevant hosted presentation checks are still required
 before M2-A. Original source requirements/dependencies and broader partial parents
 remain unchanged; user authorizes sequential continuation through M3 only.
+
+## Publication checkpoint
+
+Candidate `92df8c5200b1dec0404870533097a070cc4a04c8` committed/pushed. Exact
+[CI40106915374](https://github.com/tobisen/hollowbane/actions/runs/40106915374)
+is running; classifier dry-run requires Full. Download `release-bundle` to
+`/private/tmp/hollowbane-m1-d-92df8c5`, verify sealed full SHA/all41 hosted bytes,
+then run the six relevant hosted checks with grep
+`art loads|creation and eight-slot|navigates creation|title and settings|fresh title`.
+Review hosted captures and record acceptance before M2-A. Last accepted deployment
+remains9e928a7. No publication/hosted success is claimed for this candidate yet.
+Post-push evidence remains local to preserve the exact running release identity.
+
+## Accepted release — October24
+
+Verified deployed SHA `92df8c5200b1dec0404870533097a070cc4a04c8`. Exact
+[CI40106915374](https://github.com/tobisen/hollowbane/actions/runs/40106915374)
+passed required Full units/tooling/four Chromium shards/all15 compatibility cases,
+verify, Pages, hosted smoke and final Release acceptance. Independently verified
+all41 public files against the sealed artifact. All6 hosted focused art/keyboard/
+virtual-controller/360–760–2560 viewport cases passed15.0s, zero skips/flaky. Hosted
+title/creation/selection screenshots reviewed. HEAD/cached/live main agree.
+
+M1-D is technically released. Continue authorized M2-A pause, M2-B awaited Save &
+Exit, M2-C settings and M3 final review, with each exact release gate. Full assignment
+remains incomplete. No physical/GPU claim or completed gameplay-sprite claim.
+Machine evidence `/private/tmp/hollowbane-m1-d-release.json`.
