@@ -19,6 +19,7 @@ import type { Navigation } from "../world/navigation";
 export const CHARACTER_SCHEMA = 5;
 const LEGACY_VERSIONS = [2, 3];
 const ADVANCED_VERSIONS = [2, 3, 4, 5, 6, 7, 8];
+const STARTER_VERSIONS = [...ADVANCED_VERSIONS, 9];
 const FORMAT = "hollowbane-character";
 const MAX_BYTES = 1048576;
 function record(v: unknown): Record<string, unknown> {
@@ -74,7 +75,7 @@ function body(s: InventorySession, versions: readonly number[]): unknown {
 function validateBody(
   value: unknown,
   nav?: Navigation,
-  versions: readonly number[] = ADVANCED_VERSIONS,
+  versions: readonly number[] = STARTER_VERSIONS,
   progression = false,
   exploration = false,
 ): InventorySession {
@@ -96,7 +97,7 @@ function validateBody(
       : ["contentVersions", "character", "loot"],
   );
   if (
-    versions === ADVANCED_VERSIONS &&
+    (versions === ADVANCED_VERSIONS || versions === STARTER_VERSIONS) &&
     Array.isArray(b.contentVersions) &&
     b.contentVersions.length >= (progression ? 2 : 3) &&
     b.contentVersions.length <= versions.length &&
@@ -247,7 +248,18 @@ export function serializeCharacter(
         []),
     ].some((i) => i.contentVersion >= 4) ||
     !itemContentForVersion(3).tables.some((t) => t.id === s.loot.table);
-  const versions = modern ? ADVANCED_VERSIONS : LEGACY_VERSIONS;
+  const hasStarter = itemTree([
+    ...s.character.grid.items.map((p) => p.item),
+    ...Object.values(s.character.equipment),
+    ...s.loot.drops.map((d) => d.item),
+    ...(s.exploration?.stash?.grid.items.map((e) => e.item) ?? []),
+    ...(s.exploration?.areas.flatMap((a) => a.drops.map((d) => d.item)) ?? []),
+  ]).some((item) => item.contentVersion === 9);
+  const versions = hasStarter
+    ? STARTER_VERSIONS
+    : modern
+      ? ADVANCED_VERSIONS
+      : LEGACY_VERSIONS;
   const validated = validateBody(body(s, versions), nav, versions, true, true),
     payload = body(validated, versions);
   const text = JSON.stringify({
@@ -326,7 +338,7 @@ export function deserializeCharacter(
     payload = migrate(payload);
     schema++;
   }
-  return validateBody(payload, nav, ADVANCED_VERSIONS, true, true);
+  return validateBody(payload, nav, STARTER_VERSIONS, true, true);
 }
 export type SnapshotPair =
   | { kind: "empty" }

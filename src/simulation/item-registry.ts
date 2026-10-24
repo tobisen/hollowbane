@@ -115,6 +115,29 @@ function finalContent(): ItemContent {
   return validateItemContent(c, 8);
 }
 export const L3_ITEM_CONTENT = finalContent();
+/** Creation-only registry. Frozen versions2–8 and their drop streams stay intact. */
+export const STARTER_ITEM_CONTENT = validateItemContent(
+  {
+    ...structuredClone(EQUIPMENT_CONTENT),
+    version: 9,
+    bases: EQUIPMENT_CONTENT.bases.map((base) => {
+      const name = {
+        "ash-blade": "Worn Shortsword",
+        "cinder-staff": "Apprentice Staff",
+        "reed-bow": "Hunter's Bow",
+      }[base.id];
+      return name ? { ...base, name, level: 1, requirement: 1 } : { ...base };
+    }),
+    tables: ["ash-blade", "cinder-staff", "reed-bow"].map((base) => ({
+      id: `starter-${base}`,
+      chance: 10000,
+      levelModifier: 0,
+      quality: { normal: 1, magic: 0, rare: 0, unique: 0 },
+      bases: [{ id: base, weight: 1 }],
+    })),
+  },
+  9,
+);
 export function registeredContentForTable(
   table: string,
   preferredVersion: number,
@@ -127,15 +150,17 @@ export function registeredContentForTable(
 }
 /** Product callers migrate to this registry when version4 item execution is wired. */
 export function registeredItemContent(version: number): ItemContent {
-  return version === 8
-    ? L3_ITEM_CONTENT
-    : version === 7
-      ? AFFIX_ITEM_CONTENT
-      : version === 6
-        ? RUNE_ITEM_CONTENT
-        : version === 5
-          ? SOCKET_ITEM_CONTENT
-          : version === 4
-            ? ADVANCED_CONTENT
-            : legacyContent(version);
+  return version === 9
+    ? STARTER_ITEM_CONTENT
+    : version === 8
+      ? L3_ITEM_CONTENT
+      : version === 7
+        ? AFFIX_ITEM_CONTENT
+        : version === 6
+          ? RUNE_ITEM_CONTENT
+          : version === 5
+            ? SOCKET_ITEM_CONTENT
+            : version === 4
+              ? ADVANCED_CONTENT
+              : legacyContent(version);
 }

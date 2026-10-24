@@ -5,6 +5,7 @@ import {
 } from "./attributes";
 import { experienceAt } from "./experience";
 import type { EquipmentBase } from "./equipment-stats";
+import { STARTER_ITEM_CONTENT } from "./item-registry";
 
 export const CLASS_IDS = ["warrior", "sorcerer", "ranger"] as const;
 export type ClassId = (typeof CLASS_IDS)[number];
@@ -16,8 +17,9 @@ export interface ClassDefinition {
   /** Base resources before the shared attribute/equipment calculation. */
   readonly health: number;
   readonly mana: number;
+  readonly starterWeapon: string;
 }
-export const CLASS_CONTENT_VERSION = 1;
+export const CLASS_CONTENT_VERSION = 2;
 export function validateClasses(
   data: readonly ClassDefinition[],
 ): readonly ClassDefinition[] {
@@ -34,6 +36,22 @@ export function validateClasses(
       throw new Error("Invalid class identity");
     ids.add(entry.id);
     createAttributes(entry.attributes);
+    const starter = STARTER_ITEM_CONTENT.bases.find(
+      (base) => base.id === entry.starterWeapon,
+    );
+    const category = { warrior: "blade", sorcerer: "staff", ranger: "bow" }[
+      entry.id
+    ];
+    if (
+      !starter ||
+      starter.category !== category ||
+      starter.level !== 1 ||
+      starter.requirement > 1 ||
+      !STARTER_ITEM_CONTENT.tables.some(
+        (table) => table.id === `starter-${starter.id}`,
+      )
+    )
+      throw Error("Invalid class starter weapon");
     for (const resource of [entry.health, entry.mana])
       if (!Number.isSafeInteger(resource) || resource < 1 || resource > 10000)
         throw new Error("Invalid class resource");
@@ -47,7 +65,7 @@ export function validateClasses(
     ),
   );
 }
-/** Provisional data only: selecting a class and applying it to saves is future work. */
+/** Class foundations and creation-only equipment; never applied to loaded saves. */
 export const CHARACTER_CLASSES = validateClasses([
   {
     id: "warrior",
@@ -56,6 +74,7 @@ export const CHARACTER_CLASSES = validateClasses([
     attributes: { strength: 8, dexterity: 3, vitality: 7, energy: 2 },
     health: 120,
     mana: 60,
+    starterWeapon: "ash-blade",
   },
   {
     id: "sorcerer",
@@ -64,6 +83,7 @@ export const CHARACTER_CLASSES = validateClasses([
     attributes: { strength: 2, dexterity: 3, vitality: 4, energy: 11 },
     health: 80,
     mana: 120,
+    starterWeapon: "cinder-staff",
   },
   {
     id: "ranger",
@@ -72,6 +92,7 @@ export const CHARACTER_CLASSES = validateClasses([
     attributes: { strength: 4, dexterity: 9, vitality: 5, energy: 2 },
     health: 100,
     mana: 80,
+    starterWeapon: "reed-bow",
   },
 ]);
 /** Reuses the one XP/attribute engine; resource bonuses are applied by deriveEquipment. */

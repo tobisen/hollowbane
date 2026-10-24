@@ -2,6 +2,13 @@ import { test, expect, type Page } from "@playwright/test";
 import { characterApi } from "../fixtures/character-api";
 import { characterSlotFixture } from "../fixtures/character-slot";
 import { serializeCharacter } from "../../src/simulation/inventory-save";
+import { worldLayout } from "../../src/simulation/world-layout";
+import {
+  areaNavigation,
+  findPath,
+  fromGround,
+  onGround,
+} from "../../src/world/navigation";
 import {
   installVirtualController,
   pressVirtualButton,
@@ -11,6 +18,159 @@ async function menu(page: Page) {
   await page.goto("./");
   await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
 }
+
+test("fresh Ranger starter bow deals damage in initial forest combat", async ({
+  page,
+}) => {
+  await menu(page);
+  await page.locator("#menu-new").click();
+  await page.locator('[data-class="ranger"]').click();
+  await page.getByLabel("Character name").fill("First Hunt");
+  await page.getByRole("button", { name: "Review character" }).click();
+  await page.locator("#menu-create-confirm").click();
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat?.actors[0]?.weapon))
+    .toBe("projectile");
+  const initial = await states(page);
+  const weapon = JSON.parse(initial.saves[0]!.text!).body.character.equipment
+    .main;
+  expect(weapon.name).toBe("Hunter's Bow");
+  await page.keyboard.press("r");
+  const exit = await page.evaluate(() => {
+    const camera = window.hollowbaneWorld!.camera;
+    return {
+      x: (608 - camera.x) * camera.zoom,
+      y: (432 - camera.y) * camera.zoom,
+    };
+  });
+  await page.mouse.click(exit.x, exit.y);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld?.area))
+    .toBe("haunted-forest");
+  // Read the real encounter; all attacks still go through normal mouse input.
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          window.hollowbaneCombat!.actors.filter((a) => a.id !== 0 && a.hp > 0)
+            .length,
+      ),
+    )
+    .toBeGreaterThan(0);
+  const target = await page.evaluate(() => {
+    const combat = window.hollowbaneCombat!,
+      player = combat.actors[0]!;
+    const enemy = combat.actors
+      .filter((a) => a.id !== 0 && a.hp > 0)
+      .sort(
+        (a, b) =>
+          Math.hypot(a.x - player.x, a.y - player.y) -
+          Math.hypot(b.x - player.x, b.y - player.y),
+      )[0]!;
+    const camera = window.hollowbaneWorld!.camera;
+    return {
+      id: enemy.id,
+      ground: { x: enemy.x, y: enemy.y },
+      x: (enemy.x - camera.x) * camera.zoom,
+      y: (enemy.y - 28 - camera.y) * camera.zoom,
+    };
+  });
+  // Follow the authored floor around the entrance tree before targeting.
+  // Do not rely on the combat controller's automatic ranged standoff route.
+  const start = await page.evaluate(() => window.hollowbaneWorld!.position);
+  const route = findPath(
+    areaNavigation(worldLayout("haunted-forest", 42, 2).map),
+    start,
+    fromGround(target.ground),
+  );
+  expect(route.length).toBeGreaterThan(0);
+  const end = route.at(-1)!,
+    previous = route.at(-2) ?? start;
+  const distance = Math.hypot(end.x - previous.x, end.y - previous.y);
+  route[route.length - 1] = {
+    x: end.x + ((previous.x - end.x) / distance) * Math.min(1, distance / 2),
+    y: end.y + ((previous.y - end.y) / distance) * Math.min(1, distance / 2),
+  };
+  for (const point of route) {
+    const screen = onGround(point);
+    const view = await page.evaluate((screen) => {
+      const camera = window.hollowbaneWorld!.camera;
+      return {
+        x: (screen.x - camera.x) * camera.zoom,
+        y: (screen.y - camera.y) * camera.zoom,
+      };
+    }, screen);
+    await page.mouse.click(view.x, view.y);
+    await expect
+      .poll(() =>
+        page.evaluate(
+          (point) =>
+            Math.hypot(
+              window.hollowbaneWorld!.position.x - point.x,
+              window.hollowbaneWorld!.position.y - point.y,
+            ),
+          point,
+        ),
+      )
+      // Mouse path endpoints snap to half-unit floor cells (max error sqrt(2)/4).
+      .toBeLessThan(0.36);
+  }
+  const aim = await page.evaluate((id) => {
+    const enemy = window.hollowbaneCombat!.actors.find((a) => a.id === id)!,
+      camera = window.hollowbaneWorld!.camera;
+    return {
+      x: (enemy.x - camera.x) * camera.zoom,
+      y: (enemy.y - 28 - camera.y) * camera.zoom,
+    };
+  }, target.id);
+  await page.mouse.move(aim.x, aim.y);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat!.hovered))
+    .toBe(target.id);
+  await page.mouse.down();
+  try {
+    await expect
+      .poll(() =>
+        page.evaluate(() => window.hollowbaneCombat!.actors[0]!.selected),
+      )
+      .toBe(target.id);
+    await expect
+      .poll(
+        () =>
+          page.evaluate(() =>
+            window.hollowbaneCombat!.events.some(
+              (e) =>
+                e.kind === "damage" && e.actor === 0 && e.result.amount > 0,
+            ),
+          ),
+        { timeout: 15000 },
+      )
+      .toBe(true);
+  } catch (error) {
+    console.log(
+      "Starter combat diagnostic",
+      JSON.stringify(
+        await page.evaluate(() => ({
+          combat: window.hollowbaneCombat,
+          input: window.hollowbaneInput,
+          position: window.hollowbaneWorld!.position,
+        })),
+      ),
+    );
+    throw error;
+  } finally {
+    await page.mouse.up();
+  }
+  await page.screenshot({ path: "test-results/starter-initial-combat.png" });
+  expect(
+    JSON.parse((await states(page)).saves[0]!.text!).body.character.equipment
+      .main,
+  ).toEqual(weapon);
+});
 async function states(page: Page) {
   await characterApi(page);
   return page.evaluate(async () => {
@@ -118,6 +278,20 @@ for (const className of ["Warrior", "Sorcerer", "Ranger"]) {
       level: 1,
     });
     expect(initial.lastPlayed).toBe(m.id);
+    const weapon = JSON.parse(initial.saves[0]!.text!).body.character.equipment
+      .main;
+    expect(weapon).toMatchObject({
+      name: {
+        Warrior: "Worn Shortsword",
+        Sorcerer: "Apprentice Staff",
+        Ranger: "Hunter's Bow",
+      }[className],
+      quality: "normal",
+      requirement: 1,
+    });
+    expect(
+      JSON.parse(initial.saves[0]!.text!).body.character.grid.items,
+    ).toEqual([]);
     expect(
       JSON.parse(initial.saves[0]!.text!).body.progression.character.totalXp,
     ).toBe(0);
@@ -132,6 +306,37 @@ for (const className of ["Warrior", "Sorcerer", "Ranger"]) {
     await expect(page).toHaveURL(new RegExp(`character=${m.id}$`));
     await expect(page.locator("#inventory-dialog")).not.toBeVisible();
     expect((await states(page)).lastPlayed).toBe(m.id);
+    await page.locator("#inventory-open").click();
+    await expect(page.locator('[data-slot="main"]')).toHaveAttribute(
+      "title",
+      weapon.name,
+    );
+    await page.screenshot({ path: `test-results/starter-${className}.png` });
+    await page.locator("#inventory-close").click();
+    await page.locator("#player-pause-open").click();
+    await page.locator("#player-save-exit").click();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-menu-ready",
+      "true",
+    );
+    expect(
+      JSON.parse((await states(page)).saves[0]!.text!).body.character.equipment
+        .main,
+    ).toEqual(weapon);
+    await page.locator("#menu-continue").click();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-combat-ready",
+      "true",
+    );
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-combat-ready",
+      "true",
+    );
+    expect(
+      JSON.parse((await states(page)).saves[0]!.text!).body.character.equipment
+        .main,
+    ).toEqual(weapon);
   });
 }
 
@@ -505,9 +710,7 @@ test("menu art loads on demand and all three class portraits decode with keyboar
     await expect(portrait).toHaveJSProperty("naturalWidth", 512);
     await expect(portrait).toHaveJSProperty("naturalHeight", 768);
     await portrait.evaluate((image) => (image as HTMLImageElement).decode());
-    await expect(page.locator("#menu-class-preview")).toContainText(
-      "Starting inventory is empty",
-    );
+    await expect(page.locator("#menu-class-preview")).toContainText("equipped");
     await page.screenshot({
       animations: "disabled",
       path: `test-results/m1-d-${name}.png`,

@@ -44,6 +44,8 @@ describe("class foundations", () => {
       { health: 0 },
       { mana: Infinity },
       { identity: "" },
+      { starterWeapon: "missing" },
+      { starterWeapon: "cinder-staff" },
       { attributes: { strength: -1, dexterity: 0, vitality: 0, energy: 0 } },
     ])
       expect(() =>

@@ -10,6 +10,7 @@ import {
   CHARACTER_CAPACITY,
 } from "../simulation/character-registry";
 import { newCharacter } from "../simulation/new-character";
+import { STARTER_ITEM_CONTENT } from "../simulation/item-registry";
 import { controllerInput as hub } from "./controller-input";
 import { installPlayerSettings } from "./player-settings";
 import {
@@ -374,7 +375,7 @@ export async function startMainMenu(entryError?: string): Promise<void> {
       .map(([name, value]) => `<div><dt>${name}</dt><dd>${value}</dd></div>`)
       .join(
         "",
-      )}</dl><small>Level 1 · Starting inventory is empty</small></div>`;
+      )}</dl><small>Level 1 · ${STARTER_ITEM_CONTENT.bases.find((base) => base.id === definition.starterWeapon)!.name} equipped</small></div>`;
     root
       .querySelectorAll<HTMLButtonElement>("[data-class]")
       .forEach((el) =>

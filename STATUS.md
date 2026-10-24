@@ -1,3 +1,9 @@
+## Starter equipment fix verified locally — publication next (2026-10-25)
+
+- User authorizes only this focused DBL-113/210 repair atop verified414ee55. Fresh Warrior/Sorcerer/Ranger now equip Worn Shortsword/Apprentice Staff/Hunter's Bow once before atomic creation. Deterministic normal content9 reuses base types/icons, level-one requirements, shared derived stats and existing attacks; versions2–8 and unarmed existing saves remain unchanged. No recovery grants or new mechanics.
+- 46 focused units across10 files, six Chromium cases (three-class creation/exit/Continue/reload, real fresh Ranger forest damage, existing owner isolation, preview), TypeScript/affected lint/format/build pass. Equipped and combat screenshots reviewed. No physical hardware or full campaign claim.
+- Commit/push exact candidate, follow unchanged classifier-required Full for shared save/content contracts, verify exact CI/Pages/hosted starters and record SHA before release completion. Stop after this fix. Preserve all pre-existing local documentation edits. Evidence docs/menu/characters.md; final publication pending.
+
 ## M3 bounded-case repair verified — new exact Full gate next (2026-10-24)
 
 - Full40120254276 /66df2b6 failed only two new combined M3 cases at normal60s budgets: traces show fresh journey reached third class; distinct-owner case completed all switching/deletion and reached final returning export.43 other shard4 cases/all other required shards/units/15 compatibility passed. Pages/hosted skipped. Original reports/logs/traces/screenshots retained /private/tmp/hollowbane-menu-work/m3-ci-*; reviewed. Last accepted public remains dd45ecc.

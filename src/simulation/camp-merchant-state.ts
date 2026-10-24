@@ -40,7 +40,7 @@ export function validateMerchantState(value: unknown): MerchantState {
     s.retired.some(
       (id) =>
         typeof id !== "string" ||
-        !/^l[2-8]-[0-9a-f]{1,8}-[0-9a-f]{1,8}$/.test(id),
+        !/^l[2-9]-[0-9a-f]{1,8}-[0-9a-f]{1,8}$/.test(id),
     ) ||
     new Set(s.retired).size !== s.retired.length ||
     (s.revision as number) < s.purchased.length + (s.retired.length ? 1 : 0)

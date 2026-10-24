@@ -213,7 +213,7 @@ function validEvent(e: QuestEvent): boolean {
     case "boss":
       return e.area === "ancient-crypt" && e.id === String(CRYPT_FINALE_ACTOR);
     case "collect":
-      return /^l[2-8]-[0-9a-f]{1,8}-[0-9a-f]{1,8}$/.test(e.id);
+      return /^l[2-9]-[0-9a-f]{1,8}-[0-9a-f]{1,8}$/.test(e.id);
     default:
       return false;
   }

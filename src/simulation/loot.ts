@@ -223,7 +223,9 @@ export function generateLoot(
     ].join(" ");
   }
   const sockets =
-    content.version >= 5 ? SOCKET_CONTENT.hosts[base.id] : undefined;
+    content.version >= 5 && content.version <= 8
+      ? SOCKET_CONTENT.hosts[base.id]
+      : undefined;
   const capacity = sockets
     ? random() < 0.35
       ? 1 + Math.floor(random() * sockets.limit)

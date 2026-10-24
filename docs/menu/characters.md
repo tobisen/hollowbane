@@ -1,5 +1,41 @@
 # M1-C character creation and selection — DBL-210 / DBL-004
 
+## Starter equipment repair — DBL-113 / DBL-210 (2026-10-25)
+
+Newly confirmed characters now own and equip one normal-quality level-one weapon:
+Warrior Worn Shortsword (Ash Blade base, damage6, one hand), Sorcerer Apprentice
+Staff (Cinder Staff base, damage4/mana8, two hands), Ranger Hunter's Bow (Reed Bow
+base, damage5/accuracy4, two hands and the existing projectile/range6 calculation).
+Validated class content declares each base. Creation reuses deterministic generation,
+grid/equip transactions and class requirement context before the existing atomic
+slot transaction; no post-load grants or optional recovery action were added.
+
+Creation-only item content9 supplies the names and level-one staff requirement.
+Versions2–8, natural drops, schema5 and existing unarmed snapshots remain intact.
+Starter identities use the existing version/seed/sequence format in each owner's
+isolated namespace; repeated activation/reload cannot generate another starter.
+Serialization declares registry9 only while such an item is owned or on the ground,
+including stash/other-area storage. Existing sale/quest ID validation accepts9.
+No combat rules or resource refill policy changed. The menu preview names the
+equipped weapon; inventory reuses the original base-specific SVG icons unchanged.
+
+Focused verification:46 distinct unit cases across10 files pass, including all
+three classes, requirements, derived stats, tamper rejection, repeated reload,
+unequipped/sold starter persistence, unchanged unarmed saves and legacy replay.
+Strict TypeScript, affected ESLint/Prettier and production build pass. Six focused
+Chromium cases pass61.0s: actual three-class creation/Save & Exit/Continue/reload,
+fresh Ranger initial forest damage, existing owner switching and class previews.
+Reviewed all three equipped icons and the initial combat screenshot. Initial
+browser-test failures were tooltip selection, unavailable developer-only route
+helpers and entrance-obstacle navigation; the final case uses normal mouse input,
+authored floor navigation and existing half-cell endpoint precision. No runtime
+combat workaround or assertion deadline increase was introduced.
+
+The unchanged CI classifier requires Full for shared save/content contracts.
+No policy override or local full campaign/distribution run. Exact CI, Pages and
+hosted starter creation/combat verification are required before release acceptance.
+Stop after this repair; no next-phase authorization.
+
 User-authorized October24: continue sequentially through M1-C, M1-D, M2-A,
 M2-B, M2-C and M3, with an exact CI/Pages/hosted gate between deliverables.
 This supersedes the historical M1-B stopping instruction. Do not use the old

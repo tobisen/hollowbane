@@ -95,7 +95,7 @@ export function equipmentDefinition(
     return { base: item.base, width: 1, height: 1, slots: [], hands: 0 };
   const d = registries
     .get(
-      item.contentVersion >= 4 && item.contentVersion <= 8
+      item.contentVersion >= 4 && item.contentVersion <= 9
         ? 3
         : item.contentVersion,
     )
