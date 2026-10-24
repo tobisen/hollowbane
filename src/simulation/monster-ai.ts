@@ -62,6 +62,7 @@ export function stepMonsterAI(
   brains: MonsterBrain[],
   nav: Navigation,
   maxPaths = 2,
+  attackLimit = Infinity,
 ): AIWork {
   const budget: PathBudget = { remaining: maxPaths, requests: 0 };
   let decisions = 0;
@@ -166,6 +167,20 @@ export function stepMonsterAI(
       transitionMonster(brain, "attack", world.tick);
       stop(actor);
       if (world.tick >= brain.nextAttack) {
+        const committed = Number.isFinite(attackLimit)
+          ? world.actors.filter(
+              (a) =>
+                a.id !== actor.id &&
+                a.kind !== "player" &&
+                a.hp > 0 &&
+                (a.controller.queuedAttack ||
+                  ["windup", "active", "recovery"].includes(
+                    a.controller.timeline.phase,
+                  ) ||
+                  world.projectiles.some((p) => p.source === a.id)),
+            ).length
+          : 0;
+        if (committed >= attackLimit) continue;
         actor.controller = commandCombat(actor.controller, {
           kind: "attack",
           target: target.id,

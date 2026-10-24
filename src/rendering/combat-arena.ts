@@ -82,6 +82,7 @@ import {
   type Encounter,
 } from "../simulation/encounter";
 import { stepMonsterAI } from "../simulation/monster-ai";
+import { OpeningRecovery } from "../simulation/opening-balance";
 import { MONSTER_PROFILES, type MonsterRole } from "../simulation/monsters";
 import { controllerInput } from "./controller-input";
 import { directionFor } from "../simulation/locomotion";
@@ -340,6 +341,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
   }
   class Arena extends Phaser.Scene {
     private worldEncounter: WorldEncounterRuntime | null = null;
+    private openingRecovery = new OpeningRecovery();
     private encounter: Encounter | null = monsters
       ? createEncounter(initialCount)
       : null;
@@ -484,6 +486,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private installWorldEncounter(
       loot: import("../simulation/world-loot").LootWorld,
     ): void {
+      this.openingRecovery = new OpeningRecovery();
       if (travel && worldSession!.contentVersion === 2)
         configureWorldRewards(loot, travel.state.area);
       if (!travel || peacefulWorld) {
@@ -2020,7 +2023,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
             const aiStart = performance.now();
             this.encounter.work = {
               ...(hostile.checked
-                ? stepMonsterAI(this.world, this.encounter.brains, nav)
+                ? stepMonsterAI(
+                    this.world,
+                    this.encounter.brains,
+                    nav,
+                    2,
+                    this.worldEncounter?.attackLimit,
+                  )
                 : { decisions: 0, pathRequests: 0 }),
               separationCorrections: 0,
             };
@@ -2098,6 +2107,12 @@ export function startCombatArena(monsters = false): Phaser.Game {
           }
           if (worldSession?.consumeQuestDeaths(this.world))
             this.inventoryView?.changed();
+          if (worldSession)
+            this.openingRecovery.step(
+              this.world,
+              this.abilities ?? undefined,
+              worldSession.travel.state.area,
+            );
           this.lootView?.advance(this.world);
           if (this.encounter) finishEncounter(this.encounter, nav);
           const aim = controllerInput.frame.aim;

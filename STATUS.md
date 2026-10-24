@@ -1,3 +1,10 @@
+## Early-game B1 pressure/recovery increment — release next (2026-10-25)
+
+- User authorizes B1–B3 balance/onboarding/verification, then Q3-A–D art/audio through Q3 review. Preserve unrelated local edits; do not begin Q3 before final balance release gate. This supersedes the starter-fix STOP only for this scope.
+- DBL-058/062/109: forest ordinary weapon/skill damage ×0.65, ordinary leader health/base damage retaining tier rewards, two committed attacks, five-second safe-delay camp/forest HP/mana recovery. Spawn plans/identities/XP/loot/save schema and later-area/boss tuning unchanged. All three level-one conservative class fixtures kill the opening pack: Warrior HP148→150, Sorcerer71→85, Ranger118→120; all75XP/three rolls. Targeted world/AI/starter/combat/skills tests, strict/static/build and genuine fresh Ranger forest browser pass; corrected-build capture reviewed.
+- B1–B3 remain INCOMPLETE: fresh classes have no learned/assigned ability at level1; browser legacy resource base differs from class-foundation fixture (Ranger325 versus125HP). Resolve introductory spell access/mana and all-class browser/ranged evidence without corrupting save/point ledgers, then B2 contextual keyboard/controller hints and B3 final balance gate. No tactical AI expansion; no Q3 yet.
+- Commit/push this bounded verified increment and record exact policy-selected CI/Pages/sealed-byte/hosted gate. Last accepted public b37ee0076aebe86e8f855eb6815d6f577175456f / CI40139863014. Evidence docs/quality/early-game.md. Whole assignment incomplete; checkpoint at soft session budget. Physical/native-GPU/art/audio follow-ups remain open.
+
 ## Starter unit budget repair verified — corrected publication next (2026-10-25)
 
 - Focused DBL-113/210 starter repair only; no new phase. First6b2f319 / CI40139413066 failed one combined new-character unit at5000ms (5047ms);549 others, Fast smoke and15 compatibility passed. Never accepted/published. Remaining browser jobs may be superseded by the corrected push; do not count incomplete cases.

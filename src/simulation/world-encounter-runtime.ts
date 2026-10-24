@@ -3,6 +3,7 @@ import { areaDefinition } from "./world";
 import type { CombatWorld } from "./combat";
 import type { Encounter } from "./encounter";
 import { createMonster } from "./monsters";
+import { OPENING_BALANCE } from "./opening-balance";
 import { areaNavigation, canWalk } from "../world/navigation";
 import {
   planWorldEncounters,
@@ -19,6 +20,7 @@ import {
 } from "./stonebound-miniboss";
 /** Surviving packs restart on area load; defeated identities never restart or earn again. */
 export class WorldEncounterRuntime {
+  readonly attackLimit: number | undefined;
   readonly encounter: Encounter;
   readonly plan: ReturnType<typeof planWorldEncounters>;
   boss: {
@@ -39,6 +41,10 @@ export class WorldEncounterRuntime {
     finaleUnlocked?: boolean,
   ) {
     this.layout = layout;
+    this.attackLimit =
+      layout.map.area === "haunted-forest"
+        ? OPENING_BALANCE.simultaneousAttacks
+        : undefined;
     const plan = planWorldEncounters(layout);
     const crypt = cryptBossSpawn(layout, plan);
     this.cryptBoss =
@@ -128,6 +134,18 @@ export class WorldEncounterRuntime {
           actor.maxHp * levelScale * (elite ? 1.5 : 1),
         );
         actor.offense.damage *= levelScale * (elite ? 1.2 : 1);
+        if (this.layout.map.area === "haunted-forest") {
+          // Retain champion/elite identity and rewards, using ordinary opening stats.
+          actor.hp = actor.maxHp = Math.round(
+            actor.maxHp /
+              (spawn.tier !== "normal" ? 1.8 : 1) /
+              (elite ? 1.5 : 1),
+          );
+          actor.offense.damage /=
+            (spawn.tier !== "normal" ? 1.25 : 1) * (elite ? 1.2 : 1);
+          // Shared power scales weapon AND monster skill damage exactly once.
+          actor.encounterDamageScale = OPENING_BALANCE.damage;
+        }
         if (elite) {
           actor.name = actor.name.replace("Champion ", "Elite ");
           actor.defense.armor += 20;

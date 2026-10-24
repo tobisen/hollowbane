@@ -55,6 +55,8 @@ export interface CombatActor {
   xpReward?: number;
   id: number;
   powerMultiplier?: number;
+  /** Biome-authored scaling, independent of temporary skill power statuses. */
+  encounterDamageScale?: number;
   effectStatuses?: string[];
   itemRules?: ItemHitRules;
   leechable?: boolean;
@@ -301,6 +303,7 @@ export function applyCombatHit(
   const classTarget = target.id === world.experience.player;
   const rawDamage =
     (source.itemRules ? offense.damage : (hit?.damage ?? offense.damage)) *
+    (source.encounterDamageScale ?? 1) *
     (hit?.scalePower === false ? 1 : (source.powerMultiplier ?? 1));
   const result = resolveDamage(
     {
