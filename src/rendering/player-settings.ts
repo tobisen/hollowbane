@@ -115,28 +115,36 @@ export function installPlayerSettings(host: HTMLElement) {
     document.querySelector<HTMLButtonElement>("#game-fullscreen")?.click();
   };
   const fullscreenObserver = new MutationObserver(fullscreen);
-  const publicControl = document.querySelector("#game-fullscreen");
-  if (publicControl)
-    fullscreenObserver.observe(publicControl, {
-      attributes: true,
-      attributeFilter: ["disabled", "aria-label"],
-    });
+  const connectFullscreen = () => {
+    fullscreenObserver.disconnect();
+    const publicControl = document.querySelector("#game-fullscreen");
+    if (publicControl)
+      fullscreenObserver.observe(publicControl, {
+        attributes: true,
+        attributeFilter: ["disabled", "aria-label"],
+      });
+    fullscreen();
+  };
   window.addEventListener(
     "pagehide",
-    () => {
-      abort.abort();
+    (event) => {
       fullscreenObserver.disconnect();
+      if (!event.persisted) abort.abort();
     },
-    {
-      once: true,
-      signal: abort.signal,
+    { signal: abort.signal },
+  );
+  window.addEventListener(
+    "pageshow",
+    (event) => {
+      if (event.persisted) connectFullscreen();
     },
+    { signal: abort.signal },
   );
   installControllerSettings();
   const refresh = () => {
     presentation();
     keyboard();
-    fullscreen();
+    connectFullscreen();
   };
   refresh();
   return {

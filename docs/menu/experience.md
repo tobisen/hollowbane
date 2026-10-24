@@ -177,3 +177,12 @@ locally with static/build and decoded screenshot review. Final evidence, prior
 gates, fixture boundaries and explicit Full milestone dispatch are in
 [milestone.md](milestone.md). Final exact Full/Pages/hosted acceptance remains
 pending. Stop at M3 quality review afterward; human approval is false. No Act2.
+
+## M3 cache-restoration qualification — October24
+
+The initial test-only M3 candidate7f5ee55 was cancelled before publication after
+new persisted-page qualification reproduced a stale Settings fullscreen label.
+A focused adapter-only rebind/cleanup correction passes the unchanged contract
+plus surface/virtual navigation (three cases15.1s). New automatic Full is required;
+last accepted deployment remainsdd45ecc. See [milestone.md](milestone.md).
+No separate fullscreen/context behavior, gameplay or save-format changes.

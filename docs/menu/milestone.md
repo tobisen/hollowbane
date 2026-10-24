@@ -43,13 +43,17 @@ fullscreen/context behavior. Final hosted verification will run the actual
 production-storage, menu/character, player experience, pause/exit/settings and
 surface suites, without unrelated extended loot/performance simulations.
 
-TypeScript, affected ESLint/Prettier and production build pass. Runtime application
-bytes are unchanged from accepted M2-C; M3 adds only tests/evidence. The automatic
-classifier correctly selects Integration for the test-only diff. This is a major
-milestone, so explicitly dispatch the existing workflow with `tier=full` after
-push. Its normal main-branch concurrency cancels any automatic Integration run;
-record that supersession and use only the exact Full run for final acceptance.
-No CI policy, assertion, deadline or acceptance check is weakened.
+TypeScript, affected ESLint/Prettier and production build pass. The initial
+test-only M3 candidate had unchanged application bytes and explicitly dispatched
+Full. Later cache-restoration qualification exposed a Settings adapter defect,
+so that pending run was cancelled before deployment (details below). Final M3
+also reconnects the adapter to the existing public fullscreen control after
+persisted-page restoration and disconnects on lifecycle cleanup. The separate
+fullscreen/context implementation is unchanged. Three focused settings/surface
+contracts pass15.1s, including native fullscreen enter/exit after synthetic
+persisted-page events. This does not claim native browser-cache or hardware use.
+The corrected shared adapter automatically requires Full; use that new exact
+Full/Pages/hosted run for final acceptance. No policy/assertion/deadline is weakened.
 
 ## Gate and remaining scope
 
@@ -71,3 +75,30 @@ dependencies and separate fullscreen/right-click implementations are preserved.
 Detailed contracts: [characters](characters.md), [pause](pause.md),
 [exit](exit.md), [settings](settings.md). Public URL:
 https://tobisen.github.io/hollowbane/.
+
+## Exact final release checkpoint
+
+Candidate `7f5ee5543ad50cbb9223690c7b08d2eab922ee04` committed/pushed. Explicit
+[Full CI40119514055](https://github.com/tobisen/hollowbane/actions/runs/40119514055)
+is running. Automatic push Integration40119514466 was superseded/cancelled by
+normal main-branch concurrency; it was never accepted. Use the explicit Full run
+for exact final CI/Pages/hosted acceptance. Last accepted deployment remains
+`dd45ecc`. Sealed destination `/private/tmp/hollowbane-m3-7f5ee55`; independently
+compare all42 files with current tested dist and public bytes. Then run the eight
+relevant hosted suites listed in STATUS, review final captures, record actual
+counts/SHA and STOP at M3 quality review. Entire assignment remains incomplete
+until those checks pass. Post-push evidence stays local to preserve release identity.
+
+## Retained cache-restoration defect / replacement candidate
+
+A new focused persisted-page contract failed the original existing label assertion:
+fullscreen entered, but Settings still said Enter fullscreen. Its observer watched
+the removed public control. Original trace/screenshot retained in
+`/private/tmp/hollowbane-menu-work/m3-settings-cache-failure`. Reconnect only the
+Settings observer to the remounted control; retain lifecycle listeners for cached
+pages and abort on final teardown. Public fullscreen/context behavior is untouched.
+The exact same contract and existing surface lifecycle plus virtual navigation
+now pass15.1s; static/build/format pass. Explicit Full40119514055 /7f5ee55 was
+cancelled before deployment; its completed unit/compatibility jobs passed, but
+interrupted browser jobs are not passes. No M3 release accepted yet. Commit/push
+the focused correction and require a new exact automatic Full release gate.

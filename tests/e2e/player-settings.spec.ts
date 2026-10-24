@@ -175,6 +175,16 @@ test("shared settings persist independently, apply live graphics/audio/keyboard 
     animations: "disabled",
     path: "test-results/m2-c-pause-settings.png",
   });
+  // Exercise the same persisted-page lifecycle as the accepted public surface.
+  // This is a lifecycle contract, not a claim that Playwright used native bfcache.
+  await page.evaluate(() => {
+    window.dispatchEvent(
+      new PageTransitionEvent("pagehide", { persisted: true }),
+    );
+    window.dispatchEvent(
+      new PageTransitionEvent("pageshow", { persisted: true }),
+    );
+  });
   await page.locator("#player-fullscreen").click();
   await expect
     .poll(() => page.evaluate(() => Boolean(document.fullscreenElement)))

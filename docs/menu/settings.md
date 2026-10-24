@@ -88,3 +88,13 @@ main matches. Initial transient jobs API502 did not fail the CI run.
 M2-C is technically released. Continue authorized M3 final Full experience review
 and stop at its quality gate. Music, broader original settings/art/hardware
 follow-ups remain open. Machine evidence `/private/tmp/hollowbane-m2-c-release.json`.
+
+## M3 qualification follow-up
+
+Persisted pagehide/pageshow qualification exposed a stale Settings fullscreen
+label after the accepted surface remounted its public control. The M3 correction
+rebinds only the Settings observer and preserves cached-page listeners/cleanup.
+The same original Exit fullscreen assertion and all three focused settings/
+surface contracts pass15.1s. No native bfcache/physical claim or separate fullscreen/
+context implementation change. Retained diagnostics and final gate in
+[milestone.md](milestone.md).

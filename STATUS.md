@@ -1,3 +1,9 @@
+## M3 cache-restoration correction verified — new Full release next (2026-10-24)
+
+- DBL-208/004: Settings observer now reconnects to the accepted public fullscreen control after persisted-page restoration, retaining cached-page listeners and final teardown cleanup. Original fullscreen/context code untouched. New lifecycle contract reproduces old stale Enter label and passes unchanged after correction; existing surface lifecycle and virtual navigation also pass (three cases15.1s). Strict TypeScript/affected lint/format/build pass;42 public files. Initial M3 final two player/owner scenarios remain verified35.2s/26.3s; no gameplay/save changes.
+- Prior explicit Full40119514055 /7f5ee55 cancelled before deployment; completed units/compatibility passed, interrupted cases are not passes. Auto Integration40119514466 superseded. Neither accepted. Last accepted public SHA dd45ecc / Full40117235307/all42 public bytes/seven hosted cases50.2s. Failure trace/screenshot retained /private/tmp/hollowbane-menu-work/m3-settings-cache-failure.
+- Corrected shared adapter now automatically requires Full. Commit/push, verify NEW exact Full CI/Pages/hosted acceptance, sealed42 files and final eight relevant hosted suites before declaring completion. Then STOP at M3 quality review, approval false; no Act2. Entire assignment INCOMPLETE. Evidence docs/menu/milestone.md. Preserve unrelated local edits and music/hardware/art/performance/broader original parents.
+
 ## M3 final experience candidate — explicit Full release next (2026-10-24)
 
 - All M1-C/M1-D/M2-A/M2-B/M2-C release gates accepted sequentially. Last verified deployed SHA dd45ecc14de327b3b455e7b11eadf1dbc6e793ad / Full40117235307/Pages/all42 public files/seven hosted cases50.2s. M2-B attempt1 navigation failure and same-commit passing retry remain honest. No new runtime change for M3.
