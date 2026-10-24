@@ -53,7 +53,9 @@ test("Sevra genuine keyboard and mouse fight reaches both phases and death witho
 }, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("./");
+  // Bootstrap on a storage-free route; the title intentionally initializes the roster.
+  // Keep the exact permanent-database assertion below for the boss fixture itself.
+  await page.goto("./?controller=1");
   const sentinel = {
     revision: 7,
     text: "untouched permanent character sentinel",

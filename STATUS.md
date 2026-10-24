@@ -1,3 +1,9 @@
+## M1-C release repair — exact database isolation retained (2026-10-24)
+
+- Candidateee2b8ca / CI40100847783 failed only D08 boss-isolation setup: its initial root navigation now legitimately creates the roster database before the memory-only fixture. Boss phases/death/health and original sentinel passed. Three other Chromium shards (including all13 M1-C cases), Full units/tooling and15 compatibility cases passed; verify/release failed and Pages/hosted were skipped. No deployment claim.
+- Changed only D08 bootstrap to existing storage-free controller route; every gameplay, sentinel, exact database-inventory assertion and deadline remains unchanged. Both original boss cases pass locally50.2s; TypeScript/scoped lint/format pass. Application build/runtime bytes unchanged from locally verified/sealedee2b8ca (34 files). Total36 unique relevant local browser cases/19 focused units; no broad local repeat or physical evidence.
+- Commit/push this focused test/documentation repair, then require exact Full/Pages/sealed-byte/20 hosted menu/session cases before M1-D. Last accepted deployed SHA remains21f0f48. Failure screenshot/report/trace retained and reviewed in /private/tmp/hollowbane-menu-work/ci-chromium-2-failure. Resume docs/menu/characters.md. User authorizes continued sequential M1-D/M2/M3 only after release acceptance; entire assignment INCOMPLETE. Preserve pre-existing local documentation edits.
+
 ## M1-C character experience candidate — release pending (2026-10-24)
 
 - User authorizes sequential M1-C/M1-D/M2-A/M2-B/M2-C/M3 through final review, with each exact CI/Pages/hosted gate before the next deliverable. This supersedes the historical M1-B stop. M1-B21f0f4863f7490c93703b1d52a70f54952dec0f5 / CI40081698959 and live main rechecked before work.

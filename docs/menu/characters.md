@@ -103,3 +103,42 @@ commit/CI/Pages/all hosted bytes and relevant hosted menu/session cases remain
 pending. Last accepted deployment remains `21f0f48`. Never start M1-D before the
 M1-C publication gate passes. Preserve local unrelated documentation edits when
 staging; only this task's checkpoint additions belong in its commit.
+
+## Publication checkpoint
+
+Candidate `ee2b8caa6970c8727b2448d30a1bf15fbf2cb71f` committed/pushed;
+[CI40100847783](https://github.com/tobisen/hollowbane/actions/runs/40100847783)
+is running. Required Full/Pages/hosted acceptance remains pending. On success,
+download `release-bundle` to `/private/tmp/hollowbane-m1-c-ee2b8ca`, verify its
+sealed full SHA/all hosted bytes with `tools/ci/release_artifact.py`, and run
+hosted `main-menu.spec.ts` / `menu-characters.spec.ts` (20 cases). Record the
+accepted SHA before beginning M1-D. Last accepted deployment remains `21f0f48`.
+This post-push evidence stays local to retain the exact running release identity.
+
+CI progress: Fast static/contracts/build/initial browser smoke passed1m39s;
+complete Full units/validators/tooling passed2m30s; all15 existing required
+Chromium/Firefox/WebKit inventory cases passed3m39s. Four Chromium shards and
+publication remain pending. Downloaded/sealed artifact verified at the directory
+above; all34 files exactly equal the locally tested build. This is artifact
+evidence, not hosted acceptance.
+
+## Required release repair
+
+Run40100847783 finished with one failure and was not accepted. All13 M1-C UI
+cases passed in shard1 (69 passes, zero skips/flaky); shards3/4, complete units
+and all15 compatibility cases passed. Shard2 had58 passes and one failure:
+D08 genuine boss fight completed both phases/death with player51HP and exact
+legacy sentinel retained, then its exact database inventory assertion found the
+roster created by its initial root-title setup. The memory-only boss route itself
+did not create that database. Original screenshot/trace/report retained under
+`/private/tmp/hollowbane-menu-work/ci-chromium-2-failure` and visually reviewed.
+Verify and Release acceptance failed; Pages/hosted were skipped.
+
+Focused repair changes only D08's initial bootstrap from root to the existing
+storage-free `?controller=1` route. All original combat, sentinel, exact database
+assertions and deadlines remain intact. Both unchanged keyboard/mouse and virtual
+controller boss contracts pass locally50.2s. TypeScript/relevant lint/format pass;
+no application/engine/balance/save runtime change or redundant build. The existing
+build's34 files remain the same locally tested/sealed application. Local unique
+browser evidence is now36 cases; focused unit evidence remains19. Replacement
+exact Full/Pages/hosted gate remains mandatory before M1-D.
