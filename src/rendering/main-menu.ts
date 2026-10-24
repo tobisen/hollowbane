@@ -18,23 +18,17 @@ import {
 } from "../simulation/character-classes";
 import "./main-menu.css";
 
-const CLASS_GUIDES: Record<
-  ClassId,
-  { mark: string; strength: string; weakness: string }
-> = {
+const CLASS_GUIDES: Record<ClassId, { strength: string; weakness: string }> = {
   warrior: {
-    mark: "⚔",
     strength: "Strength and vitality support close combat and sturdy defenses.",
     weakness: "Limited energy; plan your approach to distant enemies.",
   },
   sorcerer: {
-    mark: "✦",
     strength:
       "High energy supports elemental techniques and a larger mana reserve.",
     weakness: "Lower vitality and strength demand careful spacing.",
   },
   ranger: {
-    mark: "➶",
     strength:
       "High dexterity supports precision, defense and wilderness techniques.",
     weakness: "Limited energy; positioning matters when surrounded.",
@@ -42,6 +36,9 @@ const CLASS_GUIDES: Record<
 };
 const className = (id: ClassId | null) =>
   CHARACTER_CLASSES.find((entry) => entry.id === id)?.name ?? "Adventurer";
+
+const portraitPath = (id: ClassId, thumbnail = false) =>
+  `${import.meta.env.BASE_URL}assets/menu-${id}${thumbnail ? "-thumb" : ""}-v1.webp`;
 
 export async function startMainMenu(entryError?: string): Promise<void> {
   const root = document.querySelector<HTMLElement>("main")!;
@@ -195,7 +192,16 @@ export async function startMainMenu(entryError?: string): Promise<void> {
         const portrait = document.createElement("span");
         portrait.className = "menu-class-mark";
         portrait.setAttribute("aria-hidden", "true");
-        portrait.textContent = m.classId ? CLASS_GUIDES[m.classId].mark : "◇";
+        if (m.classId) {
+          const image = document.createElement("img");
+          image.src = portraitPath(m.classId, true);
+          image.alt = "";
+          image.width = 160;
+          image.height = 200;
+          image.loading = "lazy";
+          image.decoding = "async";
+          portrait.append(image);
+        } else portrait.textContent = "◇";
         const title = document.createElement("strong");
         title.textContent = m.name;
         const summary = document.createElement("span");
@@ -362,13 +368,13 @@ export async function startMainMenu(entryError?: string): Promise<void> {
     const definition = CHARACTER_CLASSES.find((c) => c.id === selectedClass)!;
     const guide = CLASS_GUIDES[selectedClass];
     const target = root.querySelector<HTMLElement>("#menu-class-preview")!;
-    target.innerHTML = `<span class="menu-preview-mark" aria-hidden="true">${guide.mark}</span><div><h3>${definition.name}</h3><p>${definition.identity}</p><p>${guide.strength}</p><p>${guide.weakness}</p><dl class="menu-attributes">${Object.entries(
+    target.innerHTML = `<img class="menu-preview-art" src="${portraitPath(definition.id)}" alt="${definition.name} class illustration" width="512" height="768" decoding="async"><div><h3>${definition.name}</h3><p>${definition.identity}</p><p>${guide.strength}</p><p>${guide.weakness}</p><dl class="menu-attributes">${Object.entries(
       definition.attributes,
     )
       .map(([name, value]) => `<div><dt>${name}</dt><dd>${value}</dd></div>`)
       .join(
         "",
-      )}</dl><small>Level 1 · No earned points spent · Class emblem preview</small></div>`;
+      )}</dl><small>Level 1 · Starting inventory is empty</small></div>`;
     root
       .querySelectorAll<HTMLButtonElement>("[data-class]")
       .forEach((el) =>

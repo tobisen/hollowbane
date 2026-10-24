@@ -89,7 +89,10 @@ test("fresh title screen supports keyboard, settings return and character setup 
     page.getByRole("button", { name: "Settings", exact: true }),
   ).toBeFocused();
   expect(await saved(page)).toEqual([]);
-  await page.screenshot({ path: "test-results/m1-a-desktop.png" });
+  await page.screenshot({
+    animations: "disabled",
+    path: "test-results/m1-a-desktop.png",
+  });
   await page.getByRole("button", { name: "New Game" }).click();
   await expect(page.locator("#menu-create-dialog")).toBeVisible();
   expect(await saved(page)).toEqual([]);
@@ -226,6 +229,7 @@ test("title and settings fit small and ultrawide windows", async ({ page }) => {
       page.getByRole("button", { name: "New Game" }),
     ).toBeInViewport();
     await page.screenshot({
+      animations: "disabled",
       path: `test-results/m1-a-title-${size.width}.png`,
     });
     await page.getByRole("button", { name: "Settings", exact: true }).click();
@@ -234,7 +238,10 @@ test("title and settings fit small and ultrawide windows", async ({ page }) => {
         .locator("#menu-settings-dialog")
         .evaluate((el) => el.scrollWidth <= el.clientWidth),
     ).toBe(true);
-    await page.screenshot({ path: `test-results/m1-a-${size.width}.png` });
+    await page.screenshot({
+      animations: "disabled",
+      path: `test-results/m1-a-${size.width}.png`,
+    });
   }
 });
 

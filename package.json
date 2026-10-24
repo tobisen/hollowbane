@@ -26,13 +26,14 @@
     "check": "npm run typecheck && npm run lint && npm test && npm run validate:assets && npm run validate:backlog && npm run build",
     "github:import": "node scripts/import-github.mjs",
     "assets:package": "node scripts/package-assets.mjs",
-    "assets:export": "node scripts/package-assets.mjs && node scripts/export-sprites.mjs",
+    "assets:export": "node scripts/package-assets.mjs && node scripts/export-sprites.mjs && npm run assets:menu",
     "benchmark": "node scripts/benchmark.mjs",
     "test:browsers": "node scripts/browser-smoke.mjs",
     "test:movement": "playwright test --config playwright.movement.config.ts",
     "ci:plan": "node scripts/ci-policy.mjs plan",
     "validate:ci": "node scripts/validate-ci-workflows.mjs",
-    "test:deep:domains": "vitest run --config vitest.deep.config.ts"
+    "test:deep:domains": "vitest run --config vitest.deep.config.ts",
+    "assets:menu": "node scripts/package-menu-assets.mjs"
   },
   "dependencies": {
     "phaser": "4.2.1"

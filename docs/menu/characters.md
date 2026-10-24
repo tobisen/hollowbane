@@ -185,3 +185,28 @@ Failed startup now focuses its visible selection link, bringing the error/action
 into view. The existing missing-owner/forbidden-mode case passes6.9s with disabled
 save/export controls; final screenshot reviewed. No normal-game return link is
 exposed before awaited Save & Exit.
+
+Corrected candidate `9e928a74ae34dcb0d628cc2b49990d32d8e4f699` committed/pushed.
+Exact [CI40103889624](https://github.com/tobisen/hollowbane/actions/runs/40103889624)
+is running. Download `release-bundle` to `/private/tmp/hollowbane-m1-c-9e928a7`;
+require exact Full/Pages/all34 hosted bytes/21 hosted main-menu and menu-characters
+cases before M1-D. Earlier candidates/failures/cancellation remain historical and
+are not substituted for the corrected release's evidence.
+
+## Accepted release — October24
+
+Verified deployed SHA `9e928a74ae34dcb0d628cc2b49990d32d8e4f699`. Exact
+[CI40103889624](https://github.com/tobisen/hollowbane/actions/runs/40103889624)
+passed required Full units/tooling,215 Chromium cases (zero skipped/flaky), all15
+required compatibility cases, verify, Pages, hosted smoke and Release acceptance.
+Independently verified all34 public files against the sealed artifact. All21
+hosted title/creation/selection/Continue/deletion/recovery/owner/mode/legacy cases
+passed88.1s with zero skips/flaky results. Hosted responsive/recovery screenshots
+reviewed. HEAD/cached/live main agree. Prior failure/cancellation evidence remains
+historical and is not counted as green. No physical evidence or new raster art.
+
+M1-C is technically released. Continue the authorized sequence with M1-D art/UI
+polish, then each gated M2-A/B/C and M3; the full assignment remains incomplete.
+Machine record `/private/tmp/hollowbane-m1-c-release.json`; hosted report
+`/private/tmp/hollowbane-menu-work/m1-c-hosted.json`. Post-release evidence remains
+local until the next authorized increment to retain this accepted identity.

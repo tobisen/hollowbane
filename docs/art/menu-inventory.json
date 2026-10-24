@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "provenance": "docs/art/menu.md",
+  "budgets": {
+    "runtimeTotalBytes": 524288,
+    "nominalDecodedBytes": 11534336
+  },
+  "assets": [
+    {
+      "id": "menu-sanctuary-v1",
+      "source": {
+        "path": "assets/source/menu-sanctuary-v1.png",
+        "bytes": 2638943,
+        "sha256": "12afd086debde2aa907f52e3f29dda2530610baa0fa27acd1ab85a2687687bf1",
+        "width": 1672,
+        "height": 941
+      },
+      "runtime": {
+        "path": "public/assets/menu-sanctuary-v1.webp",
+        "bytes": 194316,
+        "sha256": "a5ae6af3fcb3e10316aa5d8904f98247084a1f65434a62c4ded4e9fd625d05df",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "menu-warrior-v1",
+      "source": {
+        "path": "assets/source/menu-warrior-v1.png",
+        "bytes": 2464433,
+        "sha256": "b6a299fb27d08dd326ab45e2a5c32994656d74ecc58e4e5f836ab2b6663f931a",
+        "width": 1024,
+        "height": 1536
+      },
+      "runtime": {
+        "path": "public/assets/menu-warrior-v1.webp",
+        "bytes": 54136,
+        "sha256": "1209d373a2cb011753e8c681cfe6ccb4d75c0dd176be7004ea26e678cedde424",
+        "width": 512,
+        "height": 768
+      }
+    },
+    {
+      "id": "menu-sorcerer-v1",
+      "source": {
+        "path": "assets/source/menu-sorcerer-v1.png",
+        "bytes": 2396497,
+        "sha256": "af4c02f5023699d587bb9b13687ebb0bdafcba38d2a8f8c3c76e20af50360e47",
+        "width": 1024,
+        "height": 1536
+      },
+      "runtime": {
+        "path": "public/assets/menu-sorcerer-v1.webp",
+        "bytes": 57996,
+        "sha256": "2b123094ee88757c624a384ec9570a8ac316e3f57cb628fb58189011b6c009ba",
+        "width": 512,
+        "height": 768
+      }
+    },
+    {
+      "id": "menu-ranger-v1",
+      "source": {
+        "path": "assets/source/menu-ranger-v1.png",
+        "bytes": 2359258,
+        "sha256": "427eaf672f1d63c6ec8c0c3d32825c56fa8f668d138ee0ed839d4d37d64538cc",
+        "width": 1024,
+        "height": 1536
+      },
+      "runtime": {
+        "path": "public/assets/menu-ranger-v1.webp",
+        "bytes": 54924,
+        "sha256": "a5d8da5ddf3ad70d912405103c616c2ffca0bfa971cd8b6c7ecf92fb2f5610a3",
+        "width": 512,
+        "height": 768
+      }
+    },
+    {
+      "id": "menu-warrior-thumb-v1",
+      "source": {
+        "path": "assets/source/menu-warrior-v1.png",
+        "bytes": 2464433,
+        "sha256": "b6a299fb27d08dd326ab45e2a5c32994656d74ecc58e4e5f836ab2b6663f931a",
+        "width": 1024,
+        "height": 1536
+      },
+      "runtime": {
+        "path": "public/assets/menu-warrior-thumb-v1.webp",
+        "bytes": 5992,
+        "sha256": "212bc739cdee658780129af6348de55062de90fdb36afc6de3693c205c8eddd0",
+        "width": 160,
+        "height": 200
+      }
+    },
+    {
+      "id": "menu-sorcerer-thumb-v1",
+      "source": {
+        "path": "assets/source/menu-sorcerer-v1.png",
+        "bytes": 2396497,
+        "sha256": "af4c02f5023699d587bb9b13687ebb0bdafcba38d2a8f8c3c76e20af50360e47",
+        "width": 1024,
+        "height": 1536
+      },
+      "runtime": {
+        "path": "public/assets/menu-sorcerer-thumb-v1.webp",
+        "bytes": 6000,
+        "sha256": "75c6eba847ff3d44d6ce80a08d3cd8d4b02980fa5cca99346f1079b46e0d442b",
+        "width": 160,
+        "height": 200
+      }
+    },
+    {
+      "id": "menu-ranger-thumb-v1",
+      "source": {
+        "path": "assets/source/menu-ranger-v1.png",
+        "bytes": 2359258,
+        "sha256": "427eaf672f1d63c6ec8c0c3d32825c56fa8f668d138ee0ed839d4d37d64538cc",
+        "width": 1024,
+        "height": 1536
+      },
+      "runtime": {
+        "path": "public/assets/menu-ranger-thumb-v1.webp",
+        "bytes": 5870,
+        "sha256": "7f4275e51e25142b6762727ee0dc3e625518b860ebc005ec9be70d3032bb6c94",
+        "width": 160,
+        "height": 200
+      }
+    }
+  ]
+}

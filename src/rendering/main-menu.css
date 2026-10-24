@@ -6,8 +6,8 @@ main.main-menu {
   justify-content: center;
   padding: clamp(24px, 6vw, 100px);
   background:
-    linear-gradient(90deg, #080e12f5 2%, #0b1219df 36%, #0b121966 78%),
-    url("/assets/cloister.webp") center / cover;
+    linear-gradient(90deg, #060b10cc 2%, #08101799 40%, #08101710 90%),
+    url("/assets/menu-sanctuary-v1.webp") center / cover;
 }
 .main-menu .menu-panel {
   width: min(100%, 580px);
@@ -148,7 +148,7 @@ main.main-menu {
 }
 .main-menu .menu-slot {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-columns: 56px minmax(0, 1fr);
   gap: 4px 12px;
   padding: 16px;
   text-align: left;
@@ -174,18 +174,21 @@ main.main-menu {
   align-self: center;
 }
 .main-menu #menu-class-preview {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) minmax(0, 1fr);
   align-items: center;
   gap: 28px;
   border-block: 1px solid #796444;
   padding-block: 20px;
 }
-.main-menu .menu-preview-mark {
-  font-size: 90px;
-  color: #d9b275;
-  width: 120px;
-  text-align: center;
-  flex-shrink: 0;
+.main-menu .menu-preview-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border: 1px solid #796444;
+  box-shadow: 0 12px 30px #0009;
 }
 .main-menu .menu-attributes {
   display: flex;
@@ -221,11 +224,13 @@ main.main-menu {
   .main-menu .menu-slots {
     grid-template-columns: 1fr;
   }
-  .main-menu .menu-preview-mark {
-    font-size: 56px;
-    width: 60px;
+  .main-menu .menu-preview-art {
+    width: 130px;
+    max-height: 195px;
+    justify-self: center;
   }
   .main-menu #menu-class-preview {
+    grid-template-columns: 1fr;
     gap: 16px;
   }
 }
@@ -234,4 +239,96 @@ main.main-menu {
   display: flex;
   align-items: center;
   min-height: 88px;
+}
+
+.main-menu h1 {
+  font-weight: 500;
+  margin-bottom: 16px;
+  text-shadow:
+    0 3px 2px #000,
+    0 0 50px #b4934838;
+}
+.main-menu h1::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 1px;
+  margin-top: 22px;
+  background: linear-gradient(90deg, #d6b97b, #d6b97b00);
+}
+.main-menu button {
+  transition:
+    background-color 140ms,
+    border-color 140ms,
+    box-shadow 140ms;
+  box-shadow:
+    inset 0 1px #d6b97b12,
+    0 4px 15px #0003;
+}
+.main-menu button:hover {
+  box-shadow:
+    inset 0 1px #d6b97b30,
+    0 4px 18px #0005;
+}
+.main-menu dialog {
+  width: min(900px, calc(100% - 32px));
+  background: linear-gradient(135deg, #172128f5, #0c151cfb);
+  box-shadow:
+    0 20px 100px #000c,
+    inset 0 0 0 5px #0a121780;
+}
+.main-menu dialog[open] {
+  animation: menu-enter 150ms ease-out;
+}
+.main-menu dialog p,
+.main-menu #menu-status {
+  overflow-wrap: anywhere;
+}
+.main-menu #menu-create-dialog {
+  width: min(940px, calc(100% - 32px));
+}
+.main-menu .menu-class-mark {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  min-height: 70px;
+}
+.main-menu .menu-class-mark img {
+  display: block;
+  width: 56px;
+  height: 70px;
+  object-fit: cover;
+  border: 1px solid #796444;
+}
+.main-menu #menu-class-preview h3 {
+  font-size: 26px;
+  margin-top: 0;
+}
+.main-menu .menu-slot {
+  min-height: 106px;
+}
+.main-menu [data-menu-message]:not(:empty) {
+  padding: 10px 12px;
+  background: #080f1480;
+}
+.main-menu[aria-busy="true"] button {
+  cursor: progress;
+}
+@keyframes menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .main-menu dialog[open] {
+    animation: none;
+  }
+  .main-menu button {
+    transition: none;
+  }
 }

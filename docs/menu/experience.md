@@ -132,3 +132,11 @@ each deliverable still requires exact CI/Pages/hosted acceptance before the next
 Current M1-C candidate/contracts and retained evidence: [characters.md](characters.md).
 Original requirement parents remain partial; no Act2. Settings integration is
 M2-C, separate from awaited Save & Exit in M2-B. No final artwork is claimed yet.
+
+## M1-C accepted / M1-D visual candidate — October24
+
+M1-C `9e928a7` / exact Full CI40103889624, Pages, all34 public files and21 hosted
+cases accepted; details [characters.md](characters.md). M1-D adds four original
+generated menu sources, seven optimized WebPs and scoped visual polish; candidate
+and per-deliverable release gate [art.md](art.md). M2-A begins only after M1-D
+acceptance, followed by M2-B, M2-C and final M3. No Act2.

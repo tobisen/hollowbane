@@ -204,5 +204,68 @@
     "placeholder": true,
     "type": "geometry",
     "provenance": "docs/overnight/d08.md"
+  },
+  {
+    "id": "menu-sanctuary-v1",
+    "source": "assets/source/menu-sanctuary-v1.png",
+    "runtime": "public/assets/menu-sanctuary-v1.webp",
+    "rights": "Original Hollowbane prompts; built-in imagegen; no third-party references. Portrait references are original project art.",
+    "placeholder": false,
+    "type": "menu-background",
+    "provenance": "docs/art/menu.md"
+  },
+  {
+    "id": "menu-warrior-v1",
+    "source": "assets/source/menu-warrior-v1.png",
+    "runtime": "public/assets/menu-warrior-v1.webp",
+    "rights": "Original Hollowbane prompts; built-in imagegen; no third-party references. Portrait references are original project art.",
+    "placeholder": false,
+    "type": "menu-portrait",
+    "provenance": "docs/art/menu.md"
+  },
+  {
+    "id": "menu-sorcerer-v1",
+    "source": "assets/source/menu-sorcerer-v1.png",
+    "runtime": "public/assets/menu-sorcerer-v1.webp",
+    "rights": "Original Hollowbane prompts; built-in imagegen; no third-party references. Portrait references are original project art.",
+    "placeholder": false,
+    "type": "menu-portrait",
+    "provenance": "docs/art/menu.md"
+  },
+  {
+    "id": "menu-ranger-v1",
+    "source": "assets/source/menu-ranger-v1.png",
+    "runtime": "public/assets/menu-ranger-v1.webp",
+    "rights": "Original Hollowbane prompts; built-in imagegen; no third-party references. Portrait references are original project art.",
+    "placeholder": false,
+    "type": "menu-portrait",
+    "provenance": "docs/art/menu.md"
+  },
+  {
+    "id": "menu-warrior-thumb-v1",
+    "source": "assets/source/menu-warrior-v1.png",
+    "runtime": "public/assets/menu-warrior-thumb-v1.webp",
+    "rights": "Original Hollowbane prompts; built-in imagegen; no third-party references. Portrait references are original project art.",
+    "placeholder": false,
+    "type": "menu-thumbnail",
+    "provenance": "docs/art/menu.md"
+  },
+  {
+    "id": "menu-sorcerer-thumb-v1",
+    "source": "assets/source/menu-sorcerer-v1.png",
+    "runtime": "public/assets/menu-sorcerer-thumb-v1.webp",
+    "rights": "Original Hollowbane prompts; built-in imagegen; no third-party references. Portrait references are original project art.",
+    "placeholder": false,
+    "type": "menu-thumbnail",
+    "provenance": "docs/art/menu.md"
+  },
+  {
+    "id": "menu-ranger-thumb-v1",
+    "source": "assets/source/menu-ranger-v1.png",
+    "runtime": "public/assets/menu-ranger-thumb-v1.webp",
+    "rights": "Original Hollowbane prompts; built-in imagegen; no third-party references. Portrait references are original project art.",
+    "placeholder": false,
+    "type": "menu-thumbnail",
+    "provenance": "docs/art/menu.md"
   }
 ]

@@ -77,3 +77,22 @@ Two original procedural SVG line icons (enter/exit fullscreen) and scoped
 stone/bronze control styling live in controller-ui.ts/controller-ui-surface.css.
 No third-party glyphs, fonts, raster/audio downloads or dependencies. Existing
 character/monster art and animation limitations remain unchanged. DBL-004/028.
+
+## M1-D menu illustration set
+
+Original built-in imagegen, October24,2026: ruined sanctuary background and coherent
+Warrior, Sorcerer and Ranger portraits. Four generation calls, no third-party image
+inputs; class variants reference only the new original Warrior. Native sources:
+`assets/source/menu-{sanctuary,warrior,sorcerer,ranger}-v1.png`. Seven optimized
+runtime WebPs (background, three portraits, three thumbnails) live under
+`public/assets/menu-*-v1.webp`, total379234bytes. Complete final prompts, native
+sizes, derivation and scope: [docs/art/menu.md](docs/art/menu.md); source/runtime
+fingerprints: [docs/art/menu-inventory.json](docs/art/menu-inventory.json).
+
+This supersedes the M1-A temporary title background and named-class emblems only.
+Unknown-class legacy metadata keeps a neutral diamond rather than an invented
+class portrait. Accessible Georgia/system title text and original CSS bronze
+ornamentation require no distributed font or raster lettering. These illustrations
+do not replace gameplay sprites or grant the pictured equipment; dedicated
+character/monster animation/art/audio follow-ups remain open. Re-export with
+`npm run assets:menu` or `npm run assets:export`, then `npm run validate:assets`.

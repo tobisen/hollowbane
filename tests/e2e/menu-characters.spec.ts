@@ -100,6 +100,7 @@ for (const className of ["Warrior", "Sorcerer", "Ranger"]) {
       `Aster ${className}`,
     );
     await page.screenshot({
+      animations: "disabled",
       path: `test-results/m1-c-confirm-${className}.png`,
     });
     await page.getByRole("button", { name: "Confirm creation" }).click();
@@ -268,7 +269,10 @@ test("invalid/developer character links and a missing owner cannot load or overw
   await expect(page.locator("#inventory-export")).toBeDisabled();
   await page.keyboard.press("Escape");
   await expect(page.locator("#inventory-dialog")).toBeVisible();
-  await page.screenshot({ path: "test-results/m1-c-blocked-entry.png" });
+  await page.screenshot({
+    animations: "disabled",
+    path: "test-results/m1-c-blocked-entry.png",
+  });
   expect((await states(page)).saves).toEqual(before.saves);
   await page
     .getByRole("link", { name: "Return to character selection" })
@@ -306,12 +310,27 @@ test("creation and eight-slot selection remain readable in narrow and ultrawide 
   await fixtures(page, 3);
   for (const size of [
     { width: 360, height: 640 },
+    { width: 760, height: 900 },
     { width: 2560, height: 1080 },
   ]) {
     await page.setViewportSize(size);
     await menu(page);
     await page.locator("#menu-load").click();
+    await expect
+      .poll(() =>
+        page
+          .locator("#menu-character img")
+          .evaluateAll((images) =>
+            images.every(
+              (image) =>
+                (image as HTMLImageElement).complete &&
+                (image as HTMLImageElement).naturalWidth > 0,
+            ),
+          ),
+      )
+      .toBe(true);
     await page.screenshot({
+      animations: "disabled",
       path: `test-results/m1-c-selection-${size.width}.png`,
     });
     expect(
@@ -320,7 +339,11 @@ test("creation and eight-slot selection remain readable in narrow and ultrawide 
         .evaluate((el) => el.scrollWidth <= el.clientWidth),
     ).toBe(true);
     await page.getByRole("button", { name: "Create New", exact: true }).click();
+    await page
+      .locator("#menu-class-preview img")
+      .evaluate((image) => (image as HTMLImageElement).decode());
     await page.screenshot({
+      animations: "disabled",
       path: `test-results/m1-c-creation-${size.width}.png`,
     });
     expect(
@@ -453,4 +476,52 @@ test("legacy import remains accessible after playing a different character and r
   expect(after.saves.find((s) => s.id === id)).toEqual(before.saves[0]);
   expect(after.lastPlayed).toBe("00000000-0000-4000-8000-000000000001");
   expect(after.characters[1]!.classId).toBe("ranger");
+});
+
+test("menu art loads on demand and all three class portraits decode with keyboard focus intact", async ({
+  page,
+}) => {
+  const requested: string[] = [];
+  page.on("request", (request) => requested.push(request.url()));
+  await menu(page);
+  expect(requested.some((url) => url.endsWith("menu-sanctuary-v1.webp"))).toBe(
+    true,
+  );
+  expect(
+    requested.some((url) =>
+      /menu-(warrior|sorcerer|ranger)-v1\.webp$/.test(url),
+    ),
+  ).toBe(false);
+  await page.screenshot({
+    animations: "disabled",
+    path: "test-results/m1-d-title.png",
+  });
+  await page.locator("#menu-new").click();
+  for (const name of ["Warrior", "Sorcerer", "Ranger"]) {
+    await page.getByRole("button", { name, exact: true }).click();
+    const portrait = page.getByRole("img", {
+      name: `${name} class illustration`,
+    });
+    await expect(portrait).toHaveJSProperty("naturalWidth", 512);
+    await expect(portrait).toHaveJSProperty("naturalHeight", 768);
+    await portrait.evaluate((image) => (image as HTMLImageElement).decode());
+    await expect(page.locator("#menu-class-preview")).toContainText(
+      "Starting inventory is empty",
+    );
+    await page.screenshot({
+      animations: "disabled",
+      path: `test-results/m1-d-${name}.png`,
+    });
+  }
+  await page.getByLabel("Character name").fill("W".repeat(32));
+  await page.getByRole("button", { name: "Review character" }).click();
+  await page.setViewportSize({ width: 360, height: 640 });
+  await expect(page.locator("#menu-confirm-dialog")).toBeVisible();
+  expect(
+    await page
+      .locator("#menu-confirm-dialog")
+      .evaluate((el) => el.scrollWidth <= el.clientWidth),
+  ).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#menu-create-dialog")).toBeVisible();
 });
