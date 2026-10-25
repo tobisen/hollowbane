@@ -151,6 +151,8 @@ export interface CombatPresentation {
 }
 declare global {
   interface Window {
+    /** Explicit developer profiling only; never installed for character routes. */
+    hollowbaneProfileGame?: Phaser.Game;
     hollowbaneWorld?: {
       area: string;
       seed: number;
@@ -1872,7 +1874,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     }
     update(): void {
       const start = performance.now(),
-        delta = this.previousFrame ? start - this.previousFrame : 1000 / 60;
+        delta = this.previousFrame ? this.game.loop.rawDelta : 1000 / 60;
       this.previousFrame = start;
       this.record(this.frames, delta);
       if (
@@ -2028,7 +2030,10 @@ export function startCombatArena(monsters = false): Phaser.Game {
           Math.floor((delta - capped) / (1000 / 60)),
         );
         this.accumulator += capped;
-        while (this.accumulator >= 1000 / 60) {
+        // Center the residual around zero: quantized RAF timestamps must not
+        // alternate zero/two ticks at an otherwise steady 60 Hz. Subtract full
+        // ticks below, retaining elapsed time and the existing catch-up cap.
+        while (this.accumulator >= 1000 / 120) {
           const tickStart = performance.now(),
             oldSequence = player.controller.timeline.sequence;
           this.worldEncounter?.activate();
@@ -2646,7 +2651,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       }
     }
   }
-  return new Phaser.Game({
+  const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: "combat-world",
     width: innerWidth,
@@ -2657,4 +2662,12 @@ export function startCombatArena(monsters = false): Phaser.Game {
     banner: false,
     render: { antialias: true, roundPixels: false },
   });
+  if (developerWorld && query.get("profile") === "1") {
+    window.hollowbaneProfileGame = game;
+    game.events.once(Phaser.Core.Events.DESTROY, () => {
+      if (window.hollowbaneProfileGame === game)
+        delete window.hollowbaneProfileGame;
+    });
+  }
+  return game;
 }
