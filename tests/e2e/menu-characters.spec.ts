@@ -141,19 +141,38 @@ test("fresh Ranger starter bow deals damage in initial forest combat", async ({
     .toBe(target.id);
   await page.mouse.down();
   try {
-    await expect
-      .poll(() =>
-        page.evaluate(() => window.hollowbaneCombat!.actors[0]!.selected),
-      )
-      .toBe(target.id);
+    // A first-shot critical can kill this target before a host round trip
+    // observes selection. Its recorded hit also proves the intended acquisition.
+    await page.waitForFunction(
+      (id) => {
+        const combat = window.hollowbaneCombat!;
+        return (
+          combat.actors[0]!.selected === id ||
+          combat.events.some(
+            (e) =>
+              e.kind === "damage" &&
+              e.actor === 0 &&
+              e.target === id &&
+              e.result.amount > 0,
+          )
+        );
+      },
+      target.id,
+      { polling: "raf", timeout: 5000 },
+    );
     await expect
       .poll(
         () =>
-          page.evaluate(() =>
-            window.hollowbaneCombat!.events.some(
-              (e) =>
-                e.kind === "damage" && e.actor === 0 && e.result.amount > 0,
-            ),
+          page.evaluate(
+            (id) =>
+              window.hollowbaneCombat!.events.some(
+                (e) =>
+                  e.kind === "damage" &&
+                  e.actor === 0 &&
+                  e.target === id &&
+                  e.result.amount > 0,
+              ),
+            target.id,
           ),
         { timeout: 15000 },
       )

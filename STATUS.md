@@ -1,3 +1,10 @@
+## P2 release observation correction — verified (2026-10-25)
+
+- CI40216406346 /5e560d0 failed only the existing Ranger selection observation; all other required jobs and62 shard4 cases passed. Pages/hosted skipped; public remainsc4321a6. P2 release NOT accepted; Q3 paused.
+- Reviewed screenshot/trace/events: real Ranger bow critical dealt55 at tick242, killed2030, then correct dead-target deselection preceded the host poll. No gameplay defect/nerf justified. Test accepts selected target OR recorded positive damage to that same target, and strengthens final damage assertion to that target; original5s/15s deadlines retained.
+- Focused normal17.5s pass; deterministic late-host observation after natural held-bow kill/cleared selection under2× attack-phase CPU passes12.1s. Initial6× whole-scenario stress timed out in earlier route setup before attack, excluded as evidence for this patch; no route/gameplay/deadline change. TypeScript/affected lint/format pass. Runtime bytes and native before/after measurements unchanged; reuse41-file inventory and all focused/runtime evidence.
+- Commit/push only the bounded test/evidence correction; require NEW exact classifier-selected Full CI/Pages/Release acceptance,41-file tested/sealed/public identity and hosted native keyboard/controller profile. Evidence docs/quality/mac-frame-pacing.md; checkpoint/raw artifacts /private/tmp/hollowbane-p2. Stop at P2 quality review, user approval false; no Q3.
+
 ## P2 Mac pacing — native candidate verified / release gate next (2026-10-25)
 
 - P1 accepted atc4321a6 (user confirms CI40193431144/Pages/hosted). P2 only; Q3 stays paused. DBL-035 broad parent remains partial.
