@@ -217,3 +217,20 @@ verification. Do not produce other classes, directions, monsters, bosses or Q3
 environment/audio. The shipped Warrior presentation remains unchanged. Appearance
 refinement and production-speed cadence for live adoption remain separate work;
 a complete production character set is not claimed.
+
+## Accepted pilot release
+
+User acceptance is limited to this isolated pilot. Runtime commit
+`2a341ca469c1f8850cc783c1dee398a6c7d052f4` passed the existing classifier's Full
+gate, all four Chromium shards, required compatibility, Pages, hosted checks and
+[Release acceptance in CI40226108755](https://github.com/tobisen/hollowbane/actions/runs/40226108755).
+All46 sealed files match both the locally reviewed build and public bytes.
+Three additional focused pilot checks passed on the hosted site (playback and
+stepping; real movement/root/zoom/save isolation; normal-entry exclusion), and
+hosted captures were visually inspected. No mandatory check required a repair.
+
+[Open the approved developer preview](https://tobisen.github.io/hollowbane/?developer=1&warriorPilot=1).
+This closing documentation does not change runtime bytes. The source/rig, exporter,
+validators, approved pilot and preview are committed; rejected references remain
+quarantined. Stop here. Do not infer live replacement, eight-direction or full-set
+approval from this result.
