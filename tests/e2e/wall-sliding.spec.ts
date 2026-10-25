@@ -41,6 +41,19 @@ test("Haunted Forest held keyboard slides past a tree and switches to analog and
   );
   await expect(page.locator("#inventory-dialog")).not.toBeVisible();
   await page.locator("#combat-world").focus();
+  // Reaching this seed's tree crosses several modules. Use normal running for
+  // setup so software-rendered CI reaches the contact within the test budget.
+  // Restore walking before measuring the original held-input slide below.
+  async function toggleRun() {
+    const tick = await page.evaluate(() => window.hollowbaneCombat!.tick);
+    await page.keyboard.press("r");
+    await page.waitForFunction(
+      (tick) => window.hollowbaneCombat!.tick > tick,
+      tick,
+      { polling: "raf" },
+    );
+  }
+  await toggleRun();
   const route: { x: number; y: number }[] = [];
   let from = layout.spawn;
   for (const to of findPath(nav, layout.spawn, fixture!.start)) {
@@ -73,6 +86,7 @@ test("Haunted Forest held keyboard slides past a tree and switches to analog and
       { polling: "raf", timeout: 10000 },
     );
   }
+  await toggleRun();
   await page.keyboard.down("d");
   // The tree blocks a straight screen-right step. Continue held input until actual
   // tangential progress passes the contact; sample in the browser to avoid host lag.

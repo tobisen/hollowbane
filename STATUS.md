@@ -1,3 +1,10 @@
+## Movement hotfix P1 — CI setup correction verified (2026-10-25)
+
+- Exact CI40189974809 for148562b failed only the forest wall-slide browser's long click-route setup at the whole-test60s budget. All other required jobs passed; Pages/hosted skipped. Public remains986399c; P1 release NOT accepted, P2 NOT started, Q3 stopped.
+- Trace shows21 successful waypoint waits before budget expiry, before contact assertions. Test now uses existing run toggle for setup, observes its consumption, restores walking before original assertions. Same seed42/tree/progress/collision/deadlines; runtime unchanged. Focused normal28s and final2×CPU37.2s pass; TypeScript/affected lint/format pass. Reuse exact tested41-file build; no unrelated regression rerun locally.
+- Additional sealed-artifact keyboard/virtual-controller one-cell passage and two-wall corner checks pass29.8s; capture reviewed. Driver `/private/tmp/hollowbane-p1-hosted-driver`, config `/private/tmp/hollowbane-p1-hosted.config.ts`; these are local browser evidence, not hosted/physical verification. Early driver mistakes retained separately from gameplay evidence.
+- Push successor and require exact Full CI/Pages/Release acceptance (dry-run still Full),41-file sealed/tested/public identity and hosted forest plus passage/corner checks before P2. Failure evidence `/private/tmp/hollowbane-p1-ci-failure`; tested inventory `/private/tmp/hollowbane-p1-tested-files.json`. Preserve unrelated local edits.
+
 ## Movement hotfix P1 — local verification / release gate next (2026-10-25)
 
 - User authorizes P1 wall sliding then P2 measured frame pacing autonomously; release each before the next. Q3 remains stopped. DBL-029/035 scoped repair; broad parents remain partial.
