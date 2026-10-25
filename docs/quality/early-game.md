@@ -126,3 +126,35 @@ request names remaining work B2 starter skills/resources, B3 contextual onboardi
 B4 opening quality, followed by Q3 only after those releases pass. All remain
 incomplete. Fresh level-one empty skills/bar is confirmed; no speculative resource
 or progression changes were made while the release gate remained open.
+
+## Ranger positioning CI recovery (DBL-113/109, 2026-10-25)
+
+Run40143956903 /0bc40a1 failed only fresh Ranger positioning; all other
+required unit/browser/compatibility jobs passed. Pages/hosted acceptance were
+skipped and this remains an unaccepted release. The rejected-import/autosave
+correction is preserved.
+
+Reviewed failed screenshot and trace at `/private/tmp/hollowbane-ranger-ci`.
+The player actually reaches the third waypoint: the final evaluation returned
+error0.000000437, but after the host poll deadline; the reported1.80156 is the
+previous sample. This is a browser-driver observation failure, not evidence of
+blocked terrain, failed pathfinding or an incorrect ranged attack position.
+Normal isolated reproduction passes13.5s. A temporary6× Chromium CPU-throttled
+case reproduces the old stale-sample failure (reported0.69410 despite final
+actual0.000000176), with trace/source retained under `/private/tmp`.
+
+Arrival now observes each animation frame in the browser, capturing the distance
+when it meets the unchanged0.36 bound within the unchanged5000ms deadline.
+The explicit positioning assertion remains. Throttling additionally exposed stale
+one-shot mouse aim; the same existing hover poll now refreshes projected aim for
+the moving enemy/follow camera. Every attack remains normal mouse input. No
+simulation, navigation, damage, difficulty, autosave or timeout change.
+
+Corrected normal12.1s and6× throttled32.5s Ranger browser cases pass; final combat
+capture reviewed. This is synthetic CPU contention, not physical hardware or
+reference performance evidence. TypeScript and whole ESLint pass; all four staged files pass formatting. Whole-
+worktree format reports pre-existing STATUS/menu-experience edits outside this
+commit; preserved unchanged. No unrelated local campaign suite rerun. Exact successor
+CI/Pages/sealed artifact/public bytes and hosted opening verification remain
+required before B2. B2 starting abilities/resources, B3 onboarding, B4 opening
+quality, then Q3 remain incomplete and authorized in that order.

@@ -66,3 +66,12 @@ Evidence-only source955d696af2b6a641756e3ce3c9b49713b26887d8 /39667084907 comple
 Fast static/core/build/browser job95s; verify9s; Pages70s; hosted52s; final acceptance8s. Core browser2/2 passed16.127s, hosted2/2 passed12.060s, with zero skipped/flaky/unexpected cases.29 core units and nine Python integrity/gate checks passed. One Vite build; all26 application bytes match the previously Full-verified game. npm download caching, lock/browser/OS versions and all assertions/time limits remain intact. The70-second Pages wait illustrates service variance inside the measured complete release time.
 
 This is a measured ordinary prose/evidence release, compared with the previous mandatory full20m23s/20m37s baselines. Affected gameplay groups can take longer, and shared/unknown contracts still require Full. The corrected Full implementation was accepted before this push. All482 units,143 Chromium and15 compatibility scenarios remain available and required at the mapped Full/milestone gates; complete Deep browser/performance QA remains manual and was not run. A final evidence commit records this first Fast measurement and receives its own exact-commit Fast/Pages/hosted/final verification.
+
+## Follow-up: early-game Full CI duration (2026-10-25)
+
+Failed run40143956903 /0bc40a1 took20m41s; Chromium shard1's browser step
+ran17.1minutes (23:47:38Z–00:04:47Z). This is a failed-run duration, not an
+accepted release or controlled performance sample. Track as a CI performance
+follow-up; no pipeline redesign, risk-tier downgrade, skipped mandatory test or
+campaign rerun is part of the Ranger correction. All other required unit/browser/
+compatibility jobs passed; Pages/hosted were skipped.

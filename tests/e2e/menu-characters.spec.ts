@@ -105,31 +105,39 @@ test("fresh Ranger starter bow deals damage in initial forest combat", async ({
       };
     }, screen);
     await page.mouse.click(view.x, view.y);
-    await expect
-      .poll(() =>
-        page.evaluate(
-          (point) =>
-            Math.hypot(
-              window.hollowbaneWorld!.position.x - point.x,
-              window.hollowbaneWorld!.position.y - point.y,
-            ),
-          point,
-        ),
-      )
-      // Mouse path endpoints snap to half-unit floor cells (max error sqrt(2)/4).
-      .toBeLessThan(0.36);
+    // Observe arrival beside rendering: a slow CI round trip can return a valid
+    // position after host-side expect.poll has already rejected its stale sample.
+    const arrival = await page.waitForFunction(
+      (point) => {
+        const distance = Math.hypot(
+          window.hollowbaneWorld!.position.x - point.x,
+          window.hollowbaneWorld!.position.y - point.y,
+        );
+        // Mouse endpoints snap to half-unit floor cells (max error sqrt(2)/4).
+        return distance < 0.36 ? { distance } : false;
+      },
+      point,
+      { polling: "raf", timeout: 5000 },
+    );
+    const sample = await arrival.jsonValue();
+    if (!sample) throw new Error("Arrival observation missing");
+    expect(sample.distance).toBeLessThan(0.36);
+    await arrival.dispose();
   }
-  const aim = await page.evaluate((id) => {
-    const enemy = window.hollowbaneCombat!.actors.find((a) => a.id === id)!,
-      camera = window.hollowbaneWorld!.camera;
-    return {
-      x: (enemy.x - camera.x) * camera.zoom,
-      y: (enemy.y - 28 - camera.y) * camera.zoom,
-    };
-  }, target.id);
-  await page.mouse.move(aim.x, aim.y);
   await expect
-    .poll(() => page.evaluate(() => window.hollowbaneCombat!.hovered))
+    .poll(async () => {
+      // Both the enemy and follow camera can move between host observations.
+      const aim = await page.evaluate((id) => {
+        const enemy = window.hollowbaneCombat!.actors.find((a) => a.id === id)!,
+          camera = window.hollowbaneWorld!.camera;
+        return {
+          x: (enemy.x - camera.x) * camera.zoom,
+          y: (enemy.y - 28 - camera.y) * camera.zoom,
+        };
+      }, target.id);
+      await page.mouse.move(aim.x, aim.y);
+      return page.evaluate(() => window.hollowbaneCombat!.hovered);
+    })
     .toBe(target.id);
   await page.mouse.down();
   try {
