@@ -1,5 +1,16 @@
 # Art bible — proposal, approval pending
 
+## Q3 player production authorization — 2026-10-25
+
+Q3-A through Q3-E are authorized by the user, beginning with one reviewed player
+asset set. Earlier proposal/G1 production restrictions below are historical.
+Preserve the established palette, isometric projection and foot-depth contract.
+Warrior steel/crimson, Sorcerer layered blue/violet robes and Ranger green/leather
+with bow use original menu art as style reference only. Dedicated gameplay poses
+must distinguish classes and walk/run/action states. Reject clipped weapons,
+drifting pivots/scale and inconsistent frames before scaling production.
+Pilot provenance, rejected sources and resume plan: `docs/art/q3/README.md`.
+
 Original ashbound gothic frontier: worn basalt, pale bone, tarnished bronze, charcoal fabric; amber fire contrasts cool desaturated stone. No copied characters or environments. 2:1 isometric diamond at 64×32 logical pixels; humanoid baseline 32×64 with foot pivot. Eight directions at consistent scale, silhouette approved before animation. Minimum planned actions: idle, walk, run, attack, heavy attack, cast, hit, block, death. Equipment must preserve silhouette and anchor consistency.
 
 Diffuse/baked shadow foundation with selective dynamic lights and normals. Warm hazards and cold ambient light; avoid burying enemies in darkness. Ground decals below actors; sort actors by foot-world depth; tall occluders require future transparency rules. UI uses readable text, restrained stone/bronze motifs and non-color rarity markers. Effects show windup/active/recovery and respect reduced motion/flash settings. Atlas size/memory and download budgets must precede production.

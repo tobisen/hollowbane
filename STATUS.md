@@ -1,3 +1,11 @@
+## Q3-A Warrior art pilot — safe checkpoint (2026-10-25)
+
+- User authorizes Q3 visual/audio through final review; P1/P2 accepted, Act2 excluded. DBL-023/024/025/026 player slice only; no later deliverable advanced.
+- Three built-in imagegen trials retained with original project references and prompts. Two48-pose action sheets fail48/48 clear-cell checks each; smaller six-pose walk fails4/6. Visually reviewed: clipped weapons, drifting roots, alpha/stride problems. Sources quarantined as placeholders, absent from runtime. Production artwork remains blocked; Q3-A is NOT complete.
+- Offline audit/fingerprints and eight-action animated source showcase added: docs/art/q3/README.md. Eight browser canvases/pause/resume pass, capture reviewed; TypeScript/affected ESLint/Prettier and36-record asset validation pass. No gameplay/save/render/timing changes or performance claim; no unrelated simulations.
+- Classifier dry-run requires Full for source/tooling. Checkpoint commit/push and exact CI/Pages/hosted release gate pending; do not advance with mandatory checks pending. Current verified deployed runtime remains2b29458d774cda4576ea64bab8ce7a8d8e005e19 / CI40218730021 confirmed success. Native P2 baseline preserved.
+- Soft-session checkpoint after three failed consistency trials. Resume representative-set production using controlled individual poses/rigged source, then alignment/scale/alpha/temporal review before eight directions/classes. All unrelated local documentation edits preserved. Q3-B/C/D/E pending; final quality gate not reached.
+
 ## P2 Mac pacing released — STOP for quality review (2026-10-25)
 
 - Verified deployed SHA2b29458d774cda4576ea64bab8ce7a8d8e005e19; exact CI40218730021, all required regression/compatibility, Pages, hosted critical flow and Release acceptance pass. All41 public files match sealed/local-tested bytes. No local Full Regression or test-threshold changes.

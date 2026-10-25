@@ -267,5 +267,29 @@
     "placeholder": false,
     "type": "menu-thumbnail",
     "provenance": "docs/art/menu.md"
+  },
+  {
+    "id": "q3-warrior-actions-se-v1",
+    "source": "assets/source/q3/warrior-actions-se-v1.png",
+    "rights": "Original Hollowbane prompts; built-in imagegen; original project artwork references only; release rights review pending",
+    "placeholder": true,
+    "type": "rejected-character-pilot",
+    "provenance": "docs/art/q3/warrior-prompts.md"
+  },
+  {
+    "id": "q3-warrior-actions-se-v2",
+    "source": "assets/source/q3/warrior-actions-se-v2.png",
+    "rights": "Original Hollowbane prompts; built-in imagegen; original project artwork references only; release rights review pending",
+    "placeholder": true,
+    "type": "rejected-character-pilot",
+    "provenance": "docs/art/q3/warrior-prompts.md"
+  },
+  {
+    "id": "q3-warrior-walk-se-v3",
+    "source": "assets/source/q3/warrior-walk-se-v3.png",
+    "rights": "Original Hollowbane prompt; built-in imagegen; original menu Warrior style reference; release rights review pending",
+    "placeholder": true,
+    "type": "rejected-character-pilot",
+    "provenance": "docs/art/q3/warrior-prompts.md"
   }
 ]

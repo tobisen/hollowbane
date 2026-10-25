@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>
+    Hollowbane Warrior source review — rejected production candidate
+  </title>
+  <style>
+    body {
+      margin: 32px;
+      background: #171c20;
+      color: #e6dfcf;
+      font: 16px system-ui;
+    }
+    h1 {
+      font-size: 25px;
+    }
+    p {
+      max-width: 850px;
+      line-height: 1.5;
+    }
+    main {
+      display: grid;
+      grid-template-columns: repeat(4, 220px);
+      gap: 12px;
+    }
+    canvas {
+      display: block;
+      width: 220px;
+      height: 220px;
+      background: #343b3d;
+      outline: 1px solid #89765a;
+    }
+    figure {
+      margin: 0;
+    }
+    figcaption {
+      padding: 8px 0;
+    }
+    button {
+      padding: 8px 16px;
+      margin-bottom: 18px;
+    }
+  </style>
+  <h1>Warrior action pilot · southeast only</h1>
+  <p>
+    Unshipped source review. Six frames per action; uniform source-cell cropping
+    exposes alignment errors. This preview uses an illustrative 8 fps, with
+    death held at its final frame. It does not demonstrate combat-event
+    synchronization. Grid margins, foot placement and weapon continuity require
+    correction before production.
+  </p>
+  <button id="pause">Pause preview</button>
+  <main></main>
+  <script type="module">
+    const actions = [
+      "Idle",
+      "Walk",
+      "Run",
+      "Melee",
+      "Cast",
+      "Block",
+      "Hit",
+      "Death",
+    ];
+    const image = new Image();
+    image.src = "../../../assets/source/q3/warrior-actions-se-v2.png";
+    await image.decode();
+    const contexts = actions.map((action) => {
+      const figure = document.createElement("figure");
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 220;
+      const caption = document.createElement("figcaption");
+      caption.textContent = action;
+      figure.append(canvas, caption);
+      document.querySelector("main").append(figure);
+      return canvas.getContext("2d");
+    });
+    let paused = false,
+      elapsed = 0,
+      previous;
+    document.querySelector("button").onclick = (event) => {
+      paused = !paused;
+      event.target.textContent = paused ? "Resume preview" : "Pause preview";
+    };
+    function draw(now) {
+      if (previous !== undefined && !paused) elapsed += now - previous;
+      previous = now;
+      const step = Math.floor(elapsed / 125);
+      contexts.forEach((context, row) => {
+        const col = row === 7 ? Math.min(step, 5) : step % 6;
+        context.canvas.dataset.frame = String(col);
+        const left = Math.round((col * image.width) / 6);
+        const top = Math.round((row * image.height) / 8);
+        const width = Math.round(((col + 1) * image.width) / 6) - left;
+        const height = Math.round(((row + 1) * image.height) / 8) - top;
+        context.clearRect(0, 0, 220, 220);
+        context.drawImage(image, left, top, width, height, 0, 0, 220, 220);
+        context.strokeStyle = "#b6a27b";
+        context.beginPath();
+        context.moveTo(110, 190);
+        context.lineTo(110, 210);
+        context.moveTo(100, 200);
+        context.lineTo(120, 200);
+        context.stroke();
+      });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  </script>
+</html>
