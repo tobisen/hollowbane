@@ -50,6 +50,9 @@ Raw captures/measurements: `/private/tmp/hollowbane-warrior-refinement` and the
 focused Playwright output directory. No local campaign/loot/progression suites.
 
 Required release classification remains Full under existing tooling/asset policy;
-no local unrelated Full run or policy downgrade. Exact CI, Pages and independent
-hosted preview verification are pending. Resume this release gate before cadence
-or directional production. The overall complete Warrior assignment is incomplete.
+no local unrelated Full run or policy downgrade. Exact CI40231348823 for30deeda
+failed two existing browser observations; Pages and hosted verification were
+skipped. Focused test-only repairs and evidence:
+[warrior-movement.md](warrior-movement.md). Require exact successor CI, Pages and
+independent hosted preview verification before cadence or directional production.
+The complete Warrior assignment remains incomplete.

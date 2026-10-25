@@ -40,8 +40,10 @@ motion against actual travel; slowing playback alone creates foot sliding.
 
 The sealed `release-bundle` passes the existing SHA/inventory verifier. All48
 files match `/private/tmp/hollowbane-warrior-refinement/tested-files.json` exactly.
-Independent hosted identity and preview checks remain pending deployment; no
-new animation has been produced. CI status is recorded in STATUS.md.
+Exact CI40231348823 completed with failures in Chromium shards3/4 and4/4;
+Pages and hosted acceptance were skipped. No new animation has been produced.
+An exact successor release must pass before production. CI status is recorded
+in STATUS.md.
 
 Raw evidence and the sealed bundle are under
 `/private/tmp/hollowbane-warrior-movement`. Later performance comparisons must
@@ -70,3 +72,28 @@ improvement claim. The refined preview's existing atlas is746968bytes /6MiB
 decoded; the new movement atlas does not exist yet. Physical input and display
 scanout are unmeasured. Raw report and captures:
 `/private/tmp/hollowbane-warrior-movement/prerequisite-native-baseline.json`.
+
+## Demonstrated release blockers and focused repair
+
+Both downloaded traces and screenshots were inspected. The melee assertion
+observed windup and then read HP through a separate host call after the first
+valid42-damage strike (160→118). It now pre-arms an atomic first-sequence
+windup/HP snapshot and additionally checks the first damage tick against the
+remaining windup. A diagnostic delays the host read until that real strike:
+snapshot HP160 at tick35/remaining11, later HP118/damage tick46. No phase or
+damage rule changes; the original held-attack/death deadline remains12s.
+
+The Ranger trace shows a2.7s gap between observing hover and pressing the mouse;
+the moving target left the old aim point. Player sequence remained0 and no
+player attack occurred. The test now refreshes aim and retries trusted mouse
+input within the original5s acquisition budget. It retains the same enemy,
+path, real starter bow, positive target-specific damage assertion and15s damage
+deadline. No gameplay, AI, item, input-handler or timeout changes.
+
+The focused melee and Ranger cases pass in5.2s and10.7s against the unchanged
+sealed build. A temporary diagnostic deliberately misses the first trusted
+Ranger click; re-aiming recovers and the same damage assertion passes in18.0s.
+TypeScript, affected lint and formatting pass. All48 runtime files remain
+identical; no local campaign/loot/full regression or rebuild is needed for this
+test-only repair. The existing classifier controls required successor CI;
+no release-tier override or failed-run rerun is used as acceptance.

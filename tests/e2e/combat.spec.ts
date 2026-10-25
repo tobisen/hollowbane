@@ -63,13 +63,25 @@ test("melee approaches and respects windup, recovery, held attacks and death", a
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneCombat!.hovered))
     .toBe(1);
+  // Arm before input and capture HP in the same browser observation as windup.
+  // A separate host round trip can arrive after the valid first strike.
+  const windupObservation = page.waitForFunction(() => {
+    const state = window.hollowbaneCombat!;
+    const player = state.actors[0]!;
+    return (
+      player.phase === "windup" &&
+      player.sequence === 1 && {
+        hp: state.actors[1]!.hp,
+        tick: state.tick,
+        remaining: player.remaining,
+      }
+    );
+  });
   await page.mouse.down();
-  await page.waitForFunction(
-    () => window.hollowbaneCombat!.actors[0]!.phase === "windup",
-  );
-  expect(
-    await page.evaluate(() => window.hollowbaneCombat!.actors[1]!.hp),
-  ).toBe(160);
+  const windup = await (await windupObservation).jsonValue();
+  expect(windup).toBeTruthy();
+  if (!windup) throw Error("First windup was not observed");
+  expect(windup.hp).toBe(160);
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[1]!.hp), {
       timeout: 12000,
@@ -82,6 +94,13 @@ test("melee approaches and respects windup, recovery, held attacks and death", a
     )
     .toBeNull();
   const state = await page.evaluate(() => window.hollowbaneCombat!);
+  const firstDamage = state.events.find(
+    (event) =>
+      event.kind === "damage" && event.actor === 0 && event.target === 1,
+  );
+  expect(firstDamage?.tick).toBeGreaterThanOrEqual(
+    windup.tick + windup.remaining,
+  );
   expect(state.actors[1]!.phase).toBe("dead");
   expect(state.events.some((e) => e.kind === "death")).toBe(true);
   expect(state.metrics.attackSamples).toBeGreaterThan(0);

@@ -124,42 +124,41 @@ test("fresh Ranger starter bow deals damage in initial forest combat", async ({
     expect(sample.distance).toBeLessThan(0.36);
     await arrival.dispose();
   }
-  await expect
-    .poll(async () => {
-      // Both the enemy and follow camera can move between host observations.
-      const aim = await page.evaluate((id) => {
-        const enemy = window.hollowbaneCombat!.actors.find((a) => a.id === id)!,
-          camera = window.hollowbaneWorld!.camera;
-        return {
-          x: (enemy.x - camera.x) * camera.zoom,
-          y: (enemy.y - 28 - camera.y) * camera.zoom,
-        };
-      }, target.id);
-      await page.mouse.move(aim.x, aim.y);
-      return page.evaluate(() => window.hollowbaneCombat!.hovered);
-    })
-    .toBe(target.id);
-  await page.mouse.down();
   try {
-    // A first-shot critical can kill this target before a host round trip
-    // observes selection. Its recorded hit also proves the intended acquisition.
-    await page.waitForFunction(
-      (id) => {
-        const combat = window.hollowbaneCombat!;
-        return (
-          combat.actors[0]!.selected === id ||
-          combat.events.some(
-            (e) =>
-              e.kind === "damage" &&
-              e.actor === 0 &&
-              e.target === id &&
-              e.result.amount > 0,
-          )
-        );
-      },
-      target.id,
-      { polling: "raf", timeout: 5000 },
-    );
+    await expect
+      .poll(
+        async () => {
+          const observation = await page.evaluate((id) => {
+            const combat = window.hollowbaneCombat!;
+            // A first-shot critical can already have killed the intended target.
+            const acquired =
+              combat.actors[0]!.selected === id ||
+              combat.events.some(
+                (e) =>
+                  e.kind === "damage" &&
+                  e.actor === 0 &&
+                  e.target === id &&
+                  e.result.amount > 0,
+              );
+            const enemy = combat.actors.find((a) => a.id === id)!,
+              camera = window.hollowbaneWorld!.camera;
+            return {
+              acquired,
+              x: (enemy.x - camera.x) * camera.zoom,
+              y: (enemy.y - 28 - camera.y) * camera.zoom,
+            };
+          }, target.id);
+          if (observation.acquired) return true;
+          // Re-aim a missed trusted click within the original acquisition budget.
+          // A host-side hover assertion can return after the moving target leaves.
+          await page.mouse.up();
+          await page.mouse.move(observation.x, observation.y);
+          await page.mouse.down();
+          return false;
+        },
+        { timeout: 5000 },
+      )
+      .toBe(true);
     await expect
       .poll(
         () =>

@@ -119,6 +119,16 @@
     "localFullRegression": "not run; unrelated suites excluded"
   },
   "release": {
-    "status": "pending exact commit CI/Pages/hosted acceptance"
+    "status": "30deeda failed required CI; exact successor CI/Pages/hosted acceptance pending",
+    "failedSha": "30deedabcdab090a7057184ad44eb94799702845",
+    "failedRun": 40231348823,
+    "pages": "skipped",
+    "hosted": "skipped",
+    "repair": "test-only atomic first windup observation and bounded trusted Ranger re-aim; runtime unchanged",
+    "focusedMeleeSeconds": 5.2,
+    "focusedRangerSeconds": 10.7,
+    "forcedMissRangerSeconds": 18.0,
+    "delayedWindupObservation": "snapshot160; later118; damage tick46 = snapshot35 + remaining11",
+    "evidence": "docs/art/q3/warrior-movement.md"
   }
 }

@@ -1,3 +1,10 @@
+## Q3-A Warrior movement — demonstrated release repairs (2026-10-25)
+
+- Exact30deedabcdab090a7057184ad44eb94799702845 / CI40231348823 FAILED: melee split-observation race and Ranger stale aim. Pages/hosted skipped; no release acceptance. Production remains gated; local2c7d066 preserved.
+- Test-only repairs: atomic first-sequence windup/HP snapshot plus damage-tick bound; trusted Ranger re-aim within original5s acquisition/15s damage budgets. No runtime/mechanics/timing/art changes. Both CI traces/screenshots inspected; all48 sealed runtime files unchanged.
+- Focused melee5.2s/Ranger10.7s pass; deliberate first-click miss recovers18.0s; natural-strike delayed observation proves snapshot160 versus later118. TypeScript/affected lint/format pass. No unrelated local campaign/loot/full suite or redundant build.
+- Commit/push successor, require exact classifier-selected CI/Pages and independent hosted byte/animation checks, then checkpoint A. No new movement production or A/B approval yet. Evidence/resume: docs/art/q3/warrior-movement.md and /private/tmp/hollowbane-warrior-movement/checkpoint.json. Preserve unrelated edits.
+
 ## Q3-A Warrior movement — prerequisite checkpoint (2026-10-25)
 
 - Current scope: eight-direction idle/walk/run, developer preview only; A southeast cadence/run release before B full set. No combat clips or production replacement. See docs/art/q3/warrior-movement.md.
