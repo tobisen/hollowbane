@@ -119,16 +119,20 @@
     "localFullRegression": "not run; unrelated suites excluded"
   },
   "release": {
-    "status": "30deeda failed required CI; exact successor CI/Pages/hosted acceptance pending",
+    "status": "passed exact successor Full CI/Pages/hosted acceptance",
     "failedSha": "30deedabcdab090a7057184ad44eb94799702845",
     "failedRun": 40231348823,
-    "pages": "skipped",
-    "hosted": "skipped",
+    "pages": "pass",
+    "hosted": "48 sealed/reviewed/public file hashes identical;4 focused hosted Warrior preview cases pass",
     "repair": "test-only atomic first windup observation and bounded trusted Ranger re-aim; runtime unchanged",
     "focusedMeleeSeconds": 5.2,
     "focusedRangerSeconds": 10.7,
     "forcedMissRangerSeconds": 18.0,
     "delayedWindupObservation": "snapshot160; later118; damage tick46 = snapshot35 + remaining11",
-    "evidence": "docs/art/q3/warrior-movement.md"
+    "evidence": "docs/art/q3/warrior-movement.md",
+    "verifiedSha": "86b816904ebbd75c603518ee28ee08b46f45facb",
+    "verifiedRun": 40233360148,
+    "hostedScreenshots": "light/dark and gameplay-stage captures inspected; no visible clipping or distracting halos; cadence unchanged",
+    "newMovementProduction": "not begun; checkpoints A/B remain incomplete"
   }
 }

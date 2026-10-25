@@ -1,3 +1,9 @@
+## Q3-A Warrior movement — prerequisite RELEASE VERIFIED (2026-10-25)
+
+- Verified SHA86b816904ebbd75c603518ee28ee08b46f45facb / CI40233360148: required Full/all Chromium/compatibility, Pages, hosted smoke and Release acceptance PASS. Independent48-file sealed/reviewed/public byte match and four hosted Warrior preview checks PASS; captures reviewed. Test-only repairs preserve art/runtime;2c7d066 preserved.
+- Existing southeast8 idle/16 walk remains746968bytes/6MiB; no new animations or production replacement. Original Blender4.5.3 saved rig/camera/lights inspected without modification. Cadence limitation remains; A/B quality gates incomplete.
+- Session checkpoint: prerequisite is closed. Resume animation-only Southeast cadence/distinct run as A, verify its release before B eight directions. No repeat art trials or prerequisite redeployment required. Evidence docs/art/q3/warrior-movement.md; raw /private/tmp/hollowbane-warrior-movement. Existing native P2 baseline retained; no new performance claim. Preserve unrelated edits; no combat/other classes.
+
 ## Q3-A Warrior movement — demonstrated release repairs (2026-10-25)
 
 - Exact30deedabcdab090a7057184ad44eb94799702845 / CI40231348823 FAILED: melee split-observation race and Ranger stale aim. Pages/hosted skipped; no release acceptance. Production remains gated; local2c7d066 preserved.
