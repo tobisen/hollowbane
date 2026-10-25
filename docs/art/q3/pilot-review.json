@@ -1,0 +1,168 @@
+{
+  "date": "2026-10-25",
+  "scope": "Warrior southeast: 8 idle + 16 walk; isolated developer preview",
+  "prerequisite": {
+    "sha": "f852ad103663623a613e656500bf3223874b0814",
+    "run": 40221857287,
+    "conclusion": "success",
+    "hostedFilesMatched": 41
+  },
+  "pilotReadyForUserReview": true,
+  "userArtApproval": true,
+  "productionReplacement": false,
+  "fullCharacterSetReady": false,
+  "validation": {
+    "bytes": 670868,
+    "decodedBytes": 6291456,
+    "frames": 24,
+    "maxIsolatedSoftPixels": 1,
+    "minimumAlphaMargin": 16
+  },
+  "reproduction": [
+    {
+      "name": "idle-se-00",
+      "changedChannels": 1,
+      "maxRgbDelta": 1,
+      "maxAlphaDelta": 0,
+      "geometryExact": true
+    },
+    {
+      "name": "walk-se-00",
+      "changedChannels": 6,
+      "maxRgbDelta": 1,
+      "maxAlphaDelta": 0,
+      "geometryExact": true
+    },
+    {
+      "name": "walk-se-04",
+      "changedChannels": 0,
+      "maxRgbDelta": 0,
+      "maxAlphaDelta": 0,
+      "geometryExact": true
+    },
+    {
+      "name": "walk-se-08",
+      "changedChannels": 16,
+      "maxRgbDelta": 2,
+      "maxAlphaDelta": 0,
+      "geometryExact": true
+    },
+    {
+      "name": "walk-se-12",
+      "changedChannels": 21,
+      "maxRgbDelta": 1,
+      "maxAlphaDelta": 0,
+      "geometryExact": true
+    }
+  ],
+  "nativePreviewPerformance": {
+    "url": "?developer=1&warriorPilot=1",
+    "environment": {
+      "visible": "visible",
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+    },
+    "browser": "156.0.8078.4",
+    "condition": "visible native window; zoom2; moving; comparison paused; 3 alternating pairs",
+    "samples": [
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.2,
+        "p99": 17.6,
+        "longest": 17.6,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "pilot",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.4,
+        "p99": 17.7,
+        "longest": 17.7,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "pilot",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.4,
+        "p99": 17.6,
+        "longest": 17.6,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.4,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.6,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "pilot",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.6,
+        "p99": 17.7,
+        "longest": 17.7,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      }
+    ]
+  },
+  "visualReview": {
+    "inspected": [
+      "all 16 walk poses at gameplay scale",
+      "idle and walk against shipped southeast strip",
+      "dark and light browser backgrounds",
+      "root/contact overlays",
+      "native Metal Phaser stage at 2x camera zoom"
+    ],
+    "findings": [
+      "constant body and equipment geometry",
+      "distinct alternating planted and swing feet",
+      "no observed sword/body or cell clipping",
+      "no distracting matte halo",
+      "sculptural finish differs from painted identity reference"
+    ],
+    "limits": [
+      "isolated pilot accepted by user; sculptural finish and live adoption remain distinct",
+      "3 world/s gameplay speed demands much faster cadence than the authored walk",
+      "empty preview stage performance is not full encounter performance",
+      "no physical-controller verification"
+    ]
+  },
+  "localChecks": {
+    "focusedAssetTests": 6,
+    "focusedChromiumTests": 3,
+    "typeScript": true,
+    "affectedEslint": true,
+    "assetValidation": true,
+    "build": true
+  },
+  "release": "Pilot candidate publication and exact-commit gate recorded in STATUS.md; prerequisite success is not pilot release acceptance.",
+  "approvalScope": "User: Accept the isolated pilot (2026-10-25); no live replacement or full set approval"
+}

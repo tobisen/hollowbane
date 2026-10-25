@@ -291,5 +291,23 @@
     "placeholder": true,
     "type": "rejected-character-pilot",
     "provenance": "docs/art/q3/warrior-prompts.md"
+  },
+  {
+    "id": "q3-warrior-rig-blockout-v1",
+    "source": "assets/source/q3/warrior-rig-v1/blockout-v1.py",
+    "rights": "Original project procedural model and rig; no external meshes, textures or motion capture",
+    "placeholder": true,
+    "type": "rejected-character-pilot",
+    "provenance": "docs/art/q3/pipeline-recovery.md"
+  },
+  {
+    "id": "q3-warrior-rig-pilot-v1",
+    "source": "assets/source/q3/warrior-rig-v1/warrior.py",
+    "rights": "Original project procedural model, materials and rig; original menu Warrior identity reference only; no external meshes, textures or motion capture",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/warrior-pilot/warrior.png",
+    "rig": "assets/source/q3/warrior-rig-v1/warrior.blend",
+    "provenance": "docs/art/q3/pipeline-recovery.md"
   }
 ]

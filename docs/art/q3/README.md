@@ -1,8 +1,15 @@
-# Q3-A player art checkpoint — DBL-023/024/025/026
+# Q3-A Warrior pilot — DBL-023/024/025/026
 
-Recovery evaluation and pinned local renderer evidence:
-[pipeline-recovery.md](pipeline-recovery.md). The single-direction Warrior
-idle/walk pilot is pending; the rejected sources below remain quarantined.
+The user accepted the isolated rigged Warrior pilot on2026-10-25:8 idle and16
+walk frames, southeast only. Open `?developer=1&warriorPilot=1` for playback,
+stepping, overlays, shipped comparison and Phaser movement/zoom. Live graphics
+remain unchanged; no other classes/directions are authorized by this acceptance.
+
+Production method, original source/rig, reproduction commands, visual review,
+limits and performance: [pipeline-recovery.md](pipeline-recovery.md),
+[pilot-review.json](pilot-review.json). Exact candidate publication is recorded
+in STATUS.md. The remaining sections preserve the rejected f852ad1 approach
+and its historical evidence; none of those trial images ships as runtime art.
 
 2026-10-25. User authorized Q3-A through Q3-E and final quality review, starting
 with players. P1/P2 are accepted prerequisites. Act 2 is excluded. Existing

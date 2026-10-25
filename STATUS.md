@@ -1,3 +1,11 @@
+## Q3-A Warrior rigged pilot — approved isolated preview (2026-10-25)
+
+- DBL-023/024/025/026: user accepted the isolated southeast Warrior pilot after disclosure of sculptural finish and rapid cadence at existing gameplay speed. Original Blender4.5.3 rig/source;8 idle/16 walk frames,256px uniform cells, fixed root/lighting/weapon,670868-byte transparent PNG. Live graphics and all simulation/timing remain unchanged; no other classes/directions or Q3 work.
+- Exact prerequisite f852ad103663623a613e656500bf3223874b0814 / CI40221857287 passed all mandatory jobs, Pages and Release acceptance. Independently matched all41 sealed/tested/hosted files before production.
+- Six focused asset units, three Chromium preview tests, TypeScript, affected lint/format, asset validation and build pass. Visual review covers all walk poses, light/dark edges, roots, weapon and native Phaser placement/zoom. Five rerenders preserve exact geometry/alpha with at most2/255 RGB drift in21 channels; reproducibility limits documented. Original failed AI trials and first rig blockout remain source-only references.
+- Three native Apple M4/Metal baseline/pilot pairs: shipped p9517.2/17.4/17.6ms; pilot17.4/17.4/17.6ms; zero>25ms. Empty preview only, not full encounter or physical-controller evidence. No local campaign/loot regression. Existing classifier selects mandatory release tier.
+- Preview: ?developer=1&warriorPilot=1. Approval evidence, method and repeat commands: docs/art/q3/pipeline-recovery.md and pilot-review.json. Commit/publication/exact release verification next; prerequisite success does not imply pilot release success. Stop after this pilot release. Full character set and live adoption remain unapproved.
+
 ## Q3-A pipeline recovery — evaluation checkpoint (2026-10-25)
 
 - DBL-023/024/025/026: evaluated rigged3D, layered2D and controlled poses; selected rigged3D with fixed camera/root/lighting and attached weapon. One southeast Warrior idle/walk pilot only; no new production asset yet. See docs/art/q3/pipeline-recovery.md.

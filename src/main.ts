@@ -25,6 +25,12 @@ if (invalidCharacterRoute) {
   await startMainMenu(
     "This character link includes unsupported options. Choose a character from the menu; no save was loaded.",
   );
+} else if (
+  query.get("developer") === "1" &&
+  query.get("warriorPilot") === "1"
+) {
+  const { startWarriorPilot } = await import("./rendering/warrior-pilot");
+  await startWarriorPilot();
 } else if (query.has("controller")) {
   controllerPage();
 } else if (
@@ -67,4 +73,5 @@ if (invalidCharacterRoute) {
   await startMainMenu();
 }
 
-if (!document.querySelector("main.main-menu")) installControllerUI();
+if (!document.querySelector("main.main-menu, main.warrior-pilot"))
+  installControllerUI();

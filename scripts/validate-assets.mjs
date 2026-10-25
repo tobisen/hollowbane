@@ -1,4 +1,5 @@
 import { validateWorldArtInventory } from "./validate-world-art.mjs";
+import { validateWarriorPilot } from "./validate-warrior-pilot.mjs";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import sharp from "sharp";
 import { createHash } from "node:crypto";
@@ -89,6 +90,7 @@ console.log(
 );
 
 validateWorldArtInventory(assets);
+await validateWarriorPilot();
 
 const menuInventory = JSON.parse(
   readFileSync("docs/art/menu-inventory.json", "utf8"),
