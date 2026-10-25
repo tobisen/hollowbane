@@ -1,3 +1,10 @@
+## Movement hotfix P1 — local verification / release gate next (2026-10-25)
+
+- User authorizes P1 wall sliding then P2 measured frame pacing autonomously; release each before the next. Q3 remains stopped. DBL-029/035 scoped repair; broad parents remain partial.
+- Root cause: manual collision rejected the entire step. Swept first-contact resolution now projects original remaining input against all contact normals in world units, preserving clearance, speeds, fixed ticks, animations and click-route replanning. Initial corner oscillation was reproduced and corrected.
+- 40 focused unit cases pass; TypeScript, affected lint/format and production build pass. Existing five movement browsers pass after correction. All six final affected Chromium cases pass48.9s; forest keyboard/virtual-analog/click36.7s, capture reviewed. Old sealed B3 reproduces sticking with only 0.000000339-unit progress; corrected final case exceeds0.7 units. Shallow-slide release also cannot restore blocked speed. No physical/native-GPU evidence.
+- Classifier dry-run requires Full (public/shared navigation,85 affected unit files), not a downgraded Integration gate. Exact CI/Pages/hosted navigation acceptance remains required. Last accepted public runtime986399c. Do not start P2 until P1 release passes. Source/evidence: docs/quality/movement-performance-hotfix.md; tested41-file inventory /private/tmp/hollowbane-p1-tested-files.json. Preserve unrelated local documentation.
+
 ## B4 short opening review ready — STOP for quality review (2026-10-25)
 
 - B2 and B3 released. Verified deployed runtime986399c502fcf8d26c53d0027613c71a0ea735e1; exact Full CI40177980925/232 Chromium/15 compatibility/Pages/hosted/Release acceptance pass, all41 public bytes match sealed/tested artifact; two independent hosted onboarding cases27.7s pass. B2 c1c621c/40175755816 also accepted before B3.

@@ -2,6 +2,7 @@ import { screenToWorld, worldToScreen, type Point } from "../world/isometric";
 import {
   findPath,
   segmentWalkable,
+  slideMovement,
   type Navigation,
 } from "../world/navigation";
 export type Gait = "walk" | "run";
@@ -135,6 +136,12 @@ export function moveTick(
     route: [...walker.route],
   };
   const key = Boolean(keyboard.x || keyboard.y);
+  // Sliding can reduce actual velocity below the held-input speed budget.
+  // Releasing input must decelerate that velocity, never restore blocked speed.
+  const previousSpeed =
+    !key && !result.route.length
+      ? Math.min(walker.speed, Math.hypot(walker.velocity.x, walker.velocity.y))
+      : walker.speed;
   const desired =
     key || result.route.length
       ? walker.gait === "run"
@@ -142,11 +149,11 @@ export function moveTick(
         : config.walkSpeed * (key ? inputScale : 1)
       : 0;
   const change =
-    (desired > walker.speed ? config.acceleration : config.deceleration) / 60;
+    (desired > previousSpeed ? config.acceleration : config.deceleration) / 60;
   result.speed =
-    walker.speed +
-    Math.sign(desired - walker.speed) *
-      Math.min(Math.abs(desired - walker.speed), change);
+    previousSpeed +
+    Math.sign(desired - previousSpeed) *
+      Math.min(Math.abs(desired - previousSpeed), change);
   if (key) {
     result.route = [];
     result.queuedTargets = [];
@@ -177,6 +184,22 @@ export function moveTick(
       y: result.position.y + unit.y * amount,
     };
     if (!segmentWalkable(nav, result.position, next)) {
+      if (key || !goal) {
+        const slid = slideMovement(nav, result.position, {
+          x: unit.x * amount,
+          y: unit.y * amount,
+        });
+        const dx = slid.x - result.position.x,
+          dy = slid.y - result.position.y;
+        const distance = Math.hypot(dx, dy);
+        result.position = slid;
+        moved += distance;
+        if (distance > 1e-9) {
+          result.direction = directionFor(worldToScreen({ x: dx, y: dy }));
+          result.velocity = { x: dx * 60, y: dy * 60 };
+        }
+        break;
+      }
       if (!key && goal && !replanned) {
         const end = result.route.at(-1)!;
         result.route = findPath(nav, result.position, end);

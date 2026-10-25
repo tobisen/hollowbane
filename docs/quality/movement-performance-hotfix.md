@@ -1,0 +1,29 @@
+# Movement and frame pacing hotfix — DBL-029/035
+
+User authorization (2026-10-25): complete P1 wall sliding, release and independently verify it, then P2 measured frame pacing through quality review. Q3 remains stopped. Existing gameplay, saves, graphics profiles, fullscreen, menus and Phaser 4.2.1 remain intact. Original broad issues remain partial.
+
+## P1 collision response
+
+The previous `moveTick` discarded the whole manual displacement whenever `segmentWalkable` rejected it. Held input into a slanted contact therefore stopped despite an available tangent. The sealed B3 build `986399c502fcf8d26c53d0027613c71a0ea735e1` reproduces this in the same generated forest browser case: displacement only 0.000000339 logical units, versus the required progress greater than 0.7. This is a representative seed-42 passage/tree reproduction, not identification of the exact location in the player's recording.
+
+Manual movement now sweeps to first contact using the existing clearance predicate, retains a small numerical separation, and projects the remaining intended displacement onto all gathered contact constraints. Logical terrain edges, round objects, outer bounds, legacy polygon edges and ellipses supply geometry normals. Legacy normals are transformed as covectors into world coordinates before projection. No angle exceptions, geometry reduction or speed increase. Up to eight contacts per tick; unresolved geometry fails closed. Existing walk/run acceleration and fixed 60 Hz simulation remain; animation facing and stride consume actual movement. Keyboard and analog share the resolver. Releasing manual input decelerates from actual velocity so a shallow slide cannot restore blocked speed. Click routes retain their exact endpoints, swept validation and existing replan policy.
+
+An initial sequential projection of the previously projected vector oscillated at the authored east boundary. The existing maximum-speed browser test detected it. Reprojecting the original remaining input against the whole contact cone fixes that defect; a dedicated authored-boundary test guards settling. Polygon edge normals use exact edge perpendiculars to avoid cancellation drift. Terrain contact gathering includes numerical separation around cell boundaries.
+
+## Local evidence
+
+- Eight focused new cases: 30°, 45° and arbitrary 17° walls; narrow passage/corner; terrain and two touching expanded props; keyboard/full analog equivalence, half-scale budget and manual-to-click transition; authored maximum-speed boundary settling; release after a shallow run slide.
+- All 40 cases across wall sliding, movement, locomotion, analog, seeded movement replay, navigation, combat targeting and encounter files pass. Existing maximum-speed and seeded replay include speed 12 and swept nonpenetration. Simulation stepping remains independent of presentation cadence.
+- TypeScript, affected ESLint/Prettier and production build pass. All six affected Chromium cases pass in48.9s, including the final forest case36.7s after the release-input correction; its screenshot was reviewed. The sealed old release fails the unchanged new forest progress assertion in 46.3s.
+- All five existing movement browser controls/queue/blur/camera/maximum-speed cases pass unchanged. The initial maximum-speed failure above remains diagnostic evidence, not a passing result.
+- Diagnostics: `/private/tmp/hollowbane-p1-before`, `/private/tmp/hollowbane-p1-browser-2`, `/private/tmp/hollowbane-p1-movement`, final `/private/tmp/hollowbane-p1-verified`. Test artifacts stay uncommitted. Browser controller emulation is not physical-controller verification.
+
+## Release and continuation
+
+Dry-run classifier selects **Full**: navigation public contract, shared locomotion, 85 affected unit files. Do not downgrade to Fast/Integration. The new forest spec is automatically discovered by the existing browser collection. Commit/push, then require the exact candidate's complete CI, Pages and hosted acceptance. Download its sealed `release-bundle` into a new directory; compare all files against the locally tested inventory and public bytes. Run the independent hosted `wall-sliding.spec.ts` navigation case and review its capture. Record the exact accepted SHA before P2.
+
+Last accepted public runtime is still B3 `986399c502fcf8d26c53d0027613c71a0ea735e1`, [demo](https://tobisen.github.io/hollowbane/). No P1 deployment is claimed here.
+
+## P2 pending
+
+No stuttering root cause has been established. Do not infer one from the recording, browser functional tests, or SwiftShader. After P1 release acceptance, reuse diagnostics and collect comparable stationary/forest/vegetation/combat workloads, balanced/full profiles and relevant fullscreen/windowed evidence. Record frame p50/p95/p99, long frames, simulation/render CPU, camera cost where measurable, objects/particles/draw calls and available heap/GC indicators. Profile before choosing a bounded change, retain identical workload/seed/resolution/browser/profile before and after, and release independently. Real Mac native-GPU evidence is pending; if unavailable provide a reproducible local procedure and explicitly identify software-renderer measurements. No P2 improvement or 60 FPS guarantee is claimed.
