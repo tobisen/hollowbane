@@ -1,3 +1,10 @@
+## Q3-A Warrior movement — prerequisite checkpoint (2026-10-25)
+
+- Current scope: eight-direction idle/walk/run, developer preview only; A southeast cadence/run release before B full set. No combat clips or production replacement. See docs/art/q3/warrior-movement.md.
+- Candidate30deedabcdab090a7057184ad44eb94799702845 / exact CI40231348823: static/units/compatibility pass; Chromium regression still running. Pages/hosted/Release acceptance pending. No failure demonstrated; no new production begun or verified release SHA claimed.
+- Sealed48-file build matches reviewed local inventory exactly. Native M4/Metal P2 forest baseline,359 frames/input: keyboard p50/p95/p9916.7/17.7/17.7ms; virtual controller16.7/17.6/17.7ms; zero>25ms/zero-double ticks. Captures reviewed; this draws shipped graphics, not new movement.
+- Session checkpoint: resume exact release gate, independent hosted byte/animation checks, then A. Sources remain8 idle/16 walk southeast; run/other directions/A/B quality gates incomplete. Evidence /private/tmp/hollowbane-warrior-movement. Keep checkpoint local while prerequisite CI runs; preserve unrelated edits. No orchestrator or physical-controller claim.
+
 ## Q3-A complete Warrior — art refinement checkpoint (2026-10-25)
 
 - User authorizes complete Warrior animation through quality review; deliverable1 first, preview only. Accepted pilotba04838 remains intact. Original Blender4.5.3 v2 materials/faceted accents/folded cloth retain rig, motion, root, lights and weapon geometry.8 idle/16 walk, southeast; PNG746968bytes/6MiB decoded. Production unchanged.

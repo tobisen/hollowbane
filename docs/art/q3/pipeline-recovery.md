@@ -1,8 +1,8 @@
-> Current authorization (2026-10-25): the user now authorizes a complete Warrior
-> animation set, preview-only through final review. Historical pilot-only stops
-> below remain evidence of that earlier scope. Start with art refinement, then
-> cadence, eight directions and existing combat states. No other asset classes.
-> Current batch and release checkpoint: [warrior-refinement.md](warrior-refinement.md).
+> Current authorization (2026-10-25): eight-direction Warrior idle/walk/run,
+> preview-only through movement quality review. Combat clips and other asset
+> classes are excluded. Historical stops below describe earlier scopes.
+> Prerequisite release: [warrior-refinement.md](warrior-refinement.md).
+> Current checkpoints A/B: [warrior-movement.md](warrior-movement.md).
 
 # Q3-A pipeline recovery — DBL-023/024/025/026
 
