@@ -1,3 +1,10 @@
+## Q3-A pipeline recovery — evaluation checkpoint (2026-10-25)
+
+- DBL-023/024/025/026: evaluated rigged3D, layered2D and controlled poses; selected rigged3D with fixed camera/root/lighting and attached weapon. One southeast Warrior idle/walk pilot only; no new production asset yet. See docs/art/q3/pipeline-recovery.md.
+- Blender was absent. Official Blender4.5.3 arm64 DMG checksum verified; temporary read-only mount, native orthographic RGBA probe and repeated decoded-pixel identity pass. Sandbox startup crashes in Metal detection; native execution works. No system installation, runtime or simulation change.
+- Prerequisite f852ad103663623a613e656500bf3223874b0814 / CI40221857287 still running. Static/units/compatibility and Chromium shards1–3 pass; shard4/Pages/hosted acceptance pending. Sealed SHA/all41 files match previously tested P2 bytes. Do not begin production before exact release acceptance.
+- Evaluation formatting passes. Pilot art, validation extensions, developer preview, visual/performance review and final publication remain pending. Preserve unrelated local documentation and all three rejected source trials.
+
 ## Q3-A Warrior art pilot — safe checkpoint (2026-10-25)
 
 - User authorizes Q3 visual/audio through final review; P1/P2 accepted, Act2 excluded. DBL-023/024/025/026 player slice only; no later deliverable advanced.

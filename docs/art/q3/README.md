@@ -1,5 +1,9 @@
 # Q3-A player art checkpoint — DBL-023/024/025/026
 
+Recovery evaluation and pinned local renderer evidence:
+[pipeline-recovery.md](pipeline-recovery.md). The single-direction Warrior
+idle/walk pilot is pending; the rejected sources below remain quarantined.
+
 2026-10-25. User authorized Q3-A through Q3-E and final quality review, starting
 with players. P1/P2 are accepted prerequisites. Act 2 is excluded. Existing
 mechanics, classes, progression, save fingerprints, Phaser4.2.1 and native Mac
