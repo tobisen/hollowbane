@@ -1,3 +1,10 @@
+## Movement hotfix P1 — short regression fixture verified / release pending (2026-10-25)
+
+- Exact successor CI40191644560 /895df59 also failed only the forest browser's long setup at the unchanged60s whole-test budget. Its trace showscontinued waypoint progress before reaching contact; all other required jobs pass. Pages/hosted skipped; public remains986399c. P1 release NOT accepted; P2 NOT started; Q3 stopped.
+- Final focused correction uses seed3's9.6-unit approach instead of seed42's71.7-unit maze; removes the temporary run-toggle workaround. Contact/progress/clearance/input/60s deadline/10s waypoint deadlines unchanged. Old sealed986399c fails the SAME new fixture at0.000000479 progress; unchanged corrected runtime passes9.6s normal and20.2s under6×CPU. TypeScript/affected lint/format pass; screenshot reviewed. No gameplay/render/save changes or P2 performance claims.
+- Earlier seed0 trial was unsuitable: a nearby terrain wall legitimately capped sliding at0.467. Preserved as fixture diagnostics, not a gameplay failure. Final seed3 has clear tangent space. Evidence `/private/tmp/hollowbane-p1-seed3-{before,after,throttled}`; prior CI evidence `/private/tmp/hollowbane-p1-successor-failure`. Artifacts remain uncommitted.
+- Required next: push and verify the NEW exact Full CI/Pages/Release acceptance; download successor sealed bundle to a new directory, match all41 files with `/private/tmp/hollowbane-p1-tested-files.json` and public bytes; run hosted wall-sliding plus keyboard/controller passage/corner checks and review captures. Only then P2. Additional driver/config remain `/private/tmp/hollowbane-p1-hosted-driver` and `/private/tmp/hollowbane-p1-hosted.config.ts` (exclude fixture/throttle diagnostic tests with grep when hosted). Preserve unrelated local edits.
+
 ## Movement hotfix P1 — CI setup correction verified (2026-10-25)
 
 - Exact CI40189974809 for148562b failed only the forest wall-slide browser's long click-route setup at the whole-test60s budget. All other required jobs passed; Pages/hosted skipped. Public remains986399c; P1 release NOT accepted, P2 NOT started, Q3 stopped.
