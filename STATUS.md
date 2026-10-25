@@ -1,3 +1,10 @@
+## P2 Mac pacing released — STOP for quality review (2026-10-25)
+
+- Verified deployed SHA2b29458d774cda4576ea64bab8ce7a8d8e005e19; exact CI40218730021, all required regression/compatibility, Pages, hosted critical flow and Release acceptance pass. All41 public files match sealed/local-tested bytes. No local Full Regression or test-threshold changes.
+- Native Apple M4/16GB/macOS15.7.4, Chromium156.0.8078.4/Metal: phase-dependent callback-clock/tick-boundary judder corrected by RAF elapsed time and centered60Hz residual. Visible-window zero/double ticks keyboard53/53 and controller54/55 →0/0; matched RAFp50/p95/p99 remains16.7/18.6/18.7ms, longest18.7; zero>25/33/50 both. No visual reductions or interpolation buffer; combat tick durations, wall sliding and saves preserved.
+- Independent hosted native keyboard/controller profiles pass359 frames each, p50/p95/p9916.7/16.7/16.8ms, longest16.8ms, zero>25/33/50 and zero/double ticks; uniform3.104px camera steps, captures reviewed. Evidence/procedure docs/quality/mac-frame-pacing.md; checkpoint /private/tmp/hollowbane-p2/checkpoint.json.
+- P2 technical release accepted; user quality approval remains false. STOP here; Q3 paused. Long human play, physical input latency/controllers, feedback-device/other-refresh/compositor/GC follow-ups remain open. No universal-stutter guarantee. Final evidence commit stays local without deploying another runtime; preserve unrelated edits and broad partial parents.
+
 ## P2 release observation correction — verified (2026-10-25)
 
 - CI40216406346 /5e560d0 failed only the existing Ranger selection observation; all other required jobs and62 shard4 cases passed. Pages/hosted skipped; public remainsc4321a6. P2 release NOT accepted; Q3 paused.

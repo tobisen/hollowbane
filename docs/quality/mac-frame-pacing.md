@@ -1,6 +1,6 @@
 # DBL-035 — P2 native Mac movement pacing
 
-2026-10-25. P1 is accepted at `c4321a625581355f9778cb51de6a332f6c9026a1` (user-confirmed CI40193431144, Pages and hosted smoke). This work does not repeat P1 implementation or its release regression. P2 runtime is locally verified. Initial CI40216136027 failed only STATUS formatting; successor CI40216406346 failed only the Ranger observation detailed below. Both bounded corrections are verified, with identical tested production bytes; successor exact CI/Pages/hosted acceptance remains required. Stop at P2 quality review; Q3 remains paused.
+2026-10-25. P1 accepted at c4321a6. **P2 verified deployed SHA: `2b29458d774cda4576ea64bab8ce7a8d8e005e19`**, [exact CI40218730021](https://github.com/tobisen/hollowbane/actions/runs/40218730021), all required regression/compatibility, Pages, hosted critical flow and Release acceptance **success**. All41 public files match the sealed/local-tested production build. Independent hosted native-Metal keyboard/controller movement checks pass and captures are reviewed. Stop at **P2 quality review**; user approval remains false and Q3 stays paused.
 
 ## Measured mechanism and change
 
@@ -18,6 +18,12 @@ A RAF-clock-only candidate was insufficient (e.g. balanced controller35 zero/34 
 - Warm-up:120 ticks plus both ends of the route; ten alternating36-tick screen-right/left legs, trusted keyboard or standard virtual-controller API. Each cohort is approximately6s.1138 scene display objects, one live simulation actor, zero particle emitters; no combat stress claim.
 - Paired primary captures use identical harness/seed/profile/viewport/input macro and warmed assets. Actual positions/ticks are retained. Initial visible-controller baseline start differed by one tick (0.05 world unit); the final tool returns through real click navigation to the exact origin before capture. A later normalized baseline repeat had no zero/double ticks: the old defect is phase-dependent, not present in every run.
 - Frames are sampled after render; raw RAF intervals, CPU submission intervals, full scene update, summed simulation work, existing renderer CPU timer, camera/player deltas and observable heap are separate fields. GL submission cost is not GPU completion time. No CPU tracing during the reported comparison. The first interval crossing the collection boundary is excluded consistently.
+
+## Hosted acceptance
+
+[Live game](https://tobisen.github.io/hollowbane/) serves exactly `2b29458d774cda4576ea64bab8ce7a8d8e005e19`. Native Apple M4 Metal, full1280×800, same seed42/input macro: keyboard/controller each359 complete RAF frames; p50/p95/p99=16.7/16.7/16.8ms, longest16.8ms; >25/>33/>50 counts0/0/0. Every measured inter-frame tick increment is1 (358 intervals each); zero/double counts0/0. Moving player step0.050 logical units; camera3.104 CSS pixels; player-relative camera drift0. Update p95≤2.1ms, simulation≤0.2ms, render≤2.9ms. Both captures reviewed. This is native-GPU hosted evidence, not physical-controller or input-to-photon measurement.
+
+`/private/tmp/hollowbane-p2/hosted.json` and accompanying captures retain raw evidence. Exact sealed artifact: `release-2b29458`; all41 files match `tested-files.json` and public bytes. Final post-release evidence is committed locally without publishing another runtime.
 
 ## Native visible-window comparison
 
@@ -43,11 +49,11 @@ Headless final update p95≤2.4ms, simulation≤0.2ms, render≤3.5ms. Submissio
 
 ## Release observation correction
 
-[CI40216406346](https://github.com/tobisen/hollowbane/actions/runs/40216406346) for5e560d0 passed static/unit/compatibility, all other Chromium shards and62 cases in shard4. Its only failure was the existing fresh-Ranger test waiting for transient selection after its first real bow critical had already dealt55 damage at tick242 and killed2030. The reviewed trace/event log records that valid kill, player sequence1/locked2030, and normal subsequent selected=null. Pages/hosted were skipped; no P2 deployment is accepted.
+[CI40216406346](https://github.com/tobisen/hollowbane/actions/runs/40216406346) for5e560d0 passed static/unit/compatibility, all other Chromium shards and62 cases in shard4. Its only failure was the existing fresh-Ranger test waiting for transient selection after its first real bow critical had already dealt55 damage at tick242 and killed2030. The reviewed trace/event log records that valid kill, player sequence1/locked2030, and normal subsequent selected=null. Pages/hosted were skipped; that failed run deployed nothing; the accepted2b29458 release supersedes it.
 
 The bounded test correction observes acquisition at RAF cadence and accepts either selection or already recorded positive damage to that exact target. Final damage assertion is strengthened to require the same target. Five/15-second deadlines, damage rules, critical chance, equipment and gameplay are unchanged. Normal Ranger check17.5s passes. A diagnostic deliberately delays host observation until a real held-bow kill and cleared selection (2× CPU only during attack); corrected check passes12.1s, exercising precisely the CI race. Six-times CPU stress over the entire scenario failed in earlier navigation setup, not this assertion, and remains separate excluded diagnostics. No route/deadline adjustment was made.
 
-TypeScript/affected ESLint/Prettier pass. This correction changes only the test/evidence, preserving all41 tested runtime bytes and native measurements. Require the successor's exact CI/Pages/hosted acceptance; Q3 remains paused. Artifacts: `ci-regression-failure`, `ranger-observation-normal`, `ranger-observation-post-kill` and the excluded `ranger-observation-throttled` under /private/tmp/hollowbane-p2.
+TypeScript/affected ESLint/Prettier pass. This correction changes only the test/evidence, preserving all41 tested runtime bytes and native measurements. Successor2b29458 now passes exact CI/Pages/hosted acceptance; Q3 remains paused. Artifacts: `ci-regression-failure`, `ranger-observation-normal`, `ranger-observation-post-kill` and the excluded `ranger-observation-throttled` under /private/tmp/hollowbane-p2.
 
 ## Local reproduction
 
@@ -78,8 +84,8 @@ Repeat the same route/profile/window on the before and after builds. `--url` sel
 - 13 focused camera/wall-sliding/replay unit cases pass. Final targeted Chromium clock regression passes; the unchanged baseline fails it. TypeScript, affected ESLint/Prettier and production build pass. Captures reviewed. No local Full Regression/campaign/loot run or screenshot threshold changes.
 
 - Existing risk classifier selects **Full for this P2 increment**: shared `combat-arena.ts` timing and a new profiling script. This is the required new-change release gate, not a rerun of the accepted P1 SHA. No tier override or pipeline modification.
-- Tested41-file inventory: `/private/tmp/hollowbane-p2/tested-files.json`. After push, require its exact CI/Pages, sealed/tested/public-byte identity and hosted native keyboard/controller movement profile before accepting P2's technical release. User quality approval remains false; Q3 stays paused.
+- Tested41-file inventory: `/private/tmp/hollowbane-p2/tested-files.json`. Exact CI/Pages, sealed/tested/public-byte identity and hosted native keyboard/controller profiles now pass for2b29458. User quality approval remains false; Q3 stays paused.
 - Raw JSON/CPU traces/screenshots stay uncommitted in `/private/tmp/hollowbane-p2`: `native-final`, `native-centered-final`, `native-headed-baseline`, `native-headed-centered`, plus normalized `headed-before-final`/`headed-after-final`. Baseline-build is P1 behavior plus the identical opt-in profiling hook. Source regression diagnostics in `clock-regression-before`; final pass in `browser-final`.
 - Excluded diagnostics: first pilot used the wrong update hook (CPU totals invalid) and recorded one unattributed49.9ms controller-frame interval, which is not claimed fixed; CPU-profiler startup generated a50ms boundary interval, excluded from untraced comparisons. Those attempts and the rejected RAF-only candidate remain available separately. No reported-frame threshold was relaxed.
 
-Remaining: long human play on the feedback device, actual input latency/vibration, other browser/refresh rates (120Hz still presents a60Hz simulation), reference-hardware/native GPU follow-ups, and occasional GC/loading/compositing stalls. This measured fix is not a universal stutter guarantee. Stop for P2 quality review after release; no Q3 work.
+Remaining: long human play on the feedback device, actual input latency/vibration, other browser/refresh rates (120Hz still presents a60Hz simulation), reference-hardware/native GPU follow-ups, and occasional GC/loading/compositing stalls. This measured fix is not a universal stutter guarantee. P2 technical release is accepted; stop for user quality review with approval false. No Q3 work.
