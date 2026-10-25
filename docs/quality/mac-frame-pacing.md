@@ -1,6 +1,6 @@
 # DBL-035 — P2 native Mac movement pacing
 
-2026-10-25. P1 is accepted at `c4321a625581355f9778cb51de6a332f6c9026a1` (user-confirmed CI40193431144, Pages and hosted smoke). This work does not repeat P1 implementation or its release regression. P2 candidate is locally verified; its own exact CI/Pages/hosted release remains required. Stop at P2 quality review; Q3 remains paused.
+2026-10-25. P1 is accepted at `c4321a625581355f9778cb51de6a332f6c9026a1` (user-confirmed CI40193431144, Pages and hosted smoke). This work does not repeat P1 implementation or its release regression. P2 candidate `5d9055e1139fbc4142d5642cdb392d9681f921ef` is locally verified and pushed; [exact CI40216136027](https://github.com/tobisen/hollowbane/actions/runs/40216136027) failed only STATUS bullet formatting after TypeScript/lint passed. The documentation-only correction retains identical tested runtime bytes; successor exact CI/Pages/hosted release remains required. Stop at P2 quality review; Q3 remains paused.
 
 ## Measured mechanism and change
 
@@ -15,7 +15,7 @@ A RAF-clock-only candidate was insufficient (e.g. balanced controller35 zero/34 
 - MacBook Air `Mac16,12`, Apple M4 (10-core GPU),16GB RAM, macOS15.7.4 (24G517).
 - Chromium156.0.8078.4, native `ANGLE Metal Renderer: Apple M4`; WebGL and GPU compositing enabled. Both headless and visible-window runs are native GPU results, **not SwiftShader**. Physical display scanout, physical controllers and the feedback author's hardware/browser remain unverified.
 - Seed42, Haunted Forest generated layout2, peaceful isolated developer fixture; viewport1280×800/DPR1. Full render1280×800; balanced960×600 uses existing profile, with the same CSS viewport.
-  -120 warm-up ticks plus both ends of the route; ten alternating36-tick screen-right/left legs, trusted keyboard or standard virtual-controller API. Each cohort is approximately6s.1138 scene display objects, one live simulation actor, zero particle emitters; no combat stress claim.
+- Warm-up:120 ticks plus both ends of the route; ten alternating36-tick screen-right/left legs, trusted keyboard or standard virtual-controller API. Each cohort is approximately6s.1138 scene display objects, one live simulation actor, zero particle emitters; no combat stress claim.
 - Paired primary captures use identical harness/seed/profile/viewport/input macro and warmed assets. Actual positions/ticks are retained. Initial visible-controller baseline start differed by one tick (0.05 world unit); the final tool returns through real click navigation to the exact origin before capture. A later normalized baseline repeat had no zero/double ticks: the old defect is phase-dependent, not present in every run.
 - Frames are sampled after render; raw RAF intervals, CPU submission intervals, full scene update, summed simulation work, existing renderer CPU timer, camera/player deltas and observable heap are separate fields. GL submission cost is not GPU completion time. No CPU tracing during the reported comparison. The first interval crossing the collection boundary is excluded consistently.
 
@@ -67,7 +67,7 @@ Repeat the same route/profile/window on the before and after builds. `--url` sel
 
 ## Verification and release
 
--13 focused camera/wall-sliding/replay unit cases pass. Final targeted Chromium clock regression passes; the unchanged baseline fails it. TypeScript, affected ESLint/Prettier and production build pass. Captures reviewed. No local Full Regression/campaign/loot run or screenshot threshold changes.
+- 13 focused camera/wall-sliding/replay unit cases pass. Final targeted Chromium clock regression passes; the unchanged baseline fails it. TypeScript, affected ESLint/Prettier and production build pass. Captures reviewed. No local Full Regression/campaign/loot run or screenshot threshold changes.
 
 - Existing risk classifier selects **Full for this P2 increment**: shared `combat-arena.ts` timing and a new profiling script. This is the required new-change release gate, not a rerun of the accepted P1 SHA. No tier override or pipeline modification.
 - Tested41-file inventory: `/private/tmp/hollowbane-p2/tested-files.json`. After push, require its exact CI/Pages, sealed/tested/public-byte identity and hosted native keyboard/controller movement profile before accepting P2's technical release. User quality approval remains false; Q3 stays paused.
