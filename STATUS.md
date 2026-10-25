@@ -1,3 +1,9 @@
+## B2 starter skills — local candidate, release verification next (2026-10-25)
+
+- DBL-113/115/210: fresh Warrior starts with Sundering Fan (7 MP), Sorcerer Ember Lance (8 MP), Ranger Briar Needle (9 MP), assigned to the first existing keyboard/mouse/controller slot. Existing starter weapons and combat costs/timings preserved. Each receives one creation-only foundation rank; earned point budgets remain level minus one. Repeated loads never grant ranks or restore cleared bindings; old classed/unclassed saves retain exact skill ledgers.
+- Focused class creation, actual repeated skill damage/cost, progression/forged-grant/persistence/runtime and opening-balance checks pass. Browser/storage evidence and exact release gate are recorded in docs/quality/early-game.md. Physical controllers remain unverified; browser resource bases remain unchanged and distinct from conservative class fixtures.
+- B2 release is NOT yet accepted. Last verified deployed SHA remains 55af54f56c615de169969581d43d32c6016d6fa1. Before B3: commit/push this candidate, inspect classifier-selected required tier, verify exact CI/Pages/sealed public bytes and hosted fresh-class controls/save flows. B3 onboarding, B4 all-class opening review and Q3 remain pending; no next-deliverable implementation before B2 release passes. Preserve unrelated documentation edits.
+
 ## Ranger CI recovery — correction verified, release gate next (2026-10-25)
 
 - DBL-113/109: CI40143956903 /0bc40a1 failed only fresh Ranger positioning; other required unit/browser/compatibility jobs passed, Pages/hosted skipped. Autosave/import-notice correction preserved. Last accepted deployment remains b37ee0076aebe86e8f855eb6815d6f577175456f.

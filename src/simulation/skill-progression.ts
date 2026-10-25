@@ -20,8 +20,15 @@ export interface SkillProgression {
   readonly spent: number;
   readonly rewardedLevel: number;
   readonly ranks: Readonly<Record<string, number>>;
+  /** Creation-only free foundation rank; absent on existing saves. Earned points exclude it. */
+  readonly starter?: true;
   readonly bar?: readonly (string | null)[];
 }
+export const STARTER_SKILLS = Object.freeze({
+  warrior: { node: "warrior-arms-foundation", skill: "iron-fan" },
+  sorcerer: { node: "sorcerer-ember-foundation", skill: "ember-lance" },
+  ranger: { node: "ranger-wilds-foundation", skill: "briar-edge" },
+} as const);
 function level(value: number): void {
   if (!Number.isSafeInteger(value) || value < 1 || value > 99)
     throw Error("Invalid skill reward level");
@@ -45,6 +52,7 @@ export function validateSkillProgression(
         "spent",
         "rewardedLevel",
         "ranks",
+        ...(Object.hasOwn(s, "starter") ? ["starter"] : []),
         ...(Object.hasOwn(s, "bar") ? ["bar"] : []),
       ]
         .sort()
@@ -67,6 +75,15 @@ export function validateSkillProgression(
   if (s.classId === null) {
     if (spent !== 0) throw Error("Unclassed skill ranks");
   } else validateTreeRanks(trees, s.classId, characterLevel, s.ranks);
+  if (Object.hasOwn(s, "starter")) {
+    if (
+      s.starter !== true ||
+      s.classId === null ||
+      !(s.ranks[STARTER_SKILLS[s.classId].node]! >= 1)
+    )
+      throw Error("Invalid starter skill grant");
+    spent -= 1;
+  }
   if (
     s.spent !== spent ||
     !Number.isSafeInteger(s.available) ||
@@ -110,6 +127,21 @@ export function createSkillProgression(
       ranks: {},
     },
     initialLevel,
+  );
+}
+/** Called only by fresh character creation; restore never grants or reassigns skills. */
+export function createStarterSkillProgression(
+  classId: ClassId,
+): SkillProgression {
+  const starter = STARTER_SKILLS[classId];
+  return validateSkillProgression(
+    {
+      ...createSkillProgression(classId),
+      starter: true,
+      ranks: { [starter.node]: 1 },
+      bar: [starter.skill, null, null, null, null, null],
+    },
+    1,
   );
 }
 export function rewardSkillLevels(

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { readdirSync } from "node:fs";
+import { characterApi } from "../fixtures/character-api";
 import { serializeCharacter } from "../../src/simulation/inventory-save";
 import {
   characterSlotFixture,
@@ -16,21 +16,10 @@ const texts = ["warrior", "sorcerer", "ranger"].map((id, index) =>
     characterSlotFixture(id as "warrior" | "sorcerer" | "ranger", 42 + index),
   ),
 );
-test.beforeEach(async ({ page, request }) => {
+test.beforeEach(async ({ page }) => {
   // Exercise the published production entry, never a source bundle injected by the test.
-  const files: string[] = process.env.PLAYWRIGHT_BASE_URL
-    ? Object.keys((await (await request.get("./release.json")).json()).files)
-    : readdirSync("dist/assets").map((f) => `assets/${f}`);
-  const entry = files.find((file) =>
-    /^assets\/character-storage-[\w-]+\.js$/.test(file),
-  );
-  if (!entry) throw Error("Published character storage entry is missing");
   await page.goto("./?controller=1");
-  await page.evaluate(async (path) => {
-    window.characterStorageModule = await import(
-      new URL(path, location.href).href
-    );
-  }, entry);
+  await characterApi(page);
 });
 async function raw(
   page: Page,
@@ -212,29 +201,17 @@ test("switching, stale writers, deletion and browser reload preserve owners, glo
   expect(result.setting).toBe("retained");
   await page.reload();
   // Reload the exact production entry using the same discovery as beforeEach.
-  const files: string[] = process.env.PLAYWRIGHT_BASE_URL
-    ? Object.keys(
-        (await (await page.request.get("./release.json")).json()).files,
-      )
-    : readdirSync("dist/assets").map((f) => `assets/${f}`);
-  const entry = files.find((f) =>
-    /^assets\/character-storage-[\w-]+\.js$/.test(f),
-  )!;
-  const after = await page.evaluate(
-    async ({ entry, id }) => {
-      const m = (await import(
-        new URL(entry, location.href).href
-      )) as typeof window.characterStorageModule;
-      const s = new m.CharacterStorage({ database: "m1-b-switch" });
-      try {
-        const r = await s.load(id);
-        return r.kind === "valid" ? m.serializeCharacter(r.session) : r.kind;
-      } finally {
-        s.close();
-      }
-    },
-    { entry, id: result.firstId },
-  );
+  await characterApi(page);
+  const after = await page.evaluate(async (id) => {
+    const m = window.characterStorageModule;
+    const s = new m.CharacterStorage({ database: "m1-b-switch" });
+    try {
+      const r = await s.load(id);
+      return r.kind === "valid" ? m.serializeCharacter(r.session) : r.kind;
+    } finally {
+      s.close();
+    }
+  }, result.firstId);
   expect(after).toBe(result.before);
 });
 

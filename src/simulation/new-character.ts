@@ -7,7 +7,7 @@ import {
   createInventorySession,
   type InventorySession,
 } from "./inventory-world";
-import { createSkillProgression } from "./skill-progression";
+import { createStarterSkillProgression } from "./skill-progression";
 import { WorldSession } from "./world-session";
 import { STARTER_ITEM_CONTENT } from "./item-registry";
 import { generateLoot } from "./loot";
@@ -26,7 +26,7 @@ export function newCharacter(classId: ClassId, seed = 42): InventorySession {
     curve: "xp-v1",
     character: foundation.experience,
     attributes: foundation.attributes,
-    skills: createSkillProgression(classId),
+    skills: createStarterSkillProgression(classId),
   };
   const weapon = generateLoot(
     {

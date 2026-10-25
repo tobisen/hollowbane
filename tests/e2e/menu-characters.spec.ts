@@ -303,9 +303,49 @@ for (const className of ["Warrior", "Sorcerer", "Ranger"]) {
     expect(
       JSON.parse(initial.saves[0]!.text!).body.progression.character.totalXp,
     ).toBe(0);
+    const starter = {
+      Warrior: { id: "iron-fan", name: "Sundering Fan", mana: 7 },
+      Sorcerer: { id: "ember-lance", name: "Ember Lance", mana: 8 },
+      Ranger: { id: "briar-edge", name: "Briar Needle", mana: 9 },
+    }[className]!;
+    const startingSkills = JSON.parse(initial.saves[0]!.text!).body.progression
+      .skills;
+    expect(startingSkills).toMatchObject({
+      starter: true,
+      available: 0,
+      spent: 0,
+      bar: [starter.id, null, null, null, null, null],
+    });
+    await expect(page.locator('[data-skill="0"]')).toContainText(starter.name);
+    expect(
+      await page.evaluate(() => window.hollowbaneSkills!.users[0]!.mana),
+    ).toBeGreaterThanOrEqual(starter.mana * 5);
+    // Melee requires an enemy; camp must retain that rule rather than spending mana.
+    // The new-character domain case verifies actual damage for all three abilities.
+    await page.locator("#combat-world").focus();
+    await page.keyboard.press("x");
+    await expect
+      .poll(() =>
+        page.evaluate(
+          ({ id, melee }) =>
+            window.hollowbaneSkills!.events.some(
+              (e) =>
+                e.actor === 0 &&
+                e.skill === id &&
+                (melee
+                  ? e.kind === "rejected" && e.reason === "invalid-target"
+                  : e.kind === "effect"),
+            ),
+          { id: starter.id, melee: className === "Warrior" },
+        ),
+      )
+      .toBe(true);
     await expect
       .poll(() => page.evaluate(() => window.hollowbaneWorld?.area))
       .toBe("ashen-refuge");
+    await page.screenshot({
+      path: `test-results/starter-ability-${className}.png`,
+    });
     await menu(page);
     await expect(page.locator("#menu-status")).toContainText(
       `Aster ${className}`,
@@ -314,6 +354,32 @@ for (const className of ["Warrior", "Sorcerer", "Ranger"]) {
     await expect(page).toHaveURL(new RegExp(`character=${m.id}$`));
     await expect(page.locator("#inventory-dialog")).not.toBeVisible();
     expect((await states(page)).lastPlayed).toBe(m.id);
+    await expect(page.locator('[data-skill="0"]')).toContainText(starter.name);
+    await installVirtualController(page, "Xbox 360 Controller");
+    // addInitScript applies to navigation; reload the same genuine saved owner.
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-combat-ready",
+      "true",
+    );
+    await page.locator("#combat-world").focus();
+    await pressVirtualButton(page, 2);
+    await expect
+      .poll(() =>
+        page.evaluate(
+          ({ id, melee }) =>
+            window.hollowbaneSkills!.events.some(
+              (e) =>
+                e.actor === 0 &&
+                e.skill === id &&
+                (melee
+                  ? e.kind === "rejected" && e.reason === "invalid-target"
+                  : e.kind === "effect"),
+            ),
+          { id: starter.id, melee: className === "Warrior" },
+        ),
+      )
+      .toBe(true);
     await page.locator("#inventory-open").click();
     await expect(page.locator('[data-slot="main"]')).toHaveAttribute(
       "title",
@@ -345,6 +411,9 @@ for (const className of ["Warrior", "Sorcerer", "Ranger"]) {
       JSON.parse((await states(page)).saves[0]!.text!).body.character.equipment
         .main,
     ).toEqual(weapon);
+    expect(
+      JSON.parse((await states(page)).saves[0]!.text!).body.progression.skills,
+    ).toEqual(startingSkills);
   });
 }
 

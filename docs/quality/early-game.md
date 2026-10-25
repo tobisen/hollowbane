@@ -1,3 +1,49 @@
+## B2 starter skills — DBL-113/115/210 (2026-10-25)
+
+New character creation now grants one existing class foundation rank and assigns
+its ability to slot one: Warrior Sundering Fan (7 MP), Sorcerer Ember Lance
+(8 MP), Ranger Briar Needle (9 MP). Weapons, costs, geometry, combat timing and
+level rewards are unchanged. Warrior retains melee target/range requirements;
+Ranger retains the existing precise projectile and poison behavior.
+
+The optional strict `starter: true` skill-ledger field records exactly one free
+rank in the class's designated foundation. `spent` counts earned ranks only;
+`available + spent` remains level minus one. The designated rank must exist,
+false/numeric grants and extra unfunded ranks are rejected, upgrades still cost
+a point, and level high-water rewards remain idempotent. Only `newCharacter`
+calls the grant constructor. Restore does not grant/reassign anything. Existing
+classed/unclassed supported snapshots without the field round trip unchanged,
+and deliberately emptied new-character bars stay empty across repeated reloads.
+
+Deterministic checks cover three actual casts/damage per class, exact mana costs,
+at least five casts in the conservative authored mana pool, serialized creation,
+pre-grant saves, clear/reload, point upgrades, forged ledgers and existing runtime
+transactions. Authored resource bases differ from current browser bases; no
+resource rebalance or old-save reinterpretation is included in B2.
+
+Build splitting exposed two `character-storage-*` chunks. Browser discovery now
+checks public exports instead of relying on hash/filesystem order; storage tests
+reuse that same published-entry discovery. No injected alternate storage engine.
+The first browser attempt failed on the shared implementation chunk; a later
+new Warrior assertion incorrectly expected a melee effect with no camp target.
+Corrected new assertions require the existing invalid-target rule in safe camp;
+actual three-class damage is separately checked in domain/developer combat tests.
+Diagnostics remain in `/private/tmp/hollowbane-b2-browser*`.
+
+Local verification: 53 focused unit cases across seven relevant files, strict
+TypeScript, affected ESLint/Prettier and production build pass. Six final fresh
+owner/developer combat browser cases pass (1.1 minutes); four additional storage/
+owner/virtual-navigation cases passed in the prior diagnostic run. That run
+retains the incorrect new Warrior no-target assertion as a failure, not a pass.
+Final three-class captures pass (53.6 seconds); all six starter equipment and
+ability HUD captures reviewed. Physical-controller evidence remains pending.
+
+Release acceptance is pending. Last verified deployment remains
+`55af54f56c615de169969581d43d32c6016d6fa1`. Finish exact classifier-selected
+CI/Pages/artifact identity and hosted class controls/save checks before B3.
+Virtual controllers are browser evidence only. B3 onboarding, B4 opening quality
+and Q3 visuals/audio remain unimplemented in this increment.
+
 # Early game balance and Q3 continuation
 
 Authorized 2026-10-25: B1 forest balance, B2 contextual guidance and B3 focused

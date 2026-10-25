@@ -2,6 +2,9 @@ import { expect, it } from "vitest";
 import {
   allocateSkillRanks,
   createSkillProgression,
+  createStarterSkillProgression,
+  STARTER_SKILLS,
+  skillBar,
   rewardSkillLevels,
   validateSkillProgression,
   CLASS_TREES,
@@ -24,6 +27,47 @@ import {
   stepSkillCombat,
 } from "./skills";
 const node = "sorcerer-ember-foundation";
+it("keeps the creation grant separate from earned points and rejects forged starter ledgers", () => {
+  for (const classId of ["warrior", "sorcerer", "ranger"] as const) {
+    const initial = createStarterSkillProgression(classId);
+    const starter = STARTER_SKILLS[classId];
+    expect(initial).toMatchObject({
+      available: 0,
+      spent: 0,
+      ranks: { [starter.node]: 1 },
+    });
+    expect(() => allocateSkillRanks(initial, 1, { [starter.node]: 1 })).toThrow(
+      /Insufficient/,
+    );
+    const rewarded = rewardSkillLevels(initial, 2);
+    const upgraded = allocateSkillRanks(rewarded, 2, { [starter.node]: 1 });
+    expect(upgraded).toMatchObject({
+      available: 0,
+      spent: 1,
+      ranks: { [starter.node]: 2 },
+    });
+    expect(rewardSkillLevels(upgraded, 2)).toBe(upgraded);
+    expect(rewardSkillLevels(upgraded, 99).available).toBe(97);
+    expect(
+      validateSkillProgression(JSON.parse(JSON.stringify(upgraded)), 2),
+    ).toEqual(upgraded);
+    for (const invalid of [
+      { ...initial, starter: false },
+      { ...initial, starter: 2 },
+      { ...initial, ranks: {} },
+      { ...initial, classId: null },
+      { ...initial, spent: 1 },
+      { ...initial, available: 1 },
+      { ...initial, ranks: { [starter.node]: 2 } },
+    ])
+      expect(() => validateSkillProgression(invalid, 1)).toThrow();
+    const old = createSkillProgression(classId);
+    expect(
+      validateSkillProgression(JSON.parse(JSON.stringify(old)), 1),
+    ).toEqual(old);
+    expect(skillBar(old)).toEqual(Array<null>(6).fill(null));
+  }
+});
 it("rewards multiple levels exactly once, separately from attributes, capped at 99", () => {
   const state = createSkillProgression("sorcerer");
   const rewarded = rewardSkillLevels(state, 12);
