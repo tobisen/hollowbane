@@ -1,3 +1,61 @@
+## B3 contextual beginner guidance — DBL-186/004
+
+Eight concise English topics cover movement, basic attacks, first assigned skill
+and mana cost, health/mana recovery, loot, inventory, quests/minimap and return to
+camp. A small gothic card never opens a dialog or takes focus. Its background
+passes pointer input through; only its dismiss button receives clicks and clears
+that click before returning focus to gameplay. Cards hide behind existing modals
+and while the character is dead. Unchanged guide content avoids DOM rewrites.
+
+Pure bounded progress validation and observed action completion are separate from
+simulation. Dismissed/completed topics, enabled state and whether the character
+ventured out persist under `hollowbane.guidance.v1:<character UUID>`. These are
+per-character browser preferences, not gameplay rewards or exported snapshots.
+Existing saves, class ledgers, equipment, combat costs/timing and schema remain
+unchanged. Storage denial retains page-local progress and reports that limit.
+Disable, dismiss current and replay controls are in existing pause settings.
+Existing Inventory/Quest Journal panels are reachable from the pause menu with
+normal keyboard/controller navigation. Opening waits for the pause close event
+before dispatching the existing panel intent, avoiding stale disabled UI state.
+
+Prompts use current device, movement remaps and actual controller glyph/bindings.
+Existing normal controller combat casts skills; mouse supplies basic weapon
+attacks. No new pad attack binding is claimed or introduced by onboarding. Pad
+Inventory/Journal shortcuts and map/loot prompts describe the actual world route.
+This input limitation is distinct from unmeasured balance concerns for B4.
+
+Three focused domain cases check immutable/idempotent action completion, context
+eligibility, dismissal, disable/replay and corrupt preference fallback. Targeted
+browser evidence covers real named owners, movement without pausing, separate
+owner progress, reload/disable, virtual controller dismiss/replay and existing
+journal/inventory routes, plus unchanged pause/settings flows. An initial new
+assertion expected the wrong existing Back focus; corrected to Settings. A real
+new journal shortcut race was reproduced, fixed at pause close and verified.
+No assertions/deadlines were weakened. Diagnostics: `/private/tmp/hollowbane-b3-*`.
+Four distinct targeted browser cases pass across final checks; the two final
+onboarding cases pass33.5s, including zero guide DOM mutations across30 still
+frames and no cast from dismiss clicks. Keyboard/controller captures reviewed
+at1280/760 widths; the narrow card aligns
+left to preserve minimap space. Strict types, affected lint/format and build pass.
+Exact policy-selected B3 CI/Pages/hosted acceptance is pending before B4.
+
+## B2 release accepted (2026-10-25)
+
+Verified deployed `c1c621c89798c07e65e518ad2af84b1029727791`:
+[exact Full CI40175755816](https://github.com/tobisen/hollowbane/actions/runs/40175755816),
+all230 Chromium/15 compatibility cases with zero skipped/flaky/unexpected,
+verify, Pages, hosted smoke and Release acceptance pass. All42 public files
+match the sealed artifact and previously tested hashes. Three independent hosted
+fresh Warrior/Sorcerer/Ranger creation, skill access, virtual controller and
+Save & Exit/Continue/reload cases pass47.4s; their HUD captures are reviewed.
+Warrior's camp check correctly requires an enemy target, while actual three-class
+skill damage has domain/developer-combat evidence. Fresh Warrior forest use is
+part of B4, not a claim from this camp-only hosted scenario. No physical evidence.
+
+Latest scope: B3 contextual hints, then short B4 opening review. Stop at B4 review;
+no Q3 implementation in this continuation. Detailed checkpoint:
+`/private/tmp/hollowbane-b2-release-checkpoint.json`.
+
 ## B2 starter skills — DBL-113/115/210 (2026-10-25)
 
 New character creation now grants one existing class foundation rank and assigns

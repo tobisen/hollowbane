@@ -1,0 +1,47 @@
+#beginner-hint {
+  position: absolute;
+  bottom: 246px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  width: min(420px, calc(100vw - 36px));
+  padding: 12px 16px;
+  box-sizing: border-box;
+  border: 1px solid #796444;
+  background: #101918f2;
+  color: #e9ddbd;
+  box-shadow: 0 4px 18px #0006;
+  pointer-events: none;
+  font:
+    13px/1.5 Georgia,
+    serif;
+}
+#beginner-hint[hidden] {
+  display: none;
+}
+#beginner-hint strong {
+  color: #e6c88c;
+}
+#beginner-hint p {
+  margin: 5px 0 8px;
+}
+#beginner-hint button {
+  pointer-events: auto;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+#beginner-hint small {
+  display: block;
+}
+@media (max-width: 900px) {
+  #beginner-hint {
+    left: 18px;
+    transform: none;
+  }
+}
+@media (max-height: 650px) {
+  #beginner-hint {
+    bottom: 225px;
+    padding: 8px 12px;
+  }
+}

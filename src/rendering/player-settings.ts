@@ -11,6 +11,7 @@ import {
   safePlayerBindings,
 } from "./player-preferences";
 import "./player-settings.css";
+import { installBeginnerSettings } from "./beginner-guide";
 
 /** Shared menu/pause adapter over existing graphics, sound and input systems. */
 export function installPlayerSettings(host: HTMLElement) {
@@ -141,7 +142,9 @@ export function installPlayerSettings(host: HTMLElement) {
     { signal: abort.signal },
   );
   installControllerSettings();
+  const refreshBeginner = installBeginnerSettings(host);
   const refresh = () => {
+    refreshBeginner?.();
     presentation();
     keyboard();
     connectFullscreen();

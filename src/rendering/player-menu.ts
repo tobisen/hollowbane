@@ -41,6 +41,40 @@ export class PlayerMenu {
     );
     this.dialog.querySelector<HTMLButtonElement>("#player-resume")!.onclick =
       () => this.close();
+    // Open existing panels from the same controller-accessible pause menu.
+    for (const [id, target, label, intent] of [
+      [
+        "player-inventory",
+        "inventory-open",
+        "Inventory",
+        "hollowbane-inventory-toggle",
+      ],
+      [
+        "player-journal",
+        "quest-journal-open",
+        "Quest journal",
+        "hollowbane-journal-toggle",
+      ],
+    ] as const) {
+      const opener = root.querySelector<HTMLButtonElement>(`#${target}`);
+      if (!opener) continue;
+      const shortcut = document.createElement("button");
+      shortcut.id = id;
+      shortcut.textContent = label;
+      shortcut.onclick = () => {
+        // The close handler first releases pause/modal ownership. The existing
+        // panel intent validates fresh state rather than a stale disabled button.
+        this.dialog.addEventListener(
+          "close",
+          () => {
+            window.dispatchEvent(new Event(intent, { cancelable: true }));
+          },
+          { once: true, signal: this.abort.signal },
+        );
+        this.close();
+      };
+      this.home.querySelector("nav")!.append(shortcut);
+    }
     this.dialog.querySelector<HTMLButtonElement>("#player-settings")!.onclick =
       () => {
         this.home.hidden = true;

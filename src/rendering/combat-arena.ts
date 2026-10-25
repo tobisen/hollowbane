@@ -31,6 +31,7 @@ import { findPath as worldPath } from "../world/navigation";
 import { WorldSession } from "../simulation/world-session";
 import { CharacterCheckpoint } from "./character-checkpoint";
 import { PlayerMenu } from "./player-menu";
+import { BeginnerGuide, beginnerOwner } from "./beginner-guide";
 import {
   loadPresentation,
   readPresentation,
@@ -315,6 +316,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
   }
   const polishedHud = polish ? new PolishHUD(root) : null;
   const field = document.querySelector<HTMLElement>("#combat-world")!;
+  const guidanceOwner = beginnerOwner();
+  const guide =
+    exploring && guidanceOwner ? new BeginnerGuide(root, guidanceOwner) : null;
   const weapon = document.querySelector<HTMLSelectElement>("#combat-weapon")!;
   const speed = document.querySelector<HTMLSelectElement>("#combat-speed")!;
   const recovery =
@@ -397,6 +401,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private updates: number[] = [];
     private latencies: number[] = [];
     private previousFrame = 0;
+    private guidanceTick = 0;
+    private guidanceCollected = false;
     private balancedDetail = false;
     private automaticDetail = false;
     private presentation = query.has("character")
@@ -1280,6 +1286,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
           )
         : null;
       if (playerMenu) pause.onclick = () => playerMenu.toggle();
+      const collected = () => {
+        this.guidanceCollected = true;
+      };
+      window.addEventListener("hollowbane-item-collected", collected);
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+        guide?.dispose();
+        window.removeEventListener("hollowbane-item-collected", collected);
+      });
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () =>
         playerMenu?.dispose(),
       );
@@ -2578,6 +2592,49 @@ export function startCombatArena(monsters = false): Phaser.Game {
             despawned: this.encounter.despawned,
           },
         };
+      }
+      if (guide) {
+        const bar = skillBar(this.world.experience.skills);
+        const slot = bar.findIndex((id) => id !== null);
+        const equipped =
+          this.abilities && slot >= 0
+            ? actorSkill(this.abilities, player.id, bar[slot]!)
+            : undefined;
+        const user = this.abilities?.users.find((u) => u.actor === player.id);
+        guide.update({
+          ready: Boolean(this.inventoryView?.worldReady) && player.hp > 0,
+          modal: Boolean(root.querySelector("dialog[open]")),
+          inCamp: travel?.state.area === "ashen-refuge",
+          moved: player.controller.walker.walking,
+          attacked:
+            !user?.cast && player.controller.timeline.phase === "windup",
+          cast:
+            this.abilities?.events.some(
+              (e) =>
+                e.actor === player.id &&
+                e.kind === "effect" &&
+                e.tick > this.guidanceTick,
+            ) ?? false,
+          collected: this.guidanceCollected,
+          inventory: Boolean(root.querySelector("#inventory-dialog[open]")),
+          quests: Boolean(root.querySelector("#quest-journal[open]")),
+          lootAvailable: Boolean(this.lootView?.world.drops.length),
+          needsRecovery:
+            player.hp < player.maxHp ||
+            Boolean(user && user.mana < user.maxMana),
+          skillName: equipped?.name ?? null,
+          skillMana: equipped?.mana ?? 0,
+          skillSlot: slot,
+          movementKeys: ["north", "west", "south", "east"]
+            .map((action) =>
+              this.playerBindings[
+                action as "north" | "west" | "south" | "east"
+              ][0]!.replace("Key", ""),
+            )
+            .join(" / "),
+        });
+        this.guidanceTick = this.world.tick;
+        this.guidanceCollected = false;
       }
       if (
         this.game.loop.frame % 6 === 0 &&

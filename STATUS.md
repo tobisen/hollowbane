@@ -1,3 +1,14 @@
+## B3 contextual onboarding — verified local candidate (2026-10-25)
+
+- DBL-186/004: eight short English contextual hints for movement, basic attacks, equipped skill/cost, resources, loot, inventory, quests/map and camp return. Non-modal, no forced focus, background clicks pass through. Real action observations complete hints; dismiss/disable/replay persist per UUID in browser preferences, independently of gameplay snapshots/rewards. Existing pause settings and existing inventory/journal panels reused; controller shortcuts wait for pause ownership to close.
+- B2 exact c1c621c release is accepted (Full40175755816/230 Chromium/15 compatibility/all42 bytes/three hosted fresh-class cases47.4s). B3 focused domain/static/build and keyboard/virtual-controller/pause/settings checks pass; screenshots reviewed. Required exact B3 CI/Pages/hosted gate remains pending before B4. Full local regression was not repeated. No physical-controller claim or Q3 work.
+- Current controller combat remains skill-focused; existing basic weapon attacks use mouse. Guidance reports actual controls rather than inventing a pad basic-attack binding. Keep this separate from B4 balance findings. Hint preferences remain local to this browser and outside exported gameplay snapshots.
+
+## B2 released — B3 onboarding active (2026-10-25)
+
+- Verified deployed SHA c1c621c89798c07e65e518ad2af84b1029727791. Exact Full CI40175755816,230 Chromium,15 compatibility, verify/Pages/hosted/Release acceptance pass; all42 public files match sealed/local-tested bytes. Three independent hosted fresh Warrior/Sorcerer/Ranger keyboard/virtual-controller/Save & Exit/Continue cases pass47.4s; ability HUD captures reviewed. Physical-controller checks remain separate.
+- B2 complete. Latest user authorizes B3 contextual per-character onboarding, then B4 short actual-new-character forest/skills/resources/XP/loot/quest/save review, each required runtime release gate before proceeding. Stop at B4 quality review; Q3 is not authorized in this continuation. No campaign expansion or sophisticated tactical test driver. Preserve unrelated documentation and existing gameplay/save mechanics.
+
 ## B2 starter skills — local candidate, release verification next (2026-10-25)
 
 - DBL-113/115/210: fresh Warrior starts with Sundering Fan (7 MP), Sorcerer Ember Lance (8 MP), Ranger Briar Needle (9 MP), assigned to the first existing keyboard/mouse/controller slot. Existing starter weapons and combat costs/timings preserved. Each receives one creation-only foundation rank; earned point budgets remain level minus one. Repeated loads never grant ranks or restore cleared bindings; old classed/unclassed saves retain exact skill ledgers.
