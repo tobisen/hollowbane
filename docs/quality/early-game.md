@@ -1,3 +1,74 @@
+## B4 short opening quality review (2026-10-25)
+
+B2 and B3 are released. Verified runtime:
+`986399c502fcf8d26c53d0027613c71a0ea735e1`,
+[Full CI40177980925](https://github.com/tobisen/hollowbane/actions/runs/40177980925).
+All232 Chromium and15 compatibility cases have zero skipped/flaky/unexpected;
+verify, Pages, hosted smoke and Release acceptance pass. All41 public files match
+the sealed/local-tested artifact. Two independent hosted B3 hint/persistence/
+virtual-controller/panel scenarios pass27.7s;1280/760 captures reviewed.
+B2 was independently accepted atc1c621c/40175755816 before B3 implementation.
+
+### Actual new-character observations
+
+Each owner was created through New Game, without imported fixtures or grants.
+Checks covered the correct equipped weapon/first assigned skill, at least five
+opening casts available, an accepted/tracked Embers on the Road quest with Edda's
+return instructions, actual forest weapon and ability effects, eligible kills,
+XP and natural reward rolls. Save & Exit, Continue and another reload preserve
+that same owner, equipment/inventory, point/skill ledger, XP, loot stream and
+quest progress; killed identities stay dead. The five observed action topics
+(movement, quests, inventory, attack, skill) persist as completed hints.
+
+| Class    | Starting HP / maximum | Opening mana / maximum | HP after combat | Mana after combat | XP  | Rolls / NoDrop | Passing case |
+| -------- | --------------------- | ---------------------- | --------------- | ----------------- | --- | -------------- | ------------ |
+| Warrior  | 300 /335              | 100.9 /106             | 281             | 100.7             | 25  | 1 /1           | 27.5s        |
+| Sorcerer | 300 /320              | 100.8 /141             | 264             | 111.9             | 50  | 2 /2           | 29.8s        |
+| Ranger   | 300 /325              | 102.2 /106             | 280             | 100.7             | 25  | 1 /1           | 28.8s        |
+
+Mana snapshots include normal elapsed regeneration; exact7/8/9 costs have B2
+domain coverage. The authored isolated three-member pack checks also pass:
+Warrior155→151HP/278 ticks, Sorcerer100→85/579, Ranger125→120/225; each75XP
+and three reward rolls. This three-case targeted run excludes seven unrelated
+cases by name, not seven additional passes. It relocates the authored pack to
+the mechanics floor and does not claim full forest path/monster-skill parity.
+Browser HP bases are larger; authored Sorcerer maximum mana is161 versus browser
+141, so the earlier blanket "conservative mana pool" description is inaccurate.
+The test comment is corrected; resource formulas and existing saves are unchanged.
+
+### Balance observations and driver limits
+
+No confirmed balance defect warrants a gameplay change in these short checks.
+All classes retain resources and progress; the first one/two seeded reward rolls
+are NoDrop. That is a real opening reward observation, not forced test loot.
+Natural first-item pickup, full opening-quest turn-in and10–15minute human
+playability remain outside this limited evidence. Existing release inventory/
+loot coverage remains separate. Controller combat remains skill-focused while
+mouse supplies basic weapon attacks; physical controllers are unverified.
+
+The one-off review needed several driver corrections: moving actors under ground
+clicks selected attacks, overlapping sprites defeated a predetermined hover ID,
+the first basic attack could already kill its target, global target cycling
+selected a distant enemy, and a ready snapshot could precede cast consumption.
+One temporary helper also omitted a browser-evaluation argument; that error is
+ours and was corrected. Failed runs/traces remain at
+`/private/tmp/hollowbane-b4-browser-{initial,second,third,fourth,fifth,sixth}`;
+passing Warrior/Ranger evidence is in the fourth run and Sorcerer in the final
+single-case run. Passes were collected across focused runs, not claimed as one
+all-green batch or automatic retries. Final inputs use the existing floor route,
+ordinary aimed casts and native virtual movement where ground clicks overlapped
+enemies. No simulation mutation, invulnerability, tactical AI or new persistent
+test framework was introduced. Passive waits under attack produced deaths in
+failed driver runs; those are not controlled difficulty comparisons.
+
+The three combat/resource cards and quest/skill captures are reviewed. Remaining
+narrow HUD clutter, dedicated art/animation, physical controllers and native GPU
+performance retain their earlier follow-ups. Stop at B4 human quality review;
+no Q3 work. Runtime remains986399c; this final evidence/comment-only increment is
+committed locally without an unnecessary deployment. Source and diagnostics:
+`/private/tmp/hollowbane-b4-evidence`; checkpoint:
+`/private/tmp/hollowbane-b4-review-checkpoint.json`.
+
 ## B3 contextual beginner guidance — DBL-186/004
 
 Eight concise English topics cover movement, basic attacks, first assigned skill

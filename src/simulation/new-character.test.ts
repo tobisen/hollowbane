@@ -68,7 +68,7 @@ for (const definition of CHARACTER_CLASSES) {
       player,
       user,
     );
-    // This uses the conservative authored class mana pool, below the current browser base.
+    // Authored class resources; browser resource bases are measured separately.
     user.mana = user.maxMana;
     const id = skillBar(session.progression!.skills)[0]!;
     const ability = actorSkill(runtime, 0, id)!;

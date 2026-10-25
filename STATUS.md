@@ -1,3 +1,10 @@
+## B4 short opening review ready — STOP for quality review (2026-10-25)
+
+- B2 and B3 released. Verified deployed runtime986399c502fcf8d26c53d0027613c71a0ea735e1; exact Full CI40177980925/232 Chromium/15 compatibility/Pages/hosted/Release acceptance pass, all41 public bytes match sealed/tested artifact; two independent hosted onboarding cases27.7s pass. B2 c1c621c/40175755816 also accepted before B3.
+- B4: three targeted deterministic pack cases pass; actual newly created Warrior/Sorcerer/Ranger hosted starting weapons/skills, first forest kills, mana availability, accepted/tracked quest and hint completion, XP/reward rolls, Save & Exit/Continue/reload pass across focused runs. Passing class cases27.5s/29.8s/28.8s; final HP281/264/280, XP25/50/25. Captures reviewed. Prior driver failures retained separately; no gameplay nerf or statistical tuning justified.
+- Limits: these short seeded observations are not10–15minute human play or full opening-quest completion. First one/two reward rolls were all NoDrop, so natural item pickup was not demonstrated here. Current controller combat is skill-focused; basic weapon attacks remain mouse-driven. Browser resource bases differ from authored fixtures; physical/native GPU/art follow-ups remain open.
+- B4 short technical review complete; human quality approval remains pending. STOP here; no Q3. Runtime remains986399c; final review/comment-only documentation is committed locally without pushing/deploying another build. Evidence docs/quality/early-game.md and /private/tmp/hollowbane-b4-review-checkpoint.json. Unrelated local edits preserved.
+
 ## B3 contextual onboarding — verified local candidate (2026-10-25)
 
 - DBL-186/004: eight short English contextual hints for movement, basic attacks, equipped skill/cost, resources, loot, inventory, quests/map and camp return. Non-modal, no forced focus, background clicks pass through. Real action observations complete hints; dismiss/disable/replay persist per UUID in browser preferences, independently of gameplay snapshots/rewards. Existing pause settings and existing inventory/journal panels reused; controller shortcuts wait for pause ownership to close.
