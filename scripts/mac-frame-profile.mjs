@@ -71,6 +71,28 @@ try {
       await page.waitForFunction(
         () => window.hollowbaneWorld && window.hollowbaneProfileGame,
       );
+      // Optional test-driver skin only. The application and simulation are untouched;
+      // use the identical P2 forest route/load to compare the new atlas fairly.
+      const warriorAtlas = option("warrior-atlas-url", "");
+      if (warriorAtlas)
+        await page.evaluate(async (url) => {
+          const scene = window.hollowbaneProfileGame.scene.scenes[0];
+          const response = await fetch(url.replace(/\.png$/, ".json"));
+          if (!response.ok) throw Error("Missing profiling atlas metadata");
+          const metadata = await response.json();
+          await new Promise((resolve, reject) => {
+            scene.load.once("complete", resolve);
+            scene.load.once("loaderror", () =>
+              reject(Error("Profiling atlas load failed")),
+            );
+            scene.load.spritesheet("profile-warrior-cadence", url, {
+              frameWidth: 256,
+              frameHeight: 256,
+            });
+            scene.load.start();
+          });
+          window.profileWarriorSkin = metadata;
+        }, warriorAtlas);
       const conditions = await page.evaluate((quality) => {
         const game = window.hollowbaneProfileGame;
         const scene = game.scene.scenes[0];
@@ -91,6 +113,27 @@ try {
           const start = performance.now();
           simulationMs = 0;
           originalUpdate.apply(this, args);
+          const skin = window.profileWarriorSkin;
+          if (skin) {
+            const walker = scene.world.actors[0].controller.walker;
+            const clip = skin.clips[walker.walking ? walker.gait : "idle"];
+            const phase = walker.walking
+              ? walker.distance / clip.worldStride
+              : ((walker.tick / 60) * clip.fps) / clip.count;
+            scene.sprites
+              .get(0)
+              .setTexture(
+                "profile-warrior-cadence",
+                clip.start + (Math.floor(phase * clip.count) % clip.count),
+              )
+              .setOrigin(0.5, 210 / 256)
+              .setScale(0.5)
+              .setAngle(0)
+              .setPosition(
+                768 + (walker.position.x - walker.position.y) * 64,
+                512 + (walker.position.x + walker.position.y) * 32,
+              );
+          }
           updateMs = performance.now() - start;
         };
         window.profileFrames = [];
@@ -302,6 +345,7 @@ try {
         browser: browser.version(),
         renderer,
         cpuProfiler: process.argv.includes("--trace"),
+        warriorAtlas: option("warrior-atlas-url", ""),
         headed: process.argv.includes("--headed"),
         gpu,
         seed: 42,

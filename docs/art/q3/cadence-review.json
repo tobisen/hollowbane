@@ -1,0 +1,372 @@
+{
+  "date": "2026-10-25",
+  "scope": "Checkpoint A: southeast8 idle/16 walk/16 distinct run; preview only",
+  "userQualityApproval": false,
+  "productionReplacement": false,
+  "eightDirectionProduction": false,
+  "validation": {
+    "frames": 40,
+    "bytes": 1132558,
+    "decodedBytes": 10485760,
+    "minimumMargin": 8,
+    "flightFrames": 4,
+    "walkCyclesPerSecond": 2.8798530847297497,
+    "runCyclesPerSecond": 3.4212654646589424
+  },
+  "nativePerformance": {
+    "method": "Matched P2 visible native Metal full forest; test-driver-only atlas substitution; one359-frame keyboard/controller cohort per variant",
+    "source": "/private/tmp/hollowbane-warrior-cadence",
+    "baseline": [
+      {
+        "quality": "full",
+        "input": "keyboard",
+        "conditions": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+          "renderWidth": 1280,
+          "renderHeight": 800
+        },
+        "start": {
+          "x": -14,
+          "y": -10.5
+        },
+        "count": 359,
+        "frameMs": {
+          "p50": 16.69999999999891,
+          "p95": 18.399999999999636,
+          "p99": 18.5,
+          "max": 18.600000000000364
+        },
+        "submissionIntervalMs": {
+          "p50": 16.600000023841858,
+          "p95": 18.599999964237213,
+          "p99": 18.80000001192093,
+          "max": 19
+        },
+        "ticksPerFrame": {
+          "0": 0,
+          "1": 358,
+          "2": 0
+        },
+        "over25": 0,
+        "over33": 0,
+        "over50": 0,
+        "updateMs": {
+          "p50": 1,
+          "p95": 1.399999976158142,
+          "p99": 1.5,
+          "max": 1.5
+        },
+        "simulationMs": {
+          "p50": 0.09999996423721313,
+          "p95": 0.19999998807907104,
+          "p99": 0.20000004768371582,
+          "max": 0.20000004768371582
+        },
+        "renderMs": {
+          "p50": 1.899999976158142,
+          "p95": 2,
+          "p99": 2.199999988079071,
+          "max": 2.399999976158142
+        },
+        "playerDelta": {
+          "p50": 0.049999999999999906,
+          "p95": 0.049999999999999906,
+          "p99": 0.049999999999999906,
+          "max": 0.049999999999999906
+        },
+        "cameraDeltaCss": {
+          "p50": 3.104552322799531,
+          "p95": 3.104552322799531,
+          "p99": 3.104552322799531,
+          "max": 3.104552322799531
+        },
+        "playerScreenDeltaCss": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        },
+        "heapDropOver1MiB": 177,
+        "objects": 1138,
+        "particles": 0,
+        "activeEntities": 1
+      },
+      {
+        "quality": "full",
+        "input": "controller",
+        "conditions": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+          "renderWidth": 1280,
+          "renderHeight": 800
+        },
+        "start": {
+          "x": -14,
+          "y": -10.5
+        },
+        "count": 359,
+        "frameMs": {
+          "p50": 16.699999999999818,
+          "p95": 18.199999999999818,
+          "p99": 18.30000000000109,
+          "max": 18.400000000001455
+        },
+        "submissionIntervalMs": {
+          "p50": 16.69999998807907,
+          "p95": 18.100000023841858,
+          "p99": 18.69999998807907,
+          "max": 18.900000035762787
+        },
+        "ticksPerFrame": {
+          "0": 0,
+          "1": 358,
+          "2": 0
+        },
+        "over25": 0,
+        "over33": 0,
+        "over50": 0,
+        "updateMs": {
+          "p50": 1.199999988079071,
+          "p95": 1.699999988079071,
+          "p99": 2,
+          "max": 2.300000011920929
+        },
+        "simulationMs": {
+          "p50": 0.10000002384185791,
+          "p95": 0.19999998807907104,
+          "p99": 0.20000004768371582,
+          "max": 0.30000001192092896
+        },
+        "renderMs": {
+          "p50": 2.400000035762787,
+          "p95": 2.699999988079071,
+          "p99": 2.800000011920929,
+          "max": 3.299999952316284
+        },
+        "playerDelta": {
+          "p50": 0.049999999999999906,
+          "p95": 0.049999999999999906,
+          "p99": 0.049999999999999906,
+          "max": 0.049999999999999906
+        },
+        "cameraDeltaCss": {
+          "p50": 3.104552322799531,
+          "p95": 3.104552322799531,
+          "p99": 3.104552322799531,
+          "max": 3.104552322799531
+        },
+        "playerScreenDeltaCss": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        },
+        "heapDropOver1MiB": 177,
+        "objects": 1138,
+        "particles": 0,
+        "activeEntities": 1
+      }
+    ],
+    "candidate": [
+      {
+        "quality": "full",
+        "input": "keyboard",
+        "conditions": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+          "renderWidth": 1280,
+          "renderHeight": 800
+        },
+        "start": {
+          "x": -14,
+          "y": -10.5
+        },
+        "count": 359,
+        "frameMs": {
+          "p50": 16.69999999999891,
+          "p95": 18.5,
+          "p99": 18.600000000000364,
+          "max": 18.600000000000364
+        },
+        "submissionIntervalMs": {
+          "p50": 16.600000023841858,
+          "p95": 18.400000035762787,
+          "p99": 18.900000035762787,
+          "max": 19.099999964237213
+        },
+        "ticksPerFrame": {
+          "0": 0,
+          "1": 358,
+          "2": 0
+        },
+        "over25": 0,
+        "over33": 0,
+        "over50": 0,
+        "updateMs": {
+          "p50": 1.199999988079071,
+          "p95": 1.699999988079071,
+          "p99": 1.800000011920929,
+          "max": 2.299999952316284
+        },
+        "simulationMs": {
+          "p50": 0.10000002384185791,
+          "p95": 0.19999998807907104,
+          "p99": 0.20000004768371582,
+          "max": 0.2999999523162842
+        },
+        "renderMs": {
+          "p50": 2.399999976158142,
+          "p95": 2.600000023841858,
+          "p99": 2.799999952316284,
+          "max": 3.100000023841858
+        },
+        "playerDelta": {
+          "p50": 0.049999999999999906,
+          "p95": 0.049999999999999906,
+          "p99": 0.049999999999999906,
+          "max": 0.049999999999999906
+        },
+        "cameraDeltaCss": {
+          "p50": 3.104552322799531,
+          "p95": 3.104552322799531,
+          "p99": 3.104552322799531,
+          "max": 3.104552322799531
+        },
+        "playerScreenDeltaCss": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        },
+        "heapDropOver1MiB": 178,
+        "objects": 1138,
+        "particles": 0,
+        "activeEntities": 1
+      },
+      {
+        "quality": "full",
+        "input": "controller",
+        "conditions": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+          "renderWidth": 1280,
+          "renderHeight": 800
+        },
+        "start": {
+          "x": -14,
+          "y": -10.5
+        },
+        "count": 359,
+        "frameMs": {
+          "p50": 16.699999999999818,
+          "p95": 18.200000000000728,
+          "p99": 18.400000000000546,
+          "max": 18.700000000000728
+        },
+        "submissionIntervalMs": {
+          "p50": 16.600000023841858,
+          "p95": 18.200000047683716,
+          "p99": 18.80000001192093,
+          "max": 19
+        },
+        "ticksPerFrame": {
+          "0": 0,
+          "1": 358,
+          "2": 0
+        },
+        "over25": 0,
+        "over33": 0,
+        "over50": 0,
+        "updateMs": {
+          "p50": 1.199999988079071,
+          "p95": 1.7000000476837158,
+          "p99": 2,
+          "max": 2.100000023841858
+        },
+        "simulationMs": {
+          "p50": 0.10000002384185791,
+          "p95": 0.20000004768371582,
+          "p99": 0.20000004768371582,
+          "max": 0.30000001192092896
+        },
+        "renderMs": {
+          "p50": 2.399999976158142,
+          "p95": 2.699999988079071,
+          "p99": 2.800000011920929,
+          "max": 2.899999976158142
+        },
+        "playerDelta": {
+          "p50": 0.049999999999999906,
+          "p95": 0.049999999999999906,
+          "p99": 0.049999999999999906,
+          "max": 0.049999999999999906
+        },
+        "cameraDeltaCss": {
+          "p50": 3.104552322799531,
+          "p95": 3.104552322799531,
+          "p99": 3.104552322799531,
+          "max": 3.104552322799531
+        },
+        "playerScreenDeltaCss": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        },
+        "heapDropOver1MiB": 176,
+        "objects": 1138,
+        "particles": 0,
+        "activeEntities": 1
+      }
+    ]
+  },
+  "previewPacing": {
+    "p50": 16.699999999999818,
+    "p95": 16.800000000000182,
+    "p99": 18.300000000000182,
+    "longest": 18.600000000000364,
+    "over25": 0,
+    "zeroMoves": 0,
+    "maxWorldStep": 0.05000000000000071
+  },
+  "visualReview": {
+    "inspected": [
+      "40 source poses",
+      "light/dark and corrected128px gameplay comparisons",
+      "native actual-playback sequences and video at zoom1/2",
+      "matched forest captures with candidate atlas"
+    ],
+    "findings": [
+      "fixed roots and contained sword",
+      "walk cycle reduced5.28 to2.88Hz at unchanged speed",
+      "distinct run flight/lean/arm poses",
+      "no visible clipping or distracting halos"
+    ],
+    "limitations": [
+      "brisk stylized walk and sculptural finish",
+      "16-pose foot sampling and short crossfade",
+      "southeast artwork remains southeast during input direction changes",
+      "no physical controller or human quality approval"
+    ]
+  },
+  "checks": {
+    "focusedAssetUnit": 13,
+    "chromium": 8,
+    "typescript": "pass",
+    "affectedLint": "pass",
+    "format": "pass",
+    "assetValidation": "pass",
+    "build": "pass",
+    "localFullRegression": "not run; unrelated suites excluded"
+  },
+  "release": {
+    "status": "candidate; exact commit CI/Pages/hosted verification pending"
+  },
+  "previewAllPlayingRun": {
+    "p50": 16.699999999999818,
+    "p95": 18.100000000000136,
+    "p99": 18.600000000000136,
+    "longest": 18.600000000000364,
+    "over25": 0,
+    "playing": true,
+    "stageClip": "run",
+    "frames": 240
+  }
+}

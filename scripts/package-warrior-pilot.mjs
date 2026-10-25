@@ -8,13 +8,24 @@ import { Buffer } from "node:buffer";
 const input = process.argv[2];
 if (!input) throw Error("Pass the complete Blender render directory");
 const refined = process.argv[3] === "refined";
-const source = `assets/source/q3/warrior-rig-v${refined ? 2 : 1}`;
-const output = `public/dev/warrior-${refined ? "refined" : "pilot"}`;
+const movement = process.argv[3] === "movement";
+const source = movement
+  ? "assets/source/q3/warrior-movement-se"
+  : `assets/source/q3/warrior-rig-v${refined ? 2 : 1}`;
+const output = `public/dev/warrior-${movement ? "movement" : refined ? "refined" : "pilot"}`;
 const rig = JSON.parse(await readFile(join(input, "rig.json"), "utf8"));
-if (rig.frames.length !== 24 || rig.cell !== 256 || rig.renderSize !== 512)
+const columns = movement ? 8 : 6;
+const rows = movement ? 5 : 4;
+const width = columns * 256;
+const height = rows * 256;
+if (
+  rig.frames.length !== (movement ? 40 : 24) ||
+  rig.cell !== 256 ||
+  rig.renderSize !== 512
+)
   throw Error("Unexpected render contract");
 await mkdir(output, { recursive: true });
-const atlasPixels = Buffer.alloc(1536 * 1024 * 4);
+const atlasPixels = Buffer.alloc(width * height * 4);
 const frames = [];
 for (const [index, frame] of rig.frames.entries()) {
   const path = join(input, `${frame.name}.png`);
@@ -31,12 +42,12 @@ for (const [index, frame] of rig.frames.entries()) {
   // Fully transparent RGB must be black; never matte against a background.
   for (let i = 0; i < pixels.length; i += 4)
     if (pixels[i + 3] <= 4) pixels.fill(0, i, i + 4);
-  const x = (index % 6) * 256,
-    y = Math.floor(index / 6) * 256;
+  const x = (index % columns) * 256,
+    y = Math.floor(index / columns) * 256;
   for (let row = 0; row < 256; row++)
     pixels.copy(
       atlasPixels,
-      ((y + row) * 1536 + x) * 4,
+      ((y + row) * width + x) * 4,
       row * 256 * 4,
       (row + 1) * 256 * 4,
     );
@@ -50,7 +61,7 @@ for (const [index, frame] of rig.frames.entries()) {
   });
 }
 const atlas = await sharp(atlasPixels, {
-  raw: { width: 1536, height: 1024, channels: 4 },
+  raw: { width, height, channels: 4 },
 })
   .png({ compressionLevel: 9, adaptiveFiltering: true })
   .toBuffer();
@@ -61,22 +72,28 @@ await writeFile(
     JSON.stringify({
       ...rig,
       renderSize: undefined,
-      columns: 6,
-      rows: 4,
+      columns,
+      rows,
       atlas: "warrior.png",
       atlasSha256: createHash("sha256").update(atlas).digest("hex"),
       bytes: atlas.length,
-      decodedBytes: 1536 * 1024 * 4,
-      clips: {
-        idle: { start: 0, count: 8, fps: 6 },
-        walk: { start: 8, count: 16, fps: 18 },
-      },
+      decodedBytes: width * height * 4,
+      clips: movement
+        ? rig.clips
+        : {
+            idle: { start: 0, count: 8, fps: 6 },
+            walk: { start: 8, count: 16, fps: 18 },
+          },
       frames,
       productionApproved: false,
-      scope: "isolated developer pilot; southeast idle/walk only",
+      scope: movement
+        ? "isolated southeast idle/walk/run cadence candidate; quality review pending"
+        : "isolated developer pilot; southeast idle/walk only",
       provenance: {
         producerSha256: createHash("sha256")
-          .update(await readFile(join(source, "warrior.py")))
+          .update(
+            await readFile(join(source, movement ? "motion.py" : "warrior.py")),
+          )
           .digest("hex"),
         rigSha256: createHash("sha256")
           .update(await readFile(join(input, "warrior.blend")))
@@ -84,6 +101,17 @@ await writeFile(
         referenceSha256: createHash("sha256")
           .update(await readFile("public/assets/menu-warrior-v1.webp"))
           .digest("hex"),
+        ...(movement
+          ? {
+              baseRigSha256: createHash("sha256")
+                .update(
+                  await readFile(
+                    "assets/source/q3/warrior-rig-v2/warrior.blend",
+                  ),
+                )
+                .digest("hex"),
+            }
+          : {}),
       },
     }),
     { parser: "json" },
@@ -91,5 +119,5 @@ await writeFile(
 );
 await copyFile(join(input, "warrior.blend"), join(source, "warrior.blend"));
 console.log(
-  `Packed 24 fixed-window frames: ${atlas.length} bytes; 6 MiB decoded`,
+  `Packed ${frames.length} fixed-window frames: ${atlas.length} bytes; ${atlasPixels.length} decoded bytes`,
 );

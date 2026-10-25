@@ -1,6 +1,6 @@
-> Current authorization (2026-10-25): eight-direction Warrior idle/walk/run,
-> preview-only through movement quality review. Combat clips and other asset
-> classes are excluded. Historical stops below describe earlier scopes.
+> Current assignment (2026-10-25): Southeast Warrior idle/walk/run cadence
+> pilot through its quality review. Eight-direction production is deferred;
+> combat clips and other asset classes are excluded. Historical scopes remain below.
 > Prerequisite release: [warrior-refinement.md](warrior-refinement.md).
 > Current checkpoints A/B: [warrior-movement.md](warrior-movement.md).
 

@@ -1,0 +1,20 @@
+.warrior-cadence .cadence-clips canvas {
+  width: 128px;
+  height: 128px;
+}
+.cadence-inspection {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 24px;
+}
+#cadence-inspector {
+  width: 384px;
+  height: 384px;
+  border: 1px solid #4a4437;
+}
+#cadence-frame {
+  max-width: 400px;
+  color: #e6d3aa;
+  font: 13px/1.7 monospace;
+}

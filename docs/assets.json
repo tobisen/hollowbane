@@ -319,5 +319,15 @@
     "preview": "public/dev/warrior-refined/warrior.png",
     "rig": "assets/source/q3/warrior-rig-v2/warrior.blend",
     "provenance": "docs/art/q3/warrior-refinement.md"
+  },
+  {
+    "id": "q3-warrior-se-cadence-v1",
+    "source": "assets/source/q3/warrior-movement-se/motion.py",
+    "rights": "Original project motion applied to approved original v2 rig/model/materials; no external assets, mocap or new AI sheets",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/warrior-movement/warrior.png",
+    "rig": "assets/source/q3/warrior-movement-se/warrior.blend",
+    "provenance": "docs/art/q3/warrior-movement.md"
   }
 ]

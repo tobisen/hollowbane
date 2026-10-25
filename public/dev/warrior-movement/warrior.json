@@ -1,0 +1,1771 @@
+{
+  "version": 1,
+  "blender": "4.5.3 LTS",
+  "cell": 256,
+  "root": [128, 210],
+  "direction": "southeast",
+  "orthoScale": 2.240000009536743,
+  "elevationDegrees": 30,
+  "displayScale": 0.5,
+  "clips": {
+    "idle": {
+      "start": 0,
+      "count": 8,
+      "fps": 2.5,
+      "strideMeters": 0,
+      "duty": 1
+    },
+    "walk": {
+      "start": 8,
+      "count": 16,
+      "strideMeters": 1.65,
+      "duty": 0.55,
+      "worldStride": 1.0417198071343716,
+      "fps": 46.077649355675995
+    },
+    "run": {
+      "start": 24,
+      "count": 16,
+      "strideMeters": 2.5,
+      "duty": 0.34,
+      "worldStride": 1.5783633441429874,
+      "fps": 54.74024743454308
+    }
+  },
+  "frames": [
+    {
+      "name": "idle-se-00",
+      "action": "idle",
+      "index": 0,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0, 0],
+          "pixel": [115.06998, 216.465]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0, 0],
+          "pixel": [140.92989, 203.53505]
+        }
+      ],
+      "weaponBounds": [168.33577, 95.5627, 199.65732, 184.43719],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307257,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307262,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 0,
+      "y": 0,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "becb867b659379ecd35d37810fb4b7345e75bfb7e9f1c03819ffaa7542779e09"
+    },
+    {
+      "name": "idle-se-01",
+      "action": "idle",
+      "index": 1,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0, 0],
+          "pixel": [115.06998, 216.465]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0, 0],
+          "pixel": [140.92989, 203.53505]
+        }
+      ],
+      "weaponBounds": [168.21535, 95.26628, 199.41406, 184.10209],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307257,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307262,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 256,
+      "y": 0,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "5ed86526435e2aea870cac45393004d4b0089cac79a0c98442eb8a7f408973c1"
+    },
+    {
+      "name": "idle-se-02",
+      "action": "idle",
+      "index": 2,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0, 0],
+          "pixel": [115.06998, 216.465]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0, 0],
+          "pixel": [140.92989, 203.53505]
+        }
+      ],
+      "weaponBounds": [167.92432, 95.10945, 198.82619, 183.84975],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307258,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525867,
+        "handL": 0.11,
+        "thighR": 0.4307262,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 512,
+      "y": 0,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "2e51aa039d01ccc50eff7b278f6c0be59000bc161045c455566ef30f0c6bff80"
+    },
+    {
+      "name": "idle-se-03",
+      "action": "idle",
+      "index": 3,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0, 0],
+          "pixel": [115.06998, 216.465]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0, 0],
+          "pixel": [140.92989, 203.53505]
+        }
+      ],
+      "weaponBounds": [167.62791, 95.18304, 198.23758, 183.82483],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307257,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976574,
+        "foreL": 0.2525867,
+        "handL": 0.11,
+        "thighR": 0.4307262,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 768,
+      "y": 0,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "8b41e717af45afec2d75b4aa2af9f594d9f1d0990231d68f4ca717e9c4f21fee"
+    },
+    {
+      "name": "idle-se-04",
+      "action": "idle",
+      "index": 4,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0, 0],
+          "pixel": [115.06998, 216.465]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0, 0],
+          "pixel": [140.92989, 203.53505]
+        }
+      ],
+      "weaponBounds": [167.50504, 95.44496, 197.99359, 184.0451],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307257,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525867,
+        "handL": 0.11,
+        "thighR": 0.4307262,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 1024,
+      "y": 0,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "51f2053d6525aff887e0931ac0518cb8bdd068401c2dcee3a4d0452c2111c2f4"
+    },
+    {
+      "name": "idle-se-05",
+      "action": "idle",
+      "index": 5,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0, 0],
+          "pixel": [115.06998, 216.465]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0, 0],
+          "pixel": [140.92989, 203.53505]
+        }
+      ],
+      "weaponBounds": [167.62791, 95.7429, 198.23758, 184.38471],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307257,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976574,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 1280,
+      "y": 0,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "9ae88a095ce500b69edd788bf79e80dfe558592525d5b5066b20ec3f6005101a"
+    },
+    {
+      "name": "idle-se-06",
+      "action": "idle",
+      "index": 6,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0, 0],
+          "pixel": [115.06998, 216.465]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0, 0],
+          "pixel": [140.92989, 203.53505]
+        }
+      ],
+      "weaponBounds": [167.92432, 95.90126, 198.82619, 184.64155],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307257,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 1536,
+      "y": 0,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "5cacb81ba812dff9341dbc784bebd69a0a106864b67547a997be0cadb2856a9d"
+    },
+    {
+      "name": "idle-se-07",
+      "action": "idle",
+      "index": 7,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0, 0],
+          "pixel": [115.06998, 216.465]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0, 0],
+          "pixel": [140.92989, 203.53505]
+        }
+      ],
+      "weaponBounds": [168.21535, 95.82616, 199.41406, 184.66197],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307257,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 1792,
+      "y": 0,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "0958c83518131925be3bcb036fcf525ff380a7a79caf40bd065aa2a669fddacf"
+    },
+    {
+      "name": "walk-se-00",
+      "action": "walk",
+      "index": 0,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, -0.45375, 0],
+          "pixel": [151.73853, 234.79927]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0.37124999999999997, 0],
+          "pixel": [110.92835, 188.53428]
+        }
+      ],
+      "weaponBounds": [167.62186, 106.2195, 197.22963, 194.50189],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 0,
+      "y": 256,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "13929c5a8dc25b1ab913c951f3a2e0e63c2996f44a1ce4fbe011decd51b33a67"
+    },
+    {
+      "name": "walk-se-01",
+      "action": "walk",
+      "index": 1,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, -0.35062499999999996, 0],
+          "pixel": [143.40475, 230.63239]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, 0.47062628600823037, 0.0010634572891454286],
+          "pixel": [102.89754, 184.41362]
+        }
+      ],
+      "weaponBounds": [169.28397, 105.82048, 199.98172, 194.49226],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.430726,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 256,
+      "y": 256,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "7519038ddc85a2f729cb769b3437c2d67173d4f6f82f518f6133c902b8513a2f"
+    },
+    {
+      "name": "walk-se-02",
+      "action": "walk",
+      "index": 2,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, -0.2475, 0],
+          "pixel": [135.071, 226.46551]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, 0.4552777777777779, 0.034999999999999976],
+          "pixel": [104.13789, 181.67495]
+        }
+      ],
+      "weaponBounds": [170.6769, 105.01178, 202.30696, 193.98123],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307262,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 512,
+      "y": 256,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "e74308b8b1e00d2dbba75a6d92043c69e7b103486d58fc6a627e806935234be7"
+    },
+    {
+      "name": "walk-se-03",
+      "action": "walk",
+      "index": 3,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, -0.14437500000000003, 0],
+          "pixel": [126.73724, 222.29863]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, 0.31261445473251037, 0.09394141003279677],
+          "pixel": [115.66682, 181.60573]
+        }
+      ],
+      "weaponBounds": [171.6032, 104.23083, 203.86841, 193.38257],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207435,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 768,
+      "y": 256,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "bcc27c4603a28cb0f9b0fd753701714117d836a7b6fb392bf0d94d3f5403de7b"
+    },
+    {
+      "name": "walk-se-04",
+      "action": "walk",
+      "index": 4,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, -0.04125000000000001, 0],
+          "pixel": [118.40349, 218.13175]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, 0.09568415637860098, 0.1357784834550136],
+          "pixel": [133.19743, 186.23024]
+        }
+      ],
+      "weaponBounds": [171.92804, 103.91086, 204.41705, 193.12344],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 1024,
+      "y": 256,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "fc7b639377177941b100bc5231c3710dc4ae65b5f62c10a4b7b001edad35b906"
+    },
+    {
+      "name": "walk-se-05",
+      "action": "walk",
+      "index": 5,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0.06187500000000001, 0],
+          "pixel": [110.06973, 213.96487]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, -0.14246527777777762, 0.13062177826491075],
+          "pixel": [152.44281, 196.36331]
+        }
+      ],
+      "weaponBounds": [171.6032, 104.23083, 203.86841, 193.38257],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 1280,
+      "y": 256,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "d074ff695a0fe2441d17400a25fa0508b9048123aa5299b04876b70a54b7b8f2"
+    },
+    {
+      "name": "walk-se-06",
+      "action": "walk",
+      "index": 6,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0.16499999999999992, 0],
+          "pixel": [101.73597, 209.79799]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, -0.3487860082304524, 0.08215537243668512],
+          "pixel": [169.11604, 209.49686]
+        }
+      ],
+      "weaponBounds": [170.6769, 105.01178, 202.30696, 193.98123],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1536,
+      "y": 256,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "4cfe22a6fe0359337279921ad1f97df0db170108087a7628786cd27e350e0841"
+    },
+    {
+      "name": "walk-se-07",
+      "action": "walk",
+      "index": 7,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0.26812499999999995, 0],
+          "pixel": [93.40221, 205.63111]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, -0.470230195473251, 0.025004867321942303],
+          "pixel": [178.93022, 220.06038]
+        }
+      ],
+      "weaponBounds": [169.28397, 105.82048, 199.98172, 194.49226],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1792,
+      "y": 256,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "6189bb8e92842480ee44c0e1c5a020c047669beaee9837f77333c3a7be6072b2"
+    },
+    {
+      "name": "walk-se-08",
+      "action": "walk",
+      "index": 8,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0.37124999999999997, 0],
+          "pixel": [85.06845, 201.46424]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, -0.45375, 0],
+          "pixel": [177.59842, 221.86932]
+        }
+      ],
+      "weaponBounds": [167.62186, 106.2195, 197.22963, 194.50189],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 0,
+      "y": 512,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "b6415824326e007ac637040716cd28cae0e978c49d4a5344b34c516d557a854f"
+    },
+    {
+      "name": "walk-se-09",
+      "action": "walk",
+      "index": 9,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, 0.47062628600823037, 0.0010634572891454286],
+          "pixel": [77.03764, 197.34357]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, -0.35062499999999996, 0],
+          "pixel": [169.26466, 217.70243]
+        }
+      ],
+      "weaponBounds": [165.95535, 106.01797, 194.46849, 193.86974],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.3400001,
+        "thighL": 0.430726,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976576,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 256,
+      "y": 512,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "d76e7d3352ee77c7c5de69bb1251382409127025cfe12c2c03b41c818017a468"
+    },
+    {
+      "name": "walk-se-10",
+      "action": "walk",
+      "index": 10,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, 0.4552777777777779, 0.034999999999999976],
+          "pixel": [78.27798, 194.60489]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, -0.2475, 0],
+          "pixel": [160.93091, 213.53556]
+        }
+      ],
+      "weaponBounds": [164.53951, 105.37682, 192.12135, 192.83136],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307262,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 512,
+      "y": 512,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "6a77310cef69b3996866bd89b59a1d2a7115dc22f67c1ddb2a06373f432929af"
+    },
+    {
+      "name": "walk-se-11",
+      "action": "walk",
+      "index": 11,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, 0.31261445473251037, 0.09394141003279677],
+          "pixel": [89.80692, 194.53568]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, -0.14437500000000003, 0],
+          "pixel": [152.59715, 209.36868]
+        }
+      ],
+      "weaponBounds": [163.59206, 104.70792, 190.55006, 191.88066],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 768,
+      "y": 512,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "790a2ca1ba0ef0ddd8c02179938b514a31c8e78b1eaabf2f9202ddab1208ada4"
+    },
+    {
+      "name": "walk-se-12",
+      "action": "walk",
+      "index": 12,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, 0.09568415637860098, 0.1357784834550136],
+          "pixel": [107.33753, 199.16019]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, -0.04125000000000001, 0],
+          "pixel": [144.26338, 205.2018]
+        }
+      ],
+      "weaponBounds": [163.25911, 104.42735, 189.9978, 191.49802],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1024,
+      "y": 512,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "989602661aeb1045ea551fd1f05bac7a8d64ea13967e13a999f360d9fbd5d322"
+    },
+    {
+      "name": "walk-se-13",
+      "action": "walk",
+      "index": 13,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, -0.14246527777777762, 0.13062177826491075],
+          "pixel": [126.58292, 209.29326]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0.06187500000000001, 0],
+          "pixel": [135.92963, 201.03492]
+        }
+      ],
+      "weaponBounds": [163.59206, 104.70792, 190.55006, 191.88066],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1280,
+      "y": 512,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "ebb0721e047d44c704573435403e76aabeb92a625d9f35c7595a695111af9cf6"
+    },
+    {
+      "name": "walk-se-14",
+      "action": "walk",
+      "index": 14,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, -0.3487860082304524, 0.08215537243668512],
+          "pixel": [143.25615, 222.42681]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0.16499999999999992, 0],
+          "pixel": [127.59587, 196.86804]
+        }
+      ],
+      "weaponBounds": [164.53951, 105.37682, 192.12135, 192.83136],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.5399999,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1536,
+      "y": 512,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "4d6b0b0867068dbde51cc47bb391bd90d0c07ca33e1b8869ac057d4e0a0ce52b"
+    },
+    {
+      "name": "walk-se-15",
+      "action": "walk",
+      "index": 15,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, -0.470230195473251, 0.025004867321942303],
+          "pixel": [153.07031, 232.99033]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0.26812499999999995, 0],
+          "pixel": [119.26212, 192.70116]
+        }
+      ],
+      "weaponBounds": [165.95535, 106.01797, 194.46849, 193.86974],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.3400001,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976576,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1792,
+      "y": 512,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "7b6dbcccc935a40ac76eb9ef74ba0bf3f1ef92d82b246983a6ef6c3a73854454"
+    },
+    {
+      "name": "run-se-00",
+      "action": "run",
+      "index": 0,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, -0.42500000000000004, 0],
+          "pixel": [149.41518, 233.6376]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, 0.45546442385285363, 0.11429017010115089],
+          "pixel": [104.1228, 173.81971]
+        }
+      ],
+      "weaponBounds": [166.41206, 111.90648, 191.049, 197.92113],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976576,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207435,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 0,
+      "y": 768,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "8385b9757a60a66d50d8dc40c420ed2406e97a03e00e76291c73f59e5d7bc330"
+    },
+    {
+      "name": "run-se-01",
+      "action": "run",
+      "index": 1,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, -0.26875000000000004, 0],
+          "pixel": [136.78827, 227.32414]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, 0.3204399909042214, 0.18245613695676866],
+          "pixel": [115.03442, 172.52884]
+        }
+      ],
+      "weaponBounds": [169.2262, 111.74486, 196.2751, 198.95943],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 256,
+      "y": 768,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "2349ad7e72de69223ad6b919f7982bcfb5da1b6ab2a191c146395a0319d92db6"
+    },
+    {
+      "name": "run-se-02",
+      "action": "run",
+      "index": 2,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, -0.11250000000000004, 0],
+          "pixel": [124.16135, 221.01068]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, 0.14159701352366644, 0.2291558394425422],
+          "pixel": [129.48712, 175.13312]
+        }
+      ],
+      "weaponBounds": [171.60008, 110.7139, 200.68071, 198.79383],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 512,
+      "y": 768,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "173eb5e3fef373a7ae5427a9eb5cd032c002c88df3ee87012bccc8df8a40f787"
+    },
+    {
+      "name": "run-se-03",
+      "action": "run",
+      "index": 3,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0.043749999999999956, 0],
+          "pixel": [111.53445, 214.69723]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, -0.0555886103632747, 0.2383385224461824],
+          "pixel": [145.42212, 182.19177]
+        }
+      ],
+      "weaponBounds": [173.17856, 109.56752, 203.60841, 198.14727],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307262,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 768,
+      "y": 768,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "789f6d423c390a54ce9252b69847b00bbc6f7154d24a178e36e6eb5c6328097e"
+    },
+    {
+      "name": "run-se-04",
+      "action": "run",
+      "index": 4,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0.19999999999999996, 0],
+          "pixel": [98.90754, 208.38378]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, -0.24564098283106572, 0.20684808457260842],
+          "pixel": [160.78067, 192.98779]
+        }
+      ],
+      "weaponBounds": [173.73116, 109.07797, 204.63303, 197.81828],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976576,
+        "foreL": 0.2525865,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1024,
+      "y": 768,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "d2859bc88abcef5cf2929a25b869d2d9522c7c2f8044649316f67c9c5156adbf"
+    },
+    {
+      "name": "run-se-05",
+      "action": "run",
+      "index": 5,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": true,
+          "sole": [-0.16, 0.35624999999999996, 0],
+          "pixel": [86.28063, 202.07032]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, -0.4030842059541702, 0.14550783474635715],
+          "pixel": [173.50401, 205.42057]
+        }
+      ],
+      "weaponBounds": [173.17856, 109.56752, 203.60841, 198.14727],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1280,
+      "y": 768,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "10429f5916584c072acafc8fea4e755b08f3258365ba3cf7ba3dbed1c9de43ea"
+    },
+    {
+      "name": "run-se-06",
+      "action": "run",
+      "index": 6,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, 0.4921540647522053, 0.006599901754239771],
+          "pixel": [75.29793, 195.92575]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, -0.5024423818070508, 0.07540050532076079],
+          "pixel": [181.53336, 216.37407]
+        }
+      ],
+      "weaponBounds": [171.60008, 110.7139, 200.68071, 198.79383],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207433,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557341,
+        "handR": 0.11
+      },
+      "x": 1536,
+      "y": 768,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "2a6e9da4a69ab449e492c17b33498e25867e9f2b9f9d764291736b39b142195c"
+    },
+    {
+      "name": "run-se-07",
+      "action": "run",
+      "index": 7,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, 0.5211944144440271, 0.04808668001863835],
+          "pixel": [72.95112, 190.64622]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, -0.5182396124641738, 0.020622086554635505],
+          "pixel": [182.80997, 222.43404]
+        }
+      ],
+      "weaponBounds": [169.2262, 111.74486, 196.2751, 198.95943],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1792,
+      "y": 768,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "5d332b75e93ab77d99bf86d3e09d11df673ed44ff28c29cc8417d59463abefe8"
+    },
+    {
+      "name": "run-se-08",
+      "action": "run",
+      "index": 8,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, 0.45546442385285363, 0.11429017010115089],
+          "pixel": [78.2629, 186.74966]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, -0.42500000000000004, 0],
+          "pixel": [175.27507, 220.70764]
+        }
+      ],
+      "weaponBounds": [166.41206, 111.90648, 191.049, 197.92113],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207435,
+        "footL": 0.2099999,
+        "upperL": 0.2976576,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 0,
+      "y": 1024,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "40ddb3e28bc40f8a2e12799069087ef67d316bd9fcb866c01303a534b3e78c76"
+    },
+    {
+      "name": "run-se-09",
+      "action": "run",
+      "index": 9,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, 0.3204399909042214, 0.18245613695676866],
+          "pixel": [89.17452, 185.45879]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, -0.26875000000000004, 0],
+          "pixel": [162.64816, 214.39419]
+        }
+      ],
+      "weaponBounds": [163.58769, 110.9278, 187.10442, 195.55101],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 256,
+      "y": 1024,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "9433e1e3b09b99ca8bbfe521de6e83b16f1326b8abfcb8ee2b7eadad1f5ff8f5"
+    },
+    {
+      "name": "run-se-10",
+      "action": "run",
+      "index": 10,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, 0.14159701352366644, 0.2291558394425422],
+          "pixel": [103.62721, 188.06307]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, -0.11250000000000004, 0],
+          "pixel": [150.02126, 208.08073]
+        }
+      ],
+      "weaponBounds": [161.18916, 109.20598, 184.71497, 192.50177],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 512,
+      "y": 1024,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "1fe99865f18259070c4482c95caa82a1118330eb366800d4dc795bbe28751a6a"
+    },
+    {
+      "name": "run-se-11",
+      "action": "run",
+      "index": 11,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, -0.0555886103632747, 0.2383385224461824],
+          "pixel": [119.56222, 195.12172]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0.043749999999999956, 0],
+          "pixel": [137.39435, 201.76728]
+        }
+      ],
+      "weaponBounds": [159.58607, 107.59978, 183.11493, 189.93406],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307262,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 768,
+      "y": 1024,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "913a5467122e81f72ff43d7b3f592d99436f0055e145c6195c744191ed8ffb6f"
+    },
+    {
+      "name": "run-se-12",
+      "action": "run",
+      "index": 12,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, -0.24564098283106572, 0.20684808457260842],
+          "pixel": [134.92078, 205.91774]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0.19999999999999996, 0],
+          "pixel": [124.76744, 195.45383]
+        }
+      ],
+      "weaponBounds": [159.02328, 106.9492, 182.55261, 188.93182],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1024,
+      "y": 1024,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "e6a395cff37ce546b565c2c401137c0902d1e643b779f4328bf703f0f6a57b89"
+    },
+    {
+      "name": "run-se-13",
+      "action": "run",
+      "index": 13,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, -0.4030842059541702, 0.14550783474635715],
+          "pixel": [147.6441, 218.35052]
+        },
+        {
+          "side": "R",
+          "planted": true,
+          "sole": [0.16, 0.35624999999999996, 0],
+          "pixel": [112.14054, 189.14037]
+        }
+      ],
+      "weaponBounds": [159.58607, 107.59978, 183.11493, 189.93406],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207433,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1280,
+      "y": 1024,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "dcaed14c703fc99fea7ca5b1d9bcee0843c6873cf6fa327ca1402327c2e308e3"
+    },
+    {
+      "name": "run-se-14",
+      "action": "run",
+      "index": 14,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, -0.5024423818070508, 0.07540050532076079],
+          "pixel": [155.67346, 229.30402]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, 0.4921540647522053, 0.006599901754239771],
+          "pixel": [101.15783, 182.9958]
+        }
+      ],
+      "weaponBounds": [161.18916, 109.20598, 184.71497, 192.50177],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207433,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082207,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1536,
+      "y": 1024,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "2f1f66529c8d46d7f65f3c887662b1c96977ad53141fda8aae94edcd48c66003"
+    },
+    {
+      "name": "run-se-15",
+      "action": "run",
+      "index": 15,
+      "root": [127.99993, 210.00002],
+      "contacts": [
+        {
+          "side": "L",
+          "planted": false,
+          "sole": [-0.16, -0.5182396124641738, 0.020622086554635505],
+          "pixel": [156.95006, 235.36399]
+        },
+        {
+          "side": "R",
+          "planted": false,
+          "sole": [0.16, 0.5211944144440271, 0.04808668001863835],
+          "pixel": [98.81102, 177.71626]
+        }
+      ],
+      "weaponBounds": [163.58769, 110.9278, 187.10442, 195.55101],
+      "boneLengths": {
+        "root": 0.2,
+        "torso": 0.54,
+        "head": 0.34,
+        "thighL": 0.4307261,
+        "shinL": 0.4207434,
+        "footL": 0.2099999,
+        "upperL": 0.2976575,
+        "foreL": 0.2525866,
+        "handL": 0.11,
+        "thighR": 0.4307261,
+        "shinR": 0.4207434,
+        "footR": 0.2099999,
+        "upperR": 0.3082208,
+        "foreR": 0.2557342,
+        "handR": 0.11
+      },
+      "x": 1792,
+      "y": 1024,
+      "width": 256,
+      "height": 256,
+      "pixelSha256": "934f690a10cd00d91661ce0ae31d5b95c9882ac6e407cad17d70917c789471c5"
+    }
+  ],
+  "columns": 8,
+  "rows": 5,
+  "atlas": "warrior.png",
+  "atlasSha256": "076fa06078eff2e675f9852613653d549e94f9f6ec2a3de60dd409bf6eddda35",
+  "bytes": 1132558,
+  "decodedBytes": 10485760,
+  "productionApproved": false,
+  "scope": "isolated southeast idle/walk/run cadence candidate; quality review pending",
+  "provenance": {
+    "producerSha256": "9d7e2a8d6f5f8b3fdb29e1653188da5a95b18b51993af07883f5268271990ae0",
+    "rigSha256": "5f6137be21f42035f07ce7a758372b214bee6143044388dd14b7796e2860954e",
+    "referenceSha256": "1209d373a2cb011753e8c681cfe6ccb4d75c0dd176be7004ea26e678cedde424",
+    "baseRigSha256": "a1a55b530d29fe79663af0ce36668698b7b413f81480368c2a964def4675cc21"
+  }
+}

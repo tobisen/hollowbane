@@ -1,3 +1,10 @@
+## Q3-A Southeast cadence/run — local candidate (2026-10-25)
+
+- Checkpoint A only: original approved v2 Blender4.5.3 source reused unchanged;8 idle/16 new walk/16 distinct run. Walk2.88cycles/s at3 world/s, run3.42 at5.4; planted-velocity seams, alternating support, run flight/lean/free-arm swing. No physics/simulation/live sprite changes;474bbdd preserved. No eight-direction/combat production.
+- Atlas1132558bytes/10MiB decoded;40 unique256px cells/root128,210, minimum8px margin; bone/contact/weapon/source audits pass. Thirteen focused asset/loop/negative units, eight preview browser cases, TypeScript/affected lint/format/assets/build pass. Light/dark and actual native motion at zoom1/2 reviewed. Brisk/stylized cadence and brief crossfade remain human-review limitations; approval false.
+- Native matched P2 M4/Metal forest359 frames/input: keyboard baseline p50/p95/p9916.7/18.4/18.5ms→candidate16.7/18.5/18.6; virtual controller16.7/18.2/18.3→16.7/18.2/18.4; zero>25ms/zero-double ticks, uniform camera. Test-driver-only atlas swap, not production activation. Default all-playing run preview240 intervals16.7/18.1/18.6ms, zero>25ms. No improvement/physical-device claim.
+- Release pending: commit/push and exact classifier-selected CI/Pages/hosted verification required. Latest verified deployed SHA remains86b816904ebbd75c603518ee28ee08b46f45facb. Local tested52-file inventory /private/tmp/hollowbane-warrior-cadence/tested-files.json; sources/evidence docs/art/q3/warrior-movement.md and cadence-review.json. Stop at Southeast quality review; preserve unrelated edits and do not advance B.
+
 ## Q3-A Warrior movement — prerequisite RELEASE VERIFIED (2026-10-25)
 
 - Verified SHA86b816904ebbd75c603518ee28ee08b46f45facb / CI40233360148: required Full/all Chromium/compatibility, Pages, hosted smoke and Release acceptance PASS. Independent48-file sealed/reviewed/public byte match and four hosted Warrior preview checks PASS; captures reviewed. Test-only repairs preserve art/runtime;2c7d066 preserved.
