@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-25",
+  "scope": "Deliverable 1: Warrior southeast 8 idle / 16 walk; preview only",
+  "userArtApproval": false,
+  "productionReplacement": false,
+  "fullCharacterSetReady": false,
+  "validation": {
+    "bytes": 746968,
+    "decodedBytes": 6291456,
+    "frames": 24,
+    "maxIsolatedSoftPixels": 2,
+    "minimumAlphaMargin": 16
+  },
+  "nativePreviewPerformance": {
+    "url": "http://127.0.0.1:4174/hollowbane/?developer=1&warriorPilot=1&warriorRefined=1",
+    "environment": {
+      "visible": "visible",
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+    },
+    "browser": "156.0.8078.4",
+    "condition": "visible native window; zoom2; moving; comparison paused; 3 alternating pairs",
+    "samples": [
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17,
+        "p99": 17.6,
+        "longest": 17.6,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "pilot",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.3,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "pilot",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.6,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.6,
+        "p99": 17.7,
+        "longest": 17.7,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.4,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      },
+      {
+        "source": "pilot",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.4,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "over33": 0,
+        "over50": 0
+      }
+    ]
+  },
+  "visualReview": {
+    "inspected": [
+      "all 24 poses at uniform scale",
+      "dark/light browser comparison with shipped sprite and original identity reference",
+      "accepted versus refined idle and four walk phases",
+      "native Phaser placement at gameplay scale / zoom2"
+    ],
+    "observations": [
+      "clearer faceted armor and crimson folds",
+      "weapon remains consistent",
+      "no visible cell clipping or distracting halos",
+      "partly sculptural finish remains; new set not approved"
+    ],
+    "limits": [
+      "cadence unchanged pending deliverable 2",
+      "no run, combat, other directions or controller integration",
+      "empty-stage pairs are not the full P2 forest keyboard/controller scenarios",
+      "no physical controller evidence"
+    ]
+  },
+  "checks": {
+    "unit": 7,
+    "chromium": 4,
+    "typescript": "pass",
+    "affectedLint": "pass",
+    "assetValidation": "pass",
+    "build": "pass",
+    "localFullRegression": "not run; unrelated suites excluded"
+  },
+  "release": {
+    "status": "pending exact commit CI/Pages/hosted acceptance"
+  }
+}

@@ -1,3 +1,10 @@
+## Q3-A complete Warrior — art refinement checkpoint (2026-10-25)
+
+- User authorizes complete Warrior animation through quality review; deliverable1 first, preview only. Accepted pilotba04838 remains intact. Original Blender4.5.3 v2 materials/faceted accents/folded cloth retain rig, motion, root, lights and weapon geometry.8 idle/16 walk, southeast; PNG746968bytes/6MiB decoded. Production unchanged.
+- Seven focused asset units/four Chromium preview cases/TypeScript/affected lint/format/assets/build pass. All24 poses and dark/light/gameplay-scale captures reviewed; stronger armor/fabric detail, partly sculptural finish remains. Roots/bone lengths/contacts/weapon bounds exactly match accepted pilot. User refinement approval false.
+- Three native M4/Metal pairs: shipped p9517.0/17.6/17.4ms, refined17.3/17.6/17.4ms; longest17.7ms, zero>25ms. Empty preview only; full P2 forest/controller scenarios pending. No unrelated local regression or physical-controller claim.
+- Exact CI/Pages/hosted release pending; require existing Full classification. Resume release verification before deliverable2 cadence or other production. Entire assignment INCOMPLETE; no run/combat/other directions yet. See docs/art/q3/warrior-refinement.md and refinement-review.json; raw evidence /private/tmp/hollowbane-warrior-refinement. Preserve unrelated documentation edits; no overnight orchestrator.
+
 ## Q3-A Warrior rigged pilot — approved and released; STOP (2026-10-25)
 
 - DBL-023/024/025/026: user accepted the isolated southeast Warrior pilot after disclosure of sculptural finish and rapid cadence at existing gameplay speed. Original Blender4.5.3 rig/source;8 idle/16 walk frames,256px uniform cells, fixed root/lighting/weapon,670868-byte transparent PNG. Live graphics and all simulation/timing remain unchanged. No other classes/directions or Q3 work.

@@ -65,3 +65,21 @@ it("rejects clipped pixels even when the file and frame hashes are recomputed", 
   await writeFile(join(path, "warrior.json"), JSON.stringify(meta));
   await expect(validateWarriorPilot(path)).rejects.toThrow("alpha containment");
 });
+
+it("audits refined art while preserving accepted roots, rig lengths and foot contacts", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const refined = JSON.parse(
+    await readFile("public/dev/warrior-refined/warrior.json", "utf8"),
+  ) as typeof source;
+  const result = await validateWarriorPilot("public/dev/warrior-refined");
+  expect(result.frames).toHaveLength(24);
+  expect(refined.productionApproved).toBe(false);
+  expect(refined.atlasSha256).not.toBe(source.atlasSha256);
+  for (const [index, frame] of refined.frames.entries()) {
+    const approved = source.frames[index]!;
+    expect(frame.root).toEqual(approved.root);
+    expect(frame.boneLengths).toEqual(approved.boneLengths);
+    expect(frame.contacts).toEqual(approved.contacts);
+    expect(frame.weaponBounds).toEqual(approved.weaponBounds);
+  }
+});

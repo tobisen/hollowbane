@@ -309,5 +309,15 @@
     "preview": "public/dev/warrior-pilot/warrior.png",
     "rig": "assets/source/q3/warrior-rig-v1/warrior.blend",
     "provenance": "docs/art/q3/pipeline-recovery.md"
+  },
+  {
+    "id": "q3-warrior-rig-refinement-v2",
+    "source": "assets/source/q3/warrior-rig-v2/warrior.py",
+    "rights": "Original project procedural model, materials and rig; original menu Warrior identity reference only; no external meshes, textures or motion capture",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/warrior-refined/warrior.png",
+    "rig": "assets/source/q3/warrior-rig-v2/warrior.blend",
+    "provenance": "docs/art/q3/warrior-refinement.md"
   }
 ]

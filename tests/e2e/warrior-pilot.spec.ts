@@ -132,3 +132,31 @@ test("Warrior preview needs the explicit developer route and is not loaded by no
   await expect(page.locator("#pilot-stage")).toHaveCount(0);
   expect(fetched).toEqual([]);
 });
+
+test("refined Warrior stays isolated and links to the approved visual comparison", async ({
+  page,
+}, testInfo) => {
+  await page.goto("?developer=1&warriorPilot=1&warriorRefined=1");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-warrior-pilot-ready",
+    "true",
+  );
+  await expect(page.locator("h1")).toHaveText("Warrior · art refinement");
+  await page.locator("#pilot-clip").selectOption("walk");
+  await page.locator("#pilot-play").click();
+  await page.locator("#pilot-background").selectOption("light");
+  await page.screenshot({
+    path: testInfo.outputPath("warrior-refinement-light.png"),
+    fullPage: true,
+  });
+  await page.locator("#pilot-background").selectOption("dark");
+  await page.screenshot({
+    path: testInfo.outputPath("warrior-refinement-dark.png"),
+    fullPage: true,
+  });
+  await page.getByRole("link", { name: "Compare approved pilot" }).click();
+  await expect(page.locator("h1")).toHaveText(
+    "Warrior · approved motion study",
+  );
+  await expect(page.locator("#pilot-stage canvas")).toBeVisible();
+});

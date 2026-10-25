@@ -7,8 +7,9 @@ import { Buffer } from "node:buffer";
 
 const input = process.argv[2];
 if (!input) throw Error("Pass the complete Blender render directory");
-const source = "assets/source/q3/warrior-rig-v1";
-const output = "public/dev/warrior-pilot";
+const refined = process.argv[3] === "refined";
+const source = `assets/source/q3/warrior-rig-v${refined ? 2 : 1}`;
+const output = `public/dev/warrior-${refined ? "refined" : "pilot"}`;
 const rig = JSON.parse(await readFile(join(input, "rig.json"), "utf8"));
 if (rig.frames.length !== 24 || rig.cell !== 256 || rig.renderSize !== 512)
   throw Error("Unexpected render contract");

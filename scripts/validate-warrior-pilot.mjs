@@ -12,9 +12,12 @@ export async function validateWarriorPilot(
     if (!ok) throw Error(`Warrior pilot: ${reason}`);
   };
   const hash = (data) => createHash("sha256").update(data).digest("hex");
+  const source = directory.endsWith("warrior-refined")
+    ? "assets/source/q3/warrior-rig-v2"
+    : "assets/source/q3/warrior-rig-v1";
   for (const [key, file] of [
-    ["producerSha256", "assets/source/q3/warrior-rig-v1/warrior.py"],
-    ["rigSha256", "assets/source/q3/warrior-rig-v1/warrior.blend"],
+    ["producerSha256", `${source}/warrior.py`],
+    ["rigSha256", `${source}/warrior.blend`],
     ["referenceSha256", "public/assets/menu-warrior-v1.webp"],
   ])
     assert(

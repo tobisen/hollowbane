@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-import metadata from "../../public/dev/warrior-pilot/warrior.json";
+import approvedMetadata from "../../public/dev/warrior-pilot/warrior.json";
+import refinedMetadata from "../../public/dev/warrior-refined/warrior.json";
 import { createWalker, moveTick, MOVEMENT } from "../simulation/locomotion";
 import { worldToScreen } from "../world/isometric";
 import type { Navigation } from "../world/navigation";
@@ -27,10 +28,14 @@ declare global {
 }
 
 export async function startWarriorPilot(): Promise<void> {
+  const refined =
+    new URLSearchParams(location.search).get("warriorRefined") === "1";
+  const metadata = refined ? refinedMetadata : approvedMetadata;
+  const directory = refined ? "warrior-refined" : "warrior-pilot";
   const root = document.querySelector("main")!;
   root.className = "warrior-pilot";
   document.title = "Hollowbane · Warrior animation pilot";
-  root.innerHTML = `<header><p class="eyebrow">HOLLOWBANE / Q3-A / DEVELOPER REVIEW</p><h1>Warrior · motion study</h1><p>One direction. One model. Idle and walk. Live characters remain unchanged.</p><a href="./">Return to Hollowbane</a></header>
+  root.innerHTML = `<header><p class="eyebrow">HOLLOWBANE / Q3-A / DEVELOPER REVIEW</p><h1>Warrior · ${refined ? "art refinement" : "approved motion study"}</h1><p>One direction. One model. Idle and walk. Live characters remain unchanged.</p><a href="?developer=1&warriorPilot=1${refined ? "" : "&warriorRefined=1"}">${refined ? "Compare approved pilot" : "Review refined candidate"}</a> · <a href="./">Return to Hollowbane</a></header>
   <section class="pilot-controls" aria-label="Animation controls">
     <label>Clip <select id="pilot-clip"><option value="idle">Idle</option><option value="walk">Walk</option></select></label>
     <button id="pilot-play" aria-pressed="true">Pause</button><button id="pilot-back">Previous frame</button><button id="pilot-next">Next frame</button>
@@ -39,7 +44,7 @@ export async function startWarriorPilot(): Promise<void> {
     <label>Background <select id="pilot-background"><option value="checker">Checker</option><option value="dark">Dark</option><option value="light">Light</option></select></label>
   </section>
   <section class="pilot-comparison" aria-label="Sprite comparison">
-    <figure><canvas id="pilot-candidate" width="256" height="256" aria-label="Rigged Warrior animation"></canvas><figcaption>Rigged Warrior · 2× gameplay display scale</figcaption></figure>
+    <figure><canvas id="pilot-candidate" width="256" height="256" aria-label="Rigged Warrior animation"></canvas><figcaption>${refined ? "Refined candidate" : "Approved pilot"} · 2× gameplay display scale</figcaption></figure>
     <figure><canvas id="pilot-shipped" width="256" height="256" aria-label="Shipped southeast sprite animation"></canvas><figcaption>Shipped wanderer · same ground root</figcaption></figure>
     <figure class="pilot-reference"><img src="${import.meta.env.BASE_URL}assets/menu-warrior-thumb-v1.webp" alt="Original Warrior costume reference"><figcaption>Original identity reference</figcaption></figure>
   </section><output id="pilot-frame" aria-live="off"></output>
@@ -50,7 +55,7 @@ export async function startWarriorPilot(): Promise<void> {
     <label>Stage sprite <select id="pilot-source"><option value="pilot">Pilot</option><option value="shipped">Shipped baseline</option></select></label><button id="pilot-reset">Reset position</button></div>
     <div id="pilot-stage" tabindex="0" role="application" aria-label="Warrior movement preview"></div>
     <p class="pilot-note">Travel speed is a preview control. 0.64 world/s matches the authored walking cadence; 3 world/s exposes the existing gameplay speed. No gameplay settings or saves are written. Cyan circle: 12 ground-pixel collision clearance. Gold cross: world root.</p>
-  </section><p class="pilot-note">24 poses · transparent 256px cells · locked root 128,210 · source rig and export recipe retained. Sculptural material style and live-speed cadence require art review before adoption.</p>`;
+  </section><p class="pilot-note">24 poses · transparent 256px cells · locked root 128,210 · source rig and export recipe retained. Art refinement and live-speed cadence require review before adoption.</p>`;
   const element = <T extends HTMLElement>(id: string): T =>
     document.getElementById(id) as T;
   const state = {
@@ -69,7 +74,7 @@ export async function startWarriorPilot(): Promise<void> {
   };
   const pilotImage = new Image(),
     shippedImage = new Image();
-  pilotImage.src = `${import.meta.env.BASE_URL}dev/warrior-pilot/warrior.png`;
+  pilotImage.src = `${import.meta.env.BASE_URL}dev/${directory}/warrior.png`;
   shippedImage.src = `${import.meta.env.BASE_URL}assets/wanderer.webp`;
   await Promise.all([pilotImage.decode(), shippedImage.decode()]);
   const canvases = [

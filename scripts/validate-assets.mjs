@@ -91,6 +91,7 @@ console.log(
 
 validateWorldArtInventory(assets);
 await validateWarriorPilot();
+await validateWarriorPilot("public/dev/warrior-refined");
 
 const menuInventory = JSON.parse(
   readFileSync("docs/art/menu-inventory.json", "utf8"),
