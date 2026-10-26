@@ -8,6 +8,72 @@ acceptance before advancing. Preserve simulation, saves, balance, Phaser4.2.1,
 the approved source rig, live graphics and unrelated edits. No other class art
 or normal-game sprite activation is authorized.
 
+## Overnight continuation — Release B ability increment
+
+The2026-10-26 overnight request authorizes sequential abilities, reactions/death,
+Release B, then the disposable playable arena and Release C. No new mechanics,
+other class art, normal-game sprites or save changes. Release A's exact public
+gate is now independently closed (below); Release B remains pending.
+
+Class-tree and runtime review identifies exactly two implemented Warrior active
+abilities: **iron-fan / Sundering Fan** (physical melee variant with the existing
+guarded stagger) and **oath-echo / Oath Echo** (self power effect with the existing
+Warrior armor synergy). Planned Bulwark/mastery nodes have no implemented ability;
+there is no separate battle-cry or block mechanic to invent. Player reactions use
+one existing guarded hitstun state, not distinct light/heavy stun rules.
+
+Source `assets/source/q3/warrior-abilities/render.py` reuses the unchanged approved
+v2 blend,135 meshes/15 bones, materials/lights and camera. Fixed320px overscan
+retains Release A's model scale/root160,274. Two original twelve-pose motions per
+view: loaded sword stroke and braced offhand guard. All eight complete-geometry
+views are rendered without mirroring. Four idle endpoints per view reuse exact
+approved idle pixels. No movement or attack atlas has been regenerated.
+
+**16 clips /192 poses**, eight atlases **5,368,546bytes /75MiB** base RGBA payload;
+minimum visible alpha clearance15px. Movement82.5MiB + attacks75MiB + abilities75MiB
+is **232.5MiB** total candidate texture payload, excluding historical pilot textures,
+copies and GPU overhead. Ability preview loads movement+ability textures157.5MiB;
+it does not upload the attack atlases. Total GPU/browser memory remains unmeasured.
+Every pose is audited for root, bone length, connected limb joints, fixed rotated
+feet and weapon containment. Fingerprinted source/packager/rig/movement provenance
+and developer-placeholder status are recorded in the manifest and asset registry.
+
+Route: `?developer=1&warriorPilot=1&warriorCombat=1&warriorAbilities=1`.
+The isolated seeded rank1 Warrior fixture uses real `requestSkill`/`stepSkillCombat`.
+`warriorAbilityFrame` reads the accepted cast sequence and current combat timeline;
+pose5 is the existing active-entry release, with no damage/skill callbacks. It
+yields immediately for interruptions, death, idle, stale sequences and unrelated
+skills. Base timing remains12/1/18 and10/1/16; speed breakpoints, mana and cooldowns
+are unchanged. Sundering's30-tick cooldown expires during recovery; Oath's240-tick
+cooldown still rejects immediate reuse. The preview never opens normal storage.
+
+All packaged poses were reviewed at gameplay scale with dark/light coverage.
+Feet/root and armor/weapon remain coherent; no frame-edge clipping or matte halos
+observed. Restrained hip/torso weight transfer, rapid existing activation, twelve
+sample poses, sculptural finish and front/rear weapon occlusion remain limitations.
+All22 focused units (new abilities plus unchanged attack selectors/assets) and12
+Chromium cases pass: eight directions/two skills, exact real activation, one
+effect, resource/cooldown semantics, facing/root stability, storage isolation and
+existing attack preview behavior. TypeScript/build, affected lint/format and asset
+validation pass. Native visible Chromium156/M4 Metal1280×800/DPR1 captures all16
+clips at1×/.25× (32 sequences); each ends idle with exactly one real effect.
+Representative timed strips were inspected. Three matched isolated-preview pairs
+with identical resident textures give candidate p5016.7/p9517.0–17.2/p9917.6ms,
+longest17.7ms, zero>25ms/zero camera drift; shipped p9516.8–17.4ms. This is not an
+improvement/full-forest/physical-controller claim. Warmed ready894ms is not a cold
+load measurement. Machine evidence: `ability-review.json`; local tested inventory90
+files. Phase1 is locally verified; continue Phase2/3. No final user art approval,
+Release B publication or arena completion is claimed. Retained renders/evidence:
+`/private/tmp/hollowbane-warrior-abilities`; do not repeat successful renders.
+
+```sh
+"$BLENDER_BIN" --background --python-exit-code 1 \
+  --python assets/source/q3/warrior-abilities/render.py -- /private/tmp/warrior-abilities se n e s w ne sw nw --audit
+node scripts/package-warrior-abilities.mjs /private/tmp/warrior-abilities
+node scripts/validate-warrior-abilities.mjs
+node scripts/profile-warrior-combat.mjs http://127.0.0.1:4174/hollowbane/ /private/tmp/warrior-abilities-native abilities
+```
+
 ## Release A — eight-direction attack candidate
 
 The approved release **e498ce6fc16412a578f46e67735d2d61bbac3e51** was independently
@@ -93,11 +159,14 @@ and80-file tested-build inventory:
 accepted pixels unnecessarily. Use the reproduction commands below with the new
 renderer/packager and `directions` profile argument. Candidate **066527e9e14c76f22d68588797780774e59f69f6** is committed/pushed.
 [CI40386255337](https://github.com/tobisen/hollowbane/actions/runs/40386255337)
-passed Fast; required Full is in progress. Pages, hosted bytes/preview and release
-acceptance remain pending. Last verified deployed SHA is still e498ce6. The soft
-session budget has been exceeded; this is a safe Release A checkpoint, not final
-Warrior completion. Resume this exact release gate before C3/B. Preserve successful
-renders; no B source work or normal-game activation has begun.
+passes required Full, every Chromium shard, required compatibility, Pages, hosted
+exact-SHA flow and Release acceptance. Independently rechecked on2026-10-26: public
+release.json names this exact SHA; its complete80-file inventory and every fetched
+public file match the reviewed local inventory byte for byte. Two independent
+hosted cases pass (SE primary/secondary timing and normal-entry isolation);
+impact/light-idle screenshots reviewed. Verified deployed SHA is **066527e**.
+This closes Release A; the overnight continuation authorizes Release B next.
+Original successful movement/attack pixels remain preserved.
 
 ```sh
 "$BLENDER_BIN" --background --python-exit-code 1 \

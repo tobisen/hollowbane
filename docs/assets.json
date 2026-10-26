@@ -339,5 +339,15 @@
     "preview": "public/dev/warrior-attack-directions/warrior.json",
     "rig": "assets/source/q3/warrior-combat-se/warrior.blend",
     "provenance": "docs/art/q3/warrior-combat.md"
+  },
+  {
+    "id": "q3-warrior-eight-way-abilities-v1",
+    "source": "assets/source/q3/warrior-abilities/render.py",
+    "rights": "Original project ability motion applied to approved Blender 4.5.3 rig, camera, materials and lights; complete geometry rotations, no mirroring or external art/mocap; approved idle endpoints copied exactly",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/warrior-abilities/warrior.json",
+    "rig": "assets/source/q3/warrior-rig-v2/warrior.blend",
+    "provenance": "docs/art/q3/warrior-combat.md"
   }
 ]

@@ -428,19 +428,21 @@
     "physicalControllerVerified": false
   },
   "release": {
-    "status": "pushed; Fast pass; required Full in progress; Pages/hosted pending",
-    "latestVerifiedDeployed": "e498ce6fc16412a578f46e67735d2d61bbac3e51",
+    "status": "verified exact Full CI, Pages, hosted acceptance and independent 80-file public integrity",
+    "latestVerifiedDeployed": "066527e9e14c76f22d68588797780774e59f69f6",
     "testedBuildFiles": 80,
     "productionApproved": false,
-    "next": "Resume exact Release A CI/Pages/hosted acceptance and byte match before C3/B; do not rerender accepted frames",
+    "next": "Authorized Release B: existing Warrior abilities, shared guarded hitstun, then death; live graphics unchanged",
     "runtimeSha": "066527e9e14c76f22d68588797780774e59f69f6",
     "ciRun": 40386255337,
     "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40386255337",
     "requiredTier": "Full",
     "fast": "pass",
-    "requiredCi": "in progress",
-    "pages": "pending",
-    "hostedAcceptance": "pending"
+    "requiredCi": "pass",
+    "pages": "pass",
+    "hostedAcceptance": "pass",
+    "independentHostedCases": 2,
+    "publicFileHashesMatched": 80
   },
   "rawEvidence": "/private/tmp/hollowbane-warrior-attacks-eight"
 }

@@ -5,7 +5,8 @@ import { Buffer } from "node:buffer";
 import { mkdir, writeFile } from "node:fs/promises";
 const base = process.argv[2] ?? "http://127.0.0.1:4173/hollowbane/";
 const output = process.argv[3];
-const multiDirection = process.argv[4] === "directions";
+const abilities = process.argv[4] === "abilities";
+const multiDirection = abilities || process.argv[4] === "directions";
 if (!output) throw Error("Pass base URL and untracked evidence directory");
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({
@@ -19,7 +20,7 @@ try {
   });
   const begin = Date.now();
   await page.goto(
-    `${base}?developer=1&warriorPilot=1&warriorCombat=1${multiDirection ? "&warriorAttackDirections=1" : ""}`,
+    `${base}?developer=1&warriorPilot=1&warriorCombat=1${abilities ? "&warriorAbilities=1" : multiDirection ? "&warriorAttackDirections=1" : ""}`,
   );
   await page.waitForSelector("html[data-warrior-combat-ready=true]");
   const readyMs = Date.now() - begin;
@@ -45,7 +46,9 @@ try {
     if (multiDirection)
       await page.locator("#attack-direction").selectOption(direction);
     for (const rate of ["1", "0.25"])
-      for (const clip of ["primary", "secondary"]) {
+      for (const clip of abilities
+        ? ["iron-fan", "oath-echo"]
+        : ["primary", "secondary"]) {
         await page.locator("#attack-rate").selectOption(rate);
         await page.locator("#attack-clip").selectOption(clip);
         await page.locator("#attack-reset").click();
@@ -176,8 +179,9 @@ try {
         browser: browser.version(),
         environment,
         readyMs,
-        condition:
-          "native visible isolated combat preview; secondary replay, real 12/2/18 ticks; zoom2; paired sources; all textures resident in both",
+        condition: abilities
+          ? "native visible isolated ability preview; Oath Echo replay, real 10/1/16 ticks; zoom2; paired sources; ability/movement textures resident in both"
+          : "native visible isolated combat preview; secondary replay, real 12/2/18 ticks; zoom2; paired sources; all textures resident in both",
         motion,
         samples,
       },

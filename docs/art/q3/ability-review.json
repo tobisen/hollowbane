@@ -1,0 +1,405 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "scope": "DBL-023/024/025/026; overnight Phase 1; local Release B ability increment",
+  "clips": 16,
+  "frames": 192,
+  "bytes": 5368546,
+  "decodedBytes": 78643200,
+  "totalCandidateDecodedMiB": 232.5,
+  "previewResidentPayloadMiB": 157.5,
+  "productionApproved": false,
+  "unitTests": 22,
+  "chromiumTests": 12,
+  "checks": [
+    "TypeScript/build",
+    "affected ESLint",
+    "Prettier",
+    "asset validation"
+  ],
+  "review": {
+    "allPackagedPoses": true,
+    "darkAndLight": true,
+    "nativeTimedCaptures": 32,
+    "representativeTimedStrips": true,
+    "limitations": [
+      "restrained torso/hip transfer",
+      "rapid existing activation",
+      "front/rear weapon foreshortening",
+      "sculptural finish"
+    ],
+    "userArtApproval": false
+  },
+  "native": {
+    "browser": "156.0.8078.4",
+    "environment": {
+      "visible": "visible",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "dpr": 1
+    },
+    "samples": [
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.4,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.2,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.1,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17.1,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 16.8,
+        "p99": 17.5,
+        "longest": 17.6,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 17,
+        "p99": 17.6,
+        "longest": 17.7,
+        "over25": 0,
+        "cameraDrift": 0
+      }
+    ],
+    "motion": [
+      {
+        "direction": "n",
+        "clip": "iron-fan",
+        "rate": 1.0,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "n",
+        "clip": "oath-echo",
+        "rate": 1.0,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "n",
+        "clip": "iron-fan",
+        "rate": 0.25,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "n",
+        "clip": "oath-echo",
+        "rate": 0.25,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "ne",
+        "clip": "iron-fan",
+        "rate": 1.0,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "ne",
+        "clip": "oath-echo",
+        "rate": 1.0,
+        "observedTicks": 24,
+        "observedStrikes": 0,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "ne",
+        "clip": "iron-fan",
+        "rate": 0.25,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "ne",
+        "clip": "oath-echo",
+        "rate": 0.25,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "e",
+        "clip": "iron-fan",
+        "rate": 1.0,
+        "observedTicks": 29,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "e",
+        "clip": "oath-echo",
+        "rate": 1.0,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "e",
+        "clip": "iron-fan",
+        "rate": 0.25,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "e",
+        "clip": "oath-echo",
+        "rate": 0.25,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "se",
+        "clip": "iron-fan",
+        "rate": 1.0,
+        "observedTicks": 30,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "se",
+        "clip": "oath-echo",
+        "rate": 1.0,
+        "observedTicks": 26,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "se",
+        "clip": "iron-fan",
+        "rate": 0.25,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "se",
+        "clip": "oath-echo",
+        "rate": 0.25,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "s",
+        "clip": "iron-fan",
+        "rate": 1.0,
+        "observedTicks": 28,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "s",
+        "clip": "oath-echo",
+        "rate": 1.0,
+        "observedTicks": 26,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "s",
+        "clip": "iron-fan",
+        "rate": 0.25,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "s",
+        "clip": "oath-echo",
+        "rate": 0.25,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "sw",
+        "clip": "iron-fan",
+        "rate": 1.0,
+        "observedTicks": 29,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "sw",
+        "clip": "oath-echo",
+        "rate": 1.0,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "sw",
+        "clip": "iron-fan",
+        "rate": 0.25,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "sw",
+        "clip": "oath-echo",
+        "rate": 0.25,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "w",
+        "clip": "iron-fan",
+        "rate": 1.0,
+        "observedTicks": 29,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "w",
+        "clip": "oath-echo",
+        "rate": 1.0,
+        "observedTicks": 25,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "w",
+        "clip": "iron-fan",
+        "rate": 0.25,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "w",
+        "clip": "oath-echo",
+        "rate": 0.25,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "nw",
+        "clip": "iron-fan",
+        "rate": 1.0,
+        "observedTicks": 29,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "nw",
+        "clip": "oath-echo",
+        "rate": 1.0,
+        "observedTicks": 25,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "nw",
+        "clip": "iron-fan",
+        "rate": 0.25,
+        "observedTicks": 31,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      },
+      {
+        "direction": "nw",
+        "clip": "oath-echo",
+        "rate": 0.25,
+        "observedTicks": 27,
+        "observedStrikes": 1,
+        "effects": 1,
+        "returnsToIdle": true
+      }
+    ],
+    "readyMs": 894,
+    "coldLoadMeasured": false,
+    "totalGpuMemoryMeasured": false,
+    "physicalControllerVerified": false
+  },
+  "release": {
+    "status": "local ability increment; Release B not published; hit/death and arena remain",
+    "latestVerifiedDeployed": "066527e9e14c76f22d68588797780774e59f69f6",
+    "testedBuildFiles": 90,
+    "next": "Phase 2 shared guarded hitstun clips and interruption tests; then Phase 3 death before Release B"
+  },
+  "rawEvidence": "/private/tmp/hollowbane-warrior-abilities"
+}

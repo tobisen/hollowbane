@@ -1,3 +1,10 @@
+## Overnight Warrior — Phase 1 abilities local increment (2026-10-26)
+
+- Release A066527e /CI40386255337 independently verified: required Full/Pages/hosted acceptance, all80 published hashes and two hosted preview cases pass. Last verified deployed remains066527e9e14c76f22d68588797780774e59f69f6.
+- Phase1: real Sundering Fan/Oath Echo,16 clips/192 poses; unchanged approved Blender4.5.3 rig/camera/materials/live sprites. Eight atlases5,368,546bytes/75MiB; total candidate movement+attacks+abilities232.5MiB. Preview resident payload157.5MiB, not total GPU memory.
+-22 focused units/12 Chromium, TypeScript/build, affected lint/format/assets pass; all poses/dark-light and representative native timed strips reviewed.32 native1×/.25× captures each return idle with one effect. Candidate M4/Metal p5016.7/p9517.0–17.2/p9917.6ms; zero>25ms/drift. No improvement/cold-load/physical claim.
+- Local verified increment; Release B unpublished. Continue authorized Phase2 shared guarded hitstun, then Phase3 death; B exact release before playable arena/C. Restrained weight transfer/rapid activation/sculptural finish remain; no final art approval. Evidence docs/art/q3/warrior-combat.md, ability-review.json and /private/tmp/hollowbane-warrior-abilities. Preserve renders/unrelated edits.
+
 ## Extended Warrior — Release A local candidate (2026-10-26)
 
 - Extended request authorizes C1–C9 and sequential public A/B/C gates; prior Southeast stop superseded. Exact e498ce6 /CI40366831084 and public SHA independently rechecked green. Production graphics, simulation, balance, saves, approved Blender4.5.3 sources and unrelated edits preserved.
