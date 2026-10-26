@@ -100,6 +100,32 @@ try {
           });
           window.profileWarriorSkin = metadata;
         }, warriorAtlas);
+      // Optional resident-only attack texture cohort. Forest motion stays identical;
+      // actual attack drawing is measured separately in profile-warrior-combat.mjs.
+      const residentAtlas = option("resident-atlas-url", "");
+      if (residentAtlas)
+        await page.evaluate(async (url) => {
+          const scene = window.hollowbaneProfileGame.scene.scenes[0];
+          await new Promise((resolve, reject) => {
+            scene.load.once("complete", resolve);
+            scene.load.once("loaderror", () =>
+              reject(Error("Resident atlas load failed")),
+            );
+            scene.load.spritesheet("profile-resident-attacks", url, {
+              frameWidth: 256,
+              frameHeight: 256,
+            });
+            scene.load.start();
+          });
+          const image = scene.add
+            .image(0, 0, "profile-resident-attacks")
+            .setScrollFactor(0)
+            .setDepth(1e6);
+          await new Promise((resolve) =>
+            scene.game.events.once("postrender", resolve),
+          );
+          image.destroy();
+        }, residentAtlas);
       const conditions = await page.evaluate((quality) => {
         const game = window.hollowbaneProfileGame;
         const scene = game.scene.scenes[0];
@@ -355,6 +381,7 @@ try {
         renderer,
         cpuProfiler: process.argv.includes("--trace"),
         warriorAtlas: option("warrior-atlas-url", ""),
+        residentAtlas: option("resident-atlas-url", ""),
         headed: process.argv.includes("--headed"),
         gpu,
         seed: 42,

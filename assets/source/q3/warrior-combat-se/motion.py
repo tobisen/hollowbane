@@ -24,6 +24,9 @@ rig = bpy.data.objects['Warrior rig']
 rest = {b.name: (b.head_local.copy(), b.tail_local.copy()) for b in rig.data.bones}
 assert len(rest) == 15
 assert len([o for o in scene.objects if o.type == 'MESH']) == 135
+scene.frame_set(1)
+neutral = {b.name: b.matrix.copy() for b in rig.pose.bones}
+anchors = {b.name: b.head.copy() for b in rig.pose.bones}
 rig.animation_data_clear()
 weapons = [o for o in scene.objects if o.type == 'MESH' and o.name.startswith(
     ('Sword grip', 'Bronze crossguard', 'Sword pommel', 'Straight sword blade'))]
@@ -70,23 +73,23 @@ for action, controls in keys.items():
         frame = len(records)+1
         scene.frame_set(frame)
         twist, pitch, yaw, elbow, wrist = blend_keys(controls, index)
-        body = around(Vector((0, 0, .94)), Matrix.Rotation(twist, 3, 'Z'))
+        body = around(anchors['torso'], Matrix.Rotation(twist, 3, 'Z'))
         transforms = {name: Matrix.Identity(4) for name in rest}
         transforms['torso'] = transforms['head'] = body
         for side in ['L', 'R']:
-            shoulder = rest['upper'+side][0]
+            shoulder = anchors['upper'+side]
             rotation = (Matrix.Rotation(pitch if side == 'R' else -.12*abs(twist), 3, 'X')
                         @ Matrix.Rotation(yaw if side == 'R' else -.15*twist, 3, 'Z'))
             upper = body @ around(shoulder, rotation)
-            fore = upper @ around(rest['fore'+side][0],
+            fore = upper @ around(anchors['fore'+side],
                                   Matrix.Rotation(elbow if side == 'R' else -.25*abs(twist), 3, 'X'))
-            hand = fore @ around(rest['hand'+side][0],
+            hand = fore @ around(anchors['hand'+side],
                                  Matrix.Rotation(wrist if side == 'R' else 0, 3, 'X'))
             for name, transform in [('upper', upper), ('fore', fore), ('hand', hand)]:
                 transforms[name+side] = transform
         for name, transform in transforms.items():
             bone = rig.pose.bones[name]
-            bone.matrix = transform @ rig.data.bones[name].matrix_local
+            bone.matrix = transform @ neutral[name]
             bone.rotation_mode = 'QUATERNION'
             bone.keyframe_insert(data_path='location', frame=frame)
             bone.keyframe_insert(data_path='rotation_quaternion', frame=frame)

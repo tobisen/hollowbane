@@ -29,7 +29,11 @@ if (invalidCharacterRoute) {
   query.get("developer") === "1" &&
   query.get("warriorPilot") === "1"
 ) {
-  if (
+  if (query.get("warriorCombat") === "1") {
+    const { startWarriorCombatPreview } =
+      await import("./rendering/warrior-combat-preview");
+    await startWarriorCombatPreview();
+  } else if (
     query.get("warriorCadence") === "1" ||
     query.get("warriorDirections") === "1"
   ) {

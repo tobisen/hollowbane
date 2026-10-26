@@ -9,10 +9,13 @@ const input = process.argv[2];
 if (!input) throw Error("Pass the complete Blender render directory");
 const refined = process.argv[3] === "refined";
 const movement = process.argv[3] === "movement";
-const source = movement
-  ? "assets/source/q3/warrior-movement-se"
-  : `assets/source/q3/warrior-rig-v${refined ? 2 : 1}`;
-const output = `public/dev/warrior-${movement ? "movement" : refined ? "refined" : "pilot"}`;
+const combat = process.argv[3] === "combat";
+const source = combat
+  ? "assets/source/q3/warrior-combat-se"
+  : movement
+    ? "assets/source/q3/warrior-movement-se"
+    : `assets/source/q3/warrior-rig-v${refined ? 2 : 1}`;
+const output = `public/dev/warrior-${combat ? "combat" : movement ? "movement" : refined ? "refined" : "pilot"}`;
 const rig = JSON.parse(await readFile(join(input, "rig.json"), "utf8"));
 const columns = movement ? 8 : 6;
 const rows = movement ? 5 : 4;
@@ -78,21 +81,26 @@ await writeFile(
       atlasSha256: createHash("sha256").update(atlas).digest("hex"),
       bytes: atlas.length,
       decodedBytes: width * height * 4,
-      clips: movement
-        ? rig.clips
-        : {
-            idle: { start: 0, count: 8, fps: 6 },
-            walk: { start: 8, count: 16, fps: 18 },
-          },
+      clips:
+        movement || combat
+          ? rig.clips
+          : {
+              idle: { start: 0, count: 8, fps: 6 },
+              walk: { start: 8, count: 16, fps: 18 },
+            },
       frames,
       productionApproved: false,
-      scope: movement
-        ? "isolated southeast idle/walk/run cadence candidate; quality review pending"
-        : "isolated developer pilot; southeast idle/walk only",
+      scope: combat
+        ? "isolated Southeast primary/secondary attacks; live graphics unchanged"
+        : movement
+          ? "isolated southeast idle/walk/run cadence candidate; quality review pending"
+          : "isolated developer pilot; southeast idle/walk only",
       provenance: {
         producerSha256: createHash("sha256")
           .update(
-            await readFile(join(source, movement ? "motion.py" : "warrior.py")),
+            await readFile(
+              join(source, movement || combat ? "motion.py" : "warrior.py"),
+            ),
           )
           .digest("hex"),
         rigSha256: createHash("sha256")
@@ -101,7 +109,7 @@ await writeFile(
         referenceSha256: createHash("sha256")
           .update(await readFile("public/assets/menu-warrior-v1.webp"))
           .digest("hex"),
-        ...(movement
+        ...(movement || combat
           ? {
               baseRigSha256: createHash("sha256")
                 .update(
