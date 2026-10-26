@@ -428,11 +428,19 @@
     "physicalControllerVerified": false
   },
   "release": {
-    "status": "local candidate; exact CI/Pages/hosted pending",
+    "status": "pushed; Fast pass; required Full in progress; Pages/hosted pending",
     "latestVerifiedDeployed": "e498ce6fc16412a578f46e67735d2d61bbac3e51",
     "testedBuildFiles": 80,
     "productionApproved": false,
-    "next": "Commit/push Release A; verify exact required CI, Pages and hosted bytes/preview before C3/B"
+    "next": "Resume exact Release A CI/Pages/hosted acceptance and byte match before C3/B; do not rerender accepted frames",
+    "runtimeSha": "066527e9e14c76f22d68588797780774e59f69f6",
+    "ciRun": 40386255337,
+    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40386255337",
+    "requiredTier": "Full",
+    "fast": "pass",
+    "requiredCi": "in progress",
+    "pages": "pending",
+    "hostedAcceptance": "pending"
   },
   "rawEvidence": "/private/tmp/hollowbane-warrior-attacks-eight"
 }

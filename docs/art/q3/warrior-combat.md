@@ -91,8 +91,13 @@ Raw source renders, diagnostic rejection, review sheets, timed/native evidence
 and80-file tested-build inventory:
 `/private/tmp/hollowbane-warrior-attacks-eight` (logs adjacent). Do not rerender
 accepted pixels unnecessarily. Use the reproduction commands below with the new
-renderer/packager and `directions` profile argument. Public Release A is pending;
-do not begin B until exact release acceptance is verified.
+renderer/packager and `directions` profile argument. Candidate **066527e9e14c76f22d68588797780774e59f69f6** is committed/pushed.
+[CI40386255337](https://github.com/tobisen/hollowbane/actions/runs/40386255337)
+passed Fast; required Full is in progress. Pages, hosted bytes/preview and release
+acceptance remain pending. Last verified deployed SHA is still e498ce6. The soft
+session budget has been exceeded; this is a safe Release A checkpoint, not final
+Warrior completion. Resume this exact release gate before C3/B. Preserve successful
+renders; no B source work or normal-game activation has begun.
 
 ```sh
 "$BLENDER_BIN" --background --python-exit-code 1 \
