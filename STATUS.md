@@ -1,3 +1,10 @@
+## Q3-A Warrior combat — C1 source checkpoint (2026-10-26)
+
+- New request authorizes C1–C7 through Warrior combat review; public A/B/C release gates remain sequential. Exact movement8394dd5 /CI40283317465 independently rechecked: required Full, Pages, hosted and Release acceptance succeed. Latest verified deployed runtime remains8394dd5dc709c455771eb62d277c080919eae58c.
+- Southeast source only: two draft nonlooping attacks /24 poses using unchanged approved Blender4.5.3 rig/model/materials/camera/lights. Root/feet/bone/joint/weapon audits pass; all24 final reduced silhouettes have minimum15px clearance. Dark/light still sheets reviewed. Initial clipped trial rejected and reach revised. Motion remains restrained; no timed-motion approval or public atlas yet.
+- Unconnected pure presentation selector maps existing windup/active/recovery to anticipation/impact/recovery; active entry matches actual timeline strike, interruptions/death yield. Ten focused selector/timeline tests, TypeScript, affected lint and build pass. No browser/runtime/simulation/save change or unrelated local suite. No new Mac performance/physical-controller evidence.
+- Safe soft-budget checkpoint: source blend/metadata retained; C1 is INCOMPLETE. Resume timed playback/art refinement, strict atlas packaging, isolated real-combat browser pilot, native profiling, then public A exact CI/Pages/hosted release. No C2 or production activation. Evidence/resume docs/art/q3/warrior-combat.md; final renders /private/tmp/hollowbane-warrior-combat-se-final. Preserve unrelated local edits; no overnight orchestrator.
+
 ## Extended Warrior — eight-direction movement checkpoint (2026-10-26)
 
 - Extended request authorizes movement, combat/cast/hit/death and disposable arena through final Warrior review, with exact public release gates between checkpoints. Production graphics, balancing, saves, other classes and campaign remain excluded. Preserve unrelated edits and completed SE517ed70 pixels.
