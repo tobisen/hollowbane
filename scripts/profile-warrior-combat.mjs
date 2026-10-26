@@ -6,7 +6,9 @@ import { mkdir, writeFile } from "node:fs/promises";
 const base = process.argv[2] ?? "http://127.0.0.1:4173/hollowbane/";
 const output = process.argv[3];
 const abilities = process.argv[4] === "abilities";
-const multiDirection = abilities || process.argv[4] === "directions";
+const reactions = process.argv[4] === "reactions";
+const multiDirection =
+  reactions || abilities || process.argv[4] === "directions";
 if (!output) throw Error("Pass base URL and untracked evidence directory");
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({
@@ -20,7 +22,7 @@ try {
   });
   const begin = Date.now();
   await page.goto(
-    `${base}?developer=1&warriorPilot=1&warriorCombat=1${abilities ? "&warriorAbilities=1" : multiDirection ? "&warriorAttackDirections=1" : ""}`,
+    `${base}?developer=1&warriorPilot=1&warriorCombat=1${reactions ? "&warriorReactions=1" : abilities ? "&warriorAbilities=1" : multiDirection ? "&warriorAttackDirections=1" : ""}`,
   );
   await page.waitForSelector("html[data-warrior-combat-ready=true]");
   const readyMs = Date.now() - begin;
@@ -46,26 +48,34 @@ try {
     if (multiDirection)
       await page.locator("#attack-direction").selectOption(direction);
     for (const rate of ["1", "0.25"])
-      for (const clip of abilities
-        ? ["iron-fan", "oath-echo"]
-        : ["primary", "secondary"]) {
+      for (const clip of reactions
+        ? ["hit"]
+        : abilities
+          ? ["iron-fan", "oath-echo"]
+          : ["primary", "secondary"]) {
         await page.locator("#attack-rate").selectOption(rate);
-        await page.locator("#attack-clip").selectOption(clip);
+        if (!reactions) await page.locator("#attack-clip").selectOption(clip);
         await page.locator("#attack-reset").click();
         // Arm capture before trusted input; record actual presentation, never step poses.
-        await page.evaluate(() => {
+        await page.evaluate((reactions) => {
           window.attackCapture = new Promise((resolve) => {
             const frames = [];
             let seen = -1,
-              first;
+              first,
+              hitSeen = false;
             function capture(t) {
               const o = window.hollowbaneWarriorCombat;
-              if (o.sample.sequence === 1 && o.sample.tick !== seen) {
+              if (o.sample.hitFrame !== null) hitSeen = true;
+              if (
+                (reactions ? hitSeen : o.sample.sequence === 1) &&
+                o.sample.tick !== seen
+              ) {
                 first ??= t;
                 seen = o.sample.tick;
                 frames.push({
                   t: t - first,
                   ...o.sample,
+                  frame: reactions ? o.sample.hitFrame : o.sample.frame,
                   image: document
                     .querySelector("#cadence-inspector")
                     .toDataURL(),
@@ -79,8 +89,10 @@ try {
             }
             requestAnimationFrame(capture);
           });
-        });
-        await page.locator("#attack-start").click();
+        }, reactions);
+        await page
+          .locator(reactions ? "#hit-receive" : "#attack-start")
+          .click();
         const frames = await page.evaluate(() => window.attackCapture);
         const selected = frames.filter(
           (f, i) => i === 0 || f.frame !== frames[i - 1].frame,
@@ -119,7 +131,19 @@ try {
   if (multiDirection)
     await page.locator("#attack-direction").selectOption("se");
   await page.locator("#attack-rate").selectOption("1");
-  await page.locator("#attack-repeat").check();
+  if (!reactions) await page.locator("#attack-repeat").check();
+  else
+    await page.evaluate(() => {
+      const loop = () => {
+        const s = window.hollowbaneWarriorCombat.sample;
+        if (s.phase === "idle") {
+          if (s.playerHp < 30) document.querySelector("#attack-reset").click();
+          document.querySelector("#hit-receive").click();
+        }
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame(loop);
+    });
   await page.locator("#attack-zoom").selectOption("2");
   await page.locator("#pilot-stage").scrollIntoViewIfNeeded();
   const samples = [];
@@ -179,9 +203,11 @@ try {
         browser: browser.version(),
         environment,
         readyMs,
-        condition: abilities
-          ? "native visible isolated ability preview; Oath Echo replay, real 10/1/16 ticks; zoom2; paired sources; ability/movement textures resident in both"
-          : "native visible isolated combat preview; secondary replay, real 12/2/18 ticks; zoom2; paired sources; all textures resident in both",
+        condition: reactions
+          ? "native visible isolated hit preview; repeated real diagnostic hits, existing guarded hitstun; zoom2; paired sources; attack/movement/reaction textures resident in both"
+          : abilities
+            ? "native visible isolated ability preview; Oath Echo replay, real 10/1/16 ticks; zoom2; paired sources; ability/movement textures resident in both"
+            : "native visible isolated combat preview; secondary replay, real 12/2/18 ticks; zoom2; paired sources; all textures resident in both",
         motion,
         samples,
       },

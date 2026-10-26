@@ -3,6 +3,8 @@ import attacks from "../../public/dev/warrior-combat/warrior.json";
 import movement from "../../public/dev/warrior-movement/warrior.json";
 import {
   createCombat,
+  applyCombatHit,
+  ARENA_NAV,
   stepCombat,
   type CombatWorld,
 } from "../simulation/combat";
@@ -14,6 +16,11 @@ import {
   warriorAbilityFrame,
   type WarriorAbility,
 } from "./warrior-ability-frame";
+import {
+  observeWarriorHit,
+  warriorHitFrame,
+  type WarriorHitCue,
+} from "./warrior-hit-frame";
 import {
   createSkills,
   requestSkill,
@@ -40,6 +47,9 @@ interface AttackSample {
   ability: WarriorAbility | null;
   mana: number | null;
   effects: number;
+  playerHp: number;
+  hitFrame: number | null;
+  remaining: number;
 }
 declare global {
   interface Window {
@@ -61,11 +71,15 @@ declare global {
 export async function startWarriorCombatPreview(
   multiDirection = false,
   abilities = false,
+  reactions = false,
 ): Promise<void> {
   if (abilities && !multiDirection)
     throw Error("Ability review requires the directional preview");
   const abilityManifest = abilities
     ? (await import("../../public/dev/warrior-abilities/warrior.json")).default
+    : null;
+  const reactionManifest = reactions
+    ? (await import("../../public/dev/warrior-reactions/warrior.json")).default
     : null;
   const directional = multiDirection
     ? (await import("../../public/dev/warrior-attack-directions/warrior.json"))
@@ -141,8 +155,25 @@ export async function startWarriorCombatPreview(
     el<HTMLSelectElement>("attack-clip").innerHTML =
       '<option value="iron-fan">Sundering Fan</option><option value="oath-echo">Oath Echo</option>';
     el("attack-start").textContent = "Activate once";
+    el("attack-clip").parentElement!.firstChild!.textContent = "Ability ";
+    root.querySelector("header p:not(.eyebrow)")!.textContent =
+      "Two existing abilities. Real activation, resource and cooldown rules.";
     root.querySelector(".pilot-note")!.textContent =
       "Existing Warrior abilities run on a seeded disposable class fixture. Sundering Fan uses the real melee strike; Oath Echo uses the real power effect and resource/cooldown rules. Animations only read these timelines. No saves or live graphics are changed. Hit/death and playable arena integration remain pending.";
+  }
+  if (reactions) {
+    const controls = root.querySelector(".pilot-controls")!;
+    for (const [id, label] of [
+      ["hit-receive", "Receive stagger hit"],
+      ["hit-small", "Receive small hit"],
+    ] as const) {
+      const button = document.createElement("button");
+      button.id = id;
+      button.textContent = label;
+      controls.append(button);
+    }
+    root.querySelector(".pilot-note")!.textContent +=
+      " Diagnostic hits use real damage/guard rules on this disposable fixture. One six-pose hitstun reaction; no new heavy-stun mechanic. Death animation remains pending.";
   }
   const images = {
     attacks: new Image(),
@@ -155,6 +186,7 @@ export async function startWarriorCombatPreview(
   await Promise.all(Object.values(images).map((i) => i.decode()));
   const attackImages: Partial<Record<Direction, HTMLImageElement>> = {};
   const idleImages: Partial<Record<Direction, HTMLImageElement>> = {};
+  const hitImages: Partial<Record<Direction, HTMLImageElement>> = {};
   if (directional && directionalMovement)
     await Promise.all(
       directionRows.map(async (direction) => {
@@ -165,6 +197,15 @@ export async function startWarriorCombatPreview(
         await Promise.all([attackImage.decode(), idleImage.decode()]);
         attackImages[direction] = attackImage;
         idleImages[direction] = idleImage;
+      }),
+    );
+  if (reactionManifest)
+    await Promise.all(
+      directionRows.map(async (direction) => {
+        const image = new Image();
+        image.src = `${import.meta.env.BASE_URL}dev/warrior-reactions/${reactionManifest.views[direction].atlas}`;
+        await image.decode();
+        hitImages[direction] = image;
       }),
     );
   let skills: SkillRuntime | null = null;
@@ -195,7 +236,9 @@ export async function startWarriorCombatPreview(
   };
   let world = encounter(),
     cues: MotionCues = {},
-    history: AttackSample[] = [];
+    history: AttackSample[] = [],
+    hitCue: WarriorHitCue | null = null,
+    incoming: "hit" | "small" | null = null;
   let idleTicks = 0,
     accumulator = 0,
     stepping = false;
@@ -227,6 +270,9 @@ export async function startWarriorCombatPreview(
       effects:
         skills?.events.filter((e) => e.kind === "effect" && e.actor === 0)
           .length ?? 0,
+      playerHp: actor.hp,
+      hitFrame: reactions ? warriorHitFrame(timeline, hitCue) : null,
+      remaining: timeline.remaining,
     };
   };
   const reset = () => {
@@ -235,6 +281,8 @@ export async function startWarriorCombatPreview(
     history = [];
     idleTicks = 0;
     accumulator = 0;
+    hitCue = null;
+    incoming = null;
   };
   const attack = () => {
     const player = world.actors[0]!;
@@ -271,13 +319,31 @@ export async function startWarriorCombatPreview(
       reset();
       attack();
     }
+    if (incoming) {
+      applyCombatHit(world, world.actors[1]!, world.actors[0]!, ARENA_NAV, {
+        damage: incoming === "hit" ? 10 : 1,
+        element: "physical",
+        guaranteed: true,
+        stagger: incoming === "hit",
+      });
+      incoming = null;
+    }
     if (skills) stepSkillCombat(skills);
     else stepCombat(world);
+    hitCue = observeWarriorHit(hitCue, world.actors[0]!.controller.timeline);
     recordMotion(cues, world.actors, world.events, world.tick);
     if (world.actors[0]!.controller.timeline.phase !== "idle") idleTicks = 0;
     history.push(sample());
     if (history.length > 256) history.shift();
   };
+  if (reactions) {
+    el("hit-receive").onclick = () => {
+      incoming = "hit";
+    };
+    el("hit-small").onclick = () => {
+      incoming = "small";
+    };
+  }
   if (multiDirection)
     el<HTMLSelectElement>("attack-direction").onchange = (e) => {
       state.direction = (e.target as HTMLSelectElement).value as Direction;
@@ -324,7 +390,8 @@ export async function startWarriorCombatPreview(
     const canvas = el<HTMLCanvasElement>(id),
       c = canvas.getContext("2d")!;
     const actor = world.actors[0]!,
-      frame = sample().frame;
+      current = sample(),
+      frame = current.frame;
     c.fillStyle = state.light ? "#e4e0d8" : "#171c22";
     c.fillRect(0, 0, cell, cell);
     if (shipped) {
@@ -346,21 +413,26 @@ export async function startWarriorCombatPreview(
       );
       c.restore();
     } else {
+      const hitFrame = current.hitFrame;
       const f =
-        frame === null
-          ? (directionalMovement?.views[state.direction].frames ??
-              movement.frames)[Math.floor(world.tick / 24) % 8]!
-          : ((abilityManifest ?? directional)?.views[state.direction].frames ??
-              attacks.frames)[frame]!;
-      const idle = frame === null;
+        hitFrame !== null
+          ? reactionManifest!.views[state.direction].frames[hitFrame]!
+          : frame === null
+            ? (directionalMovement?.views[state.direction].frames ??
+                movement.frames)[Math.floor(world.tick / 24) % 8]!
+            : ((abilityManifest ?? directional)?.views[state.direction]
+                .frames ?? attacks.frames)[frame]!;
+      const idle = frame === null && hitFrame === null;
       c.drawImage(
-        multiDirection
-          ? idle
-            ? idleImages[state.direction]!
-            : attackImages[state.direction]!
-          : idle
-            ? images.idle
-            : images.attacks,
+        hitFrame !== null
+          ? hitImages[state.direction]!
+          : multiDirection
+            ? idle
+              ? idleImages[state.direction]!
+              : attackImages[state.direction]!
+            : idle
+              ? images.idle
+              : images.attacks,
         f.x,
         f.y,
         f.width,
@@ -413,6 +485,12 @@ export async function startWarriorCombatPreview(
             { frameWidth: 256, frameHeight: 264 },
           );
         }
+      if (reactionManifest)
+        for (const direction of directionRows)
+          this.load.spritesheet(`hit-${direction}`, hitImages[direction]!.src, {
+            frameWidth: 320,
+            frameHeight: 320,
+          });
       if (!multiDirection) {
         this.load.spritesheet("attacks", images.attacks.src, {
           frameWidth: 256,
@@ -451,11 +529,12 @@ export async function startWarriorCombatPreview(
         candidate = state.source === "candidate";
       const pose = combatPose(actor, cues[0], world.tick);
       const p = worldToScreen(actor.controller.walker.position);
-      const f = current.frame;
+      const hit = current.hitFrame !== null;
+      const f = current.hitFrame ?? current.frame;
       this.sprite
         .setTexture(
           candidate
-            ? `${f === null ? "idle" : "attacks"}${multiDirection ? `-${state.direction}` : ""}`
+            ? `${hit ? "hit" : f === null ? "idle" : "attacks"}${multiDirection ? `-${state.direction}` : ""}`
             : "shipped",
           candidate
             ? (f ?? Math.floor(world.tick / 24) % 8)
@@ -488,6 +567,9 @@ export async function startWarriorCombatPreview(
       paint("attack-shipped", true);
       el("attack-status").textContent =
         `${(abilities ? state.ability : state.attack).toUpperCase()} · ${state.direction.toUpperCase()}\nTick ${world.tick} · ${current.phase} · pose ${f ?? "idle"}\nSequence ${current.sequence} · target HP ${current.hp}\n${abilities ? `Mana ${current.mana?.toFixed(1)} · effects ${current.effects}` : `Impact pose ${state.attack === "primary" ? 5 : 17}`} · ${state.rate}×`;
+      if (reactions)
+        el("attack-status").textContent +=
+          ` · player HP ${current.playerHp} · recovery ${current.remaining}`;
       el<HTMLButtonElement>("attack-start").disabled =
         actor.controller.timeline.phase !== "idle" ||
         actor.controller.queuedAttack ||

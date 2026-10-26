@@ -349,5 +349,15 @@
     "preview": "public/dev/warrior-abilities/warrior.json",
     "rig": "assets/source/q3/warrior-rig-v2/warrior.blend",
     "provenance": "docs/art/q3/warrior-combat.md"
+  },
+  {
+    "id": "q3-warrior-eight-way-reactions-v1",
+    "source": "assets/source/q3/warrior-reactions/render.py",
+    "rights": "Original project six-pose hit recovery on approved Blender 4.5.3 rig/camera/materials; no mirroring, external art or mocap; approved idle recovery endpoint copied exactly",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/warrior-reactions/warrior.json",
+    "rig": "assets/source/q3/warrior-rig-v2/warrior.blend",
+    "provenance": "docs/art/q3/warrior-combat.md"
   }
 ]

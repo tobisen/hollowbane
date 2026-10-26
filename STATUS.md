@@ -1,3 +1,10 @@
+## Overnight Warrior — Phase 2 reactions local increment (2026-10-26)
+
+- Phase1db03685 preserved. Phase2 adds8 directional guarded-hit clips/48 poses on unchanged approved rig;1,381,134bytes/18.75MiB. Total candidate251.25MiB base RGBA; preview176.25MiB, not total GPU memory. No separate heavier player stun state exists.
+-13 focused units/11 Chromium, TypeScript/build, affected lint/format/assets pass. Actual hits interrupt weapon/ability windup; guard prevents restart; original recovery/idle release retained. All poses/light-dark and16 native1×/.25× strips reviewed; restrained recoil remains.
+- Matched isolated M4/Metal candidate p5016.7/p9518.1–18.6/p99≤18.7ms; zero>25ms/drift. No improvement/full-forest/cold-load/physical claim.
+- Verified local increment only; Release B unpublished. Continue Phase3 death, then B exact CI/Pages/hosted before playable arena/C. Last verified deployed066527e9e14c76f22d68588797780774e59f69f6. Evidence docs/art/q3/reaction-review.json, warrior-combat.md and /private/tmp/hollowbane-warrior-reactions. Preserve successful renders and unrelated edits.
+
 ## Overnight Warrior — Phase 1 abilities local increment (2026-10-26)
 
 - Release A066527e /CI40386255337 independently verified: required Full/Pages/hosted acceptance, all80 published hashes and two hosted preview cases pass. Last verified deployed remains066527e9e14c76f22d68588797780774e59f69f6.

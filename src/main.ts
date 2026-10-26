@@ -34,8 +34,10 @@ if (invalidCharacterRoute) {
       await import("./rendering/warrior-combat-preview");
     await startWarriorCombatPreview(
       query.get("warriorAttackDirections") === "1" ||
-        query.get("warriorAbilities") === "1",
+        query.get("warriorAbilities") === "1" ||
+        query.get("warriorReactions") === "1",
       query.get("warriorAbilities") === "1",
+      query.get("warriorReactions") === "1",
     );
   } else if (
     query.get("warriorCadence") === "1" ||

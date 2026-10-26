@@ -10,6 +10,35 @@ or normal-game sprite activation is authorized.
 
 ## Overnight continuation — Release B ability increment
 
+Phase2 is also locally verified: **eight guarded-hit clips /48 poses**, original
+rig/camera/materials, fixed320px/root160,274 and exact approved idle recovery
+endpoint. Source `warrior-reactions/render.py`; manifest/atlases
+`public/dev/warrior-reactions`. **1,381,134bytes /18.75MiB** decoded; total candidate
+payload251.25MiB. Reaction preview uploads attack+movement+reaction176.25MiB; total
+GPU/browser memory remains unmeasured. All48 packaged poses/light/dark and16 native
+1×/.25× timed strips reviewed. Restrained recoil/short existing recovery remain
+quality limits. No normal sprite or gameplay change.
+
+`observeWarriorHit` records actual remaining hitstun at entry after each simulation
+step, including actor-order differences; `warriorHitFrame` fits six poses to those
+remaining ticks. Guarded follow-up damage cannot restart it; idle/death immediately
+yield. The preview's diagnostic hit controls call the real damage/guard resolver;
+they add no stun mechanic. Route: append `&warriorReactions=1` to the combat or
+ability preview.13 focused units and11 Chromium cases pass: all eight directions,
+real weapon/ability interruption before release, zero fabricated strikes/effects,
+guarded small hit without duration restart, exact idle release, stable root/camera,
+normal-entry/storage isolation, plus representative prior ability/attack cases.
+TypeScript/build, affected lint/format and asset validation pass. One earlier
+browser run against the superseded build was interrupted and is excluded.
+
+Native Chromium156/M4 Metal1280×800/DPR1, three matched isolated repeated-real-hit
+pairs with identical resident textures: candidate p5016.7/p9518.1–18.6/p99≤18.7ms,
+longest18.8ms; shipped p9518.3–18.7ms. Zero>25ms/zero camera drift. No improvement,
+full-forest, cold-load or physical-device claim. Warmed ready951ms is one sample.
+Evidence: `reaction-review.json`, `/private/tmp/hollowbane-warrior-reactions`.
+Phase1 local commitdb03685 remains intact; Phase3 death is next. Release B is not
+published and the playable arena has not begun.
+
 The2026-10-26 overnight request authorizes sequential abilities, reactions/death,
 Release B, then the disposable playable arena and Release C. No new mechanics,
 other class art, normal-game sprites or save changes. Release A's exact public

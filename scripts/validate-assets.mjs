@@ -5,6 +5,7 @@ import { validateWarriorDirections } from "./validate-warrior-directions.mjs";
 import { validateWarriorAttacks } from "./validate-warrior-attacks.mjs";
 import { validateWarriorAttackDirections } from "./validate-warrior-attack-directions.mjs";
 import { validateWarriorAbilities } from "./validate-warrior-abilities.mjs";
+import { validateWarriorReactions } from "./validate-warrior-reactions.mjs";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import sharp from "sharp";
 import { createHash } from "node:crypto";
@@ -102,6 +103,7 @@ await validateWarriorDirections();
 await validateWarriorAttacks();
 await validateWarriorAttackDirections();
 await validateWarriorAbilities();
+await validateWarriorReactions();
 
 const menuInventory = JSON.parse(
   readFileSync("docs/art/menu-inventory.json", "utf8"),
