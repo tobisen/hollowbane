@@ -329,5 +329,15 @@
     "preview": "public/dev/warrior-movement/warrior.png",
     "rig": "assets/source/q3/warrior-movement-se/warrior.blend",
     "provenance": "docs/art/q3/warrior-movement.md"
+  },
+  {
+    "id": "q3-warrior-eight-way-attacks-v1",
+    "source": "assets/source/q3/warrior-attack-directions/render.py",
+    "rights": "Original project approved Blender 4.5.3 rig and attack motion, rotated as complete geometry; no mirroring, external art or motion capture; approved SE and idle endpoints copied exactly",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/warrior-attack-directions/warrior.json",
+    "rig": "assets/source/q3/warrior-combat-se/warrior.blend",
+    "provenance": "docs/art/q3/warrior-combat.md"
   }
 ]

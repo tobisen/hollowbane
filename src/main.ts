@@ -32,7 +32,9 @@ if (invalidCharacterRoute) {
   if (query.get("warriorCombat") === "1") {
     const { startWarriorCombatPreview } =
       await import("./rendering/warrior-combat-preview");
-    await startWarriorCombatPreview();
+    await startWarriorCombatPreview(
+      query.get("warriorAttackDirections") === "1",
+    );
   } else if (
     query.get("warriorCadence") === "1" ||
     query.get("warriorDirections") === "1"

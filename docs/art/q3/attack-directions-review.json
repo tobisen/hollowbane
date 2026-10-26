@@ -1,0 +1,438 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "scope": "Extended Warrior C1/C2: public Release A candidate",
+  "directions": ["n", "ne", "e", "se", "s", "sw", "w", "nw"],
+  "clips": 16,
+  "frames": 192,
+  "assets": {
+    "pngBytes": 5369611,
+    "metadataBytes": 229776,
+    "decodedBytes": 78643200,
+    "combinedMovementAttackDecodedBytes": 165150720,
+    "cell": 320,
+    "root": [160, 274],
+    "originalPixelOffset": [32, 64],
+    "displayScale": 0.5
+  },
+  "source": {
+    "blender": "4.5.3 LTS",
+    "motionChanged": false,
+    "southeastPixelsPreserved": true,
+    "idleEndpointsExact": true,
+    "mirrored": false,
+    "originalRigPreserved": true,
+    "projectionProbeTolerancePixels": 0.001,
+    "minimumAlphaWeaponMarginPolicy": 8
+  },
+  "visual": {
+    "agentReview": "isolated eight-direction attack candidate; not final Warrior approval",
+    "allPackagedPosesReviewed": true,
+    "darkAndLight": true,
+    "timedPlaybackRates": [1, 0.25],
+    "clipsCaptured": 32,
+    "userArtApproval": false,
+    "limitations": [
+      "restrained torso/hip weight transfer",
+      "twelve-pose sampling and rapid active-entry change",
+      "direction-dependent weapon foreshortening and body occlusion",
+      "sculptural finish",
+      "ability/reactions/death and complete arena remain pending"
+    ]
+  },
+  "combat": {
+    "simulationChanged": false,
+    "timing": [12, 2, 18],
+    "impactFrames": [5, 17],
+    "oneRealStrikePerSequence": true,
+    "secondary": "visual variant of existing melee action"
+  },
+  "checks": {
+    "focusedUnitsAssets": 19,
+    "chromium": 12,
+    "typecheck": "pass",
+    "affectedLint": "pass",
+    "affectedFormat": "pass",
+    "assets": "pass",
+    "build": "pass",
+    "unrelatedLocalFullSuiteRun": false,
+    "storageIsolated": true
+  },
+  "native": {
+    "browser": "156.0.8078.4",
+    "environment": {
+      "visible": "visible",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "dpr": 1
+    },
+    "viewport": [1280, 800],
+    "readyObservationMs": 555,
+    "coldLoadClaim": false,
+    "condition": "native visible isolated combat preview; secondary replay, real 12/2/18 ticks; zoom2; paired sources; all textures resident in both; all eight attack/movement atlases resident in both",
+    "samples": [
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.69999999999709,
+        "p95": 17.799999999995634,
+        "p99": 18.5,
+        "longest": 18.599999999998545,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.69999999999709,
+        "p95": 18.099999999998545,
+        "p99": 18.5,
+        "longest": 18.599999999998545,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.69999999999709,
+        "p95": 18.19999999999709,
+        "p99": 18.599999999998545,
+        "longest": 18.700000000004366,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.69999999999709,
+        "p95": 18.19999999999709,
+        "p99": 18.40000000000873,
+        "longest": 18.60000000000582,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.69999999999709,
+        "p95": 18,
+        "p99": 18.59999999999127,
+        "longest": 18.60000000000582,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.69999999999709,
+        "p95": 18.19999999999709,
+        "p99": 18.5,
+        "longest": 18.60000000000582,
+        "over25": 0,
+        "cameraDrift": 0
+      }
+    ],
+    "motion": [
+      {
+        "direction": "n",
+        "clip": "primary",
+        "rate": 1,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.7
+      },
+      {
+        "direction": "n",
+        "clip": "secondary",
+        "rate": 1,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.8000000000002
+      },
+      {
+        "direction": "n",
+        "clip": "primary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2065.7999999999997
+      },
+      {
+        "direction": "n",
+        "clip": "secondary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2065.6000000000004
+      },
+      {
+        "direction": "ne",
+        "clip": "primary",
+        "rate": 1,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.5999999999995
+      },
+      {
+        "direction": "ne",
+        "clip": "secondary",
+        "rate": 1,
+        "observedTicks": 31,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.6000000000004
+      },
+      {
+        "direction": "ne",
+        "clip": "primary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2066.7999999999993
+      },
+      {
+        "direction": "ne",
+        "clip": "secondary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2083.2999999999993
+      },
+      {
+        "direction": "e",
+        "clip": "primary",
+        "rate": 1,
+        "observedTicks": 31,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 533.3999999999996
+      },
+      {
+        "direction": "e",
+        "clip": "secondary",
+        "rate": 1,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.6000000000004
+      },
+      {
+        "direction": "e",
+        "clip": "primary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2083.3999999999996
+      },
+      {
+        "direction": "e",
+        "clip": "secondary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2066.800000000001
+      },
+      {
+        "direction": "se",
+        "clip": "primary",
+        "rate": 1,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 533.3000000000029
+      },
+      {
+        "direction": "se",
+        "clip": "secondary",
+        "rate": 1,
+        "observedTicks": 30,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.5999999999985
+      },
+      {
+        "direction": "se",
+        "clip": "primary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2066.5999999999985
+      },
+      {
+        "direction": "se",
+        "clip": "secondary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2066.7000000000007
+      },
+      {
+        "direction": "s",
+        "clip": "primary",
+        "rate": 1,
+        "observedTicks": 30,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.5999999999985
+      },
+      {
+        "direction": "s",
+        "clip": "secondary",
+        "rate": 1,
+        "observedTicks": 30,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.7000000000007
+      },
+      {
+        "direction": "s",
+        "clip": "primary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2065.7999999999993
+      },
+      {
+        "direction": "s",
+        "clip": "secondary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2066.800000000003
+      },
+      {
+        "direction": "sw",
+        "clip": "primary",
+        "rate": 1,
+        "observedTicks": 31,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 498.5
+      },
+      {
+        "direction": "sw",
+        "clip": "secondary",
+        "rate": 1,
+        "observedTicks": 30,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.7000000000007
+      },
+      {
+        "direction": "sw",
+        "clip": "primary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2066.699999999997
+      },
+      {
+        "direction": "sw",
+        "clip": "secondary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2065.0999999999985
+      },
+      {
+        "direction": "w",
+        "clip": "primary",
+        "rate": 1,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.6999999999971
+      },
+      {
+        "direction": "w",
+        "clip": "secondary",
+        "rate": 1,
+        "observedTicks": 30,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 532.7000000000044
+      },
+      {
+        "direction": "w",
+        "clip": "primary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2083.300000000003
+      },
+      {
+        "direction": "w",
+        "clip": "secondary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2083.4000000000015
+      },
+      {
+        "direction": "nw",
+        "clip": "primary",
+        "rate": 1,
+        "observedTicks": 31,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 516.5999999999985
+      },
+      {
+        "direction": "nw",
+        "clip": "secondary",
+        "rate": 1,
+        "observedTicks": 30,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 515.3000000000029
+      },
+      {
+        "direction": "nw",
+        "clip": "primary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2066.699999999997
+      },
+      {
+        "direction": "nw",
+        "clip": "secondary",
+        "rate": 0.25,
+        "observedTicks": 32,
+        "strikes": 1,
+        "returnsToIdle": true,
+        "elapsedMs": 2083.399999999994
+      }
+    ],
+    "fullForestRepeated": false,
+    "improvementClaim": false,
+    "totalGpuMemoryMeasured": false,
+    "physicalControllerVerified": false
+  },
+  "release": {
+    "status": "local candidate; exact CI/Pages/hosted pending",
+    "latestVerifiedDeployed": "e498ce6fc16412a578f46e67735d2d61bbac3e51",
+    "testedBuildFiles": 80,
+    "productionApproved": false,
+    "next": "Commit/push Release A; verify exact required CI, Pages and hosted bytes/preview before C3/B"
+  },
+  "rawEvidence": "/private/tmp/hollowbane-warrior-attacks-eight"
+}

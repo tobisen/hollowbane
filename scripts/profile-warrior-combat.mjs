@@ -5,6 +5,7 @@ import { Buffer } from "node:buffer";
 import { mkdir, writeFile } from "node:fs/promises";
 const base = process.argv[2] ?? "http://127.0.0.1:4173/hollowbane/";
 const output = process.argv[3];
+const multiDirection = process.argv[4] === "directions";
 if (!output) throw Error("Pass base URL and untracked evidence directory");
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({
@@ -17,7 +18,9 @@ try {
     deviceScaleFactor: 1,
   });
   const begin = Date.now();
-  await page.goto(`${base}?developer=1&warriorPilot=1&warriorCombat=1`);
+  await page.goto(
+    `${base}?developer=1&warriorPilot=1&warriorCombat=1${multiDirection ? "&warriorAttackDirections=1" : ""}`,
+  );
   await page.waitForSelector("html[data-warrior-combat-ready=true]");
   const readyMs = Date.now() - begin;
   await page.bringToFront();
@@ -36,69 +39,82 @@ try {
   if (!/Metal Renderer: Apple/.test(environment.renderer))
     throw Error("Native Apple Metal required");
   const motion = [];
-  for (const rate of ["1", "0.25"])
-    for (const clip of ["primary", "secondary"]) {
-      await page.locator("#attack-rate").selectOption(rate);
-      await page.locator("#attack-clip").selectOption(clip);
-      await page.locator("#attack-reset").click();
-      // Arm capture before trusted input; record actual presentation, never step poses.
-      await page.evaluate(() => {
-        window.attackCapture = new Promise((resolve) => {
-          const frames = [];
-          let seen = -1,
-            first;
-          function capture(t) {
-            const o = window.hollowbaneWarriorCombat;
-            if (o.sample.sequence === 1 && o.sample.tick !== seen) {
-              first ??= t;
-              seen = o.sample.tick;
-              frames.push({
-                t: t - first,
-                ...o.sample,
-                image: document.querySelector("#cadence-inspector").toDataURL(),
-              });
-              if (o.sample.phase === "idle") {
-                resolve(frames);
-                return;
+  for (const direction of multiDirection
+    ? ["n", "ne", "e", "se", "s", "sw", "w", "nw"]
+    : ["se"]) {
+    if (multiDirection)
+      await page.locator("#attack-direction").selectOption(direction);
+    for (const rate of ["1", "0.25"])
+      for (const clip of ["primary", "secondary"]) {
+        await page.locator("#attack-rate").selectOption(rate);
+        await page.locator("#attack-clip").selectOption(clip);
+        await page.locator("#attack-reset").click();
+        // Arm capture before trusted input; record actual presentation, never step poses.
+        await page.evaluate(() => {
+          window.attackCapture = new Promise((resolve) => {
+            const frames = [];
+            let seen = -1,
+              first;
+            function capture(t) {
+              const o = window.hollowbaneWarriorCombat;
+              if (o.sample.sequence === 1 && o.sample.tick !== seen) {
+                first ??= t;
+                seen = o.sample.tick;
+                frames.push({
+                  t: t - first,
+                  ...o.sample,
+                  image: document
+                    .querySelector("#cadence-inspector")
+                    .toDataURL(),
+                });
+                if (o.sample.phase === "idle") {
+                  resolve(frames);
+                  return;
+                }
               }
+              requestAnimationFrame(capture);
             }
             requestAnimationFrame(capture);
-          }
-          requestAnimationFrame(capture);
+          });
         });
-      });
-      await page.locator("#attack-start").click();
-      const frames = await page.evaluate(() => window.attackCapture);
-      const selected = frames.filter(
-        (f, i) => i === 0 || f.frame !== frames[i - 1].frame,
-      );
-      const layers = [];
-      for (const [i, f] of selected.entries())
-        layers.push({
-          input: await sharp(Buffer.from(f.image.split(",")[1], "base64"))
-            .resize(256, 256)
-            .png()
-            .toBuffer(),
-          left: (i % 7) * 256,
-          top: Math.floor(i / 7) * 256,
+        await page.locator("#attack-start").click();
+        const frames = await page.evaluate(() => window.attackCapture);
+        const selected = frames.filter(
+          (f, i) => i === 0 || f.frame !== frames[i - 1].frame,
+        );
+        const layers = [];
+        for (const [i, f] of selected.entries())
+          layers.push({
+            input: await sharp(Buffer.from(f.image.split(",")[1], "base64"))
+              .resize(256, 256)
+              .png()
+              .toBuffer(),
+            left: (i % 7) * 256,
+            top: Math.floor(i / 7) * 256,
+          });
+        await sharp({
+          create: {
+            width: 7 * 256,
+            height: Math.ceil(layers.length / 7) * 256,
+            channels: 4,
+            background: "#171c22",
+          },
+        })
+          .composite(layers)
+          .png()
+          .toFile(
+            `${output}/${multiDirection ? direction + "-" : ""}${clip}-${rate}-motion.png`,
+          );
+        motion.push({
+          direction,
+          clip,
+          rate,
+          frames: frames.map((f) => ({ ...f, image: undefined })),
         });
-      await sharp({
-        create: {
-          width: 7 * 256,
-          height: Math.ceil(layers.length / 7) * 256,
-          channels: 4,
-          background: "#171c22",
-        },
-      })
-        .composite(layers)
-        .png()
-        .toFile(`${output}/${clip}-${rate}-motion.png`);
-      motion.push({
-        clip,
-        rate,
-        frames: frames.map((f) => ({ ...f, image: undefined })),
-      });
-    }
+      }
+  }
+  if (multiDirection)
+    await page.locator("#attack-direction").selectOption("se");
   await page.locator("#attack-rate").selectOption("1");
   await page.locator("#attack-repeat").check();
   await page.locator("#attack-zoom").selectOption("2");

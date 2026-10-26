@@ -2,6 +2,14 @@
   width: 128px;
   height: 128px;
 }
+.warrior-attack-directions .cadence-clips canvas {
+  width: 160px;
+  height: 160px;
+}
+.warrior-attack-directions #cadence-inspector {
+  width: 480px;
+  height: 480px;
+}
 .cadence-inspection {
   display: flex;
   align-items: center;

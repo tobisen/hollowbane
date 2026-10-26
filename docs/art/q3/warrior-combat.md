@@ -1,11 +1,110 @@
 # Q3-A Warrior combat — DBL-023/024/025/026
 
-2026-10-26. Current authorization is **Checkpoint A only**: finish and publish
-the Southeast primary/secondary pilot, then stop. No other combat directions,
-casting, hit/stagger/death, normal graphics activation or other characters.
-Preserve simulation, saves, balance and Phaser4.2.1. Source checkpoint8c47c90
-is retained in history; movement8394dd5 passed exactCI40283317465, Pages,
-hosted and Release acceptance before combat production.
+2026-10-26. The **extended Warrior production request** now authorizes C1–C9
+sequentially through final Warrior review. This supersedes the earlier Southeast
+stop. Public Release A (eight-way attacks), B (ability/reaction/death), then C
+(playable arena and final review) each require exact CI, Pages and hosted
+acceptance before advancing. Preserve simulation, saves, balance, Phaser4.2.1,
+the approved source rig, live graphics and unrelated edits. No other class art
+or normal-game sprite activation is authorized.
+
+## Release A — eight-direction attack candidate
+
+The approved release **e498ce6fc16412a578f46e67735d2d61bbac3e51** was independently
+rechecked before production: CI40366831084 and every required Full/Pages/hosted/
+Release acceptance job succeed; public release.json reports that exact SHA.
+
+C1 review retains the approved SE motion and its twelve-pose sampling. At the
+gameplay footprint the anticipation, descending cut/returning sweep and recovery
+are readable. Restrained torso/hip transfer and rapid active-entry changes remain
+visible in enlarged inspection. No visual improvement is claimed; adding samples
+would not by itself improve weight transfer or alter the fixed strike boundary.
+Do not treat this retention decision as final user art approval.
+
+C2 adds seven complete-geometry views of the same two motions, **16 clips /
+192 poses** including the copied SE reference. No mirrored asymmetric equipment,
+new model, material, lighting, motion or gameplay timing. Source:
+`assets/source/q3/warrior-attack-directions/render.py`. Approved combat/movement
+sources and their original atlases remain byte-identical. All four endpoints per
+view reuse approved directional idle0 pixels exactly, retaining the leg-snap fix.
+
+The first audit correctly rejected the old window: weapon coordinates ranged
+x=-15.426..271.426 /y=-41.764..234.737 in the original256px projection. The fixed
+**320×320** overscan translates original coordinates by **(+32,+64)** to root
+**160,274**. Native640px render,2:1 reduction, unchanged pixels per model meter and
+display scale0.5. A camera ortho/shift adjustment enlarges only the window; four
+projection probes assert the constant translation. No per-pose fitting, shrinking
+or repositioning. Existing SE256px validators remain unchanged. New validators
+retain the eight-pixel alpha/weapon margin and permit only0.001px projection
+roundoff. The first new validator's exact-float root comparison rejected
+159.99993,274.00002; it was aligned with the source audit's existing tolerance.
+
+Eight1920×1280 PNGs total **5,369,611bytes /75MiB** base-level decoded RGBA,
+metadata229,776bytes. The eight movement textures also resident in the preview
+add82.5MiB;157.5MiB combined is texture payload, not total GPU/browser memory.
+Provenance fingerprints renderer, packager, approved attack rig/atlas and movement
+manifest. The asset inventory retains developer-placeholder status.
+
+Route: `?developer=1&warriorPilot=1&warriorCombat=1&warriorAttackDirections=1`.
+Direction selection places the real disposable target along that heading; actual
+targeting locks facing. The unchanged selector consumes real12/2/18 combat ticks
+and active-entry poses5/17. Phaser stage, gameplay/enlarged canvases, old/new switch,
+root/feet, stepping,0.25×/1× and reset remain isolated from saves. The normal entry
+never fetches the directional preview or atlas. Full movement/enemy/ability arena
+integration remains C6/C7, after the A/B public gates.
+
+All192 packaged stills were reviewed at gameplay scale with dark/light coverage;
+cardinal source sheets were reviewed before diagonal production. No frame-edge
+clipping or distracting matte halos observed. Foreshortening/occlusion, especially
+front/rear sword views, sculptural posture and restrained weight transfer remain
+quality limitations. Timed playback/native/release results are recorded in
+`attack-directions-review.json`; no final Warrior or production approval yet.
+
+Local19 focused asset/negative/selector tests and12 Chromium cases pass, including
+all16 real attacks, one strike/sequence, pre-strike HP, all eight facing locks,
+root/camera stability, idle recovery and storage isolation. TypeScript, affected
+ESLint/Prettier, complete asset validation and build pass. No unrelated local
+loot/campaign regression, physical-controller or new full-forest performance
+claim. Mandatory CI remains governed by the existing risk classifier.
+
+Native visible Chromium156.0.8078.4 /Apple M4 Metal,1280×800/DPR1: all16 clips
+captured at1× and0.25× (32 sequences), with one observed real strike and idle
+return each. Slow captures observe all32 ticks; some1× captures observe30–31
+distinct ticks because inspection can coalesce ticks between rendered frames.
+This is not a zero/double simulation-tick measurement. Timed strips and gameplay
+captures were reviewed; the same posture/foreshortening limitations remain.
+
+Three alternating matched isolated-preview pairs,240 measured intervals each,
+secondary replay at real combat timing, camera2, identical atlas residency:
+
+| Pair | Shipped p50/p95/p99 ms | Candidate p50/p95/p99 ms | >25ms |
+| ---- | ---------------------- | ------------------------ | ----- |
+| 1    | 16.7/17.8/18.5         | 16.7/18.1/18.5           | 0/0   |
+| 2    | 16.7/18.2/18.4         | 16.7/18.2/18.6           | 0/0   |
+| 3    | 16.7/18.0/18.6         | 16.7/18.2/18.5           | 0/0   |
+
+Zero camera drift, longest candidate18.7ms. One555ms warmed preview-ready
+observation is not cold-load evidence. No improvement, full-forest regression,
+GPU-memory, physical-controller or other-hardware claim follows from this sample.
+
+Raw source renders, diagnostic rejection, review sheets, timed/native evidence
+and80-file tested-build inventory:
+`/private/tmp/hollowbane-warrior-attacks-eight` (logs adjacent). Do not rerender
+accepted pixels unnecessarily. Use the reproduction commands below with the new
+renderer/packager and `directions` profile argument. Public Release A is pending;
+do not begin B until exact release acceptance is verified.
+
+```sh
+"$BLENDER_BIN" --background --python-exit-code 1 \
+  --python assets/source/q3/warrior-attack-directions/render.py -- /private/tmp/warrior-attacks n e s w --audit
+# Render controlled cardinal, then diagonal batches only when needed; SE/endpoints are copied.
+node scripts/package-warrior-attack-directions.mjs /private/tmp/warrior-attacks
+node scripts/validate-warrior-attack-directions.mjs
+node scripts/profile-warrior-combat.mjs http://127.0.0.1:4173/hollowbane/ /private/tmp/attack-review directions
+```
+
+The original Checkpoint A evidence below is historical; its stop has been
+superseded by the extended request, while its approved pixels remain preserved.
 
 ## Southeast pilot
 

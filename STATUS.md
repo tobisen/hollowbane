@@ -1,3 +1,11 @@
+## Extended Warrior — Release A local candidate (2026-10-26)
+
+- Extended request authorizes C1–C9 and sequential public A/B/C gates; prior Southeast stop superseded. Exact e498ce6 /CI40366831084 and public SHA independently rechecked green. Production graphics, simulation, balance, saves, approved Blender4.5.3 sources and unrelated edits preserved.
+- C1 retains approved SE sampling/motion, with restrained torso/hip transfer and rapid impact still limitations. C2: all eight primary/secondary views,16 clips/192 poses; no mirroring. Four endpoints/view copy approved idle0 exactly; all SE pixels preserved. Fixed320px overscan/root160,274 translates old pixels+32,+64 without resizing the model. Initial old-window clipping was rejected, not hidden.
+- Eight attack atlases5,369,611bytes /75MiB decoded; metadata229,776bytes. Rig/joint/rotated feet/root/weapon audits,19 focused units/assets,12 Chromium, TypeScript/affected lint/format/assets/build pass. All192 poses, dark/light and actual timed playback reviewed; no final user art approval.
+- Native visible M4/Metal1280×800/DPR1: all16 clips at1×/.25× (32 captures), one strike/idle return each. Three matched preview pairs candidate p5016.7/p9518.1–18.2/p99≤18.6ms, longest18.7; zero>25ms/drift. All movement/attack textures resident in both;157.5MiB base RGBA payload, not total GPU memory. No new forest, improvement, cold-load or physical-controller claim.
+- Release A exact CI/Pages/hosted acceptance PENDING; latest verified deployed remains e498ce6fc16412a578f46e67735d2d61bbac3e51. Do not begin B/C3 before A release acceptance. Entire Warrior objective remains incomplete; no live activation. Resume/evidence docs/art/q3/warrior-combat.md, attack-directions-review.json and /private/tmp/hollowbane-warrior-attacks-eight (80-file tested inventory). Preserve successful renders; no overnight orchestrator.
+
 ## Q3-A Warrior combat — Checkpoint A RELEASE VERIFIED (2026-10-26)
 
 - Runtimee498ce6fc16412a578f46e67735d2d61bbac3e51 /CI40366831084: required Full, Pages, hosted and Release acceptance PASS. Sealed/local/public70-file byte match and three hosted attack-preview cases pass; captures reviewed.

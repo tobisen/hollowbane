@@ -8,7 +8,7 @@ import {
 } from "../simulation/combat";
 import { commandCombat } from "../simulation/combat-targeting";
 import { movementFrame } from "../simulation/locomotion";
-import { worldToScreen } from "../world/isometric";
+import { screenToWorld, worldToScreen } from "../world/isometric";
 import { warriorAttackFrame, type WarriorAttack } from "./warrior-attack-frame";
 import { combatPose, recordMotion, type MotionCues } from "./combat-motion";
 import "./warrior-pilot.css";
@@ -39,7 +39,20 @@ declare global {
 }
 
 /** Disposable combat fixture: no inventory, storage, normal scene or input owner. */
-export async function startWarriorCombatPreview(): Promise<void> {
+export async function startWarriorCombatPreview(
+  multiDirection = false,
+): Promise<void> {
+  const directional = multiDirection
+    ? (await import("../../public/dev/warrior-attack-directions/warrior.json"))
+        .default
+    : null;
+  const directionalMovement = multiDirection
+    ? (await import("../../public/dev/warrior-directions/warrior.json")).default
+    : null;
+  const directionRows = ["s", "sw", "w", "nw", "n", "ne", "e", "se"] as const;
+  type Direction = (typeof directionRows)[number];
+  const cell = multiDirection ? 320 : 256;
+  const pivot = multiDirection ? [160, 274] : [128, 210];
   const root = document.querySelector("main")!;
   root.className = "warrior-pilot warrior-cadence";
   document.title = "Hollowbane · Southeast Warrior attack review";
@@ -61,6 +74,7 @@ export async function startWarriorCombatPreview(): Promise<void> {
     document.getElementById(id) as T;
   const state = {
     attack: "primary" as WarriorAttack,
+    direction: "se" as Direction,
     playing: true,
     rate: 1,
     repeat: false,
@@ -69,26 +83,66 @@ export async function startWarriorCombatPreview(): Promise<void> {
     source: "candidate",
     zoom: 1,
   };
+  if (multiDirection) {
+    root.classList.add("warrior-attack-directions");
+    document.title = "Hollowbane · eight-direction Warrior attack review";
+    root.querySelector(".eyebrow")!.textContent =
+      "HOLLOWBANE / RELEASE A CANDIDATE / EIGHT DIRECTIONS";
+    root.querySelector(".pilot-note")!.textContent =
+      "Eight original rig views; no mirroring. Primary / secondary are visual variants of the same real melee action. Timing, damage and saves are unchanged. Fixed overscan preserves model scale; approved Southeast and idle endpoint pixels are reused. Developer candidate; review pending.";
+    const label = document.createElement("label");
+    label.innerHTML = `Direction <select id="attack-direction">${directionRows.map((d) => `<option value="${d}" ${d === "se" ? "selected" : ""}>${d.toUpperCase()}</option>`).join("")}</select>`;
+    root.querySelector(".pilot-controls")!.prepend(label);
+    el("pilot-stage").setAttribute(
+      "aria-label",
+      "Eight-direction attack preview",
+    );
+    for (const id of [
+      "attack-gameplay",
+      "attack-shipped",
+      "cadence-inspector",
+    ]) {
+      const canvas = el<HTMLCanvasElement>(id);
+      canvas.width = canvas.height = cell;
+    }
+  }
   const images = {
     attacks: new Image(),
     idle: new Image(),
     shipped: new Image(),
   };
-  images.attacks.src = `${import.meta.env.BASE_URL}dev/warrior-combat/warrior.png`;
-  images.idle.src = `${import.meta.env.BASE_URL}dev/warrior-movement/warrior.png`;
+  images.attacks.src = `${import.meta.env.BASE_URL}dev/${multiDirection ? "warrior-attack-directions/se.png" : "warrior-combat/warrior.png"}`;
+  images.idle.src = `${import.meta.env.BASE_URL}dev/${multiDirection ? "warrior-directions/se.png" : "warrior-movement/warrior.png"}`;
   images.shipped.src = `${import.meta.env.BASE_URL}assets/wanderer.webp`;
   await Promise.all(Object.values(images).map((i) => i.decode()));
+  const attackImages: Partial<Record<Direction, HTMLImageElement>> = {};
+  const idleImages: Partial<Record<Direction, HTMLImageElement>> = {};
+  if (directional && directionalMovement)
+    await Promise.all(
+      directionRows.map(async (direction) => {
+        const attackImage = direction === "se" ? images.attacks : new Image(),
+          idleImage = direction === "se" ? images.idle : new Image();
+        attackImage.src = `${import.meta.env.BASE_URL}dev/warrior-attack-directions/${directional.views[direction].atlas}`;
+        idleImage.src = `${import.meta.env.BASE_URL}dev/warrior-directions/${directionalMovement.views[direction].atlas}`;
+        await Promise.all([attackImage.decode(), idleImage.decode()]);
+        attackImages[direction] = attackImage;
+        idleImages[direction] = idleImage;
+      }),
+    );
   const encounter = (): CombatWorld => {
     const world = createCombat(42);
     world.hostilesActive = false;
     world.actors = world.actors.slice(0, 2);
     const player = world.actors[0]!,
       target = world.actors[1]!;
+    const facing = directional?.views[state.direction].facing ?? [2, 1];
+    const offset = screenToWorld({ x: facing[0]!, y: facing[1]! });
+    const length = Math.hypot(offset.x, offset.y);
     target.controller.walker.position = {
-      x: player.controller.walker.position.x + 0.8,
-      y: player.controller.walker.position.y,
+      x: player.controller.walker.position.x + (0.8 * offset.x) / length,
+      y: player.controller.walker.position.y + (0.8 * offset.y) / length,
     };
-    player.controller.walker.direction = 7;
+    player.controller.walker.direction = directionRows.indexOf(state.direction);
     return world;
   };
   let world = encounter(),
@@ -151,6 +205,11 @@ export async function startWarriorCombatPreview(): Promise<void> {
     history.push(sample());
     if (history.length > 256) history.shift();
   };
+  if (multiDirection)
+    el<HTMLSelectElement>("attack-direction").onchange = (e) => {
+      state.direction = (e.target as HTMLSelectElement).value as Direction;
+      reset();
+    };
   el<HTMLSelectElement>("attack-clip").onchange = (e) => {
     state.attack = (e.target as HTMLSelectElement).value as WarriorAttack;
     reset();
@@ -192,12 +251,12 @@ export async function startWarriorCombatPreview(): Promise<void> {
     const actor = world.actors[0]!,
       frame = sample().frame;
     c.fillStyle = state.light ? "#e4e0d8" : "#171c22";
-    c.fillRect(0, 0, 256, 256);
+    c.fillRect(0, 0, cell, cell);
     if (shipped) {
       const pose = combatPose(actor, cues[0], world.tick),
         f = movementFrame(actor.controller.walker, false);
       c.save();
-      c.translate(128 + pose.x * 2, 210 + pose.y * 2);
+      c.translate(pivot[0]! + pose.x * 2, pivot[1]! + pose.y * 2);
       c.rotate((pose.angle * Math.PI) / 180);
       c.drawImage(
         images.shipped,
@@ -214,33 +273,50 @@ export async function startWarriorCombatPreview(): Promise<void> {
     } else {
       const f =
         frame === null
-          ? movement.frames[Math.floor(world.tick / 24) % 8]!
-          : attacks.frames[frame]!;
+          ? (directionalMovement?.views[state.direction].frames ??
+              movement.frames)[Math.floor(world.tick / 24) % 8]!
+          : (directional?.views[state.direction].frames ?? attacks.frames)[
+              frame
+            ]!;
+      const idle = frame === null;
       c.drawImage(
-        frame === null ? images.idle : images.attacks,
+        multiDirection
+          ? idle
+            ? idleImages[state.direction]!
+            : attackImages[state.direction]!
+          : idle
+            ? images.idle
+            : images.attacks,
         f.x,
         f.y,
-        256,
-        256,
-        0,
-        0,
-        256,
-        256,
+        f.width,
+        f.height,
+        multiDirection && idle ? 32 : 0,
+        multiDirection && idle ? 64 : 0,
+        f.width,
+        f.height,
       );
     }
     if (state.guides) {
       c.strokeStyle = "#e7bd69";
       c.beginPath();
-      c.moveTo(118, 210);
-      c.lineTo(138, 210);
-      c.moveTo(128, 200);
-      c.lineTo(128, 220);
+      c.moveTo(pivot[0]! - 10, pivot[1]!);
+      c.lineTo(pivot[0]! + 10, pivot[1]!);
+      c.moveTo(pivot[0]!, pivot[1]! - 10);
+      c.lineTo(pivot[0]!, pivot[1]! + 10);
       c.stroke();
       if (!shipped)
-        for (const foot of movement.frames[0]!.contacts) {
+        for (const foot of (directionalMovement?.views[state.direction]
+          .frames[0] ?? movement.frames[0])!.contacts) {
           c.strokeStyle = "#7ee9c3";
           c.beginPath();
-          c.arc(foot.pixel[0]!, foot.pixel[1]!, 3, 0, Math.PI * 2);
+          c.arc(
+            foot.pixel[0]! + (multiDirection ? 32 : 0),
+            foot.pixel[1]! + (multiDirection ? 64 : 0),
+            3,
+            0,
+            Math.PI * 2,
+          );
           c.stroke();
         }
     }
@@ -250,14 +326,29 @@ export async function startWarriorCombatPreview(): Promise<void> {
     private graphics!: Phaser.GameObjects.Graphics;
     private frames = 0;
     preload(): void {
-      this.load.spritesheet("attacks", images.attacks.src, {
-        frameWidth: 256,
-        frameHeight: 256,
-      });
-      this.load.spritesheet("idle", images.idle.src, {
-        frameWidth: 256,
-        frameHeight: 256,
-      });
+      if (multiDirection)
+        for (const direction of directionRows) {
+          this.load.spritesheet(
+            `attacks-${direction}`,
+            attackImages[direction]!.src,
+            { frameWidth: 320, frameHeight: 320 },
+          );
+          this.load.spritesheet(
+            `idle-${direction}`,
+            idleImages[direction]!.src,
+            { frameWidth: 256, frameHeight: 264 },
+          );
+        }
+      if (!multiDirection) {
+        this.load.spritesheet("attacks", images.attacks.src, {
+          frameWidth: 256,
+          frameHeight: 256,
+        });
+        this.load.spritesheet("idle", images.idle.src, {
+          frameWidth: 256,
+          frameHeight: 256,
+        });
+      }
       this.load.spritesheet("shipped", images.shipped.src, {
         frameWidth: 128,
         frameHeight: 128,
@@ -289,12 +380,23 @@ export async function startWarriorCombatPreview(): Promise<void> {
       const f = current.frame;
       this.sprite
         .setTexture(
-          candidate ? (f === null ? "idle" : "attacks") : "shipped",
+          candidate
+            ? `${f === null ? "idle" : "attacks"}${multiDirection ? `-${state.direction}` : ""}`
+            : "shipped",
           candidate
             ? (f ?? Math.floor(world.tick / 24) % 8)
             : movementFrame(actor.controller.walker, false),
         )
-        .setOrigin(0.5, candidate ? 210 / 256 : 112 / 128)
+        .setOrigin(
+          0.5,
+          candidate
+            ? multiDirection
+              ? f === null
+                ? 210 / 264
+                : 274 / 320
+              : 210 / 256
+            : 112 / 128,
+        )
         .setScale(candidate ? 0.5 : 0.93)
         .setPosition(
           p.x + (candidate ? 0 : pose.x),
@@ -311,7 +413,7 @@ export async function startWarriorCombatPreview(): Promise<void> {
       paint("cadence-inspector");
       paint("attack-shipped", true);
       el("attack-status").textContent =
-        `${state.attack.toUpperCase()} · SE\nTick ${world.tick} · ${current.phase} · pose ${f ?? "idle"}\nSequence ${current.sequence} · target HP ${current.hp}\nImpact pose ${state.attack === "primary" ? 5 : 17} · ${state.rate}×`;
+        `${state.attack.toUpperCase()} · ${state.direction.toUpperCase()}\nTick ${world.tick} · ${current.phase} · pose ${f ?? "idle"}\nSequence ${current.sequence} · target HP ${current.hp}\nImpact pose ${state.attack === "primary" ? 5 : 17} · ${state.rate}×`;
       el<HTMLButtonElement>("attack-start").disabled =
         actor.controller.timeline.phase !== "idle" ||
         actor.controller.queuedAttack ||
