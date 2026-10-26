@@ -1,6 +1,7 @@
 import { validateWorldArtInventory } from "./validate-world-art.mjs";
 import { validateWarriorPilot } from "./validate-warrior-pilot.mjs";
 import { validateWarriorMovement } from "./validate-warrior-movement.mjs";
+import { validateWarriorDirections } from "./validate-warrior-directions.mjs";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import sharp from "sharp";
 import { createHash } from "node:crypto";
@@ -94,6 +95,7 @@ validateWorldArtInventory(assets);
 await validateWarriorPilot();
 await validateWarriorPilot("public/dev/warrior-refined");
 await validateWarriorMovement();
+await validateWarriorDirections();
 
 const menuInventory = JSON.parse(
   readFileSync("docs/art/menu-inventory.json", "utf8"),

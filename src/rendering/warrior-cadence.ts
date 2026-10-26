@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import metadata from "../../public/dev/warrior-movement/warrior.json";
+import southeastMetadata from "../../public/dev/warrior-movement/warrior.json";
 import {
   createWalker,
   moveTick,
@@ -31,11 +31,25 @@ declare global {
       playing: boolean;
       frames: Record<Clip, number>;
       source: string;
+      view: string;
+      stageView: string;
+      cameraRelative: { x: number; y: number };
     };
   }
 }
 
-export async function startWarriorCadence(): Promise<void> {
+export async function startWarriorCadence(
+  multiDirection = false,
+): Promise<void> {
+  const directional = multiDirection
+    ? (await import("../../public/dev/warrior-directions/warrior.json")).default
+    : undefined;
+  const metadata = southeastMetadata;
+  const directionRows = ["s", "sw", "w", "nw", "n", "ne", "e", "se"] as const;
+  type Direction = (typeof directionRows)[number];
+  const height = directional?.cellHeight ?? 256;
+  const viewFrames = (direction: Direction) =>
+    directional ? directional.views[direction].frames : metadata.frames;
   const root = document.querySelector("main")!;
   root.className = "warrior-pilot warrior-cadence";
   document.title = "Hollowbane · Warrior cadence and run";
@@ -57,14 +71,47 @@ export async function startWarriorCadence(): Promise<void> {
   <p class="pilot-note">40 poses · fixed 256px cells / root 128,210 · ${metadata.bytes.toLocaleString()} bytes / 10MiB decoded. Run has its own flight, lean and arm poses. One direction only; quality approval pending.</p>`;
   const element = <T extends HTMLElement>(id: string): T =>
     document.getElementById(id) as T;
+  if (multiDirection) {
+    document.title = "Hollowbane · Warrior eight-direction movement";
+    root.querySelector(".eyebrow")!.textContent =
+      "HOLLOWBANE / Q3-A / EIGHT-DIRECTION MOVEMENT";
+    root.querySelector("h1")!.textContent = "Warrior · movement showcase";
+    const controls = root.querySelector(".pilot-controls")!;
+    const label = document.createElement("label");
+    label.innerHTML = `Direction <select id="cadence-direction">${directionRows.map((d) => `<option value="${d}" ${d === "se" ? "selected" : ""}>${d.toUpperCase()}</option>`).join("")}</select>`;
+    controls.prepend(label);
+    root.querySelector(".pilot-runtime > p")!.textContent =
+      "Focus the stage. WASD/arrows: eight-direction movement. R: walk/run. Release to idle. Standard virtual-controller axes also work. Camera follows the character; the wall demonstrates collision sliding.";
+    root
+      .querySelectorAll<HTMLCanvasElement>(
+        ".cadence-clips canvas, #cadence-inspector",
+      )
+      .forEach((canvas) => {
+        canvas.height = height;
+        canvas.style.height = `${canvas.id === "cadence-inspector" ? height * 1.5 : height * 0.5}px`;
+      });
+    root.querySelector(".warrior-cadence > .pilot-note")!.textContent =
+      `${directional!.frames} poses · 8 directions · idle 8 / walk 16 / run 16 per direction. Approved SE pixels preserved. Fixed 256×264 cells / root 128,210 / scale 0.5. Developer candidate; quality review pending.`;
+  }
   const stage = element("pilot-stage");
   const image = new Image(),
     shipped = new Image();
-  image.src = `${import.meta.env.BASE_URL}dev/warrior-movement/warrior.png`;
+  image.src = `${import.meta.env.BASE_URL}dev/${multiDirection ? "warrior-directions/se.png" : "warrior-movement/warrior.png"}`;
   shipped.src = `${import.meta.env.BASE_URL}assets/wanderer.webp`;
   await Promise.all([image.decode(), shipped.decode()]);
+  const images = new Map<Direction, HTMLImageElement>();
+  if (directional)
+    await Promise.all(
+      directionRows.map(async (direction) => {
+        const img = direction === "se" ? image : new Image();
+        img.src = `${import.meta.env.BASE_URL}dev/warrior-directions/${directional.views[direction].atlas}`;
+        await img.decode();
+        images.set(direction, img);
+      }),
+    );
   const state = {
     clip: "idle" as Clip,
+    direction: "se" as Direction,
     playing: true,
     rate: 1,
     elapsed: 0,
@@ -76,6 +123,10 @@ export async function startWarriorCadence(): Promise<void> {
     source: "candidate",
     reset: false,
   };
+  if (multiDirection)
+    element<HTMLSelectElement>("cadence-direction").onchange = (e) => {
+      state.direction = (e.target as HTMLSelectElement).value as Direction;
+    };
   const keys = new Set<string>();
   const setGait = (gait: "walk" | "run") => {
     state.gait = gait;
@@ -157,8 +208,10 @@ export async function startWarriorCadence(): Promise<void> {
   ) => {
     const c = canvas.getContext("2d")!;
     c.fillStyle = state.light ? "#e4e0d8" : "#171c22";
-    c.fillRect(0, 0, 256, 256);
-    const frame = metadata.frames[metadata.clips[action].start + index]!;
+    c.fillRect(0, 0, 256, height);
+    const frame = viewFrames(state.direction)[
+      metadata.clips[action].start + index
+    ]!;
     if (old) {
       const col = state.playing
         ? action === "idle"
@@ -175,8 +228,29 @@ export async function startWarriorCadence(): Promise<void> {
         : action === "idle"
           ? Math.floor(index / 4) % 2
           : 2 + Math.floor((index / 16) * 6);
-      c.drawImage(shipped, col * 128, 7 * 128, 128, 128, 0, -14, 256, 256);
-    } else c.drawImage(image, frame.x, frame.y, 256, 256, 0, 0, 256, 256);
+      c.drawImage(
+        shipped,
+        col * 128,
+        (multiDirection ? directionRows.indexOf(state.direction) : 7) * 128,
+        128,
+        128,
+        0,
+        -14,
+        256,
+        256,
+      );
+    } else
+      c.drawImage(
+        images.get(state.direction) ?? image,
+        frame.x,
+        frame.y,
+        256,
+        height,
+        0,
+        0,
+        256,
+        height,
+      );
     if (state.guides) {
       c.strokeStyle = "#e7bd69";
       c.beginPath();
@@ -217,10 +291,17 @@ export async function startWarriorCadence(): Promise<void> {
     private action: Clip = "idle";
     private fade = 0;
     preload(): void {
-      this.load.spritesheet("candidate", image.src, {
-        frameWidth: 256,
-        frameHeight: 256,
-      });
+      if (directional)
+        for (const [direction, img] of images)
+          this.load.spritesheet(`candidate-${direction}`, img.src, {
+            frameWidth: 256,
+            frameHeight: height,
+          });
+      if (!multiDirection)
+        this.load.spritesheet("candidate", image.src, {
+          frameWidth: 256,
+          frameHeight: 256,
+        });
       this.load.spritesheet("shipped", shipped.src, {
         frameWidth: 128,
         frameHeight: 128,
@@ -236,8 +317,11 @@ export async function startWarriorCadence(): Promise<void> {
         }
       this.add.rectangle(275, 0, 30, 800, 0x654e3c, 0.8);
       this.shadow = this.add.ellipse(0, 0, 28, 12, 0, 0.35);
-      this.previous = this.add.sprite(0, 0, "candidate", 0).setVisible(false);
-      this.sprite = this.add.sprite(0, 0, "candidate", 0);
+      const initialTexture = multiDirection ? "candidate-s" : "candidate";
+      this.previous = this.add
+        .sprite(0, 0, initialTexture, 0)
+        .setVisible(false);
+      this.sprite = this.add.sprite(0, 0, initialTexture, 0);
       this.graphics = this.add.graphics();
       document.documentElement.dataset.warriorCadenceReady = "true";
     }
@@ -262,7 +346,7 @@ export async function startWarriorCadence(): Promise<void> {
       let y =
         Number(keys.has("KeyS") || keys.has("ArrowDown")) -
         Number(keys.has("KeyW") || keys.has("ArrowUp"));
-      if (keys.has("KeyD") || keys.has("Space")) {
+      if ((!multiDirection && keys.has("KeyD")) || keys.has("Space")) {
         x = 1;
         if (!y) y = 0.5;
       }
@@ -314,15 +398,31 @@ export async function startWarriorCadence(): Promise<void> {
           : movementFrame(this.walker, false);
       const p = worldToScreen(this.walker.position),
         candidate = state.source === "candidate";
+      const stageDirection = directionRows[this.walker.direction]!;
+      const texture = candidate
+        ? multiDirection
+          ? `candidate-${stageDirection}`
+          : "candidate"
+        : "shipped";
       this.shadow.setPosition(p.x, p.y).setDepth(p.y - 1);
       for (const sprite of [this.sprite, this.previous])
         sprite
           .setPosition(p.x, p.y)
           .setDepth(p.y)
-          .setOrigin(0.5, candidate ? 210 / 256 : 112 / 128)
-          .setScale(candidate ? 0.5 : 0.93);
+          .setOrigin(
+            0.5,
+            sprite.texture.key.startsWith("candidate")
+              ? 210 / (sprite.texture.key === "candidate" ? 256 : height)
+              : 112 / 128,
+          )
+          .setScale(sprite.texture.key.startsWith("candidate") ? 0.5 : 0.93);
       this.sprite
-        .setTexture(candidate ? "candidate" : "shipped", selectedFrame)
+        .setTexture(texture, selectedFrame)
+        .setOrigin(
+          0.5,
+          candidate ? 210 / (multiDirection ? height : 256) : 112 / 128,
+        )
+        .setScale(candidate ? 0.5 : 0.93)
         .setAlpha(1 - this.fade / 0.12);
       this.previous.setAlpha(this.fade / 0.12).setVisible(this.fade > 0);
       this.cameras.main.setZoom(state.zoom).centerOn(p.x, p.y - 30);
@@ -334,7 +434,16 @@ export async function startWarriorCadence(): Promise<void> {
           .lineBetween(p.x, p.y - 8, p.x, p.y + 8)
           .lineStyle(1, 0x65d5df)
           .strokeCircle(p.x, p.y, 12);
-      const signature = `${state.frames.idle}/${state.frames.walk}/${state.frames.run}/${state.clip}/${state.rate}/${state.light}/${state.guides}`;
+      if (state.guides && candidate)
+        for (const foot of viewFrames(stageDirection)[frame]!.contacts)
+          this.graphics
+            .lineStyle(1, foot.planted ? 0x7ee9c3 : 0xd795ef)
+            .strokeCircle(
+              p.x + (foot.pixel[0]! - 128) * 0.5,
+              p.y + (foot.pixel[1]! - 210) * 0.5,
+              2,
+            );
+      const signature = `${state.direction}/${state.frames.idle}/${state.frames.walk}/${state.frames.run}/${state.clip}/${state.rate}/${state.light}/${state.guides}`;
       if (signature !== this.paintSignature) {
         this.paintSignature = signature;
         for (const action of clips)
@@ -373,6 +482,12 @@ export async function startWarriorCadence(): Promise<void> {
         playing: state.playing,
         frames: { ...state.frames },
         source: state.source,
+        view: state.direction,
+        stageView: multiDirection ? stageDirection : "se",
+        cameraRelative: {
+          x: p.x - this.cameras.main.scrollX,
+          y: p.y - this.cameras.main.scrollY,
+        },
       };
     }
   }

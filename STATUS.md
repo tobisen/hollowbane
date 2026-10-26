@@ -1,3 +1,11 @@
+## Extended Warrior — eight-direction movement checkpoint (2026-10-26)
+
+- Extended request authorizes movement, combat/cast/hit/death and disposable arena through final Warrior review, with exact public release gates between checkpoints. Production graphics, balancing, saves, other classes and campaign remain excluded. Preserve unrelated edits and completed SE517ed70 pixels.
+- Movement candidate: all320 poses /24 clips (8 idle/16 walk/16 run per direction), same original Blender4.5.3 rig/camera/materials/lights. Shared eight-row bottom extension preserves scale/root; South margin12px. Eight atlases7,938,193bytes /82.5MiB decoded. Every additional pose, light/dark captures and all24 timed playback strips reviewed; sculptural finish/brisk cadence/quantized facing remain limitations, no user approval.
+- Isolated eight-way showcase includes controls, guides, shipped comparison, actual-distance keyboard/controller movement, wall sliding and camera follow. Twelve focused asset/negative/loop units, eight Chromium cases, TypeScript/build, affected lint/format and asset validation pass. No unrelated local campaign/loot/full suite or simulation changes.
+- Native M4/Metal matched P2 forest359 frames/input: keyboard baseline/candidate p95 17.1/18.0ms; virtual controller17.1/17.1; p99 at most18.6ms, zero>25ms/zero-double ticks, uniform camera. One pair only; no improvement, cold-load, total GPU memory or physical-device claim.
+- Release CI/Pages/hosted acceptance pending; latest verified deployed SHA remains517ed7013e393cf62770a12dea4415a812683638. Do not start combat production until checkpoint1 exact release acceptance. Entire extended objective remains incomplete. Resume/evidence docs/art/q3/warrior-movement.md, movement-review.json and /private/tmp/hollowbane-warrior-cardinals. Preserve successful frames; no overnight orchestrator.
+
 ## Q3-A eight-direction Warrior — cardinal source checkpoint (2026-10-26)
 
 - Southeast517ed7013e393cf62770a12dea4415a812683638 / exact CI40237453552 rechecked green, including Pages/hosted acceptance; user confirms hosted preview. New authorization: cardinal batch A, then diagonal/showcase batch B through movement review. Production graphics/physics unchanged;474bbdd preserved.

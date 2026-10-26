@@ -1,12 +1,94 @@
 # Q3-A Warrior movement — DBL-023/024/025/026
 
-2026-10-26. The user authorizes eight-direction idle/walk/run production through
-movement quality review. Southeast pilot517ed70 is released. Internal batch A
-covers the remaining cardinals N/E/S/W; batch B covers NE/SW/NW and the complete
-isolated showcase. Verify each public release before advancing to the next batch.
+2026-10-26. The extended Warrior request authorizes eight-direction movement,
+combat/cast, hit/recovery/death and an isolated playable arena through final
+Warrior quality review. Southeast pilot517ed70 is released. Public checkpoint1
+covers all movement assets and the showcase; checkpoint2 covers combat/hit/death
+in the disposable arena; checkpoint3 is the final visual/performance candidate.
+Verify each public release before advancing to the next public deliverable.
 Reuse the approved Blender4.5.3 model, rig, materials, lighting and camera. Preserve
 Southeast pixels, production sprites, movement physics and unrelated local edits.
-No combat animations, other classes, monsters or AI-generated sheets/mirroring.
+No live activation, balancing changes, other classes, monsters or new campaign.
+No new AI-generated sheets or mirrored asymmetric geometry.
+
+## Extended movement candidate — checkpoint1
+
+All eight directions now have idle8 / walk16 / run16: **320 poses /24 clips**.
+The seven additional views rotate the complete approved geometry/armature; camera,
+lights, materials and animation keys remain unchanged. Approved SE pixels are
+copied exactly, without rendering or modifying its original files. The original
+Blender sources are intact. All assets remain developer-only, unapproved for live
+adoption. No combat clips have been authored yet.
+
+All160 cardinal renders were completed before the120 diagonal renders. Full
+measured silhouettes fit the original256px render window. A shared **eight-row
+bottom extension** produces256×264 export cells; original pixels stay at the same
+coordinates, root128,210 and display scale0.5. This is3.125% extra decoded space,
+not a scale/camera/pose adjustment. South's minimum alpha margin is now12px.
+The original SE eight-pixel validator remains unchanged. The new validator uses
+the same eight-pixel edge policy against the new window, source/clip hashes,
+rig/root invariants, exactly rotated planted contacts, contained weapon geometry,
+transparent black RGB/fringes, ordered unique pixels and loop-seam checks.
+
+Eight2048×1320 PNGs total7,938,193bytes /82.5MiB decoded (10.3125MiB/view).
+These are texture payloads, not total browser/GPU memory. Assets and metadata:
+`public/dev/warrior-directions`; authoring source:
+`assets/source/q3/warrior-directions/render.py`. No placeholders or external art
+were introduced; provenance records source rig, renderer, packager and approved
+SE atlas fingerprints. Frame names retain action/direction/two-digit index.
+
+Showcase route: `?developer=1&warriorPilot=1&warriorDirections=1`.
+Direction/state selection, simultaneous gameplay-scale clips, pause/rate/stepping,
+root/foot guides, dark/light backgrounds and shipped comparison are available.
+The Phaser stage selects facing from the existing walker, uses actual-distance
+phase, retains walk/run speeds and collision sliding, follows the root and accepts
+keyboard or focused standard virtual-controller input. Source switching remains
+isolated; normal entry does not fetch these assets, and no save storage is opened.
+
+All additional280 poses and light/dark browser captures were inspected. No cell
+clipping or distracting matte halos observed. Sculptural finish, brisk stylized
+cadence,16-pose sampling and quantized eight-way facing remain review limitations.
+Timed native playback strips cover all24 loops; raw diagnostics and measurements
+are retained under `/private/tmp/hollowbane-warrior-cardinals`. User art/quality
+approval and physical-controller verification remain false.
+
+Local checks:12 focused asset/negative/loop units, all8 focused Chromium cases
+(four existing SE /four new directions), TypeScript/build, affected ESLint and
+complete asset validation pass. The first new wall assertion incorrectly assumed
+a rectangular collider; it was corrected to assert the unchanged expanded ellipse,
+continued sliding and fixed camera-relative root. No physics/tolerance change.
+No unrelated loot/campaign suite was run locally. Existing risk classification
+still controls mandatory release CI; no tier or acceptance threshold is lowered.
+
+Native visible M4/Metal,1280×800/DPR1, full P2 seed42/layout2 peaceful forest,
+same warmed10×36-tick legs and start(-14,-10.5),359 frames/input/variant:
+
+| Input              | Baseline p50/p95/p99 ms | Candidate p50/p95/p99 ms | >25ms |
+| ------------------ | ----------------------- | ------------------------ | ----- |
+| Keyboard           | 16.7/17.1/18.4          | 16.7/18.0/18.6           | 0 /0  |
+| Virtual controller | 16.7/17.1/18.4          | 16.7/17.1/18.5           | 0 /0  |
+
+All eight candidate textures load via the **test driver only**; production still
+draws shipped sprites normally. Zero zero/double ticks, uniform3.10455px camera
+steps and zero player-relative camera drift in all cohorts. Longest18.7ms. This
+single matched pair is insufficient for an improvement/regression estimate;
+cold loading, long sessions and physical input remain unmeasured. The tool now
+accepts both the earlier SE manifest and the new directional manifest.
+
+Reproduce (do not rerender completed/approved poses unnecessarily):
+
+```sh
+"$BLENDER_BIN" --background --python-exit-code 1 \
+  --python assets/source/q3/warrior-directions/render.py -- /private/tmp/warrior-views n e s w
+"$BLENDER_BIN" --background --python-exit-code 1 \
+  --python assets/source/q3/warrior-directions/render.py -- /private/tmp/warrior-views ne sw nw
+node scripts/package-warrior-directions.mjs /private/tmp/warrior-views n e s w ne se sw nw
+node scripts/validate-warrior-directions.mjs
+```
+
+Required CI/Pages/hosted acceptance is pending. Do not begin combat production
+before checkpoint1's exact release is verified. Final Warrior quality gate has
+not been reached. Concise machine evidence: [movement-review.json](movement-review.json).
 
 ## Cardinal renderer checkpoint
 
@@ -25,9 +107,7 @@ all rendered bounds before export; do not silently weaken the SE validator or
 change approved framing. Conservative South/West bounds alone overestimate the
 visible silhouette. Source and samples are in
 `/private/tmp/hollowbane-warrior-cardinals`; no runtime assets/preview changed.
-Next: complete cardinal rendering, settle padding with measured full-batch bounds,
-extend existing Sharp packaging/validation, inspect actual-scale motion and release
-batch A. Diagonal production and new-set Mac measurements have not started.
+This historical source checkpoint is superseded by the extended candidate above.
 
 ## Release checkpoints
 
@@ -40,9 +120,10 @@ batch A. Diagonal production and new-set Mac measurements have not started.
    [CI40237453552](https://github.com/tobisen/hollowbane/actions/runs/40237453552).
    Exact SHA rechecked: required CI, Pages, hosted smoke and release acceptance
    succeed. User confirms hosted preview verification. Idle8/walk16/run16 retained.
-3. **B:** N/NE/E/SE/S/SW/W/NW idle/walk/run, isolated comparative showcase and
+3. **Checkpoint1:** N/NE/E/SE/S/SW/W/NW idle/walk/run, isolated comparative showcase and
    movement preview; commit/push, required CI, Pages and hosted verification.
-   Stop at movement quality review; production adoption is separate.
+   Then the extended request permits combat-preview production. Production adoption
+   remains separate; stop at the final Warrior quality gate.
 
 Retain the same model, rig, camera elevation, lighting and uniform frame window.
 Validate unique ordered frame names/counts, atlas references, alpha margins,
@@ -218,4 +299,5 @@ Raw profiles, video, temporal strips and browser captures:
 `/private/tmp/hollowbane-warrior-cadence`. Concise record:
 [cadence-review.json](cadence-review.json). Commit/push and exact required CI,
 Pages and independent hosted preview verification must complete before this
-candidate is called released. Stop at Southeast quality review; do not begin B.
+candidate is called released. This historical Southeast stop is superseded by the
+extended request and the verified517ed70 prerequisite above.

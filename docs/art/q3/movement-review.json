@@ -1,0 +1,253 @@
+{
+  "date": "2026-10-26",
+  "scope": "Checkpoint1 eight-direction movement/showcase; extended combat arena remains pending",
+  "userQualityApproval": false,
+  "productionReplacement": false,
+  "combatAnimations": false,
+  "validation": {
+    "n": {
+      "frames": 40,
+      "bytes": 953998,
+      "decodedBytes": 10813440,
+      "minimumMargin": 20
+    },
+    "e": {
+      "frames": 40,
+      "bytes": 846125,
+      "decodedBytes": 10813440,
+      "minimumMargin": 19
+    },
+    "s": {
+      "frames": 40,
+      "bytes": 1108377,
+      "decodedBytes": 10813440,
+      "minimumMargin": 12
+    },
+    "w": {
+      "frames": 40,
+      "bytes": 883956,
+      "decodedBytes": 10813440,
+      "minimumMargin": 16
+    },
+    "ne": {
+      "frames": 40,
+      "bytes": 942210,
+      "decodedBytes": 10813440,
+      "minimumMargin": 20
+    },
+    "se": {
+      "frames": 40,
+      "bytes": 1133216,
+      "decodedBytes": 10813440,
+      "minimumMargin": 16
+    },
+    "sw": {
+      "frames": 40,
+      "bytes": 1095161,
+      "decodedBytes": 10813440,
+      "minimumMargin": 16
+    },
+    "nw": {
+      "frames": 40,
+      "bytes": 975150,
+      "decodedBytes": 10813440,
+      "minimumMargin": 20
+    }
+  },
+  "nativePerformance": {
+    "method": "One matched P2 full seed42/layout2 1280x800 DPR1 warmed native Metal pair; test-driver-only eight-atlas swap, no concurrent browser tests or builds",
+    "raw": "/private/tmp/hollowbane-warrior-cardinals",
+    "baseline": [
+      {
+        "quality": "full",
+        "input": "keyboard",
+        "conditions": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+          "renderWidth": 1280,
+          "renderHeight": 800
+        },
+        "start": {
+          "x": -14,
+          "y": -10.5
+        },
+        "count": 359,
+        "frameMs": {
+          "p50": 16.699999999999818,
+          "p95": 17.099999999998545,
+          "p99": 18.399999999999636,
+          "max": 18.700000000000728
+        },
+        "over25": 0,
+        "ticksPerFrame": {
+          "0": 0,
+          "1": 358,
+          "2": 0
+        },
+        "cameraDeltaCss": {
+          "p50": 3.104552322799531,
+          "p95": 3.104552322799531,
+          "p99": 3.104552322799531,
+          "max": 3.104552322799531
+        },
+        "playerScreenDeltaCss": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        }
+      },
+      {
+        "quality": "full",
+        "input": "controller",
+        "conditions": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+          "renderWidth": 1280,
+          "renderHeight": 800
+        },
+        "start": {
+          "x": -14,
+          "y": -10.5
+        },
+        "count": 359,
+        "frameMs": {
+          "p50": 16.699999999999818,
+          "p95": 17.100000000000364,
+          "p99": 18.400000000001455,
+          "max": 18.5
+        },
+        "over25": 0,
+        "ticksPerFrame": {
+          "0": 0,
+          "1": 358,
+          "2": 0
+        },
+        "cameraDeltaCss": {
+          "p50": 3.104552322799531,
+          "p95": 3.104552322799531,
+          "p99": 3.104552322799531,
+          "max": 3.104552322799531
+        },
+        "playerScreenDeltaCss": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        }
+      }
+    ],
+    "candidate": [
+      {
+        "quality": "full",
+        "input": "keyboard",
+        "conditions": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+          "renderWidth": 1280,
+          "renderHeight": 800
+        },
+        "start": {
+          "x": -14,
+          "y": -10.5
+        },
+        "count": 359,
+        "frameMs": {
+          "p50": 16.69999999999891,
+          "p95": 18,
+          "p99": 18.600000000000364,
+          "max": 18.700000000000728
+        },
+        "over25": 0,
+        "ticksPerFrame": {
+          "0": 0,
+          "1": 358,
+          "2": 0
+        },
+        "cameraDeltaCss": {
+          "p50": 3.104552322799531,
+          "p95": 3.104552322799531,
+          "p99": 3.104552322799531,
+          "max": 3.104552322799531
+        },
+        "playerScreenDeltaCss": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        }
+      },
+      {
+        "quality": "full",
+        "input": "controller",
+        "conditions": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+          "renderWidth": 1280,
+          "renderHeight": 800
+        },
+        "start": {
+          "x": -14,
+          "y": -10.5
+        },
+        "count": 359,
+        "frameMs": {
+          "p50": 16.699999999999818,
+          "p95": 17.100000000000364,
+          "p99": 18.5,
+          "max": 18.699999999999818
+        },
+        "over25": 0,
+        "ticksPerFrame": {
+          "0": 0,
+          "1": 358,
+          "2": 0
+        },
+        "cameraDeltaCss": {
+          "p50": 3.104552322799531,
+          "p95": 3.104552322799531,
+          "p99": 3.104552322799531,
+          "max": 3.104552322799531
+        },
+        "playerScreenDeltaCss": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        }
+      }
+    ],
+    "limitations": [
+      "single matched pair; no improvement/regression estimate",
+      "cold loading and long sessions unmeasured",
+      "no physical controller evidence"
+    ],
+    "browser": "156.0.8078.4"
+  },
+  "checks": {
+    "focusedAssetUnits": 12,
+    "chromiumCases": 8,
+    "typecheck": true,
+    "affectedLint": true,
+    "assetValidation": true,
+    "build": true,
+    "fullLocalRegression": false
+  },
+  "release": {
+    "candidateSha": null,
+    "requiredCi": "pending",
+    "pages": "pending",
+    "hosted": "pending",
+    "verifiedDeployedSha": "517ed7013e393cf62770a12dea4415a812683638"
+  },
+  "resume": "Verify exact checkpoint1 CI/Pages, sealed/local/hosted bytes and directional hosted cases before combat authoring. Sources and completed frames are retained in /private/tmp/hollowbane-warrior-cardinals/render; preserve SE and successful renders.",
+  "visualReview": {
+    "allPoses": true,
+    "darkLight": true,
+    "timedNativeLoops": 24,
+    "samplesPerLoop": 12,
+    "source": "actual-motion.json / actual-{idle,walk,run}.png in raw directory",
+    "limitations": [
+      "sculptural finish",
+      "brisk stylized cadence",
+      "16-pose movement sampling",
+      "eight-way facing quantization"
+    ]
+  }
+}

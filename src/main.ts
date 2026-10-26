@@ -29,9 +29,12 @@ if (invalidCharacterRoute) {
   query.get("developer") === "1" &&
   query.get("warriorPilot") === "1"
 ) {
-  if (query.get("warriorCadence") === "1") {
+  if (
+    query.get("warriorCadence") === "1" ||
+    query.get("warriorDirections") === "1"
+  ) {
     const { startWarriorCadence } = await import("./rendering/warrior-cadence");
-    await startWarriorCadence();
+    await startWarriorCadence(query.get("warriorDirections") === "1");
   } else {
     const { startWarriorPilot } = await import("./rendering/warrior-pilot");
     await startWarriorPilot();

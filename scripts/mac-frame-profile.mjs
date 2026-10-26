@@ -85,10 +85,17 @@ try {
             scene.load.once("loaderror", () =>
               reject(Error("Profiling atlas load failed")),
             );
-            scene.load.spritesheet("profile-warrior-cadence", url, {
-              frameWidth: 256,
-              frameHeight: 256,
-            });
+            const sources = metadata.views
+              ? Object.entries(metadata.views).map(([direction, view]) => [
+                  direction,
+                  new URL(view.atlas, url).href,
+                ])
+              : [["cadence", url]];
+            for (const [direction, image] of sources)
+              scene.load.spritesheet(`profile-warrior-${direction}`, image, {
+                frameWidth: 256,
+                frameHeight: metadata.cellHeight ?? 256,
+              });
             scene.load.start();
           });
           window.profileWarriorSkin = metadata;
@@ -123,10 +130,12 @@ try {
             scene.sprites
               .get(0)
               .setTexture(
-                "profile-warrior-cadence",
+                skin.views
+                  ? `profile-warrior-${["s", "sw", "w", "nw", "n", "ne", "e", "se"][walker.direction]}`
+                  : "profile-warrior-cadence",
                 clip.start + (Math.floor(phase * clip.count) % clip.count),
               )
-              .setOrigin(0.5, 210 / 256)
+              .setOrigin(0.5, 210 / (skin.cellHeight ?? 256))
               .setScale(0.5)
               .setAngle(0)
               .setPosition(
