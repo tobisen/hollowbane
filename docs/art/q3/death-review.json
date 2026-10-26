@@ -276,10 +276,15 @@
     "totalGpuMemoryMeasured": false
   },
   "release": {
-    "status": "local candidate verified; commit/push/exact CI/Pages/hosted pending",
+    "status": "a072526 CI40409500741 failed STATUS formatting; format-only successor pending; no runtime changes",
     "latestVerifiedDeployed": "066527e9e14c76f22d68588797780774e59f69f6",
     "testedBuildFiles": 110,
-    "next": "Commit/push coherent Release B, require exact risk-based CI/Pages and hosted byte/preview acceptance before Phase5 arena"
+    "next": "Verify format-only successor exact Full CI/Pages/hosted and110-file identity before arena",
+    "runtimeSha": "a0725264da6c4d340abc0f4126784c0fc7989419",
+    "ciRun": 40409500741,
+    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40409500741",
+    "failedRuntimeSha": "a0725264da6c4d340abc0f4126784c0fc7989419",
+    "failedCiRun": 40409500741
   },
   "rawEvidence": "/private/tmp/hollowbane-warrior-death"
 }

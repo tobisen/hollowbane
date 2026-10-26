@@ -1,14 +1,19 @@
+## Overnight Warrior — Release B static repair (2026-10-26)
+
+- Candidate a0725264da6c4d340abc0f4126784c0fc7989419 / CI40409500741 failed only STATUS.md formatting after TypeScript/lint passed. Full/Pages/hosted skipped; release is not accepted.
+- Corrected three newly added Markdown bullets. No runtime/art/timing changes; reuse all110 reviewed/tested files and retained native evidence. Successor exact Full CI/Pages/hosted and public-byte checks are required before arena integration. Last verified deployed remains066527e9e14c76f22d68588797780774e59f69f6.
+
 ## Overnight Warrior — Release B local candidate (2026-10-26)
 
 - Phases1–3 locally verified: existing two abilities16 clips/192 poses, guarded hit8/48, death8/128. Total current candidate72 clips/880 poses. All approved movement/attack pixels, rig/material/camera, saves/mechanics and live graphics preserved.
 - Death3,401,111PNG bytes/98MiB decoded; all sets23,458,595PNG bytes/349.25MiB base RGBA, not total GPU memory. Fixed448px/root224,274 preserves model scale; grounded collapse/relaxed arms/heels/held terminal audited. No invented heavy stun.
--39 focused units/assets/22 Chromium, TypeScript/build, affected lint/format/assets pass. All128 death poses/light-dark and eight1× native strips reviewed;16 native captures end dead/pose15 with zero skill effects. Corrected diagnostic shipped recoil is browser-covered and reprofiled. Candidate M4/Metal death p5016.6–16.7/p9518.6–18.7/p9918.7ms, zero>25ms/drift. No improvement/cold-load/physical/full-forest claim.
+- 39 focused units/assets/22 Chromium, TypeScript/build, affected lint/format/assets pass. All128 death poses/light-dark and eight1× native strips reviewed;16 native captures end dead/pose15 with zero skill effects. Corrected diagnostic shipped recoil is browser-covered and reprofiled. Candidate M4/Metal death p5016.6–16.7/p9518.6–18.7/p9918.7ms, zero>25ms/drift. No improvement/cold-load/physical/full-forest claim.
 - Release B local candidate; exact CI/Pages/hosted PENDING. Last verified deployed066527e9e14c76f22d68588797780774e59f69f6. Do not integrate arena before B acceptance. Entire overnight assignment remains incomplete; resume docs/art/q3/warrior-combat.md, death-review.json and /private/tmp/hollowbane-warrior-death (110-file tested inventory). Preserve renders/unrelated edits.
 
 ## Overnight Warrior — Phase 2 reactions local increment (2026-10-26)
 
 - Phase1db03685 preserved. Phase2 adds8 directional guarded-hit clips/48 poses on unchanged approved rig;1,381,134bytes/18.75MiB. Total candidate251.25MiB base RGBA; preview176.25MiB, not total GPU memory. No separate heavier player stun state exists.
--13 focused units/11 Chromium, TypeScript/build, affected lint/format/assets pass. Actual hits interrupt weapon/ability windup; guard prevents restart; original recovery/idle release retained. All poses/light-dark and16 native1×/.25× strips reviewed; restrained recoil remains.
+- 13 focused units/11 Chromium, TypeScript/build, affected lint/format/assets pass. Actual hits interrupt weapon/ability windup; guard prevents restart; original recovery/idle release retained. All poses/light-dark and16 native1×/.25× strips reviewed; restrained recoil remains.
 - Matched isolated M4/Metal candidate p5016.7/p9518.1–18.6/p99≤18.7ms; zero>25ms/drift. No improvement/full-forest/cold-load/physical claim.
 - Verified local increment only; Release B unpublished. Continue Phase3 death, then B exact CI/Pages/hosted before playable arena/C. Last verified deployed066527e9e14c76f22d68588797780774e59f69f6. Evidence docs/art/q3/reaction-review.json, warrior-combat.md and /private/tmp/hollowbane-warrior-reactions. Preserve successful renders and unrelated edits.
 
@@ -16,7 +21,7 @@
 
 - Release A066527e /CI40386255337 independently verified: required Full/Pages/hosted acceptance, all80 published hashes and two hosted preview cases pass. Last verified deployed remains066527e9e14c76f22d68588797780774e59f69f6.
 - Phase1: real Sundering Fan/Oath Echo,16 clips/192 poses; unchanged approved Blender4.5.3 rig/camera/materials/live sprites. Eight atlases5,368,546bytes/75MiB; total candidate movement+attacks+abilities232.5MiB. Preview resident payload157.5MiB, not total GPU memory.
--22 focused units/12 Chromium, TypeScript/build, affected lint/format/assets pass; all poses/dark-light and representative native timed strips reviewed.32 native1×/.25× captures each return idle with one effect. Candidate M4/Metal p5016.7/p9517.0–17.2/p9917.6ms; zero>25ms/drift. No improvement/cold-load/physical claim.
+- 22 focused units/12 Chromium, TypeScript/build, affected lint/format/assets pass; all poses/dark-light and representative native timed strips reviewed.32 native1×/.25× captures each return idle with one effect. Candidate M4/Metal p5016.7/p9517.0–17.2/p9917.6ms; zero>25ms/drift. No improvement/cold-load/physical claim.
 - Local verified increment; Release B unpublished. Continue authorized Phase2 shared guarded hitstun, then Phase3 death; B exact release before playable arena/C. Restrained weight transfer/rapid activation/sculptural finish remain; no final art approval. Evidence docs/art/q3/warrior-combat.md, ability-review.json and /private/tmp/hollowbane-warrior-abilities. Preserve renders/unrelated edits.
 
 ## Extended Warrior — Release A local candidate (2026-10-26)

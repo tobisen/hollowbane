@@ -72,8 +72,12 @@ shipped p5016.7/p9518.7/p9918.7ms; candidate p5016.6–16.7/p9518.6–18.7/p9918
 Longest18.8ms, zero>25ms/zero root-camera drift. Warmed preview-ready883ms is one
 observation, not a cold-load estimate. No improvement/full-forest/physical/GPU-memory
 claim. Evidence `death-review.json` and retained110-file tested local inventory.
-Release B local verification is complete; exact commit/push/CI/Pages/hosted release
-acceptance is next. Do not integrate the arena before that public gate passes.
+Release B candidate **a0725264da6c4d340abc0f4126784c0fc7989419** is committed/pushed.
+[Exact CI40409500741](https://github.com/tobisen/hollowbane/actions/runs/40409500741)
+failed only STATUS.md formatting after TypeScript/lint passed; Full/Pages/hosted
+were skipped. Three newly added Markdown bullets are repaired in the successor.
+Runtime/art and all110 reviewed/tested bytes remain unchanged. Require the successor
+exact Full/Pages/hosted acceptance before arena integration.
 
 Phase2 is also locally verified: **eight guarded-hit clips /48 poses**, original
 rig/camera/materials, fixed320px/root160,274 and exact approved idle recovery
