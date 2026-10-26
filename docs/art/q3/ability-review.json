@@ -396,10 +396,18 @@
     "physicalControllerVerified": false
   },
   "release": {
-    "status": "local ability increment; Release B not published; hit/death and arena remain",
-    "latestVerifiedDeployed": "066527e9e14c76f22d68588797780774e59f69f6",
+    "status": "Release B verified: exact Full CI, Pages, hosted acceptance and independent110-file/four-case public checks",
+    "latestVerifiedDeployed": "cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16",
     "testedBuildFiles": 90,
-    "next": "Phase 2 shared guarded hitstun clips and interruption tests; then Phase 3 death before Release B"
+    "next": "Authorized Phase5 isolated playable Warrior arena; then polish/final performance and exact Release C gate; entire overnight objective remains incomplete",
+    "runtimeSha": "cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16",
+    "ciRun": 40409917180,
+    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40409917180",
+    "requiredCi": "pass",
+    "pages": "pass",
+    "hostedAcceptance": "pass",
+    "publicFilesMatched": 110,
+    "independentHostedCases": 4
   },
   "rawEvidence": "/private/tmp/hollowbane-warrior-abilities"
 }

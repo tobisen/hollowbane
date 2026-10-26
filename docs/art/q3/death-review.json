@@ -276,15 +276,28 @@
     "totalGpuMemoryMeasured": false
   },
   "release": {
-    "status": "a072526 CI40409500741 failed STATUS formatting; format-only successor pending; no runtime changes",
-    "latestVerifiedDeployed": "066527e9e14c76f22d68588797780774e59f69f6",
+    "status": "Release B verified: exact Full CI, Pages, hosted acceptance and independent110-file/four-case public checks",
+    "latestVerifiedDeployed": "cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16",
     "testedBuildFiles": 110,
-    "next": "Verify format-only successor exact Full CI/Pages/hosted and110-file identity before arena",
-    "runtimeSha": "a0725264da6c4d340abc0f4126784c0fc7989419",
-    "ciRun": 40409500741,
-    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40409500741",
+    "next": "Authorized Phase5 isolated playable Warrior arena; then polish/final performance and exact Release C gate; entire overnight objective remains incomplete",
+    "runtimeSha": "cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16",
+    "ciRun": 40409917180,
+    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40409917180",
     "failedRuntimeSha": "a0725264da6c4d340abc0f4126784c0fc7989419",
-    "failedCiRun": 40409500741
+    "failedCiRun": 40409500741,
+    "fast": "pass",
+    "fullUnitsValidatorsTooling": "pass",
+    "requiredCompatibility": "pass",
+    "chromiumShards": "all four pass",
+    "sealedCiFilesMatched": 110,
+    "pages": "pass",
+    "hostedAcceptance": "pass",
+    "requiredCi": "pass",
+    "publicFilesMatched": 110,
+    "independentHostedCases": 4,
+    "overnightComplete": false,
+    "arenaStarted": false,
+    "capacityCheckpoint": true
   },
   "rawEvidence": "/private/tmp/hollowbane-warrior-death"
 }

@@ -1,3 +1,10 @@
+## Overnight Warrior — Release B VERIFIED; arena next (2026-10-26)
+
+- Verified deployed cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16 / CI40409917180: Full units/tooling, all four Chromium shards, required compatibility, Pages, hosted and Release acceptance PASS. Local/sealed/public110-file hashes match; four independent hosted Warrior cases pass and captures reviewed. Earlier a072526 status-format failure is repaired and retained as history.
+- Phases1–4 delivered:32 new clips/368 poses; total candidate72 clips/880 poses. Existing two Warrior abilities, shared guarded hitstun and grounded non-looping death; no new mechanics or live-graphics/save change. All26 earlier developer asset files preserved byte for byte.
+- Total candidate23,458,595PNG bytes/349.25MiB base RGBA; death preview resident274.25MiB, not GPU-memory measurement.39 focused units/assets,22 local Chromium and native M4/Metal death p9518.6–18.7ms, zero>25ms/drift. Sculptural finish, rapid existing motions, stiff cloak and foreshortening remain; no final user art/physical-controller/full-forest claim.
+- Session-capacity checkpoint after public B acceptance. Entire overnight objective INCOMPLETE: playable arena has not begun; Phase5 integration, Phase6 polish, Phase7 final performance and Release C remain authorized. Next: combine real disposable combat/skill fixture with movement-distance animation/controller input and all five atlas sets; preserve normal gameplay. Resume docs/art/q3/warrior-combat.md and death-review.json; raw /private/tmp/hollowbane-warrior-death. Do not rerender accepted assets unnecessarily.
+
 ## Overnight Warrior — Release B static repair (2026-10-26)
 
 - Candidate a0725264da6c4d340abc0f4126784c0fc7989419 / CI40409500741 failed only STATUS.md formatting after TypeScript/lint passed. Full/Pages/hosted skipped; release is not accepted.

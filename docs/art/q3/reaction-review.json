@@ -218,9 +218,17 @@
     "baselineLimitation": "Initial diagnostic hit events were missed by shipped recoil; retained absolute candidate data, superseded paired comparison by Release B corrected repeat"
   },
   "release": {
-    "status": "local reaction increment; Release B not published",
-    "latestVerifiedDeployed": "066527e9e14c76f22d68588797780774e59f69f6",
-    "next": "Phase3 death poses/terminal state, then coherent exact Release B gate before arena"
+    "status": "Release B verified: exact Full CI, Pages, hosted acceptance and independent110-file/four-case public checks",
+    "latestVerifiedDeployed": "cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16",
+    "next": "Authorized Phase5 isolated playable Warrior arena; then polish/final performance and exact Release C gate; entire overnight objective remains incomplete",
+    "runtimeSha": "cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16",
+    "ciRun": 40409917180,
+    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40409917180",
+    "requiredCi": "pass",
+    "pages": "pass",
+    "hostedAcceptance": "pass",
+    "publicFilesMatched": 110,
+    "independentHostedCases": 4
   },
   "rawEvidence": "/private/tmp/hollowbane-warrior-reactions",
   "correctedReleaseBRepeat": {

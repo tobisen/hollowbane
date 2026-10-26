@@ -8,7 +8,47 @@ acceptance before advancing. Preserve simulation, saves, balance, Phaser4.2.1,
 the approved source rig, live graphics and unrelated edits. No other class art
 or normal-game sprite activation is authorized.
 
-## Overnight continuation — Release B local candidate
+## Release B — VERIFIED; Phase5 arena next
+
+Verified deployed **cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16** /
+[CI40409917180](https://github.com/tobisen/hollowbane/actions/runs/40409917180):
+required Full unit/validators/tooling, all four Chromium shards, required
+compatibility, Pages, hosted exact-SHA flow and Release acceptance PASS.
+Independent sealed/local/public verification matches **all110 reviewed/tested
+files byte for byte**. All26 pre-existing developer asset files also match Release
+A exactly. Four independent hosted cases pass: actual two-skill activation/resource/
+cooldown semantics, interrupted weapon/ability hit recovery with shipped recoil,
+cast-to-death/held corpse/reset, and normal-entry isolation. Hosted activation,
+interruption and light corpse captures were inspected.
+
+[Release B ability/reaction/death showcase](https://tobisen.github.io/hollowbane/?developer=1&warriorPilot=1&warriorCombat=1&warriorAbilities=1&warriorDeath=1).
+Primary/secondary remain on the attack route; movement on its existing showcase.
+This is **not yet the complete playable arena**, final Warrior art approval or
+production adoption. Phases1–4 are delivered; Phases5–8 remain incomplete and
+authorized. Session-capacity checkpoint: the verified B release is safe to resume
+without repeating rendering, profiling or deployment. No execution continues
+after this session ends.
+
+Next concrete implementation: integrate an isolated developer arena using owned
+`createCombat`/`createSkills` state, existing `commandCombat`/skill intents,
+`controllerInput`, collision navigation and `warrior-cadence.ts` displacement-phase
+mapping. Compose all five atlas sets with the existing pure attack/ability/hit/
+death selectors; observe every real simulation tick. Keep per-frame diagnostics,
+old/new toggle, roots/actual feet, reset and representative existing hostile actors.
+No normal saves/progression/quests/inventory owner. Verify movement/controller,
+interruption, fast facing changes and terminal states, then matched native arena
+performance before exact Release C. Handle presentation transitions without
+adding gameplay clocks or animation callbacks. Existing349.25MiB texture payload
+must be measured in the complete arena before any targeted optimization.
+
+Raw/seal/hosted evidence: `/private/tmp/hollowbane-warrior-death`,
+`/private/tmp/hollowbane-warrior-release-b-sealed`,
+`/private/tmp/hollowbane-warrior-release-b-hosted.sh`. Machine release fields in
+`ability-review.json`, `reaction-review.json` and `death-review.json` name the
+verified B runtime. The local-production/failure chronology below is retained;
+its pending gate notes are superseded by this completed acceptance.
+
+## Release B production and review history
 
 Phase3 adds **eight death clips /128 poses**; total candidate inventory is now
 **72 clips /880 poses** across movement, two attacks, two existing abilities,
@@ -77,7 +117,10 @@ Release B candidate **a0725264da6c4d340abc0f4126784c0fc7989419** is committed/pu
 failed only STATUS.md formatting after TypeScript/lint passed; Full/Pages/hosted
 were skipped. Three newly added Markdown bullets are repaired in the successor.
 Runtime/art and all110 reviewed/tested bytes remain unchanged. Require the successor
-exact Full/Pages/hosted acceptance before arena integration.
+exact Full/Pages/hosted acceptance before arena integration. Successor
+**cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16** is pushed;
+[CI40409917180](https://github.com/tobisen/hollowbane/actions/runs/40409917180)
+is in progress. Its local seal matches all110 reviewed/tested files.
 
 Phase2 is also locally verified: **eight guarded-hit clips /48 poses**, original
 rig/camera/materials, fixed320px/root160,274 and exact approved idle recovery
