@@ -1,12 +1,33 @@
 # Q3-A Warrior movement — DBL-023/024/025/026
 
-2026-10-25. Current assignment stops at the **Southeast idle / walk / run quality
-gate (A)**. Eight-direction production (B) requires a later request. Use the
-accepted Blender4.5.3 rig and Python/Sharp pipeline. Preserve
-the original sources, refined materials, production sprites, movement speeds and
-simulation timing. No combat clips, other classes, monsters, audio or environment
-production. This supersedes the earlier complete-animation scope in the recovery
-notes. No AI-generated sheets or mirrored asymmetric equipment.
+2026-10-26. The user authorizes eight-direction idle/walk/run production through
+movement quality review. Southeast pilot517ed70 is released. Internal batch A
+covers the remaining cardinals N/E/S/W; batch B covers NE/SW/NW and the complete
+isolated showcase. Verify each public release before advancing to the next batch.
+Reuse the approved Blender4.5.3 model, rig, materials, lighting and camera. Preserve
+Southeast pixels, production sprites, movement physics and unrelated local edits.
+No combat animations, other classes, monsters or AI-generated sheets/mirroring.
+
+## Cardinal renderer checkpoint
+
+The original approved blend is opened directly; all135 meshes and the armature
+rotate together about the fixed root. Camera/lights and motion keys stay intact.
+`assets/source/q3/warrior-directions/render.py` excludes SE deliberately. Direction
+angles N135/E45/S315/W225 degrees project to the expected screen headings.
+All160 cardinal pose records pass root, ankle and bone-length invariants. Native
+sample renders cover one run pose per direction; this is not a completed atlas
+batch or full motion review.
+
+South run07's actual256px alpha bounds are77,39–197,251 after the existing2:1
+Sharp reduction and alpha>4 threshold: **four pixels of bottom clearance**. This
+is contained but tighter than the existing SE eight-pixel audit margin. Review
+all rendered bounds before export; do not silently weaken the SE validator or
+change approved framing. Conservative South/West bounds alone overestimate the
+visible silhouette. Source and samples are in
+`/private/tmp/hollowbane-warrior-cardinals`; no runtime assets/preview changed.
+Next: complete cardinal rendering, settle padding with measured full-batch bounds,
+extend existing Sharp packaging/validation, inspect actual-scale motion and release
+batch A. Diagonal production and new-set Mac measurements have not started.
 
 ## Release checkpoints
 
@@ -15,9 +36,10 @@ notes. No AI-generated sheets or mirrored asymmetric equipment.
    [CI40233360148](https://github.com/tobisen/hollowbane/actions/runs/40233360148).
    Classifier-selected Full, Pages, hosted acceptance and independent hosted
    animation verification all pass. Checkpoint A may now begin.
-2. **A:** reviewed idle/walk cadence and distinct southeast run pilot. Verify at
-   gameplay and increased zoom, actual walk3/run5.4 world units per second.
-   Commit/push, required CI, Pages and hosted preview must pass before B.
+2. **Southeast pilot passed:** `517ed7013e393cf62770a12dea4415a812683638`,
+   [CI40237453552](https://github.com/tobisen/hollowbane/actions/runs/40237453552).
+   Exact SHA rechecked: required CI, Pages, hosted smoke and release acceptance
+   succeed. User confirms hosted preview verification. Idle8/walk16/run16 retained.
 3. **B:** N/NE/E/SE/S/SW/W/NW idle/walk/run, isolated comparative showcase and
    movement preview; commit/push, required CI, Pages and hosted verification.
    Stop at movement quality review; production adoption is separate.

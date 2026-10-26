@@ -1,3 +1,10 @@
+## Q3-A eight-direction Warrior — cardinal source checkpoint (2026-10-26)
+
+- Southeast517ed7013e393cf62770a12dea4415a812683638 / exact CI40237453552 rechecked green, including Pages/hosted acceptance; user confirms hosted preview. New authorization: cardinal batch A, then diagonal/showcase batch B through movement review. Production graphics/physics unchanged;474bbdd preserved.
+- New renderer reuses approved blend, all135 meshes/15 bones/materials/motion/camera/lights; rotates complete geometry without mirroring. All160 cardinal pose records pass root/ankle/bone audits; four native run-pose samples rendered/visually inspected. No complete new sequences exported yet. SE pixels untouched.
+- South run07 has four-pixel actual bottom clearance (alpha>4 after existing2:1 downsample), tighter than SE eight-pixel policy. No clipping in inspected sample; full-batch padding/alpha review remains required before export. No validator weakened. Python compilation/native Blender4.5.3 checks pass; no TS/browser changes, no new-set Mac performance or release claim.
+- Safe session checkpoint: complete cardinal rendering/packaging/validation and actual-scale motion review before public batch A release; verify its CI/Pages/hosted gate before diagonals. Source/resume docs/art/q3/warrior-movement.md; native samples/audit metadata /private/tmp/hollowbane-warrior-cardinals. Entire eight-direction objective remains incomplete. No combat/other classes or production activation.
+
 ## Q3-A Southeast cadence/run — local candidate (2026-10-25)
 
 - Checkpoint A only: original approved v2 Blender4.5.3 source reused unchanged;8 idle/16 new walk/16 distinct run. Walk2.88cycles/s at3 world/s, run3.42 at5.4; planted-velocity seams, alternating support, run flight/lean/free-arm swing. No physics/simulation/live sprite changes;474bbdd preserved. No eight-direction/combat production.
