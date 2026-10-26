@@ -1,3 +1,10 @@
+## Q3-A Warrior combat — Checkpoint A RELEASE VERIFIED (2026-10-26)
+
+- Runtimee498ce6fc16412a578f46e67735d2d61bbac3e51 /CI40366831084: required Full, Pages, hosted and Release acceptance PASS. Sealed/local/public70-file byte match and three hosted attack-preview cases pass; captures reviewed.
+- Southeast primary/secondary:24 poses/two clips. Idle leg snap corrected;18 focused units/assets,11 local Chromium, TypeScript/lint/assets/build pass. Atlas726924bytes/6MiB;14px margin. Live sprites, saves and combat timing preserved.
+- Native M4/Metal: actual-preview candidate p9518.2–18.5ms, zero>25ms/drift; matched P2 resident-atlas checks pass. Restrained torso motion/rapid impact remain limitations; no improvement or physical/GPU-memory claim.
+- STOP at completed A. No other directions/states or live adoption. Evidence docs/art/q3/warrior-combat.md and combat-review.json. Preserve unrelated edits.
+
 ## Q3-A Warrior combat — Checkpoint A local candidate (2026-10-26)
 
 - Current authorization is Southeast Checkpoint A only; STOP after its release verification. Two nonlooping clips /24 poses, original Blender4.5.3 rig/camera/materials/lights. Timed1×/.25× gameplay/enlarged and light/dark review passes for this isolated pilot; restrained torso shift, rapid impact and foreshortening remain limitations, not user art approval.

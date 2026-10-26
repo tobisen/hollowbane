@@ -96,14 +96,31 @@ all four cohorts. The extra atlas is6MiB base-level RGBA; browser/GPU overhead
 and copies remain unmeasured. One forest pair is not an improvement estimate.
 No observed P2 pacing regression in these limited warm measurements. Original
 Q3 measurements remain in warrior-movement.md; fresh matched measurements avoid
-comparing different scenes directly. Exact release acceptance remains pending;
-Checkpoint A is incomplete until required CI, Pages and hosted checks pass.
+comparing different scenes directly. Checkpoint A has now passed exact release acceptance as recorded below.
 
 Raw final motion strips/native report:
 `/private/tmp/hollowbane-warrior-checkpoint-a/final`; renders and discarded
 pre-repair evidence: `/private/tmp/hollowbane-warrior-checkpoint-a`. Concise
 machine evidence: `combat-review.json`. No physical-controller or other-hardware
 verification. Do not start any next animation batch after this checkpoint.
+
+## Checkpoint A — RELEASE VERIFIED
+
+Verified deployed runtime **e498ce6fc16412a578f46e67735d2d61bbac3e51**,
+[CI40366831084](https://github.com/tobisen/hollowbane/actions/runs/40366831084):
+required Full units/validators/tooling, all four Chromium shards, required
+cross-browser cases, Pages, hosted exact-SHA flow and Release acceptance succeed.
+The sealed CI artifact matches all70 locally reviewed/tested file hashes.
+Independent public verification matches the exact SHA and all70 hosted bytes.
+All **three hosted attack-preview smoke cases pass**; primary/secondary impact,
+light background and shipped comparison captures were inspected. No additional
+runtime changes or rebuild were needed after local/native review.
+
+[Public Southeast attack preview](https://tobisen.github.io/hollowbane/?developer=1&warriorPilot=1&warriorCombat=1).
+This closes Checkpoint A only. **STOP**; do not produce other directions,
+casting, reactions or death, and do not activate these graphics in normal play.
+User art/production-adoption approval remains false. This final evidence closure
+is documentation only; the accepted runtime SHA above remains authoritative.
 
 ## Reproduce
 

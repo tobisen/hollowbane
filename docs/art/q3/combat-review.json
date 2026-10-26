@@ -39,7 +39,8 @@
     "typecheck": "pass",
     "affectedLint": "pass",
     "assets": "pass",
-    "build": "pass"
+    "build": "pass",
+    "hostedPreview": 3
   },
   "native": {
     "browser": "156.0.8078.4",
@@ -418,11 +419,20 @@
     "physicalControllerVerified": false
   },
   "release": {
-    "runtimeSha": null,
-    "ciRun": null,
-    "status": "pending",
-    "checkpointAPassed": false,
-    "latestVerifiedDeployed": "8394dd5dc709c455771eb62d277c080919eae58c"
+    "runtimeSha": "e498ce6fc16412a578f46e67735d2d61bbac3e51",
+    "ciRun": 40366831084,
+    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40366831084",
+    "status": "verified",
+    "requiredTier": "Full",
+    "requiredCi": "pass",
+    "pages": "pass",
+    "hostedAcceptance": "pass",
+    "independentHostedPreviewCases": 3,
+    "hostedScreenshotsReviewed": true,
+    "sealedReviewedHostedFilesMatched": 70,
+    "checkpointAPassed": true,
+    "latestVerifiedDeployed": "e498ce6fc16412a578f46e67735d2d61bbac3e51",
+    "productionApproved": false
   },
   "rawEvidence": "/private/tmp/hollowbane-warrior-checkpoint-a"
 }
