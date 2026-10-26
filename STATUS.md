@@ -1,3 +1,10 @@
+## Overnight Warrior — Release B local candidate (2026-10-26)
+
+- Phases1–3 locally verified: existing two abilities16 clips/192 poses, guarded hit8/48, death8/128. Total current candidate72 clips/880 poses. All approved movement/attack pixels, rig/material/camera, saves/mechanics and live graphics preserved.
+- Death3,401,111PNG bytes/98MiB decoded; all sets23,458,595PNG bytes/349.25MiB base RGBA, not total GPU memory. Fixed448px/root224,274 preserves model scale; grounded collapse/relaxed arms/heels/held terminal audited. No invented heavy stun.
+-39 focused units/assets/22 Chromium, TypeScript/build, affected lint/format/assets pass. All128 death poses/light-dark and eight1× native strips reviewed;16 native captures end dead/pose15 with zero skill effects. Corrected diagnostic shipped recoil is browser-covered and reprofiled. Candidate M4/Metal death p5016.6–16.7/p9518.6–18.7/p9918.7ms, zero>25ms/drift. No improvement/cold-load/physical/full-forest claim.
+- Release B local candidate; exact CI/Pages/hosted PENDING. Last verified deployed066527e9e14c76f22d68588797780774e59f69f6. Do not integrate arena before B acceptance. Entire overnight assignment remains incomplete; resume docs/art/q3/warrior-combat.md, death-review.json and /private/tmp/hollowbane-warrior-death (110-file tested inventory). Preserve renders/unrelated edits.
+
 ## Overnight Warrior — Phase 2 reactions local increment (2026-10-26)
 
 - Phase1db03685 preserved. Phase2 adds8 directional guarded-hit clips/48 poses on unchanged approved rig;1,381,134bytes/18.75MiB. Total candidate251.25MiB base RGBA; preview176.25MiB, not total GPU memory. No separate heavier player stun state exists.

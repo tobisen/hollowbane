@@ -8,7 +8,72 @@ acceptance before advancing. Preserve simulation, saves, balance, Phaser4.2.1,
 the approved source rig, live graphics and unrelated edits. No other class art
 or normal-game sprite activation is authorized.
 
-## Overnight continuation — Release B ability increment
+## Overnight continuation — Release B local candidate
+
+Phase3 adds **eight death clips /128 poses**; total candidate inventory is now
+**72 clips /880 poses** across movement, two attacks, two existing abilities,
+shared guarded-hit recovery and death. Death atlases total **3,401,111bytes /
+98MiB** base RGBA; metadata200,065bytes. All five current sets total
+**23,458,595PNG bytes /349.25MiB** base decoded payload, excluding historical
+pilots, browser copies, driver overhead and any mipmaps. Death preview uploads
+movement+attacks+reactions+death274.25MiB; the ability/death route substitutes the
+ability atlases for attacks at the same decoded size. The later arena will need
+all349.25MiB unless measurement justifies a targeted change.
+
+`assets/source/q3/warrior-death/render.py` retains the original Blender4.5.3 rig,
+camera/light/material identity and pixels per meter. The first416px window failed
+the strict eight-pixel envelope (east pose10 x=1.77px); it was rejected before
+packaging. A fixed448px window translates original pixels(+96,+64), root224,274;
+four projection probes prove unchanged scale. Final complete vertex envelope is
+x9.79888..438.201 /y81.7047..360.28146, within the unchanged eight-pixel margin.
+No per-pose fitting, resizing or mirroring.
+
+Motion: planted knee collapse, accelerating backward fall, arm release, heel
+contact and restrained settle. Inspection demonstrated hovering heels and arms
+retaining their brace; actual shoe-bound contact and connected two-bone IK now
+resolve these late poses. An initial fixed-ankle trial correctly failed toe/ground
+penetration by3.9mm and was rejected. All128 poses retain bone lengths/connected
+limbs/root. Mesh-ground minima stay0.002m±0.00000005; final heels touch that same
+plane. Only affected late SE poses were rerendered; unchanged early frames were
+retained, and unaccepted directional work was stopped before correction. Source
+logs/rejected trials remain in `/private/tmp/hollowbane-warrior-death` and adjacent
+logs. No existing movement/attack/ability/reaction atlas was regenerated.
+
+Frame0 copies approved directional idle0 exactly; frames13–15 copy the same
+settled pixels, eliminating terminal flicker. `warriorDeathFrame` consumes the real
+death-event tick and existing30-tick presentation duration, yields for every live
+phase and holds pose15 indefinitely. A corpse without observed entry uses its
+settled pose. No resurrection/despawn/corpse rule or animation-triggered damage.
+Append `&warriorDeath=1` to the combat/ability preview; actual lethal diagnostics
+can interrupt a cast or hitstun, and only explicit reset recreates the fixture.
+All canvas/stage roots preserve model scale despite wider cells; foot overlays
+follow recorded actual death-pose positions.
+
+Diagnostic hits previously occurred just before tick advancement, so the shipped
+comparison missed their recoil/death cues. They are now recorded at their real
+event tick before advancement. An added browser assertion proves shipped recoil;
+the prior reaction comparison is retained with this limitation. Corrected native
+repeat (three cohorts/source, reset before warmup): shipped/candidate p5016.7,
+p9518.6/p99≤18.7ms, longest candidate18.8ms, zero>25ms/drift. No improvement claim.
+
+All128 packaged poses/light-dark and browser captures reviewed: knee collapse,
+held weapon, terminal contacts and silhouette remain coherent, with no clipping
+or matte halos observed. Sculptural finish, fast existing fall, stiff cloak and
+front/rear foreshortening remain limitations, not final user art approval.
+**39 focused unit/asset cases /22 Chromium** pass, including every death/reaction
+direction, actual cast interruption without release, terminal hold under extra
+damage, explicit reset, resource/cooldown behavior, corrected shipped recoil and
+normal-entry/storage isolation. TypeScript/build, affected lint/format and complete
+asset validation pass. Native visible Chromium156/M4 Metal1280×800/DPR1 captures
+all eight deaths at1×/.25×:16 sequences, each terminal15/dead/HP0 with zero skill
+effects. Every1× timed strip was reviewed. Three matched pairs, reset before60-frame
+warmup,240 measured intervals/cohort, identical274.25MiB texture payload resident:
+shipped p5016.7/p9518.7/p9918.7ms; candidate p5016.6–16.7/p9518.6–18.7/p9918.7ms.
+Longest18.8ms, zero>25ms/zero root-camera drift. Warmed preview-ready883ms is one
+observation, not a cold-load estimate. No improvement/full-forest/physical/GPU-memory
+claim. Evidence `death-review.json` and retained110-file tested local inventory.
+Release B local verification is complete; exact commit/push/CI/Pages/hosted release
+acceptance is next. Do not integrate the arena before that public gate passes.
 
 Phase2 is also locally verified: **eight guarded-hit clips /48 poses**, original
 rig/camera/materials, fixed320px/root160,274 and exact approved idle recovery

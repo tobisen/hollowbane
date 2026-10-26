@@ -7,8 +7,9 @@ const base = process.argv[2] ?? "http://127.0.0.1:4173/hollowbane/";
 const output = process.argv[3];
 const abilities = process.argv[4] === "abilities";
 const reactions = process.argv[4] === "reactions";
+const death = process.argv[4] === "death";
 const multiDirection =
-  reactions || abilities || process.argv[4] === "directions";
+  death || reactions || abilities || process.argv[4] === "directions";
 if (!output) throw Error("Pass base URL and untracked evidence directory");
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({
@@ -22,7 +23,7 @@ try {
   });
   const begin = Date.now();
   await page.goto(
-    `${base}?developer=1&warriorPilot=1&warriorCombat=1${reactions ? "&warriorReactions=1" : abilities ? "&warriorAbilities=1" : multiDirection ? "&warriorAttackDirections=1" : ""}`,
+    `${base}?developer=1&warriorPilot=1&warriorCombat=1${death ? "&warriorDeath=1" : reactions ? "&warriorReactions=1" : abilities ? "&warriorAbilities=1" : multiDirection ? "&warriorAttackDirections=1" : ""}`,
   );
   await page.waitForSelector("html[data-warrior-combat-ready=true]");
   const readyMs = Date.now() - begin;
@@ -48,50 +49,79 @@ try {
     if (multiDirection)
       await page.locator("#attack-direction").selectOption(direction);
     for (const rate of ["1", "0.25"])
-      for (const clip of reactions
-        ? ["hit"]
-        : abilities
-          ? ["iron-fan", "oath-echo"]
-          : ["primary", "secondary"]) {
+      for (const clip of death
+        ? ["death"]
+        : reactions
+          ? ["hit"]
+          : abilities
+            ? ["iron-fan", "oath-echo"]
+            : ["primary", "secondary"]) {
         await page.locator("#attack-rate").selectOption(rate);
-        if (!reactions) await page.locator("#attack-clip").selectOption(clip);
+        if (!reactions && !death)
+          await page.locator("#attack-clip").selectOption(clip);
         await page.locator("#attack-reset").click();
         // Arm capture before trusted input; record actual presentation, never step poses.
-        await page.evaluate((reactions) => {
-          window.attackCapture = new Promise((resolve) => {
-            const frames = [];
-            let seen = -1,
-              first,
-              hitSeen = false;
-            function capture(t) {
-              const o = window.hollowbaneWarriorCombat;
-              if (o.sample.hitFrame !== null) hitSeen = true;
-              if (
-                (reactions ? hitSeen : o.sample.sequence === 1) &&
-                o.sample.tick !== seen
-              ) {
-                first ??= t;
-                seen = o.sample.tick;
-                frames.push({
-                  t: t - first,
-                  ...o.sample,
-                  frame: reactions ? o.sample.hitFrame : o.sample.frame,
-                  image: document
-                    .querySelector("#cadence-inspector")
-                    .toDataURL(),
-                });
-                if (o.sample.phase === "idle") {
-                  resolve(frames);
-                  return;
+        await page.evaluate(
+          ({ reactions, death }) => {
+            window.attackCapture = new Promise((resolve) => {
+              const frames = [];
+              let seen = -1,
+                first,
+                hitSeen = false,
+                deathSeen = false,
+                firstTick;
+              function capture(t) {
+                const o = window.hollowbaneWarriorCombat;
+                if (o.sample.hitFrame !== null) hitSeen = true;
+                if (o.sample.deathFrame !== null) deathSeen = true;
+                if (
+                  (death
+                    ? deathSeen
+                    : reactions
+                      ? hitSeen
+                      : o.sample.sequence === 1) &&
+                  o.sample.tick !== seen
+                ) {
+                  first ??= t;
+                  firstTick ??= o.sample.tick;
+                  seen = o.sample.tick;
+                  frames.push({
+                    t: t - first,
+                    ...o.sample,
+                    frame: death
+                      ? o.sample.deathFrame
+                      : reactions
+                        ? o.sample.hitFrame
+                        : o.sample.frame,
+                    image: document
+                      .querySelector("#cadence-inspector")
+                      .toDataURL(),
+                  });
+                  if (
+                    death
+                      ? o.sample.deathFrame === 15 &&
+                        o.sample.tick - firstTick >= 45
+                      : o.sample.phase === "idle"
+                  ) {
+                    resolve(frames);
+                    return;
+                  }
                 }
+                requestAnimationFrame(capture);
               }
               requestAnimationFrame(capture);
-            }
-            requestAnimationFrame(capture);
-          });
-        }, reactions);
+            });
+          },
+          { reactions, death },
+        );
         await page
-          .locator(reactions ? "#hit-receive" : "#attack-start")
+          .locator(
+            death
+              ? "#death-receive"
+              : reactions
+                ? "#hit-receive"
+                : "#attack-start",
+          )
           .click();
         const frames = await page.evaluate(() => window.attackCapture);
         const selected = frames.filter(
@@ -131,19 +161,24 @@ try {
   if (multiDirection)
     await page.locator("#attack-direction").selectOption("se");
   await page.locator("#attack-rate").selectOption("1");
-  if (!reactions) await page.locator("#attack-repeat").check();
+  if (!reactions && !death) await page.locator("#attack-repeat").check();
   else
-    await page.evaluate(() => {
+    await page.evaluate((death) => {
       const loop = () => {
         const s = window.hollowbaneWarriorCombat.sample;
-        if (s.phase === "idle") {
+        if (death) {
+          if (s.phase === "dead" && s.tick >= 60)
+            document.querySelector("#attack-reset").click();
+          if (window.hollowbaneWarriorCombat.sample.phase === "idle")
+            document.querySelector("#death-receive").click();
+        } else if (s.phase === "idle") {
           if (s.playerHp < 30) document.querySelector("#attack-reset").click();
           document.querySelector("#hit-receive").click();
         }
         requestAnimationFrame(loop);
       };
       requestAnimationFrame(loop);
-    });
+    }, death);
   await page.locator("#attack-zoom").selectOption("2");
   await page.locator("#pilot-stage").scrollIntoViewIfNeeded();
   const samples = [];
@@ -156,6 +191,7 @@ try {
     "candidate",
   ]) {
     await page.locator("#attack-source").selectOption(source);
+    await page.locator("#attack-reset").click();
     const sample = await page.evaluate(
       () =>
         new Promise((resolve) => {
@@ -203,11 +239,13 @@ try {
         browser: browser.version(),
         environment,
         readyMs,
-        condition: reactions
-          ? "native visible isolated hit preview; repeated real diagnostic hits, existing guarded hitstun; zoom2; paired sources; attack/movement/reaction textures resident in both"
-          : abilities
-            ? "native visible isolated ability preview; Oath Echo replay, real 10/1/16 ticks; zoom2; paired sources; ability/movement textures resident in both"
-            : "native visible isolated combat preview; secondary replay, real 12/2/18 ticks; zoom2; paired sources; all textures resident in both",
+        condition: death
+          ? "native visible isolated death preview; real lethal diagnostics and explicit fixture resets; existing 30-tick visual fall/held terminal; zoom2; paired sources reset before warmup; attack/movement/reaction/death textures resident in both"
+          : reactions
+            ? "native visible isolated hit preview; repeated real diagnostic hits, existing guarded hitstun; zoom2; paired sources; attack/movement/reaction textures resident in both"
+            : abilities
+              ? "native visible isolated ability preview; Oath Echo replay, real 10/1/16 ticks; zoom2; paired sources; ability/movement textures resident in both"
+              : "native visible isolated combat preview; secondary replay, real 12/2/18 ticks; zoom2; paired sources; all textures resident in both",
         motion,
         samples,
       },

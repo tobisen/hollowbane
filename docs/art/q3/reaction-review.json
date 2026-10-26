@@ -214,12 +214,81 @@
     "readyMs": 951,
     "coldLoadMeasured": false,
     "physicalControllerVerified": false,
-    "totalGpuMemoryMeasured": false
+    "totalGpuMemoryMeasured": false,
+    "baselineLimitation": "Initial diagnostic hit events were missed by shipped recoil; retained absolute candidate data, superseded paired comparison by Release B corrected repeat"
   },
   "release": {
     "status": "local reaction increment; Release B not published",
     "latestVerifiedDeployed": "066527e9e14c76f22d68588797780774e59f69f6",
     "next": "Phase3 death poses/terminal state, then coherent exact Release B gate before arena"
   },
-  "rawEvidence": "/private/tmp/hollowbane-warrior-reactions"
+  "rawEvidence": "/private/tmp/hollowbane-warrior-reactions",
+  "correctedReleaseBRepeat": {
+    "rawEvidence": "/private/tmp/hollowbane-warrior-death/reaction-native",
+    "shippedRecoilCoveredByBrowser": true,
+    "cohortsResetBeforeWarmup": true,
+    "readyMs": 968,
+    "samples": [
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.6,
+        "p99": 18.7,
+        "longest": 18.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.6,
+        "p99": 18.7,
+        "longest": 18.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.6,
+        "p99": 18.7,
+        "longest": 18.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.6,
+        "p99": 18.6,
+        "longest": 18.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.6,
+        "p99": 18.7,
+        "longest": 18.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.6,
+        "p99": 18.7,
+        "longest": 18.8,
+        "over25": 0,
+        "cameraDrift": 0
+      }
+    ]
+  }
 }

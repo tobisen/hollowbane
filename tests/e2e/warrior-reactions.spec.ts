@@ -46,6 +46,7 @@ for (const direction of ["n", "ne", "e", "se", "s", "sw", "w", "nw"])
           expect(o.sample.remaining).toBe(13 - tick);
           expect(o.sample.frame).toBeNull();
           if (tick === 2) expect(o.sample.hitFrame).toBe(0);
+          if (tick === 2) expect(o.sample.shippedRecoil).toBeGreaterThan(0);
           if (tick === 12) expect(o.sample.hitFrame).toBe(5);
         } else
           expect(o.sample).toMatchObject({ phase: "idle", hitFrame: null });

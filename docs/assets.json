@@ -359,5 +359,15 @@
     "preview": "public/dev/warrior-reactions/warrior.json",
     "rig": "assets/source/q3/warrior-rig-v2/warrior.blend",
     "provenance": "docs/art/q3/warrior-combat.md"
+  },
+  {
+    "id": "q3-warrior-eight-way-death-v1",
+    "source": "assets/source/q3/warrior-death/render.py",
+    "rights": "Original project grounded collapse/fall/settle on approved Blender 4.5.3 rig/camera/materials; no mirroring, external art or mocap; approved idle start and repeated settled endpoint pixels copied exactly",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/warrior-death/warrior.json",
+    "rig": "assets/source/q3/warrior-rig-v2/warrior.blend",
+    "provenance": "docs/art/q3/warrior-combat.md"
   }
 ]

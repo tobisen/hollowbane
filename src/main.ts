@@ -35,9 +35,12 @@ if (invalidCharacterRoute) {
     await startWarriorCombatPreview(
       query.get("warriorAttackDirections") === "1" ||
         query.get("warriorAbilities") === "1" ||
-        query.get("warriorReactions") === "1",
+        query.get("warriorReactions") === "1" ||
+        query.get("warriorDeath") === "1",
       query.get("warriorAbilities") === "1",
-      query.get("warriorReactions") === "1",
+      query.get("warriorReactions") === "1" ||
+        query.get("warriorDeath") === "1",
+      query.get("warriorDeath") === "1",
     );
   } else if (
     query.get("warriorCadence") === "1" ||

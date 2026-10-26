@@ -21,6 +21,7 @@ import {
   warriorHitFrame,
   type WarriorHitCue,
 } from "./warrior-hit-frame";
+import { warriorDeathFrame } from "./warrior-death-frame";
 import {
   createSkills,
   requestSkill,
@@ -50,6 +51,8 @@ interface AttackSample {
   playerHp: number;
   hitFrame: number | null;
   remaining: number;
+  shippedRecoil: number;
+  deathFrame: number | null;
 }
 declare global {
   interface Window {
@@ -72,6 +75,7 @@ export async function startWarriorCombatPreview(
   multiDirection = false,
   abilities = false,
   reactions = false,
+  death = false,
 ): Promise<void> {
   if (abilities && !multiDirection)
     throw Error("Ability review requires the directional preview");
@@ -80,6 +84,9 @@ export async function startWarriorCombatPreview(
     : null;
   const reactionManifest = reactions
     ? (await import("../../public/dev/warrior-reactions/warrior.json")).default
+    : null;
+  const deathManifest = death
+    ? (await import("../../public/dev/warrior-death/warrior.json")).default
     : null;
   const directional = multiDirection
     ? (await import("../../public/dev/warrior-attack-directions/warrior.json"))
@@ -90,8 +97,8 @@ export async function startWarriorCombatPreview(
     : null;
   const directionRows = ["s", "sw", "w", "nw", "n", "ne", "e", "se"] as const;
   type Direction = (typeof directionRows)[number];
-  const cell = multiDirection ? 320 : 256;
-  const pivot = multiDirection ? [160, 274] : [128, 210];
+  const cell = death ? 448 : multiDirection ? 320 : 256;
+  const pivot = death ? [224, 274] : multiDirection ? [160, 274] : [128, 210];
   const root = document.querySelector("main")!;
   root.className = "warrior-pilot warrior-cadence";
   document.title = "Hollowbane · Southeast Warrior attack review";
@@ -175,6 +182,26 @@ export async function startWarriorCombatPreview(
     root.querySelector(".pilot-note")!.textContent +=
       " Diagnostic hits use real damage/guard rules on this disposable fixture. One six-pose hitstun reaction; no new heavy-stun mechanic. Death animation remains pending.";
   }
+  if (death) {
+    root.classList.add("warrior-death");
+    const style = document.createElement("style");
+    style.textContent =
+      ".warrior-death .pilot-comparison canvas {width:224px;height:224px}.warrior-death #cadence-inspector {width:672px;height:672px;max-width:100%}";
+    root.append(style);
+    const button = document.createElement("button");
+    button.id = "death-receive";
+    button.textContent = "Receive lethal hit";
+    root.querySelector(".pilot-controls")!.append(button);
+    const note = root.querySelector(".pilot-note")!;
+    note.textContent = note
+      .textContent!.replace(
+        "Hit/death and playable arena integration remain pending.",
+        "Playable arena integration remains pending.",
+      )
+      .replace("Death animation remains pending.", "Death review candidate.");
+    note.textContent +=
+      " Lethal diagnostic damage uses the real death rules. The candidate fall follows the real death event and holds its terminal pose; only explicit reset starts a new fixture.";
+  }
   const images = {
     attacks: new Image(),
     idle: new Image(),
@@ -187,6 +214,7 @@ export async function startWarriorCombatPreview(
   const attackImages: Partial<Record<Direction, HTMLImageElement>> = {};
   const idleImages: Partial<Record<Direction, HTMLImageElement>> = {};
   const hitImages: Partial<Record<Direction, HTMLImageElement>> = {};
+  const deathImages: Partial<Record<Direction, HTMLImageElement>> = {};
   if (directional && directionalMovement)
     await Promise.all(
       directionRows.map(async (direction) => {
@@ -206,6 +234,15 @@ export async function startWarriorCombatPreview(
         image.src = `${import.meta.env.BASE_URL}dev/warrior-reactions/${reactionManifest.views[direction].atlas}`;
         await image.decode();
         hitImages[direction] = image;
+      }),
+    );
+  if (deathManifest)
+    await Promise.all(
+      directionRows.map(async (direction) => {
+        const image = new Image();
+        image.src = `${import.meta.env.BASE_URL}dev/warrior-death/${deathManifest.views[direction].atlas}`;
+        await image.decode();
+        deathImages[direction] = image;
       }),
     );
   let skills: SkillRuntime | null = null;
@@ -238,7 +275,7 @@ export async function startWarriorCombatPreview(
     cues: MotionCues = {},
     history: AttackSample[] = [],
     hitCue: WarriorHitCue | null = null,
-    incoming: "hit" | "small" | null = null;
+    incoming: "hit" | "small" | "kill" | null = null;
   let idleTicks = 0,
     accumulator = 0,
     stepping = false;
@@ -273,6 +310,10 @@ export async function startWarriorCombatPreview(
       playerHp: actor.hp,
       hitFrame: reactions ? warriorHitFrame(timeline, hitCue) : null,
       remaining: timeline.remaining,
+      shippedRecoil: combatPose(actor, cues[0], world.tick).recoil,
+      deathFrame: death
+        ? warriorDeathFrame(timeline, world.tick, cues[0]?.deathAt ?? null)
+        : null,
     };
   };
   const reset = () => {
@@ -321,11 +362,14 @@ export async function startWarriorCombatPreview(
     }
     if (incoming) {
       applyCombatHit(world, world.actors[1]!, world.actors[0]!, ARENA_NAV, {
-        damage: incoming === "hit" ? 10 : 1,
+        damage: incoming === "kill" ? 10000 : incoming === "hit" ? 10 : 1,
         element: "physical",
         guaranteed: true,
         stagger: incoming === "hit",
       });
+      // The diagnostic hit is resolved before the next tick advances. Record its
+      // real event now so the shipped comparison also receives recoil/death cues.
+      recordMotion(cues, world.actors, world.events, world.tick);
       incoming = null;
     }
     if (skills) stepSkillCombat(skills);
@@ -344,6 +388,10 @@ export async function startWarriorCombatPreview(
       incoming = "small";
     };
   }
+  if (death)
+    el("death-receive").onclick = () => {
+      incoming = "kill";
+    };
   if (multiDirection)
     el<HTMLSelectElement>("attack-direction").onchange = (e) => {
       state.direction = (e.target as HTMLSelectElement).value as Direction;
@@ -413,31 +461,36 @@ export async function startWarriorCombatPreview(
       );
       c.restore();
     } else {
-      const hitFrame = current.hitFrame;
+      const hitFrame = current.hitFrame,
+        deathFrame = current.deathFrame;
       const f =
-        hitFrame !== null
-          ? reactionManifest!.views[state.direction].frames[hitFrame]!
-          : frame === null
-            ? (directionalMovement?.views[state.direction].frames ??
-                movement.frames)[Math.floor(world.tick / 24) % 8]!
-            : ((abilityManifest ?? directional)?.views[state.direction]
-                .frames ?? attacks.frames)[frame]!;
-      const idle = frame === null && hitFrame === null;
+        deathFrame !== null
+          ? deathManifest!.views[state.direction].frames[deathFrame]!
+          : hitFrame !== null
+            ? reactionManifest!.views[state.direction].frames[hitFrame]!
+            : frame === null
+              ? (directionalMovement?.views[state.direction].frames ??
+                  movement.frames)[Math.floor(world.tick / 24) % 8]!
+              : ((abilityManifest ?? directional)?.views[state.direction]
+                  .frames ?? attacks.frames)[frame]!;
+      const idle = frame === null && hitFrame === null && deathFrame === null;
       c.drawImage(
-        hitFrame !== null
-          ? hitImages[state.direction]!
-          : multiDirection
-            ? idle
-              ? idleImages[state.direction]!
-              : attackImages[state.direction]!
-            : idle
-              ? images.idle
-              : images.attacks,
+        deathFrame !== null
+          ? deathImages[state.direction]!
+          : hitFrame !== null
+            ? hitImages[state.direction]!
+            : multiDirection
+              ? idle
+                ? idleImages[state.direction]!
+                : attackImages[state.direction]!
+              : idle
+                ? images.idle
+                : images.attacks,
         f.x,
         f.y,
         f.width,
         f.height,
-        multiDirection && idle ? 32 : 0,
+        (cell - f.width) / 2,
         multiDirection && idle ? 64 : 0,
         f.width,
         f.height,
@@ -451,13 +504,22 @@ export async function startWarriorCombatPreview(
       c.moveTo(pivot[0]!, pivot[1]! - 10);
       c.lineTo(pivot[0]!, pivot[1]! + 10);
       c.stroke();
-      if (!shipped)
+      if (!shipped && current.deathFrame !== null) {
+        for (const foot of deathManifest!.views[state.direction].frames[
+          current.deathFrame
+        ]!.footPixels) {
+          c.strokeStyle = "#7ee9c3";
+          c.beginPath();
+          c.arc(foot[0]!, foot[1]!, 3, 0, Math.PI * 2);
+          c.stroke();
+        }
+      } else if (!shipped)
         for (const foot of (directionalMovement?.views[state.direction]
           .frames[0] ?? movement.frames[0])!.contacts) {
           c.strokeStyle = "#7ee9c3";
           c.beginPath();
           c.arc(
-            foot.pixel[0]! + (multiDirection ? 32 : 0),
+            foot.pixel[0]! + (multiDirection ? (cell - 256) / 2 : 0),
             foot.pixel[1]! + (multiDirection ? 64 : 0),
             3,
             0,
@@ -491,6 +553,16 @@ export async function startWarriorCombatPreview(
             frameWidth: 320,
             frameHeight: 320,
           });
+      if (deathManifest)
+        for (const direction of directionRows)
+          this.load.spritesheet(
+            `death-${direction}`,
+            deathImages[direction]!.src,
+            {
+              frameWidth: 448,
+              frameHeight: 448,
+            },
+          );
       if (!multiDirection) {
         this.load.spritesheet("attacks", images.attacks.src, {
           frameWidth: 256,
@@ -529,12 +601,13 @@ export async function startWarriorCombatPreview(
         candidate = state.source === "candidate";
       const pose = combatPose(actor, cues[0], world.tick);
       const p = worldToScreen(actor.controller.walker.position);
-      const hit = current.hitFrame !== null;
-      const f = current.hitFrame ?? current.frame;
+      const hit = current.hitFrame !== null,
+        dead = current.deathFrame !== null;
+      const f = current.deathFrame ?? current.hitFrame ?? current.frame;
       this.sprite
         .setTexture(
           candidate
-            ? `${hit ? "hit" : f === null ? "idle" : "attacks"}${multiDirection ? `-${state.direction}` : ""}`
+            ? `${dead ? "death" : hit ? "hit" : f === null ? "idle" : "attacks"}${multiDirection ? `-${state.direction}` : ""}`
             : "shipped",
           candidate
             ? (f ?? Math.floor(world.tick / 24) % 8)
@@ -543,11 +616,13 @@ export async function startWarriorCombatPreview(
         .setOrigin(
           0.5,
           candidate
-            ? multiDirection
-              ? f === null
-                ? 210 / 264
-                : 274 / 320
-              : 210 / 256
+            ? dead
+              ? 274 / 448
+              : multiDirection
+                ? f === null
+                  ? 210 / 264
+                  : 274 / 320
+                : 210 / 256
             : 112 / 128,
         )
         .setScale(candidate ? 0.5 : 0.93)

@@ -1,0 +1,285 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "scope": "DBL-023/024/025/026; overnight Phases1-3; local coherent Release B candidate",
+  "deathClips": 8,
+  "deathFrames": 128,
+  "completeCandidateClips": 72,
+  "completeCandidateFrames": 880,
+  "deathPngBytes": 3401111,
+  "deathMetadataBytes": 200065,
+  "deathDecodedMiB": 98,
+  "totalCandidatePngBytes": 23458595,
+  "totalCandidateDecodedMiB": 349.25,
+  "deathPreviewResidentPayloadMiB": 274.25,
+  "productionApproved": false,
+  "geometryEnvelope": [9.79888, 81.7047, 438.201, 360.28146],
+  "sourceGeometryMinimumMargin": 9.79888,
+  "groundContactMeters": 0.002,
+  "tests": {
+    "focusedUnitsAssets": 39,
+    "chromium": 22,
+    "typecheckBuild": true,
+    "affectedLint": true,
+    "format": true,
+    "assets": true
+  },
+  "review": {
+    "allPackagedPoses": true,
+    "darkAndLight": true,
+    "nativeAllRealSpeedDeathStrips": true,
+    "slowCaptures": 8,
+    "userArtApproval": false,
+    "limitations": [
+      "sculptural finish",
+      "rapid existing 30-tick fall",
+      "stiff cloak",
+      "front/rear foreshortening"
+    ]
+  },
+  "native": {
+    "browser": "156.0.8078.4",
+    "environment": {
+      "visible": "visible",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "dpr": 1
+    },
+    "readyMs": 883,
+    "samples": [
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.7,
+        "p99": 18.7,
+        "longest": 18.7,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.7,
+        "p99": 18.7,
+        "longest": 18.8,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.6,
+        "p95": 18.7,
+        "p99": 18.7,
+        "longest": 18.8,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.7,
+        "p99": 18.7,
+        "longest": 18.8,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "shipped",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.7,
+        "p99": 18.7,
+        "longest": 18.8,
+        "over25": 0,
+        "cameraDrift": 0
+      },
+      {
+        "source": "candidate",
+        "frames": 240,
+        "p50": 16.7,
+        "p95": 18.6,
+        "p99": 18.7,
+        "longest": 18.7,
+        "over25": 0,
+        "cameraDrift": 0
+      }
+    ],
+    "motion": [
+      {
+        "direction": "n",
+        "rate": 1.0,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "n",
+        "rate": 0.25,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "ne",
+        "rate": 1.0,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "ne",
+        "rate": 0.25,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "e",
+        "rate": 1.0,
+        "observedTicks": 45,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "e",
+        "rate": 0.25,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "se",
+        "rate": 1.0,
+        "observedTicks": 44,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "se",
+        "rate": 0.25,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "s",
+        "rate": 1.0,
+        "observedTicks": 43,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "s",
+        "rate": 0.25,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "sw",
+        "rate": 1.0,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "sw",
+        "rate": 0.25,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "w",
+        "rate": 1.0,
+        "observedTicks": 46,
+        "observedPoses": 15,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "w",
+        "rate": 0.25,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "nw",
+        "rate": 1.0,
+        "observedTicks": 45,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      },
+      {
+        "direction": "nw",
+        "rate": 0.25,
+        "observedTicks": 46,
+        "observedPoses": 16,
+        "terminal": 15,
+        "phase": "dead",
+        "hp": 0,
+        "effects": 0
+      }
+    ],
+    "coldLoadMeasured": false,
+    "fullForestRepeated": false,
+    "physicalControllerVerified": false,
+    "totalGpuMemoryMeasured": false
+  },
+  "release": {
+    "status": "local candidate verified; commit/push/exact CI/Pages/hosted pending",
+    "latestVerifiedDeployed": "066527e9e14c76f22d68588797780774e59f69f6",
+    "testedBuildFiles": 110,
+    "next": "Commit/push coherent Release B, require exact risk-based CI/Pages and hosted byte/preview acceptance before Phase5 arena"
+  },
+  "rawEvidence": "/private/tmp/hollowbane-warrior-death"
+}
