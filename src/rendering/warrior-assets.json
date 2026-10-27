@@ -1,0 +1,282 @@
+{
+  "movement": {
+    "source": "warrior-directions",
+    "width": 256,
+    "height": 264,
+    "root": [128, 210],
+    "views": {
+      "n": {
+        "file": "assets/warrior/movement-n-f210d6de3ba8.png",
+        "sha256": "f210d6de3ba84457b8d71b369f5df6dcfd26a0bb7ce12ca234e264a561744f25",
+        "bytes": 953998,
+        "decodedBytes": 10813440
+      },
+      "e": {
+        "file": "assets/warrior/movement-e-b44f5d116008.png",
+        "sha256": "b44f5d1160087cf03bc7072f6301317b38f74fc36033d71fcb4274d214aea561",
+        "bytes": 846125,
+        "decodedBytes": 10813440
+      },
+      "s": {
+        "file": "assets/warrior/movement-s-65d6c44b7122.png",
+        "sha256": "65d6c44b712295a269f18134e500e62e878d3df666ac09ce7d8f1b9835a7209e",
+        "bytes": 1108377,
+        "decodedBytes": 10813440
+      },
+      "w": {
+        "file": "assets/warrior/movement-w-86e0d3054c68.png",
+        "sha256": "86e0d3054c6893ac85c28e594b61b6448dc897dbf4cc12b843b2994e12c0eafc",
+        "bytes": 883956,
+        "decodedBytes": 10813440
+      },
+      "ne": {
+        "file": "assets/warrior/movement-ne-ce6bdc2c2918.png",
+        "sha256": "ce6bdc2c291813c38c2bcd36e1c4b11288e87f469cb617898bcf80fb0dbe4577",
+        "bytes": 942210,
+        "decodedBytes": 10813440
+      },
+      "se": {
+        "file": "assets/warrior/movement-se-0cf51edc8899.png",
+        "sha256": "0cf51edc8899d3e934c7059c736baeb54aa169a6eb519fcb5bb5b5868afa04bc",
+        "bytes": 1133216,
+        "decodedBytes": 10813440
+      },
+      "sw": {
+        "file": "assets/warrior/movement-sw-cbd2c9a5f51c.png",
+        "sha256": "cbd2c9a5f51cc3c1c4ab7c78aabb6dcb6dec2df416a99c8a4508f5cdfb43efba",
+        "bytes": 1095161,
+        "decodedBytes": 10813440
+      },
+      "nw": {
+        "file": "assets/warrior/movement-nw-52c4d5285ef8.png",
+        "sha256": "52c4d5285ef8324e851b7594986751c0278d2565c103954f17b4977515b6dc78",
+        "bytes": 975150,
+        "decodedBytes": 10813440
+      }
+    }
+  },
+  "attacks": {
+    "source": "warrior-attack-directions",
+    "width": 320,
+    "height": 320,
+    "root": [160, 274],
+    "views": {
+      "n": {
+        "file": "assets/warrior/attacks-n-5da56db174df.png",
+        "sha256": "5da56db174df875e1c082b1e219050514aae4fcaf5470c8f4042422259d1fe3f",
+        "bytes": 670014,
+        "decodedBytes": 9830400
+      },
+      "ne": {
+        "file": "assets/warrior/attacks-ne-08e9d4b0afe7.png",
+        "sha256": "08e9d4b0afe7a7621f56e04b902e3841ff57253f73e59ac4e04c589307ee69e9",
+        "bytes": 649038,
+        "decodedBytes": 9830400
+      },
+      "e": {
+        "file": "assets/warrior/attacks-e-d4448f329fb3.png",
+        "sha256": "d4448f329fb3035412a9459ab6701fc6f73c03b5e028107dee9d4ad463f9f15e",
+        "bytes": 543379,
+        "decodedBytes": 9830400
+      },
+      "se": {
+        "file": "assets/warrior/attacks-se-8f6b095e8459.png",
+        "sha256": "8f6b095e845928a4406f2f1024fa8300b6cff06d9c4780cd3b93321be20e5648",
+        "bytes": 739700,
+        "decodedBytes": 9830400
+      },
+      "s": {
+        "file": "assets/warrior/attacks-s-d9c8173b99b3.png",
+        "sha256": "d9c8173b99b30e67d807c8d3bfa2561846d0ab6f1b42e9269146d7ca0e88f164",
+        "bytes": 793937,
+        "decodedBytes": 9830400
+      },
+      "sw": {
+        "file": "assets/warrior/attacks-sw-8c7c62056dbd.png",
+        "sha256": "8c7c62056dbdbac99f109a559bc65940ad41e9fbd5509d42985e3143ea7310a8",
+        "bytes": 745307,
+        "decodedBytes": 9830400
+      },
+      "w": {
+        "file": "assets/warrior/attacks-w-afa53a6dd5f9.png",
+        "sha256": "afa53a6dd5f9a2f7b5e561ec404b6d46cbf70063bd49fe00b51f8f01358b9d46",
+        "bytes": 558789,
+        "decodedBytes": 9830400
+      },
+      "nw": {
+        "file": "assets/warrior/attacks-nw-2e3cca7f43b4.png",
+        "sha256": "2e3cca7f43b4dcca29f3a435b4b52a06b00110da4f8adf324ccd67b36bb80d05",
+        "bytes": 669447,
+        "decodedBytes": 9830400
+      }
+    }
+  },
+  "abilities": {
+    "source": "warrior-abilities",
+    "width": 320,
+    "height": 320,
+    "root": [160, 274],
+    "views": {
+      "n": {
+        "file": "assets/warrior/abilities-n-00e2d377cf4b.png",
+        "sha256": "00e2d377cf4bf19eeb25d21405a0407bfec4156fa226206452c87bc744a9319a",
+        "bytes": 657097,
+        "decodedBytes": 9830400
+      },
+      "e": {
+        "file": "assets/warrior/abilities-e-4c6c4276330c.png",
+        "sha256": "4c6c4276330c69d9381c829ccbbe4a48dd3a48f6b75bf9140b7e3bc257ac2618",
+        "bytes": 539169,
+        "decodedBytes": 9830400
+      },
+      "s": {
+        "file": "assets/warrior/abilities-s-08191e4f4486.png",
+        "sha256": "08191e4f44868192df3d962766da91e184341755e22796004758bd7b4c95d25b",
+        "bytes": 800568,
+        "decodedBytes": 9830400
+      },
+      "w": {
+        "file": "assets/warrior/abilities-w-ec77c3e7c35c.png",
+        "sha256": "ec77c3e7c35c39248e8e23f01052f214fd112cc0ff525941b5c3452b59ba09bc",
+        "bytes": 555427,
+        "decodedBytes": 9830400
+      },
+      "ne": {
+        "file": "assets/warrior/abilities-ne-064ce6ba8c6e.png",
+        "sha256": "064ce6ba8c6e830c657bf836d86e1b05bc3276ed36c196e8287c4a63355787c7",
+        "bytes": 637347,
+        "decodedBytes": 9830400
+      },
+      "se": {
+        "file": "assets/warrior/abilities-se-7586a94562b0.png",
+        "sha256": "7586a94562b0decb7aee5ba270f07c3a6d241e1255b0002c3dad0a9a3c97e41b",
+        "bytes": 753013,
+        "decodedBytes": 9830400
+      },
+      "sw": {
+        "file": "assets/warrior/abilities-sw-7447daf76aa1.png",
+        "sha256": "7447daf76aa121a103f4f2ebb75a7005248d1c020b738473ff5c8b597680537d",
+        "bytes": 762236,
+        "decodedBytes": 9830400
+      },
+      "nw": {
+        "file": "assets/warrior/abilities-nw-7518f7b29068.png",
+        "sha256": "7518f7b29068bc29aed5a6741a998a83b45ecb3504925a2998c98c48c321f030",
+        "bytes": 663689,
+        "decodedBytes": 9830400
+      }
+    }
+  },
+  "hit": {
+    "source": "warrior-reactions",
+    "width": 320,
+    "height": 320,
+    "root": [160, 274],
+    "views": {
+      "n": {
+        "file": "assets/warrior/hit-n-ccd68743d006.png",
+        "sha256": "ccd68743d0061fd12f54b1ab9f017b570a4dbd8a1df706fb0fcc886a4bc742be",
+        "bytes": 162327,
+        "decodedBytes": 2457600
+      },
+      "e": {
+        "file": "assets/warrior/hit-e-b313bd251a6f.png",
+        "sha256": "b313bd251a6fc4765e6269c8c8cc2758d4a5299b8a001a3c9559d687c05cb8ca",
+        "bytes": 142561,
+        "decodedBytes": 2457600
+      },
+      "s": {
+        "file": "assets/warrior/hit-s-4a9129c4d5bd.png",
+        "sha256": "4a9129c4d5bd257c954bfc1efe4b4ef43b3c0d94642ee760bf5a3f9376c13dac",
+        "bytes": 209864,
+        "decodedBytes": 2457600
+      },
+      "w": {
+        "file": "assets/warrior/hit-w-32081fc0f5e8.png",
+        "sha256": "32081fc0f5e86f57ef8d11e1503242e343b87bef53e70795b452114222f7c8a8",
+        "bytes": 139254,
+        "decodedBytes": 2457600
+      },
+      "ne": {
+        "file": "assets/warrior/hit-ne-bdb7159afbab.png",
+        "sha256": "bdb7159afbab6ebe8a2a6d85b4740b02e3765137b9ff7066902fd01e9fb56732",
+        "bytes": 157605,
+        "decodedBytes": 2457600
+      },
+      "se": {
+        "file": "assets/warrior/hit-se-1d7f3aabc907.png",
+        "sha256": "1d7f3aabc90768700bfbb03bedf9c85b02042f6b0b3e8c8e953aa3681e7b5abe",
+        "bytes": 204756,
+        "decodedBytes": 2457600
+      },
+      "sw": {
+        "file": "assets/warrior/hit-sw-97b3d3691468.png",
+        "sha256": "97b3d3691468fa3b44f749be0e1b175d6c809a085204f0326c515baabae92112",
+        "bytes": 195594,
+        "decodedBytes": 2457600
+      },
+      "nw": {
+        "file": "assets/warrior/hit-nw-9befa76233be.png",
+        "sha256": "9befa76233bed0e15ff8d599fd4f5df93710ab86eb23bdd7f4a9bedf9cd0536f",
+        "bytes": 169173,
+        "decodedBytes": 2457600
+      }
+    }
+  },
+  "death": {
+    "source": "warrior-death",
+    "width": 448,
+    "height": 448,
+    "root": [224, 274],
+    "views": {
+      "n": {
+        "file": "assets/warrior/death-n-a404fd5a561a.png",
+        "sha256": "a404fd5a561ad1b508ae3db95eb682c2ed899d407b3c335278966412e3af3487",
+        "bytes": 339594,
+        "decodedBytes": 12845056
+      },
+      "e": {
+        "file": "assets/warrior/death-e-fb44de609250.png",
+        "sha256": "fb44de609250b57bf7521d6d6f9a580156c5a7656f5949b99045e5bf4aa95918",
+        "bytes": 408943,
+        "decodedBytes": 12845056
+      },
+      "s": {
+        "file": "assets/warrior/death-s-b536ffd8b38f.png",
+        "sha256": "b536ffd8b38fefd8b9facbd2df80962d2af8db5762a82633e58b6a124d254100",
+        "bytes": 461953,
+        "decodedBytes": 12845056
+      },
+      "w": {
+        "file": "assets/warrior/death-w-a4f28bef3c72.png",
+        "sha256": "a4f28bef3c72cecbf32f3f438e8ff103d7a6b2857744de620f0822fe6b474d90",
+        "bytes": 400433,
+        "decodedBytes": 12845056
+      },
+      "ne": {
+        "file": "assets/warrior/death-ne-feeecab7d14a.png",
+        "sha256": "feeecab7d14a56a98cff2b991a8b5f686b2a1e855af2cfcc88ccf08568a577bb",
+        "bytes": 396781,
+        "decodedBytes": 12845056
+      },
+      "se": {
+        "file": "assets/warrior/death-se-771b9d843bbe.png",
+        "sha256": "771b9d843bbe598d4b22970d7a818b8e154ca3aea130f63cfa49483a1194d634",
+        "bytes": 502233,
+        "decodedBytes": 12845056
+      },
+      "sw": {
+        "file": "assets/warrior/death-sw-763682d60dcd.png",
+        "sha256": "763682d60dcd83a2d93b2cd30f3c029b012ae49a408f3ec00e103a13915f1234",
+        "bytes": 482763,
+        "decodedBytes": 12845056
+      },
+      "nw": {
+        "file": "assets/warrior/death-nw-6dac231c4c8d.png",
+        "sha256": "6dac231c4c8df42a4a17cebd3549f1836f908875864bcd57e166de7238a4a171",
+        "bytes": 408411,
+        "decodedBytes": 12845056
+      }
+    }
+  }
+}

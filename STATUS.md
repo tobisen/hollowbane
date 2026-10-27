@@ -1,3 +1,12 @@
+## Warrior production — Checkpoint A local candidate (2026-10-27)
+
+- User approved Release C art/gameplay and authorized normal-campaign integration through A/B; historical live-adoption stop superseded only for this task. Original simulation, balance, classes, saves, Phaser4.2.1 and all source pixels preserved.
+- Supported Warrior sword/empty offhand defaults to shared authored animation selectors; bow/staff/shield/empty hands and other classes retain legacy graphics. Debug override is session-only. Normal secondary remains its existing assigned skill.
+- Production-only hashed aliases preserve all40 approved PNGs23,458,595bytes/349.25MiB base RGBA (not GPU memory). Restored compatible Warriors alone acquire textures; safe load barrier, bounded queue, shared leases, partial-failure cleanup and live fallback. No ordinary developer-asset requests.
+- 49 focused selector/assets/inventory tests and10 production/seven shared-arena Chromium cases pass across bounded runs; reviewed camp/forest/graveyard/crypt/combat captures. Full local run672/674 had two unchanged25s timeouts; both files pass12/12 isolated. TypeScript/lint/assets/backlog/build pass separately; no green npm-run-check claim.
+- Required equipment audit exposed existing unequip-to-grid transaction metadata leaking into saves. Canonical item/x/y entries fix it; regression reproduced red then passed. Live shield/empty-hand/save/reload now passes; schema, strict validation, item identity and mechanics unchanged.
+- Checkpoint A ready for commit/push and required Full CI/Pages/hosted checks. Latest verified deployed remains3fd3525ebac49758946e547582663d4ccf0d576c /CI40460551017. Do not advance B past a failed A release gate. Native campaign profiling, further NPC/transition/death/resource acceptance and final B remain pending. Entire assignment incomplete. Resume docs/art/q3/warrior-production.md; raw /private/tmp/hollowbane-warrior-production-local and -fixed. Preserve unrelated documentation edits.
+
 ## Warrior Release C — VERIFIED playable arena (2026-10-27)
 
 - Verified deployed3fd3525ebac49758946e547582663d4ccf0d576c / CI40460551017: required Fast/Full670 unit/292 Chromium/compatibility, Pages, hosted and Release acceptance PASS. All113 local/sealed-CI/public file hashes match; seven independent hosted arena cases pass. Zero CI Chromium failures/flakes/skips.

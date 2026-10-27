@@ -60,6 +60,9 @@ import { CombatAudio } from "./combat-audio";
 import { PolishHUD } from "./polish-hud";
 import { drawSkillVisuals, type SpellVisualStats } from "./skill-visuals";
 import { combatPose, recordMotion, type MotionCues } from "./combat-motion";
+import { WarriorProduction } from "./warrior-production";
+import { WarriorMotion } from "./warrior-pose";
+import { warriorRendererSelection } from "./warrior-renderer-selection";
 import { queueMonsterSkills } from "../simulation/monster-skills";
 import { actionPrompt } from "../simulation/prompts";
 import {
@@ -346,6 +349,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
     root.append(controls);
   }
   class Arena extends Phaser.Scene {
+    private warrior: WarriorProduction | null = null;
+    private warriorMotion = new WarriorMotion();
     private worldEncounter: WorldEncounterRuntime | null = null;
     private openingRecovery = new OpeningRecovery();
     private encounter: Encounter | null = monsters
@@ -683,6 +688,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       });
     }
     create(): void {
+      if (exploring) this.warrior = new WarriorProduction(this, root);
       if (loot)
         this.lootView = new LootView(
           root,
@@ -1293,6 +1299,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       };
       window.addEventListener("hollowbane-item-collected", collected);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+        this.warrior?.dispose(this.sprites.get(0));
         guide?.dispose();
         window.removeEventListener("hollowbane-item-collected", collected);
       });
@@ -1581,7 +1588,8 @@ export function startCombatArena(monsters = false): Phaser.Game {
       sprite
         .setPosition(p.x, p.y)
         .setDepth(p.y)
-        .setFrame(movementFrame(a.controller.walker, false))
+        .setTexture("arena-wanderer", movementFrame(a.controller.walker, false))
+        .setOrigin(0.5, 112 / 128)
         .setAlpha(dead ? 1 - fall * 0.65 : 1);
       const time = a.controller.timeline;
       const progress =
@@ -1651,6 +1659,20 @@ export function startCombatArena(monsters = false): Phaser.Game {
           .setPosition(p.x, p.y + 2)
           .setDisplaySize((34 + pose.fall * 12) * champion, 14 + pose.fall * 3)
           .setAlpha(dead ? 0.65 : 1);
+      }
+      if (
+        a.id === 0 &&
+        this.warrior?.draw(
+          sprite,
+          a,
+          this.world.tick,
+          this.motion[0]?.deathAt ?? null,
+          this.abilities?.users.find((u) => u.actor === 0)?.cast ?? null,
+          this.warriorMotion,
+          p,
+        )
+      ) {
+        this.contactShadows.get(0)?.setPosition(p.x, p.y + 2);
       }
       if (brain && !flash)
         sprite.setTint(
@@ -1908,6 +1930,22 @@ export function startCombatArena(monsters = false): Phaser.Game {
         player.recoveryBonus = Number(recovery.value);
       }
       this.world.hostilesActive = !monsters && !exploring && hostile.checked;
+      if (this.warrior && this.inventoryView?.worldReady) {
+        this.warriorMotion.observe(player, this.world.tick);
+        this.warrior.sync(
+          warriorRendererSelection(
+            this.world.experience.skills.classId,
+            this.inventoryRuntime!.character.equipment,
+            this.warrior.legacy,
+          ),
+          this.sprites.get(0),
+        );
+        if (this.warrior.loading) {
+          this.accumulator = 0;
+          this.previousFrame = 0;
+          return;
+        }
+      }
       const keys = query.has("character")
         ? movementVector(this.keys, this.playerBindings)
         : {
@@ -2155,6 +2193,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               this.world.events,
               this.world.tick,
             );
+          if (this.warrior) this.warriorMotion.observe(player, this.world.tick);
           for (const event of this.world.events)
             if (event.tick === this.world.tick) {
               this.feedback(event);

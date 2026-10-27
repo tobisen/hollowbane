@@ -1,5 +1,10 @@
 # Q3-A Warrior combat — DBL-023/024/025/026
 
+2026-10-27 update: the user approved Release C visual/gameplay quality and
+authorized normal-campaign integration through two production release checkpoints.
+See [production integration](warrior-production.md) for current scope/evidence.
+Historical live-adoption prohibitions below are superseded only for that assignment.
+
 2026-10-26. The **extended Warrior production request** now authorizes C1–C9
 sequentially through final Warrior review. This supersedes the earlier Southeast
 stop. Public Release A (eight-way attacks), B (ability/reaction/death), then C

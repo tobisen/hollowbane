@@ -12,7 +12,26 @@ import { placeLoot } from "./world-loot";
 import { inventoryItem } from "./inventory-test-helper";
 import { ARENA_NAV } from "./combat";
 import { fromGround } from "../world/navigation";
+import { serializeCharacter, deserializeCharacter } from "./inventory-save";
 const p = fromGround({ x: 750, y: 560 });
+it("unequipped transaction destinations retain canonical grid fields and remain saveable", () => {
+  const s = createInventorySession(),
+    item = inventoryItem("ash-blade");
+  s.character.equipment.main = item;
+  const before = structuredClone(s);
+  const moved = moveOwned(s, item.id, { kind: "grid", x: 7, y: 0 });
+  expect(moved.ok).toBe(true);
+  if (!moved.ok) throw Error(moved.reason);
+  expect(s).toEqual(before);
+  expect(moved.value.character.grid.items[0]!.item).toBe(item);
+  const loaded = deserializeCharacter(serializeCharacter(moved.value));
+  expect(loaded.character).toEqual(moved.value.character);
+  expect(Object.keys(loaded.character.grid.items[0]!).sort()).toEqual([
+    "item",
+    "x",
+    "y",
+  ]);
+});
 it("moves the same original instance ground→grid→equipment→grid→ground exactly once", () => {
   let s = createInventorySession();
   const item = inventoryItem("ash-blade");

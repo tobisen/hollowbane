@@ -69,7 +69,10 @@ export function addGrid(
     return { ok: false, reason: "No room at that position" };
   return {
     ok: true,
-    value: { ...grid, items: [...grid.items, { item, ...point }] },
+    value: {
+      ...grid,
+      items: [...grid.items, { item, x: point.x, y: point.y }],
+    },
   };
 }
 export function removeGrid(

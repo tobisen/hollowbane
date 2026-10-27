@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
+import { warriorProductionAssets } from "./scripts/warrior-production-assets";
 export default defineConfig({
   base: "/hollowbane/",
+  plugins: [warriorProductionAssets()],
   build: {
     target: "es2022",
     rollupOptions: {

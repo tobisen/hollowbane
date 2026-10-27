@@ -15,35 +15,21 @@ import { ARENA_NAV } from "../simulation/combat";
 import type { Point } from "../world/isometric";
 import type { Navigation } from "../world/navigation";
 import { recordMotion, type MotionCues } from "./combat-motion";
-import { warriorAttackFrame, type WarriorAttack } from "./warrior-attack-frame";
 import {
-  warriorAbilityFrame,
-  type WarriorAbility,
-} from "./warrior-ability-frame";
-import {
-  observeWarriorHit,
-  warriorHitFrame,
-  type WarriorHitCue,
-} from "./warrior-hit-frame";
-import { warriorDeathFrame } from "./warrior-death-frame";
+  warriorPose,
+  WARRIOR_DIRECTIONS,
+  type WarriorSet,
+} from "./warrior-pose";
+import type { WarriorAttack } from "./warrior-attack-frame";
+import type { WarriorAbility } from "./warrior-ability-frame";
+import { observeWarriorHit, type WarriorHitCue } from "./warrior-hit-frame";
+export { WARRIOR_DIRECTIONS, type WarriorSet };
 import movementManifest from "../../public/dev/warrior-directions/warrior.json";
 
 export const WARRIOR_ARENA_NAV: Navigation = {
   ...ARENA_NAV,
   obstacles: [{ x: 1000, y: 720, rx: 16, ry: 90 }],
 };
-export const WARRIOR_DIRECTIONS = [
-  "s",
-  "sw",
-  "w",
-  "nw",
-  "n",
-  "ne",
-  "e",
-  "se",
-] as const;
-export type WarriorSet = "movement" | "attacks" | "abilities" | "hit" | "death";
-
 /** Disposable fixture only. Never binds a character owner, storage or loot runtime. */
 export function createWarriorArena() {
   const world = createCombat(42);
@@ -154,36 +140,12 @@ export function warriorArenaPose(arena: WarriorArena): {
   frame: number;
   clip: string;
 } {
-  const player = arena.world.actors[0]!,
-    t = player.controller.timeline;
-  const death = warriorDeathFrame(
-    t,
+  return warriorPose(
+    arena.world.actors[0]!,
     arena.world.tick,
     arena.cues[0]?.deathAt ?? null,
+    arena.skills.users[0]!.cast,
+    arena,
+    arena.attack,
   );
-  if (death !== null) return { set: "death", frame: death, clip: "death" };
-  const hit = warriorHitFrame(t, arena.hit);
-  if (hit !== null) return { set: "hit", frame: hit, clip: "hit" };
-  const ability = warriorAbilityFrame(t, arena.skills.users[0]!.cast);
-  if (ability)
-    return {
-      set: "abilities",
-      frame: (ability.ability === "iron-fan" ? 0 : 12) + ability.frame,
-      clip: ability.ability,
-    };
-  const attack = warriorAttackFrame(t, arena.attack);
-  if (attack !== null)
-    return { set: "attacks", frame: attack, clip: arena.attack };
-  const walker = player.controller.walker;
-  return walker.walking
-    ? {
-        set: "movement",
-        frame: (walker.gait === "run" ? 24 : 8) + Math.floor(arena.phase * 16),
-        clip: walker.gait,
-      }
-    : {
-        set: "movement",
-        frame: Math.floor(arena.world.tick / 24) % 8,
-        clip: "idle",
-      };
 }
