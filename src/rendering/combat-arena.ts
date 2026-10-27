@@ -1937,6 +1937,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
             this.world.experience.skills.classId,
             this.inventoryRuntime!.character.equipment,
             this.warrior.legacy,
+            player.weapon,
           ),
           this.sprites.get(0),
         );

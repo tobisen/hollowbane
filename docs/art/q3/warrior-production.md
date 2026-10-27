@@ -28,6 +28,12 @@ legacy saves retain their existing presentation. All armor slots are stat-bearin
 the prior world renderer never promised visible per-item armor changes. No new
 item artwork or modular-equipment system has been invented.
 
+The active simulation weapon is also checked. Equipment statistics defer a weapon
+change until the committed attack ends; a newly equipped blade cannot display a
+sword while an earlier projectile attack still owns the timeline. That interval
+retains legacy presentation (`committed-projectile`). A red/green selector
+regression covers this guard; it does not change the original defer rule.
+
 Developer tools, without normal-player controls:
 
 ```js
@@ -71,6 +77,17 @@ it does not increase ordinary client downloads beyond the selected route.
 
 ## Checkpoint A validation
 
+Candidate **62907874bc427d0db4fedde0ff23e94bbeea096c** is committed/pushed.
+[CI40567635119](https://github.com/tobisen/hollowbane/actions/runs/40567635119)
+Fast/static, Full units/validators and required compatibility PASS; Chromium
+shard1 FAILED, so A is **not accepted**. Pages/hosted acceptance is unverified.
+Inspect `/private/tmp/hollowbane-warrior-production-a-failed.log` before advancing.
+All153 sealed-CI/local files match byte for byte; the published runtime is not yet
+verified. The sealed
+local153-file artifact is retained at
+`/private/tmp/hollowbane-warrior-production-a-tested`. The original controller
+waypoint round-trip/reload case also passes (14s); no physical claim.
+
 Initial focused validation:29 unit cases pass across selection, provenance,
 shared mapping and existing real attack/skill/reaction/death/arena contracts.
 TypeScript, affected lint and production build pass. Initial browser checks pass:
@@ -107,6 +124,52 @@ failure history are in `/private/tmp/hollowbane-warrior-production-local` and
 One earlier browser run overlapped a rebuild and saw temporary404s; that run is
 not stable-artifact release evidence. A navigation-race test driver and its use
 of the campaign skill-button as melee were corrected without changing input rules.
+
+## Corrective A — required release gate
+
+CI40567635119 failed only the new battle case: Oath was requested after the
+observed idle sample had already yielded to a committed state. The retained Linux
+context says **"Oath Echo: committed"**. Full **675 units/147 files**, required
+compatibility and the other three Chromium shards pass. Deployment/hosted jobs
+were skipped; A6290787 is **not accepted**. Raw failed log and browser artifact:
+`/private/tmp/hollowbane-warrior-production-a-failed.log` and `-a-ci-failure`.
+
+The driver now prepares the actual self buff before engagement and uses supported
+hold-to-repeat melee rather than assuming a one-shot attack cannot be interrupted.
+Both ability-effect and actual melee assertions remain. Six visible M4/Metal
+legacy/Warrior battle runs pass with those inputs. Timing from those particular
+Playwright runs is **not accepted**: trace-enabled runs contain large stalls in
+both modes; tracing-disabled confirmation is pending. No invulnerability, stat,
+damage, cooldown, AI or timing mutation was used. Natural crypt lethal damage,
+held death15 and legacy/texture reload with unchanged corpse position/sequence
+also pass; the gameplay-scale corpse capture was reviewed.
+
+Thirty focused selector/arena cases pass after the active-projectile guard.
+TypeScript, scoped lint and build pass. The complete corrected11-case local browser
+suite passes (2.7m); a corrective commit and exact Full/Pages/hosted verification
+are required before marking A accepted or finishing B.
+
+## Provisional native movement evidence
+
+Exact A6290787 artifact: visible Chromium156.0.8078.4, Apple M4/Metal,1280×800,
+DPR1, Full detail, normal owned level24 Warrior forest save, seed42,16 actors.
+Three alternating-order pairs each for browser keyboard events and a virtual pad;
+60-frame warmup and420 measured intervals. Candidate p5016.7/p9517.2–18.6/
+p99≤18.7ms, zero>25ms; legacy p9517.2–17.8. Camera-relative range0px. No warmed
+improvement claim; this is movement, not actual combat or a full campaign.
+
+Fresh-context HTTP-cache-disabled local-origin uploads take485–597ms, navigation
+ready1649–2105ms versus legacy1162–1227ms. Exactly40 production requests,
+23,458,595 encoded/23,470,595 transfer bytes and349.25MiB base RGBA; zero developer
+requests. Whole-page loading RAF maxima267–317ms versus legacy266–283ms;
+5–9 versus6–9 loading intervals>25ms. These startup/terrain/renderer gaps are not
+warmed-play results and do not establish machine-cold or hosted loading behavior.
+JS heap samples vary with GC and are not GPU memory or leak proof. Native maximum
+texture edge16384px, all atlases≤2048px. Native old/new captures reviewed.
+
+Raw `/private/tmp/hollowbane-warrior-production-native/summary.json`; reproduce
+with `scripts/profile-warrior-production.mjs BASE_URL CONSTRUCTED_FIXTURES_JSON
+UNTRACKED_OUTPUT`. Later active-weapon-guard builds still need final confirmation.
 
 ## Remaining acceptance
 

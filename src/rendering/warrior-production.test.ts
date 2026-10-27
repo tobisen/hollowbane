@@ -49,6 +49,15 @@ describe("production Warrior equipment selection", () => {
     for (const id of ["sorcerer", "ranger", null] as const)
       expect(warriorRendererSelection(id, c.equipment)).toBe("other-class");
   });
+  it("retains legacy graphics until a committed projectile weapon actually yields to the equipped blade", () => {
+    const c = newCharacter("warrior").character;
+    expect(
+      warriorRendererSelection("warrior", c.equipment, false, "projectile"),
+    ).toBe("committed-projectile");
+    expect(
+      warriorRendererSelection("warrior", c.equipment, false, "melee"),
+    ).toBe("supported");
+  });
 });
 
 it("observes displacement across facing/gait changes and yields to hit/death without simulation writes", () => {

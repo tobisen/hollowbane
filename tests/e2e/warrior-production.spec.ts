@@ -1,4 +1,5 @@
 import { expect as baseExpect, test, type Page } from "@playwright/test";
+import { writeFileSync } from "node:fs";
 const expect = baseExpect.configure({ timeout: 20_000 });
 import { characterApi } from "../fixtures/character-api";
 import { characterSlotFixture } from "../fixtures/character-slot";
@@ -24,6 +25,7 @@ async function existing(
   page: Page,
   classId: "warrior" | "sorcerer" | "ranger" = "warrior",
   area: AreaId = "ashen-refuge",
+  legacy = false,
 ) {
   await page.goto("./");
   await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
@@ -50,10 +52,11 @@ async function existing(
     { item: inventoryItem("bark-guard"), x: 5, y: 0 },
   ];
   const id = await page.evaluate(
-    async ({ text, classId }) => {
+    async ({ text, classId, legacy }) => {
       const api = window.characterStorageModule,
         store = new api.CharacterStorage();
       try {
+        sessionStorage.setItem("hollowbane-warrior-legacy", legacy ? "1" : "0");
         return (
           await store.create(
             `Production ${classId}`,
@@ -64,13 +67,13 @@ async function existing(
         store.close();
       }
     },
-    { text: serializeCharacter(s), classId },
+    { text: serializeCharacter(s), classId, legacy },
   );
   await page.goto(`./?world=1&character=${id}`);
   await expect(page.locator("#inventory-dialog")).not.toBeVisible();
   await expect(page.locator("html")).toHaveAttribute(
     "data-warrior-renderer",
-    classId === "warrior" ? "warrior" : "legacy",
+    classId === "warrior" && !legacy ? "warrior" : "legacy",
   );
   return id;
 }
@@ -289,11 +292,110 @@ test("real forest melee and both Warrior abilities retain existing input and sim
   page,
 }, info) => {
   await installVirtualController(page, "Xbox virtual standard");
-  await existing(page, "warrior", "haunted-forest");
+  const profiling = process.env.WARRIOR_PRODUCTION_PROFILE === "1";
+  const legacy = profiling && process.env.WARRIOR_PRODUCTION_LEGACY === "1";
+  if (profiling)
+    await page.addInitScript(() =>
+      localStorage.setItem(
+        "hollowbane.presentation.v1",
+        JSON.stringify({ version: 1, quality: "full", volume: 1, muted: true }),
+      ),
+    );
+  await existing(page, "warrior", "haunted-forest", legacy);
+  if (profiling) {
+    await page.evaluate(async () => {
+      const canvas = document.querySelector<HTMLCanvasElement>(
+        "#combat-world canvas",
+      )!;
+      const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
+      if (!gl) throw Error("Native WebGL unavailable");
+      const ext = gl.getExtension("WEBGL_debug_renderer_info");
+      const renderer = ext
+        ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL))
+        : "unknown";
+      if (!/Metal Renderer: Apple M4/.test(renderer))
+        throw Error(`Expected native M4/Metal: ${renderer}`);
+      await new Promise<void>((resolve) => {
+        let n = 0;
+        const warm = () => {
+          if (++n === 60) resolve();
+          else requestAnimationFrame(warm);
+        };
+        requestAnimationFrame(warm);
+      });
+      const frames: {
+        ms: number;
+        tick: number;
+        hp: number;
+        actors: number;
+        clip: string | null;
+        direction: number;
+        textures: number;
+        x: number;
+        y: number;
+        relativeX: number;
+        relativeY: number;
+        updateP95: number;
+        renderP95: number;
+      }[] = [];
+      let previous: number | null = null,
+        running = true;
+      window.warriorBattleEvidence = {
+        renderer,
+        frames,
+        stop: () => {
+          running = false;
+        },
+      };
+      const sample = (now: number) => {
+        const c = window.hollowbaneCombat!,
+          w = window.hollowbaneWorld!,
+          v = window.hollowbaneWarriorProduction!;
+        if (previous !== null)
+          frames.push({
+            ms: now - previous,
+            tick: c.tick,
+            hp: c.actors[0]!.hp,
+            actors: c.actors.length,
+            clip: v.pose?.clip ?? null,
+            direction: c.actors[0]!.direction,
+            textures: v.textures,
+            x: w.position.x,
+            y: w.position.y,
+            relativeX:
+              (768 + (w.position.x - w.position.y) * 64 - w.camera.x) *
+              w.camera.zoom,
+            relativeY:
+              (512 + (w.position.x + w.position.y) * 32 - w.camera.y) *
+              w.camera.zoom,
+            updateP95: c.metrics.updateP95,
+            renderP95: c.metrics.renderP95,
+          });
+        previous = now;
+        if (running && frames.length < 10000) requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+  }
   await page.locator("#combat-world").focus();
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
     .toBe(true);
+  // Prepare the self buff before approaching the hostile pack, as a player can.
+  await page.keyboard.press("q");
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        window.hollowbaneSkills!.events.some(
+          (e) =>
+            e.kind === "effect" && e.actor === 0 && e.skill === "oath-echo",
+        ),
+      ),
+    )
+    .toBe(true);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase))
+    .toBe("idle");
   const target = await page.evaluate(() => {
     const c = window.hollowbaneCombat!,
       p = c.actors[0]!;
@@ -324,30 +426,24 @@ test("real forest melee and both Warrior abilities retain existing input and sim
       y: (enemy.y - 28 - camera.y) * camera.zoom,
     };
   }, target.id);
-  await page.mouse.click(aim.x, aim.y);
-  await expect
-    .poll(() =>
-      page.evaluate(() =>
-        window.hollowbaneCombat!.events.some(
-          (e) => e.kind === "damage" && e.actor === 0,
+  await page.mouse.move(aim.x, aim.y);
+  await page.mouse.down();
+  try {
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          window.hollowbaneCombat!.events.some(
+            (e) => e.kind === "damage" && e.actor === 0,
+          ),
         ),
-      ),
-    )
-    .toBe(true);
+      )
+      .toBe(true);
+  } finally {
+    await page.mouse.up();
+  }
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase))
     .toBe("idle");
-  await page.keyboard.press("q");
-  await expect
-    .poll(() =>
-      page.evaluate(() =>
-        window.hollowbaneSkills!.events.some(
-          (e) =>
-            e.kind === "effect" && e.actor === 0 && e.skill === "oath-echo",
-        ),
-      ),
-    )
-    .toBe(true);
   // Real hostile hits may legitimately interrupt a cast. Reissue through normal
   // input only after actual recovery/cooldown; never grant immunity or effects.
   for (let attempt = 0; attempt < 4; attempt++) {
@@ -396,6 +492,149 @@ test("real forest melee and both Warrior abilities retain existing input and sim
       ),
     ),
   ).toBe(true);
-  expect((await state(page)).mode).toBe("warrior");
+  expect((await state(page)).mode).toBe(legacy ? "legacy" : "warrior");
+  if (profiling) {
+    const evidence = await page.evaluate(() => {
+      window.warriorBattleEvidence!.stop();
+      return {
+        renderer: window.warriorBattleEvidence!.renderer,
+        frames: window.warriorBattleEvidence!.frames,
+        dpr: devicePixelRatio,
+        resolution: [innerWidth, innerHeight],
+      };
+    });
+    writeFileSync(
+      info.outputPath("native-battle.json"),
+      JSON.stringify(
+        { mode: legacy ? "legacy" : "warrior", ...evidence },
+        null,
+        2,
+      ),
+    );
+  }
   await page.screenshot({ path: info.outputPath("forest-real-combat.png") });
+});
+
+declare global {
+  interface Window {
+    warriorBattleEvidence?: {
+      renderer: string;
+      frames: {
+        ms: number;
+        tick: number;
+        hp: number;
+        actors: number;
+        clip: string | null;
+        direction: number;
+        textures: number;
+        x: number;
+        y: number;
+        relativeX: number;
+        relativeY: number;
+        updateP95: number;
+        renderP95: number;
+      }[];
+      stop(): void;
+    };
+  }
+}
+
+test("natural campaign death holds its terminal pose across legacy switching and texture reload", async ({
+  page,
+}, info) => {
+  await installVirtualController(page, "Xbox virtual standard");
+  await existing(page, "warrior", "ancient-crypt");
+  await page.locator("#combat-world").focus();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+    .toBe(true);
+  const target = await page.evaluate(() => {
+    const c = window.hollowbaneCombat!,
+      p = c.actors[0]!;
+    const a = c.actors
+      .filter((a) => a.id !== 0 && a.hp > 0)
+      .sort(
+        (a, b) =>
+          Math.hypot(a.x - p.x, a.y - p.y) - Math.hypot(b.x - p.x, b.y - p.y),
+      )[0]!;
+    return {
+      start: window.hollowbaneWorld!.position,
+      end: { x: a.x, y: a.y },
+      hp: p.hp,
+    };
+  });
+  const route = findPath(
+    areaNavigation(worldLayout("ancient-crypt", 42, 2).map),
+    target.start,
+    fromGround(target.end),
+  );
+  expect(route.length).toBeGreaterThan(0);
+  for (const point of route) {
+    try {
+      await driveQuestPoint(page, point);
+    } catch (error) {
+      if (await page.evaluate(() => window.hollowbaneCombat!.actors[0]!.hp > 0))
+        throw error;
+    }
+    if (
+      await page.evaluate(
+        (hp) => window.hollowbaneCombat!.actors[0]!.hp < hp,
+        target.hp,
+      )
+    )
+      break;
+  }
+  await expect
+    .poll(
+      () => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase),
+      { timeout: 90_000 },
+    )
+    .toBe("dead");
+  await expect
+    .poll(async () => (await state(page)).pose)
+    .toEqual({ set: "death", frame: 15, clip: "death" });
+  const before = await page.evaluate(() => {
+    const c = window.hollowbaneCombat!,
+      a = c.actors[0]!;
+    return { tick: c.tick, x: a.x, y: a.y, sequence: a.sequence };
+  });
+  await page.evaluate(() =>
+    window.hollowbaneWarriorProduction!.setLegacy(true),
+  );
+  await expect.poll(async () => (await state(page)).textures).toBe(0);
+  await page.evaluate(() =>
+    window.hollowbaneWarriorProduction!.setLegacy(false),
+  );
+  await expect.poll(async () => (await state(page)).mode).toBe("warrior");
+  expect((await state(page)).pose).toEqual({
+    set: "death",
+    frame: 15,
+    clip: "death",
+  });
+  expect(
+    await page.evaluate(() => {
+      const a = window.hollowbaneCombat!.actors[0]!;
+      return { hp: a.hp, phase: a.phase, x: a.x, y: a.y, sequence: a.sequence };
+    }),
+  ).toEqual({
+    hp: 0,
+    phase: "dead",
+    x: before.x,
+    y: before.y,
+    sequence: before.sequence,
+  });
+  expect(
+    await page.evaluate(
+      (tick) =>
+        window.hollowbaneSkills!.events.some(
+          (e) => e.actor === 0 && e.kind === "effect" && e.tick > tick,
+        ),
+      before.tick,
+    ),
+  ).toBe(false);
+  await page.screenshot({ path: info.outputPath("crypt-held-corpse.png") });
+  await page.screenshot({
+    path: info.outputPath("crypt-held-corpse-detail.png"),
+    clip: { x: 448, y: 100, width: 384, height: 300 },
+  });
 });
