@@ -152,8 +152,8 @@ Thirty focused selector/arena cases pass after the active-projectile guard.
 TypeScript, scoped lint and build pass. The complete corrected11-case local browser
 suite passes (2.7m). Corrective candidate **d72d572247a0fd305a9253479f2e1db1a6f695b3**
 is committed/pushed: [CI40573939227](https://github.com/tobisen/hollowbane/actions/runs/40573939227)
-Fast, Full units/validators and required compatibility pass; all Chromium and
-Pages/hosted acceptance remain pending. The sealed153-file local artifact is
+Fast, Full676 units/validators and required compatibility pass; Chromium shards1/2
+failed as recorded below, so Pages/hosted acceptance was not reached. The sealed153-file local artifact is
 `/private/tmp/hollowbane-warrior-production-corrective-tested`. A remains
 unaccepted until the required release gate passes; final B remains incomplete.
 
@@ -234,13 +234,57 @@ and run through the shared virtual input; its gameplay-scale captures are retain
 This is twelve production cases plus the existing seven arena cases across focused
 runs. Four additional Firefox/WebKit creation and failed-asset fallback cases pass;
 those captures and ordinary walk/run captures were reviewed. No full cross-engine
-Act1 playthrough is claimed. Final source requires another exact Full/Pages/hosted gate before A/B approval.
+Act1 playthrough is claimed. Gate-repair candidate **f86d07597533d38066315a6d3b76c986c9458ddb** is committed/pushed.
+[CI40583590744](https://github.com/tobisen/hollowbane/actions/runs/40583590744)
+failed the bounded-direction observation as recorded below. Its153 sealed local files are
+identical to the profiled corrective runtime; only tests/profiling/documentation
+changed. Final acceptance remains pending.
 
-## Remaining acceptance
+## Final campaign coverage and limits
 
-Exact required release acceptance, independent hosted campaign checks and final
-file-hash verification remain before production acceptance. Representative combat,
-NPC/area/waypoint travel, cross-character saves, eight-direction walk/run, natural
-death and forest/graveyard/crypt/native visual checks are recorded above. Retain physical-controller,
-actual GPU-memory/residency and full Act1 human-playthrough limitations unless
-measured/performed. Previously accepted cloak stiffness/foreshortening remain.
+| Requirement                   | Evidence                                                                                                             |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| New and historical Warrior    | Real owned-character creation/selection, existing slot, Save & Exit, Continue and reload                             |
+| Locomotion/collision/camera   | All eight walk/run directions, existing controller waypoint/area-route contracts, native moving forest cohorts       |
+| Combat/skills/reactions/death | Full16-actor forest melee and both abilities; normal interruptions; natural crypt lethal damage and held death15     |
+| Equipment/inventory           | Live blade/bow/staff/shield/empty-hand switching, deferred projectile guard, strict unequip-save-load regression     |
+| World/UI                      | Forest/graveyard/crypt captures, forest→graveyard→forest→camp route, NPC briefing and controller waypoint round trip |
+| Legacy/other classes          | Three debug lease cycles, corpse mode switching, Sorcerer/Ranger no-atlas checks, independent character saves        |
+| Asset lifecycle               | Conditional40-atlas ownership,0 after release/40 on reacquire, safe partial failure, no ordinary developer requests  |
+| Browser coverage              | 12 production/seven shared-arena cases across focused local runs; four Firefox/WebKit startup/failure cases          |
+
+These representative campaign checkpoints do not constitute a full Act1 human
+playthrough. Physical-controller/vibration and actual GPU-memory/residency/leaks
+remain unverified.40→0→40 texture-manager counts are lifecycle evidence, not a
+claim about GPU-driver allocations. Existing combat checkpoint stalls, accepted
+cloak stiffness/foreshortening and unchanged static armor appearance remain.
+No next class/monster artwork, balance or campaign work is implied.
+
+## Bounded-direction gate repair
+
+Candidate f86d075 /CI40583590744 **FAILED** only the new eight-direction case.
+Full676 units/147 files, required compatibility and three other Chromium shards
+pass. The actual forest battle and natural crypt death pass Linux. Pages/hosted
+were skipped; verified deployed remains3fd3525. This failed run is not acceptance.
+
+The retained trace shows the first walk screenshot held the stick for another
+1.25s, moving spawn0,0 to2.864,2.864. The first run screenshot then carried the
+actor to3.8,3.8 at the normal camp boundary. The next requested diagonal was
+correctly blocked by collision, so the gait observation timed out. This is an
+unbounded test input, not a renderer/collision defect.
+
+The browser observation now captures actual walking/gait/facing/displacement and
+neutralizes the ordinary virtual stick at that observation, before host polling
+or screenshot work. Both gait sets still require all eight distinct facings and
+actual movement>0.15. No actor positions, collision, simulation clocks or stats
+are patched. Captures are named after movement rather than claiming a moving
+frame after input release. Three ordinary and three6×CPU-throttled local repetitions pass.
+TypeScript/affected lint pass; all153 rebuilt runtime files remain identical. Failure evidence:
+`/private/tmp/hollowbane-warrior-production-input-repair-failure` and
+`-shard1-live.log`; correction evidence `-bounded-directions`.
+
+## Remaining release acceptance
+
+Another exact required Full/Pages/hosted gate, independent hosted campaign checks
+and final file-hash verification remain before production acceptance. Preserve
+the last verified deployed3fd3525 until those gates actually pass.

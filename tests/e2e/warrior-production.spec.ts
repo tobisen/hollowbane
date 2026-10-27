@@ -636,29 +636,35 @@ test("normal campaign Warrior walks and runs in all eight facing directions", as
         },
         { x, y },
       );
-      await page.waitForFunction(
+      const sample = await page.waitForFunction(
         ({ before, gait }) => {
-          const p = window.hollowbaneWorld!.position;
-          return (
-            window.hollowbaneCombat!.actors[0]!.walking &&
-            window.hollowbaneWarriorProduction!.pose?.clip === gait &&
-            Math.hypot(p.x - before.x, p.y - before.y) > 0.15
-          );
+          const p = window.hollowbaneWorld!.position,
+            actor = window.hollowbaneCombat!.actors[0]!,
+            clip = window.hollowbaneWarriorProduction!.pose?.clip,
+            distance = Math.hypot(p.x - before.x, p.y - before.y);
+          if (!actor.walking || clip !== gait || distance <= 0.15) return null;
+          // End the real input at the observed displacement, before host polling
+          // or a slow screenshot can carry the actor into the camp boundary.
+          window.virtualPads[0]!.axes[0] = window.virtualPads[0]!.axes[1] = 0;
+          return {
+            direction: actor.direction,
+            walking: actor.walking,
+            clip,
+            distance,
+          };
         },
         { before, gait },
+        { timeout: 10_000 },
       );
-      directions.add(
-        await page.evaluate(
-          () => window.hollowbaneCombat!.actors[0]!.direction,
-        ),
-      );
+      const observed = await sample.jsonValue();
+      expect(observed?.walking).toBe(true);
+      expect(observed?.clip).toBe(gait);
+      expect(observed?.distance).toBeGreaterThan(0.15);
+      directions.add(observed!.direction);
       if (directions.size === 1)
         await page.screenshot({
-          path: info.outputPath(`campaign-${gait}.png`),
+          path: info.outputPath(`campaign-after-${gait}.png`),
         });
-      await page.evaluate(() => {
-        window.virtualPads[0]!.axes[0] = window.virtualPads[0]!.axes[1] = 0;
-      });
       await expect
         .poll(() =>
           page.evaluate(() => window.hollowbaneCombat!.actors[0]!.walking),
