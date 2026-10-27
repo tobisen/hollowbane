@@ -407,6 +407,9 @@ test("real forest melee and both Warrior abilities retain existing input and sim
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase))
     .toBe("idle");
+  // Use the normal Run control for the long forest approach; the original
+  // ten-second waypoint deadlines also apply on slower software-rendered CI.
+  await pressVirtualButton(page, 10);
   const target = await page.evaluate(() => {
     const c = window.hollowbaneCombat!,
       p = c.actors[0]!;
@@ -429,25 +432,47 @@ test("real forest melee and both Warrior abilities retain existing input and sim
   );
   expect(route.length).toBeGreaterThan(0);
   for (const point of route) await driveQuestPoint(page, point);
-  const aim = await page.evaluate((id) => {
-    const enemy = window.hollowbaneCombat!.actors.find((a) => a.id === id)!,
-      camera = window.hollowbaneWorld!.camera;
-    return {
-      x: (enemy.x - camera.x) * camera.zoom,
-      y: (enemy.y - 28 - camera.y) * camera.zoom,
-    };
-  }, target.id);
-  await page.mouse.move(aim.x, aim.y);
-  await page.mouse.down();
   try {
     await expect
-      .poll(() =>
-        page.evaluate(() =>
+      .poll(async () => {
+        const observation = await page.evaluate(() => {
+          const combat = window.hollowbaneCombat!,
+            player = combat.actors[0]!,
+            camera = window.hollowbaneWorld!.camera;
+          const enemy = combat.actors
+            .filter((a) => a.id !== 0 && a.hp > 0)
+            .sort(
+              (a, b) =>
+                Math.hypot(a.x - player.x, a.y - player.y) -
+                Math.hypot(b.x - player.x, b.y - player.y),
+            )[0];
+          return {
+            damaged: combat.events.some(
+              (e) => e.kind === "damage" && e.actor === 0,
+            ),
+            phase: player.phase,
+            aim: enemy
+              ? {
+                  x: (enemy.x - camera.x) * camera.zoom,
+                  y: (enemy.y - 28 - camera.y) * camera.zoom,
+                }
+              : null,
+          };
+        });
+        if (observation.damaged) return true;
+        // The pack moves during approach. Re-acquire a nearby living opponent
+        // through trusted mouse input; let committed attacks finish normally.
+        if (observation.phase === "idle" && observation.aim) {
+          await page.mouse.up();
+          await page.mouse.move(observation.aim.x, observation.aim.y);
+          await page.mouse.down();
+        }
+        return page.evaluate(() =>
           window.hollowbaneCombat!.events.some(
             (e) => e.kind === "damage" && e.actor === 0,
           ),
-        ),
-      )
+        );
+      })
       .toBe(true);
   } finally {
     await page.mouse.up();

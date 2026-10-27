@@ -343,9 +343,42 @@ Raw failures `-miniboss-shard3.log` / `-miniboss-shard3-failure` and
 in `-ground-windup-50x`; the first history experiment's entry-tick arithmetic and
 listener-registration race were corrected against the unchanged timeline source.
 
+## Normal Run approach — latest gate repair
+
+Candidate200de528a10855417d2ad4aa73c11cf20f3ed2bd /CI40596999048 **FAILED** only
+its campaign battle approach. Full676 units/147 files, required compatibility and
+Chromium shards2–4 pass, including all repaired legacy cases. Shard1 passes103/104,
+including the other11 production cases, eight-way movement23.2s and natural
+crypt death49.6s. Pages/hosted skipped; no accepted production release.
+
+The trace shows a live300HP actor steering along the correct unobstructed floor,
+still0.758 world units from(-7,-10.5) when the original10s waypoint deadline
+expires. It is walking at3 world/s; there is no wall, death or asset-load failure.
+The driver now uses the normal sampled Run control after Oath preparation, before
+the same authored approach. No route/deadline/actor/stat/AI/collision mutation;
+all16 actors and actual melee/both-effect assertions remain. Three ordinary
+repetitions pass. The Run-only stress passes its waypoint but two trials then
+fail the unchanged20s melee-damage assertion: a held preselected moving target
+produces no hits before legitimate player death. These remain failed trials.
+
+The final driver re-acquires the current nearest living opponent with trusted
+mouse input while idle and lets committed attacks finish. It reads the same
+genuine actor0-damage predicate again after input, within the unchanged20s limit.
+No target/health/AI/collision mutation or easier encounter. The final version
+passes three ordinary cases (18.7–20.2s) and three6×CPU cases (35.4–39.8s),
+including real melee and exactly one Fan effect. TypeScript/lint/format pass.
+
+Raw `-history-shard1.log` / `-history-shard1-failure`, corrected `-running-approach`
+and `-running-approach-slow` (Run-only melee failures); final
+`-running-reaim` and `-running-reaim-slow`. All153 reviewed/CI files still match the profiled
+runtime; this is another test-driver change only. Native matched comparisons
+above retain their original walking routes; a later hosted Run profile must be
+labelled as an additional unmatched cohort, not substituted for those comparisons.
+
 ## Remaining release acceptance
 
-Another exact required release gate is necessary for these two focused existing
-browser-driver repairs. ef1ef92 is not accepted. Independent hosted12 campaign
-checks, public153-file verification and final B evidence remain incomplete.
-Last verified deployed remains3fd3525ebac49758946e547582663d4ccf0d576c.
+Focused Run/live-target verification passes; commit/push this small test repair.
+Its exact required Full/Pages/hosted gate must pass before independent hosted12
+campaign checks, public153-file verification and final B acceptance. All earlier
+failed trials remain failures. Last verified deployed remains
+3fd3525ebac49758946e547582663d4ccf0d576c. No next class/monster/campaign work.
