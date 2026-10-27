@@ -1,0 +1,26 @@
+.warrior-arena header p {
+  margin: 6px 0;
+  font: 13px/1.5 system-ui;
+}
+.warrior-arena h1 {
+  margin: 8px 0;
+}
+.warrior-arena .pilot-controls {
+  gap: 8px;
+  margin: 12px 0;
+}
+.warrior-arena #pilot-stage {
+  height: auto;
+  aspect-ratio: 2;
+  max-width: 960px;
+}
+.warrior-arena #arena-status {
+  display: block;
+  white-space: pre-wrap;
+  margin-top: 12px;
+  font: 12px/1.6 monospace;
+}
+.warrior-arena #arena-loading {
+  font: 12px system-ui;
+  color: #b9ae98;
+}

@@ -1,0 +1,416 @@
+{
+  "version": 1,
+  "date": "2026-10-27",
+  "issues": ["DBL-023", "DBL-024", "DBL-025", "DBL-026"],
+  "status": "local candidate; exact CI, Pages, hosted and public-byte verification pending",
+  "lastVerifiedDeployedSha": "cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16",
+  "route": "?developer=1&warriorPilot=1&warriorArena=1",
+  "productionAdoption": false,
+  "userArtApproval": false,
+  "physicalControllerVerified": false,
+  "assets": {
+    "sets": 5,
+    "atlases": 40,
+    "clips": 72,
+    "poses": 880,
+    "pngBytes": 23458595,
+    "decodedBaseBytes": 366215168,
+    "actualTotalGpuMemoryMeasured": false,
+    "largestAtlasEdge": 2048,
+    "ordinaryEntryCandidateRequests": 0,
+    "loaderMaxParallelDownloads": 2,
+    "duplicatedAtlasRequestsAtEntry": 0,
+    "resetTextureCount": 40,
+    "releaseTextureCount": 0,
+    "reloadTextureCount": 40,
+    "verifiedReleaseReloadCycles": 3,
+    "pixelChanges": false,
+    "sourceAssetChanges": false
+  },
+  "validation": {
+    "focusedUnitsAndAssets": 65,
+    "chromium": 7,
+    "typeScript": "pass",
+    "affectedLint": "pass",
+    "build": "pass",
+    "failedPriorAssertions": "Two exact camera-coordinate equalities rejected ~5.7e-14 pixel roundoff; corrected to ten decimal places, then final seven-case run passed."
+  },
+  "native": {
+    "browser": "156.0.8078.4",
+    "environment": {
+      "visible": "visible",
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "dpr": 1,
+      "canvas": [960, 480],
+      "displayed": [960, 480]
+    },
+    "condition": "Visible native Metal, 1280x800/DPR1, 960x480 gameplay canvas/zoom1, five real training actors, obstacle, all forty textures resident in both sources; reset, 60 RAF warmup, 420 measured intervals; keyboard and virtual controller use matching semantic event schedules; no physical or total GPU memory claim",
+    "coldCondition": "Fresh browser contexts, HTTP cache disabled, local origin; OS/driver caches not reset; not hosted-network or machine-cold evidence.",
+    "initialCold": [
+      {
+        "readyMs": 433.10000002384186,
+        "requests": 40,
+        "unique": 40,
+        "encodedBodyBytes": 23458595,
+        "transferBytes": 23470595,
+        "decodedBaseBytes": 366215168,
+        "textures": 40,
+        "maxTextureSize": 16384,
+        "loadingRafLongest": 114.60000000000002,
+        "loadingRafOver25": 6,
+        "jsHeapOnly": {
+          "used": 18219014,
+          "total": 24323770
+        }
+      },
+      {
+        "readyMs": 422.60000002384186,
+        "requests": 40,
+        "unique": 40,
+        "encodedBodyBytes": 23458595,
+        "transferBytes": 23470595,
+        "decodedBaseBytes": 366215168,
+        "textures": 40,
+        "maxTextureSize": 16384,
+        "loadingRafLongest": 100,
+        "loadingRafOver25": 5,
+        "jsHeapOnly": {
+          "used": 17220683,
+          "total": 24586223
+        }
+      },
+      {
+        "readyMs": 422.6999999284744,
+        "requests": 40,
+        "unique": 40,
+        "encodedBodyBytes": 23458595,
+        "transferBytes": 23470595,
+        "decodedBaseBytes": 366215168,
+        "textures": 40,
+        "maxTextureSize": 16384,
+        "loadingRafLongest": 101.9,
+        "loadingRafOver25": 3,
+        "jsHeapOnly": {
+          "used": 17580719,
+          "total": 24586475
+        }
+      }
+    ],
+    "boundedQueueCold": [
+      {
+        "readyMs": 484.2000000476837,
+        "requests": 40,
+        "unique": 40,
+        "encodedBodyBytes": 23458595,
+        "transferBytes": 23470595,
+        "decodedBaseBytes": 366215168,
+        "textures": 40,
+        "maxTextureSize": 16384,
+        "loadingRafLongest": 18.300000000000068,
+        "loadingRafOver25": 0,
+        "jsHeapOnly": {
+          "used": 19060293,
+          "total": 25635957
+        }
+      },
+      {
+        "readyMs": 494.6999999284744,
+        "requests": 40,
+        "unique": 40,
+        "encodedBodyBytes": 23458595,
+        "transferBytes": 23470595,
+        "decodedBaseBytes": 366215168,
+        "textures": 40,
+        "maxTextureSize": 16384,
+        "loadingRafLongest": 18.399999999999977,
+        "loadingRafOver25": 0,
+        "jsHeapOnly": {
+          "used": 19081621,
+          "total": 25897965
+        }
+      },
+      {
+        "readyMs": 491.09999990463257,
+        "requests": 40,
+        "unique": 40,
+        "encodedBodyBytes": 23458595,
+        "transferBytes": 23470595,
+        "decodedBaseBytes": 366215168,
+        "textures": 40,
+        "maxTextureSize": 16384,
+        "loadingRafLongest": 33.30000000000001,
+        "loadingRafOver25": 1,
+        "jsHeapOnly": {
+          "used": 18793853,
+          "total": 26160109
+        }
+      }
+    ],
+    "samples": [
+      {
+        "device": "keyboard",
+        "source": "shipped",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.300000000000182,
+        "p99": 18.5,
+        "longest": 18.700000000000728,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 224,
+          "oath-echo": 27,
+          "walk": 12,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "keyboard",
+        "source": "candidate",
+        "frames": 420,
+        "p50": 16.69999999999891,
+        "p95": 18.299999999999272,
+        "p99": 18.400000000001455,
+        "longest": 18.69999999999891,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 225,
+          "oath-echo": 26,
+          "walk": 12,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "keyboard",
+        "source": "candidate",
+        "frames": 420,
+        "p50": 16.700000000000728,
+        "p95": 18.299999999999272,
+        "p99": 18.5,
+        "longest": 18.700000000000728,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 226,
+          "oath-echo": 25,
+          "walk": 12,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "keyboard",
+        "source": "shipped",
+        "frames": 420,
+        "p50": 16.700000000000728,
+        "p95": 18.400000000001455,
+        "p99": 18.5,
+        "longest": 18.600000000002183,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 226,
+          "oath-echo": 25,
+          "walk": 12,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "keyboard",
+        "source": "shipped",
+        "frames": 420,
+        "p50": 16.69999999999709,
+        "p95": 18.39999999999418,
+        "p99": 18.5,
+        "longest": 18.69999999999709,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 225,
+          "oath-echo": 26,
+          "walk": 12,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "keyboard",
+        "source": "candidate",
+        "frames": 420,
+        "p50": 16.69999999999709,
+        "p95": 18.30000000000291,
+        "p99": 18.599999999998545,
+        "longest": 18.700000000004366,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 226,
+          "oath-echo": 25,
+          "walk": 12,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "controller",
+        "source": "shipped",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 17.699999999999818,
+        "p99": 18.399999999999636,
+        "longest": 18.5,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 225,
+          "oath-echo": 26,
+          "walk": 12,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "controller",
+        "source": "candidate",
+        "frames": 420,
+        "p50": 16.69999999999891,
+        "p95": 17.200000000000728,
+        "p99": 17.600000000000364,
+        "longest": 17.69999999999891,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 227,
+          "oath-echo": 25,
+          "walk": 11,
+          "primary": 31,
+          "hit": 38,
+          "run": 89
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "controller",
+        "source": "candidate",
+        "frames": 420,
+        "p50": 16.69999999999709,
+        "p95": 17.200000000000728,
+        "p99": 17.600000000002183,
+        "longest": 17.700000000000728,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 224,
+          "oath-echo": 26,
+          "walk": 12,
+          "primary": 31,
+          "hit": 37,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "controller",
+        "source": "shipped",
+        "frames": 420,
+        "p50": 16.69999999999709,
+        "p95": 17.299999999995634,
+        "p99": 17.600000000002183,
+        "longest": 17.700000000004366,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 225,
+          "oath-echo": 26,
+          "walk": 12,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "controller",
+        "source": "shipped",
+        "frames": 420,
+        "p50": 16.69999999999709,
+        "p95": 17.099999999998545,
+        "p99": 17.60000000000582,
+        "longest": 17.80000000000291,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 225,
+          "oath-echo": 26,
+          "walk": 12,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      },
+      {
+        "device": "controller",
+        "source": "candidate",
+        "frames": 420,
+        "p50": 16.69999999999709,
+        "p95": 17,
+        "p99": 17.5,
+        "longest": 17.60000000000582,
+        "over25": 0,
+        "cameraDrift": 5.684341886080802e-14,
+        "textures": [40],
+        "clips": {
+          "idle": 225,
+          "oath-echo": 25,
+          "walk": 13,
+          "primary": 31,
+          "hit": 36,
+          "run": 91
+        },
+        "maxEffects": 1
+      }
+    ],
+    "scope": "Final matched cohorts include walk/run, primary, Oath Echo and real enemy hitstun; natural held deaths captured separately. Initial cohorts also exercised secondary. Fan correctness is covered by focused simulation and prior Release B browser evidence.",
+    "interpretation": "No warmed gameplay performance improvement claimed. Bounded loading queue reduces observed initial upload bursts in these three samples; one 33.3ms loading interval remains. Heap samples are JS heap only, never GPU memory.",
+    "raw": "/private/tmp/hollowbane-warrior-arena-final-native",
+    "priorRaw": "/private/tmp/hollowbane-warrior-arena-native"
+  },
+  "browserEvidence": "/private/tmp/hollowbane-warrior-arena-final-browser",
+  "remaining": [
+    "Stiff cloak, sculptural finish, restrained torso motion and front/rear foreshortening.",
+    "Simple training actors/grid are existing developer placeholders, not full forest/campaign art acceptance.",
+    "349.25MiB decoded candidate payload is developer-only; total browser/GPU memory and physical controls remain unmeasured.",
+    "No live adoption: require user art approval and representative forest loading/residency/hardware review."
+  ]
+}

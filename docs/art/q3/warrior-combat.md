@@ -8,7 +8,83 @@ acceptance before advancing. Preserve simulation, saves, balance, Phaser4.2.1,
 the approved source rig, live graphics and unrelated edits. No other class art
 or normal-game sprite activation is authorized.
 
-## Release B — VERIFIED; Phase5 arena next
+## Release C — local playable candidate (2026-10-27)
+
+The current request authorizes the complete developer arena, memory review,
+native profiling and exact Release C publication. This supersedes the earlier
+one-task stop for this assignment. **Release C is not yet publicly verified.**
+Last verified deployed remains `cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16`.
+
+Route: `?developer=1&warriorPilot=1&warriorArena=1`. The new isolated owner uses
+`createCombat`, `commandCombat`, `stepSkillCombat`, existing rank-one Warrior
+abilities, shared controller input, normal movement acceleration/gaits, actual
+target approach, collision/ellipse-wall sliding and five existing training actors.
+No storage/character/loot/quest owner or normal graphics are changed. Primary and
+secondary retain the already approved interpretation: visual variants of the
+same melee rules, not a new damage mechanic.
+
+All five atlas sets share their approved scale and ground anchor. Locomotion
+uses the movement manifest's distance cadence; attack/cast/reaction/death selectors
+read every real simulation tick. Facing changes do not restart gait phase;
+committed attacks retain their variant; hitstun/death override casts; terminal
+death remains held. Presentation never executes strikes or skill effects.
+Camera/depth follow authoritative positions. At 960×480 the stage is capped at
+actual gameplay scale. Original/candidate comparison, target cycling, reset,
+pause/one-tick/0.25× inspection and state/frame/active-entry/effect/root/foot
+diagnostics are available only on the guarded developer route.
+
+**65 focused unit/asset and seven Chromium cases pass**, including actual enemy
+interruption/death, movement/controller combat, real effects, exact paused
+old/new outcomes, normal-entry/storage isolation and three resource cycles.
+TypeScript, scoped lint/format and production build pass. Two initial camera
+assertions rejected ~5.7e-14px floating-point roundoff; ten-decimal assertions
+retain meaningful precision. Candidate/old, ability, movement and held corpse
+captures were inspected. No major root/transition defect was demonstrated at
+gameplay scale. Stiff cloak, sculptural finish, restrained torso motion and
+foreshortening remain visible limitations; no final user art approval is implied.
+
+### Asset lifecycle and native evidence
+
+Phaser alone loads **40 unique PNG atlases /23,458,595 encoded bytes**, once,
+inside the lazy developer entry. Ordinary entry requests zero developer assets.
+All40 coexist: **349.25MiB base RGBA**, not measured total GPU memory. Atlas edges
+max2048px versus the native context's16384px maximum. No atlas/pipeline/source
+pixels changed or redundant canvas image copies added. Explicit release switches
+to the original sprite and removes every candidate texture; reload restores40.
+Reset preserves40 without new loads. Three complete cycles retained identical
+paused gameplay and counts; this establishes lifecycle behavior, not a driver
+memory/leak measurement. Reload holds simulation until resources are ready.
+
+Fresh-context, HTTP-cache-disabled **local-origin** native Chromium156/Apple M4
+Metal samples initially loaded in423–433ms but showed100–115ms loading RAF gaps.
+Only this arena's queue is bounded to two downloads: ready484–495ms, longest
+loading gaps18.3/18.4/33.3ms, zero/zero/one>25ms. This trades ~60ms readiness for
+less bursty startup; OS/GPU caches were not reset and hosted cold-load is unknown.
+JS heap samples are explicitly separate from GPU allocation/residency.
+
+Final matched native cohorts: three pairs each for keyboard and virtual
+controller, visible1280×800/DPR1,960×480/zoom1, five actors, identical40-texture
+payload, reset before60-frame warmup and420 measured intervals. Candidate p50
+16.7ms; keyboard p9518.3/p99≤18.6, controller p9517.0–17.2/p99≤17.6; longest
+candidate18.7ms, zero>25ms and camera roundoff≤5.7e-14px. Matched originals span
+p9517.1–18.4; no warmed performance improvement claim. Final cohorts cover
+movement/primary/Oath/real hits; earlier cohorts also secondary; Fan remains
+covered by focused simulation and approved B browser evidence. Natural terminal
+deaths were captured/reviewed separately. No physical-controller/full-forest or
+actual GPU-memory claim.
+
+Evidence: `arena-review.json`; raw `/private/tmp/hollowbane-warrior-arena-final-native`
+and `-final-browser`; tested build inventory in
+`/private/tmp/hollowbane-warrior-arena-tested-files.json`. Reproduce with
+`node scripts/profile-warrior-arena.mjs BASE_URL UNTRACKED_OUTPUT`. Existing risk
+classifier requires **Full** (new developer contracts/entry/profiler). Next:
+commit/push the verified candidate, verify exact required Full/Pages/hosted,
+independently replay this route and match sealed/local/public bytes. Preserve
+unrelated documentation edits. Recommend continued developer review; eventual
+live adoption needs user art approval plus representative forest residency,
+hardware and loading validation. Never activate it automatically.
+
+## Release B — VERIFIED; retained checkpoint
 
 Verified deployed **cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16** /
 [CI40409917180](https://github.com/tobisen/hollowbane/actions/runs/40409917180):

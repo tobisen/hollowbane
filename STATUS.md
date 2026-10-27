@@ -1,3 +1,11 @@
+## Warrior Release C — playable local candidate (2026-10-27)
+
+- Developer route `?developer=1&warriorPilot=1&warriorArena=1` integrates all72 clips/880 poses with actual movement, targeting, melee/skills, hostile damage, hit/death, collision, camera and shared keyboard/mouse/controller input. Original/candidate, pause/step/slow inspection, reset and texture lifecycle diagnostics remain isolated from normal graphics/saves.
+- 65 focused unit/assets and seven Chromium cases pass; TypeScript/build/scoped lint/format pass; gameplay-scale captures inspected. Real interruptions, held corpse, old/new deterministic outcomes and three unload/reload cycles covered. Physical controllers remain unverified.
+- All40 unique atlases23,458,595PNG bytes/349.25MiB base RGBA; zero normal-entry developer requests. Release0/reload40/reset40 textures; no source/art changes or actual GPU-memory claim. Bounding developer load concurrency2 reduced observed loading gaps100–115→18.3–33.3ms; local cache-disabled readiness484–495ms, not hosted/machine-cold evidence.
+- Native visible M4/Metal final candidate p5016.7/p9517.0–18.3/p99≤18.6ms; longest18.7, zero>25ms, camera roundoff≤5.7e-14px. No warmed improvement/full-forest/physical claim. Stiff cloak/foreshortening/sculptural finish remain; no user art approval/live activation.
+- Release C exact CI/Pages/hosted/public bytes PENDING; classifier requires Full. Last verified deployed remainscf2f01f5644d6963adea5b6f9e1b687ecc2b0c16. Next: commit/push, verify exact release and hosted arena. Evidence docs/art/q3/warrior-combat.md, arena-review.json; raw /private/tmp/hollowbane-warrior-arena-final-native and -final-browser;113-file tested inventory. Preserve unrelated documentation edits.
+
 ## Overnight Warrior — Release B VERIFIED; arena next (2026-10-26)
 
 - Verified deployed cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16 / CI40409917180: Full units/tooling, all four Chromium shards, required compatibility, Pages, hosted and Release acceptance PASS. Local/sealed/public110-file hashes match; four independent hosted Warrior cases pass and captures reviewed. Earlier a072526 status-format failure is repaired and retained as history.

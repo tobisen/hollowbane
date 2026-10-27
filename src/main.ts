@@ -29,7 +29,10 @@ if (invalidCharacterRoute) {
   query.get("developer") === "1" &&
   query.get("warriorPilot") === "1"
 ) {
-  if (query.get("warriorCombat") === "1") {
+  if (query.get("warriorArena") === "1") {
+    const { startWarriorArena } = await import("./rendering/warrior-arena");
+    await startWarriorArena();
+  } else if (query.get("warriorCombat") === "1") {
     const { startWarriorCombatPreview } =
       await import("./rendering/warrior-combat-preview");
     await startWarriorCombatPreview(
