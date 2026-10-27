@@ -283,8 +283,28 @@ TypeScript/affected lint pass; all153 rebuilt runtime files remain identical. Fa
 `/private/tmp/hollowbane-warrior-production-input-repair-failure` and
 `-shard1-live.log`; correction evidence `-bounded-directions`.
 
+## Existing miniboss input gate repair
+
+Candidate04091d9 /CI40588421219 is blocked by Chromium shard3's existing
+`overnight-d07b` mouse-fight approach, before combat. Its graveyard fixture retains
+legacy presentation. The diagnostic shows actual walking speed, an unblocked live
+actor and continued progress to6.878,3.5, only0.122 from7,3.5 when the original
+10s waypoint deadline expires (precision0.1). Run was requested via keyboard
+immediately after inventory interaction, then navigation switches to virtual input.
+This is not evidence of a new Warrior rendering/collision failure.
+
+The unchanged mouse case passes three local repetitions, confirming intermittent
+input/timing rather than a persistent local failure. The test now requests Run
+through the existing sampled virtual button10 helper, keeping approach input on
+one device after the modal closes. No deadline, precision, route, damage, reward,
+save or fight assertion changes. Both miniboss cases pass three repetitions each;
+TypeScript and affected lint pass. Application/source assets remain unchanged.
+Failed evidence `-bounded-shard3.log` / `-bounded-shard3-failure`; local baseline
+`-existing-miniboss-baseline`; correction `-existing-miniboss-input-repair`.
+
 ## Remaining release acceptance
 
-Another exact required Full/Pages/hosted gate, independent hosted campaign checks
-and final file-hash verification remain before production acceptance. Preserve
-the last verified deployed3fd3525 until those gates actually pass.
+The corrected existing-test driver needs another exact required release gate.
+Current04091d9 is not accepted; remaining original-run shard outcomes are retained
+separately. Independent hosted12 campaign checks and final153-file verification
+remain before acceptance. Last verified deployed remains3fd3525.

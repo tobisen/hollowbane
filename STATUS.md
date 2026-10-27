@@ -1,9 +1,16 @@
+## Warrior production — existing miniboss input gate repair (2026-10-27)
+
+- Candidate04091d9 /CI40588421219 blocked by shard3 old miniboss approach timeout before combat; Full676 units/147 files, compatibility and shard2 pass; shards1/4 still pending at this checkpoint. Its unclassed fixture retains legacy art. No publication acceptance; last verified deployed3fd3525ebac49758946e547582663d4ccf0d576c.
+- Diagnostic: live walking actor still approaching6.878,3.5, remaining0.122 versus precision0.1 at original10s deadline. Mixed keyboard Run immediately after inventory then virtual navigation did not produce running in that trial. Unchanged mouse case passes three local repetitions. Repair requests Run via existing sampled virtual button10, keeping approach on one device. No time/precision/route/gameplay/HP/reward/save assertion changes.
+- Both miniboss cases pass three repetitions each; TypeScript/scoped lint pass. Runtime/source art unchanged; all153 reviewed bytes remain valid. Evidence docs/art/q3/warrior-production.md and /private/tmp/hollowbane-warrior-production-bounded-shard3-failure, -bounded-shard3.log, -existing-miniboss-baseline and -existing-miniboss-input-repair. Preserve unrelated edits.
+- Next commit/push this focused repair; require exact Full/Pages/hosted gate and independent hosted12 campaign/153-file checks before final B. Entire assignment remains incomplete. Keep native baseline checkpoint-stall, physical-controller, actual GPU-memory and human-playthrough limits explicit. No bypass of failed gates.
+
 ## Warrior production — bounded-direction release-gate repair (2026-10-27)
 
 - Candidatef86d075 /CI40583590744 FAILED only the new eight-direction observation; Full676 units/147 files, required compatibility and Chromium shards2–4 pass. Actual forest battle/natural crypt death pass. Pages/hosted skipped; last verified deployed remains3fd3525ebac49758946e547582663d4ccf0d576c. No A/B acceptance.
 - Linux trace proves held input during screenshots moved spawn0,0→2.864,2.864 and then run→camp boundary3.8,3.8; next diagonal was correctly blocked. Test now captures actual walking/gait/facing/displacement and releases the normal virtual stick at the browser observation before screenshot/host latency. Every original movement/gait/eight-facing assertion remains; no simulation/position/collision/clock changes.
 - Three ordinary plus three6×CPU-throttled repetitions pass; screenshots reviewed. TypeScript/scoped lint pass. All153 rebuilt client files match f86/d72 byte for byte. Only test input/documentation changes. Evidence docs/art/q3/warrior-production.md; raw /private/tmp/hollowbane-warrior-production-input-repair-failure, -bounded-directions and -bounded-directions-slow.
-- Next commit/push this repair, require exact Full/Pages/hosted acceptance, then independent hosted12 campaign/153-byte checks and final B evidence. Entire assignment remains incomplete. Preserve unrelated documentation and the native limitations already recorded; do not bypass failed required release gates.
+- Candidate04091d955797b9a820e50328d0c24fe40ff01a20 committed/pushed; required CI40588421219 in progress. Next exact Full/Pages/hosted acceptance, then independent hosted12 campaign/153-byte checks and final B evidence. Entire assignment remains incomplete. Preserve unrelated documentation and the native limitations already recorded; do not bypass failed required release gates.
 
 ## Warrior production — input/range gate repair candidate (2026-10-27)
 

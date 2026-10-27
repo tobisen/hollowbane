@@ -19,7 +19,9 @@ async function approach(page: Page) {
   await installVirtualController(page, "Xbox 360 Controller");
   await loadD06Checkpoint(page, fixture.text);
   await prepareEarnedQuestWarrior(page);
-  await page.keyboard.press("r");
+  // The approach already uses a virtual stick. Sample Run on that same device
+  // after inventory closes, rather than racing keyboard/controller ownership.
+  await pressVirtualButton(page, 10);
   const path = await page.evaluate(
     (id) => window.hollowbaneWorld!.routeToHostile!(id),
     fixture.id,
