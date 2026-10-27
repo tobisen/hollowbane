@@ -5,7 +5,10 @@ import { characterApi } from "../fixtures/character-api";
 import { characterSlotFixture } from "../fixtures/character-slot";
 import { inventoryItem } from "../../src/simulation/inventory-test-helper";
 import { serializeCharacter } from "../../src/simulation/inventory-save";
-import { installVirtualController } from "./virtual-controller";
+import {
+  installVirtualController,
+  pressVirtualButton,
+} from "./virtual-controller";
 import { WorldSession } from "../../src/simulation/world-session";
 import type { AreaId } from "../../src/simulation/world";
 import { worldLayout } from "../../src/simulation/world-layout";
@@ -377,6 +380,14 @@ test("real forest melee and both Warrior abilities retain existing input and sim
       requestAnimationFrame(sample);
     });
   }
+  const cpu =
+    profiling && process.env.WARRIOR_PRODUCTION_CPU === "1"
+      ? await page.context().newCDPSession(page)
+      : null;
+  if (cpu) {
+    await cpu.send("Profiler.enable");
+    await cpu.send("Profiler.start");
+  }
   await page.locator("#combat-world").focus();
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
@@ -444,54 +455,100 @@ test("real forest melee and both Warrior abilities retain existing input and sim
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneCombat!.actors[0]!.phase))
     .toBe("idle");
-  // Real hostile hits may legitimately interrupt a cast. Reissue through normal
-  // input only after actual recovery/cooldown; never grant immunity or effects.
-  for (let attempt = 0; attempt < 4; attempt++) {
-    if (
-      await page.evaluate(() =>
-        window.hollowbaneSkills!.events.some(
-          (e) => e.kind === "effect" && e.actor === 0 && e.skill === "iron-fan",
-        ),
-      )
-    )
-      break;
-    await expect
-      .poll(() =>
-        page.evaluate(() => {
+  // Read only public presentation snapshots. Approach/cycle/cast through the
+  // same sampled virtual controller as normal play, without a host polling race.
+  const fan = await page.evaluate(
+    () =>
+      new Promise<boolean>((resolve) => {
+        const pad = window.virtualPads[0]!,
+          start = window.hollowbaneCombat!.tick;
+        let down: { index: number; sample: number } | null = null,
+          readyAfter = 0;
+        const button = (index: number, pressed: boolean) => {
+          pad.buttons[index] = {
+            pressed,
+            touched: pressed,
+            value: pressed ? 1 : 0,
+          };
+        };
+        const finish = (success: boolean) => {
+          pad.axes[0] = pad.axes[1] = 0;
+          button(5, false);
+          button(11, false);
+          resolve(success);
+        };
+        const sample = () => {
           const c = window.hollowbaneCombat!,
-            u = window.hollowbaneSkills!.users.find((u) => u.actor === 0)!;
-          return (
-            c.actors[0]!.phase === "idle" &&
-            (u.cooldowns["iron-fan"] ?? 0) <= c.tick
-          );
-        }),
-      )
-      .toBe(true);
-    const tick = await page.evaluate(() => window.hollowbaneCombat!.tick);
-    await page.keyboard.press("1");
-    await expect
-      .poll(() =>
-        page.evaluate(
-          (tick) =>
+            p = c.actors[0]!,
+            u = window.hollowbaneSkills!.users.find((u) => u.actor === 0)!,
+            count = window.hollowbaneInput!.samples;
+          if (
             window.hollowbaneSkills!.events.some(
               (e) =>
-                e.actor === 0 &&
-                e.skill === "iron-fan" &&
-                e.tick > tick &&
-                e.kind !== "start",
-            ),
-          tick,
-        ),
-      )
-      .toBe(true);
-  }
+                e.actor === 0 && e.skill === "iron-fan" && e.kind === "effect",
+            )
+          )
+            return finish(true);
+          if (p.hp <= 0 || c.tick - start > 1800) return finish(false);
+          if (down) {
+            if (count >= down.sample + 3) {
+              button(down.index, false);
+              down = null;
+              readyAfter = count + 3;
+            }
+            requestAnimationFrame(sample);
+            return;
+          }
+          const targets = c.actors
+            .filter((a) => a.id !== 0 && a.hp > 0)
+            .map((a) => {
+              const dx = (a.x - p.x) / 64,
+                dy = (a.y - p.y) / 32;
+              return {
+                id: a.id,
+                dx,
+                dy,
+                distance: Math.hypot((dx + dy) / 2, (dy - dx) / 2),
+              };
+            })
+            .sort((a, b) => a.distance - b.distance);
+          const nearest = targets[0];
+          if (!nearest) return finish(false);
+          const selected = targets.find((a) => a.id === p.selected);
+          if (nearest.distance > 1) {
+            const n = Math.hypot(nearest.dx, nearest.dy);
+            pad.axes[0] = nearest.dx / n;
+            pad.axes[1] = nearest.dy / n;
+          } else {
+            pad.axes[0] = pad.axes[1] = 0;
+            if (count >= readyAfter) {
+              const index =
+                !selected || selected.distance > 1.25
+                  ? 11
+                  : p.phase === "idle" &&
+                      (u.cooldowns["iron-fan"] ?? 0) <= c.tick
+                    ? 5
+                    : null;
+              if (index !== null) {
+                button(index, true);
+                down = { index, sample: count };
+              }
+            }
+          }
+          requestAnimationFrame(sample);
+        };
+        requestAnimationFrame(sample);
+      }),
+  );
+  expect(fan).toBe(true);
   expect(
-    await page.evaluate(() =>
-      window.hollowbaneSkills!.events.some(
-        (e) => e.kind === "effect" && e.actor === 0 && e.skill === "iron-fan",
-      ),
+    await page.evaluate(
+      () =>
+        window.hollowbaneSkills!.events.filter(
+          (e) => e.actor === 0 && e.skill === "iron-fan" && e.kind === "effect",
+        ).length,
     ),
-  ).toBe(true);
+  ).toBe(1);
   expect((await state(page)).mode).toBe(legacy ? "legacy" : "warrior");
   if (profiling) {
     const evidence = await page.evaluate(() => {
@@ -511,6 +568,14 @@ test("real forest melee and both Warrior abilities retain existing input and sim
         2,
       ),
     );
+    if (cpu) {
+      const { profile } = await cpu.send("Profiler.stop");
+      writeFileSync(
+        info.outputPath("native-battle.cpuprofile"),
+        JSON.stringify(profile),
+      );
+      await cpu.detach();
+    }
   }
   await page.screenshot({ path: info.outputPath("forest-real-combat.png") });
 });
@@ -538,6 +603,72 @@ declare global {
     };
   }
 }
+
+test("normal campaign Warrior walks and runs in all eight facing directions", async ({
+  page,
+}, info) => {
+  await installVirtualController(page, "Xbox virtual standard");
+  await existing(page);
+  await page.locator("#combat-world").focus();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+    .toBe(true);
+  for (const gait of ["walk", "run"] as const) {
+    if (gait === "run") await pressVirtualButton(page, 10);
+    const directions = new Set<number>();
+    for (const [x, y] of [
+      [0, 1],
+      [-1, 1],
+      [-1, 0],
+      [-1, -1],
+      [0, -1],
+      [1, -1],
+      [1, 0],
+      [1, 1],
+    ]) {
+      const before = await page.evaluate(
+        () => window.hollowbaneWorld!.position,
+      );
+      await page.evaluate(
+        ({ x, y }) => {
+          window.virtualPads[0]!.axes[0] = x!;
+          window.virtualPads[0]!.axes[1] = y!;
+        },
+        { x, y },
+      );
+      await page.waitForFunction(
+        ({ before, gait }) => {
+          const p = window.hollowbaneWorld!.position;
+          return (
+            window.hollowbaneCombat!.actors[0]!.walking &&
+            window.hollowbaneWarriorProduction!.pose?.clip === gait &&
+            Math.hypot(p.x - before.x, p.y - before.y) > 0.15
+          );
+        },
+        { before, gait },
+      );
+      directions.add(
+        await page.evaluate(
+          () => window.hollowbaneCombat!.actors[0]!.direction,
+        ),
+      );
+      if (directions.size === 1)
+        await page.screenshot({
+          path: info.outputPath(`campaign-${gait}.png`),
+        });
+      await page.evaluate(() => {
+        window.virtualPads[0]!.axes[0] = window.virtualPads[0]!.axes[1] = 0;
+      });
+      await expect
+        .poll(() =>
+          page.evaluate(() => window.hollowbaneCombat!.actors[0]!.walking),
+        )
+        .toBe(false);
+    }
+    expect([...directions].sort()).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
+  }
+  expect((await state(page)).textures).toBe(40);
+});
 
 test("natural campaign death holds its terminal pose across legacy switching and texture reload", async ({
   page,

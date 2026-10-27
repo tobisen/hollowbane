@@ -138,43 +138,109 @@ The driver now prepares the actual self buff before engagement and uses supporte
 hold-to-repeat melee rather than assuming a one-shot attack cannot be interrupted.
 Both ability-effect and actual melee assertions remain. Six visible M4/Metal
 legacy/Warrior battle runs pass with those inputs. Timing from those particular
-Playwright runs is **not accepted**: trace-enabled runs contain large stalls in
-both modes; tracing-disabled confirmation is pending. No invulnerability, stat,
+Playwright runs is **not accepted**: large stalls occur in both modes even with tracing disabled; they are not
+attributed to tracing. A native CPU profile observes1198ms cumulative
+`writeCheckpoint` work in a19s battle, including355ms session capture and842ms
+save work. This identifies pre-existing checkpoint work as one contributor;
+not every long interval is attributed. No checkpoint optimization or save-rule
+change is included in the Warrior task. No invulnerability, stat,
 damage, cooldown, AI or timing mutation was used. Natural crypt lethal damage,
 held death15 and legacy/texture reload with unchanged corpse position/sequence
 also pass; the gameplay-scale corpse capture was reviewed.
 
 Thirty focused selector/arena cases pass after the active-projectile guard.
 TypeScript, scoped lint and build pass. The complete corrected11-case local browser
-suite passes (2.7m); a corrective commit and exact Full/Pages/hosted verification
-are required before marking A accepted or finishing B.
+suite passes (2.7m). Corrective candidate **d72d572247a0fd305a9253479f2e1db1a6f695b3**
+is committed/pushed: [CI40573939227](https://github.com/tobisen/hollowbane/actions/runs/40573939227)
+Fast, Full units/validators and required compatibility pass; all Chromium and
+Pages/hosted acceptance remain pending. The sealed153-file local artifact is
+`/private/tmp/hollowbane-warrior-production-corrective-tested`. A remains
+unaccepted until the required release gate passes; final B remains incomplete.
 
-## Provisional native movement evidence
+## Verified native measurements — corrective runtime d72d572
 
-Exact A6290787 artifact: visible Chromium156.0.8078.4, Apple M4/Metal,1280×800,
-DPR1, Full detail, normal owned level24 Warrior forest save, seed42,16 actors.
-Three alternating-order pairs each for browser keyboard events and a virtual pad;
-60-frame warmup and420 measured intervals. Candidate p5016.7/p9517.2–18.6/
-p99≤18.7ms, zero>25ms; legacy p9517.2–17.8. Camera-relative range0px. No warmed
-improvement claim; this is movement, not actual combat or a full campaign.
+Visible Chromium156.0.8078.4, Apple M4/Metal,1280×800, DPR1, Full detail,
+normal owned level24 Warrior forest save, seed42,16 actors. Three alternating-order
+pairs per input;60-frame warmup and420 measured intervals. The corrected tool
+sends keyboard events to the focused game field and rejects a cohort without
+actual displacement/walk poses. Both devices moved; axis ranges2.1213 world units.
 
-Fresh-context HTTP-cache-disabled local-origin uploads take485–597ms, navigation
-ready1649–2105ms versus legacy1162–1227ms. Exactly40 production requests,
-23,458,595 encoded/23,470,595 transfer bytes and349.25MiB base RGBA; zero developer
-requests. Whole-page loading RAF maxima267–317ms versus legacy266–283ms;
-5–9 versus6–9 loading intervals>25ms. These startup/terrain/renderer gaps are not
-warmed-play results and do not establish machine-cold or hosted loading behavior.
-JS heap samples vary with GC and are not GPU memory or leak proof. Native maximum
-texture edge16384px, all atlases≤2048px. Native old/new captures reviewed.
+| Scenario                | Warrior                  | Legacy                   |
+| ----------------------- | ------------------------ | ------------------------ |
+| Movement p50/p95/p99    | 16.7 /18.0–18.5 /≤18.6ms | 16.7 /18.1–18.5 /≤18.6ms |
+| Movement>25ms / longest | 0 /18.7ms                | 0 /18.8ms                |
+| Battle p50/p95          | 16.7 /18.3–18.6ms        | 16.7 /18.5–18.6ms        |
+| Battle p99 / longest    | 18.7–381.4 /550.1ms      | 18.7–32.7 /634.4ms       |
+| Battle>25ms per run     | 7–11                     | 7–10                     |
 
-Raw `/private/tmp/hollowbane-warrior-production-native/summary.json`; reproduce
-with `scripts/profile-warrior-production.mjs BASE_URL CONSTRUCTED_FIXTURES_JSON
-UNTRACKED_OUTPUT`. Later active-weapon-guard builds still need final confirmation.
+All six untraced battle cases pass actual melee, Oath and Fan with ordinary
+interruptions. They travel the same authored forest route and keep16 actors;
+inputs are browser-driven, not physical or bit-identical simulation replays.
+Camera-relative drift is0px in the short movement cohorts. No warmed improvement
+or globally hitch-free campaign claim. The sparse tail makes battle p99 variable;
+large stalls occur in **both** renderers. Animation clip/facing-change windows
+(±one RAF interval) have p95≤18.7ms; exposed update-CPU p95≤1.1ms and render-CPU
+p95≤3.8ms. These are CPU/RAF envelopes, not isolated GPU timing.
+
+A native CPU probe observes1198ms cumulative `writeCheckpoint` work in a19s
+battle, including355ms capture and842ms save work. This identifies existing
+checkpoint work as one contributor, not every long interval. Persistence/AI/
+combat performance is unchanged by this presentation task; those baseline stalls
+remain an explicit follow-up. Tracing-disabled results disprove the earlier
+tracing-only hypothesis. Original A synthetic-keyboard rows stayed idle and are
+**excluded** from movement evidence; replacement cohorts verify actual walking.
+
+Fresh-context HTTP-cache-disabled local-origin candidate uploads take707–870ms,
+navigation ready2513–3060ms versus legacy1778–1957ms. Exactly40 production PNG
+requests,23,458,595 encoded /23,470,595 transfer bytes and349.25MiB base RGBA;
+zero developer requests. Whole-page startup RAF maxima433–500ms versus legacy
+433–484ms; these terrain/renderer/loading gaps are separate from warmed play and
+are neither hosted nor machine-cold results. JS heap varies with GC and is not
+GPU allocation or leak proof. Native maximum texture edge16384px; all atlases
+≤2048px. Final native keyboard/pad captures reviewed at gameplay scale.
+
+Raw evidence:
+
+- `/private/tmp/hollowbane-warrior-production-native-verified/summary.json`
+- `/private/tmp/hollowbane-warrior-production-native-untraced`
+- `/private/tmp/hollowbane-warrior-production-cpu` (CPU probe, not pacing acceptance)
+- Historical invalid/traced/failed trials retain their original directories.
+
+Reproduce movement using `scripts/profile-warrior-production.mjs BASE_URL
+CONSTRUCTED_FIXTURES_JSON UNTRACKED_OUTPUT`. Battle probe uses
+`WARRIOR_PRODUCTION_PROFILE=1`, optional `WARRIOR_PRODUCTION_LEGACY=1` and
+`WARRIOR_PRODUCTION_CPU=1`; require visible M4/Metal and disable Playwright tracing
+for pacing. CPU sampling and screenshots must remain outside accepted pacing
+cohorts. No live simulation mutation is used.
+
+## Second input repair — required A gate still blocked
+
+Corrective d72d572 /CI40573939227 also failed release acceptance: campaign Fan
+reported **out-of-range**, and the old arena controller case's Oath was
+interrupted after engagement. Full676 units, required compatibility and other
+Chromium cases pass, but publication is not accepted. Retained contexts/logs:
+`/private/tmp/hollowbane-warrior-production-corrective-ci-failure` and
+`-corrective-failed.log`. The normal crypt death case passes on Linux too.
+
+The campaign driver now reads public snapshots and approaches/selects an in-range
+opponent through the normal virtual stick and target-cycle button, then emits the
+usual Fan button only when idle/cooldown permit. Host polling no longer assumes a
+retreating target remains in range. The arena self buff occurs before engagement;
+the final exact-one-effect assertion is retained. Both exact failed cases pass
+three local repetitions each; the arena end-count check also passes separately.
+No actor, health, offense, AI, cooldown, damage or simulation timing is patched.
+A new ordinary-campaign case verifies all eight facing directions for both walk
+and run through the shared virtual input; its gameplay-scale captures are retained.
+This is twelve production cases plus the existing seven arena cases across focused
+runs. Four additional Firefox/WebKit creation and failed-asset fallback cases pass;
+those captures and ordinary walk/run captures were reviewed. No full cross-engine
+Act1 playthrough is claimed. Final source requires another exact Full/Pages/hosted gate before A/B approval.
 
 ## Remaining acceptance
 
-Representative real campaign combat, NPC/door/waypoint/area transitions, forest/
-graveyard/crypt visual inspection and native M4/Metal matched profiling must be
-recorded before final production acceptance. Retain physical-controller,
+Exact required release acceptance, independent hosted campaign checks and final
+file-hash verification remain before production acceptance. Representative combat,
+NPC/area/waypoint travel, cross-character saves, eight-direction walk/run, natural
+death and forest/graveyard/crypt/native visual checks are recorded above. Retain physical-controller,
 actual GPU-memory/residency and full Act1 human-playthrough limitations unless
 measured/performed. Previously accepted cloak stiffness/foreshortening remain.

@@ -151,6 +151,18 @@ test("shared virtual controller performs movement, secondary and existing abilit
   await installVirtualController(page, "Xbox standard virtual (browser only)");
   await open(page);
   await page.locator("#pilot-stage").focus();
+  // Prepare the self buff before engagement; real interruptions remain covered separately.
+  await pressVirtualButton(page, 7);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.hollowbaneWarriorArena!.sample.effects),
+    )
+    .toBe(1);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.hollowbaneWarriorArena!.sample.phase),
+    )
+    .toBe("idle");
   await page.evaluate(() => {
     window.virtualPads[0]!.axes = [-1, 0, 0, 0];
   });
@@ -177,12 +189,9 @@ test("shared virtual controller performs movement, secondary and existing abilit
       page.evaluate(() => window.hollowbaneWarriorArena!.sample.phase),
     )
     .toBe("idle");
-  await pressVirtualButton(page, 7);
-  await expect
-    .poll(() =>
-      page.evaluate(() => window.hollowbaneWarriorArena!.sample.effects),
-    )
-    .toBe(1);
+  expect(
+    await page.evaluate(() => window.hollowbaneWarriorArena!.sample.effects),
+  ).toBe(1);
 });
 
 test("natural hostile damage enters hit reaction, then death holds and reset is clean", async ({

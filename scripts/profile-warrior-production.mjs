@@ -177,7 +177,7 @@ try {
         await page.locator("#combat-world").focus();
         const frames = await page.evaluate(async (device) => {
           const key = (name, down) =>
-            window.dispatchEvent(
+            document.querySelector("#combat-world").dispatchEvent(
               new KeyboardEvent(down ? "keydown" : "keyup", {
                 key: name,
                 code: `Key${name.toUpperCase()}`,
@@ -241,6 +241,13 @@ try {
           span = (k) =>
             Math.max(...frames.map((f) => f[k])) -
             Math.min(...frames.map((f) => f[k]));
+        if (
+          span("x") + span("y") < 0.2 ||
+          (mode === "warrior" && !frames.some((f) => f.pose?.clip === "walk"))
+        )
+          throw Error(
+            `Movement driver did not move the actual campaign actor: ${device}/${mode}`,
+          );
         const sample = {
           device,
           repeat,
