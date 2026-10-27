@@ -8,12 +8,45 @@ acceptance before advancing. Preserve simulation, saves, balance, Phaser4.2.1,
 the approved source rig, live graphics and unrelated edits. No other class art
 or normal-game sprite activation is authorized.
 
-## Release C — local playable candidate (2026-10-27)
+## Release C — VERIFIED playable developer arena (2026-10-27)
+
+Verified deployed **3fd3525ebac49758946e547582663d4ccf0d576c** /
+[CI40460551017](https://github.com/tobisen/hollowbane/actions/runs/40460551017):
+Fast/static, Full **670 units /146 files**, **292 Chromium** (zero failed/flaky/
+skipped), required compatibility, Pages, workflow hosted and Release acceptance
+PASS. All seven new arena cases pass on Linux and independently on the hosted
+site. **All113 tested local/sealed-CI/public files match byte for byte.**
+
+[Play the developer Warrior arena](https://tobisen.github.io/hollowbane/?developer=1&warriorPilot=1&warriorArena=1).
+Production graphics, simulation, saves, dependencies and approved art/source
+assets remain unchanged. Release C implementation/validation/publication is
+complete. Stop for Warrior art/playable quality review; no automatic live
+adoption or new class/monster/campaign production. Historical B resume instructions
+below are superseded by this completed C checkpoint.
+
+The extended hosted check also passes: at8HP, a real enemy windup triggers a
+genuine Oath cast through the ordinary arena input. Natural lethal damage kills
+the player while still in cast windup, with **zero ability effects**, then holds
+death15. Original/candidate switching retains the same corpse position; zero
+page errors. No direct diagnostic damage, altered health, offense, cooldown or
+simulation mutation. Raw `/private/tmp/hollowbane-warrior-arena-hosted-extended`;
+all seven hosted captures in `/private/tmp/hollowbane-warrior-arena-release-c-hosted`
+were retained and representative gameplay/corpse captures inspected.
+
+Additional actual native 1× arena playback was captured and inspected while CI
+ran: primary24 distinct states, secondary24, Sundering14, Oath14, natural damage/
+death119. Each ability activated once; both melee variants returned through real
+recovery to idle and natural death ended at held15. Captures follow genuine
+simulation/render progression rather than pose stepping. Ground/root remains
+stable through approach/strike/cast/reaction/death; known rapid cadence, restrained
+cloak/torso and foreshortening remain. Raw/contact strips:
+`/private/tmp/hollowbane-warrior-arena-motion`. These captures are separate from
+frame-pacing measurements and do not change or invalidate the sealed build.
 
 The current request authorizes the complete developer arena, memory review,
 native profiling and exact Release C publication. This supersedes the earlier
-one-task stop for this assignment. **Release C is not yet publicly verified.**
-Last verified deployed remains `cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16`.
+one-task stop for this assignment. Release C is verified at the exact runtime
+above; no user art/live-adoption approval is inferred.
 
 Route: `?developer=1&warriorPilot=1&warriorArena=1`. The new isolated owner uses
 `createCombat`, `commandCombat`, `stepSkillCombat`, existing rank-one Warrior
@@ -77,10 +110,10 @@ Evidence: `arena-review.json`; raw `/private/tmp/hollowbane-warrior-arena-final-
 and `-final-browser`; tested build inventory in
 `/private/tmp/hollowbane-warrior-arena-tested-files.json`. Reproduce with
 `node scripts/profile-warrior-arena.mjs BASE_URL UNTRACKED_OUTPUT`. Existing risk
-classifier requires **Full** (new developer contracts/entry/profiler). Next:
-commit/push the verified candidate, verify exact required Full/Pages/hosted,
-independently replay this route and match sealed/local/public bytes. Preserve
-unrelated documentation edits. Recommend continued developer review; eventual
+classifier required **Full** (new developer contracts/entry/profiler), now passed.
+The final verification checkpoint is committed locally while deployed runtime
+remains the exact accepted SHA above; unrelated documentation edits are retained.
+Recommend continued developer review; eventual
 live adoption needs user art approval plus representative forest residency,
 hardware and loading validation. Never activate it automatically.
 

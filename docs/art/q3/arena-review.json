@@ -2,8 +2,8 @@
   "version": 1,
   "date": "2026-10-27",
   "issues": ["DBL-023", "DBL-024", "DBL-025", "DBL-026"],
-  "status": "local candidate; exact CI, Pages, hosted and public-byte verification pending",
-  "lastVerifiedDeployedSha": "cf2f01f5644d6963adea5b6f9e1b687ecc2b0c16",
+  "status": "Release C verified: exact Full CI, Pages, workflow hosted acceptance, independent arena checks and public-byte verification pass",
+  "lastVerifiedDeployedSha": "3fd3525ebac49758946e547582663d4ccf0d576c",
   "route": "?developer=1&warriorPilot=1&warriorArena=1",
   "productionAdoption": false,
   "userArtApproval": false,
@@ -33,7 +33,8 @@
     "typeScript": "pass",
     "affectedLint": "pass",
     "build": "pass",
-    "failedPriorAssertions": "Two exact camera-coordinate equalities rejected ~5.7e-14 pixel roundoff; corrected to ten decimal places, then final seven-case run passed."
+    "failedPriorAssertions": "Two exact camera-coordinate equalities rejected ~5.7e-14 pixel roundoff; corrected to ten decimal places, then final seven-case run passed.",
+    "hostedChromium": 7
   },
   "native": {
     "browser": "156.0.8078.4",
@@ -412,5 +413,106 @@
     "Simple training actors/grid are existing developer placeholders, not full forest/campaign art acceptance.",
     "349.25MiB decoded candidate payload is developer-only; total browser/GPU memory and physical controls remain unmeasured.",
     "No live adoption: require user art approval and representative forest loading/residency/hardware review."
-  ]
+  ],
+  "candidateSha": "3fd3525ebac49758946e547582663d4ccf0d576c",
+  "ci": {
+    "run": 40460551017,
+    "url": "https://github.com/tobisen/hollowbane/actions/runs/40460551017",
+    "requiredTier": "full",
+    "fast": "pass",
+    "requiredFull": "pass",
+    "pages": "pass",
+    "hosted": "pass",
+    "sealedLocalCiFilesMatch": 113,
+    "fullChromium": 292,
+    "linuxArena": 7,
+    "chromiumFailures": 0,
+    "chromiumFlakes": 0,
+    "chromiumSkipped": 0,
+    "status": "completed",
+    "conclusion": "success",
+    "fullUnits": 670,
+    "fullUnitFiles": 146,
+    "releaseAcceptance": "pass",
+    "independentPublicFilesMatch": 113,
+    "independentHostedArenaCases": 7
+  },
+  "visualPlayback": {
+    "raw": "/private/tmp/hollowbane-warrior-arena-motion",
+    "scale": 1,
+    "reviewed": true,
+    "runs": [
+      {
+        "clip": "primary",
+        "capturedStates": 24,
+        "terminal": {
+          "set": "movement",
+          "frame": 1,
+          "clip": "idle"
+        },
+        "effects": 0
+      },
+      {
+        "clip": "iron-fan",
+        "capturedStates": 14,
+        "terminal": {
+          "set": "movement",
+          "frame": 3,
+          "clip": "idle"
+        },
+        "effects": 1
+      },
+      {
+        "clip": "secondary",
+        "capturedStates": 24,
+        "terminal": {
+          "set": "movement",
+          "frame": 1,
+          "clip": "idle"
+        },
+        "effects": 0
+      },
+      {
+        "clip": "oath-echo",
+        "capturedStates": 14,
+        "terminal": {
+          "set": "movement",
+          "frame": 1,
+          "clip": "idle"
+        },
+        "effects": 1
+      },
+      {
+        "clip": "death",
+        "capturedStates": 119,
+        "terminal": {
+          "set": "death",
+          "frame": 15,
+          "clip": "death"
+        },
+        "effects": 0
+      }
+    ],
+    "finding": "Real primary/secondary approach, impact/recovery; both abilities activate once; natural hits/death and held terminal. Ground/root stays anchored; rapid existing cadence, restrained torso/cloak and foreshortening remain."
+  },
+  "hostedEvidence": "/private/tmp/hollowbane-warrior-arena-release-c-hosted",
+  "extendedQuality": {
+    "naturalLethalDamageDuringCast": "pass",
+    "trigger": {
+      "tick": 986,
+      "hp": 8,
+      "enemyWindupTick": 981
+    },
+    "sawRealCast": true,
+    "lastAlivePhase": "windup",
+    "terminal": {
+      "set": "death",
+      "frame": 15,
+      "clip": "death"
+    },
+    "effects": 0,
+    "pageErrors": [],
+    "corpseOriginalCandidatePositionParity": "pass",
+    "raw": "/private/tmp/hollowbane-warrior-arena-hosted-extended"
+  }
 }
