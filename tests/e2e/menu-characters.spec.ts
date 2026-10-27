@@ -95,7 +95,7 @@ test("fresh Ranger starter bow deals damage in initial forest combat", async ({
     x: end.x + ((previous.x - end.x) / distance) * Math.min(1, distance / 2),
     y: end.y + ((previous.y - end.y) / distance) * Math.min(1, distance / 2),
   };
-  for (const point of route) {
+  for (const [index, point] of route.entries()) {
     const screen = onGround(point);
     const view = await page.evaluate((screen) => {
       const camera = window.hollowbaneWorld!.camera;
@@ -104,7 +104,12 @@ test("fresh Ranger starter bow deals damage in initial forest combat", async ({
         y: (screen.y - camera.y) * camera.zoom,
       };
     }, screen);
-    await page.mouse.click(view.x, view.y);
+    const previousPoint = route[index - 1] ?? start;
+    // A short final segment can already be within the arrival tolerance of the
+    // preceding endpoint. Let that route finish: a redundant click near the
+    // enemy can correctly become an attack instead of a ground-move command.
+    if (Math.hypot(point.x - previousPoint.x, point.y - previousPoint.y) > 0.36)
+      await page.mouse.click(view.x, view.y);
     // Observe arrival beside rendering: a slow CI round trip can return a valid
     // position after host-side expect.poll has already rejected its stale sample.
     const arrival = await page.waitForFunction(
@@ -154,7 +159,21 @@ test("fresh Ranger starter bow deals damage in initial forest combat", async ({
           await page.mouse.up();
           await page.mouse.move(observation.x, observation.y);
           await page.mouse.down();
-          return false;
+          // Input can acquire or critically kill the target during these host
+          // round trips. Return current evidence rather than a stale false.
+          return page.evaluate((id) => {
+            const combat = window.hollowbaneCombat!;
+            return (
+              combat.actors[0]!.selected === id ||
+              combat.events.some(
+                (e) =>
+                  e.kind === "damage" &&
+                  e.actor === 0 &&
+                  e.target === id &&
+                  e.result.amount > 0,
+              )
+            );
+          }, target.id);
         },
         { timeout: 5000 },
       )

@@ -150,15 +150,61 @@ test("ground movement waits for recovery and breakpoints are observable", async 
   await page.locator("#combat-weapon").selectOption("projectile");
   await page.locator("#combat-speed").selectOption("90");
   const p = await target(page, 1);
-  await page.mouse.click(p.x, p.y);
-  await page.waitForFunction(
-    () => window.hollowbaneCombat!.actors[0]!.phase === "windup",
-  );
-  const before = await page.evaluate(() => window.hollowbaneCombat!.actors[0]!);
-  expect(before.windup).toBe(6);
   const ground = await point(page, 550, 630);
+  const windupObservation = page.waitForFunction(() => {
+    const state = window.hollowbaneCombat!,
+      player = state.actors[0]!;
+    const windup = state.events.find(
+      (event) =>
+        event.kind === "phase" && event.actor === 0 && event.phase === "windup",
+    );
+    return windup && player.sequence === 1 && { ...player };
+  });
+  await page.locator("#combat-world").evaluate((field, ground) => {
+    const capture = (event: Event) => {
+      const pointer = event as PointerEvent;
+      if (
+        Math.hypot(pointer.clientX - ground.x, pointer.clientY - ground.y) > 1
+      )
+        return;
+      field.removeEventListener("pointerdown", capture);
+      const state = window.hollowbaneCombat!,
+        actor = state.actors[0]!;
+      field.setAttribute(
+        "data-test-ground-delivery",
+        JSON.stringify({
+          x: actor.x,
+          y: actor.y,
+          phase: actor.phase,
+          tick: state.tick,
+        }),
+      );
+    };
+    // Register fully before either click. Observe after the game's own listener;
+    // only test DOM metadata changes, never simulation or its clock.
+    field.addEventListener("pointerdown", capture);
+  }, ground);
+  await page.mouse.click(p.x, p.y);
+  const observation = await windupObservation;
+  // Send the queued move before another protocol round trip can consume recovery.
   await page.mouse.click(ground.x, ground.y);
-  const after = await page.evaluate(() => window.hollowbaneCombat!.actors[0]!);
+  const before = await observation.jsonValue();
+  if (!before) throw Error("First projectile windup was not observed");
+  expect(before.windup).toBe(6);
+  await expect(page.locator("#combat-world")).toHaveAttribute(
+    "data-test-ground-delivery",
+    /./,
+  );
+  const after = await page.locator("#combat-world").evaluate(
+    (field) =>
+      JSON.parse(field.getAttribute("data-test-ground-delivery")!) as {
+        x: number;
+        y: number;
+        phase: string;
+        tick: number;
+      },
+  );
+  expect(["windup", "active", "recovery"]).toContain(after.phase);
   expect(after.x).toBe(before.x);
   expect(after.y).toBe(before.y);
   await expect
@@ -166,6 +212,16 @@ test("ground movement waits for recovery and breakpoints are observable", async 
       page.evaluate(() => window.hollowbaneCombat!.actors[0]!.walking),
     )
     .toBe(true);
+  const phases = await page.evaluate(() => window.hollowbaneCombat!.events);
+  const firstPhase = (phase: string) =>
+    phases.find(
+      (event) =>
+        event.actor === 0 && event.kind === "phase" && event.phase === phase,
+    )!.tick;
+  // Entry consumes the first windup tick in the existing timeline contract.
+  expect(firstPhase("active") - firstPhase("windup") + 1).toBe(6);
+  expect(after.tick).toBeLessThan(firstPhase("idle"));
+  expect(firstPhase("idle") - firstPhase("recovery")).toBe(before.recovery);
   await page.locator("#combat-world").focus();
   await page.keyboard.press("Space");
   const stopped = await page.evaluate(

@@ -302,9 +302,50 @@ TypeScript and affected lint pass. Application/source assets remain unchanged.
 Failed evidence `-bounded-shard3.log` / `-bounded-shard3-failure`; local baseline
 `-existing-miniboss-baseline`; correction `-existing-miniboss-input-repair`.
 
+## Existing short-phase and Ranger click gate repairs
+
+Candidateef1ef92 /CI40592127397 **FAILED** Chromium shards3/4; Pages/hosted
+were skipped. Full676 units/147 files, compatibility and shards1/2 pass,
+including all12 production cases again. The repaired miniboss cases pass Linux
+(45.2s mouse/31.0s controller). Current failures are existing legacy tests:
+
+- `combat.spec` waited for a six-tick projectile windup after clicking. The retained
+  screenshot shows a completed legitimate42-damage attack, idle actor, windup6,
+  and software frame p9583.3ms. Pre-arming a snapshot alone passes ordinary/6×
+  trials but fails a50×CPU stress; a short phase can complete within catch-up.
+  The repair uses existing recorded phase events and a fully registered read-only
+  observer after the normal trusted ground-pointer handler. It checks delivery
+  during commitment, unchanged x/y, six inclusive windup ticks (entry consumes the
+  first tick), full recovery timing, subsequent walking and keyboard stop/move.
+  No simulation hook/clock/phase mutation or deadline increase. Three ordinary
+  and three50×CPU stress repetitions pass. Failed intermediate experiments remain
+  labelled; they are not acceptance evidence.
+- `menu-characters` clicked a final short ground segment near a moving enemy.
+  Its intended(-7.25,11.25) endpoint is already within0.36 of the preceding
+  (-7.5,11) endpoint. The redundant click correctly became an attack: retained
+  screenshot shows selected/damaged Thorn runner, not completed ground travel.
+  The driver now lets that existing route finish rather than issuing another
+  click when the segment is within its existing tolerance. Every waypoint still
+  requires distance<0.36 within the original5s; actual starter-bow acquisition/
+  damage assertions remain. The navigation repair passes three ordinary/two6× runs; a third6× run
+  passes navigation but exposes a stale post-input acquisition false despite
+  actual55-damage critical/death events in its retained diagnostic. The callback
+  now re-reads its identical selected-or-damaged predicate after trusted input.
+  The final version passes an ordinary case and three6× cases. Original5s
+  acquisition and15s damage limits remain; no successful damage is fabricated.
+
+TypeScript, affected lint and formatting pass. No application/art/save/balance
+changes; all153 runtime file hashes remain the same profiled d72 runtime.
+Raw failures `-miniboss-shard3.log` / `-miniboss-shard3-failure` and
+`-miniboss-shard4.log` / `-miniboss-shard4-failure`. Corrected evidence
+`-ground-history-armed`, `-ground-history-50x`, `-ranger-arrival-repair` and
+`-ranger-arrival-slow`. Earlier pre-armed-only50×failure/interruption is retained
+in `-ground-windup-50x`; the first history experiment's entry-tick arithmetic and
+listener-registration race were corrected against the unchanged timeline source.
+
 ## Remaining release acceptance
 
-The corrected existing-test driver needs another exact required release gate.
-Current04091d9 is not accepted; remaining original-run shard outcomes are retained
-separately. Independent hosted12 campaign checks and final153-file verification
-remain before acceptance. Last verified deployed remains3fd3525.
+Another exact required release gate is necessary for these two focused existing
+browser-driver repairs. ef1ef92 is not accepted. Independent hosted12 campaign
+checks, public153-file verification and final B evidence remain incomplete.
+Last verified deployed remains3fd3525ebac49758946e547582663d4ccf0d576c.
