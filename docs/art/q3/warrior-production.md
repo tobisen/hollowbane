@@ -5,6 +5,50 @@ authorized production integration through Checkpoints A/B. This supersedes the
 historical live-adoption stop in `warrior-combat.md`; no other class or monster
 artwork, engine, balance or campaign expansion is authorized.
 
+## Accepted production runtime — 2026-10-28
+
+Checkpoint A is **verified** at
+**eb4922cdd3b9e4bf0d8d738c7ac69c31a3547567** /
+[CI40602347499](https://github.com/tobisen/hollowbane/actions/runs/40602347499).
+Required static/contracts, Full **676 units/147 files**, **304 Chromium** and
+**15 required cross-browser** cases, Pages, exact-SHA hosted smoke and Release
+acceptance all PASS. Chromium reports **zero unexpected/flaky/skipped** cases.
+All153 reviewed, sealed-CI and public file hashes match byte for byte.
+
+Independent **12/12 hosted campaign cases** pass in visible native M4/Metal
+Chromium (1.8m), including normal creation/existing saves, live equipment fallback,
+resource cycles, other-class isolation, all eight walk/run directions, real forest
+melee/both abilities and natural held crypt death. Camp, combat and corpse
+captures were reviewed at gameplay scale; earlier forest/graveyard/crypt and
+four Firefox/WebKit startup/failure captures are retained below. This is
+representative automated campaign acceptance, not a full human Act1 playthrough.
+
+The additional hosted battle probe verifies ANGLE Apple M4/Metal, Full detail,
+1280×800/DPR1,16 actors and40 textures throughout its604-frame sample. It observes
+idle/run/primary/hit/Oath/Fan clips, p50 **16.7ms**, p95 **18.2ms**, p99 **250.1ms**,
+**9 intervals>25ms**, longest **416.7ms**. Sampling stops before screenshot capture;
+Playwright tracing/video and CPU sampling are off. This is an **additional
+unmatched Run/live-target cohort**; the earlier three matched pairs/input retain
+their original routes and comparisons. Existing checkpoint-related stalls remain;
+no globally hitch-free or improved tail-latency claim.
+
+Checkpoint B quality evidence is complete: presentation/equipment/save/resource
+reviews, broader gameplay/cross-class coverage, native comparisons and explicit
+limits are recorded here. The final evidence revision changes only documentation;
+all153 runtime files remain the accepted/profiler-tested bytes. Its exact deployed
+evidence SHA and selected CI/Pages/hosted acceptance are recorded by the successful
+[Verify and deploy workflow](https://github.com/tobisen/hollowbane/actions/workflows/verify-deploy.yml)
+and the public [release manifest](https://tobisen.github.io/hollowbane/release.json).
+Final publication verification compares that revision's sealed artifact with all153
+accepted files and every public byte; it does not require redundant gameplay
+replays when those bytes are identical.
+
+Raw accepted evidence: `/private/tmp/hollowbane-warrior-production-reaim-tested`,
+`-reaim-ci`, `-reaim-results`, `-reaim-unit.log`, `-reaim-compat.log`,
+`-a-hosted-bytes.log`, `-a-hosted-native.log` and `-a-hosted-native` (captures and
+`native-battle.json`). Historical checkpoint sections below describe status at
+those earlier revisions; failed/interrupted trials retain their original labels.
+
 ## Presentation and compatibility
 
 The normal world renderer consumes the existing campaign actor, motion events,
@@ -195,8 +239,12 @@ navigation ready2513–3060ms versus legacy1778–1957ms. Exactly40 production P
 requests,23,458,595 encoded /23,470,595 transfer bytes and349.25MiB base RGBA;
 zero developer requests. Whole-page startup RAF maxima433–500ms versus legacy
 433–484ms; these terrain/renderer/loading gaps are separate from warmed play and
-are neither hosted nor machine-cold results. JS heap varies with GC and is not
-GPU allocation or leak proof. Native maximum texture edge16384px; all atlases
+are neither hosted nor machine-cold results. Across six movement cohorts per
+renderer, Chromium `usedJSHeapSize` first/last sample ranges are Warrior
+22.21–37.18→29.22–32.59MiB and legacy19.63–35.94→23.48–36.96MiB. No forced GC;
+these are fresh-context movement samples, not retained scene-switch trends.
+They exclude GPU texture allocations and do not prove leak freedom. Native
+maximum texture edge16384px; all atlases
 ≤2048px. Final native keyboard/pad captures reviewed at gameplay scale.
 
 Raw evidence:
@@ -375,10 +423,16 @@ runtime; this is another test-driver change only. Native matched comparisons
 above retain their original walking routes; a later hosted Run profile must be
 labelled as an additional unmatched cohort, not substituted for those comparisons.
 
-## Remaining release acceptance
+## Final publication and stop
 
-Focused Run/live-target verification passes; commit/push this small test repair.
-Its exact required Full/Pages/hosted gate must pass before independent hosted12
-campaign checks, public153-file verification and final B acceptance. All earlier
-failed trials remain failures. Last verified deployed remains
-3fd3525ebac49758946e547582663d4ccf0d576c. No next class/monster/campaign work.
+The accepted runtime, full required release gate, independent public-byte check,
+native hosted campaign acceptance and visual/performance/resource evidence are
+recorded above. Publish this documentation-only Checkpoint B through the existing
+selected risk gate, verify its exact deployed SHA and all153 public bytes against
+the sealed CI artifact, and stop. The earlier Full gate and twelve hosted gameplay
+checks remain applicable only while every runtime file stays identical.
+
+No new class/monster artwork, balance change or campaign expansion follows.
+Physical controllers/vibration, GPU residency/leaks, broader reference-hardware
+performance and a full human Act1 playthrough remain unverified. Accepted cloak
+stiffness/foreshortening and baseline checkpoint stalls remain explicit limitations.
