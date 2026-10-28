@@ -27,9 +27,9 @@ def rounded(values):
     return [round(float(v), 6) for v in values]
 
 
-def export():
+def export(output=None, on_pose=None):
     assert bpy.app.version_string == '4.5.3 LTS', 'Use the approved Blender version'
-    output = Path(sys.argv[sys.argv.index('--') + 1])
+    output = Path(output) if output is not None else Path(sys.argv[sys.argv.index('--') + 1])
     result = {'version': 1, 'blender': bpy.app.version_string,
               'producerSha256': digest(Path(__file__)),
               'units': 'atlas pixels; camera depth in Blender units',
@@ -97,6 +97,8 @@ def export():
                                    'matrixWorld': [rounded(row) for row in matrix]}
                 frames.append({'action': approved['action'], 'index': approved['index'],
                                'root': root, 'hands': hands})
+                if on_pose is not None:
+                    on_pose(name, direction, index, approved, scene, rig)
             views[direction] = frames
         result['sets'][name] = {'rigSha256': digest(source),
                                'manifestSha256': digest(manifest_path),
@@ -105,6 +107,7 @@ def export():
     output.write_text(json.dumps(result, sort_keys=True, separators=(',', ':')) + '\n')
     print('WARRIOR_ATTACHMENTS', sum(len(v) for s in result['sets'].values()
                                     for v in s['views'].values()), digest(output))
+    return result
 
 
 if __name__ == '__main__':

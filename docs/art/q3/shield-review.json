@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "scope": "DBL-023/024/025 original bark-guard offline grip/occlusion feasibility",
+  "productionApproved": false,
+  "checkpointAAccepted": false,
+  "lastVerifiedDeployment": "ee03e81964bb597636aa2d96f64716268e5c1d81",
+  "provenance": {
+    "origin": "Original procedural mesh/materials; no external assets. Existing approved rig/pose sources remain intact.",
+    "probeSha256": "5df9b079ad27f53b0dbfa9b432ad30637d3eb505e968d02a68bd31de089961b2",
+    "exporterSha256": "5c0aec72a8e22ecc5d2e8d08f1963a560b151bd76000027df7bf8706ed4ebaab",
+    "reviewBuilderSha256": "194ed021a2eb60a354aa31719d9b95a7594edc698d22429244d93985c5f17343",
+    "poseAuthoringSha256": {
+      "abilities": "cd1e1f10641c6275a787110877b837a6ab7885dd58112d456365a72f362c8766",
+      "death": "3ae574e52f59bef124a7fc56db926acd04ab63a08000e58c28a75d75e1ca58e8",
+      "hit": "8f52c4d0e3be529ad280bcd96370fd90b87bf1bc2e764a6cc0b4830af3431de3"
+    }
+  },
+  "coverage": {
+    "poses": 880,
+    "directions": 8,
+    "packedAliases": 96,
+    "uniqueEquipmentRastersRequired": 784,
+    "uniqueLateDeathBodyVariantsRequired": 48,
+    "renderedCompositeProofs": 138,
+    "uniqueOverlayRenders": 126,
+    "completeMotionDirection": "se",
+    "browserPreviewCases": 18,
+    "browserErrors": []
+  },
+  "geometry": {
+    "grip": "fixed palm grip, 0.14m plate clearance; center-grip handle swivel",
+    "shieldDimensionsMeters": [0.44, 0.64, 0.035],
+    "surfaceIntersectionFailures": 0,
+    "minimumShieldGroundMeters": 0.010744,
+    "minimumModifiedArmGroundMeters": 0.037257,
+    "lateDeathAdjustment": "Left arm only, nominal 0.20m opening constrained to 97% two-bone reach; -20deg smooth handle turn over poses8\u201311. Other bones, timing, root and camera unchanged.",
+    "limitations": "BVH surface checks on authored samples; not swept continuous collision, gameplay acceptance or a GPU measurement."
+  },
+  "repeatability": {
+    "exports": ["shield-arm-proof", "shield-motion"],
+    "comparedFields": [
+      "name",
+      "set",
+      "direction",
+      "ordinal",
+      "action",
+      "index",
+      "root",
+      "grip",
+      "matrixWorld",
+      "swivelRadians",
+      "shieldBounds",
+      "plateGroundMinimum",
+      "plateBodyIntersections",
+      "leftArm",
+      "bodyOverride"
+    ],
+    "canonical880PoseSha256": "0df3b039aeddd400eeb8a4d106b2e8d7daf0d18f6a72eb9efdf264c6885ce64c",
+    "wholeJsonByteEqualityClaimed": false
+  },
+  "occlusionSamples": [
+    {
+      "name": "idle-w-00",
+      "mixedOcclusion": {
+        "frontOverBodyPixels": 0,
+        "behindBodyPixels": 1670
+      }
+    },
+    {
+      "name": "primary-se-05",
+      "mixedOcclusion": {
+        "frontOverBodyPixels": 1297,
+        "behindBodyPixels": 0
+      }
+    },
+    {
+      "name": "oath-echo-se-05",
+      "mixedOcclusion": {
+        "frontOverBodyPixels": 2365,
+        "behindBodyPixels": 0
+      }
+    },
+    {
+      "name": "death-se-13",
+      "mixedOcclusion": {
+        "frontOverBodyPixels": 678,
+        "behindBodyPixels": 0
+      }
+    }
+  ],
+  "resources": {
+    "runtimePngDeltaBytes": 0,
+    "runtimeDecodedDeltaBytes": 0,
+    "runtimeAtlasDelta": 0,
+    "temporaryCompositeOverlayPngBytes": 924132,
+    "temporaryBytesAreProductionPayload": false,
+    "measuredGpuMemory": null,
+    "newCampaignPerformance": null,
+    "acceptedRuntimeFilesUnchanged": 153
+  },
+  "visualReview": {
+    "lightAndDark": true,
+    "eightIdleAndSettledViews": true,
+    "completeSeClips": {
+      "idle": 8,
+      "walk": 16,
+      "run": 16,
+      "primary": 12,
+      "secondary": 12,
+      "oath-echo": 12,
+      "iron-fan": 12,
+      "hit": 6,
+      "death": 16
+    },
+    "findings": "Stable grip, scale, original non-death silhouette and terminal shield attachment in reviewed previews. Body holdouts handle directional occlusion. Existing rapid motion, rigid cloak and sculptural finish remain. Preview attack/cast rates are inspection cadence, not authoritative combat evidence.",
+    "fullEightDirectionMotionReviewed": false
+  },
+  "validation": {
+    "focusedSuites": 4,
+    "focusedTests": 14,
+    "typecheck": "pass",
+    "affectedEslint": "pass",
+    "productionBuild": "pass",
+    "ciPagesHosted": "not run for this local proof"
+  },
+  "rawEvidence": "/private/tmp/hollowbane-warrior-equipment/shield-motion",
+  "next": "Render remaining unique shield/body variants, package tight alpha overlays and limited death body variants, complete eight-way motion/transition review in isolated developer equipment environment before campaign activation."
+}

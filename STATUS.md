@@ -1,3 +1,10 @@
+## Q3-B Warrior equipment — shield grip/occlusion proof (2026-10-28)
+
+- Extended equipment assignment remains authorized through A/B/C. Offline original bark-guard proof covers all880 poses/eight directions, with zero sampled shield/body/floor failures. Two independent core pose exports match.96 packed aliases explicit; full assignment and A remain incomplete.
+- Unchanged death arm cannot fit the shield. Verified candidate uses a limited left-arm landing/physical-handle turn;48 unique late-death body images are required. Other bones, roots, timing and all approved source art remain intact.126 unique shield renders/138 composites; complete SE motion plus eight-way idle/primary/Oath/settled samples reviewed light/dark.
+- Four suites/14 tests, TypeScript/build/affected lint pass;18 native Chromium offline preview cases pass. All153 accepted runtime files remain byte-identical. Runtime PNG/decoded/atlas delta0; temporary composite overlays924132bytes are not production payload or GPU memory. No campaign performance/CI/Pages/hosted release claim. Verified deployed evidence baseline remains ee03e81964bb597636aa2d96f64716268e5c1d81.
+- Next finish missing unique overlay/death-body rasters, crop/package and review all eight directions in isolated equipment showcase before sword/shield campaign integration and mandatory A publication acceptance. Production shield/bow/staff/empty hands still use legacy. Preserve unrelated edits, native checkpoint stalls and physical/GPU/human-playthrough limitations. Resume docs/art/q3/warrior-equipment.md and shield-review.json; raw /private/tmp/hollowbane-warrior-equipment/shield-motion.
+
 ## Q3-B Warrior equipment — audit / metadata checkpoint (2026-10-28)
 
 - Authorized through equipment Checkpoints A/B/C; full assignment and A remain incomplete. Audit: blade one-hand, bow/staff two-hand, shield offhand; transactions enforce exclusion. Static armor preserved. Matrix and next steps: docs/art/q3/warrior-equipment.md.

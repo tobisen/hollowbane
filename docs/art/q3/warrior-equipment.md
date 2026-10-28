@@ -3,10 +3,84 @@
 2026-10-28. User authorizes modular Warrior equipment work through public
 Checkpoints A/B/C. This supersedes the earlier production-publication stop for
 this scope. Other classes, monsters, balance, saves and Phaser4.2.1 remain intact.
-This is the initial audit and metadata feasibility increment, **not Checkpoint A**.
+This includes the audit and offline shield grip/occlusion proof, **not Checkpoint A**.
 Prior accepted production evidence revision: `ee03e81964bb597636aa2d96f64716268e5c1d81`;
 accepted runtime/evidence is described in [warrior-production.md](warrior-production.md).
-No new publication or equipment visual support is claimed here.
+No new publication or production equipment visual support is claimed here.
+
+## Shield proof checkpoint — 2026-10-28
+
+Original `bark-guard` geometry and materials now have a fixed left-palm grip.
+The plate is0.44×0.64×0.035m with0.14m hand clearance. All880 authored poses in
+eight directions pass bone/root/foot checks, grip invariance, shield/body BVH
+surface checks and shield-floor checks. Two independent executions have identical
+core880-pose transforms/geometry diagnostics (canonical SHA256
+`0df3b039aeddd400eeb8a4d106b2e8d7daf0d18f6a72eb9efdf264c6885ce64c`).
+Whole JSONs differ in provenance and additional diagnostic fields; no byte-equality
+claim is made for those files. See [shield-review.json](shield-review.json).
+
+The original unchanged death arm **cannot fit this shield**: the rigid fit
+intersects the forearm and sinks below ground. A73-angle handle sweep found no
+valid late pose, including a narrower0.32m shield trial. A targeted left-arm
+landing variant opens the arm nominally0.20m, constrained by the original two-bone
+IK/reach, and turns the shield−20° around its physical handle over poses8–11.
+Bone lengths, shoulder, hand orientation, all other bones, root, camera, combat
+timing and simulation remain intact. Minimum sampled shield clearance0.010744m;
+modified arm clearance0.037257m. Surface checks are not continuous collision proof.
+
+This requires **48 unique late-death body variant images**, plus the two held
+aliases per direction. All other body art reuses approved pixels. A shield-only
+layer cannot fix the original death geometry. Do not cover or translate the
+incorrect hand with arbitrary screen offsets or enable the unchanged death art.
+
+`scripts/probe-warrior-shield.py` reuses the512-pose exporter via a read-only
+observation callback. For procedural poses, it hash-checks and runs the existing
+approved authoring scripts with one AST observation after `records.append`;
+their pose code/assertions and source files are unchanged. The optional death-arm
+candidate runs the existing IK in that callback. Renders use original body
+geometry as camera holdouts, producing an equipment-only alpha overlay that can
+be composited above the exact approved body. The probe rotates both rig **and
+meshes** like the approved directional renderers; rotating only metadata wrists
+does not rotate body geometry for this visual/depth test.
+
+All96 packed idle/settled aliases are explicit, including root translation when
+reusing a movement shield image in attack/ability/death cells. There are784 unique
+equipment rasters to finish. Current proof contains126 unique overlays and138
+composites: all110 SE poses and eight-way idle/primary/Oath/settled-death samples.
+Light/dark stills and complete SE sequence strips were reviewed at gameplay scale.
+Native Chromium passes18 offline playback cases (nine clips/two preview speeds),
+with zero browser errors. Preview combat/cast cadence is diagnostic; these are not
+actual campaign combat, controller or authoritative timing tests. Full eight-way
+motion/transition review remains required.
+
+`scripts/review-warrior-shield.mjs` verifies approved body hashes, handles alias
+padding and emits comparison sheets, an isolated `motion.html` and pixel-depth
+diagnostics. Sample West idle correctly hides1670 opaque shield pixels behind the
+body; SE primary/Oath/death have front-facing overlaps. These samples do not prove
+a single whole-sprite ordering fails within one frame. Per-pixel holdouts avoid
+assuming one ordering for every pose. The full lit references and light/dark
+composites retain no demonstrated gameplay-scale halo; shadow/contact appearance
+and all remaining directions still need the developer/campaign review.
+
+Four focused suites/14 tests, TypeScript, affected ESLint and build pass. All153
+accepted runtime files match the new build byte for byte. No source blend,
+approved PNG, renderer, save, balance or Phaser4.2.1 change. Runtime asset delta
+remains0; the temporary138 composite overlays total924132PNG bytes **before**
+tight atlas packing and are not a production payload/GPU residency measurement.
+No new campaign/native performance or CI/Pages/hosted verification is claimed.
+
+Raw evidence: `/private/tmp/hollowbane-warrior-equipment/shield-motion` (metadata,
+overlays, limited body variants, depth references, light/dark sheets, motion HTML,
+sequence strips and18-case browser results). Earlier `shield-rigid`,
+`shield-corrected`, `shield-landing`, `shield-sweep`, `shield-narrow-sweep` and
+`shield-arm-sweep` retain failed/diagnostic trials; do not count them as passes.
+
+Next: preserve successful renders; finish only missing unique overlays and48
+death body variants, package cropped alpha layers, review complete eight-way
+motion/transitions and integrate in the isolated equipment showcase. Production
+still supports only blade/empty offhand; shield/bow/staff/empty hands retain
+legacy fallback. Then complete the actual sword/shield campaign vertical slice
+and mandatory exact Checkpoint A CI/Pages/hosted gate before expansion B/C.
 
 ## Actual compatibility matrix
 
@@ -80,7 +154,8 @@ offsets, packed idle/settled-pose aliases and body occlusion. A hand's camera de
 alone cannot establish correct shield/torso overlap. Do not enable support from
 this probe or treat it as a visual acceptance pass.
 
-Next: create one original `bark-guard` mesh on a left-hand grip in a separate
+Audit's next step (now covered by the offline proof above): create one original
+`bark-guard` mesh on a left-hand grip in a separate
 developer source; prove shield/body visibility in eight idle views and moving
 primary/Oath/death poses at gameplay scale, light and dark. Compare a small
 equipment-only render with body depth/holdout against a projected attachment.
@@ -128,6 +203,6 @@ transactions, equipment content and derived statistics. TypeScript/production
 build, ESLint and document formatting pass. Runtime, source art and saves are
 unchanged; no browser screenshot/E2E or new native timing evidence is claimed.
 No new CI/Pages/hosted run: this is a local recoverable audit increment preceding
-public Checkpoint A. Resume with the isolated shield/grip/occlusion visual proof
-above, then extend pose coverage before renderer integration. The full Q3-B
+public Checkpoint A. Continue from the shield proof checkpoint above: finish
+missing rasters and all-direction motion before renderer integration. The full Q3-B
 assignment remains incomplete; this checkpoint is a session-budget split.
