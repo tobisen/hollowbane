@@ -1,0 +1,51 @@
+{
+  "source": "warrior-equipment",
+  "configuration": {
+    "main": "ash-blade",
+    "off": "bark-guard",
+    "armor": "approved static appearance"
+  },
+  "bodyFromDeathFrame": 8,
+  "files": [
+    {
+      "source": "shield.png",
+      "file": "assets/warrior/equipment-shield-c26cdc2b9a1d.png",
+      "sha256": "c26cdc2b9a1db2e604f5dd4b4038230eef47a65ef208cc6ba42c33b944c97773",
+      "bytes": 2317738,
+      "contentType": "image/png"
+    },
+    {
+      "source": "shield.json",
+      "file": "assets/warrior/equipment-shield-0946d57f0e2d.json",
+      "sha256": "0946d57f0e2d824e75d342d3f03b079c1ade543acb3d1e9198992a6fe6d77419",
+      "bytes": 292275,
+      "contentType": "application/json"
+    },
+    {
+      "source": "shield-death-body.png",
+      "file": "assets/warrior/equipment-shield-death-body-e5d407d6e489.png",
+      "sha256": "e5d407d6e489d715c8b57682aa9b01c7bfa46133940afb86d284220f1b21bea1",
+      "bytes": 1371235,
+      "contentType": "image/png"
+    },
+    {
+      "source": "shield-death-body.json",
+      "file": "assets/warrior/equipment-shield-death-body-418b5db4cc12.json",
+      "sha256": "418b5db4cc12728e34e2bc426cdfc2da4f7fdb3bb5113e981cde31c250b9c634",
+      "bytes": 21551,
+      "contentType": "application/json"
+    }
+  ],
+  "textures": {
+    "shield": {
+      "image": "assets/warrior/equipment-shield-c26cdc2b9a1d.png",
+      "atlas": "assets/warrior/equipment-shield-0946d57f0e2d.json",
+      "decodedBytes": 16777216
+    },
+    "body": {
+      "image": "assets/warrior/equipment-shield-death-body-e5d407d6e489.png",
+      "atlas": "assets/warrior/equipment-shield-death-body-418b5db4cc12.json",
+      "decodedBytes": 8388608
+    }
+  }
+}

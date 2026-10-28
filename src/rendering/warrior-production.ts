@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import assets from "./warrior-assets.json";
+import { WarriorEquipment } from "./warrior-equipment";
 import type { CombatActor } from "../simulation/combat";
 import type { Cast } from "../simulation/skills";
 import {
@@ -31,6 +32,13 @@ declare global {
       decodedBytes: number;
       loadMs: number;
       pose: ReturnType<typeof warriorPose> | null;
+      equipment: {
+        textures: number;
+        decodedBytes: number;
+        visible: boolean;
+        bodyVariant: boolean;
+      };
+      equipmentLoadMs: number;
       setLegacy(enabled: boolean): void;
     };
   }
@@ -48,12 +56,14 @@ export class WarriorProduction {
   private disposed = false;
   private loadMs = 0;
   private pose: ReturnType<typeof warriorPose> | null = null;
+  private equipment: WarriorEquipment;
   private overlay: HTMLElement;
   legacy = false;
   constructor(
     private scene: Phaser.Scene,
     root: HTMLElement,
   ) {
+    this.equipment = new WarriorEquipment(scene);
     try {
       this.legacy = sessionStorage.getItem("hollowbane-warrior-legacy") === "1";
     } catch {
@@ -67,7 +77,7 @@ export class WarriorProduction {
     root.append(this.overlay);
   }
   get loading(): boolean {
-    return this.state === "loading";
+    return this.state === "loading" || this.equipment.loading;
   }
   private restore(sprite: Phaser.GameObjects.Sprite | undefined): void {
     if (sprite?.texture.key.startsWith("warrior-production-"))
@@ -91,54 +101,73 @@ export class WarriorProduction {
     });
   }
   sync(reason: string, sprite: Phaser.GameObjects.Sprite | undefined): void {
+    if (reason !== this.reason) this.failed = false;
     this.reason = reason;
-    if (reason !== "supported") {
+    const wantsEquipment = reason === "supported-shield";
+    if (reason !== "supported" && !wantsEquipment) {
       this.restore(sprite);
+      this.equipment.sync(false, sprite);
       this.release();
       this.state = "legacy";
       this.failed = false;
       this.pose = null;
-    } else if (!this.lease && !this.failed) {
-      this.state = "loading";
-      const begin = performance.now();
-      let lease = leases.get(this.scene.game);
-      if (!lease) {
-        const owners = new Set<WarriorProduction>();
-        const ready = new Promise<boolean>((resolve) => {
-          const previousParallel = this.scene.load.maxParallelDownloads;
-          this.scene.load.maxParallelDownloads = 2;
-          for (const set of sets)
-            for (const direction of WARRIOR_DIRECTIONS) {
-              const manifest = assets[set];
-              if (!this.scene.textures.exists(key(set, direction)))
-                this.scene.load.spritesheet(
-                  key(set, direction),
-                  import.meta.env.BASE_URL + manifest.views[direction].file,
-                  { frameWidth: manifest.width, frameHeight: manifest.height },
-                );
-            }
-          const finish = () => {
-            this.scene.load.maxParallelDownloads = previousParallel;
-            resolve(keys.every((name) => this.scene.textures.exists(name)));
-            this.scene.events.off(Phaser.Scenes.Events.SHUTDOWN, finish);
-          };
-          this.scene.load.once("complete", finish);
-          this.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, finish);
-          this.scene.load.start();
+    } else {
+      if (!wantsEquipment) this.equipment.sync(false, sprite);
+      if (!this.lease && !this.failed) {
+        this.state = "loading";
+        const begin = performance.now();
+        let lease = leases.get(this.scene.game);
+        if (!lease) {
+          const owners = new Set<WarriorProduction>();
+          const ready = new Promise<boolean>((resolve) => {
+            const previousParallel = this.scene.load.maxParallelDownloads;
+            this.scene.load.maxParallelDownloads = 2;
+            for (const set of sets)
+              for (const direction of WARRIOR_DIRECTIONS) {
+                const manifest = assets[set];
+                if (!this.scene.textures.exists(key(set, direction)))
+                  this.scene.load.spritesheet(
+                    key(set, direction),
+                    import.meta.env.BASE_URL + manifest.views[direction].file,
+                    {
+                      frameWidth: manifest.width,
+                      frameHeight: manifest.height,
+                    },
+                  );
+              }
+            const finish = () => {
+              this.scene.load.maxParallelDownloads = previousParallel;
+              resolve(keys.every((name) => this.scene.textures.exists(name)));
+              this.scene.events.off(Phaser.Scenes.Events.SHUTDOWN, finish);
+            };
+            this.scene.load.once("complete", finish);
+            this.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, finish);
+            this.scene.load.start();
+          });
+          lease = { owners, ready };
+          leases.set(this.scene.game, lease);
+        }
+        lease.owners.add(this);
+        this.lease = lease;
+        const acquired = lease;
+        void lease.ready.then((ready) => {
+          if (this.disposed || this.lease !== acquired) return;
+          this.loadMs = performance.now() - begin;
+          this.state = ready ? "warrior" : "legacy";
+          this.failed = !ready;
+          if (!ready) this.release();
+          else this.equipment.sync(this.reason === "supported-shield", sprite);
         });
-        lease = { owners, ready };
-        leases.set(this.scene.game, lease);
       }
-      lease.owners.add(this);
-      this.lease = lease;
-      const acquired = lease;
-      void lease.ready.then((ready) => {
-        if (this.disposed || this.lease !== acquired) return;
-        this.loadMs = performance.now() - begin;
-        this.state = ready ? "warrior" : "legacy";
-        this.failed = !ready;
-        if (!ready) this.release();
-      });
+      if (this.state === "warrior") this.equipment.sync(wantsEquipment, sprite);
+      if (wantsEquipment && this.equipment.failed) {
+        this.restore(sprite);
+        this.equipment.sync(false, sprite);
+        this.release();
+        this.failed = true;
+        this.state = "legacy";
+        this.pose = null;
+      }
     }
     this.overlay.style.display = this.loading ? "grid" : "none";
     this.publish();
@@ -151,8 +180,13 @@ export class WarriorProduction {
     cast: Cast | null,
     motion: WarriorMotion,
     position: { x: number; y: number },
+    tint = 0xffffff,
   ): boolean {
-    if (this.state !== "warrior") return false;
+    if (
+      this.state !== "warrior" ||
+      (this.reason === "supported-shield" && !this.equipment.ready)
+    )
+      return false;
     const pose = warriorPose(actor, tick, deathAt, cast, motion);
     const manifest = assets[pose.set];
     sprite
@@ -166,22 +200,40 @@ export class WarriorProduction {
       .setAlpha(1)
       .setPosition(position.x, position.y)
       .setDepth(position.y);
+    if (
+      this.reason === "supported-shield" &&
+      !this.equipment.draw(
+        sprite,
+        pose,
+        WARRIOR_DIRECTIONS[actor.controller.walker.direction]!,
+        manifest.root,
+        position,
+        tint,
+      )
+    )
+      return false;
     this.pose = pose;
     this.publish();
     return true;
   }
   private publish(): void {
     if (this.disposed) return;
-    const textures = keys.filter((name) =>
+    const baseTextures = keys.filter((name) =>
       this.scene.textures.exists(name),
     ).length;
+    const equipment = this.equipment.resources;
+    const mode = this.loading ? "loading" : this.state;
     window.hollowbaneWarriorProduction = {
-      mode: this.state,
+      mode,
       reason: this.failed ? "asset-load-failed" : this.reason,
-      textures,
-      decodedBytes: textures === keys.length ? decodedBytes : 0,
+      textures: baseTextures + equipment.textures,
+      decodedBytes:
+        (baseTextures === keys.length ? decodedBytes : 0) +
+        equipment.decodedBytes,
       loadMs: this.loadMs,
       pose: this.pose,
+      equipment,
+      equipmentLoadMs: this.equipment.loadMs,
       setLegacy: (enabled) => {
         this.legacy = enabled;
         try {
@@ -194,10 +246,11 @@ export class WarriorProduction {
         }
       },
     };
-    document.documentElement.dataset.warriorRenderer = this.state;
+    document.documentElement.dataset.warriorRenderer = mode;
   }
   dispose(sprite: Phaser.GameObjects.Sprite | undefined): void {
     this.restore(sprite);
+    this.equipment.dispose(sprite);
     this.disposed = true;
     this.release();
     this.overlay.remove();

@@ -2,20 +2,31 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import type { Plugin } from "vite";
 import assets from "../src/rendering/warrior-assets.json";
+import equipment from "../src/rendering/warrior-equipment-assets.json";
 
 /** Publish the approved pixels without duplicating or editing source atlases.
  * Only this allowlist is exposed by the dev server; no arbitrary file paths.
  */
 export function warriorProductionAssets(): Plugin {
-  const entries = Object.values(assets).flatMap((set) =>
-    Object.entries(set.views).map(([direction, view]) => ({
-      ...view,
+  const entries = [
+    ...Object.values(assets).flatMap((set) =>
+      Object.entries(set.views).map(([direction, view]) => ({
+        ...view,
+        contentType: "image/png",
+        source: new URL(
+          `../public/dev/${set.source}/${direction}.png`,
+          import.meta.url,
+        ),
+      })),
+    ),
+    ...equipment.files.map((entry) => ({
+      ...entry,
       source: new URL(
-        `../public/dev/${set.source}/${direction}.png`,
+        `../public/dev/${equipment.source}/${entry.source}`,
         import.meta.url,
       ),
     })),
-  );
+  ];
   return {
     name: "warrior-production-assets",
     configureServer(server) {
@@ -25,7 +36,7 @@ export function warriorProductionAssets(): Plugin {
           (e) => path === `/${e.file}` || path === `/hollowbane/${e.file}`,
         );
         if (!entry) return next();
-        response.setHeader("Content-Type", "image/png");
+        response.setHeader("Content-Type", entry.contentType);
         response.end(readFileSync(entry.source));
       });
     },

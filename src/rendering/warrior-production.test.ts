@@ -24,7 +24,7 @@ describe("production Warrior equipment selection", () => {
       );
     }
   });
-  it("fails closed for bows, staffs, shields, empty hands and other classes without mutating equipment", () => {
+  it("supports only the verified shield beside a blade and fails closed for other configurations", () => {
     const c = createCharacterInventory(40);
     expect(warriorRendererSelection("warrior", c.equipment)).toBe(
       "empty-main-hand",
@@ -39,9 +39,16 @@ describe("production Warrior equipment selection", () => {
     c.equipment.off = inventoryItem("bark-guard");
     const before = structuredClone(c);
     expect(warriorRendererSelection("warrior", c.equipment)).toBe(
-      "unsupported-offhand:bark-guard",
+      "supported-shield",
     );
     expect(c).toEqual(before);
+    expect(
+      warriorRendererSelection("warrior", c.equipment, false, "projectile"),
+    ).toBe("committed-projectile");
+    c.equipment.off.base = "future-offhand";
+    expect(warriorRendererSelection("warrior", c.equipment)).toBe(
+      "unsupported-offhand:future-offhand",
+    );
     delete c.equipment.off;
     expect(warriorRendererSelection("warrior", c.equipment, true)).toBe(
       "debug-legacy",

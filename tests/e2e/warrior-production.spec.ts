@@ -11,13 +11,15 @@ import {
 } from "./virtual-controller";
 import { WorldSession } from "../../src/simulation/world-session";
 import type { AreaId } from "../../src/simulation/world";
+import equipmentAssets from "../../src/rendering/warrior-equipment-assets.json" with { type: "json" };
 import { worldLayout } from "../../src/simulation/world-layout";
+import { createCombat } from "../../src/simulation/combat";
 import {
   areaNavigation,
   findPath,
   fromGround,
 } from "../../src/world/navigation";
-import { driveQuestPoint } from "./quest-world-input";
+import { driveQuestPoint, driveQuestPoints } from "./quest-world-input";
 import {
   allocateSkillRanks,
   assignSkill,
@@ -29,11 +31,13 @@ async function existing(
   classId: "warrior" | "sorcerer" | "ranger" = "warrior",
   area: AreaId = "ashen-refuge",
   legacy = false,
+  shield = false,
+  initial?: ReturnType<typeof characterSlotFixture>,
 ) {
   await page.goto("./");
   await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
   await characterApi(page);
-  const s = characterSlotFixture(classId);
+  const s = initial ?? characterSlotFixture(classId);
   if (area !== "ashen-refuge") {
     const w = new WorldSession(undefined, 42, 2, area);
     s.exploration = w.capture(w.travel.layout.spawn, s.loot);
@@ -54,6 +58,12 @@ async function existing(
     { item: inventoryItem("cinder-staff"), x: 3, y: 0 },
     { item: inventoryItem("bark-guard"), x: 5, y: 0 },
   ];
+  if (shield) {
+    s.character.equipment.off = inventoryItem("bark-guard");
+    s.character.grid.items = s.character.grid.items.filter(
+      (entry) => entry.item.base !== "bark-guard",
+    );
+  }
   const id = await page.evaluate(
     async ({ text, classId, legacy }) => {
       const api = window.characterStorageModule,
@@ -121,7 +131,7 @@ test("new Warrior uses approved production assets only after character creation"
   expect(errors).toEqual([]);
 });
 
-test("historical blade, live bow/staff fallback, repeated debug leases and save/reload", async ({
+test("historical blade, live shield, bow/staff fallback, repeated debug leases and save/reload", async ({
   page,
 }, info) => {
   const id = await existing(page);
@@ -155,12 +165,14 @@ test("historical blade, live bow/staff fallback, repeated debug leases and save/
   await page.locator("#inventory-equip").click();
   await expect
     .poll(async () => (await state(page)).reason)
-    .toBe("unsupported-offhand:bark-guard");
-  await expect.poll(async () => (await state(page)).textures).toBe(0);
+    .toBe("supported-shield");
+  await expect.poll(async () => (await state(page)).textures).toBe(42);
+  expect((await state(page)).decodedBytes).toBe(373.25 * 1024 ** 2);
   await page.locator('#inventory-gear [data-slot="off"]').click();
   await page.locator("#inventory-take").click();
   await page.locator('[data-focus="cell-8-0"]').click();
   await expect.poll(async () => (await state(page)).mode).toBe("warrior");
+  await expect.poll(async () => (await state(page)).textures).toBe(40);
   await page.locator('#inventory-gear [data-slot="main"]').click();
   await page.locator("#inventory-take").click();
   await page.locator('[data-focus="cell-7-0"]').click();
@@ -202,6 +214,216 @@ test("historical blade, live bow/staff fallback, repeated debug leases and save/
     "data-warrior-renderer",
     "warrior",
   );
+});
+
+test("restored sword/shield survives Save and Exit and releases its conditional textures", async ({
+  page,
+}, info) => {
+  const requests: string[] = [],
+    errors: string[] = [];
+  page.on("request", (r) => requests.push(r.url()));
+  page.on("pageerror", (e) => errors.push(e.message));
+  await existing(page, "warrior", "ashen-refuge", false, true);
+  await expect
+    .poll(async () => (await state(page)).equipment.visible)
+    .toBe(true);
+  expect(await state(page)).toMatchObject({
+    reason: "supported-shield",
+    textures: 42,
+    decodedBytes: 373.25 * 1024 ** 2,
+    equipment: { textures: 2, visible: true, bodyVariant: false },
+  });
+  expect(requests.filter((url) => /\/dev\//.test(url))).toEqual([]);
+  await page.locator("#combat-world").focus();
+  const start = await page.evaluate(() => window.hollowbaneWorld!.position);
+  await page.keyboard.down("s");
+  await page.waitForFunction((start) => {
+    const p = window.hollowbaneWorld!.position;
+    return Math.hypot(p.x - start.x, p.y - start.y) > 1.5;
+  }, start);
+  await page.keyboard.up("s");
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.hollowbaneCombat!.actors[0]!.walking),
+    )
+    .toBe(false);
+  const savedPosition = await page.evaluate(
+    () => window.hollowbaneWorld!.position,
+  );
+  await page.screenshot({ path: info.outputPath("restored-shield-camp.png") });
+  await page.locator("#player-pause-open").click();
+  await page.locator("#player-save-exit").click();
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  await page.locator("#menu-continue").click();
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-warrior-renderer",
+    "warrior",
+  );
+  await expect
+    .poll(async () => (await state(page)).equipment.visible)
+    .toBe(true);
+  expect(await page.evaluate(() => window.hollowbaneWorld!.position)).toEqual(
+    savedPosition,
+  );
+  expect(await state(page)).toMatchObject({
+    reason: "supported-shield",
+    textures: 42,
+    equipment: { textures: 2, visible: true },
+  });
+  for (let cycle = 0; cycle < 3; cycle++) {
+    await page.evaluate(() =>
+      window.hollowbaneWarriorProduction!.setLegacy(true),
+    );
+    await expect.poll(async () => (await state(page)).textures).toBe(0);
+    await page.evaluate(() =>
+      window.hollowbaneWarriorProduction!.setLegacy(false),
+    );
+    await expect.poll(async () => (await state(page)).textures).toBe(42);
+    await expect
+      .poll(async () => (await state(page)).equipment.visible)
+      .toBe(true);
+  }
+  expect(errors).toEqual([]);
+});
+
+for (const [name, entry] of Object.entries(equipmentAssets.textures))
+  test(`missing ${name} equipment atlas fails completely and recovers after reload`, async ({
+    page,
+  }) => {
+    const requests: string[] = [],
+      errors: string[] = [];
+    page.on("request", (r) => {
+      if (r.url().includes("/assets/warrior/equipment-"))
+        requests.push(r.url());
+    });
+    page.on("pageerror", (e) => errors.push(e.message));
+    await existing(page, "warrior", "ashen-refuge", true, true);
+    const pattern = `**/${entry.image}`;
+    await page.route(pattern, (r) =>
+      r.fulfill({ status: 404, body: "Deliberately missing equipment atlas" }),
+    );
+    await page.evaluate(() =>
+      window.hollowbaneWarriorProduction!.setLegacy(false),
+    );
+    await expect
+      .poll(async () => (await state(page)).reason)
+      .toBe("asset-load-failed");
+    await expect.poll(async () => (await state(page)).textures).toBe(0);
+    expect((await state(page)).equipment.visible).toBe(false);
+    const count = requests.length,
+      tick = await page.evaluate(() => window.hollowbaneCombat!.tick);
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneCombat!.tick))
+      .toBeGreaterThan(tick + 30);
+    expect(requests).toHaveLength(count);
+    await page.unroute(pattern);
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-warrior-renderer",
+      "warrior",
+    );
+    await expect.poll(async () => (await state(page)).textures).toBe(42);
+    await expect
+      .poll(async () => (await state(page)).equipment.visible)
+      .toBe(true);
+    expect(errors).toEqual([]);
+  });
+
+test("shield ownership survives saved waypoint travel and a real forest-to-camp portal", async ({
+  page,
+}, info) => {
+  await installVirtualController(page, "Xbox virtual standard");
+  const fixture = characterSlotFixture("warrior"),
+    world = new WorldSession(fixture.exploration),
+    combat = createCombat();
+  combat.actors = [combat.actors[0]!];
+  // Construct a legal previously visited/attuned save before the browser opens.
+  for (const exit of ["forest", "camp"]) {
+    combat.actors[0]!.controller.walker.position = {
+      ...world.travel.layout.exits.find((e) => e.id === exit)!.trigger,
+    };
+    expect(world.transition(combat, fixture.loot)).toBe(true);
+    world.attuneWaypoint(world.travel.layout.spawn, true, true, true);
+  }
+  fixture.exploration = world.capture(world.travel.layout.spawn, fixture.loot);
+  const id = await existing(
+    page,
+    "warrior",
+    "ashen-refuge",
+    false,
+    true,
+    fixture,
+  );
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.locator("#world-waypoints-open").click();
+  await page.locator('[data-destination="haunted-forest"]').click();
+  await page.locator("#waypoint-confirm").click();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+    .toBe("haunted-forest");
+  await expect(page.locator("#waypoint-save-status")).toHaveText(
+    "Character checkpoint saved locally.",
+  );
+  expect(await state(page)).toMatchObject({
+    textures: 42,
+    reason: "supported-shield",
+    equipment: { visible: true },
+  });
+  await page.locator("#waypoint-close").click();
+  await page.reload();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld?.area))
+    .toBe("haunted-forest");
+  await expect.poll(async () => (await state(page)).textures).toBe(42);
+  await page.locator("#combat-world").focus();
+  await pressVirtualButton(page, 10);
+  // Normal character routes intentionally omit developer navigation callbacks.
+  // Use the same pure layout/pathfinder, then deliver the original live stick input.
+  const layout = worldLayout("haunted-forest", 42, 2);
+  const start = await page.evaluate(() => window.hollowbaneWorld!.position);
+  const path = findPath(
+    areaNavigation(layout.map),
+    start,
+    layout.exits.find((e) => e.id === "camp")!.trigger,
+  );
+  expect(path.length).toBeGreaterThan(0);
+  await driveQuestPoints(page, path, "haunted-forest", path);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld!.area))
+    .toBe("ashen-refuge");
+  await expect
+    .poll(async () => (await state(page)).equipment.visible)
+    .toBe(true);
+  await page.locator("#inventory-open").click();
+  await page.locator("#inventory-save").click();
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint saved locally.",
+  );
+  await page.locator("#inventory-close").click();
+  await characterApi(page);
+  const saved = await page.evaluate(async (id) => {
+    const store = new window.characterStorageModule.CharacterStorage();
+    try {
+      const result = await store.load(id);
+      if (result.kind !== "valid")
+        throw Error("Invalid equipment/travel checkpoint");
+      return {
+        area: result.session.exploration!.area,
+        main: result.session.character.equipment.main?.id,
+        off: result.session.character.equipment.off?.id,
+      };
+    } finally {
+      store.close();
+    }
+  }, id);
+  expect(saved).toEqual({
+    area: "ashen-refuge",
+    main: fixture.character.equipment.main!.id,
+    off: inventoryItem("bark-guard").id,
+  });
+  await page.screenshot({ path: info.outputPath("shield-returned-camp.png") });
+  expect(errors).toEqual([]);
 });
 
 for (const classId of ["sorcerer", "ranger"] as const)
@@ -283,11 +505,11 @@ for (const area of [
   test(`approved Warrior draws on normal ${area} terrain and retains atlas ownership`, async ({
     page,
   }, info) => {
-    await existing(page, "warrior", area);
+    await existing(page, "warrior", area, false, true);
     await expect
       .poll(() => page.evaluate(() => window.hollowbaneWorld?.area))
       .toBe(area);
-    expect((await state(page)).textures).toBe(40);
+    expect((await state(page)).textures).toBe(42);
     await page.screenshot({ path: info.outputPath(`${area}-warrior.png`) });
   });
 
@@ -304,7 +526,7 @@ test("real forest melee and both Warrior abilities retain existing input and sim
         JSON.stringify({ version: 1, quality: "full", volume: 1, muted: true }),
       ),
     );
-  await existing(page, "warrior", "haunted-forest", legacy);
+  await existing(page, "warrior", "haunted-forest", legacy, true);
   if (profiling) {
     await page.evaluate(async () => {
       const canvas = document.querySelector<HTMLCanvasElement>(
@@ -633,7 +855,7 @@ test("normal campaign Warrior walks and runs in all eight facing directions", as
   page,
 }, info) => {
   await installVirtualController(page, "Xbox virtual standard");
-  await existing(page);
+  await existing(page, "warrior", "ashen-refuge", false, true);
   await page.locator("#combat-world").focus();
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
@@ -698,14 +920,14 @@ test("normal campaign Warrior walks and runs in all eight facing directions", as
     }
     expect([...directions].sort()).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
   }
-  expect((await state(page)).textures).toBe(40);
+  expect((await state(page)).textures).toBe(42);
 });
 
 test("natural campaign death holds its terminal pose across legacy switching and texture reload", async ({
   page,
 }, info) => {
   await installVirtualController(page, "Xbox virtual standard");
-  await existing(page, "warrior", "ancient-crypt");
+  await existing(page, "warrior", "ancient-crypt", false, true);
   await page.locator("#combat-world").focus();
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
@@ -755,6 +977,9 @@ test("natural campaign death holds its terminal pose across legacy switching and
   await expect
     .poll(async () => (await state(page)).pose)
     .toEqual({ set: "death", frame: 15, clip: "death" });
+  await expect
+    .poll(async () => (await state(page)).equipment.bodyVariant)
+    .toBe(true);
   const before = await page.evaluate(() => {
     const c = window.hollowbaneCombat!,
       a = c.actors[0]!;

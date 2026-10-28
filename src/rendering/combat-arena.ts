@@ -1670,6 +1670,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.abilities?.users.find((u) => u.actor === 0)?.cast ?? null,
           this.warriorMotion,
           p,
+          flash ? 0xffd7a0 : 0xffffff,
         )
       ) {
         this.contactShadows.get(0)?.setPosition(p.x, p.y + 2);

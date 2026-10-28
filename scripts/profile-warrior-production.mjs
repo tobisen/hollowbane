@@ -9,6 +9,17 @@ if (!base || !fixturePath || !output)
     "Pass base URL, constructed session JSON and untracked output directory",
   );
 const fixtures = JSON.parse(await readFile(fixturePath, "utf8"));
+const equipment = JSON.parse(fixtures["haunted-forest"]).body.character
+  .equipment;
+if (
+  equipment.main?.base !== "ash-blade" ||
+  (equipment.off && equipment.off.base !== "bark-guard")
+)
+  throw Error("Profile only the verified blade/optional-shield configuration");
+const withShield = equipment.off?.base === "bark-guard";
+const candidateReason = withShield ? "supported-shield" : "supported";
+const expectedTextures = withShield ? 42 : 40;
+const expectedDecodedBytes = (349.25 + (withShield ? 24 : 0)) * 1024 ** 2;
 const files = (await readdir("dist/assets"))
   .filter((f) => /^character-storage-[\w-]+\.js$/.test(f))
   .map((f) => `assets/${f}`);
@@ -47,9 +58,12 @@ try {
             if (
               !v ||
               v.mode === "loading" ||
-              !["supported", "debug-legacy", "asset-load-failed"].includes(
-                v.reason,
-              )
+              ![
+                "supported",
+                "supported-shield",
+                "debug-legacy",
+                "asset-load-failed",
+              ].includes(v.reason)
             )
               requestAnimationFrame(sample);
           };
@@ -120,15 +134,16 @@ try {
         const navigationAt = Date.now();
         await page.goto(`${base}?world=1&character=${id}`);
         await page.waitForFunction(
-          (mode) => {
+          ({ mode, candidateReason }) => {
             const v = window.hollowbaneWarriorProduction;
             return (
               v &&
               v.mode === mode &&
-              v.reason === (mode === "legacy" ? "debug-legacy" : "supported")
+              v.reason ===
+                (mode === "legacy" ? "debug-legacy" : candidateReason)
             );
           },
-          mode,
+          { mode, candidateReason },
           { timeout: 30000 },
         );
         const load = await page.evaluate(() => {
@@ -148,9 +163,19 @@ try {
               ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)
               : "unknown",
             loadMs: window.hollowbaneWarriorProduction.loadMs,
+            equipmentLoadMs: window.hollowbaneWarriorProduction.equipmentLoadMs,
             textures: window.hollowbaneWarriorProduction.textures,
             decodedBaseBytes: window.hollowbaneWarriorProduction.decodedBytes,
             requests: requests.length,
+            pngRequests: requests.filter((e) =>
+              /\.png$/.test(new URL(e.name).pathname),
+            ).length,
+            pngEncodedBodyBytes: requests
+              .filter((e) => /\.png$/.test(new URL(e.name).pathname))
+              .reduce((n, e) => n + e.encodedBodySize, 0),
+            atlasJsonEncodedBodyBytes: requests
+              .filter((e) => /\.json$/.test(new URL(e.name).pathname))
+              .reduce((n, e) => n + e.encodedBodySize, 0),
             encodedBodyBytes: requests.reduce(
               (n, e) => n + e.encodedBodySize,
               0,
@@ -166,6 +191,13 @@ try {
         });
         if (!/Metal Renderer: Apple M4/.test(load.renderer))
           throw Error(`Expected native M4/Metal: ${load.renderer}`);
+        if (
+          load.developerRequests ||
+          load.textures !== (mode === "warrior" ? expectedTextures : 0) ||
+          load.decodedBaseBytes !==
+            (mode === "warrior" ? expectedDecodedBytes : 0)
+        )
+          throw Error(`Unexpected native texture inventory ${device}/${mode}`);
         cold.push({
           device,
           repeat,
@@ -225,6 +257,7 @@ try {
                   phase: c.actors[0].phase,
                   pose: v.pose,
                   textures: v.textures,
+                  equipmentVisible: v.equipment.visible,
                   heap: performance.memory?.usedJSHeapSize ?? null,
                 });
               previous = now;
@@ -248,6 +281,15 @@ try {
           throw Error(
             `Movement driver did not move the actual campaign actor: ${device}/${mode}`,
           );
+        if (
+          mode === "warrior" &&
+          frames.some(
+            (f) =>
+              f.textures !== expectedTextures ||
+              (withShield && !f.equipmentVisible),
+          )
+        )
+          throw Error(`Lost native equipment textures/layer ${device}/${mode}`);
         const sample = {
           device,
           repeat,
@@ -284,6 +326,10 @@ try {
     JSON.stringify(
       {
         gpu,
+        equipment: {
+          main: equipment.main.base,
+          off: equipment.off?.base ?? null,
+        },
         browser: browser.version(),
         resolution: [1280, 800],
         dpr: 1,

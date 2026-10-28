@@ -3,11 +3,98 @@
 2026-10-28. User authorizes modular Warrior equipment work through public
 Checkpoints A/B/C. This supersedes the earlier production-publication stop for
 this scope. Other classes, monsters, balance, saves and Phaser4.2.1 remain intact.
-This includes the audit, shield proof and opt-in developer equipment arena,
-**not Checkpoint A**.
-Prior accepted production evidence revision: `ee03e81964bb597636aa2d96f64716268e5c1d81`;
-accepted runtime/evidence is described in [warrior-production.md](warrior-production.md).
-No new publication or production equipment visual support is claimed here.
+This includes the shield proof, opt-in showcase and now the local campaign
+vertical slice below. **Checkpoint A is pending exact publication acceptance.**
+Prior accepted production revision remains
+`ee03e81964bb597636aa2d96f64716268e5c1d81`; see
+[warrior-production.md](warrior-production.md). Historical sections retain their
+then-current counts and restrictions.
+
+## Production sword/shield release candidate — 2026-10-29
+
+The normal campaign now selects the original sword/shield candidate from actual
+`ash-blade`/`bark-guard` equipment. Standard body frames remain shared; only the
+late-death left arm uses the48 unique variants. Two optional, reference-counted
+textures load after the existing40 finish, under the existing presentation
+barrier. A single overlay follows the existing deterministic pose, root, actor
+depth and hit tint. Hidden/disposed sprites restore their original textures
+before release. Failed partial loads release all candidate textures, preserve
+legacy presentation and do not retry every simulation tick; reload can recover.
+No simulation, equipment rule/statistic, save format or Phaser4.2.1 change.
+
+Empty offhand retains40 textures; shield uses42. Sorcerer/Ranger, bow/staff,
+empty/unknown main, unknown offhand, committed projectiles, explicit legacy and
+failed assets retain fallback. The original baked sword is never mislabeled as
+another weapon. The source package's `productionApproved:false` describes its
+immutable developer proof; the compact hash-pinned production descriptor is the
+reviewed promotion path. Public acceptance remains separate and pending.
+
+Full `npm run check` passes **682 tests/150 files**, TypeScript, lint,45 asset
+records, backlog/dependency validation and build. **16 distinct production
+Chromium scenarios** pass across bounded runs: character creation, existing
+character, live inventory equip/unequip including persisted unequip, Save & Exit,
+re-entry, three42→0→42 resource cycles, both missing-equipment-atlas recoveries,
+cross-class isolation, actual movement/combat/both abilities, three terrains,
+eight-way walk/run, natural held corpse, saved waypoint and actual portal travel.
+Six additional Firefox/WebKit restore and failure/recovery cases pass. Earlier
+14 developer Chromium/four compatibility cases remain recorded below. All tests
+use real inputs and established simulation; no timing/stat/AI bypass was added.
+
+The first local production invocation mistakenly selected hosted fixture mode
+without a release receipt; corrected local invocation passed. The new travel
+case initially called a developer-only route helper unavailable in campaign;
+it now uses pure navigation and the existing trusted virtual-input driver.
+Original arrival bounds remain. Native combat profiling preserves the already
+approved Run/current-target driver; a snapshot/hash records that exact protocol.
+All failure artifacts remain in the temporary evidence directory.
+
+Gameplay-scale light/dark source, sixteen live walk/run facings, actual
+camp/forest/marsh/crypt, melee/abilities and natural corpse captures were reviewed.
+No demonstrated detached grip, body intersection or alpha halo remains in these
+samples. Existing brisk cadence, rigid cloak and sculptural finish remain;
+sampled geometry and automated motion do not replace a full human playthrough.
+
+### Resource and native evidence
+
+The two additional PNGs total **3688973 bytes**, plus313826 uncompressed atlas
+JSON bytes and **24MiB calculated base RGBA**. Candidate total is42 textures,
+373.25MiB calculated base RGBA. This is not GPU residency. Production requests
+only the four hash-pinned aliases; no `/dev/` asset requests. Three tested cycles
+release/reacquire cleanly; no general leak-free claim beyond these observations.
+
+Native Chromium156.0.8078.4 /Apple M4/verified ANGLE Metal,1280×800/DPR1/Full,
+HTTP cache disabled, balanced repeated orders and identical real shield snapshots:
+
+| Measurement                                                    | Candidate                                                          | Same-equipment legacy baseline                                    |
+| -------------------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Movement (three pairs per keyboard/virtual-pad;420 frames/run) | p5016.7, p9518.6–18.7, p9918.7, max18.8ms;0>25                     | p9517.3–18.7, p9918.7, max18.8ms;0>25                             |
+| Camera relative movement range                                 | 0px both axes                                                      | 0px both axes                                                     |
+| Real16-actor forest combat (three pairs;584–619 frames/run)    | p5016.7, p9517.9–18.3, p9918.7–383.3, max415.7–416.5ms;5–13>25/run | p5016.7, p9517.8–18.4, p9918.7–267.4, max416.5–416.7ms;5–9>25/run |
+| Cold navigation to renderer ready                              | 1699–1944ms; body492–558.4ms, extra shield38.5–54.8ms              | 1157–1178ms; no Warrior textures                                  |
+| Production load                                                | 42PNG +2JSON;27147568 encoded PNG bytes/49721 encoded JSON bytes   | No Warrior requests                                               |
+| Actual inventory equip click→observed ready (three pairs)      | 168.7–276.1ms; shield loader45.6–47.5ms                            | 121.4–123.9ms                                                     |
+| Equip frame maximum                                            | 99.3–100.1ms                                                       | 99.9–100.1ms                                                      |
+| Unequip click→observed ready                                   | 260.1–267.4ms                                                      | 263.4–268.8ms                                                     |
+| Unequip frame maximum                                          | 200–216.6ms                                                        | 200–216.6ms                                                       |
+
+Movement has5040 sampled frames total and16 actors. Each cohort proves actual
+travel; prior idle-keyboard results are not reused. Combat includes real primary,
+hit and both abilities. Legacy baseline is the last released fallback for this
+same shield equipment, not a different body-only load. Existing variable
+checkpoint/combat and inventory stalls remain; no tail-latency improvement or
+globally hitch-free claim. No unrelated persistence optimization. Click-to-ready
+includes browser driver observation/redraw overhead and two post-ready paint
+intervals are retained in frame sampling. OS/GPU cache was not reset. Virtual
+pads/browser keyboard/mouse are not physical-controller evidence.
+
+Machine evidence: [equipment-production-review.json](equipment-production-review.json).
+Raw renders, browser captures/results, matched movement, battle and inventory
+switch samples plus a163-file tested client seal remain under
+`/private/tmp/hollowbane-warrior-equipment`. Next commit/push this coherent
+candidate, require exact **Full +Pages +hosted** acceptance and byte identity,
+then record the published SHA before any B/C expansion. No public A/B/C receipt
+is claimed yet. Bows/staffs/unarmed still need a shared sword-free body and genuine
+category-specific choreography; full armor production remains outside scope.
 
 ## Packaged equipment / playable study — 2026-10-28
 
@@ -154,16 +241,16 @@ base IDs; advanced/unique/set/socketed instances retain those bases. Level,
 identification and configured attribute requirements still apply. There are no
 class-specific equipment restrictions in `equipment.ts`.
 
-| Configuration                 | Campaign renderer now | New art needed                                      | Motion needed                                                                                          | Grip/attachment data                                          | Existing motion reuse                             | Temporary fallback                                          |
-| ----------------------------- | --------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------- |
-| `ash-blade`, empty offhand    | Yes                   | No; approved sword is baked in                      | No                                                                                                     | None for current baked renderer                               | All 72 clips                                      | Only debug override, failed loading or committed projectile |
-| `ash-blade` + `bark-guard`    | No                    | Original shield candidate and two atlases now exist | 48 unique late-death body variants authored; campaign review pending                                   | Left-hand grip, full projected orientation and body occlusion | All 880 poses proven in developer assets          | Yes, until verified                                         |
-| `reed-bow`, empty offhand     | No                    | Original bow plus shared sword-free body solution   | Bow draw/release and two-hand coordination; sword strikes do not establish compatibility               | Both-hand grip; projectile timeline alignment                 | Locomotion/hit/death may be reusable after review | Yes                                                         |
-| `cinder-staff`, empty offhand | No                    | Original staff plus shared sword-free body solution | Actual melee staff choreography needs visual review; current sword strike is not accepted staff motion | Two-hand grip and staff/body occlusion                        | Locomotion/hit/death may be reusable after review | Yes                                                         |
-| Empty main, empty offhand     | No                    | Shared sword-free body solution                     | Unarmed attack not authored                                                                            | Empty-hand pose data                                          | Non-attack states may be reusable                 | Yes                                                         |
-| Empty main + `bark-guard`     | No                    | Shield and shared sword-free body solution          | Unarmed/shield coordination not authored                                                               | Left grip and occlusion                                       | Must be reviewed                                  | Yes                                                         |
-| Bow/staff + offhand           | Invalid equipment     | —                                                   | —                                                                                                      | —                                                             | —                                                 | Existing transactions displace conflicting equipment        |
-| Unknown future base           | No                    | Audit when introduced                               | Audit when introduced                                                                                  | Audit when introduced                                         | No assumption                                     | Yes, fail closed                                            |
+| Configuration                 | Campaign renderer now      | New art needed                                      | Motion needed                                                                                          | Grip/attachment data                                          | Existing motion reuse                             | Temporary fallback                                          |
+| ----------------------------- | -------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------- |
+| `ash-blade`, empty offhand    | Yes                        | No; approved sword is baked in                      | No                                                                                                     | None for current baked renderer                               | All 72 clips                                      | Only debug override, failed loading or committed projectile |
+| `ash-blade` + `bark-guard`    | Local candidate; A pending | Original shield candidate and two atlases now exist | 48 unique late-death body variants; local campaign scenarios pass                                      | Left-hand grip, full projected orientation and body occlusion | All 880 poses proven in developer assets          | Exact public release gate pending                           |
+| `reed-bow`, empty offhand     | No                         | Original bow plus shared sword-free body solution   | Bow draw/release and two-hand coordination; sword strikes do not establish compatibility               | Both-hand grip; projectile timeline alignment                 | Locomotion/hit/death may be reusable after review | Yes                                                         |
+| `cinder-staff`, empty offhand | No                         | Original staff plus shared sword-free body solution | Actual melee staff choreography needs visual review; current sword strike is not accepted staff motion | Two-hand grip and staff/body occlusion                        | Locomotion/hit/death may be reusable after review | Yes                                                         |
+| Empty main, empty offhand     | No                         | Shared sword-free body solution                     | Unarmed attack not authored                                                                            | Empty-hand pose data                                          | Non-attack states may be reusable                 | Yes                                                         |
+| Empty main + `bark-guard`     | No                         | Shield and shared sword-free body solution          | Unarmed/shield coordination not authored                                                               | Left grip and occlusion                                       | Must be reviewed                                  | Yes                                                         |
+| Bow/staff + offhand           | Invalid equipment          | —                                                   | —                                                                                                      | —                                                             | —                                                 | Existing transactions displace conflicting equipment        |
+| Unknown future base           | No                         | Audit when introduced                               | Audit when introduced                                                                                  | Audit when introduced                                         | No assumption                                     | Yes, fail closed                                            |
 
 `equipment-content.ts`: blade is one-handed; bow/staff are two-handed; shield
 occupies `off`. Dual wield, axes, maces and other offhands are not current content.

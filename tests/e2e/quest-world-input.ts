@@ -155,7 +155,7 @@ export async function driveQuestPoint(
 ) {
   await driveQuestPoints(page, [p], sourceArea, activePath);
 }
-async function driveQuestPoints(
+export async function driveQuestPoints(
   page: Page,
   points: Point[],
   sourceArea?: string,

@@ -1,0 +1,1230 @@
+{
+  "version": 1,
+  "scope": "DBL-023/024/025 real sword/shield campaign vertical slice",
+  "checkpointAAccepted": false,
+  "publication": "Pending exact Full CI, Pages and hosted acceptance",
+  "lastVerifiedDeployedSha": "ee03e81964bb597636aa2d96f64716268e5c1d81",
+  "configuration": {
+    "main": "ash-blade",
+    "off": "bark-guard",
+    "armor": "Existing static appearance"
+  },
+  "fallback": [
+    "Non-Warrior",
+    "Explicit legacy override",
+    "Empty main",
+    "Bow",
+    "Staff",
+    "Unknown main/offhand base",
+    "Committed projectile",
+    "Asset load failure"
+  ],
+  "sourceProof": "equipment-review.json",
+  "additionalPngBytes": 3688973,
+  "additionalAtlasJsonBytes": 313826,
+  "additionalDecodedBaseBytes": 25165824,
+  "totalTextures": 42,
+  "totalDecodedBaseBytes": 391380992,
+  "measuredGpuMemory": false,
+  "localValidation": {
+    "fullCheck": {
+      "unitFiles": 150,
+      "unitTests": 682,
+      "typescript": true,
+      "lint": true,
+      "assetRecords": 45,
+      "build": true
+    },
+    "productionChromiumDistinctCases": 16,
+    "productionChromiumCaseResults": "Passed across bounded runs; exact release CI remains pending",
+    "developerChromiumCases": 14,
+    "developerFirefoxWebkitCases": 4,
+    "productionFirefoxWebkitCases": 6
+  },
+  "nativeProtocol": {
+    "browser": "156.0.8078.4",
+    "hardware": "Apple M4 / verified ANGLE Metal",
+    "resolution": [1280, 800],
+    "dpr": 1,
+    "graphics": "full",
+    "matchedEquipment": {
+      "main": "ash-blade",
+      "off": "bark-guard"
+    },
+    "cache": "HTTP disabled; OS/GPU cache not reset",
+    "trace": "off",
+    "video": "off",
+    "combatActors": 16
+  },
+  "nativeMovement": {
+    "rows": [
+      {
+        "device": "keyboard",
+        "repeat": 0,
+        "mode": "warrior",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.699999999999818,
+        "p99": 18.700000000000728,
+        "longest": 18.800000000000182,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2000000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [36152969, 26647031],
+        "errors": []
+      },
+      {
+        "device": "keyboard",
+        "repeat": 0,
+        "mode": "legacy",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.600000000000364,
+        "p99": 18.700000000000728,
+        "longest": 18.80000000000109,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2500000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [32089472, 36444614],
+        "errors": []
+      },
+      {
+        "device": "keyboard",
+        "repeat": 1,
+        "mode": "legacy",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 17.299999999999272,
+        "p99": 18.700000000000728,
+        "longest": 18.700000000000728,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2500000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [22755420, 30118587],
+        "errors": []
+      },
+      {
+        "device": "keyboard",
+        "repeat": 1,
+        "mode": "warrior",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.699999999999818,
+        "p99": 18.700000000000728,
+        "longest": 18.800000000000182,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2000000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [30170000, 30311674],
+        "errors": []
+      },
+      {
+        "device": "keyboard",
+        "repeat": 2,
+        "mode": "warrior",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.600000000000364,
+        "p99": 18.700000000000273,
+        "longest": 18.700000000000728,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2000000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [36149758, 32013078],
+        "errors": []
+      },
+      {
+        "device": "keyboard",
+        "repeat": 2,
+        "mode": "legacy",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.600000000000364,
+        "p99": 18.700000000000728,
+        "longest": 18.800000000000182,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2500000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [36462153, 32216307],
+        "errors": []
+      },
+      {
+        "device": "controller",
+        "repeat": 0,
+        "mode": "warrior",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.69999999999891,
+        "p99": 18.700000000000728,
+        "longest": 18.800000000000182,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2000000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [30572103, 35933507],
+        "errors": []
+      },
+      {
+        "device": "controller",
+        "repeat": 0,
+        "mode": "legacy",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.699999999999818,
+        "p99": 18.700000000000728,
+        "longest": 18.80000000000109,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2500000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [37384930, 34673034],
+        "errors": []
+      },
+      {
+        "device": "controller",
+        "repeat": 1,
+        "mode": "legacy",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.600000000000364,
+        "p99": 18.700000000000273,
+        "longest": 18.800000000000182,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2000000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [27369108, 30073395],
+        "errors": []
+      },
+      {
+        "device": "controller",
+        "repeat": 1,
+        "mode": "warrior",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.699999999999818,
+        "p99": 18.700000000000728,
+        "longest": 18.799999999999272,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2000000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [36471508, 28867599],
+        "errors": []
+      },
+      {
+        "device": "controller",
+        "repeat": 2,
+        "mode": "warrior",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.600000000000364,
+        "p99": 18.700000000000728,
+        "longest": 18.799999999999272,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2000000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [36962404, 25143606],
+        "errors": []
+      },
+      {
+        "device": "controller",
+        "repeat": 2,
+        "mode": "legacy",
+        "frames": 420,
+        "p50": 16.699999999999818,
+        "p95": 18.69999999999891,
+        "p99": 18.700000000000273,
+        "longest": 18.800000000000182,
+        "over25": 0,
+        "cameraRelativeRange": {
+          "x": 0,
+          "y": 0
+        },
+        "hp": [300, 309.2000000000021],
+        "actors": [16, 16],
+        "jsHeapOnly": [36029628, 26372043],
+        "errors": []
+      }
+    ],
+    "cold": [
+      {
+        "device": "keyboard",
+        "repeat": 0,
+        "mode": "warrior",
+        "navigationReadyMs": 1944,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 558.3999999761581,
+        "equipmentLoadMs": 54.799999952316284,
+        "textures": 42,
+        "decodedBaseBytes": 391380992,
+        "requests": 44,
+        "pngRequests": 42,
+        "pngEncodedBodyBytes": 27147568,
+        "atlasJsonEncodedBodyBytes": 49721,
+        "encodedBodyBytes": 27197289,
+        "transferBytes": 27210489,
+        "developerRequests": 0,
+        "loadingRafLongest": 268.2,
+        "loadingRafOver25": 6,
+        "jsHeapOnly": 27577213
+      },
+      {
+        "device": "keyboard",
+        "repeat": 0,
+        "mode": "legacy",
+        "navigationReadyMs": 1162,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 0,
+        "equipmentLoadMs": 0,
+        "textures": 0,
+        "decodedBaseBytes": 0,
+        "requests": 0,
+        "pngRequests": 0,
+        "pngEncodedBodyBytes": 0,
+        "atlasJsonEncodedBodyBytes": 0,
+        "encodedBodyBytes": 0,
+        "transferBytes": 0,
+        "developerRequests": 0,
+        "loadingRafLongest": 266.7,
+        "loadingRafOver25": 6,
+        "jsHeapOnly": 30045726
+      },
+      {
+        "device": "keyboard",
+        "repeat": 1,
+        "mode": "legacy",
+        "navigationReadyMs": 1161,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 0,
+        "equipmentLoadMs": 0,
+        "textures": 0,
+        "decodedBaseBytes": 0,
+        "requests": 0,
+        "pngRequests": 0,
+        "pngEncodedBodyBytes": 0,
+        "atlasJsonEncodedBodyBytes": 0,
+        "encodedBodyBytes": 0,
+        "transferBytes": 0,
+        "developerRequests": 0,
+        "loadingRafLongest": 266.79999999999995,
+        "loadingRafOver25": 8,
+        "jsHeapOnly": 24591391
+      },
+      {
+        "device": "keyboard",
+        "repeat": 1,
+        "mode": "warrior",
+        "navigationReadyMs": 1699,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 492,
+        "equipmentLoadMs": 39.90000009536743,
+        "textures": 42,
+        "decodedBaseBytes": 391380992,
+        "requests": 44,
+        "pngRequests": 42,
+        "pngEncodedBodyBytes": 27147568,
+        "atlasJsonEncodedBodyBytes": 49721,
+        "encodedBodyBytes": 27197289,
+        "transferBytes": 27210489,
+        "developerRequests": 0,
+        "loadingRafLongest": 283.4,
+        "loadingRafOver25": 5,
+        "jsHeapOnly": 26323729
+      },
+      {
+        "device": "keyboard",
+        "repeat": 2,
+        "mode": "warrior",
+        "navigationReadyMs": 1717,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 505.7000000476837,
+        "equipmentLoadMs": 43.39999997615814,
+        "textures": 42,
+        "decodedBaseBytes": 391380992,
+        "requests": 44,
+        "pngRequests": 42,
+        "pngEncodedBodyBytes": 27147568,
+        "atlasJsonEncodedBodyBytes": 49721,
+        "encodedBodyBytes": 27197289,
+        "transferBytes": 27210489,
+        "developerRequests": 0,
+        "loadingRafLongest": 266.59999999999997,
+        "loadingRafOver25": 6,
+        "jsHeapOnly": 25907664
+      },
+      {
+        "device": "keyboard",
+        "repeat": 2,
+        "mode": "legacy",
+        "navigationReadyMs": 1173,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 0,
+        "equipmentLoadMs": 0,
+        "textures": 0,
+        "decodedBaseBytes": 0,
+        "requests": 0,
+        "pngRequests": 0,
+        "pngEncodedBodyBytes": 0,
+        "atlasJsonEncodedBodyBytes": 0,
+        "encodedBodyBytes": 0,
+        "transferBytes": 0,
+        "developerRequests": 0,
+        "loadingRafLongest": 266.70000000000005,
+        "loadingRafOver25": 6,
+        "jsHeapOnly": 24262060
+      },
+      {
+        "device": "controller",
+        "repeat": 0,
+        "mode": "warrior",
+        "navigationReadyMs": 1736,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 513.8999999761581,
+        "equipmentLoadMs": 38.5,
+        "textures": 42,
+        "decodedBaseBytes": 391380992,
+        "requests": 44,
+        "pngRequests": 42,
+        "pngEncodedBodyBytes": 27147568,
+        "atlasJsonEncodedBodyBytes": 49721,
+        "encodedBodyBytes": 27197289,
+        "transferBytes": 27210489,
+        "developerRequests": 0,
+        "loadingRafLongest": 283.4000000000001,
+        "loadingRafOver25": 5,
+        "jsHeapOnly": 27116214
+      },
+      {
+        "device": "controller",
+        "repeat": 0,
+        "mode": "legacy",
+        "navigationReadyMs": 1170,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 0,
+        "equipmentLoadMs": 0,
+        "textures": 0,
+        "decodedBaseBytes": 0,
+        "requests": 0,
+        "pngRequests": 0,
+        "pngEncodedBodyBytes": 0,
+        "atlasJsonEncodedBodyBytes": 0,
+        "encodedBodyBytes": 0,
+        "transferBytes": 0,
+        "developerRequests": 0,
+        "loadingRafLongest": 266.70000000000005,
+        "loadingRafOver25": 6,
+        "jsHeapOnly": 24467022
+      },
+      {
+        "device": "controller",
+        "repeat": 1,
+        "mode": "legacy",
+        "navigationReadyMs": 1178,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 0,
+        "equipmentLoadMs": 0,
+        "textures": 0,
+        "decodedBaseBytes": 0,
+        "requests": 0,
+        "pngRequests": 0,
+        "pngEncodedBodyBytes": 0,
+        "atlasJsonEncodedBodyBytes": 0,
+        "encodedBodyBytes": 0,
+        "transferBytes": 0,
+        "developerRequests": 0,
+        "loadingRafLongest": 283.4,
+        "loadingRafOver25": 6,
+        "jsHeapOnly": 26529955
+      },
+      {
+        "device": "controller",
+        "repeat": 1,
+        "mode": "warrior",
+        "navigationReadyMs": 1753,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 529,
+        "equipmentLoadMs": 52.799999952316284,
+        "textures": 42,
+        "decodedBaseBytes": 391380992,
+        "requests": 44,
+        "pngRequests": 42,
+        "pngEncodedBodyBytes": 27147568,
+        "atlasJsonEncodedBodyBytes": 49721,
+        "encodedBodyBytes": 27197289,
+        "transferBytes": 27210489,
+        "developerRequests": 0,
+        "loadingRafLongest": 283.30000000000007,
+        "loadingRafOver25": 6,
+        "jsHeapOnly": 30325377
+      },
+      {
+        "device": "controller",
+        "repeat": 2,
+        "mode": "warrior",
+        "navigationReadyMs": 1708,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 497,
+        "equipmentLoadMs": 44.200000047683716,
+        "textures": 42,
+        "decodedBaseBytes": 391380992,
+        "requests": 44,
+        "pngRequests": 42,
+        "pngEncodedBodyBytes": 27147568,
+        "atlasJsonEncodedBodyBytes": 49721,
+        "encodedBodyBytes": 27197289,
+        "transferBytes": 27210489,
+        "developerRequests": 0,
+        "loadingRafLongest": 283.4000000000001,
+        "loadingRafOver25": 6,
+        "jsHeapOnly": 23367265
+      },
+      {
+        "device": "controller",
+        "repeat": 2,
+        "mode": "legacy",
+        "navigationReadyMs": 1157,
+        "graphics": "full",
+        "canvas": [1280, 800],
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "loadMs": 0,
+        "equipmentLoadMs": 0,
+        "textures": 0,
+        "decodedBaseBytes": 0,
+        "requests": 0,
+        "pngRequests": 0,
+        "pngEncodedBodyBytes": 0,
+        "atlasJsonEncodedBodyBytes": 0,
+        "encodedBodyBytes": 0,
+        "transferBytes": 0,
+        "developerRequests": 0,
+        "loadingRafLongest": 283.19999999999993,
+        "loadingRafOver25": 5,
+        "jsHeapOnly": 28224443
+      }
+    ],
+    "limits": [
+      "Browser keyboard events and virtual pads, no physical hardware",
+      "Normal deterministic constructed forest save, not full human campaign",
+      "HTTP cache disabled, OS/GPU cache not reset",
+      "Base RGBA and JS heap are not GPU memory",
+      "Actual campaign attacks/skills are verified separately; this cohort measures movement with natural encounters"
+    ]
+  },
+  "nativeCombat": {
+    "pairs": 3,
+    "trace": "off",
+    "video": "off",
+    "cpuProfiler": "off",
+    "rows": [
+      {
+        "repeat": 0,
+        "mode": "warrior",
+        "frames": 584,
+        "p50": 16.69999999999891,
+        "p95": 18.30000000000109,
+        "p99": 383.2999999999993,
+        "longest": 415.6999999999989,
+        "over25": 13,
+        "actors": [16],
+        "textures": [42],
+        "clips": ["hit", "idle", "iron-fan", "oath-echo", "primary", "run"],
+        "cameraRange": {
+          "relativeX": 1.1368683772161603e-13,
+          "relativeY": 5.684341886080802e-14
+        },
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)"
+      },
+      {
+        "repeat": 0,
+        "mode": "legacy",
+        "frames": 602,
+        "p50": 16.699999999999818,
+        "p95": 18.09999999999991,
+        "p99": 267.39999999999964,
+        "longest": 416.7000000000007,
+        "over25": 9,
+        "actors": [16],
+        "textures": [0],
+        "clips": [],
+        "cameraRange": {
+          "relativeX": 1.1368683772161603e-13,
+          "relativeY": 5.684341886080802e-14
+        },
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)"
+      },
+      {
+        "repeat": 1,
+        "mode": "warrior",
+        "frames": 600,
+        "p50": 16.69999999999891,
+        "p95": 18,
+        "p99": 266.8000000000011,
+        "longest": 416.10000000000036,
+        "over25": 9,
+        "actors": [16],
+        "textures": [42],
+        "clips": ["hit", "idle", "iron-fan", "oath-echo", "primary", "run"],
+        "cameraRange": {
+          "relativeX": 1.1368683772161603e-13,
+          "relativeY": 5.684341886080802e-14
+        },
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)"
+      },
+      {
+        "repeat": 1,
+        "mode": "legacy",
+        "frames": 619,
+        "p50": 16.699999999999818,
+        "p95": 17.799999999999272,
+        "p99": 18.699999999999818,
+        "longest": 416.5,
+        "over25": 5,
+        "actors": [16],
+        "textures": [0],
+        "clips": [],
+        "cameraRange": {
+          "relativeX": 1.1368683772161603e-13,
+          "relativeY": 5.684341886080802e-14
+        },
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)"
+      },
+      {
+        "repeat": 2,
+        "mode": "warrior",
+        "frames": 619,
+        "p50": 16.69999999999891,
+        "p95": 17.899999999999636,
+        "p99": 18.69999999999891,
+        "longest": 416.5,
+        "over25": 5,
+        "actors": [16],
+        "textures": [42],
+        "clips": ["hit", "idle", "iron-fan", "oath-echo", "primary", "run"],
+        "cameraRange": {
+          "relativeX": 1.1368683772161603e-13,
+          "relativeY": 5.684341886080802e-14
+        },
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)"
+      },
+      {
+        "repeat": 2,
+        "mode": "legacy",
+        "frames": 605,
+        "p50": 16.699999999999818,
+        "p95": 18.400000000000546,
+        "p99": 33.29999999999927,
+        "longest": 416.7000000000007,
+        "over25": 7,
+        "actors": [16],
+        "textures": [0],
+        "clips": [],
+        "cameraRange": {
+          "relativeX": 1.1368683772161603e-13,
+          "relativeY": 5.684341886080802e-14
+        },
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)"
+      }
+    ],
+    "driverSha256": "431b6a30536008ddd01b3cfd3a856890201ea0adcd31288c7c31297e13fef389",
+    "limits": [
+      "Identical legitimate shield-equipped level24 fixture in each mode",
+      "Existing checkpoint stalls preserved; no general hitch-free or physical-controller/GPU-residency claim"
+    ]
+  },
+  "nativeEquipmentSwitch": {
+    "resolution": [1280, 800],
+    "dpr": 1,
+    "profile": "full",
+    "results": [
+      {
+        "repeat": 0,
+        "mode": "warrior",
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "equipped": {
+          "elapsed": 276.10000002384186,
+          "frames": [
+            {
+              "ms": 16.699999999999818,
+              "mode": "loading",
+              "textures": 40
+            },
+            {
+              "ms": 99.90000000000009,
+              "mode": "loading",
+              "textures": 40
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "loading",
+              "textures": 40
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "loading",
+              "textures": 41
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 100.09999999999991,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.700000000000273,
+              "mode": "warrior",
+              "textures": 42
+            }
+          ],
+          "loaderMs": 45.59999990463257,
+          "textures": 42,
+          "decodedBytes": 391380992
+        },
+        "unequipped": {
+          "elapsed": 266.3000000715256,
+          "frames": [
+            {
+              "ms": 16.699999999999818,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.700000000000273,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.5,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 200.0999999999999,
+              "mode": "warrior",
+              "textures": 40
+            },
+            {
+              "ms": 33.29999999999973,
+              "mode": "warrior",
+              "textures": 40
+            },
+            {
+              "ms": 16.700000000000273,
+              "mode": "warrior",
+              "textures": 40
+            }
+          ],
+          "loaderMs": 0,
+          "textures": 40,
+          "decodedBytes": 366215168
+        },
+        "errors": []
+      },
+      {
+        "repeat": 0,
+        "mode": "legacy",
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "equipped": {
+          "elapsed": 121.5,
+          "frames": [
+            {
+              "ms": 16.799999999999955,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 99.90000000000009,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "legacy",
+              "textures": 0
+            }
+          ],
+          "loaderMs": 0,
+          "textures": 0,
+          "decodedBytes": 0
+        },
+        "unequipped": {
+          "elapsed": 265.39999997615814,
+          "frames": [
+            {
+              "ms": 16.699999999999818,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.600000000000136,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 200,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.699999999999818,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.600000000000136,
+              "mode": "legacy",
+              "textures": 0
+            }
+          ],
+          "loaderMs": 0,
+          "textures": 0,
+          "decodedBytes": 0
+        },
+        "errors": []
+      },
+      {
+        "repeat": 1,
+        "mode": "legacy",
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "equipped": {
+          "elapsed": 121.39999997615814,
+          "frames": [
+            {
+              "ms": 16.699999999999818,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 100,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 14.900000000000091,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 18.40000000000009,
+              "mode": "legacy",
+              "textures": 0
+            }
+          ],
+          "loaderMs": 0,
+          "textures": 0,
+          "decodedBytes": 0
+        },
+        "unequipped": {
+          "elapsed": 263.39999997615814,
+          "frames": [
+            {
+              "ms": 16.700000000000045,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.699999999999818,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.600000000000136,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 200,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 15.099999999999909,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 18.200000000000045,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 15.5,
+              "mode": "legacy",
+              "textures": 0
+            }
+          ],
+          "loaderMs": 0,
+          "textures": 0,
+          "decodedBytes": 0
+        },
+        "errors": []
+      },
+      {
+        "repeat": 1,
+        "mode": "warrior",
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "equipped": {
+          "elapsed": 168.70000004768372,
+          "frames": [
+            {
+              "ms": 16.700000000000045,
+              "mode": "loading",
+              "textures": 40
+            },
+            {
+              "ms": 99.29999999999995,
+              "mode": "loading",
+              "textures": 40
+            },
+            {
+              "ms": 17.40000000000009,
+              "mode": "loading",
+              "textures": 41
+            },
+            {
+              "ms": 16.699999999999818,
+              "mode": "loading",
+              "textures": 41
+            },
+            {
+              "ms": 16.600000000000136,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.699999999999818,
+              "mode": "warrior",
+              "textures": 42
+            }
+          ],
+          "loaderMs": 46.300000071525574,
+          "textures": 42,
+          "decodedBytes": 391380992
+        },
+        "unequipped": {
+          "elapsed": 260.09999990463257,
+          "frames": [
+            {
+              "ms": 16.799999999999727,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.700000000000273,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 200,
+              "mode": "warrior",
+              "textures": 40
+            },
+            {
+              "ms": 14.799999999999727,
+              "mode": "warrior",
+              "textures": 40
+            },
+            {
+              "ms": 18.600000000000364,
+              "mode": "warrior",
+              "textures": 40
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "warrior",
+              "textures": 40
+            }
+          ],
+          "loaderMs": 0,
+          "textures": 40,
+          "decodedBytes": 366215168
+        },
+        "errors": []
+      },
+      {
+        "repeat": 2,
+        "mode": "warrior",
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "equipped": {
+          "elapsed": 171.80000007152557,
+          "frames": [
+            {
+              "ms": 16.700000000000045,
+              "mode": "loading",
+              "textures": 40
+            },
+            {
+              "ms": 100,
+              "mode": "loading",
+              "textures": 40
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "loading",
+              "textures": 41
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "loading",
+              "textures": 41
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "warrior",
+              "textures": 42
+            }
+          ],
+          "loaderMs": 47.5,
+          "textures": 42,
+          "decodedBytes": 391380992
+        },
+        "unequipped": {
+          "elapsed": 267.39999997615814,
+          "frames": [
+            {
+              "ms": 16.600000000000364,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 16.799999999999727,
+              "mode": "warrior",
+              "textures": 42
+            },
+            {
+              "ms": 216.60000000000036,
+              "mode": "warrior",
+              "textures": 40
+            },
+            {
+              "ms": 16.699999999999818,
+              "mode": "warrior",
+              "textures": 40
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "warrior",
+              "textures": 40
+            }
+          ],
+          "loaderMs": 0,
+          "textures": 40,
+          "decodedBytes": 366215168
+        },
+        "errors": []
+      },
+      {
+        "repeat": 2,
+        "mode": "legacy",
+        "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+        "equipped": {
+          "elapsed": 123.89999997615814,
+          "frames": [
+            {
+              "ms": 16.59999999999991,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 100.10000000000014,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "legacy",
+              "textures": 0
+            }
+          ],
+          "loaderMs": 0,
+          "textures": 0,
+          "decodedBytes": 0
+        },
+        "unequipped": {
+          "elapsed": 268.7999999523163,
+          "frames": [
+            {
+              "ms": 16.700000000000045,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.700000000000045,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 216.5999999999999,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.800000000000182,
+              "mode": "legacy",
+              "textures": 0
+            },
+            {
+              "ms": 16.59999999999991,
+              "mode": "legacy",
+              "textures": 0
+            }
+          ],
+          "loaderMs": 0,
+          "textures": 0,
+          "decodedBytes": 0
+        },
+        "errors": []
+      }
+    ],
+    "limits": [
+      "Actual browser mouse transactions; not physical input latency",
+      "Click-to-ready includes inventory redraw and driver observation overhead",
+      "HTTP cache disabled; OS/GPU cache not reset",
+      "Texture counts and calculated RGBA are not measured GPU residency"
+    ]
+  },
+  "visualReview": [
+    "Light/dark all-direction original shield composites",
+    "Native Phaser trim and eight-way corpse montage",
+    "Live released-input sixteen walk/run facings",
+    "Actual camp, forest, marsh, crypt terrain",
+    "Real melee, both abilities and hit feedback",
+    "Natural held corpse including limited left-arm variant"
+  ],
+  "failureHistory": [
+    "Rigid death arm intersects shield; angle/width sweeps failed before limited left-arm variant",
+    "Initial local fixture run used hosted mode without release.json; corrected invocation only",
+    "New waypoint test initially used debug-only route helper; replaced with pure pathfinding and existing trusted live input driver",
+    "Initial developer direction expectation projected screen intent incorrectly; corrected expectation, original bounds retained"
+  ],
+  "limits": [
+    "Existing variable checkpoint/combat and inventory stalls remain; no global hitch-free or improvement claim",
+    "Virtual controllers only; no physical-controller evidence",
+    "Calculated base RGBA is not GPU residency",
+    "No full human Act1 playthrough",
+    "Bows/staffs/unarmed need genuine sword-free body/choreography; retain legacy",
+    "A/B/C incomplete until required publication receipts; do not advance past failed A"
+  ],
+  "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment"
+}

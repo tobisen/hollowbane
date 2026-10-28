@@ -2,7 +2,7 @@ import type { ClassId } from "../simulation/character-classes";
 import type { CharacterInventory } from "../simulation/equipment";
 import type { Weapon } from "../simulation/combat";
 
-/** Fixed sword, empty offhand; armor has always been cosmetic/static in-world.
+/** Fixed sword, optional original shield; armor remains cosmetic/static in-world.
  * Fail closed for empty/unknown weapons and future equipment bases.
  */
 export function warriorRendererSelection(
@@ -16,7 +16,8 @@ export function warriorRendererSelection(
   if (!equipment.main) return "empty-main-hand";
   if (equipment.main.base !== "ash-blade")
     return `unsupported-weapon:${equipment.main.base}`;
-  if (equipment.off) return `unsupported-offhand:${equipment.off.base}`;
+  if (equipment.off && equipment.off.base !== "bark-guard")
+    return `unsupported-offhand:${equipment.off.base}`;
   if (activeWeapon !== "melee") return "committed-projectile";
-  return "supported";
+  return equipment.off ? "supported-shield" : "supported";
 }
