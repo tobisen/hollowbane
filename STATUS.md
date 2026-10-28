@@ -1,3 +1,10 @@
+## Q3-B Warrior equipment — audit / metadata checkpoint (2026-10-28)
+
+- Authorized through equipment Checkpoints A/B/C; full assignment and A remain incomplete. Audit: blade one-hand, bow/staff two-hand, shield offhand; transactions enforce exclusion. Static armor preserved. Matrix and next steps: docs/art/q3/warrior-equipment.md.
+- New metadata-only exporter verifies all512 saved movement/attack poses across eight directions. Two independent Blender4.5.3 exports are byte-identical (4460379c883fa32237df8af5f15c3d80f44975bb5ec5fe2481a18bca5b89ab8c). Wrist transforms are not approved grips or occlusion. Procedural ability/hit/death368 poses and packed-pose aliases remain pending.
+- Four focused suites/14 tests, TypeScript/build and lint pass; no runtime/art/save changes, PNG/decoded/atlas delta0. No new native timing, browser or CI/Pages/hosted evidence. Prior accepted evidence revisionee03e81964bb597636aa2d96f64716268e5c1d81 remains the baseline; no new release claimed.
+- Session-budget split: next create original bark-guard on a separate left-hand grip; prove eight-way shield/body occlusion and representative primary/Oath/death at gameplay scale/light-dark before enabling support. Bow/staff/empty hands retain legacy; no shield support claimed. Preserve unrelated documentation edits, prior checkpoint stalls and physical/GPU/human-playthrough limitations. Raw /private/tmp/hollowbane-warrior-equipment/attachments-{1,2}.json. Do not advance B past mandatory A publication acceptance.
+
 ## Warrior production — A VERIFIED; B final evidence (2026-10-28)
 
 - Verified runtimeeb4922cdd3b9e4bf0d8d738c7ac69c31a3547567 /CI40602347499:676 unit/304 Chromium/15 compatibility; Pages/hosted/Release acceptance PASS. All153 reviewed/CI/public hashes match;12 independent hosted M4/Metal cases pass; captures reviewed.
