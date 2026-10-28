@@ -7,6 +7,7 @@ import { createHash } from "node:crypto";
 import { Buffer } from "node:buffer";
 
 const directory = process.argv[2];
+const includeAll = process.argv.includes("--all");
 if (!directory) throw Error("Pass a completed shield probe directory");
 const proof = JSON.parse(
   await readFile(join(directory, "shield.json"), "utf8"),
@@ -30,7 +31,7 @@ const hash = (data) => createHash("sha256").update(data).digest("hex");
 const rendered = [];
 const byName = new Map(proof.poses.map((pose) => [pose.name, pose]));
 for (const pose of proof.poses) {
-  if (pose.renderRequested === false) continue;
+  if (!includeAll && pose.renderRequested === false) continue;
   const rasterPose = byName.get(pose.rasterAlias) ?? pose;
   const path = join(directory, `${rasterPose.name}-overlay.png`);
   try {
@@ -180,24 +181,26 @@ await writeFile(
   JSON.stringify(report, null, 2),
 );
 // A local inspection artifact, isolated from the game and real save storage.
-const clips = Object.fromEntries(
-  [...new Set(rendered.map((p) => p.action))].map((action) => [
-    action,
-    rendered
-      .filter((p) => p.direction === "se" && p.action === action)
-      .sort((a, b) => a.index - b.index)
-      .map((p) => ({ name: p.name, index: p.index, root: p.root })),
-  ]),
-);
-await writeFile(
-  join(directory, "motion.html"),
-  `<!doctype html><meta charset="utf-8"><title>Warrior shield study</title>
+for (const direction of [...new Set(rendered.map((p) => p.direction))]) {
+  const clips = Object.fromEntries(
+    [...new Set(rendered.map((p) => p.action))].map((action) => [
+      action,
+      rendered
+        .filter((p) => p.direction === direction && p.action === action)
+        .sort((a, b) => a.index - b.index)
+        .map((p) => ({ name: p.name, index: p.index, root: p.root })),
+    ]),
+  );
+  await writeFile(
+    join(directory, `motion-${direction}.html`),
+    `<!doctype html><meta charset="utf-8"><title>Warrior shield study</title>
 <style>body{background:#101918;color:#e4dbc3;font:16px system-ui}button,select{font:inherit;margin:8px}canvas{display:block}main{max-width:900px;margin:auto}</style>
 <main><h1>Warrior shield study — unapproved</h1>
+<nav>${[...new Set(rendered.map((p) => p.direction))].map((d) => `<a href="motion-${d}.html">${d.toUpperCase()}</a>`).join(" · ")}</nav><p>Facing ${direction.toUpperCase()}</p>
 <p>Offline authored motion. Original body at left, shield candidate at right. No campaign, input, save or performance validation.</p>
 <label>Clip <select id="clip">${Object.keys(clips)
-    .map((c) => `<option>${c}</option>`)
-    .join("")}</select></label>
+      .map((c) => `<option>${c}</option>`)
+      .join("")}</select></label>
 <label>Speed <select id="speed"><option value="1">Preview cadence</option><option value="0.25">Quarter speed</option></select></label>
 <button id="play">Pause</button><button id="reset">Reset</button><button id="step">Step</button><button id="background">Light / dark</button>
 <canvas width="700" height="350"></canvas><p id="diagnostic"></p></main>
@@ -228,6 +231,11 @@ function draw(now){
 }
 requestAnimationFrame(draw);
 </script>`,
+  );
+}
+await writeFile(
+  join(directory, "motion.html"),
+  await readFile(join(directory, "motion-se.html")),
 );
 console.log(
   `${rendered.length} composite proofs (${rendered.filter((p) => p.bodyOverride).length} targeted body variants); ${report.overlayPngBytes} overlay PNG bytes; no production assets written`,

@@ -369,5 +369,14 @@
     "preview": "public/dev/warrior-death/warrior.json",
     "rig": "assets/source/q3/warrior-rig-v2/warrior.blend",
     "provenance": "docs/art/q3/warrior-combat.md"
+  },
+  {
+    "id": "q3-warrior-bark-guard-v1",
+    "source": "scripts/probe-warrior-shield.py",
+    "rights": "Original project shield mesh/materials and targeted left-arm death landing on approved Blender 4.5.3 rig; existing pose authoring and body pixels reused; no external assets or motion capture",
+    "placeholder": true,
+    "type": "developer-item-attachments",
+    "preview": "public/dev/warrior-equipment/equipment.json",
+    "provenance": "docs/art/q3/warrior-equipment.md"
   }
 ]

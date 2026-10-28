@@ -7,6 +7,7 @@ import { validateWarriorAttackDirections } from "./validate-warrior-attack-direc
 import { validateWarriorAbilities } from "./validate-warrior-abilities.mjs";
 import { validateWarriorReactions } from "./validate-warrior-reactions.mjs";
 import { validateWarriorDeath } from "./validate-warrior-death.mjs";
+import { validateWarriorEquipment } from "./validate-warrior-equipment.mjs";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import sharp from "sharp";
 import { createHash } from "node:crypto";
@@ -98,6 +99,7 @@ console.log(
 
 validateWorldArtInventory(assets);
 await validateWarriorPilot();
+await validateWarriorEquipment();
 await validateWarriorPilot("public/dev/warrior-refined");
 await validateWarriorMovement();
 await validateWarriorDirections();

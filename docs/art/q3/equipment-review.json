@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "scope": "DBL-023/024/025 packaged original shield and opt-in equipment arena",
+  "productionApproved": false,
+  "checkpointAAccepted": false,
+  "campaignGraphicsChanged": false,
+  "lastVerifiedDeployedSha": "ee03e81964bb597636aa2d96f64716268e5c1d81",
+  "resources": [
+    {
+      "name": "shield",
+      "pngBytes": 2317738,
+      "pngSha256": "c26cdc2b9a1db2e604f5dd4b4038230eef47a65ef208cc6ba42c33b944c97773",
+      "decodedBytes": 16777216,
+      "frames": 880
+    },
+    {
+      "name": "shield-death-body",
+      "pngBytes": 1371235,
+      "pngSha256": "e5d407d6e489d715c8b57682aa9b01c7bfa46133940afb86d284220f1b21bea1",
+      "decodedBytes": 8388608,
+      "frames": 64
+    }
+  ],
+  "additionalDecodedPayloadBytes": 25165824,
+  "additionalPngBytes": 3688973,
+  "atlasJsonTransferBytes": 313826,
+  "calculatedPayloadIsGpuMemory": false,
+  "provenance": {
+    "producerSha256": "8cde62ecae1319763a475c2472c91061fa8e7f49304d084dfe5b6dd1b444070e",
+    "packingSha256": "b4303bc5f76413de76acd31369af351d87f07b4eaeb5def58792059ba234f30e",
+    "probeSha256": "5df9b079ad27f53b0dbfa9b432ad30637d3eb505e968d02a68bd31de089961b2",
+    "proofSha256": "6f0a3482ddb6492d3d9db3ecc4497bba567da5adf505cf44534b534c24308e7a",
+    "bodyManifestHashes": {
+      "movement": "9f111cf16f867e252e7239d8a72b583f1d9af9eada10cef6a78c498326f07f59",
+      "attacks": "af3bc8b44109228707a10091d278ee826dfa7ffc170f1f61a2bd866133eb7d0d",
+      "abilities": "d76c46fabb1b4f561e493ec0cefd0c5321414f8c7a77ad288598d60ae8f3eb61",
+      "hit": "e80645dd8de7328c06c8f951122190bbd5688890f75dd9c2a257896e662d083a",
+      "death": "c5ce083fe6d1d4fa77a3efed06d19b29a5a8e0dfd9585978e16c194985a1132d"
+    }
+  },
+  "canonical880PoseSha256": "0df3b039aeddd400eeb8a4d106b2e8d7daf0d18f6a72eb9efdf264c6885ce64c",
+  "rasterInventory": {
+    "uniqueOverlays": 784,
+    "uniqueDeathBodyVariants": 48,
+    "logicalShieldFrames": 880,
+    "logicalBodyFrames": 64,
+    "packedAliases": 96
+  },
+  "roundtrip": {
+    "checked": 944,
+    "overlayFrames": 880,
+    "bodyFrames": 64,
+    "pixelMismatches": 0,
+    "resources": [
+      {
+        "name": "shield",
+        "pngBytes": 2317738,
+        "pngSha256": "c26cdc2b9a1db2e604f5dd4b4038230eef47a65ef208cc6ba42c33b944c97773",
+        "decodedBytes": 16777216,
+        "frames": 880
+      },
+      {
+        "name": "shield-death-body",
+        "pngBytes": 1371235,
+        "pngSha256": "e5d407d6e489d715c8b57682aa9b01c7bfa46133940afb86d284220f1b21bea1",
+        "decodedBytes": 8388608,
+        "frames": 64
+      }
+    ]
+  },
+  "phaserNativeTrim": {
+    "checks": 880,
+    "version": "4.2.1",
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+    "textures": 2,
+    "errors": []
+  },
+  "offlineNativePlayback": {
+    "pairs": 144,
+    "directions": 8,
+    "clips": 9,
+    "rates": [1, 0.25],
+    "allPoseNamesObserved": true,
+    "slowIdleLoopCompletionRuns": 15,
+    "errors": [],
+    "combatCadence": "Diagnostic preview only; authoritative timing comes from the arena/game."
+  },
+  "developerArena": {
+    "route": "?developer=1&warriorPilot=1&warriorArena=1&warriorEquipment=1",
+    "configurationData": "Actual existing base IDs; appearance study on disposable melee fixture, not real item transactions.",
+    "chromiumCases": 14,
+    "requiredCompatCases": 4,
+    "localValidationOnly": true,
+    "visualReview": [
+      "eight-way idle and settled shield views",
+      "complete SE sequences",
+      "native phased playback all directions",
+      "16 released-input walk/run facing captures",
+      "actual arena Oath and naturally lethal corpse captures"
+    ],
+    "resourceCycles": {
+      "cycles": 3,
+      "readyTextures": 42,
+      "releasedCandidateTextures": 0,
+      "steadyDecodedBytes": 391380992,
+      "pngRequestsInitialPlusReloads": 168
+    },
+    "storage": "No localStorage keys or IndexedDB databases created",
+    "ordinaryEntryAndOriginalArena": "No equipment asset requests; original arena retains40 textures",
+    "input": "Real keyboard/mouse and standard virtual controller; no physical-controller claim",
+    "limits": "Developer-only appearance selectors; not main campaign equipment/save/travel verification."
+  },
+  "validation": {
+    "focusedNewUnitCases": 4,
+    "priorRelevantUnitCases": 14,
+    "typecheck": "pass",
+    "affectedEslint": "pass",
+    "assetValidation": "pass (45 asset records plus all Warrior validations)",
+    "build": "pass",
+    "ciPagesHosted": "not run; no public release candidate yet"
+  },
+  "sourceHashes": {
+    "src/main.ts": "4c7152c6bf95e6d05646f52f92d6037d878ed5f4578eadf84171014ceba792bf",
+    "src/rendering/warrior-arena.ts": "542d8949fbf04855022644c47aa960e3ebef13cf70b3450ad09a20c6754448df",
+    "src/rendering/warrior-equipment-preview.ts": "e0f610ac03fa7d43b3c46d2df9d32780032bceb4262038876d92d7cd0baaa59d",
+    "scripts/review-warrior-shield.mjs": "41bfd055b4e852a8ad399730242b1f0711f36abe899074f32e90e68daf031d97"
+  },
+  "nativeCampaignPerformance": null,
+  "openLimitations": [
+    "Main campaign still falls back for shields; conditional production lease/selection not yet integrated",
+    "No new cold-load/switch-latency or matched native M4 campaign profiles",
+    "No physical controller, measured GPU residency or full human Act1 playthrough",
+    "Bow, staff, empty hands and full modular armor remain unsupported by the new graphics"
+  ],
+  "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment",
+  "next": "Integrate conditional shared equipment texture leases and the verified body/overlay selection into WarriorProduction; preserve active-weapon guards, validate real equipment/save/travel/death transactions, profile matched native campaign conditions, then mandatory exact Checkpoint A publication gate."
+}

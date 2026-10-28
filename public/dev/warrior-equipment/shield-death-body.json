@@ -1,0 +1,522 @@
+{
+  "frames": {
+    "death-n-08": {
+      "frame": { "x": 472, "y": 312, "w": 132, "h": 106 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 152, "y": 197, "w": 132, "h": 106 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "878d1bd842a5d7336a948e31d7234890ad9ebba1ef2481f3c527249308697a7c"
+    },
+    "death-n-09": {
+      "frame": { "x": 1330, "y": 312, "w": 136, "h": 104 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 153, "y": 226, "w": 136, "h": 104 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "fe76e7214d5bcf834d6db8f802c64980caf4bc0bdf90b63d55e440b43937d4bc"
+    },
+    "death-n-10": {
+      "frame": { "x": 151, "y": 312, "w": 142, "h": 116 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 152, "y": 235, "w": 142, "h": 116 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "c680f137338f82667f26574688d712134be61a51b6d15336b04a9e70b9f219be"
+    },
+    "death-n-11": {
+      "frame": { "x": 1658, "y": 179, "w": 145, "h": 121 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 152, "y": 239, "w": 145, "h": 121 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "a7dd09daf346e0a08ed9038726b063af40798c8b83e961bd3a09e3e1ad7cbdd7"
+    },
+    "death-n-12": {
+      "frame": { "x": 2, "y": 312, "w": 145, "h": 119 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 152, "y": 239, "w": 145, "h": 119 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "b554d2362b64ca895cf4c8bcbd6449590191188d6dc0b7c475983432b9a01b7b"
+    },
+    "death-n-13": {
+      "frame": { "x": 1509, "y": 179, "w": 145, "h": 122 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 152, "y": 239, "w": 145, "h": 122 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "fa3de91fce9386fb79b6d464e27094379c38b1f513283c57b9f41da63c16647b"
+    },
+    "death-n-14": {
+      "frame": { "x": 1509, "y": 179, "w": 145, "h": 122 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 152, "y": 239, "w": 145, "h": 122 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "fa3de91fce9386fb79b6d464e27094379c38b1f513283c57b9f41da63c16647b"
+    },
+    "death-n-15": {
+      "frame": { "x": 1509, "y": 179, "w": 145, "h": 122 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 152, "y": 239, "w": 145, "h": 122 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "fa3de91fce9386fb79b6d464e27094379c38b1f513283c57b9f41da63c16647b"
+    },
+    "death-e-08": {
+      "frame": { "x": 1146, "y": 179, "w": 194, "h": 124 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 44, "y": 164, "w": 194, "h": 124 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "8b607fba58ec2e511c431cb009988c042a7612786d3e8cf8b3cc0de037cc89c4"
+    },
+    "death-e-09": {
+      "frame": { "x": 199, "y": 435, "w": 206, "h": 99 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 25, "y": 186, "w": 206, "h": 99 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "8bc24588091c0eec41b4ab4c39b8239c0dbe20f29411e871ab4460c3a7bbbe93"
+    },
+    "death-e-10": {
+      "frame": { "x": 217, "y": 540, "w": 209, "h": 92 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 17, "y": 201, "w": 209, "h": 92 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "b9bfc8bb79bcfe7d70030e08e4c5e171bbd4db900feea33e12c0748eb63258d3"
+    },
+    "death-e-11": {
+      "frame": { "x": 1067, "y": 435, "w": 211, "h": 96 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 14, "y": 208, "w": 211, "h": 96 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "6d7de45c134221502439e4074c99adefb62577dbcba8a729e7f5633691b4929d"
+    },
+    "death-e-12": {
+      "frame": { "x": 409, "y": 435, "w": 215, "h": 98 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 11, "y": 206, "w": 215, "h": 98 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "61f5d18bd6b3e34bbd339b21f50a9de549c5172836a6aaae600dbd06be47e63a"
+    },
+    "death-e-13": {
+      "frame": { "x": 628, "y": 435, "w": 216, "h": 97 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 9, "y": 207, "w": 216, "h": 97 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "6d9ef6da13612cc228eecfa9f09687fc4f6cddfe47d7d61d5921abce730e8898"
+    },
+    "death-e-14": {
+      "frame": { "x": 628, "y": 435, "w": 216, "h": 97 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 9, "y": 207, "w": 216, "h": 97 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "6d9ef6da13612cc228eecfa9f09687fc4f6cddfe47d7d61d5921abce730e8898"
+    },
+    "death-e-15": {
+      "frame": { "x": 628, "y": 435, "w": 216, "h": 97 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 9, "y": 207, "w": 216, "h": 97 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "6d9ef6da13612cc228eecfa9f09687fc4f6cddfe47d7d61d5921abce730e8898"
+    },
+    "death-s-08": {
+      "frame": { "x": 2, "y": 2, "w": 132, "h": 173 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 164, "y": 99, "w": 132, "h": 173 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "fbf0bc7651154a498cddee96d63007366c10d18716aca1d87437c25415c463b6"
+    },
+    "death-s-09": {
+      "frame": { "x": 501, "y": 2, "w": 136, "h": 153 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 159, "y": 117, "w": 136, "h": 153 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "b795174b8b2cd20eb23853a3b1aec5ae2b43e160d1c6afb12c06f41396adf2aa"
+    },
+    "death-s-10": {
+      "frame": { "x": 1088, "y": 2, "w": 142, "h": 140 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 154, "y": 129, "w": 142, "h": 140 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "9acaec872a1c834cacf61398607b179a1df0c4dd027aad555b07c086cdb41178"
+    },
+    "death-s-11": {
+      "frame": { "x": 939, "y": 2, "w": 145, "h": 140 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 151, "y": 133, "w": 145, "h": 140 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "12038fd95e9b5955c916f1f95c3a75f4b33b629abb9f08513d940418092b1a5a"
+    },
+    "death-s-12": {
+      "frame": { "x": 641, "y": 2, "w": 145, "h": 144 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 151, "y": 129, "w": 145, "h": 144 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "2fac04f4bb203457f35f0291aed1a39b6a9487c81a6eea02d6c42e2973e2365c"
+    },
+    "death-s-13": {
+      "frame": { "x": 790, "y": 2, "w": 145, "h": 143 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 151, "y": 130, "w": 145, "h": 143 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "7dcf693cd7252d241849eea2da5c043b1fe29e0f082927aaa66a77586502f96b"
+    },
+    "death-s-14": {
+      "frame": { "x": 790, "y": 2, "w": 145, "h": 143 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 151, "y": 130, "w": 145, "h": 143 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "7dcf693cd7252d241849eea2da5c043b1fe29e0f082927aaa66a77586502f96b"
+    },
+    "death-s-15": {
+      "frame": { "x": 790, "y": 2, "w": 145, "h": 143 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 151, "y": 130, "w": 145, "h": 143 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "7dcf693cd7252d241849eea2da5c043b1fe29e0f082927aaa66a77586502f96b"
+    },
+    "death-w-08": {
+      "frame": { "x": 1807, "y": 179, "w": 194, "h": 120 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 210, "y": 168, "w": 194, "h": 120 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "557ca27fbb57ac9530e443f1b7184e71626d12a14ba2d4955516d20c1bd11608"
+    },
+    "death-w-09": {
+      "frame": { "x": 1698, "y": 435, "w": 206, "h": 95 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 217, "y": 190, "w": 206, "h": 95 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "8413a6289d33823ef093ab431e9da283d295be9d5e676129ed519d7d569bb3c0"
+    },
+    "death-w-10": {
+      "frame": { "x": 824, "y": 540, "w": 209, "h": 86 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 222, "y": 204, "w": 209, "h": 86 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "2d4c3032cc7dcfcb1ef4099db8b76ff2f4d3e528edc246ab1fea157481163105"
+    },
+    "death-w-11": {
+      "frame": { "x": 2, "y": 540, "w": 211, "h": 94 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 223, "y": 208, "w": 211, "h": 94 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "fa5b0fc8bf316f68b645349360f65b13e8961ed602aa4f80196738213ccab8a3"
+    },
+    "death-w-12": {
+      "frame": { "x": 848, "y": 435, "w": 215, "h": 96 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 222, "y": 206, "w": 215, "h": 96 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "95609d9437b8aad5adf18f9fc85ed8da0b8ab2760d75683e14c7e81f96ad6676"
+    },
+    "death-w-13": {
+      "frame": { "x": 1478, "y": 435, "w": 216, "h": 95 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 223, "y": 207, "w": 216, "h": 95 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "2648b763244ec0611481c042f5ed0bdbebfc65037f99483f1dba529b9a53c9d3"
+    },
+    "death-w-14": {
+      "frame": { "x": 1478, "y": 435, "w": 216, "h": 95 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 223, "y": 207, "w": 216, "h": 95 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "2648b763244ec0611481c042f5ed0bdbebfc65037f99483f1dba529b9a53c9d3"
+    },
+    "death-w-15": {
+      "frame": { "x": 1478, "y": 435, "w": 216, "h": 95 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 223, "y": 207, "w": 216, "h": 95 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "2648b763244ec0611481c042f5ed0bdbebfc65037f99483f1dba529b9a53c9d3"
+    },
+    "death-ne-08": {
+      "frame": { "x": 1344, "y": 179, "w": 161, "h": 122 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 92, "y": 173, "w": 161, "h": 122 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "0820581c7105e570f83f7ef4434aa4d3519c0848651e5c698bad242058ad286c"
+    },
+    "death-ne-09": {
+      "frame": { "x": 297, "y": 312, "w": 171, "h": 109 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 77, "y": 200, "w": 171, "h": 109 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "b3cf393df0ef9189c818bbb5242197a813e68849ba4aa04a61740a2b5ab31a06"
+    },
+    "death-ne-10": {
+      "frame": { "x": 791, "y": 312, "w": 174, "h": 105 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 71, "y": 217, "w": 174, "h": 105 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "6bb3a69f011c70603ee80f81fcec7b124430cfca196c6aa44c159af730cc8cb6"
+    },
+    "death-ne-11": {
+      "frame": { "x": 1151, "y": 312, "w": 175, "h": 104 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 69, "y": 230, "w": 175, "h": 104 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "93f1088ab9a132c5dbdaf15d2f59fd10b226be964a4dd14b9f836051c8068e29"
+    },
+    "death-ne-12": {
+      "frame": { "x": 969, "y": 312, "w": 178, "h": 104 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 67, "y": 230, "w": 178, "h": 104 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "c1872ff61f534eaead8b47217231479daff687de5156524915171cf71cf7da9e"
+    },
+    "death-ne-13": {
+      "frame": { "x": 608, "y": 312, "w": 179, "h": 105 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 65, "y": 230, "w": 179, "h": 105 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "70d96b5ab68f7d18358f86732a185f0a1e85b4449d48db3dde2bd82a5f918641"
+    },
+    "death-ne-14": {
+      "frame": { "x": 608, "y": 312, "w": 179, "h": 105 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 65, "y": 230, "w": 179, "h": 105 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "70d96b5ab68f7d18358f86732a185f0a1e85b4449d48db3dde2bd82a5f918641"
+    },
+    "death-ne-15": {
+      "frame": { "x": 608, "y": 312, "w": 179, "h": 105 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 65, "y": 230, "w": 179, "h": 105 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "70d96b5ab68f7d18358f86732a185f0a1e85b4449d48db3dde2bd82a5f918641"
+    },
+    "death-se-08": {
+      "frame": { "x": 138, "y": 2, "w": 194, "h": 159 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 90, "y": 123, "w": 194, "h": 159 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "ac2f5bab8da04b81690ec7ca28746c5d265648e8e06d3eded52d48f67de77b2b"
+    },
+    "death-se-09": {
+      "frame": { "x": 1234, "y": 2, "w": 192, "h": 136 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 77, "y": 144, "w": 192, "h": 136 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "080aec3644b728f675805bde2381ce4122bd35e627c0dadde4c6628ba6303a8f"
+    },
+    "death-se-10": {
+      "frame": { "x": 950, "y": 179, "w": 192, "h": 125 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 72, "y": 154, "w": 192, "h": 125 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "605dd3991f52d206f5fda6ef26b13fd05df10f04d0c9d6b62c987746105dc40f"
+    },
+    "death-se-11": {
+      "frame": { "x": 753, "y": 179, "w": 193, "h": 125 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 69, "y": 158, "w": 193, "h": 125 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "74dfb843900abed2b1f9e6a9d1d8a30f03780fc2a953b61ce19f29e6e221cffa"
+    },
+    "death-se-12": {
+      "frame": { "x": 181, "y": 179, "w": 193, "h": 128 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 67, "y": 155, "w": 193, "h": 128 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "e526d4eb63783ebf68c36adcf9df4abddf187462ad7aa85005ac73a7d6c340b6"
+    },
+    "death-se-13": {
+      "frame": { "x": 378, "y": 179, "w": 193, "h": 127 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 66, "y": 156, "w": 193, "h": 127 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "f16bc75d90fb47e7a119d1061a1a52234bc062027e6459d59261a77deae9b10c"
+    },
+    "death-se-14": {
+      "frame": { "x": 378, "y": 179, "w": 193, "h": 127 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 66, "y": 156, "w": 193, "h": 127 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "f16bc75d90fb47e7a119d1061a1a52234bc062027e6459d59261a77deae9b10c"
+    },
+    "death-se-15": {
+      "frame": { "x": 378, "y": 179, "w": 193, "h": 127 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 66, "y": 156, "w": 193, "h": 127 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "f16bc75d90fb47e7a119d1061a1a52234bc062027e6459d59261a77deae9b10c"
+    },
+    "death-sw-08": {
+      "frame": { "x": 336, "y": 2, "w": 161, "h": 159 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 195, "y": 123, "w": 161, "h": 159 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "f61930de1facbd2ca73fe2e4540351f0c7147ad972e973d49565a16be90dc804"
+    },
+    "death-sw-09": {
+      "frame": { "x": 1430, "y": 2, "w": 171, "h": 135 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 200, "y": 145, "w": 171, "h": 135 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "1981e94fbbb0108160a5bbc8138ef44492bf69c41cb3c32a2331eb8e6fdb4d1a"
+    },
+    "death-sw-10": {
+      "frame": { "x": 575, "y": 179, "w": 174, "h": 127 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 203, "y": 152, "w": 174, "h": 127 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "5f73dc8b8f7ba3e538be1f68d31fa8cdbc2416aa944e5fbe13adc3ee7f152487"
+    },
+    "death-sw-11": {
+      "frame": { "x": 2, "y": 179, "w": 175, "h": 129 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 204, "y": 154, "w": 175, "h": 129 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "243b9e12a04b0110c12184d8c4dc727b4d2c0f246a70bf7ea9e79b1961289d19"
+    },
+    "death-sw-12": {
+      "frame": { "x": 1788, "y": 2, "w": 178, "h": 131 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 203, "y": 152, "w": 178, "h": 131 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "c7f8a1a82e64237b084da5bf95541712061a56e36aa185d025040a998be4fb3d"
+    },
+    "death-sw-13": {
+      "frame": { "x": 1605, "y": 2, "w": 179, "h": 131 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 204, "y": 152, "w": 179, "h": 131 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "b79fbca7175b6206ef08fd9e4194dea7787e7c79c6b69bc05594a38b420e2d75"
+    },
+    "death-sw-14": {
+      "frame": { "x": 1605, "y": 2, "w": 179, "h": 131 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 204, "y": 152, "w": 179, "h": 131 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "b79fbca7175b6206ef08fd9e4194dea7787e7c79c6b69bc05594a38b420e2d75"
+    },
+    "death-sw-15": {
+      "frame": { "x": 1605, "y": 2, "w": 179, "h": 131 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 204, "y": 152, "w": 179, "h": 131 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "b79fbca7175b6206ef08fd9e4194dea7787e7c79c6b69bc05594a38b420e2d75"
+    },
+    "death-nw-08": {
+      "frame": { "x": 626, "y": 540, "w": 194, "h": 87 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 164, "y": 211, "w": 194, "h": 87 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "1f9fcd3e46922dcbd4f2a4bf6b95e32569f5ca4e8d14d5e0275c5029a4f25f68"
+    },
+    "death-nw-09": {
+      "frame": { "x": 430, "y": 540, "w": 192, "h": 89 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 179, "y": 220, "w": 192, "h": 89 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "a8a09be0869257798dc906b5f78a3a318655c99df202020c0f2946a7bb3a6169"
+    },
+    "death-nw-10": {
+      "frame": { "x": 1282, "y": 435, "w": 192, "h": 96 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 184, "y": 226, "w": 192, "h": 96 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "b74c80ce5d42de2ce7844bf4d7566ff3f5054d0c49c77c77b7cf50b75110c8e1"
+    },
+    "death-nw-11": {
+      "frame": { "x": 1667, "y": 312, "w": 193, "h": 101 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 186, "y": 230, "w": 193, "h": 101 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "0e6b2c7c62459c0211f81253a652d76ab958bbd94652b5ae7eb3227e7f57bef3"
+    },
+    "death-nw-12": {
+      "frame": { "x": 2, "y": 435, "w": 193, "h": 101 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 188, "y": 230, "w": 193, "h": 101 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "e12a3c9247a8aca576d8194ec969898ace8a4123cb577a16e151c34b8e0d127a"
+    },
+    "death-nw-13": {
+      "frame": { "x": 1470, "y": 312, "w": 193, "h": 102 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 189, "y": 230, "w": 193, "h": 102 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "08d9675b2b5c40ad9a53dbe9b077818d5873221a0e5d8d86f34ea372109dea2d"
+    },
+    "death-nw-14": {
+      "frame": { "x": 1470, "y": 312, "w": 193, "h": 102 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 189, "y": 230, "w": 193, "h": 102 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "08d9675b2b5c40ad9a53dbe9b077818d5873221a0e5d8d86f34ea372109dea2d"
+    },
+    "death-nw-15": {
+      "frame": { "x": 1470, "y": 312, "w": 193, "h": 102 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 189, "y": 230, "w": 193, "h": 102 },
+      "sourceSize": { "w": 448, "h": 448 },
+      "pixelSha256": "08d9675b2b5c40ad9a53dbe9b077818d5873221a0e5d8d86f34ea372109dea2d"
+    }
+  },
+  "meta": {
+    "image": "shield-death-body.png",
+    "format": "RGBA8888",
+    "size": { "w": 2048, "h": 1024 },
+    "scale": "1"
+  }
+}

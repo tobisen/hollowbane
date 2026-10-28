@@ -1,3 +1,10 @@
+## Q3-B Warrior equipment — packed developer candidate (2026-10-28)
+
+- All784 original shield overlays/48 unique late-death body variants packed into two atlases:3688973PNG bytes /24MiB calculated RGBA, plus313826atlas-JSON bytes.880 shield/64 body logical frames;96 shared aliases. All944 pixel/root round trips and native Phaser4.2.1/880 trim checks pass. Existing40 body atlases preserved; no measured GPU-memory claim.
+- Opt-in playable appearance study: ?developer=1&warriorPilot=1&warriorArena=1&warriorEquipment=1. Actual live movement/secondary/Oath/hit/death selectors, graphics/fallback switching, grip marker and reset/resource controls; disposable base-ID appearance choices do not perform real item transactions or touch saves. Campaign shield selection remains legacy.
+- Four new packing/asset unit cases plus prior14 relevant cases, TypeScript/build/affected lint/45-record assets pass.14 Chromium and4 Firefox-WebKit checks pass across bounded runs;144 native offline playback pairs cover all poses with15 focused idle-loop completions. Three42→0→42 texture cycles preserve encounter/texture inventory; no equipment requests outside the opt-in route. Captures reviewed; no physical-controller or new campaign frame-pacing evidence.
+- New developer build is local/unpublished. A/B/C remain incomplete; verified deployed baseline ee03e81964bb597636aa2d96f64716268e5c1d81. Next integrate conditional production leases/body-overlay selection, verify real equipment/save/travel/death and matched native campaign profiling, then exact A CI/Pages/hosted gate before B. Preserve all unrelated edits/limitations. Resume docs/art/q3/warrior-equipment.md and equipment-review.json; raw /private/tmp/hollowbane-warrior-equipment.
+
 ## Q3-B Warrior equipment — shield grip/occlusion proof (2026-10-28)
 
 - Extended equipment assignment remains authorized through A/B/C. Offline original bark-guard proof covers all880 poses/eight directions, with zero sampled shield/body/floor failures. Two independent core pose exports match.96 packed aliases explicit; full assignment and A remain incomplete.

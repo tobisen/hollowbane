@@ -93,12 +93,18 @@ declare global {
       cameraRelative: { x: number; y: number };
       root: { x: number; y: number };
       readyMs: number;
+      equipment?: {
+        configuration: string;
+        fallback: string;
+        overlayVisible: boolean;
+        bodyVariant: boolean;
+      };
     };
   }
 }
 
 /** Developer entry only. Assets are loaded once by Phaser, never decoded into duplicate canvas images. */
-export async function startWarriorArena(): Promise<void> {
+export async function startWarriorArena(equipmentMode = false): Promise<void> {
   const begin = performance.now();
   const root = document.querySelector("main")!;
   root.className = "warrior-pilot warrior-arena";
@@ -114,6 +120,18 @@ export async function startWarriorArena(): Promise<void> {
   <div id="pilot-stage" tabindex="0" role="application" aria-label="Playable Warrior arena"></div>
   <output id="arena-status" aria-label="Animation diagnostics"></output>
   <p class="pilot-note">Seeded disposable training encounter. Both sword variants use existing melee rules. Candidate is not active in normal play. No character save is opened. Gold cross: authoritative ground root; green/purple: authored feet. Graphics switching preserves gameplay. <a href="./">Return to Hollowbane</a></p>`;
+  let equipment:
+    import("./warrior-equipment-preview").WarriorEquipmentPreview | null = null;
+  if (equipmentMode) {
+    const { WarriorEquipmentPreview } =
+      await import("./warrior-equipment-preview");
+    equipment = new WarriorEquipmentPreview();
+    document.title = "Hollowbane · Warrior equipment study";
+    root.querySelector(".eyebrow")!.textContent =
+      "HOLLOWBANE / Q3-B / EQUIPMENT CANDIDATE";
+    root.querySelector("h1")!.textContent = "Warrior · equipment study";
+  }
+  const resourceKeys = [...candidateKeys, ...(equipment?.keys ?? [])];
   const el = <T extends HTMLElement>(id: string) =>
     document.getElementById(id) as T;
   const stage = el("pilot-stage"),
@@ -228,6 +246,7 @@ export async function startWarriorArena(): Promise<void> {
             },
           );
         }
+      equipment?.queue(this);
     }
     preload(): void {
       this.queueCandidate();
@@ -242,7 +261,7 @@ export async function startWarriorArena(): Promise<void> {
       });
     }
     create(): void {
-      const missing = candidateKeys.filter((key) => !this.textures.exists(key));
+      const missing = resourceKeys.filter((key) => !this.textures.exists(key));
       if (missing.length) {
         el("arena-loading").textContent =
           `Asset loading failed: ${missing.join(", ")}`;
@@ -291,6 +310,7 @@ export async function startWarriorArena(): Promise<void> {
                   : 0x9caaa0,
             ),
         );
+        if (actor.id === 0) equipment?.create(this);
       }
       this.graphics = this.add.graphics();
       this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
@@ -324,7 +344,8 @@ export async function startWarriorArena(): Promise<void> {
           source = "shipped";
           el<HTMLSelectElement>("arena-source").value = source;
           this.sprites[0]!.setTexture("arena-shipped", 0);
-          for (const key of candidateKeys) this.textures.remove(key);
+          equipment?.release();
+          for (const key of resourceKeys) this.textures.remove(key);
           resourceState = "released";
           el("arena-resources").textContent = "Reload candidate textures";
           el("arena-loading").textContent =
@@ -333,7 +354,7 @@ export async function startWarriorArena(): Promise<void> {
           resourceState = "loading";
           this.queueCandidate();
           this.load.once("complete", () => {
-            resourceState = candidateKeys.every((key) =>
+            resourceState = resourceKeys.every((key) =>
               this.textures.exists(key),
             )
               ? "ready"
@@ -438,7 +459,10 @@ export async function startWarriorArena(): Promise<void> {
       const sample = arenaSample(arena),
         pose = sample.pose;
       const direction = WARRIOR_DIRECTIONS[sample.direction]!;
-      const candidate = source === "candidate" && resourceState === "ready";
+      const candidate =
+        source === "candidate" &&
+        resourceState === "ready" &&
+        (!equipment || equipment.fallback === "supported-developer-candidate");
       const p = worldToScreen(player.controller.walker.position);
       this.cameras.main.centerOn(p.x, p.y - 30);
       this.graphics.clear().setDepth(10000);
@@ -476,6 +500,7 @@ export async function startWarriorArena(): Promise<void> {
           .setAngle(useCandidate ? 0 : motion.angle)
           .setAlpha(useCandidate ? 1 : motion.alpha)
           .setDepth(q.y);
+        if (i === 0) equipment?.draw(sprite, pose, direction, q, candidate);
         this.shadows[i]!.setPosition(q.x, q.y).setDepth(q.y - 1);
         if (actor.id !== 0 && actor.hp > 0) {
           this.graphics
@@ -512,13 +537,21 @@ export async function startWarriorArena(): Promise<void> {
                 p.y + (foot[1]! - manifests[pose.set].root[1]!) * 0.5,
                 2,
               );
+          const grip = equipment?.grip(pose, direction);
+          if (grip)
+            this.graphics
+              .lineStyle(1, 0xf4c77f)
+              .strokeCircle(p.x + grip.x, p.y + grip.y, 2);
         }
       }
-      const count = candidateKeys.filter((key) =>
+      const count = resourceKeys.filter((key) =>
         this.textures.exists(key),
       ).length;
       el("arena-status").textContent =
-        `HP ${sample.hp}/${player.maxHp} · mana ${sample.mana.toFixed(1)} · ${sample.gait} · ${direction.toUpperCase()}\nTick ${sample.tick} · ${sample.phase} (${sample.remaining}) · ${pose.clip} frame ${pose.frame} · sequence ${sample.sequence} · ${rate}×\nActive entries ${sample.strikes} · ability effects ${sample.effects} · root ${p.x.toFixed(2)}, ${p.y.toFixed(2)} · textures ${count}/40 · ${source}`;
+        `HP ${sample.hp}/${player.maxHp} · mana ${sample.mana.toFixed(1)} · ${sample.gait} · ${direction.toUpperCase()}\nTick ${sample.tick} · ${sample.phase} (${sample.remaining}) · ${pose.clip} frame ${pose.frame} · sequence ${sample.sequence} · ${rate}×\nActive entries ${sample.strikes} · ability effects ${sample.effects} · root ${p.x.toFixed(2)}, ${p.y.toFixed(2)} · textures ${count}/${resourceKeys.length} · ${source}` +
+        (equipment
+          ? `\nEquipment ${equipment.selection} · ${equipment.fallback} · shield grip marker`
+          : "");
       window.hollowbaneWarriorArena = {
         sample,
         history,
@@ -537,7 +570,9 @@ export async function startWarriorArena(): Promise<void> {
                   : 0),
               0,
             ),
-          0,
+          equipment && this.textures.exists(equipment.keys[0])
+            ? equipment.decodedBytes
+            : 0,
         ),
         maxTextureSize: this.maxTextureSize,
         renderFrames: ++this.frames,
@@ -547,6 +582,16 @@ export async function startWarriorArena(): Promise<void> {
         },
         root: { x: p.x, y: p.y },
         readyMs,
+        ...(equipment
+          ? {
+              equipment: {
+                configuration: equipment.selection,
+                fallback: equipment.fallback,
+                overlayVisible: equipment.visible,
+                bodyVariant: this.sprites[0]!.texture.key === equipment.keys[1],
+              },
+            }
+          : {}),
       };
     }
   }

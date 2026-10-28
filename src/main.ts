@@ -31,7 +31,7 @@ if (invalidCharacterRoute) {
 ) {
   if (query.get("warriorArena") === "1") {
     const { startWarriorArena } = await import("./rendering/warrior-arena");
-    await startWarriorArena();
+    await startWarriorArena(query.get("warriorEquipment") === "1");
   } else if (query.get("warriorCombat") === "1") {
     const { startWarriorCombatPreview } =
       await import("./rendering/warrior-combat-preview");
