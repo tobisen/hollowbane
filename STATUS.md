@@ -1,3 +1,10 @@
+## Q3-B completion continuation — A verified / local input-showcase increment (2026-10-29)
+
+- Accepted baseline8fece2b98325991e2116d6de25e12aba5908d089 /CI40790057405: Full, Pages, hosted and Release acceptance pass. All163 public bytes match;16 independent native M4/Metal hosted cases pass. Camp/combat/corpse captures reviewed. Additional unmatched631-frame battle p5016.7/p9516.9/p9917.6ms,3>25/max416.6; existing checkpoint stalls remain.
+- Six legal appearance combinations now have shared campaign selection and precise fallback/resource diagnostics. Empty-main/shield added; stale campaign warning removed. Real shield drag/drop exposed stale suppression swallowing the next click; new-gesture reset and keyboard allowance repair it without ownership/stat/save/simulation changes.
+- 26 focused units/seven files, TypeScript/affected lint/build, seven distinct native Chromium and eight Firefox/WebKit cases pass across bounded runs. Captures reviewed. All Warrior pixels/atlas JSON unchanged; new art/atlas/RGBA delta0. Existing shield cost3688973PNG bytes/24MiB calculated RGBA; not GPU memory.
+- Local coherent increment ready for publication under selected CI tier. B/C and new staff/bow/unarmed visuals remain incomplete; preserve legacy fallback. Next exact CI/Pages/hosted acceptance, then bounded shared sword-free body/patch and real staff-grip proof. Preserve7b1e4e2 ancestry, unrelated edits and hardware/human-playthrough limits. Evidence docs/art/q3/warrior-equipment.md and equipment-production-review.json; raw /private/tmp/hollowbane-warrior-equipment/completion-*.
+
 ## Q3-B sword/shield production — exact CI pending (2026-10-29)
 
 - Exact original shield now follows actual ash-blade/bark-guard equipment in campaign, with shared conditional two-atlas lease, per-pixel body occlusion and limited late-death body variant. Empty offhand stays40 textures; shield42; other classes, bow/staff/empty/unknown bases, committed projectiles, debug override and failed assets use legacy. No gameplay/save/stat/schema or Phaser4.2.1 changes.

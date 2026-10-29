@@ -1,15 +1,47 @@
 import type Phaser from "phaser";
 import equipment from "../../public/dev/warrior-equipment/equipment.json";
 import type { WarriorPose } from "./warrior-pose";
+import { itemContentForVersion } from "../simulation/item-content";
+import {
+  warriorRendererSelection,
+  type WarriorEquipmentAppearance,
+} from "./warrior-renderer-selection";
 
+const baseName = (id: string): string =>
+  itemContentForVersion(3).bases.find((base) => base.id === id)!.name;
 const selections = {
-  "ash-blade+bark-guard": "Ash blade + Bark guard",
-  "ash-blade": "Ash blade + empty offhand",
-  "reed-bow": "Reed bow · legacy fallback",
-  "cinder-staff": "Cinder staff · legacy fallback",
+  "ash-blade+bark-guard": `${baseName("ash-blade")} + ${baseName("bark-guard")}`,
+  "ash-blade": `${baseName("ash-blade")} + empty offhand`,
+  "reed-bow": `${baseName("reed-bow")} · legacy fallback`,
+  "cinder-staff": `${baseName("cinder-staff")} · legacy fallback`,
   empty: "Empty hands · legacy fallback",
+  "empty+bark-guard": `Empty main + ${baseName("bark-guard")} · legacy fallback`,
 } as const;
 type Selection = keyof typeof selections;
+const appearances: Record<Selection, WarriorEquipmentAppearance> = {
+  "ash-blade+bark-guard": {
+    main: { base: "ash-blade" },
+    off: { base: "bark-guard" },
+  },
+  "ash-blade": { main: { base: "ash-blade" } },
+  "reed-bow": { main: { base: "reed-bow" } },
+  "cinder-staff": { main: { base: "cinder-staff" } },
+  empty: {},
+  "empty+bark-guard": { off: { base: "bark-guard" } },
+};
+const limitations: Record<Selection, string> = {
+  "ash-blade+bark-guard":
+    "Supported: approved sword body, original shield overlay and limited late-death arm variant.",
+  "ash-blade": "Supported: approved sword body with empty offhand.",
+  "reed-bow":
+    "Legacy fallback: sword-free body, bow draw/release and both-hand grips are not authored.",
+  "cinder-staff":
+    "Legacy fallback: sword-free body and reviewed two-hand staff attacks are not authored.",
+  empty:
+    "Legacy fallback: sword-free body and unarmed attacks are not authored.",
+  "empty+bark-guard":
+    "Legacy fallback: shield poses alone do not supply a sword-free body or unarmed attacks.",
+};
 const frames = equipment.framesByPose as Record<
   WarriorPose["set"],
   Record<string, string[]>
@@ -30,6 +62,12 @@ export class WarriorEquipmentPreview {
     label.textContent = "Visual configuration ";
     const select = document.createElement("select");
     select.id = "arena-equipment";
+    const note = document.createElement("p");
+    note.id = "arena-equipment-note";
+    note.className = "pilot-note";
+    const updateNote = () => {
+      note.textContent = `${limitations[this.selection]} Appearance study on a disposable melee fixture; selection changes graphics only. No real items, statistics or character saves are edited. Campaign secondary retains its assigned skill; this arena also exposes the alternate melee clip.`;
+    };
     for (const [value, name] of Object.entries(selections)) {
       const option = document.createElement("option");
       option.value = value;
@@ -39,20 +77,21 @@ export class WarriorEquipmentPreview {
     select.onchange = () => {
       if (Object.hasOwn(selections, select.value))
         this.selection = select.value as Selection;
+      updateNote();
     };
     label.append(select);
     document.querySelector(".pilot-controls")!.append(label);
-    const note = document.createElement("p");
-    note.className = "pilot-note";
-    note.textContent =
-      "Equipment appearance study: original base definitions, disposable melee fixture. Selection changes graphics only; no real items, statistics or character saves are edited. Shields remain unapproved for campaign use.";
+    updateNote();
     document.querySelector(".pilot-controls")!.after(note);
   }
   get fallback(): string {
-    if (this.selection === "empty") return "empty-main-hand";
-    if (["reed-bow", "cinder-staff"].includes(this.selection))
-      return `unsupported-weapon:${this.selection}`;
-    return "supported-developer-candidate";
+    const reason = warriorRendererSelection(
+      "warrior",
+      appearances[this.selection],
+    );
+    return reason === "supported" || reason === "supported-shield"
+      ? "supported-developer-candidate"
+      : reason;
   }
   queue(scene: Phaser.Scene): void {
     for (const [key, name] of [

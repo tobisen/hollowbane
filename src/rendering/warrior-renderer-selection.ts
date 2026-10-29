@@ -1,13 +1,18 @@
 import type { ClassId } from "../simulation/character-classes";
-import type { CharacterInventory } from "../simulation/equipment";
 import type { Weapon } from "../simulation/combat";
+
+/** Appearance needs only base identities; never construct or mutate real items. */
+export interface WarriorEquipmentAppearance {
+  readonly main?: { readonly base: string };
+  readonly off?: { readonly base: string };
+}
 
 /** Fixed sword, optional original shield; armor remains cosmetic/static in-world.
  * Fail closed for empty/unknown weapons and future equipment bases.
  */
 export function warriorRendererSelection(
   classId: ClassId | null,
-  equipment: CharacterInventory["equipment"],
+  equipment: WarriorEquipmentAppearance,
   legacy = false,
   activeWeapon: Weapon = "melee",
 ): string {

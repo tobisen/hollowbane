@@ -96,6 +96,7 @@ declare global {
       equipment?: {
         configuration: string;
         fallback: string;
+        rendererReason: string;
         overlayVisible: boolean;
         bodyVariant: boolean;
       };
@@ -119,7 +120,7 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
   </section><p id="arena-loading" role="status">Loading developer assets…</p>
   <div id="pilot-stage" tabindex="0" role="application" aria-label="Playable Warrior arena"></div>
   <output id="arena-status" aria-label="Animation diagnostics"></output>
-  <p class="pilot-note">Seeded disposable training encounter. Both sword variants use existing melee rules. Candidate is not active in normal play. No character save is opened. Gold cross: authoritative ground root; green/purple: authored feet. Graphics switching preserves gameplay. <a href="./">Return to Hollowbane</a></p>`;
+  <p class="pilot-note">Seeded disposable training encounter. Both sword variants use existing melee rules. This fixture is separate from campaign characters. No character save is opened. Gold cross: authoritative ground root; green/purple: authored feet. Graphics switching preserves gameplay. <a href="./">Return to Hollowbane</a></p>`;
   let equipment:
     import("./warrior-equipment-preview").WarriorEquipmentPreview | null = null;
   if (equipmentMode) {
@@ -463,6 +464,12 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
         source === "candidate" &&
         resourceState === "ready" &&
         (!equipment || equipment.fallback === "supported-developer-candidate");
+      const rendererReason =
+        resourceState !== "ready"
+          ? `resources-${resourceState}`
+          : source !== "candidate"
+            ? "original-comparison"
+            : (equipment?.fallback ?? "supported-developer-candidate");
       const p = worldToScreen(player.controller.walker.position);
       this.cameras.main.centerOn(p.x, p.y - 30);
       this.graphics.clear().setDepth(10000);
@@ -550,7 +557,7 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
       el("arena-status").textContent =
         `HP ${sample.hp}/${player.maxHp} · mana ${sample.mana.toFixed(1)} · ${sample.gait} · ${direction.toUpperCase()}\nTick ${sample.tick} · ${sample.phase} (${sample.remaining}) · ${pose.clip} frame ${pose.frame} · sequence ${sample.sequence} · ${rate}×\nActive entries ${sample.strikes} · ability effects ${sample.effects} · root ${p.x.toFixed(2)}, ${p.y.toFixed(2)} · textures ${count}/${resourceKeys.length} · ${source}` +
         (equipment
-          ? `\nEquipment ${equipment.selection} · ${equipment.fallback} · shield grip marker`
+          ? `\nEquipment ${equipment.selection} · ${rendererReason} · shield grip marker`
           : "");
       window.hollowbaneWarriorArena = {
         sample,
@@ -587,6 +594,7 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
               equipment: {
                 configuration: equipment.selection,
                 fallback: equipment.fallback,
+                rendererReason,
                 overlayVisible: equipment.visible,
                 bodyVariant: this.sprites[0]!.texture.key === equipment.keys[1],
               },

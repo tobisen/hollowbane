@@ -1,9 +1,9 @@
 {
   "version": 1,
   "scope": "DBL-023/024/025 real sword/shield campaign vertical slice",
-  "checkpointAAccepted": false,
-  "publication": "Pending exact Full CI, Pages and hosted acceptance",
-  "lastVerifiedDeployedSha": "ee03e81964bb597636aa2d96f64716268e5c1d81",
+  "checkpointAAccepted": true,
+  "publication": "Verified exact Full CI, Pages, hosted smoke and Release acceptance; independent native hosted acceptance passed",
+  "lastVerifiedDeployedSha": "8fece2b98325991e2116d6de25e12aba5908d089",
   "configuration": {
     "main": "ash-blade",
     "off": "bark-guard",
@@ -36,7 +36,7 @@
       "build": true
     },
     "productionChromiumDistinctCases": 16,
-    "productionChromiumCaseResults": "Passed across bounded runs; exact release CI remains pending",
+    "productionChromiumCaseResults": "16 local distinct cases and all 16 independent native hosted cases pass at the accepted SHA",
     "developerChromiumCases": 14,
     "developerFirefoxWebkitCases": 4,
     "productionFirefoxWebkitCases": 6
@@ -1224,7 +1224,110 @@
     "Calculated base RGBA is not GPU residency",
     "No full human Act1 playthrough",
     "Bows/staffs/unarmed need genuine sword-free body/choreography; retain legacy",
-    "A/B/C incomplete until required publication receipts; do not advance past failed A"
+    "Checkpoint A verified; remaining equipment expansion and B/C acceptance are separate, not claimed complete"
   ],
-  "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment"
+  "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment",
+  "acceptedRelease": {
+    "sha": "8fece2b98325991e2116d6de25e12aba5908d089",
+    "ciRun": 40790057405,
+    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40790057405",
+    "conclusion": "success",
+    "requiredJobs": [
+      {
+        "name": "Fast static, contracts and Chromium smoke",
+        "conclusion": "success"
+      },
+      {
+        "name": "Required Full Regression / Chromium shard 2/4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Required Full Regression / Required Chromium, Firefox and WebKit inventory contracts",
+        "conclusion": "success"
+      },
+      {
+        "name": "Required Full Regression / Complete unit, validators and tooling",
+        "conclusion": "success"
+      },
+      {
+        "name": "Required Full Regression / Chromium shard 4/4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Required Full Regression / Chromium shard 1/4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Required Full Regression / Chromium shard 3/4",
+        "conclusion": "success"
+      },
+      {
+        "name": "verify",
+        "conclusion": "success"
+      },
+      {
+        "name": "deploy",
+        "conclusion": "success"
+      },
+      {
+        "name": "Hosted exact SHA and selected critical flow",
+        "conclusion": "success"
+      },
+      {
+        "name": "Release acceptance",
+        "conclusion": "success"
+      }
+    ],
+    "publicFilesVerified": 163,
+    "publicFilesMatchTestedCiArtifact": true,
+    "independentHostedNativeCases": 16,
+    "independentHostedDurationMinutes": 3.2,
+    "capturesReviewed": [
+      "restored-shield-camp.png",
+      "forest-real-combat.png",
+      "crypt-held-corpse-detail.png"
+    ],
+    "nativeBattle": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "dpr": 1,
+      "resolution": [1280, 800],
+      "frames": 631,
+      "p50": 16.7,
+      "p95": 16.9,
+      "p99": 17.6,
+      "max": 416.6,
+      "over25": 3,
+      "actors": [16],
+      "textures": [42],
+      "protocol": "Additional unmatched hosted cohort; not a baseline comparison or evidence of improvement"
+    },
+    "rawEvidence": "/private/tmp/hollowbane-warrior-equipment/hosted-native-a"
+  },
+  "completionContinuation": {
+    "scope": "Accepted A baseline, six-configuration developer matrix and observed inventory drag/click repair",
+    "newProductionWeaponCategories": [],
+    "checkpointBAccepted": false,
+    "checkpointCAccepted": false,
+    "addedPngBytes": 0,
+    "addedAtlases": 0,
+    "addedDecodedBaseBytes": 0,
+    "localFocusedUnitCases": 26,
+    "typescript": true,
+    "affectedLint": true,
+    "build": true,
+    "nativeChromiumDistinctCases": 7,
+    "nativeChromiumResults": "Four showcase cases, corrected real shield drag/equip/save/reload, keyboard-after-drag and virtual-pad/mouse handoff pass across bounded runs",
+    "firefoxWebkitResults": "All eight focused Firefox/WebKit cases pass: six configurations, resources, real shield drag/equip/save/reload and immediate keyboard after drag",
+    "publication": "Pending coherent commit and exact selected CI/Pages/hosted acceptance",
+    "repair": "A dragged grid redraw can remove the original click target, leaving suppression to consume the next intended click. Clear on new pointerdown and allow keyboard click detail 0; real campaign red/green evidence retained.",
+    "failureHistory": [
+      "Temporary local runner inherited its directory for the server; corrected explicit repository cwd without changing application",
+      "Real shield test exposed stale drag click suppression after successful grid move; app event-lifecycle fix passes original test"
+    ],
+    "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment/completion-*",
+    "next": "Publish this coherent increment; then bounded shared sword-free body/patch proof and genuine staff grips/motion before promotion. No B/C completion claim.",
+    "finalBuildFiles": 164,
+    "unchangedAcceptedFiles": 158,
+    "allAcceptedWarriorPngJsonUnchanged": true
+  }
 }

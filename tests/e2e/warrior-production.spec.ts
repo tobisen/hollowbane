@@ -158,6 +158,34 @@ test("historical blade, live shield, bow/staff fallback, repeated debug leases a
       .toBe(base === "ash-blade" ? 40 : 0);
   }
   const shield = inventoryItem("bark-guard").id;
+  // Move the actual shield through trusted drag/drop before equipping it.
+  // An overflowing footprint must preserve both ownership and presentation.
+  const shieldCell = page
+    .locator(`#inventory-grid button[data-item="${shield}"]`)
+    .first();
+  for (const [cell, placement] of [
+    ["cell-9-3", "invalid"],
+    ["cell-8-2", "valid"],
+  ] as const) {
+    const start = await shieldCell.boundingBox(),
+      end = await page.locator(`[data-focus="${cell}"]`).boundingBox();
+    if (!start || !end) throw Error("Missing shield drag geometry");
+    await page.mouse.move(start.x + 10, start.y + 10);
+    await page.mouse.down();
+    await page.mouse.move(end.x + 10, end.y + 10, { steps: 4 });
+    await expect(page.locator(`[data-placement="${placement}"]`)).toHaveCount(
+      1,
+    );
+    await page.mouse.up();
+    expect(await state(page)).toMatchObject({
+      reason: "supported",
+      textures: 40,
+    });
+    await expect(shieldCell).toHaveAttribute(
+      "data-focus",
+      placement === "invalid" ? "cell-5-0" : "cell-8-2",
+    );
+  }
   await page
     .locator(`#inventory-grid button[data-item="${shield}"]`)
     .first()

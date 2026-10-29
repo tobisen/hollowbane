@@ -153,12 +153,23 @@ test("equipment study switches and falls back without changing the frozen encoun
     ["reed-bow", false, "unsupported-weapon:reed-bow"],
     ["cinder-staff", false, "unsupported-weapon:cinder-staff"],
     ["empty", false, "empty-main-hand"],
+    ["empty+bark-guard", false, "empty-main-hand"],
     ["ash-blade+bark-guard", true, "supported-developer-candidate"],
   ] as const) {
     await page.selectOption("#arena-equipment", configuration);
     await expect
       .poll(() => page.evaluate(() => window.hollowbaneWarriorArena!.equipment))
-      .toMatchObject({ configuration, fallback, overlayVisible: visible });
+      .toMatchObject({
+        configuration,
+        fallback,
+        rendererReason: fallback,
+        overlayVisible: visible,
+      });
+    await expect(page.locator("#arena-equipment-note")).toContainText(
+      fallback === "supported-developer-candidate"
+        ? "Supported:"
+        : "Legacy fallback:",
+    );
     expect(
       await page.evaluate(() => window.hollowbaneWarriorArena!.sample),
     ).toEqual(before);
@@ -168,6 +179,13 @@ test("equipment study switches and falls back without changing the frozen encoun
     fullPage: true,
   });
   await page.selectOption("#arena-source", "shipped");
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => window.hollowbaneWarriorArena!.equipment!.rendererReason,
+      ),
+    )
+    .toBe("original-comparison");
   await expect
     .poll(() =>
       page.evaluate(
@@ -208,6 +226,11 @@ test("shield release and reload cycles keep a bounded texture inventory and unch
         page.evaluate(() => window.hollowbaneWarriorArena!.candidateTextures),
       )
       .toBe(0);
+    expect(
+      await page.evaluate(
+        () => window.hollowbaneWarriorArena!.equipment!.rendererReason,
+      ),
+    ).toBe("resources-released");
     expect(
       await page.evaluate(
         () => window.hollowbaneWarriorArena!.equipment!.overlayVisible,

@@ -29,6 +29,11 @@ describe("production Warrior equipment selection", () => {
     expect(warriorRendererSelection("warrior", c.equipment)).toBe(
       "empty-main-hand",
     );
+    c.equipment.off = inventoryItem("bark-guard");
+    expect(warriorRendererSelection("warrior", c.equipment)).toBe(
+      "empty-main-hand",
+    );
+    delete c.equipment.off;
     for (const base of ["reed-bow", "cinder-staff"]) {
       c.equipment.main = inventoryItem(base);
       expect(warriorRendererSelection("warrior", c.equipment)).toBe(

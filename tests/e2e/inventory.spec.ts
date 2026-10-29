@@ -97,6 +97,12 @@ test("drag previews valid/invalid cells and commits only a valid move", async ({
     "5",
   );
   await expect(page.locator(".inventory-drag-ghost")).toHaveCount(0);
+  // Redrawing the dragged item must not swallow the next keyboard activation.
+  const moved = page.locator('[data-focus="cell-4-2"]');
+  await expect(moved).toHaveAttribute("data-selected", "false");
+  await moved.focus();
+  await page.keyboard.press("Enter");
+  await expect(moved).toHaveAttribute("data-selected", "true");
 });
 for (const id of [
   "Xbox virtual standard",

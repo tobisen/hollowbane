@@ -312,7 +312,7 @@ export class InventoryView {
     this.dialog.addEventListener(
       "click",
       (e) => {
-        if (this.suppressClick) {
+        if (this.suppressClick && e.detail !== 0) {
           e.preventDefault();
           e.stopImmediatePropagation();
           this.suppressClick = false;
@@ -1120,6 +1120,9 @@ Active set bonuses: ${d.advanced.active.map((s) => `${s.set} ${s.required}-piece
     };
   }
   private pointerDown = (e: PointerEvent) => {
+    // A grid redraw can remove the drag's click target. Suppression belongs to
+    // that gesture only; the next deliberate pointer/keyboard action must work.
+    this.suppressClick = false;
     if (e.button !== 0 || !this.ready) return;
     // Complete device handoff before starting the new mouse gesture.
     if (this.lastDevice === "gamepad") this.resetSelection();
