@@ -1,3 +1,8 @@
+## Q3-B startup release — exact Full pending (2026-10-29)
+
+- Candidatec437335844e4f82e30b00da2967d4f64c9614a64 pushed; exact CI40950346938 Fast passes, Full units/compatibility/four Chromium shards running. CI seal matches all164 tested files; Full receipt verified.35-minute observation bound; no verdict inferred from expiration. Last verified public remainsf28c16c8080959b3a7a95a50683b470f76994dc2.
+- Keep evidence checkpoint local. Next exact Full/Pages/hosted/Release acceptance,164 public bytes,22 independent native cases and3 cold/cached-reload pairs. No production weapon expansion before that gate. Read-only880-pose bounds support investigating local patches, but shadows/hidden-body/AA reconstruction remain unproven; no new art/support. Resume docs/art/q3/warrior-equipment.md and /private/tmp/hollowbane-q3-startup. Preserve all unrelated edits/checkpoints.
+
 ## Q3-B startup — measured local readiness fix (2026-10-29)
 
 - Developer queue2 caused real cold45-file loading beyond5s. Queue4 plus real asset/first-render/input/interactive events; controls inert until usable. All original5s/60s bounds preserved. Native controlled150ms three matched pairs: cold6.111–6.168s→3.849–3.901s;42 textures/373.25MiB calculated RGBA unchanged,720 ready frames/zero>25. Loading reload max68.5ms versus35.3 retained.

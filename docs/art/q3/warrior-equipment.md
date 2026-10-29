@@ -77,6 +77,30 @@ trusted Pause outcome; source changes are presentation-only. The preliminary
 client comparison correctly allows the changed HTML entry reference alongside
 two JavaScript chunks; all non-entry assets are byte-identical.
 
+### Exact startup release / safe resume
+
+Candidate **c437335844e4f82e30b00da2967d4f64c9614a64** is pushed normally, preserving
+`eecb977`, `8a48dc9` and all unrelated edits. Exact
+[CI40950346938](https://github.com/tobisen/hollowbane/actions/runs/40950346938)
+Fast static/contracts/smoke passes; Full units, compatibility and four Chromium
+shards are running. Downloaded `ci-bundle` seal matches all164 locally tested
+files; retained `ci-plan/ci-plan.json` confirms Full. The watcher is bounded to
+35minutes; expiration is not a CI verdict. Keep this evidence checkpoint local
+while CI is active. Next require exact Full/Pages/hosted/Release acceptance,
+independent164 public hashes,22 native hosted cases and three real cold/cached
+reload pairs before production expansion. Raw `/private/tmp/hollowbane-q3-startup`.
+
+Read-only body audit while CI runs: all880 authored poses already expose projected
+weapon bounds (mean2162–2995 pixels/pose; maximum5582). Summed unpadded rectangles
+are9024324RGBA bytes, **not packed/runtime/GPU costs**; they omit shadow/reflection
+changes and hidden-body reconstruction. The source has four separate sword meshes,
+15 bones and rigid gauntlet/finger plates without finger bones. A pilot must test
+reference rerender agreement, revealed hand/body pixels, antialiased edges and
+sword-shadow changes before choosing clean shared atlases plus a sword layer or
+localized runtime patches. The installed Phaser4.2.1 mask API exposes geometry
+masks, not the old bitmap-mask/MultiPipeline recipe; do not introduce an assumed
+Phaser3 renderer path. No new raster, weapon motion or compatibility is claimed.
+
 ## CI recovery — 2026-10-29
 
 Candidate `72155e6d62a83add0779d3e2662c9a80389499d4` failed exact

@@ -1482,6 +1482,18 @@
     "lastVerifiedDeployedSha": "f28c16c8080959b3a7a95a50683b470f76994dc2",
     "rawEvidence": "/private/tmp/hollowbane-q3-startup",
     "protocolSha256": "43091c5ad3b61fec3241174fbcc6bd0d6833af506f3b3a38e4573785e2ae9c60",
-    "next": "Commit/push coherent startup fix; exact Full/Pages/hosted+164 public hashes,22 independent native cases and3 cold/warm pairs. Then bounded shared sword-free body proof; no B/C promotion yet."
+    "next": "Commit/push coherent startup fix; exact Full/Pages/hosted+164 public hashes,22 independent native cases and3 cold/warm pairs. Then bounded shared sword-free body proof; no B/C promotion yet.",
+    "candidateSha": "c437335844e4f82e30b00da2967d4f64c9614a64",
+    "ciRun": 40950346938,
+    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40950346938",
+    "ciStatus": "Fast passed; required Full running; Pages/hosted pending",
+    "ciAndTestedFileHashesMatched": 164,
+    "ciObservationBoundSeconds": 2100,
+    "readonlyBodyAudit": {
+      "authoredPoses": 880,
+      "naiveUnpaddedWeaponRectangleRgbaBytes": 9024324,
+      "isCleanBodyOrPackedCostProof": false,
+      "rawEvidence": "/private/tmp/hollowbane-q3-startup/shared-body-readonly-audit.json"
+    }
   }
 }
