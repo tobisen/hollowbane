@@ -56,6 +56,16 @@ CI remains **Full**, measured from the last accepted deployment including the
 unaccepted inventory interaction change. Do not expand weapons before its exact
 Full/Pages/hosted/integrity release gate passes.
 
+Recovery fix **f28c16c8080959b3a7a95a50683b470f76994dc2** is committed and pushed by normal fast-forward,
+preserving `8a48dc9`. Exact [CI40937358584](https://github.com/tobisen/hollowbane/actions/runs/40937358584)
+has passed Fast static/contracts/smoke; all Full shards/units/compatibility are
+running. Downloaded/seal-verified CI bundle matches all164 locally tested files;
+its `release-plan` receipt confirms Full. Pages/hosted/public integrity remain
+pending. Keep this evidence checkpoint local while the run is active. Next:
+inspect exact CI40937358584, require every mandatory job, then verify published
+164-file identity and run16 hosted native production plus two showcase cases.
+Do not push another candidate or expand weapons before this release gate passes.
+
 ## Verified sword/shield baseline and completion continuation — 2026-10-29
 
 Exact [CI40790057405](https://github.com/tobisen/hollowbane/actions/runs/40790057405)

@@ -1,3 +1,8 @@
+## Q3-B recovery release checkpoint — exact Full CI pending (2026-10-29)
+
+- Focused fixf28c16c8080959b3a7a95a50683b470f76994dc2 pushed normally, preserving8a48dc9. Exact CI40937358584 Fast static/contracts/smoke passes; Full units/four Chromium shards/compatibility running. Verified CI bundle matches all164 tested files; release-plan confirms Full. Pages/hosted pending; last verified deployment remains8fece2b98325991e2116d6de25e12aba5908d089.
+- Keep this evidence-only checkpoint local during active CI. Next inspect40937358584; require Full/Pages/hosted/Release acceptance, compare164 public files, run16 independent native production and two hosted showcase cases, review captures and record exact deployedSHA before bounded shared sword-free body/staff proof. Bow/staff/unarmed legacy; B/C incomplete. Preserve unrelated edits and hardware/GPU/stall limits. Evidence docs/art/q3/warrior-equipment.md and /private/tmp/hollowbane-q3-ci-recovery.
+
 ## Q3-B CI recovery — verified local repair / publication pending (2026-10-29)
 
 - CI40918355913 failed D12 Warrior reload: area metadata preceded IndexedDB restoration; J arrived while loading inventory owned the modal and journal was disabled. Journal never opened. First reward/save succeeded; no drag involved. CI trace/screenshots retained under /private/tmp/hollowbane-q3-ci-recovery.

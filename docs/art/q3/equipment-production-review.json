@@ -1349,7 +1349,13 @@
       "build": true,
       "unchangedClientFiles": 164,
       "screenshotsReviewed": true,
-      "requiredTier": "full"
+      "requiredTier": "full",
+      "candidateSha": "f28c16c8080959b3a7a95a50683b470f76994dc2",
+      "ciRun": 40937358584,
+      "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40937358584",
+      "ciStatus": "Fast passed; Full running; Pages/hosted pending",
+      "ciBundleFilesMatched": 164,
+      "testedCiBundle": "/private/tmp/hollowbane-q3-ci-recovery/fix-ci-bundle"
     }
   }
 }
