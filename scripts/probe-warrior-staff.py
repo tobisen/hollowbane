@@ -4,7 +4,7 @@ Blender --background --python-exit-code 1 --python scripts/probe-warrior-staff.p
   -- /private/tmp/warrior-staff-proof [--audit]
 
 Default twelve static poses; --motion gives twelve primary poses per selected
-direction. --motion --carry gives forty SE locomotion poses only.
+direction. --motion --carry gives forty locomotion poses per selected direction.
 Uses the approved rig/materials/camera and hash-verified two-bone IK authoring.
 No blend/public writes, gameplay callbacks, mechanics or save changes.
 """
@@ -34,13 +34,13 @@ def main():
     parser.add_argument('output', type=Path)
     parser.add_argument('--audit', action='store_true')
     parser.add_argument('--motion', action='store_true', help='Bounded SE primary choreography instead of legacy static study')
-    parser.add_argument('--carry', action='store_true', help='SE-only staff guard over approved forty movement poses')
+    parser.add_argument('--carry', action='store_true', help='Staff guard over approved forty movement poses')
     parser.add_argument('--subframes', type=int, choices=[1, 8], default=1)
     parser.add_argument('--directions', nargs='+', choices=['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'])
     options = parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
     assert options.subframes == 1 or (options.audit and options.motion)
     assert options.directions is None or (options.motion and len(options.directions) == len(set(options.directions)))
-    assert not options.carry or (options.motion and options.subframes == 1 and options.directions in (None, ['se']))
+    assert not options.carry or (options.motion and options.subframes == 1)
     motion_path = ROOT / 'assets/source/q3/warrior-staff-se/motion.json'
     motion = json.loads(motion_path.read_text()) if options.motion else None
     output = options.output.resolve()
@@ -259,6 +259,11 @@ def main():
                                   for actual, expected in zip(rig.pose.bones[name].matrix, original[name])
                                   for a, b in zip(actual, expected))
                 assert lower_error < 1e-5
+                facing_contacts = movement['views'][facing]['frames'][ordinal]['contacts']
+                foot_world_error = max((rig.matrix_world @ rig.pose.bones['foot' + c['side']].head
+                                        - Vector(c['sole']) - Vector((0, 0, .09))).length
+                                       for c in facing_contacts)
+                assert foot_world_error < 1e-5
             assert max(abs(a - b) for a, b in zip(project(Vector((0, 0, 0))), [256, 338])) < .001
             graph = bpy.context.evaluated_depsgraph_get()
             staff_trees, bounds, minimum = [], [], math.inf
@@ -290,7 +295,8 @@ def main():
                       'productionApproved': False}
             if options.carry:
                 record.update(action=approved['action'], index=approved['index'], ordinal=ordinal,
-                              lowerBodyMatrixMaximumError=lower_error, contacts=approved['contacts'],
+                              lowerBodyMatrixMaximumError=lower_error, footWorldMaximumError=foot_world_error,
+                              contacts=facing_contacts,
                               palmR=list(palm_r), axis=list(axis))
             elif motion:
                 index = float(phase.removeprefix('primary-'))

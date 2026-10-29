@@ -257,6 +257,79 @@ combat integration and exact B/C release gates. **Staff/bow/unarmed stay legacy*
 only sword and sword/shield are production supported. Verified public remains
 **c437335844e4f82e30b00da2967d4f64c9614a64**; local proof checkpoint, no pending CI.
 
+## Eight-direction carry — local proof complete 2026-10-30
+
+Reuse the accepted40 SE carry renders; export only the280 missing directional
+carry poses. All **320 sampled frames** pass the original shaft/non-hand body,
+ground, grip, connected-bone, root and unchanged lower-body checks. The remaining
+seven directions additionally compare rotated feet to the shipped per-direction
+world contact metadata: maximum error **1.93e-7m**. No mirror, changed gait or
+original Warrior set replacement. All40 poses per direction have been inspected
+on gameplay-scale source sheets; native gait/primary handoff captures show
+consistent grip, stable root, cloak occlusion and uncut staff/feet.
+
+`review-warrior-staff-directions.mjs ... --carry` validates reviewed input hashes,
+reuses the existing deterministic crop/packer and checks **320/320 CPU and native
+GPU trim/root round trips**. The original primary mode was rerun after extension:
+**96/96 CPU/GPU**, the accepted PNG and metadata are byte-identical, and three
+3→2→3 resource cycles pass. Its600-frame sample p9518.6/max18.7ms has zero>25 or
+runtime errors. No approved primary rerender. Carry playback independently
+unpacks/hashes all96 reused primary images against the original reviewed sources.
+
+A single actual600-tick simulation plan is rendered in eight views, without
+multiplying gameplay events: every8/16/16 carry frame is covered, run stops into
+the accepted primary and returns to idle. All600 plan ticks are visited; the one
+authoritative damage event remains active pose5. Native M4/ANGLE Metal,960×440/
+DPR1, eight gameplay1× views: **600 intervals,p5016.7/p9518.5/p9918.6/max33.3ms,
+one>25,zero runtime errors**. Retain the tail sample; this is isolated eight-view
+playback, not a matched production benchmark or a combat-stall fix.
+
+Three complete native atlas release/reload cycles stay **15→10→15** textures:
+five inspected atlases, nine label textures and one review render target. No
+inventory growth; the diagnostic labels/render target are not campaign resources.
+Four explicit2048² carry atlases: **8,955,699 PNG bytes /64MiB calculated base
+RGBA**. With the reused primary atlas, the fixture uses **11,661,793 PNG bytes /
+80MiB calculated base RGBA**. Neither number is measured GPU residency or a
+shipping staff allocation. Attempts to squeeze all poses into fewer existing
+2048px shelves fail the packer's unchanged bounds; no dimension cap was raised.
+
+This full-body proof layout is **not an accepted production resource budget**.
+The source lower-body matrices are preserved; comparison with shipped images
+still finds lower-body pixel differences. A smaller correction/patch must be
+compared against full controls, including alpha/lighting/occlusion. Do not infer
+pixel-exact legs or promise a saving from bone reuse. The SE idle0/primary0 handoff
+is close (one alpha pixel differs, maximum premultiplied RGB2/255, zero pixels>4)
+and the inspected transition is stable; no false exact-alias claim.
+
+**16 focused tests/four files and TypeScript** passed for carry; the directional
+extension passes scoped lint/format, Python syntax and both embedded browser
+module parsers. Native control/resource checks above cover the added offline
+browser behavior. Production source/art/save delta0: a production change will
+still need focused campaign tests, TypeScript/lint/build and exact required Full,
+Pages, hosted acceptance and public file integrity. No new CI is pending.
+
+**Staff primary and carry proofs are accepted; full staff support is not.** At
+this session checkpoint, next implement bounded SE staff-compatible Sundering Fan
+and Oath authoring on the same rig. Read `class-abilities.ts`: Warrior Fan is
+single-target melee, overriding the registry cone; Oath is the existing self
+power/armor buff. Preserve assigned secondary, actual release at pose5, cooldowns,
+input and damage; keep grip/body/foot/root checks and review real skill timing
+before directional export. Then hit/death, resource layout and complete-category
+campaign equipment/save/travel/combat/resource acceptance and exact B/C releases.
+Bow/unarmed remain legacy; do not start their expansion before B passes. No staff
+category promotion or new publication. Verified public stays
+**c437335844e4f82e30b00da2967d4f64c9614a64**. Keep this validated proof local.
+
+Raw: `/private/tmp/hollowbane-q3-staff-choreography/{carry-seven-audit,carry-seven-render,carry-eight-native,primary-mode-followup}`.
+Reproduce the completed native review without rerendering:
+
+```sh
+node scripts/review-warrior-staff-directions.mjs /private/tmp/hollowbane-q3-staff-choreography/carry-render /private/tmp/hollowbane-q3-staff-choreography/carry-seven-render /private/tmp/hollowbane-q3-staff-choreography/carry-eight-native --carry
+```
+
+No owned renderer/server remains active at the checkpoint. Preserve all local
+proof commits, `8a48dc9` recovery ancestry and unrelated documentation edits.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing

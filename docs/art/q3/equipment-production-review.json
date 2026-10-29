@@ -1327,7 +1327,7 @@
       "Independent hosted showcase startup reproducibly exceeds5s while developer atlases still download (98% initial/93% traced);21/22 pass, broader acceptance remains open. No global timeout/assertion change."
     ],
     "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment/completion-*",
-    "next": "Expand the accepted staff carry to the seven remaining directions using cached approved movement matrices, not a full Warrior rerender; audit foot/root/body checks before bounded export and native directional review. Then author staff-compatible assigned abilities/hit/death and complete category integration/release. Staff remains legacy until every required pose is accepted.",
+    "next": "Implement bounded Southeast staff ability authoring on the approved rig: inspect classAbility override (Sundering Fan is single-target melee, not the registry cone) and unchanged Oath self-buff; create staff-specific anticipation/contact or braced activation at existing pose5, with exact guard return, grip/body/root checks. Audit and review actual skill timing before directional export. Then hit/death, shared-body resource budget and complete-category campaign integration/exact B/C releases. Bow/unarmed stay legacy until B passes.",
     "finalBuildFiles": 164,
     "unchangedAcceptedFiles": 158,
     "allAcceptedWarriorPngJsonUnchanged": true,
@@ -1934,5 +1934,166 @@
     "campaignRuntimeArtSaveDelta": 0,
     "rawEvidence": "/private/tmp/hollowbane-q3-staff-choreography",
     "next": "Expand the accepted staff carry to the seven remaining directions using cached approved movement matrices, not a full Warrior rerender; audit foot/root/body checks before bounded export and native directional review. Then author staff-compatible assigned abilities/hit/death and complete category integration/release. Staff remains legacy until every required pose is accepted."
+  },
+  "staffEightDirectionCarry": {
+    "productionApproved": false,
+    "completeStaffConfiguration": false,
+    "producerSha256": "158b4134bf2da54d31c998ebf4a2a2067acfd9697fc644ace78d1feda0951437",
+    "inputs": [
+      {
+        "directory": "/private/tmp/hollowbane-q3-staff-choreography/carry-render",
+        "proofSha256": "f776f374ed93b6f2d41b206fac90c0f0c888268fa09bfdd6498e2dabe6756cfa",
+        "producerSha256": "a5c4b5a266a7cdb7cd92a72deb135444b83b232241be2684c12300f6f88a1b7d",
+        "motionSha256": "97d88a9feaa78344caa3a3d9d2a320bd5897fcfeab45b18ca8604f6f4c573d16"
+      },
+      {
+        "directory": "/private/tmp/hollowbane-q3-staff-choreography/carry-seven-render",
+        "proofSha256": "02d10e7848ba4fef79269308c9d79cd95ad25ebe9f7f98bf1c45e0e147bafc7e",
+        "producerSha256": "e3d222f66a3f4a4d7d27811c5d3475abfe26591a9b37ff39948cb3b1896d6c6e",
+        "motionSha256": "97d88a9feaa78344caa3a3d9d2a320bd5897fcfeab45b18ca8604f6f4c573d16"
+      }
+    ],
+    "kind": "carry",
+    "logicalFrames": 320,
+    "uniqueRasters": 320,
+    "guardAliases": 0,
+    "cpuRoundTrips": 320,
+    "gpuRoundTrips": 320,
+    "atlas": null,
+    "atlases": [
+      {
+        "key": "carry-0",
+        "width": 2048,
+        "height": 2048,
+        "pngBytes": 2231992,
+        "decodedBaseBytes": 16777216
+      },
+      {
+        "key": "carry-1",
+        "width": 2048,
+        "height": 2048,
+        "pngBytes": 2263401,
+        "decodedBaseBytes": 16777216
+      },
+      {
+        "key": "carry-2",
+        "width": 2048,
+        "height": 2048,
+        "pngBytes": 2221183,
+        "decodedBaseBytes": 16777216
+      },
+      {
+        "key": "carry-3",
+        "width": 2048,
+        "height": 2048,
+        "pngBytes": 2239123,
+        "decodedBaseBytes": 16777216
+      }
+    ],
+    "carryPlayback": {
+      "actualPlanTicks": 600,
+      "nativeVisitedPlanTicks": 600,
+      "actualPlanSha256": "e5c620085b8acf960de7c3e1ae51b396c2b82b77d7aa3def9ab1c56d0ff9ac1d",
+      "acceptedPrimaryPngSha256": "6d264a8d60bec65dcfe9f2270197e7b7f71e2bfb1161da583bb37a89cb2406b8",
+      "acceptedPrimaryMetadataSha256": "2226fbd528fbf0d9274e277ecee9a4d0ee182832e12ac4bce87d18c8d2c32958",
+      "acceptedPrimaryAtlasReused": true,
+      "primaryAtlasAdditionalPngBytes": 0,
+      "fixtureLoadedAtlases": 5,
+      "actualDamageEvents": 1
+    },
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+    "inventory": [
+      {
+        "cycle": 0,
+        "stage": "released",
+        "textures": 10
+      },
+      {
+        "cycle": 0,
+        "stage": "reloaded",
+        "textures": 15
+      },
+      {
+        "cycle": 1,
+        "stage": "released",
+        "textures": 10
+      },
+      {
+        "cycle": 1,
+        "stage": "reloaded",
+        "textures": 15
+      },
+      {
+        "cycle": 2,
+        "stage": "released",
+        "textures": 10
+      },
+      {
+        "cycle": 2,
+        "stage": "reloaded",
+        "textures": 15
+      }
+    ],
+    "frameStats": {
+      "count": 600,
+      "p50": 16.69999999999891,
+      "p95": 18.5,
+      "p99": 18.600000000002183,
+      "max": 33.29999999999927,
+      "over25": 1
+    },
+    "errors": [],
+    "scope": "DBL-023/024/025 all forty carry poses in each direction; not complete staff support",
+    "directionalCarryVisualReviewAccepted": true,
+    "newRenders": 280,
+    "reusedSoutheastRenders": 40,
+    "sampledGeometryPoses": 320,
+    "sevenDirectionFootWorldMaximumErrorMetres": 1.9213254687529247e-7,
+    "allLowerBodyMatricesAndOriginalFootContactsRetained": true,
+    "shaftBodyIntersections": 0,
+    "sourceAndActualTimedNativeCapturesReviewed": true,
+    "southeastIdlePrimaryGuardComparison": {
+      "scope": "SE carry idle0 versus accepted primary guard0, exact packed RGBA",
+      "identical": false,
+      "alphaDifferentPixels": 1,
+      "maxPremultipliedRgb": 2,
+      "pixelsOver4": 0
+    },
+    "costs": {
+      "carryPngBytes": 8955699,
+      "carryAtlases": 4,
+      "carryCalculatedBaseRgbaBytes": 67108864,
+      "reusedPrimaryPngBytes": 2706094,
+      "reusedPrimaryCalculatedBaseRgbaBytes": 16777216,
+      "combinedDiagnosticPngBytes": 11661793,
+      "combinedDiagnosticCalculatedBaseRgbaBytes": 83886080,
+      "productionDelta": 0,
+      "gpuResidencyMeasured": false
+    },
+    "primaryModeFollowup": {
+      "cpuRoundTrips": 96,
+      "gpuRoundTrips": 96,
+      "pngAndMetadataByteIdenticalToAcceptedProof": true,
+      "nativeFrameStats": {
+        "count": 600,
+        "p50": 16.69999999999891,
+        "p95": 18.600000000000364,
+        "p99": 18.69999999999891,
+        "max": 18.700000000000728,
+        "over25": 0
+      },
+      "balancedResourceCycles": 3,
+      "runtimeErrors": []
+    },
+    "validation": {
+      "focusedTests": 16,
+      "testFiles": 4,
+      "typescript": true,
+      "scopedJsLintFormat": true,
+      "pythonAndEmbeddedBrowserSyntax": true
+    },
+    "limitations": "Four full-body carry proof atlases plus reused primary are 80MiB calculated RGBA; not an accepted shipping layout or GPU residency. Reused bone poses do not imply pixel-identical lower-body images. Local patch/correction plan still needs full controls. Eight-view33.3ms/one>25 sample retained; no campaign regression/improvement inference.",
+    "rawEvidence": "/private/tmp/hollowbane-q3-staff-choreography",
+    "next": "Implement bounded Southeast staff ability authoring on the approved rig: inspect classAbility override (Sundering Fan is single-target melee, not the registry cone) and unchanged Oath self-buff; create staff-specific anticipation/contact or braced activation at existing pose5, with exact guard return, grip/body/root checks. Audit and review actual skill timing before directional export. Then hit/death, shared-body resource budget and complete-category campaign integration/exact B/C releases. Bow/unarmed stay legacy until B passes."
   }
 }

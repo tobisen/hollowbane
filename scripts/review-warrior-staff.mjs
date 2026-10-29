@@ -14,9 +14,7 @@ const directions = [...new Set(proof.samples.map((s) => s.direction))];
 if (
   proof.productionApproved ||
   (proof.carrySourceSha256
-    ? proof.samples.length !== 40 ||
-      directions.length !== 1 ||
-      directions[0] !== "se"
+    ? proof.samples.length !== directions.length * 40 || directions.length > 8
     : proof.motionSha256
       ? proof.samples.length !== directions.length * 12 || directions.length > 8
       : proof.samples.length !== 12)
@@ -29,16 +27,19 @@ if (proof.carrySourceSha256) {
       Array.from({ length: 16 }, (_, index) => ({ action, index })),
     ),
   ];
-  if (
-    proof.samples.some(
-      (s, i) =>
-        s.ordinal !== i ||
-        s.action !== expected[i].action ||
-        s.index !== expected[i].index ||
-        !(s.lowerBodyMatrixMaximumError < 1e-5),
+  for (const direction of directions)
+    if (
+      proof.samples
+        .filter((s) => s.direction === direction)
+        .some(
+          (s, i) =>
+            s.ordinal !== i ||
+            s.action !== expected[i].action ||
+            s.index !== expected[i].index ||
+            !(s.lowerBodyMatrixMaximumError < 1e-5),
+        )
     )
-  )
-    throw Error("Changed or incomplete carry gait");
+      throw Error("Changed or incomplete carry gait");
 } else if (proof.motionSha256)
   for (const direction of directions) {
     const indices = proof.samples
