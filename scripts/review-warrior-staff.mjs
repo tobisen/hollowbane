@@ -10,8 +10,22 @@ if (!process.argv[2] || !relative(process.cwd(), directory).startsWith(".."))
   throw Error("Pass a diagnostic directory outside the repository");
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex"),
   proof = JSON.parse(await readFile(resolve(directory, "staff.json"), "utf8"));
-if (proof.samples.length !== 12 || proof.productionApproved)
-  throw Error("Expected twelve unapproved diagnostic poses");
+const directions = [...new Set(proof.samples.map((s) => s.direction))];
+if (
+  proof.productionApproved ||
+  (proof.motionSha256
+    ? proof.samples.length !== directions.length * 12 || directions.length > 8
+    : proof.samples.length !== 12)
+)
+  throw Error("Expected bounded unapproved staff poses");
+if (proof.motionSha256)
+  for (const direction of directions) {
+    const indices = proof.samples
+      .filter((s) => s.direction === direction)
+      .map((s) => s.index);
+    if (indices.some((v, i) => v !== i))
+      throw Error("Incomplete directional motion");
+  }
 const reports = [],
   tiles = [];
 for (const [index, sample] of proof.samples.entries()) {
@@ -50,12 +64,14 @@ for (const [index, sample] of proof.samples.entries()) {
     .toBuffer();
   await writeFile(resolve(directory, `${sample.name}-packed.png`), png);
   tiles.push({
+    direction: sample.direction,
     input: await sharp(png).resize(256, 256).png().toBuffer(),
     left: (index % 4) * 256,
     top: Math.floor(index / 4) * 256,
   });
   reports.push({
     name: sample.name,
+    direction: sample.direction,
     pixelSha256: hash(pixels),
     pngBytes: png.length,
     decodedBaseBytes: pixels.length,
@@ -70,20 +86,40 @@ for (const [index, sample] of proof.samples.entries()) {
     staffGroundMinimum: sample.staffGroundMinimum,
   });
 }
-for (const [background, text] of [
-  ["#252c30", "white"],
-  ["#d9d6cd", "black"],
-]) {
-  const labels = Buffer.from(
-    `<svg width="1024" height="768"><style>text{font:12px monospace;fill:${text}}</style>${reports.map((r, i) => `<text x="${(i % 4) * 256 + 8}" y="${Math.floor(i / 4) * 256 + 16}">${r.name}</text>`).join("")}</svg>`,
-  );
-  await sharp({ create: { width: 1024, height: 768, channels: 4, background } })
-    .composite([...tiles, { input: labels, left: 0, top: 0 }])
-    .png()
-    .toFile(
-      resolve(directory, `review-${text === "white" ? "dark" : "light"}.png`),
+const groups =
+  proof.motionSha256 && directions.length > 1 ? directions : [null];
+for (const direction of groups)
+  for (const [background, text] of [
+    ["#252c30", "white"],
+    ["#d9d6cd", "black"],
+  ]) {
+    const selected = direction
+        ? reports.filter((r) => r.direction === direction)
+        : reports,
+      selectedTiles = direction
+        ? tiles.filter((r) => r.direction === direction)
+        : tiles,
+      height = Math.ceil(selected.length / 4) * 256;
+    const labels = Buffer.from(
+      `<svg width="1024" height="${height}"><style>text{font:12px monospace;fill:${text}}</style>${selected.map((r, i) => `<text x="${(i % 4) * 256 + 8}" y="${Math.floor(i / 4) * 256 + 16}">${r.name}</text>`).join("")}</svg>`,
     );
-}
+    await sharp({ create: { width: 1024, height, channels: 4, background } })
+      .composite([
+        ...selectedTiles.map(({ input }, i) => ({
+          input,
+          left: (i % 4) * 256,
+          top: Math.floor(i / 4) * 256,
+        })),
+        { input: labels, left: 0, top: 0 },
+      ])
+      .png()
+      .toFile(
+        resolve(
+          directory,
+          `review-${direction ? direction + "-" : ""}${text === "white" ? "dark" : "light"}.png`,
+        ),
+      );
+  }
 const rejected = reports.filter(
     (r) =>
       r.alphaTouchesCellEdge ||

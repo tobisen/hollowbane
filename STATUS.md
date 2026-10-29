@@ -1,3 +1,9 @@
+## Q3-B staff primary eight directions / carry pilot next (2026-10-30)
+
+- Reused12 accepted SE renders; only84 additional primary frames.712 dense samples pass unchanged reach/grip/body/ground/root checks. All eight contact/sheet views reviewed;96 CPU/GPU atlas round trips exact.88 unique rasters/eight guard aliases; diagnostic2048² atlas2706094PNG bytes/16MiB calculated RGBA, not production/GPU cost.
+- Native M4/Metal600 intervals p9518.1/max18.6ms,zero>25/errors; three texture3→2→3 release cycles stable. Scoped lint/format/Python syntax pass; prior13 timing/packing tests and TypeScript pass. App/art/save delta0. Staff/bow/unarmed remain legacy; B/C incomplete.
+- Next bounded SE idle/walk/run staff carry pilot preserving approved lower-body/feet and solving opposing grip with original torso motion; actual gait/primary transition review before directional expansion, then assigned abilities/hit/death and category integration/release. Verified deployed remainsc437335844e4f82e30b00da2967d4f64c9614a64; no CI pending. Keep proof local and unrelated edits/checkpoints intact. Resume docs/art/q3/warrior-equipment.md and /private/tmp/hollowbane-q3-staff-choreography.
+
 ## Q3-B SE staff primary timed proof / category still legacy (2026-10-29)
 
 - Actual staff rules: two-handed melee/range1.05, unchanged primary clock and secondary assignment. New original12-pose SE guard/load/contact/follow-through uses approved rig and opposing grip, with a shorter1.55m staff; no actor rescaling.89 continuous geometry samples clear all shaft/body checks; stable feet/root, exact guard/recovery pixels. Timed native captures meet real range marker; SE primary accepted only for directional continuation.

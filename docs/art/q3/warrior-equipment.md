@@ -175,6 +175,47 @@ then complete staff movement and assigned ability/reaction/death coverage before
 any campaign integration. Keep bow/unarmed legacy. Last verified deployed SHA
 remains **c437335844e4f82e30b00da2967d4f64c9614a64**. Keep this proof checkpoint local.
 
+## Eight-direction staff primary — local proof 2026-10-30
+
+The accepted SE motion now covers all eight facings. Reuse the12 existing SE
+renders; export only84 missing primary poses. Direction rotations come from the
+approved movement manifest. The same torso/grip authoring, rig, camera/scale and
+deterministic exporter are retained; no mirroring or original Warrior rerender.
+Combined **712 dense samples** (89 per direction) retain the same reach, palm,
+shaft/non-hand body, ground, root and foot checks. All pass. Guard/recovery images
+are exact per-direction aliases. Light/dark sheets and native actual-timed impact
+captures have been reviewed across all facings, including rear cloak occlusion.
+
+`scripts/review-warrior-staff-directions.mjs` checks reviewed source pixel hashes,
+reuses the existing crop/packing code and verifies **96/96 CPU and native GPU
+round trips**. All96 logical frames,88 unique rasters and8 guard aliases fit one
+2048² diagnostic atlas: **2,706,094 PNG bytes /16MiB calculated base RGBA**.
+This full-body primary-only artifact is not shipped or a complete category cost;
+shared-body patches remain the intended resource investigation. No GPU-residency
+or campaign-payload claim. Three native unload/reload cycles return **3→2→3**
+textures (fixture-owned defaults/render target included), with no growth.
+
+Native M4/ANGLE Metal, actual primary selector/timing at gameplay1× and inspection
+2×, rotating all eight facings: **600 intervals, p5016.7/p9518.1/p9918.6/
+max18.6ms,zero>25,zero runtime errors**. This is isolated motion playback, not
+production encounter performance. Expanded tooling passes scoped lint/format and
+Python syntax; the unchanged timing/packing modules already passed13 focused
+cases and TypeScript in the SE pilot. No redundant full campaign regression for
+an unpublished offline proof. A complete production change still requires the
+specified focused and exact Full/Pages/hosted release gates.
+
+**Staff remains legacy.** Primary-direction proof is accepted; locomotion,
+assigned secondary abilities, hit, death, real equipment/save/area/resource
+integration and B/C remain incomplete. Next executable action: cache approved
+SE idle/walk/run bone/foot poses, keep the lower body unchanged and solve the
+two-hand staff guard against existing torso motion. Render a bounded gait pilot
+and inspect actual gait/primary handoff before any directional locomotion batch.
+No new production categories. Sword alone/sword+shield remain supported;
+bow/unarmed legacy. Last verified public SHA is still
+**c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending. Raw evidence remains
+`/private/tmp/hollowbane-q3-staff-choreography/{seven-dense,seven-render,eight-primary}`.
+Keep this tooling/proof checkpoint local until a coherent category is complete.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing

@@ -1327,7 +1327,7 @@
       "Independent hosted showcase startup reproducibly exceeds5s while developer atlases still download (98% initial/93% traced);21/22 pass, broader acceptance remains open. No global timeout/assertion change."
     ],
     "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment/completion-*",
-    "next": "Audit same accepted primary motion in remaining seven facings without rerendering SE; review all directional impact/occlusion/trim roots. Then staff movement/secondary-assigned abilities/hit/death. No production promotion before entire configuration and exact B/C release gates.",
+    "next": "Bounded Southeast staff idle/walk/run carry pilot: reuse approved movement lower-body poses and fixed-foot contacts, solve opposing grip against torso motion, review actual gait timing/transition to accepted primary. Then assigned abilities, hit/death, full directions and complete-category integration; B/C remain unaccepted.",
     "finalBuildFiles": 164,
     "unchangedAcceptedFiles": 158,
     "allAcceptedWarriorPngJsonUnchanged": true,
@@ -1791,5 +1791,88 @@
     "campaignRuntimeArtSaveDelta": 0,
     "rawEvidence": "/private/tmp/hollowbane-q3-staff-choreography",
     "next": "Audit same accepted primary motion in remaining seven facings without rerendering SE; review all directional impact/occlusion/trim roots. Then staff movement/secondary-assigned abilities/hit/death. No production promotion before entire configuration and exact B/C release gates."
+  },
+  "staffEightDirectionPrimary": {
+    "productionApproved": false,
+    "completeStaffConfiguration": false,
+    "producerSha256": "6e82efbdddbc50965933bcfd0804565037c800c837fd1b86718d1cc13e41288c",
+    "inputs": [
+      {
+        "directory": "/private/tmp/hollowbane-q3-staff-choreography/render",
+        "proofSha256": "655459b7e669f9fd466c54d04c1bdcaa9ffb3e4bd704b77e843cc204c84fd3a3",
+        "producerSha256": "e7aa6282d7413c326a545451a5b133bd60c481c0e2bbb6f59d1027f73562c482",
+        "motionSha256": "441be5cadb8a817a1a43b33c8f2e780b30301b2b2f038efcfea2329676703cb8"
+      },
+      {
+        "directory": "/private/tmp/hollowbane-q3-staff-choreography/seven-render",
+        "proofSha256": "8bcf0c0666cf74f29422fb62fccc9a1b77ab980f5b975f5c01b66f7c889549c8",
+        "producerSha256": "cab7672f0bc9b3e7bd28385706df01090a9df3b12ecfb7443f313b740f9cae1e",
+        "motionSha256": "97d88a9feaa78344caa3a3d9d2a320bd5897fcfeab45b18ca8604f6f4c573d16"
+      }
+    ],
+    "logicalFrames": 96,
+    "uniqueRasters": 88,
+    "guardAliases": 8,
+    "cpuRoundTrips": 96,
+    "gpuRoundTrips": 96,
+    "atlas": {
+      "width": 2048,
+      "height": 2048,
+      "pngBytes": 2706094,
+      "decodedBaseBytes": 16777216
+    },
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+    "inventory": [
+      {
+        "cycle": 0,
+        "stage": "released",
+        "textures": 2
+      },
+      {
+        "cycle": 0,
+        "stage": "reloaded",
+        "textures": 3
+      },
+      {
+        "cycle": 1,
+        "stage": "released",
+        "textures": 2
+      },
+      {
+        "cycle": 1,
+        "stage": "reloaded",
+        "textures": 3
+      },
+      {
+        "cycle": 2,
+        "stage": "released",
+        "textures": 2
+      },
+      {
+        "cycle": 2,
+        "stage": "reloaded",
+        "textures": 3
+      }
+    ],
+    "frameStats": {
+      "count": 600,
+      "p50": 16.69999999999891,
+      "p95": 18.100000000000364,
+      "p99": 18.600000000000364,
+      "max": 18.600000000000364,
+      "over25": 0
+    },
+    "errors": [],
+    "scope": "DBL-023/024/025 primary motion only; not full staff support",
+    "primaryVisualReviewAccepted": true,
+    "denseGeometrySamples": 712,
+    "newRenders": 84,
+    "reusedSoutheastRenders": 12,
+    "visualReview": "All eight directional sheets and native actual-timed impact captures reviewed: grip, cloak/body occlusion, anticipation/contact/recovery, fixed root and unclipped alpha.",
+    "validation": "13 focused tests/four files and TypeScript passed in Southeast pilot; expanded offline exporter Python syntax and scoped JavaScript lint/format pass. No app/runtime changes.",
+    "costLimit": "Disposable full-body primary atlas, not production payload or measured GPU residency; existing shared-body patch feasibility retained. Full category resource plan remains pending.",
+    "campaignRuntimeArtSaveDelta": 0,
+    "rawEvidence": "/private/tmp/hollowbane-q3-staff-choreography",
+    "next": "Bounded Southeast staff idle/walk/run carry pilot: reuse approved movement lower-body poses and fixed-foot contacts, solve opposing grip against torso motion, review actual gait timing/transition to accepted primary. Then assigned abilities, hit/death, full directions and complete-category integration; B/C remain unaccepted."
   }
 }

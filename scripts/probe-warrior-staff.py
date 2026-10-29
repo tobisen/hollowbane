@@ -34,8 +34,10 @@ def main():
     parser.add_argument('--audit', action='store_true')
     parser.add_argument('--motion', action='store_true', help='Bounded SE primary choreography instead of legacy static study')
     parser.add_argument('--subframes', type=int, choices=[1, 8], default=1)
+    parser.add_argument('--directions', nargs='+', choices=['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'])
     options = parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
     assert options.subframes == 1 or (options.audit and options.motion)
+    assert options.directions is None or (options.motion and len(options.directions) == len(set(options.directions)))
     motion_path = ROOT / 'assets/source/q3/warrior-staff-se/motion.json'
     motion = json.loads(motion_path.read_text()) if options.motion else None
     output = options.output.resolve()
@@ -164,7 +166,11 @@ def main():
         poses = [controls(index / options.subframes)
                  for index in range(11 * options.subframes + 1)]
     records = []
-    directions = [('se', 0)] if motion else [('se', 0), ('w', 225), ('nw', 180)]
+    movement_path = ROOT / 'public/dev/warrior-directions/warrior.json'
+    movement = json.loads(movement_path.read_text())
+    directions = ([(name, movement['views'][name]['rotationDegrees'])
+                   for name in options.directions or ['se']] if motion
+                  else [('se', 0), ('w', 225), ('nw', 180)])
     for facing, angle in directions:
         rotation = Matrix.Rotation(math.radians(angle), 4, 'Z')
         rig.matrix_world = rotation
@@ -259,6 +265,7 @@ def main():
         'provenance': 'Original primitive wood/bronze/amber staff; existing approved Warrior rig and materials',
         'productionApproved': False, 'genuineMotionQualityAccepted': False,
         'motionSha256': digest(motion_path) if motion else None,
+        'movementManifestSha256': digest(movement_path),
         'subframes': options.subframes,
         'samples': records}, indent=2) + '\n')
 
