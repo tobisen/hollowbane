@@ -1,3 +1,9 @@
+## Q3-B staff pilot checkpoint / no category promotion (2026-10-29)
+
+- Verified runtime remainsc437335844e4f82e30b00da2967d4f64c9614a64; Full/Pages/24 native hosted/164 public hashes accepted. Shared-body proof6b7c1c1 local; campaign stays42 textures/373.25MiB calculated RGBA, not GPU residency. Cold16.73s transfer and existing414.8ms combat stall remain recorded.
+- Original staff12-pose SE/W/NW pilot: approved15-bone rig/IK, reachable opposing two-hand grip, zero sampled non-hand shaft/body intersections, palm error≤1.24e-7m, fixed feet/root.512 overscan corrects rejected NW clipping without rescaling; captures/alpha edges reviewed.455395PNG bytes/12MiB RGBA are temporary diagnostic frames, not production costs; runtime/art/save delta0.
+- Staff motion remains UNACCEPTED: SE active heavily foreshortened, provisional jab35.54° off forward/30.17° elevated, only four control poses. Next refine aimed continuous SE/W/NW attack against actual phase/impact timing with unchanged grip/collision checks; then full directions/abilities/hit/death and category packing/integration/release. Staff/bow/unarmed legacy; B/C incomplete. Keep tooling local; preserve rejected evidence and unrelated edits. Resume docs/art/q3/warrior-equipment.md; raw /private/tmp/hollowbane-q3-staff-proof and rejected siblings.
+
 ## Q3-B bounded body proof checkpoint / B–C incomplete (2026-10-29)
 
 - Startup release verifiedc437335844e4f82e30b00da2967d4f64c9614a64: Full/Pages/hosted/164 file integrity and24 independent native cases pass. Original hidden journal cause was pre-restore shortcut; startup queue2→4/readiness fixed. Slow cold16.73s transfer and campaign414.8ms stall remain explicit; no universal5s or hitch-free claim.

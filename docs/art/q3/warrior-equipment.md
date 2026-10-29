@@ -204,6 +204,65 @@ bow nor unarmed compatibility. Then expand alias/transition/directional coverage
 and integrate only coherent categories through fresh exact release gates. Keep
 legacy fallbacks, the slow cold-transfer target limit and checkpoint stalls.
 
+## Original staff grip pilot — geometry feasible, motion unaccepted
+
+Local `scripts/probe-warrior-staff.py` now provides **12 bounded diagnostic
+renders**, SE/W/NW guard, anticipation, active and recovery. It reuses the approved
+15-bone rig/camera/body materials and the hash-verified analytical bone-placement
+helper. Staff wood, bronze ferrules and amber cap are original procedural
+primitives:1.70m shaft,1.75m including cap. No external asset, approved source
+replacement, blend save, gameplay or save-schema change.
+
+The first audit rejects a sword-axis grip: shaft enters torso/forearms and one
+left target needs0.611m against0.550m available. Transverse palm placement,
+reachable targets, a braced torso and consistent opposing overhand/underhand grips
+now pass all12 sampled non-hand shaft/body intersection tests. No intersecting
+forearm/torso mesh was excluded to obtain a pass. Only intentional gauntlet/finger
+contact is excluded. Max palm error1.24e-7m, lowest shaft0.839m; connected joints,
+original bone lengths, fixed feet/root remain asserted. This is geometry evidence,
+not accepted human grip/choreography quality.
+
+Raised NW tips clip the initial448 cell. The final512×512 cell/root256,338 adds
+transparent padding without shrinking actor/weapon: three world anchors verify
+exact source+128,+128 projection. Packed alpha clears every edge (top minimum50px).
+`review-warrior-staff.mjs` checks hashes and produces light/dark gameplay-scale
+sheets. Twelve temporary512 frames total455395PNG bytes and12MiB calculated RGBA;
+these are **diagnostic controls**, not a category payload or GPU measurement.
+A prospective512 scratch would be1MiB versus448's0.766MiB; actual localized body/
+weapon packing and runtime costs remain unmeasured. Published increment stays0.
+
+**Staff is not supported.** Actual review shows heavily foreshortened SE active
+silhouette; the provisional jab's horizontal axis is35.54° from model forward
+and30.17° above ground. This is not accepted aiming/impact choreography.
+Only four control poses exist, without continuous phase timing or full directional,
+ability, hit, death, equip/save/reload/resource/campaign acceptance. Keep staff,
+bow and unarmed on legacy. Shared sword-free body remains a bounded proof,
+not a complete new category asset set. B/C remain incomplete.
+
+Reproduce with pinned Blender4.5.3LTS and an external diagnostic directory:
+
+```sh
+Blender --background --python-exit-code 1 --python scripts/probe-warrior-staff.py -- /private/tmp/hollowbane-q3-staff-proof --audit
+Blender --background --python-exit-code 1 --python scripts/probe-warrior-staff.py -- /private/tmp/hollowbane-q3-staff-proof
+node scripts/review-warrior-staff.mjs /private/tmp/hollowbane-q3-staff-proof
+```
+
+Python syntax, scoped JS lint/syntax/format and final12-pose geometry/edge checks
+pass. No extra full gameplay/build run is needed for these offline-only tools;
+accepted runtime remains **c437335844e4f82e30b00da2967d4f64c9614a64**. Raw
+`/private/tmp/hollowbane-q3-staff-proof` contains provenance-linked `staff.json`,
+`review.json` and captures; `-initial-*`, `-transverse-reach.log`,
+`-horizontal-intersections.*`, `-diagonal-intersections.log`,
+`-same-grip-cuff-collision.log` and `-clipped448` retain rejected evidence. Do not
+count rejected samples as passes. Keep the validated tooling checkpoint local.
+
+**Exact next action:** refine the bounded staff attack toward actual model
+forward(0,-1), phase/impact timing and readable SE motion while retaining both-hand
+contact/reach/body/floor checks. Prove continuous SE/W/NW motion before all-eight,
+ability/hit/death exports or category body correction packing. Then integrate only
+a complete visually accepted category through fresh Full/Pages/hosted/integrity
+and B/C gates. Preserve both verified sword configurations and all legacy fallbacks.
+
 ## CI recovery — 2026-10-29
 
 Candidate `72155e6d62a83add0779d3e2662c9a80389499d4` failed exact
