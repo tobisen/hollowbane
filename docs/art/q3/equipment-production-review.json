@@ -1318,11 +1318,12 @@
     "nativeChromiumDistinctCases": 7,
     "nativeChromiumResults": "Four showcase cases, corrected real shield drag/equip/save/reload, keyboard-after-drag and virtual-pad/mouse handoff pass across bounded runs",
     "firefoxWebkitResults": "All eight focused Firefox/WebKit cases pass: six configurations, resources, real shield drag/equip/save/reload and immediate keyboard after drag",
-    "publication": "Pushed; exact selected Full CI in progress (Fast static/contracts/smoke still running when inspected); Pages/hosted acceptance pending",
+    "publication": "Exact CI40918355913 failed D12 Warrior reload readiness in Full Chromium shard3; Pages/hosted blocked. Recovery fix under local verification.",
     "repair": "A dragged grid redraw can remove the original click target, leaving suppression to consume the next intended click. Clear on new pointerdown and allow keyboard click detail 0; real campaign red/green evidence retained.",
     "failureHistory": [
       "Temporary local runner inherited its directory for the server; corrected explicit repository cwd without changing application",
-      "Real shield test exposed stale drag click suppression after successful grid move; app event-lifecycle fix passes original test"
+      "Real shield test exposed stale drag click suppression after successful grid move; app event-lifecycle fix passes original test",
+      "CI40918355913: area metadata checked before IndexedDB restoration; early J correctly rejected while loading modal owned inventory. Journal never opened; hidden Next was a test precondition failure. No drag in scenario."
     ],
     "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment/completion-*",
     "next": "Publish this coherent increment; then bounded shared sword-free body/patch proof and genuine staff grips/motion before promotion. No B/C completion claim.",
@@ -1332,6 +1333,23 @@
     "candidateSha": "72155e6d62a83add0779d3e2662c9a80389499d4",
     "ciRun": 40918355913,
     "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40918355913",
-    "testedBundle": "/private/tmp/hollowbane-warrior-equipment/completion-tested-bundle"
+    "testedBundle": "/private/tmp/hollowbane-warrior-equipment/completion-tested-bundle",
+    "ciRecovery": {
+      "rootCause": "Journal shortcut sent before worldReady during asynchronous checkpoint restoration; area metadata is not storage readiness.",
+      "fix": "Wait for enabled journal opener and hidden inventory; focus gameplay; send J and assert visible journal/finale title. Original reward/save assertions preserved.",
+      "rawEvidence": "/private/tmp/hollowbane-q3-ci-recovery",
+      "releaseAccepted": false,
+      "lastVerifiedDeployedSha": "8fece2b98325991e2116d6de25e12aba5908d089",
+      "localUnits": 17,
+      "localUnitFiles": 4,
+      "focusedNativeChromiumCases": 9,
+      "delayedTransactionReproduction": true,
+      "typescript": true,
+      "lint": true,
+      "build": true,
+      "unchangedClientFiles": 164,
+      "screenshotsReviewed": true,
+      "requiredTier": "full"
+    }
   }
 }

@@ -77,7 +77,13 @@ for (const id of CLASS_IDS)
     await expect
       .poll(() => page.evaluate(() => window.hollowbaneWorld?.area))
       .toBe("ashen-refuge");
+    // Area metadata exists before the asynchronous checkpoint restore finishes.
+    // Journal input is intentionally unavailable while inventory owns loading.
+    await expect(page.locator("#quest-journal-open")).toBeEnabled();
+    await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+    await page.locator("#combat-world").focus();
     await page.keyboard.press("j");
+    await expect(page.locator("#quest-journal")).toBeVisible();
     for (
       let i = 0;
       i < 4 &&
@@ -86,6 +92,7 @@ for (const id of CLASS_IDS)
       i++
     )
       await page.locator("#quest-next").click();
+    await expect(page.locator("#quest-title")).toHaveText("A Lantern Unbound");
     await expect(page.locator("#quest-status")).toHaveText(
       "Status: claimed · Act 1 complete",
     );

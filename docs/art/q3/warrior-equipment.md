@@ -9,6 +9,53 @@ vertical slice below. **Checkpoint A is verified** at
 [warrior-production.md](warrior-production.md). Historical sections retain their
 then-current counts and restrictions.
 
+## CI recovery — 2026-10-29
+
+Candidate `72155e6d62a83add0779d3e2662c9a80389499d4` failed exact
+[CI40918355913](https://github.com/tobisen/hollowbane/actions/runs/40918355913)
+only in Full Chromium shard3's Warrior D12 finale reload. Other three shards,
+complete units/tooling and required compatibility passed; publication was blocked.
+Recovery ancestor `8a48dc9` remains intact. Last verified deployment remains
+`8fece2b98325991e2116d6de25e12aba5908d089` until a new release is accepted.
+
+Downloaded trace/screenshots prove the journal never opened after reload. At
+trace207342.669ms, inventory owns the loading modal, status is `Loading character
+checkpoint…`, the class is still the default level1, and the journal opener is
+disabled. The test sends `j` at207345.805ms after checking only area metadata;
+`QuestJournal.open()` correctly rejects input before `worldReady`. Storage restores
+and releases inventory later, but the lost shortcut is not replayed. The empty
+journal title and hidden Next button then persist. No competing final overlay,
+failed quest event or duplicate reward: the first claim and save completed with
+claimed finale, XP4248 and gold531. No drag occurs; its dialog-scoped click handler
+cannot intercept this keyboard event. The recent drag repair is not this cause.
+
+The focused test repair waits for the journal opener to become enabled and the
+loading inventory to close, focuses gameplay, sends the original shortcut, and
+asserts the journal is visible before navigation. It also asserts the final title.
+Every original reward/class/XP/gold/item/loot/progression/reload assertion and all
+deadlines remain. Application, simulation, save schema and art bytes are unchanged.
+Ordinary and6×CPU original local runs pass; this is evidence of a missed readiness
+contract, not a claim that those runs reproduced the failure. Raw CI trace,
+screenshots/log and local diagnostic evidence: `/private/tmp/hollowbane-q3-ci-recovery`.
+
+The isolated delayed-transaction reproduction now passes: hold the real
+read-only IndexedDB completion notification, observe loading inventory/disabled
+journal, send `j` and verify both journal/Next remain hidden, then release the
+notification and run the repaired setup through all original reward/reload
+assertions. No timer delay or live simulation/save mutation is used. An initial
+request-event interception did not delay storage (which awaits transaction
+completion); its diagnostic failure is retained separately, not counted as a pass.
+
+Local verification: **17 units/four files**, strict TypeScript, full ESLint,
+formatting and production build pass; **nine focused native Chromium cases**
+pass (three earned finales, merchant, keyboard-after-drag, controller/mouse
+handoff, six-configuration selection, resource cycles and real shield drag/equip/
+save/reload). Completion/camp captures reviewed. All **164 client file hashes**
+match the previously sealed candidate exactly; runtime/art delta is0. Required
+CI remains **Full**, measured from the last accepted deployment including the
+unaccepted inventory interaction change. Do not expand weapons before its exact
+Full/Pages/hosted/integrity release gate passes.
+
 ## Verified sword/shield baseline and completion continuation — 2026-10-29
 
 Exact [CI40790057405](https://github.com/tobisen/hollowbane/actions/runs/40790057405)

@@ -1,3 +1,9 @@
+## Q3-B CI recovery — verified local repair / publication pending (2026-10-29)
+
+- CI40918355913 failed D12 Warrior reload: area metadata preceded IndexedDB restoration; J arrived while loading inventory owned the modal and journal was disabled. Journal never opened. First reward/save succeeded; no drag involved. CI trace/screenshots retained under /private/tmp/hollowbane-q3-ci-recovery.
+- Test now waits for enabled journal/closed inventory, focuses gameplay and asserts visible journal/finale title. Original reward/progression/reload assertions/deadlines preserved; no app/save/art changes. Controlled transaction delay reproduces rejected early J and passes repaired recovery.17 units/four files, nine native Chromium cases, TypeScript/full lint/build pass; screenshots reviewed. All164 client hashes unchanged.
+- Preserve recovery8a48dc9 and unrelated edits. Commit/push focused fix; require exact Full/Pages/hosted acceptance and164-file public identity before weapon expansion. Last verified deployment remains8fece2b98325991e2116d6de25e12aba5908d089. Bow/staff/unarmed remain legacy; B/C incomplete. Resume docs/art/q3/warrior-equipment.md.
+
 ## Q3-B completion continuation — A verified / local input-showcase increment (2026-10-29)
 
 - Accepted baseline8fece2b98325991e2116d6de25e12aba5908d089 /CI40790057405: Full, Pages, hosted and Release acceptance pass. All163 public bytes match;16 independent native M4/Metal hosted cases pass. Camp/combat/corpse captures reviewed. Additional unmatched631-frame battle p5016.7/p9516.9/p9917.6ms,3>25/max416.6; existing checkpoint stalls remain.
