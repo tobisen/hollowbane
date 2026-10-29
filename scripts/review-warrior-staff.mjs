@@ -13,12 +13,33 @@ const hash = (bytes) => createHash("sha256").update(bytes).digest("hex"),
 const directions = [...new Set(proof.samples.map((s) => s.direction))];
 if (
   proof.productionApproved ||
-  (proof.motionSha256
-    ? proof.samples.length !== directions.length * 12 || directions.length > 8
-    : proof.samples.length !== 12)
+  (proof.carrySourceSha256
+    ? proof.samples.length !== 40 ||
+      directions.length !== 1 ||
+      directions[0] !== "se"
+    : proof.motionSha256
+      ? proof.samples.length !== directions.length * 12 || directions.length > 8
+      : proof.samples.length !== 12)
 )
   throw Error("Expected bounded unapproved staff poses");
-if (proof.motionSha256)
+if (proof.carrySourceSha256) {
+  const expected = [
+    ...Array.from({ length: 8 }, (_, index) => ({ action: "idle", index })),
+    ...["walk", "run"].flatMap((action) =>
+      Array.from({ length: 16 }, (_, index) => ({ action, index })),
+    ),
+  ];
+  if (
+    proof.samples.some(
+      (s, i) =>
+        s.ordinal !== i ||
+        s.action !== expected[i].action ||
+        s.index !== expected[i].index ||
+        !(s.lowerBodyMatrixMaximumError < 1e-5),
+    )
+  )
+    throw Error("Changed or incomplete carry gait");
+} else if (proof.motionSha256)
   for (const direction of directions) {
     const indices = proof.samples
       .filter((s) => s.direction === direction)

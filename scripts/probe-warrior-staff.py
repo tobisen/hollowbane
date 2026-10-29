@@ -3,7 +3,8 @@
 Blender --background --python-exit-code 1 --python scripts/probe-warrior-staff.py
   -- /private/tmp/warrior-staff-proof [--audit]
 
-Twelve diagnostic poses only: SE/W/NW guard, anticipation, jab and recovery.
+Default twelve static poses; --motion gives twelve primary poses per selected
+direction. --motion --carry gives forty SE locomotion poses only.
 Uses the approved rig/materials/camera and hash-verified two-bone IK authoring.
 No blend/public writes, gameplay callbacks, mechanics or save changes.
 """
@@ -33,17 +34,38 @@ def main():
     parser.add_argument('output', type=Path)
     parser.add_argument('--audit', action='store_true')
     parser.add_argument('--motion', action='store_true', help='Bounded SE primary choreography instead of legacy static study')
+    parser.add_argument('--carry', action='store_true', help='SE-only staff guard over approved forty movement poses')
     parser.add_argument('--subframes', type=int, choices=[1, 8], default=1)
     parser.add_argument('--directions', nargs='+', choices=['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'])
     options = parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
     assert options.subframes == 1 or (options.audit and options.motion)
     assert options.directions is None or (options.motion and len(options.directions) == len(set(options.directions)))
+    assert not options.carry or (options.motion and options.subframes == 1 and options.directions in (None, ['se']))
     motion_path = ROOT / 'assets/source/q3/warrior-staff-se/motion.json'
     motion = json.loads(motion_path.read_text()) if options.motion else None
     output = options.output.resolve()
     assert not output.is_relative_to(ROOT)
     output.mkdir(parents=True, exist_ok=True)
     assert bpy.app.version_string == '4.5.3 LTS'
+    movement_path = ROOT / 'public/dev/warrior-directions/warrior.json'
+    movement = json.loads(movement_path.read_text())
+    carry = []
+    carry_controls_path = ROOT / 'assets/source/q3/warrior-staff-se/carry.json'
+    carry_controls = json.loads(carry_controls_path.read_text()) if options.carry else None
+    carry_source = ROOT / 'assets/source/q3/warrior-movement-se/warrior.blend'
+    if options.carry:
+        assert digest(carry_source) == movement['provenance']['rigSha256']
+        bpy.ops.wm.open_mainfile(filepath=str(carry_source))
+        carry_rig = bpy.data.objects['Warrior rig']
+        for ordinal, approved in enumerate(movement['views']['se']['frames']):
+            bpy.context.scene.frame_set(ordinal + 1)
+            bpy.context.view_layer.update()
+            matrices = {bone.name: bone.matrix.copy() for bone in carry_rig.pose.bones}
+            for contact in approved['contacts']:
+                expected = Vector(contact['sole']) + Vector((0, 0, .09))
+                assert (carry_rig.pose.bones['foot' + contact['side']].head - expected).length < 1e-5
+            carry.append((approved, matrices))
+        assert len(carry) == 40
     manifest = json.loads((ROOT / 'public/dev/warrior-refined/warrior.json').read_text())
     source = ROOT / 'assets/source/q3/warrior-rig-v2/warrior.blend'
     assert digest(source) == manifest['provenance']['rigSha256']
@@ -165,9 +187,11 @@ def main():
             raise AssertionError(index)
         poses = [controls(index / options.subframes)
                  for index in range(11 * options.subframes + 1)]
+        if options.carry:
+            poses = [(f"{approved['action']}-{approved['index']:02}",
+                      keys[0]['palm'], keys[0]['axis'], keys[0]['lean'], keys[0]['yaw'])
+                     for approved, _ in carry]
     records = []
-    movement_path = ROOT / 'public/dev/warrior-directions/warrior.json'
-    movement = json.loads(movement_path.read_text())
     directions = ([(name, movement['views'][name]['rotationDegrees'])
                    for name in options.directions or ['se']] if motion
                   else [('se', 0), ('w', 225), ('nw', 180)])
@@ -176,13 +200,27 @@ def main():
         rig.matrix_world = rotation
         for obj in body:
             obj.matrix_world = rotation @ base[obj.name]
-        for phase, position, shaft, lean, yaw in poses:
+        for ordinal, (phase, position, shaft, lean, yaw) in enumerate(poses):
             axis, palm_r = Vector(shaft).normalized(), Vector(position)
             anchor = Vector(rest['torso'][0])
             torso = (Matrix.Translation(anchor) @ Matrix.Rotation(yaw, 4, 'Z')
                      @ Matrix.Rotation(lean, 4, 'X') @ Matrix.Translation(-anchor))
             for name, matrix in neutral.items():
                 rig.pose.bones[name].matrix = matrix
+            expected_feet = {side: Vector(rest['foot' + side][0]) for side in ['L', 'R']}
+            lower_error = 0
+            if options.carry:
+                approved, original = carry[ordinal]
+                # Reuse the exact approved lower-body matrices, not another gait
+                # or wall-clock animation. Upper-body guard follows its torso.
+                operator = original['torso'] @ neutral['torso'].inverted()
+                torso = operator @ torso
+                palm_r = operator @ (palm_r + Vector(carry_controls['palmOffsets'][approved['action']]))
+                axis = (operator.to_3x3() @ axis).normalized()
+                for name in ['root', 'thighL', 'shinL', 'footL', 'thighR', 'shinR', 'footR']:
+                    rig.pose.bones[name].matrix = original[name]
+                expected_feet = {c['side']: Vector(c['sole']) + Vector((0, 0, .09))
+                                 for c in approved['contacts']}
             for name in ['torso', 'head']:
                 rig.pose.bones[name].matrix = torso @ neutral[name]
             across = Vector((0, 0, 1)).cross(axis).normalized()
@@ -215,7 +253,12 @@ def main():
             for side in ['L', 'R']:
                 for parent, child in [('upper', 'fore'), ('fore', 'hand')]:
                     assert (rig.pose.bones[parent + side].tail - rig.pose.bones[child + side].head).length < 1e-5
-                assert (rig.pose.bones['foot' + side].head - Vector(rest['foot' + side][0])).length < 1e-5
+                assert (rig.pose.bones['foot' + side].head - expected_feet[side]).length < 1e-5
+            if options.carry:
+                lower_error = max(abs(a - b) for name in ['root', 'thighL', 'shinL', 'footL', 'thighR', 'shinR', 'footR']
+                                  for actual, expected in zip(rig.pose.bones[name].matrix, original[name])
+                                  for a, b in zip(actual, expected))
+                assert lower_error < 1e-5
             assert max(abs(a - b) for a, b in zip(project(Vector((0, 0, 0))), [256, 338])) < .001
             graph = bpy.context.evaluated_depsgraph_get()
             staff_trees, bounds, minimum = [], [], math.inf
@@ -245,7 +288,11 @@ def main():
                       'staffBounds': [min(p[0] for p in bounds), min(p[1] for p in bounds),
                                       max(p[0] for p in bounds), max(p[1] for p in bounds)],
                       'productionApproved': False}
-            if motion:
+            if options.carry:
+                record.update(action=approved['action'], index=approved['index'], ordinal=ordinal,
+                              lowerBodyMatrixMaximumError=lower_error, contacts=approved['contacts'],
+                              palmR=list(palm_r), axis=list(axis))
+            elif motion:
                 index = float(phase.removeprefix('primary-'))
                 tip = palm_r + axis * geometry['tip']
                 record.update(action='primary', index=index,
@@ -265,6 +312,8 @@ def main():
         'provenance': 'Original primitive wood/bronze/amber staff; existing approved Warrior rig and materials',
         'productionApproved': False, 'genuineMotionQualityAccepted': False,
         'motionSha256': digest(motion_path) if motion else None,
+        'carrySourceSha256': digest(carry_source) if options.carry else None,
+        'carryControlsSha256': digest(carry_controls_path) if options.carry else None,
         'movementManifestSha256': digest(movement_path),
         'subframes': options.subframes,
         'samples': records}, indent=2) + '\n')

@@ -1,3 +1,9 @@
+## Q3-B SE staff carry / directional carry next (2026-10-30)
+
+- New40 SE idle/walk/run staff carry poses reuse approved lower-body matrices/foot contacts (max2.39e-7 error). Initial run4/5 shaft/thigh clipping retained; run guard10cm higher clears unchanged checks in all40. Grip≤1.21e-7m; no ghost sword/root change. Actual gameplay-scale gait/primary handoff captures reviewed.
+- Actual simulation/selector600-tick plan covers8/16/16 carry frames and one existing damage event at active pose5. Native M4/Metal600 intervals p9516.8/max18.7ms,zero>25/errors. Disposable SE40carry+12reused-primary atlas1420541PNG bytes/8MiB calculated RGBA; not production/GPU memory.16 focused tests/four files, TypeScript/scoped lint/syntax pass.
+- Next remaining seven carry facings using cached approved lower-body poses: audit before bounded export/native review, then staff assigned abilities/hit/death, resource plan and complete category integration/exact B/C releases. Staff/bow/unarmed remain legacy; production delta0. Verified deployed c437335844e4f82e30b00da2967d4f64c9614a64; no CI pending. Keep proof local, preserve unrelated edits/recovery. Resume docs/art/q3/warrior-equipment.md; raw /private/tmp/hollowbane-q3-staff-choreography.
+
 ## Q3-B staff primary eight directions / carry pilot next (2026-10-30)
 
 - Reused12 accepted SE renders; only84 additional primary frames.712 dense samples pass unchanged reach/grip/body/ground/root checks. All eight contact/sheet views reviewed;96 CPU/GPU atlas round trips exact.88 unique rasters/eight guard aliases; diagnostic2048² atlas2706094PNG bytes/16MiB calculated RGBA, not production/GPU cost.

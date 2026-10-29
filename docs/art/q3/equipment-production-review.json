@@ -1327,7 +1327,7 @@
       "Independent hosted showcase startup reproducibly exceeds5s while developer atlases still download (98% initial/93% traced);21/22 pass, broader acceptance remains open. No global timeout/assertion change."
     ],
     "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment/completion-*",
-    "next": "Bounded Southeast staff idle/walk/run carry pilot: reuse approved movement lower-body poses and fixed-foot contacts, solve opposing grip against torso motion, review actual gait timing/transition to accepted primary. Then assigned abilities, hit/death, full directions and complete-category integration; B/C remain unaccepted.",
+    "next": "Expand the accepted staff carry to the seven remaining directions using cached approved movement matrices, not a full Warrior rerender; audit foot/root/body checks before bounded export and native directional review. Then author staff-compatible assigned abilities/hit/death and complete category integration/release. Staff remains legacy until every required pose is accepted.",
     "finalBuildFiles": 164,
     "unchangedAcceptedFiles": 158,
     "allAcceptedWarriorPngJsonUnchanged": true,
@@ -1874,5 +1874,65 @@
     "campaignRuntimeArtSaveDelta": 0,
     "rawEvidence": "/private/tmp/hollowbane-q3-staff-choreography",
     "next": "Bounded Southeast staff idle/walk/run carry pilot: reuse approved movement lower-body poses and fixed-foot contacts, solve opposing grip against torso motion, review actual gait timing/transition to accepted primary. Then assigned abilities, hit/death, full directions and complete-category integration; B/C remain unaccepted."
+  },
+  "staffSoutheastCarry": {
+    "productionApproved": false,
+    "completeStaffConfiguration": false,
+    "producerSha256": "c42fb178ec0d129f6c775eca351f5fdaea977e86f3f70ffaf7168fcbc6c384c3",
+    "inputs": [
+      {
+        "set": "movement",
+        "proofSha256": "f776f374ed93b6f2d41b206fac90c0f0c888268fa09bfdd6498e2dabe6756cfa",
+        "reviewSha256": "382e9c4ee152be1b230f9cacc8fe83249d35d5834f554e6b409f46a5c1171b3b"
+      },
+      {
+        "set": "attacks",
+        "proofSha256": "655459b7e669f9fd466c54d04c1bdcaa9ffb3e4bd704b77e843cc204c84fd3a3",
+        "reviewSha256": "94b06f06d00f3fd7c1daf6dc1595438bc81bccc03b3b75579de5568c8d03a7de"
+      }
+    ],
+    "timingBundleSha256": "ad4a8129c48dbbe8e96019c8e23bb9946c3e98a5908ff4bbead14f6442d5715d",
+    "rules": {
+      "weapon": "melee",
+      "range": 1.05
+    },
+    "actualPlanTicks": 600,
+    "actualPrimaryDamageEvents": 1,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+    "textures": 2,
+    "atlas": {
+      "width": 2048,
+      "height": 1024,
+      "pngBytes": 1420541,
+      "decodedBaseBytes": 8388608
+    },
+    "frameStats": {
+      "count": 600,
+      "p50": 16.69999999999891,
+      "p95": 16.80000000000109,
+      "p99": 18.299999999999272,
+      "max": 18.69999999999709,
+      "over25": 0
+    },
+    "errors": [],
+    "scope": "DBL-023/024/025 Southeast idle/walk/run carry pilot only",
+    "seCarryPilotAcceptedForDirectionalStudy": true,
+    "renderedCarryPoses": 40,
+    "reusedPrimaryPoses": 12,
+    "lowerBodyMatrixMaximumError": 2.384185791015625e-7,
+    "palmMaximumErrorMetres": 1.2013700229374393e-7,
+    "shaftBodyIntersections": 0,
+    "alphaTouchesCellEdge": false,
+    "rejectedInitialGuard": "Two run poses clipped the right thigh; retained in carry-rejected-low-guard. Raised run palm10cm through original carry.json; unchanged collision assertions clear every pose.",
+    "actualPlayback": "Actual createCombat/stepCombat/WarriorMotion/warriorPose; full8/16/16 gait coverage, run-to-primary, one damage event at existing active pose5. No second gameplay clock or production mutation.",
+    "visualReview": "All40 source poses plus actual native gait/primary handoff captures reviewed at gameplay1x/inspection2x; stable root, coordinated grip, no ghost sword.",
+    "focusedTests": 16,
+    "testFiles": 4,
+    "typescript": true,
+    "scopedLintSyntax": true,
+    "costLimit": "Disposable combined SE carry+primary full-body atlas only; not campaign payload/full staff category/GPU residency. Resource-cycle campaign acceptance remains pending.",
+    "campaignRuntimeArtSaveDelta": 0,
+    "rawEvidence": "/private/tmp/hollowbane-q3-staff-choreography",
+    "next": "Expand the accepted staff carry to the seven remaining directions using cached approved movement matrices, not a full Warrior rerender; audit foot/root/body checks before bounded export and native directional review. Then author staff-compatible assigned abilities/hit/death and complete category integration/release. Staff remains legacy until every required pose is accepted."
   }
 }

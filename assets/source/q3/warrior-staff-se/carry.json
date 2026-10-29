@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "productionApproved": false,
+  "provenance": "Original staff guard adjustment over the approved Warrior locomotion; no leg, foot, stride or gameplay changes",
+  "palmOffsets": {
+    "idle": [0, 0, 0],
+    "walk": [0, 0, 0],
+    "run": [0, 0, 0.1]
+  }
+}

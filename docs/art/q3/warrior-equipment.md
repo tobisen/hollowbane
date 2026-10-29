@@ -216,6 +216,47 @@ bow/unarmed legacy. Last verified public SHA is still
 `/private/tmp/hollowbane-q3-staff-choreography/{seven-dense,seven-render,eight-primary}`.
 Keep this tooling/proof checkpoint local until a coherent category is complete.
 
+## Southeast staff carry — local timed pilot 2026-10-30
+
+`probe-warrior-staff.py --motion --carry` caches the hash-verified approved
+movement blend's40 SE bone poses before opening the unchanged base rig. Reuse
+all lower-body matrices and original planted/swing foot contacts; solve the
+accepted opposing staff grip against the existing torso motion. Lower-body matrix
+maximum error **2.39e-7**, palm error **1.21e-7m**; original scale/root, bone lengths
+and connected joints pass. Only40 new SE carry renders, not existing Warrior sets.
+
+The first guard clipped the raised right thigh at run4/5. Rejected metadata/logs
+remain in `carry-rejected-low-guard`. Original `carry.json` now raises the running
+guard10cm; all40 poses clear the unchanged non-hand body/staff, ground and cell-edge
+checks. No leg motion, armor exclusion, camera or scale was changed to hide it.
+All8 idle/16 walk/16 run source poses and native handoff captures reviewed: stable
+root, coordinated two-hand carry, leg clearance and no old sword ghost. Guard is
+consistent across the run stop, primary load/contact/recovery and idle return.
+
+`profile-warrior-staff-carry.mjs` bundles actual `createCombat`, `stepCombat`,
+`WarriorMotion`, `warriorPose` and real equipment derivation into a deterministic
+600-tick plan. It covers every carry frame, actual walk/run speeds and the run-to-
+primary transition. Staff is unchanged melee/range1.05; **one** real damage event
+at tick444/active pose5. The native viewer consumes the plan; no independent
+strike callbacks, forced frame captures or campaign/save access.
+
+Native M4/ANGLE Metal, gameplay1×/inspection2×,600 intervals:
+**p5016.7/p9516.8/p9918.3/max18.7ms,zero>25,zero runtime errors**.
+The disposable combined40 carry+12 reused primary atlas2048×1024 is
+**1,420,541 PNG bytes /8MiB calculated base RGBA**, not production payload or
+GPU residency. No claimed campaign performance or carry resource-cycle acceptance.
+**16 focused tests/four files**, TypeScript, scoped JavaScript lint/format and
+Python syntax pass. App/art/save delta0. Raw evidence:
+`/private/tmp/hollowbane-q3-staff-choreography/{carry-audit,carry-render,carry-native}`.
+
+Accepted SE carry pilot only. Next expand carry to the seven remaining facings
+with approved cached lower-body matrices; audit first, export only missing carry
+poses and review native occlusion/root/grip. Then staff-compatible assigned
+abilities, hit/death, category resource plan, real campaign equipment/save/travel/
+combat integration and exact B/C release gates. **Staff/bow/unarmed stay legacy**;
+only sword and sword/shield are production supported. Verified public remains
+**c437335844e4f82e30b00da2967d4f64c9614a64**; local proof checkpoint, no pending CI.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing
