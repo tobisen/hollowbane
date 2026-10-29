@@ -76,6 +76,40 @@ CI/Pages/hosted receipt. Then investigate a bounded shared sword-removal/body
 patch proof and genuine staff grip/motion before considering production support.
 Keep the accepted A release and all successful exports intact.
 
+## Exact continuation release / safe resume checkpoint — 2026-10-29
+
+Coherent candidate **72155e6d62a83add0779d3e2662c9a80389499d4** is committed and
+pushed. The dry-run proved a normal fast-forward including `7b1e4e2`; no reset or
+unrelated-document staging. Exact [CI40918355913](https://github.com/tobisen/hollowbane/actions/runs/40918355913)
+is running; bounded inspection finds Fast static/contracts/smoke still in progress.
+The repository classifier selects **Full**, including inventory UI integration;
+no gate is lowered. Pages/hosted acceptance are pending. Last verified deployed
+release remains **8fece2b98325991e2116d6de25e12aba5908d089**.
+
+The final164-file tested bundle is sealed at
+`/private/tmp/hollowbane-warrior-equipment/completion-tested-bundle` with this
+candidate SHA. Keep this evidence-only recovery checkpoint local while the run
+is active; another push cancels that run. Resume with:
+
+```sh
+gh run view 40918355913 --json headSha,status,conclusion,jobs
+gh run download 40918355913 --name release-bundle --dir /private/tmp/hollowbane-warrior-equipment/completion-ci-bundle
+python3 tools/ci/release_artifact.py verify --directory /private/tmp/hollowbane-warrior-equipment/completion-ci-bundle --sha 72155e6d62a83add0779d3e2662c9a80389499d4
+```
+
+Compare all164 CI file hashes to `completion-tested-bundle/release.json`; inspect
+any mismatch. Require exact Full/Pages/hosted/Release acceptance. Then run the
+existing hosted byte comparison against the downloaded bundle, all16 native
+production cases (including the corrected real drag case), and the two updated
+showcase selection/resource cases on the hosted developer route. Use the
+preserved native/compatibility configs with `PLAYWRIGHT_BASE_URL` for hosted work;
+review captures and record the accepted SHA. A failed required gate must be
+repaired before proceeding. No B/C or new weapon art completion is claimed.
+After exact acceptance, the next art slice is a bounded shared sword-free body
+patch feasibility proof before genuine staff grip/motion. Do not relabel the
+approved one-hand sword motion. Preserve all approved source/exported pixels,
+explicit fallback categories and physical/GPU/human-playthrough limitations.
+
 ## Production sword/shield release candidate — 2026-10-29
 
 The normal campaign now selects the original sword/shield candidate from actual

@@ -1318,7 +1318,7 @@
     "nativeChromiumDistinctCases": 7,
     "nativeChromiumResults": "Four showcase cases, corrected real shield drag/equip/save/reload, keyboard-after-drag and virtual-pad/mouse handoff pass across bounded runs",
     "firefoxWebkitResults": "All eight focused Firefox/WebKit cases pass: six configurations, resources, real shield drag/equip/save/reload and immediate keyboard after drag",
-    "publication": "Pending coherent commit and exact selected CI/Pages/hosted acceptance",
+    "publication": "Pushed; exact selected Full CI in progress (Fast static/contracts/smoke still running when inspected); Pages/hosted acceptance pending",
     "repair": "A dragged grid redraw can remove the original click target, leaving suppression to consume the next intended click. Clear on new pointerdown and allow keyboard click detail 0; real campaign red/green evidence retained.",
     "failureHistory": [
       "Temporary local runner inherited its directory for the server; corrected explicit repository cwd without changing application",
@@ -1328,6 +1328,10 @@
     "next": "Publish this coherent increment; then bounded shared sword-free body/patch proof and genuine staff grips/motion before promotion. No B/C completion claim.",
     "finalBuildFiles": 164,
     "unchangedAcceptedFiles": 158,
-    "allAcceptedWarriorPngJsonUnchanged": true
+    "allAcceptedWarriorPngJsonUnchanged": true,
+    "candidateSha": "72155e6d62a83add0779d3e2662c9a80389499d4",
+    "ciRun": 40918355913,
+    "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40918355913",
+    "testedBundle": "/private/tmp/hollowbane-warrior-equipment/completion-tested-bundle"
   }
 }
