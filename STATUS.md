@@ -1,3 +1,9 @@
+## Q3-B recovery — CI/Pages verified; hosted startup follow-up (2026-10-29)
+
+- Deployedf28c16c8080959b3a7a95a50683b470f76994dc2; exact CI40937358584 Full/Pages/hosted/Release acceptance pass:682 units/150 files,315 Chromium,15 compatibility. All164 CI/tested/public file hashes match. Original hidden-journal failure repaired by explicit restored-state setup; original assertions/deadlines preserved.8a48dc9 ancestry intact.
+- Independent native hosted21/22 pass: all16 production/four D12/resource cases pass; camp/combat/corpse captures reviewed. Developer selection fails before selection: original5s readiness bound catches98% loading; focused trace reproduces93%, outstanding downloads after5s, no observed runtime/request errors. Do not claim22/22 or expand weapons.602-frame M4 battle p9518.2/max416.7ms,9>25;42 textures/373.25MiB calculated RGBA, not GPU memory; resource cycles pass.
+- Execution boundary: keep evidence checkpoint local. Next fix explicit cold hosted asset-load/readiness precondition, preserve UI/selection/save assertions and no global timeout increase; focused hosted red/green, then required exact release gate. Only afterward shared sword-free body/staff grip proof. Bow/staff/unarmed legacy; B/C incomplete. All unrelated edits preserved byte-for-byte. Evidence docs/art/q3/warrior-equipment.md and /private/tmp/hollowbane-q3-ci-recovery.
+
 ## Q3-B recovery release checkpoint — exact Full CI pending (2026-10-29)
 
 - Focused fixf28c16c8080959b3a7a95a50683b470f76994dc2 pushed normally, preserving8a48dc9. Exact CI40937358584 Fast static/contracts/smoke passes; Full units/four Chromium shards/compatibility running. Verified CI bundle matches all164 tested files; release-plan confirms Full. Pages/hosted pending; last verified deployment remains8fece2b98325991e2116d6de25e12aba5908d089.

@@ -15,8 +15,9 @@ Candidate `72155e6d62a83add0779d3e2662c9a80389499d4` failed exact
 [CI40918355913](https://github.com/tobisen/hollowbane/actions/runs/40918355913)
 only in Full Chromium shard3's Warrior D12 finale reload. Other three shards,
 complete units/tooling and required compatibility passed; publication was blocked.
-Recovery ancestor `8a48dc9` remains intact. Last verified deployment remains
-`8fece2b98325991e2116d6de25e12aba5908d089` until a new release is accepted.
+Recovery ancestor `8a48dc9` remains intact. Recovery deployment is now verified at
+`f28c16c8080959b3a7a95a50683b470f76994dc2`; the broader independent Q3-B
+showcase acceptance still has the startup follow-up recorded below.
 
 Downloaded trace/screenshots prove the journal never opened after reload. At
 trace207342.669ms, inventory owns the loading modal, status is `Loading character
@@ -58,13 +59,62 @@ Full/Pages/hosted/integrity release gate passes.
 
 Recovery fix **f28c16c8080959b3a7a95a50683b470f76994dc2** is committed and pushed by normal fast-forward,
 preserving `8a48dc9`. Exact [CI40937358584](https://github.com/tobisen/hollowbane/actions/runs/40937358584)
-has passed Fast static/contracts/smoke; all Full shards/units/compatibility are
-running. Downloaded/seal-verified CI bundle matches all164 locally tested files;
-its `release-plan` receipt confirms Full. Pages/hosted/public integrity remain
-pending. Keep this evidence checkpoint local while the run is active. Next:
-inspect exact CI40937358584, require every mandatory job, then verify published
-164-file identity and run16 hosted native production plus two showcase cases.
-Do not push another candidate or expand weapons before this release gate passes.
+**passes Full, Pages, hosted exact-SHA/file smoke and Release acceptance**:
+**682 units/150 files,315 Chromium (89+75+59+92),15 required compatibility**,
+static/asset/backlog/tooling/coverage gates. All315 Chromium results have zero
+failures, skips or retries; all four D12 cases pass on Linux. Downloaded CI seal
+and independent public comparison match **all164 files** to the tested bundle.
+The workflow ran19:08:33–19:37:28UTC on2026-10-29. Last verified deployed SHA is
+now **f28c16c8080959b3a7a95a50683b470f76994dc2**; this does **not** mark B/C or the
+broader independent showcase acceptance complete.
+
+### Independent hosted result / execution boundary
+
+The additional visible native M4/Metal run has **21/22 passes**: **all16 production
+cases**, all three earned finale/reload cases, the earned-gold merchant case and
+three developer resource cycles pass. Real drag/click/equipment/save/exit/re-entry,
+both abilities without duplicate effects, eight-way locomotion, three terrains,
+actual waypoint/portal travel, natural held death and404 recovery remain correct.
+Camp, real combat and corpse captures reviewed. No source art/save/simulation or
+Phaser changes. All pre-existing STATUS edits and16 other unrelated working files
+were independently compared and preserved byte for byte.
+
+The **developer configuration-selection case fails its original5s startup
+assertion**, before any selection. Initial screenshot shows `Loading developer
+atlases ·98%`; focused traced reproduction shows93% and no runtime/request errors
+before teardown. Downloads are still active after5s from navigation: shield PNG/
+JSON finish at5257/5261ms and final queued resources are not finished at capture.
+`Arena.create()` correctly withholds readiness until resources exist. This is a
+reproduced cold hosted asset-loading/readiness boundary, not an invalid weapon
+selection or a green22-case run. The original5s assertion and60s test bound were
+not changed; the diagnostic adds only read-only errors/resource timing observers.
+Do not promote a weapon or call full Q3-B acceptance passed from these results.
+
+Native additional unmatched battle: **602 frames/16 actors/42 textures**, verified
+Apple M4/ANGLE Metal,1280×800/DPR1/Full; p5016.7/p9518.2/p99281.4ms,
+**9>25ms/max416.7ms**. Existing variable checkpoint stalls remain; no improvement
+claim or new matched comparison. Resource cycles pass42→0→42 with unchanged
+inventory;373.25MiB is calculated base RGBA, **not measured GPU memory**. Art,
+PNG/atlas and calculated memory delta remains0.
+
+**Safe execution checkpoint; keep evidence-only commits local.** Next resolve the
+hosted developer asset-load precondition explicitly, preserving all six selection,
+frozen-encounter/save-isolation and existing UI assertions. Observe real resource
+completion and renderer readiness; do not force actions or raise global timeouts.
+Run the smallest cold hosted selection/resource cases with trace, then any required
+new exact CI/Pages/hosted/integrity gate for a committed fix. Only after the complete
+acceptance passes, begin a bounded shared sword-free body/patch feasibility slice,
+then genuine staff grip/two-hand motion; bow draw/release and unarmed choreography
+remain subsequent. No new weapon is supported. No full Warrior rerender.
+
+Raw evidence in `/private/tmp/hollowbane-q3-ci-recovery`: `accepted-ci.json`,
+`accepted-units.log`, `fix-ci-bundle`, all four shard reports, `hosted-results.json`,
+`hosted-native`, `hosted-battle-summary.json`, `hosted-startup-diagnostic` trace and
+`startup-failure-timing.json`. The unchanged22-case native config is
+`playwright.hosted.config.mts`; use `PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/`
+and `WARRIOR_PRODUCTION_PROFILE=1`. Focused original-deadline startup reproduction
+uses `playwright.startup.config.mts --grep 'equipment study switches' --trace on`.
+These are temporary evidence/harness files, not committed test artifacts.
 
 ## Verified sword/shield baseline and completion continuation — 2026-10-29
 
