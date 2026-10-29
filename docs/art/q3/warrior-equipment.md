@@ -92,9 +92,45 @@ Raw renders, browser captures/results, matched movement, battle and inventory
 switch samples plus a163-file tested client seal remain under
 `/private/tmp/hollowbane-warrior-equipment`. Next commit/push this coherent
 candidate, require exact **Full +Pages +hosted** acceptance and byte identity,
-then record the published SHA before any B/C expansion. No public A/B/C receipt
+then record the published SHA before any B/C expansion. Candidate
+`8fece2b98325991e2116d6de25e12aba5908d089` is pushed; exact Full CI
+[40790057405](https://github.com/tobisen/hollowbane/actions/runs/40790057405) is in progress. All163 locally tested client files match the exact CI artifact
+byte for byte; its classification receipt confirms Full. No public A/B/C receipt
 is claimed yet. Bows/staffs/unarmed still need a shared sword-free body and genuine
 category-specific choreography; full armor production remains outside scope.
+
+## Release continuation checkpoint — 2026-10-29
+
+Pushed runtime: `8fece2b98325991e2116d6de25e12aba5908d089`.
+Exact required Full run: [40790057405](https://github.com/tobisen/hollowbane/actions/runs/40790057405).
+Static/build/smoke, complete unit/validators/tooling and all15 required
+compatibility contracts have passed. At this checkpoint all four Chromium
+shards are still running; Pages/hosted acceptance is not yet verified. All163
+locally tested client files equal the downloaded exact CI artifact; its receipt
+confirms Full. No equipment release is accepted yet. Last verified public
+revision remains `ee03e81964bb597636aa2d96f64716268e5c1d81`.
+
+Keep this evidence update local while that release run is active; pushing it
+would cancel the current run. Resume by inspecting the exact run and failures,
+not by starting more equipment work. If Full succeeds, require Pages and hosted
+Release acceptance; compare all163 public bytes to
+`/private/tmp/hollowbane-warrior-equipment/production-ci-bundle`, then run the16
+production cases against the published URL using the native config
+`/private/tmp/hollowbane-warrior-equipment/playwright.native.config.mts` and
+`PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/`.
+`WARRIOR_PRODUCTION_PROFILE=1` additionally verifies actual M4/Metal in battle.
+Review hosted captures, record the accepted SHA, then publish the Markdown-only
+evidence increment under the repository-selected tier and verify its own release.
+Do not push this checkpoint while the prior run is active. If a required gate
+fails, inspect its exact artifact and repair the demonstrated cause; do not skip
+or lower the gate.
+
+A remains incomplete; B/C have not begun. Bow/staff/unarmed remain legacy because
+the baked sword/body and actual two-hand choreography are not interchangeable.
+Next expansion must establish a shared sword-free body and genuine grips/motion,
+not relabel the blade. Preserve successful exports and the48-frame shield death
+repair. Physical controllers, GPU residency and full human Act1 remain unverified.
+Unrelated pre-existing documentation edits remain unstaged.
 
 ## Packaged equipment / playable study — 2026-10-28
 
