@@ -2,8 +2,8 @@
   "version": 1,
   "scope": "DBL-023/024/025 real sword/shield campaign vertical slice",
   "checkpointAAccepted": true,
-  "publication": "Exact recovery Full CI, Pages, hosted exact-file smoke and Release acceptance pass; independent16 production/four D12/resource cases pass; developer selection startup remains open (21/22 independent hosted).",
-  "lastVerifiedDeployedSha": "f28c16c8080959b3a7a95a50683b470f76994dc2",
+  "publication": "Startup release verified: exact Full CI/Pages/hosted/Release acceptance,164 public hashes and24 independent native hosted cases pass. One16.73s throughput-bound cold sample remains explicit; no B/C or new category acceptance.",
+  "lastVerifiedDeployedSha": "c437335844e4f82e30b00da2967d4f64c9614a64",
   "configuration": {
     "main": "ash-blade",
     "off": "bark-guard",
@@ -1327,7 +1327,7 @@
       "Independent hosted showcase startup reproducibly exceeds5s while developer atlases still download (98% initial/93% traced);21/22 pass, broader acceptance remains open. No global timeout/assertion change."
     ],
     "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment/completion-*",
-    "next": "Resolve reproduced cold hosted developer asset-load readiness before further equipment expansion. Preserve5s UI/60s case assertions and no global timeout increase. Then bounded shared sword-free body and genuine staff grip/motion; no B/C promotion.",
+    "next": "Bounded11-pose sword-free reference/clean proof; compare shipped pixels and local-patch residuals before any mass export or genuine staff grip/motion. B/C remain incomplete.",
     "finalBuildFiles": 164,
     "unchangedAcceptedFiles": 158,
     "allAcceptedWarriorPngJsonUnchanged": true,
@@ -1339,7 +1339,7 @@
       "rootCause": "Journal shortcut sent before worldReady during asynchronous checkpoint restoration; area metadata is not storage readiness.",
       "fix": "Wait for enabled journal opener and hidden inventory; focus gameplay; send J and assert visible journal/finale title. Original reward/save assertions preserved.",
       "rawEvidence": "/private/tmp/hollowbane-q3-ci-recovery",
-      "releaseAccepted": false,
+      "releaseAccepted": true,
       "lastVerifiedDeployedSha": "f28c16c8080959b3a7a95a50683b470f76994dc2",
       "localUnits": 17,
       "localUnitFiles": 4,
@@ -1358,7 +1358,7 @@
       "ciBundleFilesMatched": 164,
       "testedCiBundle": "/private/tmp/hollowbane-q3-ci-recovery/fix-ci-bundle",
       "ciReleaseAccepted": true,
-      "independentHostedAcceptanceComplete": false,
+      "independentHostedAcceptanceComplete": true,
       "publicFilesMatched": 164,
       "fullUnitTests": 682,
       "fullUnitFiles": 150,
@@ -1390,11 +1390,13 @@
         "protocol": "Unmatched additional native hosted battle sample; no baseline improvement claim."
       },
       "resourceCycles": "42\u21920\u219242;373.25MiB calculated base RGBA, not measured GPU memory",
-      "unrelatedEditsPreserved": true
+      "unrelatedEditsPreserved": true,
+      "independentHostedFollowupSha": "c437335844e4f82e30b00da2967d4f64c9614a64",
+      "followupResult": "Original22/22 plus two new readiness checks pass at startup release; prior21/22 record retained as historical evidence."
     },
     "priorFailedCandidateSha": "72155e6d62a83add0779d3e2662c9a80389499d4",
     "priorFailedCiRun": 40918355913,
-    "independentHostedAcceptanceComplete": false
+    "independentHostedAcceptanceComplete": true
   },
   "startupReadiness": {
     "scope": "DBL-023/024/025 developer-only startup; no new weapon compatibility",
@@ -1466,7 +1468,7 @@
       "postReadyFrameIntervals": 720,
       "postReadyFramesAbove25ms": 0,
       "measuredGpuMemory": false,
-      "scopeLimit": "Matched generated diagnostic cap-only comparison precedes final error-observer cleanup; final exact hosted cold/warm measurements pending"
+      "scopeLimit": "Controlled matched comparison isolates cap2/4 and precedes error-observer cleanup; exact final published six-start results retained separately."
     },
     "assets": {
       "buildFiles": 164,
@@ -1477,16 +1479,16 @@
       "additionalDecodedBaseBytes": 0
     },
     "requiredTier": "full",
-    "publication": "Local verified candidate; exact CI/Pages/22 hosted/cold-warm/integrity pending",
-    "releaseAccepted": false,
-    "lastVerifiedDeployedSha": "f28c16c8080959b3a7a95a50683b470f76994dc2",
+    "publication": "Verified deployed exact release; all24 independent native hosted cases pass",
+    "releaseAccepted": true,
+    "lastVerifiedDeployedSha": "c437335844e4f82e30b00da2967d4f64c9614a64",
     "rawEvidence": "/private/tmp/hollowbane-q3-startup",
     "protocolSha256": "43091c5ad3b61fec3241174fbcc6bd0d6833af506f3b3a38e4573785e2ae9c60",
-    "next": "Commit/push coherent startup fix; exact Full/Pages/hosted+164 public hashes,22 independent native cases and3 cold/warm pairs. Then bounded shared sword-free body proof; no B/C promotion yet.",
+    "next": "Bounded11-pose sword-free reference/clean proof; compare shipped pixels and local-patch residuals before any mass export or genuine staff grip/motion. B/C remain incomplete.",
     "candidateSha": "c437335844e4f82e30b00da2967d4f64c9614a64",
     "ciRun": 40950346938,
     "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40950346938",
-    "ciStatus": "Fast passed; required Full running; Pages/hosted pending",
+    "ciStatus": "Success: Full, Pages, exact-SHA hosted smoke and Release acceptance",
     "ciAndTestedFileHashesMatched": 164,
     "ciObservationBoundSeconds": 2100,
     "readonlyBodyAudit": {
@@ -1494,6 +1496,50 @@
       "naiveUnpaddedWeaponRectangleRgbaBytes": 9024324,
       "isCleanBodyOrPackedCostProof": false,
       "rawEvidence": "/private/tmp/hollowbane-q3-startup/shared-body-readonly-audit.json"
+    },
+    "publicFilesMatched": 164,
+    "fullUnitTests": 682,
+    "fullUnitFiles": 150,
+    "fullChromiumCases": 317,
+    "requiredCompatibilityCases": 15,
+    "independentHostedPassed": 24,
+    "independentHostedFailed": 0,
+    "originalIndependentCasesPassed": 22,
+    "startupFunctionalGatePassed": true,
+    "coldTargetSatisfiedInAllPublishedSamples": false,
+    "publishedCandidate": {
+      "hardware": "Apple M4 / verified ANGLE Metal",
+      "protocol": "Three fresh contexts each followed by cached same-context reload; no injected latency or OS/GPU/CDN cache reset. All six real Pause interactions succeed; benchmark observes30s maximum, original browser5s assertions unchanged.",
+      "coldInteractiveMs": [16729.699999928474, 3744, 3539.5],
+      "warmInteractiveMs": [
+        528.3999999761581, 573.8999999761581, 692.3999999761581
+      ],
+      "coldSuccessfulPauseMs": [16825, 3827, 3636.899999976158],
+      "warmSuccessfulPauseMs": [
+        585.7999999523163, 624.5999999046326, 743.2000000476837
+      ],
+      "filesPerStartup": 45,
+      "textures": 42,
+      "decodedBaseBytes": 391380992,
+      "runtimeOrRequestErrors": 0,
+      "postReadyIntervals": 360,
+      "postReadyAbove25": 1,
+      "maxPostReadyMs": 33.29999999999927,
+      "slowColdInvestigation": "First cold16.730s: assets-loading2.880s, loaded16.700s;27,725,858 transfer bytes/13.797s=1.92MiB/s, maxTTFB1.292s. Next two same-byte cold starts7.77/8.16MiB/s. No error, missing milestone, duplicate texture or early readiness. Queue fix improves controlled RTT bottleneck but does not satisfy5s on this measured slow connection. Payload/deferred-loading optimization remains a follow-up; do not call universal cold target met."
+    },
+    "nativeHostedBattle": {
+      "frames": 548,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "resolution": [1280, 800],
+      "dpr": 1,
+      "p50": 16.699999999999818,
+      "p95": 18.699999999999818,
+      "p99": 281.40000000000146,
+      "max": 414.7999999999993,
+      "over25": 12,
+      "actors": [16],
+      "textures": [42],
+      "protocol": "Unmatched additional native hosted battle sample; no baseline improvement claim."
     }
   }
 }

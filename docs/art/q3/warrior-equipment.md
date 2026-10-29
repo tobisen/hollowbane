@@ -9,7 +9,7 @@ vertical slice below. **Checkpoint A is verified** at
 [warrior-production.md](warrior-production.md). Historical sections retain their
 then-current counts and restrictions.
 
-## Showcase startup candidate — 2026-10-29
+## Showcase startup release — verified 2026-10-29
 
 The remaining failure is `equipment study switches and falls back without changing
 the frozen encounter or opening saves`. It fails before selection: the45-file
@@ -45,7 +45,7 @@ request errors and zero>25ms over720 post-ready frame intervals. Four-way loadin
 has a68.5ms maximum during reload versus35.3ms at two; cold maxima35.2/33.5ms.
 This loading-stage tail increase remains explicit; no combat-stall improvement or
 GPU-residency claim. Matched data precede only removal of the startup error
-observer after completion; final published measurements are still required.
+observer after completion; exact final published measurements appear below.
 
 Two new browser cases hold a real required request and inject404, proving that
 ready/input cannot appear early and that the first real click works. Existing
@@ -64,12 +64,36 @@ cases. Captures reviewed. Final164-file build retains161 accepted hashes; only
 the arena/entry JavaScript and HTML entry reference change. Every approved image,
 atlas JSON and campaign chunk is unchanged: art/PNG/atlas/RGBA delta0.
 
-Local candidate; publication pending. Require the risk-based **Full** exact CI,
-Pages, hosted smoke, all164 public hashes, the22 independent hosted cases and
-three actual cold/cached-reload pairs before production weapon expansion. Last
-verified deployed SHA remains **f28c16c8080959b3a7a95a50683b470f76994dc2**.
-No new weapon category is supported; staff/bow/unarmed remain legacy and B/C are
-incomplete. Shared sword-free body pilot follows the startup release gate.
+**Verified deployed: `c437335844e4f82e30b00da2967d4f64c9614a64`.** Exact
+[CI40950346938](https://github.com/tobisen/hollowbane/actions/runs/40950346938)
+passes Full/Pages/hosted/Release acceptance: **682 units/150 files,317 Chromium
+(89+75+61+92),15 compatibility**, zero skips/retries in retained browser reports.
+All164 tested/CI/public hashes match. Independent native hosted **24/24** pass:
+all original22 plus two new readiness cases. This includes quest rewards once,
+reload, real drag/subsequent clicks, equipment selection, three terrains, area
+travel, cross-class isolation, both abilities, eight facings, death and resources.
+Camp/showcase/combat/corpse captures reviewed. No new category or B/C acceptance.
+
+Actual published three cold/cached pairs: **16.730/0.528s,3.744/0.574s,
+3.540/0.692s**, successful Pause observed16.825/0.586s,3.827/0.625s,
+3.637/0.743s. All six complete45 files,42 textures,373.25MiB calculated base
+RGBA and zero runtime/request errors. Across360 post-ready intervals, one>25ms
+(max33.3); no GPU-memory claim. The diagnostic observes up to30s to retain slow
+starts; original browser5s readiness assertions and60s case bounds are unchanged.
+
+**The cold target is not met in every published sample.** The first cold spends
+13.82s loading assets after a2.88s preload start:27,725,858 transferred bytes over
+13.797s (**1.92MiB/s**, maximum response wait1.292s). Subsequent same-byte cold
+transfers reach7.77/8.16MiB/s; cached asset transfer is0. This is retained evidence
+of a throughput/response-time limit, not a discarded flaky run. Four-way loading
+fixes the controlled request-queue bottleneck but cannot establish a universal5s
+connection target. Further payload/deferred-loading work is a measured follow-up;
+no early readiness or timeout relaxation. Functional startup release gate passes.
+
+Additional unmatched native M4/Metal forest battle:548 intervals,p5016.7,
+p9518.7,p99281.4,max414.8ms,12>25;16 actors/42 textures,1280×800/DPR1/Full.
+Existing checkpoint stalls remain; no improvement/regression attribution from
+this unmatched sample. Resource cycles remain42→0→42; art/atlas/RGBA delta0.
 
 Raw evidence: `/private/tmp/hollowbane-q3-startup/{baseline-hosted,matched-native,native-ui,facing-reset,compat-ui}`.
 `measure.mjs` retains the exact protocol, real milestone/resource timings and
@@ -79,16 +103,15 @@ two JavaScript chunks; all non-entry assets are byte-identical.
 
 ### Exact startup release / safe resume
 
-Candidate **c437335844e4f82e30b00da2967d4f64c9614a64** is pushed normally, preserving
-`eecb977`, `8a48dc9` and all unrelated edits. Exact
-[CI40950346938](https://github.com/tobisen/hollowbane/actions/runs/40950346938)
-Fast static/contracts/smoke passes; Full units, compatibility and four Chromium
-shards are running. Downloaded `ci-bundle` seal matches all164 locally tested
-files; retained `ci-plan/ci-plan.json` confirms Full. The watcher is bounded to
-35minutes; expiration is not a CI verdict. Keep this evidence checkpoint local
-while CI is active. Next require exact Full/Pages/hosted/Release acceptance,
-independent164 public hashes,22 native hosted cases and three real cold/cached
-reload pairs before production expansion. Raw `/private/tmp/hollowbane-q3-startup`.
+Startup release is accepted at **c437335844e4f82e30b00da2967d4f64c9614a64**,
+preserving `eecb977`, `8a48dc9` and all unrelated edits. CI40950346938 is complete
+and successful; all164 files and24 independent native hosted cases are verified.
+Evidence-only checkpoints remain local; do not republish solely to update this
+record. Next bounded sword-free body proof through the approved deterministic
+exporter before genuine staff/bow/unarmed choreography or any mass export. B/C
+remain incomplete, unsupported categories retain legacy. Keep the measured slow
+cold-transfer target limitation and combat stalls explicit. Raw evidence:
+`/private/tmp/hollowbane-q3-startup/{accepted-ci.json,ci-complete,hosted-native,hosted-startup}`.
 
 Read-only body audit while CI runs: all880 authored poses already expose projected
 weapon bounds (mean2162–2995 pixels/pose; maximum5582). Summed unpadded rectangles

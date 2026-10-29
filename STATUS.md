@@ -1,3 +1,9 @@
+## Q3-B startup release verified / bounded body proof (2026-10-29)
+
+- Verified deployedc437335844e4f82e30b00da2967d4f64c9614a64; exact CI40950346938 Full/Pages/hosted/Release acceptance pass:682 units/150 files,317 Chromium,15 compatibility. All164 tested/CI/public hashes match;24/24 independent native hosted pass (original22 plus two readiness cases), captures reviewed. All checkpoints/unrelated edits preserved.
+- Three real cold/cached starts16.730/0.528s,3.744/0.574s,3.540/0.692s; first slow cold transfers27.73MB at1.92MiB/s. Functional startup gate passes, universal5s cold target is NOT established. All real Pause interactions work; readiness truthful, deadlines unchanged. Native548-frame battle p9518.7/max414.8ms,12>25; existing stalls remain.42 textures/373.25MiB calculated RGBA, not GPU memory; art delta0.
+- Continue bounded11-pose sword-free reference/clean proof using approved rig/exporter, compare shipped pixels/patch residuals at gameplay scale before mass export or genuine new motions. Current support remains ash-blade alone/with bark-guard; staff/bow/unarmed legacy; B/C incomplete. Resume docs/art/q3/warrior-equipment.md. Evidence /private/tmp/hollowbane-q3-startup; keep evidence-only checkpoint local.
+
 ## Q3-B startup release — exact Full pending (2026-10-29)
 
 - Candidatec437335844e4f82e30b00da2967d4f64c9614a64 pushed; exact CI40950346938 Fast passes, Full units/compatibility/four Chromium shards running. CI seal matches all164 tested files; Full receipt verified.35-minute observation bound; no verdict inferred from expiration. Last verified public remainsf28c16c8080959b3a7a95a50683b470f76994dc2.
