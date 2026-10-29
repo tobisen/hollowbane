@@ -124,6 +124,86 @@ localized runtime patches. The installed Phaser4.2.1 mask API exposes geometry
 masks, not the old bitmap-mask/MultiPipeline recipe; do not introduce an assumed
 Phaser3 renderer path. No new raster, weapon motion or compatibility is claimed.
 
+## Bounded shared sword-free body proof — 2026-10-29
+
+Local offline tooling now establishes a reusable **candidate**, without replacing
+approved Sword/Sword+Shield pixels or promoting any new category. Phase3's
+bounded representative proof passes; the full shared body/export integration and
+all eight-direction transitions remain incomplete. B/C remain unaccepted.
+
+- `scripts/probe-warrior-body.py` reuses the approved metadata exporter and
+  hash-verified procedural authoring. Audit all880 poses; render at most12 chosen
+  reference/clean pairs. Only four sword meshes change render visibility, restored
+  in `finally`;15 bones, cameras, root, materials, lighting and motion stay fixed.
+  No blend/public writes. Cycles48 samples, seed24, no animated seed.
+- Default11 poses cover idle/walk/run, primary/secondary, both abilities, hit and
+  two settled deaths across SE/W/NW/N. Nine reference frames match approved RGBA
+  exactly; two SE movement references differ slightly in RGB (raw maximum15).
+  Do not call all11 exact. All22 packed reference/clean images reproduce exactly
+  on a second export; Blender's Date/render-time PNG metadata differs.
+- `scripts/review-warrior-body.mjs` independently checks atlas/frame hashes,
+  applies the existing2:1 resize and alpha≤4 cleanup, and compares dark/light
+  gameplay-scale captures. Replace weapon bounds+6px with clean RGBA; alpha-over
+  alone cannot erase the baked blade. Every candidate has **zero alpha difference**
+  from its fully clean render. Outside-crop RGB lighting/denoising differences
+  remain: raw max51, premultiplied max7.94/255;14 pixels>4/255 across11 poses.
+  No visible ghost sword, hand/scale/root jump or seam in reviewed samples.
+- A second bounded export covers **NW primary1–10 plus idle**. All11 references
+  are pixel exact; clean-patch alpha matches exactly, maximum premultiplied RGB
+  residual5.74/255 with3 pixels>4/255. Source primary0/11 are verified exact idle
+  aliases padded+32,+64, matching the root offset. This proves a sample handoff,
+  not genuine unarmed motion or complete transitions.
+
+`scripts/probe-warrior-body-runtime.mjs` uses the actual installed **Phaser4.2.1**
+public DynamicTexture clear/stamp API on native M4/ANGLE Metal. Each pose's GPU
+composition matches its offline control **exactly**, including alpha, in both
+11-pose studies. Three allocate/release cycles each return26→24 fixture textures;
+24 includes temporary frame/control images, not campaign inventory. The second
+scratch exists only for pixel comparison. First diagnostic's WebGL2 assumption
+was corrected to the actual WebGL1/2 context; an export-overlapping timing trial
+is excluded and retained. Final runs execute after Blender exits.
+
+| Native disposable proof |   Patch PNG | Patch atlas / base RGBA | Frame p95 / p99 / max | >25ms |
+| ----------------------- | ----------: | ----------------------- | --------------------- | ----: |
+| Representative11        | 37610 bytes | 512×256 / 524288 bytes  | 18.5 / 18.7 / 18.7ms  | 0/600 |
+| NW primary/idle11       | 18814 bytes | 512×256 / 524288 bytes  | 18.6 / 18.7 / 18.7ms  | 0/600 |
+
+One reusable448×448 scratch is **802816 base RGBA bytes (0.766MiB)**; the first
+pilot patch atlas is0.5MiB. These are calculated payloads, not GPU residency;
+full880 packing, category pose corrections and production integration are not
+measured. Submission CPU p95 1.2/1.1ms, not GPU execution time. The
+isolated fixture's good frame times do not resolve existing campaign stalls.
+Campaign remains42 textures/373.25MiB with **zero added assets or runtime code**.
+No880-frame body rerender or full atlas per new weapon was introduced.
+
+Reproduce from repository root with approved Blender4.5.3LTS:
+
+```sh
+Blender --background --python-exit-code 1 --python scripts/probe-warrior-body.py -- /private/tmp/hollowbane-q3-body-proof
+node scripts/review-warrior-body.mjs /private/tmp/hollowbane-q3-body-proof
+node scripts/probe-warrior-body-runtime.mjs /private/tmp/hollowbane-q3-body-proof
+```
+
+The Blender executable is the verified pinned binary, not an arbitrary installed
+version. For the contiguous study use `--render idle-nw-00 primary-nw-01` through
+`primary-nw-10` as11 explicit arguments and the second evidence directory. Run
+native measurements sequentially after export. Raw evidence:
+`/private/tmp/hollowbane-q3-body-proof` and
+`/private/tmp/hollowbane-q3-body-transitions`, including provenance-linked
+`body.json`, `review.json`, `runtime.json`, repeated pixel hashes and idle aliases.
+JS scoped lint/syntax/format and Python syntax pass. Approved sources, campaign,
+saves and all unrelated working files are unchanged. Keep this tooling/evidence
+checkpoint local; the last deployed SHA remains
+**c437335844e4f82e30b00da2967d4f64c9614a64** with its accepted release evidence above.
+
+**Exact next action:** bounded original `cinder-staff` grip/choreography pilot
+using approved rig and IK: SE/W/NW idle, anticipation, active and recovery. Check
+both hand contacts/reach, shaft/body/floor occlusion and genuine jab/guard motion
+before full export. Original rigid mittens/sword strikes establish neither staff,
+bow nor unarmed compatibility. Then expand alias/transition/directional coverage
+and integrate only coherent categories through fresh exact release gates. Keep
+legacy fallbacks, the slow cold-transfer target limit and checkpoint stalls.
+
 ## CI recovery — 2026-10-29
 
 Candidate `72155e6d62a83add0779d3e2662c9a80389499d4` failed exact

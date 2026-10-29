@@ -1,3 +1,9 @@
+## Q3-B bounded body proof checkpoint / B–C incomplete (2026-10-29)
+
+- Startup release verifiedc437335844e4f82e30b00da2967d4f64c9614a64: Full/Pages/hosted/164 file integrity and24 independent native cases pass. Original hidden journal cause was pre-restore shortcut; startup queue2→4/readiness fixed. Slow cold16.73s transfer and campaign414.8ms stall remain explicit; no universal5s or hitch-free claim.
+- Approved exporter audits880 poses;11 representative plus11 NW primary/idle pairs (21 unique poses), no mass rerender. Representative22 packed images repeat exactly.9/11 first references and11/11 NW references pixel exact; two SE references have smallRGB differences. All patch alpha silhouettes exact; remaining RGB residuals documented. Both11-pose native GPU controls exact, three balanced resource cycles each;600 frames/run p9518.5/18.6ms, zero>25. Pilot patch37610PNG bytes/0.5MiB plus0.766MiB reusable scratch; calculated, not GPU memory. Campaigndelta0.
+- Local offline tools/visual evidence validated; no new category or production-body promotion. Next bounded genuine cinder-staff two-hand grip/jab/guard pilot SE/W/NW, then full shared-body aliases/transitions/directions before coherent category integration/exact B/C releases. Ash-blade alone/with bark-guard supported; staff/bow/unarmed legacy. Full assignment incomplete. Keep tooling checkpoint local, preserve unrelated edits/recovery ancestry. Resume docs/art/q3/warrior-equipment.md; raw /private/tmp/hollowbane-q3-body-proof and -body-transitions.
+
 ## Q3-B startup release verified / bounded body proof (2026-10-29)
 
 - Verified deployedc437335844e4f82e30b00da2967d4f64c9614a64; exact CI40950346938 Full/Pages/hosted/Release acceptance pass:682 units/150 files,317 Chromium,15 compatibility. All164 tested/CI/public hashes match;24/24 independent native hosted pass (original22 plus two readiness cases), captures reviewed. All checkpoints/unrelated edits preserved.

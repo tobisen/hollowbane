@@ -1327,7 +1327,7 @@
       "Independent hosted showcase startup reproducibly exceeds5s while developer atlases still download (98% initial/93% traced);21/22 pass, broader acceptance remains open. No global timeout/assertion change."
     ],
     "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment/completion-*",
-    "next": "Bounded11-pose sword-free reference/clean proof; compare shipped pixels and local-patch residuals before any mass export or genuine staff grip/motion. B/C remain incomplete.",
+    "next": "Bounded original cinder-staff two-hand grip and genuine jab/guard pilot using approved rig/IK: SE/W/NW idle, anticipation, active and recovery; verify reach, shaft/body/floor occlusion and both hand contacts before any full exports. Keep bow/unarmed legacy; no sword-strike compatibility inference.",
     "finalBuildFiles": 164,
     "unchangedAcceptedFiles": 158,
     "allAcceptedWarriorPngJsonUnchanged": true,
@@ -1484,7 +1484,7 @@
     "lastVerifiedDeployedSha": "c437335844e4f82e30b00da2967d4f64c9614a64",
     "rawEvidence": "/private/tmp/hollowbane-q3-startup",
     "protocolSha256": "43091c5ad3b61fec3241174fbcc6bd0d6833af506f3b3a38e4573785e2ae9c60",
-    "next": "Bounded11-pose sword-free reference/clean proof; compare shipped pixels and local-patch residuals before any mass export or genuine staff grip/motion. B/C remain incomplete.",
+    "next": "Bounded original cinder-staff two-hand grip and genuine jab/guard pilot using approved rig/IK: SE/W/NW idle, anticipation, active and recovery; verify reach, shaft/body/floor occlusion and both hand contacts before any full exports. Keep bow/unarmed legacy; no sword-strike compatibility inference.",
     "candidateSha": "c437335844e4f82e30b00da2967d4f64c9614a64",
     "ciRun": 40950346938,
     "ciUrl": "https://github.com/tobisen/hollowbane/actions/runs/40950346938",
@@ -1541,5 +1541,123 @@
       "textures": [42],
       "protocol": "Unmatched additional native hosted battle sample; no baseline improvement claim."
     }
+  },
+  "sharedSwordFreeBodyPilot": {
+    "scope": "DBL-023/024/025 bounded offline body and native renderer proof; not a new supported category",
+    "boundedProofVerified": true,
+    "productionApproved": false,
+    "full880BodySetComplete": false,
+    "checkpointBAccepted": false,
+    "checkpointCAccepted": false,
+    "method": "Approved rig/exporter; observe all880 geometry poses; hide only four sword meshes; reference and clean Cycles48/seed24 renders. Crop weapon bounds plus6px and replace RGBA, including transparent pixels. Reuse one448-square DynamicTexture via clear/stamp; no campaign changes.",
+    "authoredSourcePosesAuditedPerExport": 880,
+    "representativePairs": 11,
+    "additionalContiguousNwPairs": 11,
+    "uniqueRasterPoses": 21,
+    "representativePixelExactReferences": 9,
+    "seMovementReferenceLimit": "Two source SE movement references differ slightly in RGB (max15 raw channel); approved pixels untouched. No claim all11 references are identical.",
+    "repeatedRepresentativePackedRgbaIdentical": 22,
+    "rawPngLimit": "Blender embeds Date/render timings; raw PNG files differ while packed RGBA repeats exactly.",
+    "representativePatchResidual": {
+      "maxAlphaDelta": 0,
+      "maxPremultipliedRgbDelta": 7.9372549019607845,
+      "premultipliedPixelsAbove4": 14,
+      "rawChannelMax": 51
+    },
+    "contiguousNwPrimary": {
+      "pixelExactReferences": 11,
+      "maxAlphaDelta": 0,
+      "maxPremultipliedRgbDelta": 5.741176470588235,
+      "premultipliedPixelsAbove4": 3,
+      "endpoints": "Primary0/11 are pixel-exact padded idle; +32,+64 root translation verified. Authored1..10 and idle exercise root handoff in renderer proof; not real unarmed choreography."
+    },
+    "nativeRepresentative": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "phaser": "4.2.1",
+      "probeSha256": "44cca29532ea55495f02535a929461409827b0f18baa6a6c2e8cf50b5300932b",
+      "reviewSha256": "35e167197d9472977a934252d47a641d9b4a3ffcb03598a971556c8de07a3fb6",
+      "patchAtlas": {
+        "width": 512,
+        "height": 256,
+        "pngBytes": 37610,
+        "decodedBaseBytes": 524288
+      },
+      "proposedSingleScratchBaseBytes": 802816,
+      "frames": {
+        "count": 600,
+        "p50": 16.699999999999818,
+        "p95": 18.5,
+        "p99": 18.700000000000045,
+        "max": 18.700000000000728,
+        "over25": 0
+      },
+      "submissionCpuMs": {
+        "count": 601,
+        "p50": 0.9000000953674316,
+        "p95": 1.2000000476837158,
+        "p99": 1.2999999523162842,
+        "max": 1.5,
+        "over25": 0
+      },
+      "gpuPixelControls": 11,
+      "gpuMismatches": 0,
+      "resourceCycles": 3,
+      "allocatedFixtureTextures": 26,
+      "releasedFixtureTextures": 24,
+      "runtimeErrors": 0,
+      "rawReportSha256": "17c80680deae4464f01cd02eb4e399372d8b4b11ce001fb9b10ad8d2bdac2709"
+    },
+    "nativeContiguousNw": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "phaser": "4.2.1",
+      "probeSha256": "44cca29532ea55495f02535a929461409827b0f18baa6a6c2e8cf50b5300932b",
+      "reviewSha256": "19a00355d05fed14521cf54a0289e8a8384af84f05249a7cd307096563b0dbf6",
+      "patchAtlas": {
+        "width": 512,
+        "height": 256,
+        "pngBytes": 18814,
+        "decodedBaseBytes": 524288
+      },
+      "proposedSingleScratchBaseBytes": 802816,
+      "frames": {
+        "count": 600,
+        "p50": 16.699999999999818,
+        "p95": 18.600000000000023,
+        "p99": 18.699999999999818,
+        "max": 18.700000000000728,
+        "over25": 0
+      },
+      "submissionCpuMs": {
+        "count": 601,
+        "p50": 0.3999999761581421,
+        "p95": 1.100000023841858,
+        "p99": 1.2000000476837158,
+        "max": 1.2999999523162842,
+        "over25": 0
+      },
+      "gpuPixelControls": 11,
+      "gpuMismatches": 0,
+      "resourceCycles": 3,
+      "allocatedFixtureTextures": 26,
+      "releasedFixtureTextures": 24,
+      "runtimeErrors": 0,
+      "rawReportSha256": "a40a9b48cc15a1e5215dc5067e24589776aeebf6291318459b621fc38ecd65f8"
+    },
+    "costLimit": "Pilot-only atlas costs; each proposed compositor uses one448-square scratch802816 calculated base bytes. Native fixture has a second scratch and full-frame images only as test controls. No full880 packed/GPU cost extrapolation or campaign performance claim.",
+    "campaignDelta": {
+      "sourceArtFiles": 0,
+      "additionalTextures": 0,
+      "additionalPngBytes": 0,
+      "additionalDecodedBaseBytes": 0
+    },
+    "screenshotsReviewed": "Representative dark/light sheets, contiguous NW sheets, native composited/control capture; stable roots/scale/silhouette, no visible sword ghost/seam. Sparse states/facings only; hands remain original closed gauntlets.",
+    "validation": "BothJS tools ESLint/syntax/Prettier and Python syntax pass; real22 representative raster pixels repeat; each export880 geometry audits; both native runs11 GPU controls exact, three balanced release/reload cycles, zero runtime errors. No redundant campaign/build rerun for offline tooling.",
+    "excludedTrials": "Initial diagnostic assumed WebGL2; fixed to Phaser actual WebGL1/2 context. One runtime trial overlapped export completion and is excluded from measurements; retained separately.",
+    "rawEvidence": [
+      "/private/tmp/hollowbane-q3-body-proof",
+      "/private/tmp/hollowbane-q3-body-transitions"
+    ],
+    "next": "Bounded original cinder-staff two-hand grip and genuine jab/guard pilot using approved rig/IK: SE/W/NW idle, anticipation, active and recovery; verify reach, shaft/body/floor occlusion and both hand contacts before any full exports. Keep bow/unarmed legacy; no sword-strike compatibility inference.",
+    "remaining": "Full shared-body alias/transition/eight-direction verification, genuine staff/bow/unarmed choreography, category-specific performance/save/reload/lifecycle and exact B/C releases. Cold connection target and existing checkpoint stalls remain open."
   }
 }
