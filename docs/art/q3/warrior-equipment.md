@@ -124,6 +124,57 @@ localized runtime patches. The installed Phaser4.2.1 mask API exposes geometry
 masks, not the old bitmap-mask/MultiPipeline recipe; do not introduce an assumed
 Phaser3 renderer path. No new raster, weapon motion or compatibility is claimed.
 
+## Southeast staff primary — timed pilot accepted for directional study
+
+The new continuation inspects actual rules first: `cinder-staff` is two-handed,
+**melee/range1.05**, without a staff projectile/cast mechanic. Primary keeps the
+existing timing; campaign secondary retains its assigned skill. No damage,
+cooldown, item or save changes. Production still falls back for staff.
+
+`assets/source/q3/warrior-staff-se/motion.json` authors a distinct12-pose loaded
+staff guard, forward contact, follow-through and exact guard return. The revised
+original shaft is1.50m (1.55m including cap), retaining0.24m opposing hand grips;
+actor scale/root are unchanged. Contact tip is approximately
+(-0.001,-1.768,1.080)m: close to forward aim instead of the old raised diagonal
+jab. The old1.75m static prototype remains historical, not accepted production art.
+
+The deterministic rig probe's `--motion` mode audits **89 continuous samples**,
+with exact palm contact, original bone lengths/connected joints/fixed feet/root
+and zero shaft/non-hand body intersections. Rejected reach/armor-graze trials
+are retained; no decorative armor check was removed. A fixed continuous elbow
+pole removes the prior angle-dependent flip. Render only12 SE poses; no original
+Warrior set rerender. Guard0/recovery11 pixels match exactly. Dark/light and native
+1× gameplay/2× inspection captures show readable anticipation, coordinated hands,
+forward contact at the existing range marker and a stable recovery.
+
+`profile-warrior-staff-motion.mjs` bundles the **actual** pure timeline, attack
+selector, equipment definition/stats and speed table into a disposable native
+Phaser4.2.1 viewer. Four timings12/2/18,10/2/16,8/2/14,6/2/12 each have one strike
+at ticks11/9/7/5; active always selects pose5. Hit/kill yield the primary selector.
+Captures pause only after real simulation-selected frames render; no forced pose,
+new damage callback or test timeout increase. The initial viewer fixture/syntax
+errors are retained separately and corrected; they are not production regressions.
+
+Final isolated native M4/ANGLE Metal: **18 completed attacks**,600 intervals,
+p5016.7/p9516.8/p9918.3/max18.7ms,zero>25,zero runtime errors.
+One trimmed2048×256 pilot atlas: **307784PNG bytes/2MiB calculated RGBA**.
+This fixture draws two inspection scales, not the production encounter; GPU
+residency and full staff packing remain unmeasured. Published increment stays0;
+existing cold-transfer/combat-stall limits remain unchanged.
+
+**13 focused tests/four files, TypeScript, scoped JS lint/syntax pass.** Native
+captures/video and geometry/provenance are under
+`/private/tmp/hollowbane-q3-staff-choreography`. Formatting-only input changes are
+recorded by preserved consumed JSON and `input-equivalence.json`; parsed controls/
+geometry are identical. No raster/hash claim is silently rewritten.
+
+Accepted **SE primary pilot only**, sufficient to study remaining directions.
+No staff production/ability/hit/death/category/B/C acceptance. Next audit/export
+only the remaining seven primary facings and review occlusion/trim/root/impact;
+then complete staff movement and assigned ability/reaction/death coverage before
+any campaign integration. Keep bow/unarmed legacy. Last verified deployed SHA
+remains **c437335844e4f82e30b00da2967d4f64c9614a64**. Keep this proof checkpoint local.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing

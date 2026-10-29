@@ -32,7 +32,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
     parser.add_argument('--audit', action='store_true')
+    parser.add_argument('--motion', action='store_true', help='Bounded SE primary choreography instead of legacy static study')
+    parser.add_argument('--subframes', type=int, choices=[1, 8], default=1)
     options = parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
+    assert options.subframes == 1 or (options.audit and options.motion)
+    motion_path = ROOT / 'assets/source/q3/warrior-staff-se/motion.json'
+    motion = json.loads(motion_path.read_text()) if options.motion else None
     output = options.output.resolve()
     assert not output.is_relative_to(ROOT)
     output.mkdir(parents=True, exist_ok=True)
@@ -109,19 +114,27 @@ def main():
 
     # Entirely original primitive geometry:1.70m shaft,2cm radius. Grip center
     # is localZ0; second hand is0.24m toward the ornamented tip. No new effect.
-    cylinder('Original staff shaft', .020, 1.70, .60, wood)
-    cylinder('Original staff tail ferrule', .024, .10, -.20, bronze)
-    cylinder('Original staff head ferrule', .029, .12, 1.35, bronze)
-    cylinder('Original staff amber cap', .042, .10, 1.45, ember, 8)
+    geometry = motion['geometry'] if motion else {
+        'shaftLength': 1.70, 'shaftCenter': .60, 'tailFerrule': -.20,
+        'headFerrule': 1.35, 'cap': 1.45, 'tip': 1.5}
+    cylinder('Original staff shaft', .020, geometry['shaftLength'], geometry['shaftCenter'], wood)
+    cylinder('Original staff tail ferrule', .024, .10, geometry['tailFerrule'], bronze)
+    cylinder('Original staff head ferrule', .029, .12, geometry['headFerrule'], bronze)
+    cylinder('Original staff amber cap', .042, .10, geometry['cap'], ember, 8)
 
-    def joint(shoulder, wrist, upper, lower, side, high_staff):
+    def joint(shoulder, wrist, upper, lower, side, staff_height):
         delta = wrist - shoulder
         distance = delta.length
         assert abs(upper - lower) + 1e-5 < distance < upper + lower - 1e-5, (side, distance, upper + lower)
         direction = delta.normalized()
         along = (upper * upper - lower * lower + distance * distance) / (2 * distance)
-        pole = Vector((-.5 if side == 'L' else .5, .1,
-                       -.6 if side == 'L' and high_staff else .8))
+        if options.motion:
+            # One elbow pole throughout the attack; no branch at a shaft angle
+            # that could abruptly flip the analytic IK between two solutions.
+            pole_z = -.6 if side == 'L' else .8
+        else:
+            pole_z = -.6 if side == 'L' and staff_height > .6 else .8
+        pole = Vector((-.5 if side == 'L' else .5, .1, pole_z))
         perpendicular = (pole - direction * pole.dot(direction)).normalized()
         return shoulder + direction * along + perpendicular * math.sqrt(upper * upper - along * along)
 
@@ -131,8 +144,28 @@ def main():
         ('active', (.13, -.43, 1.12), (-.50, -.70, .50), .35, .25),
         ('recovery', (.13, -.36, 1.09), (-.50, -.30, .81), .15, .10),
     ]
+    if motion:
+        assert motion['poseCount'] == 12 and motion['impactPose'] == 5
+        keys = motion['keys']
+        assert keys[0]['pose'] == 0 and keys[-1]['pose'] == 11
+        assert all(a['pose'] < b['pose'] for a, b in zip(keys, keys[1:]))
+
+        def controls(index):
+            for a, b in zip(keys, keys[1:]):
+                if a['pose'] <= index <= b['pose']:
+                    t = (index - a['pose']) / (b['pose'] - a['pose'])
+                    t = t * t * (3 - 2 * t)
+                    blend = lambda x, y: x + (y - x) * t
+                    return (f'primary-{index:06.3f}',
+                            [blend(x, y) for x, y in zip(a['palm'], b['palm'])],
+                            [blend(x, y) for x, y in zip(a['axis'], b['axis'])],
+                            blend(a['lean'], b['lean']), blend(a['yaw'], b['yaw']))
+            raise AssertionError(index)
+        poses = [controls(index / options.subframes)
+                 for index in range(11 * options.subframes + 1)]
     records = []
-    for facing, angle in [('se', 0), ('w', 225), ('nw', 180)]:
+    directions = [('se', 0)] if motion else [('se', 0), ('w', 225), ('nw', 180)]
+    for facing, angle in directions:
         rotation = Matrix.Rotation(math.radians(angle), 4, 'Z')
         rig.matrix_world = rotation
         for obj in body:
@@ -160,7 +193,7 @@ def main():
                 hand = Matrix.Translation(palm) @ grip_rotation @ Matrix.Translation(-rest_palm) @ rig.data.bones['hand' + side].matrix_local
                 wrist = hand.translation
                 shoulder = torso @ Vector(rest['upper' + side][0])
-                elbow = joint(shoulder, wrist, lengths['upper' + side], lengths['fore' + side], side, axis.z > .6)
+                elbow = joint(shoulder, wrist, lengths['upper' + side], lengths['fore' + side], side, axis.z)
                 rig.pose.bones['upper' + side].matrix = pose_bone('upper' + side, shoulder, elbow)
                 rig.pose.bones['fore' + side].matrix = pose_bone('fore' + side, elbow, wrist)
                 rig.pose.bones['hand' + side].matrix = hand
@@ -206,6 +239,14 @@ def main():
                       'staffBounds': [min(p[0] for p in bounds), min(p[1] for p in bounds),
                                       max(p[0] for p in bounds), max(p[1] for p in bounds)],
                       'productionApproved': False}
+            if motion:
+                index = float(phase.removeprefix('primary-'))
+                tip = palm_r + axis * geometry['tip']
+                record.update(action='primary', index=index,
+                              phase='windup' if index < 5 else 'active' if index == 5 else 'recovery',
+                              palmR=list(palm_r), axis=list(axis), tip=list(tip),
+                              wrists={side: list(rig.pose.bones['hand' + side].head) for side in ['L', 'R']},
+                              elbows={side: list(rig.pose.bones['fore' + side].head) for side in ['L', 'R']})
             records.append(record)
             if not options.audit:
                 scene.render.filepath = str(output / (record['name'] + '.png'))
@@ -217,6 +258,8 @@ def main():
         'ikAuthoringSha256': digest(authoring), 'blender': bpy.app.version_string,
         'provenance': 'Original primitive wood/bronze/amber staff; existing approved Warrior rig and materials',
         'productionApproved': False, 'genuineMotionQualityAccepted': False,
+        'motionSha256': digest(motion_path) if motion else None,
+        'subframes': options.subframes,
         'samples': records}, indent=2) + '\n')
 
 

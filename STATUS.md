@@ -1,3 +1,9 @@
+## Q3-B SE staff primary timed proof / category still legacy (2026-10-29)
+
+- Actual staff rules: two-handed melee/range1.05, unchanged primary clock and secondary assignment. New original12-pose SE guard/load/contact/follow-through uses approved rig and opposing grip, with a shorter1.55m staff; no actor rescaling.89 continuous geometry samples clear all shaft/body checks; stable feet/root, exact guard/recovery pixels. Timed native captures meet real range marker; SE primary accepted only for directional continuation.
+- Actual timeline/selector plans12/2/18,10/2/16,8/2/14,6/2/12 each strike once at pose5; hit/death yield. Final M4/Metal18 attacks/600 frames p9516.8/max18.7ms,zero>25/errors. One temporary primary atlas307784PNG bytes/2MiB calculated RGBA, not production/GPU cost.13 focused tests/four files, TypeScript/scoped lint pass. Rejected probes and formatting-only input provenance retained.
+- Next remaining seven primary facings without rerendering SE; then staff movement/assigned abilities/hit/death and full category integration/release gates. No staff/bow/unarmed production promotion; B/C incomplete. Verified deployed remainsc437335844e4f82e30b00da2967d4f64c9614a64, no new CI pending; cold16.73s/old combat stalls retained. Preserve unrelated edits/checkpoints. Resume docs/art/q3/warrior-equipment.md; raw /private/tmp/hollowbane-q3-staff-choreography. Keep proof local.
+
 ## Q3-B staff pilot checkpoint / no category promotion (2026-10-29)
 
 - Verified runtime remainsc437335844e4f82e30b00da2967d4f64c9614a64; Full/Pages/24 native hosted/164 public hashes accepted. Shared-body proof6b7c1c1 local; campaign stays42 textures/373.25MiB calculated RGBA, not GPU residency. Cold16.73s transfer and existing414.8ms combat stall remain recorded.

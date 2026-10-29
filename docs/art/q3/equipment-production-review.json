@@ -1327,7 +1327,7 @@
       "Independent hosted showcase startup reproducibly exceeds5s while developer atlases still download (98% initial/93% traced);21/22 pass, broader acceptance remains open. No global timeout/assertion change."
     ],
     "rawEvidenceRoot": "/private/tmp/hollowbane-warrior-equipment/completion-*",
-    "next": "Refine bounded staff attack alignment to actual forward(0,-1), real phase/impact timing and clear SE readability; preserve opposing grip/reach/body/floor checks. Prove continuous SE/W/NW motion before eight-way/ability/hit/death exports, shared body correction packing or campaign promotion. Staff/bow/unarmed remain legacy; B/C incomplete.",
+    "next": "Audit same accepted primary motion in remaining seven facings without rerendering SE; review all directional impact/occlusion/trim roots. Then staff movement/secondary-assigned abilities/hit/death. No production promotion before entire configuration and exact B/C release gates.",
     "finalBuildFiles": 164,
     "unchangedAcceptedFiles": 158,
     "allAcceptedWarriorPngJsonUnchanged": true,
@@ -1687,5 +1687,109 @@
     "validation": "Strict original bone lengths, connected arm joints, fixed feet/root, reachable two-bone targets and exact palm centers for12 samples. Non-hand mesh intersection/floor/alpha-edge checks pass. Python syntax and scoped JS ESLint/syntax/format pass. This validates diagnostic tooling, not a supported category.",
     "campaignRuntimeArtSaveDelta": 0,
     "next": "Refine bounded staff attack alignment to actual forward(0,-1), real phase/impact timing and clear SE readability; preserve opposing grip/reach/body/floor checks. Prove continuous SE/W/NW motion before eight-way/ability/hit/death exports, shared body correction packing or campaign promotion. Staff/bow/unarmed remain legacy; B/C incomplete."
+  },
+  "staffSoutheastPrimary": {
+    "scope": "DBL-023/024/025 Southeast primary choreography only; not full staff compatibility",
+    "sePrimaryReviewAcceptedForDirectionalPilot": true,
+    "productionApproved": false,
+    "rules": {
+      "weapon": "melee",
+      "range": 1.05,
+      "hands": 2
+    },
+    "renderedPoses": 12,
+    "denseGeometrySamples": 89,
+    "sourceInput": {
+      "consumedInputSha256": "441be5cadb8a817a1a43b33c8f2e780b30301b2b2f038efcfea2329676703cb8",
+      "formattedSourceSha256": "97d88a9feaa78344caa3a3d9d2a320bd5897fcfeab45b18ca8604f6f4c573d16",
+      "sameParsedControlsAndGeometry": true
+    },
+    "sourceGeometry": "Original1.50m wood shaft/1.55m including cap, two-handed0.24m grip; dimensions revised to fit melee reach, no actor rescaling. Earlier1.75m static prototype retained as historical evidence.",
+    "impactTipModelMetres": [
+      -0.0010370612144470215, -1.7679823637008667, 1.0795851945877075
+    ],
+    "motion": "Distinct loaded guard, forward contact, follow-through and exact guard return. Continuous fixed elbow pole, both palms solved each sample. No original sword animation or extra gameplay clock.",
+    "realTimings": [
+      {
+        "timing": {
+          "windup": 12,
+          "active": 2,
+          "recovery": 18
+        },
+        "ticks": 32,
+        "strikeTick": 11
+      },
+      {
+        "timing": {
+          "windup": 10,
+          "active": 2,
+          "recovery": 16
+        },
+        "ticks": 28,
+        "strikeTick": 9
+      },
+      {
+        "timing": {
+          "windup": 8,
+          "active": 2,
+          "recovery": 14
+        },
+        "ticks": 24,
+        "strikeTick": 7
+      },
+      {
+        "timing": {
+          "windup": 6,
+          "active": 2,
+          "recovery": 12
+        },
+        "ticks": 20,
+        "strikeTick": 5
+      }
+    ],
+    "native": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "completedAttacks": 18,
+      "frameStats": {
+        "count": 600,
+        "p50": 16.699999999999818,
+        "p95": 16.80000000000109,
+        "p99": 18.300000000000182,
+        "max": 18.700000000000273,
+        "over25": 0
+      },
+      "textures": 4,
+      "atlas": {
+        "width": 2048,
+        "height": 256,
+        "pngBytes": 307784,
+        "decodedBaseBytes": 2097152
+      },
+      "runtimeErrors": []
+    },
+    "verification": {
+      "focusedTests": 13,
+      "testFiles": 4,
+      "typescript": true,
+      "nodeLintSyntax": true,
+      "actualTimedNativeCapturesReviewed": true,
+      "guardAndRecoveryPixelsIdentical": true,
+      "interruptedPrimaryYields": [
+        {
+          "command": "hit",
+          "frame": null,
+          "strike": false
+        },
+        {
+          "command": "kill",
+          "frame": null,
+          "strike": false
+        }
+      ]
+    },
+    "costLimit": "One disposable full-body primary atlas, not campaign payload or full staff category packing. Native fixture draws gameplay1x and inspection2x; no production benchmark/GPU-residency claim.",
+    "campaignRuntimeArtSaveDelta": 0,
+    "rawEvidence": "/private/tmp/hollowbane-q3-staff-choreography",
+    "next": "Audit same accepted primary motion in remaining seven facings without rerendering SE; review all directional impact/occlusion/trim roots. Then staff movement/secondary-assigned abilities/hit/death. No production promotion before entire configuration and exact B/C release gates."
   }
 }
