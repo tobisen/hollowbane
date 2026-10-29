@@ -32,6 +32,111 @@ async function step(page: Page, count: number) {
   }
 }
 
+test("startup waits for every required asset and a rendered frame before enabling input", async ({
+  page,
+}) => {
+  let release!: () => void, requested!: () => void;
+  const held = new Promise<void>((resolve) => (release = resolve));
+  const arrived = new Promise<void>((resolve) => (requested = resolve));
+  await page.route(
+    "**/dev/warrior-equipment/shield-death-body.png",
+    async (r) => {
+      requested();
+      await held;
+      await r.continue();
+    },
+  );
+  try {
+    await page.goto(route);
+    await arrived;
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-warrior-arena-ready",
+      "false",
+    );
+    await expect(page.locator(".pilot-controls")).toHaveJSProperty(
+      "inert",
+      true,
+    );
+    await expect(page.locator("#pilot-stage")).toHaveJSProperty("inert", true);
+    expect(
+      await page.evaluate(() =>
+        window.hollowbaneWarriorArenaStartup!.milestones.map((m) => m.phase),
+      ),
+    ).not.toContain("assets-loaded");
+    release();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-warrior-arena-ready",
+      "true",
+    );
+    const startup = await page.evaluate(
+      () => window.hollowbaneWarriorArenaStartup!,
+    );
+    expect(startup.milestones.map((m) => m.phase)).toContain("page-loaded");
+    expect(
+      startup.milestones
+        .filter((m) => m.phase !== "page-loaded")
+        .map((m) => m.phase),
+    ).toEqual([
+      "assets-loading",
+      "assets-loaded",
+      "renderer-ready",
+      "input-ready",
+      "interactive",
+    ]);
+    expect(startup.completedFiles).toBe(startup.queuedFiles);
+    expect(startup.failedFiles).toEqual([]);
+    expect(startup.milestones.map((m) => m.at)).toEqual(
+      startup.milestones.map((m) => m.at).sort((a, b) => a - b),
+    );
+    await expect(page.locator(".pilot-controls")).toHaveJSProperty(
+      "inert",
+      false,
+    );
+    await page.locator("#arena-pause").click();
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneWarriorArena!.playing))
+      .toBe(false);
+    expect(
+      await page.evaluate(
+        () => window.hollowbaneWarriorArenaStartup!.milestones.at(-1)!.phase,
+      ),
+    ).toBe("first-interaction");
+  } finally {
+    release();
+  }
+});
+
+test("missing startup equipment cannot advertise renderer or input readiness", async ({
+  page,
+}) => {
+  await page.route("**/dev/warrior-equipment/shield-death-body.png", (r) =>
+    r.fulfill({ status: 404, body: "Missing required startup texture" }),
+  );
+  await page.goto(route);
+  await expect(page.locator("#arena-loading")).toContainText(
+    "Asset loading failed:",
+  );
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-warrior-arena-ready",
+    "false",
+  );
+  await expect(page.locator(".pilot-controls")).toHaveJSProperty("inert", true);
+  expect(
+    await page.evaluate(() =>
+      window
+        .hollowbaneWarriorArenaStartup!.milestones.filter(
+          (m) => m.phase !== "page-loaded",
+        )
+        .map((m) => m.phase),
+    ),
+  ).toEqual(["assets-loading"]);
+  expect(
+    await page.evaluate(
+      () => window.hollowbaneWarriorArenaStartup!.failedFiles,
+    ),
+  ).toContain("arena-shield-body");
+});
+
 test("shared virtual controller moves the shield candidate and commits one ability effect", async ({
   page,
 }) => {
@@ -91,6 +196,13 @@ test("shield follows all eight live walk and run facings on the camera root", as
   await open(page);
   for (const gait of ["walk", "run"]) {
     await page.locator("#arena-reset").click();
+    // The reset intent precedes the next published frame. Do not measure a
+    // fresh encounter against the previous gait's stale cumulative distance.
+    await expect
+      .poll(() =>
+        page.evaluate(() => window.hollowbaneWarriorArena!.sample.distance),
+      )
+      .toBe(0);
     if (gait === "run") await page.keyboard.press("r");
     const seen = new Set<number>();
     for (const [keys, x, y] of [

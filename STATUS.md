@@ -1,3 +1,9 @@
+## Q3-B startup — measured local readiness fix (2026-10-29)
+
+- Developer queue2 caused real cold45-file loading beyond5s. Queue4 plus real asset/first-render/input/interactive events; controls inert until usable. All original5s/60s bounds preserved. Native controlled150ms three matched pairs: cold6.111–6.168s→3.849–3.901s;42 textures/373.25MiB calculated RGBA unchanged,720 ready frames/zero>25. Loading reload max68.5ms versus35.3 retained.
+- 14 units/two files,16 distinct native Chromium/eight FF-WebKit, TypeScript/full lint/build pass; captures reviewed. Facing trace exposed stale Reset distance2.4; wait for published0 before measuring, all assertions preserved; three repetitions pass.164 files/161 hashes unchanged; every Warrior image/atlas/campaign chunk intact. No new weapon support.
+- Commit/push coherent startup candidate; require exact Full/Pages/hosted/164 public bytes,22 independent native cases and3 cold/cached-reload pairs before production expansion. Verified deployed remainsf28c16c8080959b3a7a95a50683b470f76994dc2. Bow/staff/unarmed legacy; B/C incomplete. Resume docs/art/q3/warrior-equipment.md; raw /private/tmp/hollowbane-q3-startup. Preserve unrelated edits/eecb977 ancestry.
+
 ## Q3-B recovery — CI/Pages verified; hosted startup follow-up (2026-10-29)
 
 - Deployedf28c16c8080959b3a7a95a50683b470f76994dc2; exact CI40937358584 Full/Pages/hosted/Release acceptance pass:682 units/150 files,315 Chromium,15 compatibility. All164 CI/tested/public file hashes match. Original hidden-journal failure repaired by explicit restored-state setup; original assertions/deadlines preserved.8a48dc9 ancestry intact.

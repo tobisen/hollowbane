@@ -9,6 +9,74 @@ vertical slice below. **Checkpoint A is verified** at
 [warrior-production.md](warrior-production.md). Historical sections retain their
 then-current counts and restrictions.
 
+## Showcase startup candidate — 2026-10-29
+
+The remaining failure is `equipment study switches and falls back without changing
+the frozen encounter or opening saves`. It fails before selection: the45-file
+Phaser preload is capped at **two** requests. Published native starts reproduce
+**6.258s cold**, with two further fresh-context starts2.378/2.768s; cached reloads
+0.533–0.548s. CDN/connection/OS/GPU caches were not reset. The five-second check
+exposes actual loading, not a hidden control or incorrect quest state.
+
+The developer-only queue is now bounded at **four**. No atlas is skipped, deferred,
+duplicated or registered twice. Campaign loading is unchanged. Explicit events
+`hollowbane-warrior-arena-startup` and Performance marks record page loaded,
+assets loading/loaded, renderer ready, input ready, interactive and first trusted
+control interaction. Public read-only diagnostics are
+`window.hollowbaneWarriorArenaStartup`. Controls/stage remain inert until every
+required texture (including Original) exists, handlers are bound, the real first
+render completes and its state snapshot exists. Failed required resources leave
+readiness false and input inert. `readyMs` now includes that first render.
+
+Three balanced matched pairs on native M4/ANGLE Metal,1280×800/DPR1, controlled
+150ms latency/20MiB/s download/10MiB/s upload:
+
+| Queue | Cold interactive | Successful Pause observed | Reload interactive |
+| ----- | ---------------- | ------------------------- | ------------------ |
+| 2     | 6.111–6.168s     | 6.190–6.247s              | 5.316–5.594s       |
+| 4     | 3.849–3.901s     | 3.927–3.980s              | 3.456–3.508s       |
+
+These local-preview reloads revalidate under injected latency; they are **not**
+the cached hosted reload measurements above. A generated local diagnostic bundle
+switches only the cap2/4 in balanced orders, then restores it; no source/art is
+modified by the comparison. Twelve cohorts each have45 completed files,44 unique
+developer requests,42 textures and373.25MiB calculated base RGBA, zero runtime/
+request errors and zero>25ms over720 post-ready frame intervals. Four-way loading
+has a68.5ms maximum during reload versus35.3ms at two; cold maxima35.2/33.5ms.
+This loading-stage tail increase remains explicit; no combat-stall improvement or
+GPU-residency claim. Matched data precede only removal of the startup error
+observer after completion; final published measurements are still required.
+
+Two new browser cases hold a real required request and inject404, proving that
+ready/input cannot appear early and that the first real click works. Existing
+five-second startup/UI assertions and60s case bounds are unchanged. A wider
+native run exposed an independent facing-driver reset race: trace reads stale
+previous-gait distance2.4 after Reset while the new fixture is at0, holding Run
+until excessive travel reaches an obstacle. The driver now waits for the normal
+published0-distance reset snapshot; every displacement/gait/eight-facing/camera
+assertion and deadline remains. The original failure is retained; the repaired
+case passes three times.
+
+**14 units/two files**, strict TypeScript, full lint, formatting and build pass.
+**16 distinct native Chromium cases** pass across bounded runs (initial15,
+repaired facing3×), plus **eight Firefox/WebKit** readiness/selection/resource
+cases. Captures reviewed. Final164-file build retains161 accepted hashes; only
+the arena/entry JavaScript and HTML entry reference change. Every approved image,
+atlas JSON and campaign chunk is unchanged: art/PNG/atlas/RGBA delta0.
+
+Local candidate; publication pending. Require the risk-based **Full** exact CI,
+Pages, hosted smoke, all164 public hashes, the22 independent hosted cases and
+three actual cold/cached-reload pairs before production weapon expansion. Last
+verified deployed SHA remains **f28c16c8080959b3a7a95a50683b470f76994dc2**.
+No new weapon category is supported; staff/bow/unarmed remain legacy and B/C are
+incomplete. Shared sword-free body pilot follows the startup release gate.
+
+Raw evidence: `/private/tmp/hollowbane-q3-startup/{baseline-hosted,matched-native,native-ui,facing-reset,compat-ui}`.
+`measure.mjs` retains the exact protocol, real milestone/resource timings and
+trusted Pause outcome; source changes are presentation-only. The preliminary
+client comparison correctly allows the changed HTML entry reference alongside
+two JavaScript chunks; all non-entry assets are byte-identical.
+
 ## CI recovery — 2026-10-29
 
 Candidate `72155e6d62a83add0779d3e2662c9a80389499d4` failed exact

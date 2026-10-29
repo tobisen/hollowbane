@@ -1395,5 +1395,93 @@
     "priorFailedCandidateSha": "72155e6d62a83add0779d3e2662c9a80389499d4",
     "priorFailedCiRun": 40918355913,
     "independentHostedAcceptanceComplete": false
+  },
+  "startupReadiness": {
+    "scope": "DBL-023/024/025 developer-only startup; no new weapon compatibility",
+    "rootCause": "Two parallel requests serialize45 required startup files beyond5s on cold hosted navigation; control selection is never reached.",
+    "resolution": "Bound queue at4; explicit real loading/render/input/interactive/first trusted click milestones; inert until all required resources and first rendered snapshot exist.",
+    "originalFiveSecondUiAndSixtySecondCaseBoundsPreserved": true,
+    "localValidation": {
+      "unitTests": 14,
+      "unitFiles": 2,
+      "typescript": true,
+      "fullLint": true,
+      "build": true,
+      "nativeChromiumDistinctCases": 16,
+      "facingRepetitionsAfterResetRepair": 3,
+      "firefoxWebkitCases": 8
+    },
+    "additionalFacingDriverRepair": "Wait for the normal0-distance reset snapshot; trace previously observed stale2.4 and ran into obstacle. All facing/displacement/camera assertions remain.",
+    "publishedBaseline": {
+      "cold": [6257.8, 2378.3, 2767.6],
+      "warm": [547.7, 533.1, 542.7]
+    },
+    "matchedNative": {
+      "hardware": "Apple M4 / verified ANGLE Metal",
+      "viewport": [1280, 800],
+      "dpr": 1,
+      "latencyMs": 150,
+      "downloadMiBps": 20,
+      "uploadMiBps": 10,
+      "orders": [
+        [2, 4],
+        [4, 2],
+        [2, 4]
+      ],
+      "localReloads": "Preview cache revalidation with injected latency, not hosted memory-cache warm starts",
+      "rows": {
+        "2": {
+          "cold": {
+            "interactiveMs": [6118.5, 6167.6, 6111.1],
+            "observedSuccessfulPauseMs": [6197.4, 6247, 6190.2],
+            "maxLoadingFrameMs": 33.5,
+            "postReadyFramesAbove25ms": 0
+          },
+          "warm": {
+            "interactiveMs": [5505.2, 5315.6, 5594.1],
+            "observedSuccessfulPauseMs": [5561.9, 5374.6, 5651.7],
+            "maxLoadingFrameMs": 35.3,
+            "postReadyFramesAbove25ms": 0
+          }
+        },
+        "4": {
+          "cold": {
+            "interactiveMs": [3874.2, 3900.6, 3849.2],
+            "observedSuccessfulPauseMs": [3950.6, 3980.3, 3927.1],
+            "maxLoadingFrameMs": 35.2,
+            "postReadyFramesAbove25ms": 0
+          },
+          "warm": {
+            "interactiveMs": [3456.3, 3487.7, 3507.6],
+            "observedSuccessfulPauseMs": [3517.7, 3551.2, 3556.9],
+            "maxLoadingFrameMs": 68.5,
+            "postReadyFramesAbove25ms": 0
+          }
+        }
+      },
+      "filesPerStartup": 45,
+      "uniqueDeveloperRequests": 44,
+      "textures": 42,
+      "decodedBaseBytes": 391380992,
+      "postReadyFrameIntervals": 720,
+      "postReadyFramesAbove25ms": 0,
+      "measuredGpuMemory": false,
+      "scopeLimit": "Matched generated diagnostic cap-only comparison precedes final error-observer cleanup; final exact hosted cold/warm measurements pending"
+    },
+    "assets": {
+      "buildFiles": 164,
+      "unchangedAcceptedFiles": 161,
+      "allWarriorPngJsonAndCampaignChunksUnchanged": true,
+      "additionalPngBytes": 0,
+      "additionalAtlases": 0,
+      "additionalDecodedBaseBytes": 0
+    },
+    "requiredTier": "full",
+    "publication": "Local verified candidate; exact CI/Pages/22 hosted/cold-warm/integrity pending",
+    "releaseAccepted": false,
+    "lastVerifiedDeployedSha": "f28c16c8080959b3a7a95a50683b470f76994dc2",
+    "rawEvidence": "/private/tmp/hollowbane-q3-startup",
+    "protocolSha256": "43091c5ad3b61fec3241174fbcc6bd0d6833af506f3b3a38e4573785e2ae9c60",
+    "next": "Commit/push coherent startup fix; exact Full/Pages/hosted+164 public hashes,22 independent native cases and3 cold/warm pairs. Then bounded shared sword-free body proof; no B/C promotion yet."
   }
 }

@@ -78,8 +78,23 @@ function arenaSample(arena: ReturnType<typeof createWarriorArena>) {
   };
 }
 type ArenaSample = ReturnType<typeof arenaSample>;
+type StartupPhase =
+  | "page-loaded"
+  | "assets-loading"
+  | "assets-loaded"
+  | "renderer-ready"
+  | "input-ready"
+  | "interactive"
+  | "first-interaction";
 declare global {
   interface Window {
+    hollowbaneWarriorArenaStartup?: {
+      milestones: { phase: StartupPhase; at: number }[];
+      parallelDownloads: number;
+      queuedFiles: number;
+      completedFiles: number;
+      failedFiles: string[];
+    };
     hollowbaneWarriorArena?: {
       sample: ArenaSample;
       history: ArenaSample[];
@@ -107,6 +122,32 @@ declare global {
 /** Developer entry only. Assets are loaded once by Phaser, never decoded into duplicate canvas images. */
 export async function startWarriorArena(equipmentMode = false): Promise<void> {
   const begin = performance.now();
+  const startup = (window.hollowbaneWarriorArenaStartup = {
+    milestones: [] as { phase: StartupPhase; at: number }[],
+    parallelDownloads: 4,
+    queuedFiles: 0,
+    completedFiles: 0,
+    failedFiles: [] as string[],
+  });
+  const milestone = (phase: StartupPhase, at = performance.now()) => {
+    if (startup.milestones.some((entry) => entry.phase === phase)) return;
+    startup.milestones.push({ phase, at });
+    performance.mark(`hollowbane-warrior-arena:${phase}`, { startTime: at });
+    window.dispatchEvent(
+      new CustomEvent("hollowbane-warrior-arena-startup", {
+        detail: { phase, at },
+      }),
+    );
+  };
+  if (document.readyState === "complete") {
+    const navigation = performance.getEntriesByType("navigation")[0] as
+      PerformanceNavigationTiming | undefined;
+    milestone("page-loaded", navigation?.loadEventEnd || performance.now());
+  } else
+    window.addEventListener("load", () => milestone("page-loaded"), {
+      once: true,
+    });
+  document.documentElement.dataset.warriorArenaReady = "false";
   const root = document.querySelector("main")!;
   root.className = "warrior-pilot warrior-arena";
   document.title = "Hollowbane · playable Warrior review";
@@ -121,6 +162,12 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
   <div id="pilot-stage" tabindex="0" role="application" aria-label="Playable Warrior arena"></div>
   <output id="arena-status" aria-label="Animation diagnostics"></output>
   <p class="pilot-note">Seeded disposable training encounter. Both sword variants use existing melee rules. This fixture is separate from campaign characters. No character save is opened. Gold cross: authoritative ground root; green/purple: authored feet. Graphics switching preserves gameplay. <a href="./">Return to Hollowbane</a></p>`;
+  const controls = root.querySelector<HTMLElement>(".pilot-controls")!;
+  const stage = root.querySelector<HTMLElement>("#pilot-stage")!;
+  controls.inert = stage.inert = true;
+  controls.addEventListener("click", (event) => {
+    if (event.isTrusted && !controls.inert) milestone("first-interaction");
+  });
   let equipment:
     import("./warrior-equipment-preview").WarriorEquipmentPreview | null = null;
   if (equipmentMode) {
@@ -135,8 +182,7 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
   const resourceKeys = [...candidateKeys, ...(equipment?.keys ?? [])];
   const el = <T extends HTMLElement>(id: string) =>
     document.getElementById(id) as T;
-  const stage = el("pilot-stage"),
-    keys = new Set<string>();
+  const keys = new Set<string>();
   let arena = createWarriorArena(),
     source = "candidate",
     playing = true,
@@ -250,6 +296,19 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
       equipment?.queue(this);
     }
     preload(): void {
+      this.load.once("start", () => {
+        startup.queuedFiles = this.load.totalToLoad;
+        milestone("assets-loading");
+      });
+      const failed = (file: Phaser.Loader.File) => {
+        startup.failedFiles.push(file.key);
+      };
+      this.load.on("loaderror", failed);
+      this.load.once("complete", () => {
+        this.load.off("loaderror", failed);
+        startup.completedFiles = this.load.totalComplete;
+        if (!startup.failedFiles.length) milestone("assets-loaded");
+      });
       this.queueCandidate();
       this.load.spritesheet(
         "arena-shipped",
@@ -262,14 +321,15 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
       });
     }
     create(): void {
-      const missing = resourceKeys.filter((key) => !this.textures.exists(key));
+      const missing = [...resourceKeys, "arena-shipped"].filter(
+        (key) => !this.textures.exists(key),
+      );
       if (missing.length) {
         el("arena-loading").textContent =
           `Asset loading failed: ${missing.join(", ")}`;
         return;
       }
       resourceState = "ready";
-      readyMs = performance.now() - begin;
       const gl = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).gl;
       this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE) as number;
       el("arena-loading").textContent =
@@ -372,7 +432,19 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
           this.load.start();
         }
       };
-      document.documentElement.dataset.warriorArenaReady = "true";
+      const rendered = () => {
+        const snapshot = window.hollowbaneWarriorArena;
+        if (snapshot?.candidateTextures !== resourceKeys.length) return;
+        this.game.events.off(Phaser.Core.Events.POST_RENDER, rendered);
+        milestone("renderer-ready");
+        controls.inert = stage.inert = false;
+        milestone("input-ready");
+        readyMs = performance.now() - begin;
+        snapshot.readyMs = readyMs;
+        document.documentElement.dataset.warriorArenaReady = "true";
+        milestone("interactive");
+      };
+      this.game.events.on(Phaser.Core.Events.POST_RENDER, rendered);
     }
     update(_time: number, delta: number): void {
       if (!this.graphics) return;
@@ -612,8 +684,8 @@ export async function startWarriorArena(equipmentMode = false): Promise<void> {
     scene: Arena,
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
     audio: { noAudio: true },
-    // Cold profiling found ~100ms loading bursts with the default parallel queue.
-    // Bound this developer-only loader; preserve every approved source pixel.
-    loader: { maxParallelDownloads: 2 },
+    // Bound developer-only startup concurrency. Two serializes the 45-file queue
+    // beyond hosted readiness; four retains a cap without changing campaign loads.
+    loader: { maxParallelDownloads: startup.parallelDownloads },
   });
 }
