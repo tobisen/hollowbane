@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "scope": "Original staff guarded recoil/recovery; existing hitstun only, not production approved",
+  "productionApproved": false,
+  "impactPose": 0,
+  "poseCount": 6,
+  "geometry": {
+    "shaftLength": 1.5,
+    "shaftCenter": 0.6,
+    "tailFerrule": -0.1,
+    "headFerrule": 1.25,
+    "cap": 1.35,
+    "tip": 1.4
+  },
+  "keys": [
+    {
+      "pose": 0,
+      "palm": [0.15, -0.36, 1.14],
+      "axis": [-0.5, -0.12, 0.86],
+      "lean": -0.02,
+      "yaw": 0.05
+    },
+    {
+      "pose": 1,
+      "palm": [0.17, -0.34, 1.19],
+      "axis": [-0.5, -0.1, 0.86],
+      "lean": -0.14,
+      "yaw": -0.02
+    },
+    {
+      "pose": 2,
+      "palm": [0.16, -0.35, 1.17],
+      "axis": [-0.5, -0.12, 0.86],
+      "lean": -0.08,
+      "yaw": 0.02
+    },
+    {
+      "pose": 3,
+      "palm": [0.14, -0.35, 1.12],
+      "axis": [-0.5, -0.14, 0.85],
+      "lean": 0.04,
+      "yaw": 0.06
+    },
+    {
+      "pose": 4,
+      "palm": [0.13, -0.35, 1.09],
+      "axis": [-0.5, -0.15, 0.85],
+      "lean": 0.1,
+      "yaw": 0.09
+    },
+    {
+      "pose": 5,
+      "palm": [0.13, -0.35, 1.08],
+      "axis": [-0.5, -0.15, 0.85],
+      "lean": 0.12,
+      "yaw": 0.1
+    }
+  ]
+}

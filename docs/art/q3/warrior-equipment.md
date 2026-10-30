@@ -483,6 +483,77 @@ legacy**. B/C remain incomplete. Last verified deployed SHA remains
 **c437335844e4f82e30b00da2967d4f64c9614a64**, no CI pending. No owned renderer/server
 remains; preserve unrelated edits and recovery ancestry.
 
+## Staff hit/recovery — eight-direction local candidate 2026-10-30
+
+Two required six-pose entries now cover all eight directions: guarded recoil and
+forward-held recoil from melee contact. **96 logical poses;72 new renders and24
+reused primary contact/guard images.** Both return exactly to the accepted guard.
+All **656 dense samples** and96 packed poses retain the original opposing grip,
+reach, connected joints, body/shaft/ground clearance and fixed feet/root. No
+new stagger state, duration, combat effect or save change.
+
+The first guard-only pilot passed mechanical tests but was **visually rejected**
+for an active-primary interruption: tip displacement1.5667m to the raised guard.
+The forward entry starts with the **exact accepted primary5 PNG**, so entry now
+follows the normal primary4→5 stroke rather than adding that jump. Its subsequent
+recoil uses approved recovery controls with a coordinated torso/palm/shaft offset.
+An initial independent-palm attempt exceeded left-arm reach; retained evidence
+records that rejection. Reach/collision limits were not relaxed. Zero-offset
+endpoints bypass matrix reconstruction to preserve exact aliases.
+
+`src/rendering/warrior-staff-hit.ts` is a pure, currently **unwired campaign**
+presentation observer. It remembers the held pose, keeps the selected entry
+through guarded follow-up hits and yields to living/death selectors without
+owning a clock. Its candidate3–7 forward-pose classification is exercised here
+for active primary, guard, walking and Oath windup. Fan and load/recovery boundary
+entries still require the complete phase3 transition matrix before production;
+these fixtures are not a claim that every interruption is accepted.
+
+The actual600-tick skill/combat plan tests four entries × three recovery bonuses:
+**12/9/6 ticks**, every six-pose sequence, one stagger despite follow-up damage,
+exact release into real movement and no effect from interrupted Oath. Every tick
+matches an untouched simulation copy. Four new observer cases plus existing hit
+and packing tests give **11 focused passes/three files**; strict TypeScript,
+scoped ESLint/Prettier and Python syntax pass. A TypeScript alias-narrowing error
+was corrected with a non-null assertion erased from runtime output.
+
+All six reaction poses in all eight directions were reviewed in actual-timed
+native gameplay-scale sequences, with light/dark captures. The native fixtures
+reuse and independently verify184/160 context frames against reviewed source
+pixel hashes (primary/carry or Oath/carry), loading only used categories. Combined
+**96 CPU and96 GPU round trips** pass; eight views read one authoritative plan.
+
+| Native M4/Metal fixture | PNG bytes | Calculated RGBA | p50 / p95 / p99 / max | >25ms |
+| ---------------------- | --------: | --------------: | -------------------- | ----: |
+| Guard entry,9 cases/450 unique ticks | 1369056 | 8MiB | 16.7 /18.0 /18.5 /18.6ms | 0/600 |
+| Forward entry,3 cases/150 unique ticks | 1530328 | 8MiB | 16.7 /18.1 /18.5 /66.7ms | 1/600 |
+
+Three **16→10→16** texture cycles pass per fixture: one new reaction atlas plus
+five reused context atlases, nine labels and a round-trip target. The66.7ms tail
+is retained, not retried away or attributed without matched evidence. The SE
+combined viewer independently records600 intervals p9518.6/max18.7ms,zero>25,
+three2→1→2 cycles. These are isolated reviews, not matched campaign performance
+or measured GPU residency. The two2048×1024 diagnostic atlases total
+**2899384PNG bytes /16MiB calculated RGBA**; no shipping asset is added. Shared
+body/attachment optimization and the complete staff budget remain open.
+
+Raw `/private/tmp/hollowbane-q3-staff-choreography/` evidence: `hit-summary.json`,
+`{hit,hit-extended}-{se,seven}-{dense,render}`, `hit-se-native`,
+`{hit,hit-extended}-eight-native`. Preserve `hit-se-native-rejected-active-snap`,
+`hit-extended-rejected-reach.{json,log}` and the initial older-primary-report
+reader failure. The reader now supports its singular atlas metadata while keeping
+byte-size and exact used-pixel checks. The accepted primary/carry/ability assets
+and all old raw evidence are unchanged. No full release CI/build/hosted run.
+
+Next bounded work: staff death on the approved grounded collapse/settle body
+poses, beginning SE with no sword and correct staff/hand/floor interaction.
+Then close the complete transition matrix (including Fan/load/recovery entry
+boundaries), resource reuse, developer arena, campaign/save/travel and matched
+native acceptance before exact B release and C review. Staff/bow/unarmed remain
+legacy; sword and sword/shield remain supported. Verified deployed SHA is still
+**c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending. No owned process remains
+at this checkpoint. Preserve unrelated edits and recovery ancestry.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing

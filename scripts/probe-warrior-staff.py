@@ -6,6 +6,7 @@ Blender --background --python-exit-code 1 --python scripts/probe-warrior-staff.p
 Default twelve static poses; --motion gives twelve primary poses per selected
 direction. --motion --carry gives forty locomotion poses per selected direction.
 --motion --ability <iron-fan|oath-echo> gives twelve staff-specific ability poses.
+--motion --reaction hit gives six staff-compatible hit recovery poses.
 Uses the approved rig/materials/camera and hash-verified two-bone IK authoring.
 No blend/public writes, gameplay callbacks, mechanics or save changes.
 """
@@ -38,6 +39,7 @@ def main():
     parser.add_argument('--motion', action='store_true', help='Bounded SE primary choreography instead of legacy static study')
     parser.add_argument('--carry', action='store_true', help='Staff guard over approved forty movement poses')
     parser.add_argument('--ability', choices=['iron-fan', 'oath-echo'], help='Original staff-compatible assigned Warrior ability')
+    parser.add_argument('--reaction', choices=['hit', 'hit-extended'], help='Existing six-pose hitstun presentation, with held-weapon entry')
     parser.add_argument('--reuse-guards', type=Path, help='Reviewed primary source directory for exact ability guard aliases')
     parser.add_argument('--subframes', type=int, choices=[1, 8], default=1)
     parser.add_argument('--directions', nargs='+', choices=['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'])
@@ -46,17 +48,21 @@ def main():
     assert options.directions is None or (options.motion and len(options.directions) == len(set(options.directions)))
     assert not options.carry or (options.motion and options.subframes == 1)
     assert not options.ability or (options.motion and not options.carry)
-    assert not options.reuse_guards or (options.ability and not options.audit)
-    action = options.ability or 'primary'
-    motion_path = ROOT / ('assets/source/q3/warrior-staff-se/' + (action + '.json' if options.ability else 'motion.json'))
+    assert not options.reaction or (options.motion and not options.carry and not options.ability)
+    assert not options.reuse_guards or ((options.ability or options.reaction) and not options.audit)
+    action = options.ability or options.reaction or 'primary'
+    motion_path = ROOT / ('assets/source/q3/warrior-staff-se/' + (action + '.json' if options.ability or options.reaction else 'motion.json'))
     motion = json.loads(motion_path.read_text()) if options.motion else None
     guard_source = None
     if options.reuse_guards:
         primary_path = ROOT / 'assets/source/q3/warrior-staff-se/motion.json'
         primary_controls = json.loads(primary_path.read_text())
         assert motion['geometry'] == primary_controls['geometry']
-        for endpoint in [0, -1]:
-            assert motion['keys'][endpoint] == primary_controls['keys'][endpoint]
+        for endpoint in [-1] if options.reaction else [0, -1]:
+            assert {k:motion['keys'][endpoint][k] for k in ['palm','axis','lean','yaw']} == {k:primary_controls['keys'][endpoint][k] for k in ['palm','axis','lean','yaw']}
+        if action == 'hit-extended':
+            active = next(k for k in primary_controls['keys'] if k['pose'] == 5)
+            assert {k:motion['keys'][0][k] for k in ['palm','axis','lean','yaw']} == {k:active[k] for k in ['palm','axis','lean','yaw']}
         guard_bytes = (options.reuse_guards / 'staff.json').read_bytes()
         guard_source = json.loads(guard_bytes)
         guard_review = json.loads((options.reuse_guards / 'review.json').read_text())
@@ -193,9 +199,10 @@ def main():
         ('recovery', (.13, -.36, 1.09), (-.50, -.30, .81), .15, .10),
     ]
     if motion:
-        assert motion['poseCount'] == 12 and motion['impactPose'] == 5
+        count = 6 if options.reaction else 12
+        assert motion['poseCount'] == count and motion['impactPose'] == (0 if options.reaction else 5)
         keys = motion['keys']
-        assert keys[0]['pose'] == 0 and keys[-1]['pose'] == 11
+        assert keys[0]['pose'] == 0 and keys[-1]['pose'] == count - 1
         assert all(a['pose'] < b['pose'] for a, b in zip(keys, keys[1:]))
 
         def controls(index):
@@ -207,10 +214,12 @@ def main():
                     return (f'{action}-{index:06.3f}',
                             [blend(x, y) for x, y in zip(a['palm'], b['palm'])],
                             [blend(x, y) for x, y in zip(a['axis'], b['axis'])],
-                            blend(a['lean'], b['lean']), blend(a['yaw'], b['yaw']))
+                            blend(a['lean'], b['lean']), blend(a['yaw'], b['yaw']),
+                            blend(a.get('referenceLean',a['lean']),b.get('referenceLean',b['lean'])),
+                            blend(a.get('referenceYaw',a['yaw']),b.get('referenceYaw',b['yaw'])))
             raise AssertionError(index)
         poses = [controls(index / options.subframes)
-                 for index in range(11 * options.subframes + 1)]
+                 for index in range((count - 1) * options.subframes + 1)]
         if options.carry:
             poses = [(f"{approved['action']}-{approved['index']:02}",
                       keys[0]['palm'], keys[0]['axis'], keys[0]['lean'], keys[0]['yaw'])
@@ -224,11 +233,19 @@ def main():
         rig.matrix_world = rotation
         for obj in body:
             obj.matrix_world = rotation @ base[obj.name]
-        for ordinal, (phase, position, shaft, lean, yaw) in enumerate(poses):
+        for ordinal, pose in enumerate(poses):
+            phase, position, shaft, lean, yaw = pose[:5]
             axis, palm_r = Vector(shaft).normalized(), Vector(position)
             anchor = Vector(rest['torso'][0])
             torso = (Matrix.Translation(anchor) @ Matrix.Rotation(yaw, 4, 'Z')
                      @ Matrix.Rotation(lean, 4, 'X') @ Matrix.Translation(-anchor))
+            if motion and motion.get('followTorso') and (pose[5] != lean or pose[6] != yaw):
+                reference_lean, reference_yaw = pose[5:]
+                reference = (Matrix.Translation(anchor) @ Matrix.Rotation(reference_yaw, 4, 'Z')
+                             @ Matrix.Rotation(reference_lean, 4, 'X') @ Matrix.Translation(-anchor))
+                operator = torso @ reference.inverted()
+                palm_r = operator @ palm_r
+                axis = (operator.to_3x3() @ axis).normalized()
             for name, matrix in neutral.items():
                 rig.pose.bones[name].matrix = matrix
             expected_feet = {side: Vector(rest['foot' + side][0]) for side in ['L', 'R']}
@@ -326,17 +343,18 @@ def main():
                 index = float(phase.removeprefix(action + '-'))
                 tip = palm_r + axis * geometry['tip']
                 record.update(action=action, index=index,
-                              phase='windup' if index < 5 else 'active' if index == 5 else 'recovery',
+                              phase=('hit' if index < 5 else 'recovery') if options.reaction else ('windup' if index < 5 else 'active' if index == 5 else 'recovery'),
                               palmR=list(palm_r), axis=list(axis), tip=list(tip),
                               wrists={side: list(rig.pose.bones['hand' + side].head) for side in ['L', 'R']},
                               elbows={side: list(rig.pose.bones['fore' + side].head) for side in ['L', 'R']})
             records.append(record)
             if not options.audit:
                 destination = output / (record['name'] + '.png')
-                if guard_source and index in [0, 11]:
+                if guard_source and index in ([0, 5] if action == 'hit-extended' else [5] if options.reaction else [0, 11]):
                     assert guard_source['rigSha256'] == digest(source)
                     assert guard_source['ikAuthoringSha256'] == digest(authoring)
-                    candidates = [s for s in guard_source['samples'] if s['direction'] == facing and s['index'] == 0]
+                    source_index = 5 if action == 'hit-extended' and index == 0 else 0
+                    candidates = [s for s in guard_source['samples'] if s['direction'] == facing and s['index'] == source_index]
                     assert len(candidates) == 1
                     original = candidates[0]
                     assert original['palmR'] == record['palmR'] and original['axis'] == record['axis']
@@ -358,6 +376,7 @@ def main():
         'provenance': 'Original primitive wood/bronze/amber staff; existing approved Warrior rig and materials',
         'productionApproved': False, 'genuineMotionQualityAccepted': False,
         'motionSha256': digest(motion_path) if motion else None,
+        'clipAction': action, 'poseCount': motion['poseCount'] if motion else None,
         'carrySourceSha256': digest(carry_source) if options.carry else None,
         'carryControlsSha256': digest(carry_controls_path) if options.carry else None,
         'movementManifestSha256': digest(movement_path),

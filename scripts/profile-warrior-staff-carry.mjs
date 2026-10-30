@@ -15,10 +15,12 @@ import {
   equipmentFrame,
 } from "./warrior-equipment-packing.mjs";
 
-const abilities = process.argv.includes("--abilities");
+const abilities = process.argv.includes("--abilities"),
+  hitMode = process.argv.includes("--hit");
+if (abilities && hitMode) throw Error("Select one staff review mode");
 const [carry, primary, output] = process.argv
   .slice(2)
-  .filter((p) => p !== "--abilities")
+  .filter((p) => p !== "--abilities" && p !== "--hit")
   .map((p) => resolve(p));
 if (
   !carry ||
@@ -35,15 +37,23 @@ await mkdir(output, { recursive: true });
 const hash = (b) => createHash("sha256").update(b).digest("hex"),
   rasters = [],
   inputs = [];
-for (const [set, directory, count] of abilities
+for (const [set, directory, count] of hitMode
   ? [
-      ["iron-fan", carry, 12],
-      ["oath-echo", primary, 12],
-    ]
-  : [
-      ["movement", carry, 40],
+      ["hit", carry, 6],
+      ["hit-extended", resolve(carry, "../hit-extended-se-render"), 6],
       ["attacks", primary, 12],
-    ]) {
+      ["oath-echo", resolve(primary, "../ability-oath-echo-render"), 12],
+      ["movement", resolve(primary, "../carry-render"), 40],
+    ]
+  : abilities
+    ? [
+        ["iron-fan", carry, 12],
+        ["oath-echo", primary, 12],
+      ]
+    : [
+        ["movement", carry, 40],
+        ["attacks", primary, 12],
+      ]) {
   const bytes = await readFile(resolve(directory, "staff.json")),
     proof = JSON.parse(bytes),
     reviewedBytes = await readFile(resolve(directory, "review.json")),
@@ -56,7 +66,8 @@ for (const [set, directory, count] of abilities
     proof.samples.some(
       (s, i) =>
         s.direction !== "se" ||
-        (abilities && (s.action !== set || s.index !== i)),
+        ((abilities || (hitMode && set.startsWith("hit"))) &&
+          (s.action !== set || s.index !== i)),
     )
   )
     throw Error("Unreviewed Southeast input");
@@ -102,8 +113,54 @@ const packed = packEquipmentRasters(rasters),
   };
 await writeFile(resolve(output, "carry.png"), png);
 await writeFile(resolve(output, "carry.json"), JSON.stringify(atlas));
-const entry = abilities
+const entry = hitMode
   ? `
+import {createCombat, applyCombatHit, ARENA_NAV} from './src/simulation/combat';
+import {commandCombat} from './src/simulation/combat-targeting';
+import {createMonsterExperience} from './src/simulation/monster-experience';
+import {DEFAULT_XP_CURVE} from './src/simulation/experience';
+import {createSkillProgression,allocateSkillRanks} from './src/simulation/skill-progression';
+import {createSkills,requestSkill,stepSkillCombat} from './src/simulation/skills';
+import {WarriorMotion,warriorPose} from './src/rendering/warrior-pose';
+import {observeStaffHit} from './src/rendering/warrior-staff-hit';
+import {createCharacterInventory} from './src/simulation/equipment';
+import {inventoryItem} from './src/simulation/inventory-test-helper';
+import {deriveEquipment,captureEquipmentBase,applyEquipment} from './src/simulation/equipment-stats';
+export function plan(){
+ const rows=[],cases=[];let rules;
+ for(const mode of ['guard','walk','weapon','ability'])for(const bonus of [0,25,60]){
+  const w=createCombat(42);w.hostilesActive=false;w.actors=w.actors.slice(0,2);
+  w.experience=createMonsterExperience(DEFAULT_XP_CURVE[11]);w.experience.skills=allocateSkillRanks(createSkillProgression('warrior',12),12,{'warrior-arms-foundation':1,'warrior-resolve-foundation':1});
+  const a=w.actors[0],b=w.actors[1];b.controller.walker.position={x:a.controller.walker.position.x+.6,y:a.controller.walker.position.y};b.hp=10000;b.maxHp=10000;
+  const c=createCharacterInventory();c.equipment.main=inventoryItem('cinder-staff');applyEquipment(deriveEquipment(c,captureEquipmentBase(a)),a);a.recoveryBonus=bonus;
+  rules={weapon:a.weapon,range:a.range};const r=createSkills(w),baseline=structuredClone(r),m=new WarriorMotion();m.observe(a,0);let hitAt=null,duration=null,view=null;
+  for(let local=0;local<50;local++){
+   if(mode==='weapon'&&local===0)for(const x of [r,baseline])x.combat.actors[0].controller=commandCombat(x.combat.actors[0].controller,{kind:'attack',target:b.id,repeat:false});
+   if(mode==='ability'&&local===8)for(const x of [r,baseline])requestSkill(x,{actor:a.id,skill:'oath-echo',target:null,direction:{x:1,y:0}});
+   const movement=(mode==='walk'||hitAt!==null)?{x:1,y:.5}:{x:0,y:0};
+   stepSkillCombat(r,ARENA_NAV,movement);stepSkillCombat(baseline,ARENA_NAV,movement);
+   const hit=hitAt===null&&(mode==='weapon'?a.controller.timeline.phase==='active':local===(mode==='ability'?10:12));
+   if(hit || (hitAt!==null&&w.tick===hitAt+1)){
+    for(const x of [r,baseline])applyCombatHit(x.combat,x.combat.actors[1],x.combat.actors[0],ARENA_NAV,{damage:hit?6:2,element:'physical',guaranteed:true,stagger:true});
+    if(hit){hitAt=w.tick;duration=a.controller.timeline.remaining;}
+   }
+   m.observe(a,w.tick);const pose=warriorPose(a,w.tick,null,r.users[0].cast,m);view=observeStaffHit(view,pose);
+   if(JSON.stringify(r)!==JSON.stringify(baseline))throw Error('Reaction presentation changed simulation');
+   if(pose.set==='hit'&&(m.hit.duration!==duration||a.controller.timeline.remaining!==duration-(w.tick-hitAt)))throw Error('Repeated hit restarted stun');
+   const frame=pose.set==='abilities'?'oath-echo-'+pose.frame%12:pose.set==='hit'&&view.variant==='extended'?'hit-extended-'+pose.frame:pose.set+'-'+pose.frame;
+   rows.push({tick:rows.length+1,localTick:w.tick,mode,bonus,pose,variant:view.variant,frame,position:{...a.controller.walker.position},phase:a.controller.timeline.phase,strike:0,hit,hitAt,duration,remaining:a.controller.timeline.remaining});
+  }
+  const hits=w.events.filter(e=>e.kind==='stagger'&&e.target===a.id).length;
+  const selected=rows.slice(-50);if(hits!==1||new Set(selected.filter(x=>x.pose.set==='hit').map(x=>x.pose.frame)).size!==6)throw Error('Reaction poses or stagger count changed');
+  if(mode==='ability'&&r.events.some(e=>e.kind==='effect'))throw Error('Interrupted ability released');
+  if(!selected.some(x=>x.localTick===hitAt+duration&&x.pose.set==='movement'))throw Error('Recovery did not yield to actual movement');
+  cases.push({mode,bonus,hitAt,duration,staggerEvents:hits,events:w.events,skillEvents:r.events});
+ }
+ return {rows,cases,rules};
+}
+`
+  : abilities
+    ? `
 import { createCombat } from './src/simulation/combat';
 import { createMonsterExperience } from './src/simulation/monster-experience';
 import { DEFAULT_XP_CURVE } from './src/simulation/experience';
@@ -142,7 +199,7 @@ export function plan(){
  return {rows,cases,rules};
 }
 `
-  : `
+    : `
 import { createCombat, stepCombat } from './src/simulation/combat';
 import { commandCombat } from './src/simulation/combat-targeting';
 import { createWalker } from './src/simulation/locomotion';
@@ -180,12 +237,14 @@ if (
   plan.rules.weapon !== "melee" ||
   plan.rules.range !== 1.05 ||
   plan.rows.some(
-    (r) => !atlas.frames[r.frame] || (!abilities && r.direction !== 7),
+    (r) =>
+      !atlas.frames[r.frame] || (!abilities && !hitMode && r.direction !== 7),
   ) ||
-  plan.rows.reduce((n, r) => n + r.strike, 0) !== (abilities ? 8 : 1)
+  plan.rows.reduce((n, r) => n + r.strike, 0) !==
+    (hitMode ? 0 : abilities ? 8 : 1)
 )
   throw Error("Real staff motion/timing contract changed");
-for (const [clip, count] of abilities
+for (const [clip, count] of abilities || hitMode
   ? []
   : [
       ["idle", 8],
@@ -255,22 +314,36 @@ try {
     new Promise((_, reject) => page.once("pageerror", reject)),
   ]);
   // Pause only after the requested frame was selected by actual simulation.
-  for (const target of abilities
+  for (const target of hitMode
     ? plan.rows
         .filter(
           (r, i) =>
-            r.strike ||
             i === 0 ||
-            (r.pose.set === "abilities" &&
-              plan.rows[i - 1]?.pose.set !== "abilities") ||
-            (r.pose.set !== "abilities" &&
-              plan.rows[i - 1]?.pose.set === "abilities"),
+            plan.rows[i + 1]?.hit ||
+            r.hit ||
+            (r.pose.set === "hit" &&
+              r.mode === "weapon" &&
+              r.bonus === 0 &&
+              r.pose.frame !== plan.rows[i - 1]?.pose.frame) ||
+            (r.pose.set !== "hit" && plan.rows[i - 1]?.pose.set === "hit"),
         )
         .map((r) => r.tick)
-    : [
-        1, 96, 192, 198, 204, 216, 312, 318, 324, 336, 431, 432, 433, 437, 444,
-        463, 480,
-      ]) {
+    : abilities
+      ? plan.rows
+          .filter(
+            (r, i) =>
+              r.strike ||
+              i === 0 ||
+              (r.pose.set === "abilities" &&
+                plan.rows[i - 1]?.pose.set !== "abilities") ||
+              (r.pose.set !== "abilities" &&
+                plan.rows[i - 1]?.pose.set === "abilities"),
+          )
+          .map((r) => r.tick)
+      : [
+          1, 96, 192, 198, 204, 216, 312, 318, 324, 336, 431, 432, 433, 437,
+          444, 463, 480,
+        ]) {
     await page.evaluate(async (target) => {
       const s = window.carryScene;
       s.playing = true;
@@ -321,9 +394,11 @@ try {
     throw Error(native.renderer);
   if (new Set(native.seen).size !== 600)
     throw Error("Native playback did not complete actual 600-tick plan");
-  const lightTargets = abilities
-    ? plan.rows.filter((r) => r.strike).map((r) => r.tick)
-    : [];
+  const lightTargets = hitMode
+    ? plan.rows.filter((r) => r.hit).map((r) => r.tick)
+    : abilities
+      ? plan.rows.filter((r) => r.strike).map((r) => r.tick)
+      : [];
   for (const target of lightTargets) {
     await page.evaluate(async (target) => {
       const s = window.carryScene;
@@ -386,17 +461,19 @@ try {
     timingBundleSha256: hash(await readFile(bundle)),
     rules: plan.rules,
     actualPlanTicks: plan.rows.length,
-    ...(abilities
-      ? {
-          actualSkillEffects: plan.rows.reduce((n, r) => n + r.strike, 0),
-          cases: plan.cases,
-        }
-      : {
-          actualPrimaryDamageEvents: plan.rows.reduce(
-            (n, r) => n + r.strike,
-            0,
-          ),
-        }),
+    ...(hitMode
+      ? { actualHitReactions: plan.cases.length, cases: plan.cases }
+      : abilities
+        ? {
+            actualSkillEffects: plan.rows.reduce((n, r) => n + r.strike, 0),
+            cases: plan.cases,
+          }
+        : {
+            actualPrimaryDamageEvents: plan.rows.reduce(
+              (n, r) => n + r.strike,
+              0,
+            ),
+          }),
     renderer: native.renderer,
     textures: native.textures,
     resourceCycles,

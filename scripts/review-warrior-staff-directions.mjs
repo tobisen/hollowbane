@@ -16,14 +16,20 @@ import {
 const args = process.argv.slice(2),
   abilityIndex = args.indexOf("--ability"),
   ability = abilityIndex >= 0 ? args.splice(abilityIndex, 2)[1] : null,
+  reactionIndex = args.indexOf("--reaction"),
+  reaction = reactionIndex >= 0 ? args.splice(reactionIndex, 2)[1] : null,
   carryMode = args.at(-1) === "--carry";
 if (
   (abilityIndex >= 0 && !["iron-fan", "oath-echo"].includes(ability)) ||
-  (ability && carryMode)
+  (reactionIndex >= 0 && !["hit", "hit-extended"].includes(reaction)) ||
+  (ability && reaction) ||
+  ((ability || reaction) && carryMode)
 )
   throw Error("Invalid staff review mode");
 if (carryMode) args.pop();
-const eightViews = carryMode || Boolean(ability);
+const clip = ability ?? reaction,
+  frameCount = reaction ? 6 : 12,
+  eightViews = carryMode || Boolean(clip);
 const [se, seven, output] = args.map((p) => resolve(p));
 if (
   !se ||
@@ -38,7 +44,7 @@ if (
 await mkdir(output, { recursive: true });
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex"),
   source = await readFile(
-    `assets/source/q3/warrior-staff-se/${ability ?? "motion"}.json`,
+    `assets/source/q3/warrior-staff-se/${clip ?? "motion"}.json`,
   ),
   carrySource = carryMode
     ? await readFile("assets/source/q3/warrior-staff-se/carry.json")
@@ -72,7 +78,9 @@ for (const directory of [se, seven]) {
         directory,
         ability
           ? `../ability-${ability}-consumed.json`
-          : "../motion-consumed.json",
+          : reaction
+            ? `../${reaction}-consumed.json`
+            : "../motion-consumed.json",
       ),
     );
     if (
@@ -98,8 +106,8 @@ for (const directory of [se, seven]) {
       !names.includes(sample.direction) ||
       !Number.isInteger(index) ||
       index < 0 ||
-      index >= (carryMode ? 40 : 12) ||
-      (ability && sample.action !== ability)
+      index >= (carryMode ? 40 : frameCount) ||
+      (clip && sample.action !== clip)
     )
       throw Error("Duplicate/invalid directional pose");
     if (
@@ -110,16 +118,17 @@ for (const directory of [se, seven]) {
     originals.set(name, { png, pixels });
     frames.push({ name, direction: sample.direction, index });
     const guard = originals.get(`${sample.direction}-0`);
-    if (!carryMode && index === 11 && guard?.pixels.equals(pixels))
+    if (!carryMode && index === frameCount - 1 && guard?.pixels.equals(pixels))
       aliases[name] = `${sample.direction}-0`;
     else rasters.push({ name, ...cropEquipmentRgba(pixels, 512, 512) });
   }
 }
 if (
-  frames.length !== (carryMode ? 320 : 96) ||
+  frames.length !== (carryMode ? 320 : frameCount * 8) ||
   names.some(
     (d) =>
-      frames.filter((f) => f.direction === d).length !== (carryMode ? 40 : 12),
+      frames.filter((f) => f.direction === d).length !==
+      (carryMode ? 40 : frameCount),
   )
 )
   throw Error("Expected every pose in all eight directions");
@@ -149,7 +158,7 @@ for (const group of carryMode
       meta: {
         image: carryMode
           ? `carry-${atlases.length}.png`
-          : `${ability ?? "primary"}.png`,
+          : `${clip ?? "primary"}.png`,
         size: { w: packed.width, h: packed.height },
         scale: "1",
       },
@@ -173,7 +182,7 @@ for (const group of carryMode
       ? `carry-${atlases.length}`
       : "staff";
   }
-  const key = carryMode ? `carry-${atlases.length}` : (ability ?? "primary");
+  const key = carryMode ? `carry-${atlases.length}` : (clip ?? "primary");
   await writeFile(resolve(output, key + ".png"), png);
   await writeFile(resolve(output, key + ".json"), JSON.stringify(atlas));
   atlases.push({
@@ -197,12 +206,59 @@ const primaryBytes = carryMode
     ? await readFile(
         resolve(
           se,
-          ability ? "../ability-native/plan.json" : "../carry-native/plan.json",
+          reaction
+            ? "../hit-se-native/plan.json"
+            : ability
+              ? "../ability-native/plan.json"
+              : "../carry-native/plan.json",
         ),
       )
     : null,
   nativePrimary = carryMode ? JSON.parse(primaryMetadata) : null,
   actualPlan = eightViews ? JSON.parse(planBytes) : null;
+if (reaction) {
+  const prior = JSON.parse(
+    await readFile(resolve(se, "../hit-se-native/review.json")),
+  );
+  if (
+    prior.errors.length ||
+    prior.actualHitReactions !== 12 ||
+    !prior.inputs.some((i) => i.proofSha256 === inputs[0].proofSha256)
+  )
+    throw Error("Missing accepted actual reaction timing");
+  const variant = reaction === "hit" ? "guard" : "extended",
+    groups = new Set(
+      actualPlan.rows
+        .filter((r) => r.pose.set === "hit" && r.variant === variant)
+        .map((r) => r.mode + ":" + r.bonus),
+    );
+  actualPlan.rows = actualPlan.rows.filter((r) =>
+    groups.has(r.mode + ":" + r.bonus),
+  );
+  actualPlan.cases = actualPlan.cases.filter((c) =>
+    groups.has(c.mode + ":" + c.bonus),
+  );
+  if (
+    actualPlan.cases.length !== (variant === "guard" ? 9 : 3) ||
+    actualPlan.rows.some((r) => r.pose.set === "hit" && r.variant !== variant)
+  )
+    throw Error("Incomplete reaction entry coverage");
+  for (const c of actualPlan.cases) {
+    const rows = actualPlan.rows.filter(
+      (r) => r.mode === c.mode && r.bonus === c.bonus,
+    );
+    if (
+      c.staggerEvents !== 1 ||
+      new Set(rows.filter((r) => r.pose.set === "hit").map((r) => r.pose.frame))
+        .size !== 6 ||
+      !rows.some(
+        (r) =>
+          r.localTick === c.hitAt + c.duration && r.pose.set === "movement",
+      )
+    )
+      throw Error("Reaction duration/release changed");
+  }
+}
 if (ability) {
   const prior = JSON.parse(
     await readFile(resolve(se, "../ability-native/review.json")),
@@ -288,9 +344,119 @@ if (carryMode) {
 const loadAtlases = atlases.map((a) => ({ key: a.texture, file: a.key }));
 if (carryMode)
   loadAtlases.push({ key: "accepted-primary", file: "accepted-primary" });
+const contextAtlases = [],
+  contextTextures = {},
+  verifiedContextFrames = new Set();
+if (reaction) {
+  for (const [set, directory, files, count] of [
+    [
+      "movement",
+      "carry-eight-native",
+      ["carry-0", "carry-1", "carry-2", "carry-3"],
+      320,
+    ],
+    ["attacks", "eight-primary", ["primary"], 96],
+    ["abilities", "ability-oath-echo-eight-native", ["oath-echo"], 96],
+  ]) {
+    if (!actualPlan.rows.some((r) => r.pose.set === set)) continue;
+    if (
+      set === "abilities" &&
+      actualPlan.rows.some(
+        (r) => r.pose.set === set && r.pose.clip !== "oath-echo",
+      )
+    )
+      throw Error("Unsupported reaction context ability");
+    const folder = resolve(se, "../" + directory),
+      prior = JSON.parse(await readFile(resolve(folder, "review.json"))),
+      expected = new Map();
+    if (
+      prior.errors.length ||
+      prior.gpuRoundTrips !== count ||
+      prior.cpuRoundTrips !== count
+    )
+      throw Error("Unaccepted reaction context");
+    for (const input of prior.inputs) {
+      const proofBytes = await readFile(resolve(input.directory, "staff.json")),
+        proof = JSON.parse(proofBytes),
+        review = JSON.parse(
+          await readFile(resolve(input.directory, "review.json")),
+        );
+      if (
+        hash(proofBytes) !== input.proofSha256 ||
+        review.proofSha256 !== input.proofSha256
+      )
+        throw Error("Changed context proof");
+      for (const sample of proof.samples)
+        expected.set(
+          sample.direction + "-" + (sample.ordinal ?? sample.index),
+          review.reports.find((r) => r.name === sample.name)?.pixelSha256,
+        );
+    }
+    for (const file of files) {
+      const png = await readFile(resolve(folder, file + ".png")),
+        atlas = JSON.parse(await readFile(resolve(folder, file + ".json"))),
+        key = "context-" + file;
+      const acceptedBytes =
+        prior.atlases?.find((a) => a.key === file)?.pngBytes ??
+        (files.length === 1 ? prior.atlas?.pngBytes : undefined);
+      if (png.length !== acceptedBytes) throw Error("Changed context PNG size");
+      const metadata = await sharp(png).metadata(),
+        pixels = await sharp(png).ensureAlpha().raw().toBuffer();
+      if (
+        metadata.width !== atlas.meta.size.w ||
+        metadata.height !== atlas.meta.size.h
+      )
+        throw Error("Invalid context atlas size");
+      const used = new Set(
+        actualPlan.rows
+          .filter((r) => r.pose.set === set)
+          .flatMap((r) =>
+            names.map(
+              (d) =>
+                d +
+                "-" +
+                (set === "abilities" ? r.pose.frame % 12 : r.pose.frame),
+            ),
+          ),
+      );
+      for (const name of Object.keys(atlas.frames)) {
+        contextTextures[set + ":" + name] = key;
+        if (!used.has(name)) continue;
+        const f = atlas.frames[name],
+          restored = Buffer.alloc(512 * 512 * 4);
+        if (f.rotated || f.sourceSize.w !== 512 || f.sourceSize.h !== 512)
+          throw Error("Invalid context trim");
+        for (let y = 0; y < f.frame.h; y++)
+          pixels.copy(
+            restored,
+            ((f.spriteSourceSize.y + y) * 512 + f.spriteSourceSize.x) * 4,
+            ((f.frame.y + y) * atlas.meta.size.w + f.frame.x) * 4,
+            ((f.frame.y + y) * atlas.meta.size.w + f.frame.x + f.frame.w) * 4,
+          );
+        if (hash(restored) !== expected.get(name))
+          throw Error("Changed reused context pixels " + name);
+        verifiedContextFrames.add(set + ":" + name);
+      }
+      contextAtlases.push({ key, file: key, png, atlas });
+      loadAtlases.push({ key, file: key });
+    }
+    for (const r of actualPlan.rows.filter((r) => r.pose.set === set))
+      for (const d of names)
+        if (
+          !contextTextures[
+            set +
+              ":" +
+              d +
+              "-" +
+              (set === "abilities" ? r.pose.frame % 12 : r.pose.frame)
+          ]
+        )
+          throw Error("Missing reaction context frame");
+  }
+}
 const html = `<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#252c30"><script src="/phaser.js"></script><script type="module">
 ${eightViews ? "" : "import {plan}from'/timing.mjs';"}
-const names=${JSON.stringify(names)},loadAtlases=${JSON.stringify(loadAtlases)},textureByFrame=${JSON.stringify(textureByFrame)};
+const names=${JSON.stringify(names)},loadAtlases=${JSON.stringify(loadAtlases)},textureByFrame=${JSON.stringify(textureByFrame)},contextTextures=${JSON.stringify(contextTextures)};
 class Review extends Phaser.Scene{
 preload(){for(const a of loadAtlases)this.load.atlas(a.key,'/'+a.file+'.png','/'+a.file+'.json');}
 create(){if(Phaser.VERSION!=='4.2.1')throw Error('Phaser version');for(const a of loadAtlases)if(!this.textures.exists(a.key))throw Error('Missing atlas '+a.key);
@@ -298,7 +464,7 @@ ${eightViews ? `this.views=names.map((name,i)=>{this.add.text(80+(i%4)*240,32+Ma
 this.rt=this.textures.addDynamicTexture('roundtrip',512,512);this.label=this.add.text(8,8,'',{fontSize:'14px'});this.i=0;this.d=0;this.playing=false;this.acc=0;this.visited=new Set();window.directionScene=this;window.directionReady=true;}
 draw(name){for(const v of this.views)v.setTexture(textureByFrame[name],name);this.label.setText('Staff primary '+name+' · gameplay1× / inspection2× · unapproved category');}
 update(time,delta){if(!this.playing)return;this.acc+=delta;while(this.acc>=1000/60){this.acc-=1000/60;const r=this.p[this.i];
-${ability ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:0);this.views[j].setTexture(textureByFrame[frame],frame);}this.current=r;this.label.setText('Staff ${ability} · actual tick '+r.tick+' · speed '+r.speed+' · gameplay1× · unapproved category');` : carryMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+r.pose.frame;this.views[j].setTexture(r.pose.set==='movement'?textureByFrame[frame]:'accepted-primary',frame);}this.current=r;this.label.setText('Staff '+r.pose.clip+' · actual tick '+r.tick+' · gameplay1× · unapproved category');` : `this.draw(names[this.d]+'-'+(r.frame??0));this.current={direction:names[this.d],...r};`}
+${reaction ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:r.pose.frame),key=r.pose.set==='hit'?textureByFrame[frame]:contextTextures[r.pose.set+':'+frame];this.views[j].setTexture(key,frame);}this.current=r;this.label.setText('Staff ${reaction} · '+r.mode+' · tick '+r.tick+' · recovery '+r.bonus+' · gameplay1×');` : ability ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:0);this.views[j].setTexture(textureByFrame[frame],frame);}this.current=r;this.label.setText('Staff ${ability} · actual tick '+r.tick+' · speed '+r.speed+' · gameplay1× · unapproved category');` : carryMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+r.pose.frame;this.views[j].setTexture(r.pose.set==='movement'?textureByFrame[frame]:'accepted-primary',frame);}this.current=r;this.label.setText('Staff '+r.pose.clip+' · actual tick '+r.tick+' · gameplay1× · unapproved category');` : `this.draw(names[this.d]+'-'+(r.frame??0));this.current={direction:names[this.d],...r};`}
 this.visited.add(this.i);this.i++;if(this.i===this.p.length){this.i=0;this.d=(this.d+1)%8;}}}
 async snap(key,frame){this.rt.clear().stamp(key,frame,0,0,{originX:0,originY:0}).render();return new Promise(resolve=>this.rt.snapshotArea(0,0,512,512,image=>resolve(image.src)));}
 }
@@ -319,6 +485,13 @@ if (!eightViews)
 for (const a of atlases) {
   routes.set("/" + a.key + ".png", [a.png, "image/png"]);
   routes.set("/" + a.key + ".json", [
+    Buffer.from(JSON.stringify(a.atlas)),
+    "application/json",
+  ]);
+}
+for (const a of contextAtlases) {
+  routes.set("/" + a.file + ".png", [a.png, "image/png"]);
+  routes.set("/" + a.file + ".json", [
     Buffer.from(JSON.stringify(a.atlas)),
     "application/json",
   ]);
@@ -390,22 +563,36 @@ try {
       throw Error("GPU trim mismatch " + frame.name);
     results.push(frame.name);
   }
-  for (const direction of ability
+  for (const direction of reaction
     ? actualPlan.rows
         .filter(
           (r, i) =>
-            r.strike ||
             i === 0 ||
-            (r.pose.set === "abilities" &&
-              r.speed === 0 &&
+            r.hit ||
+            actualPlan.rows[i + 1]?.hit ||
+            (r.pose.set === "hit" &&
+              r.bonus === 0 &&
               r.pose.frame !== actualPlan.rows[i - 1]?.pose.frame) ||
-            (r.pose.set !== "abilities" &&
-              actualPlan.rows[i - 1]?.pose.set === "abilities"),
+            (r.pose.set !== "hit" &&
+              actualPlan.rows[i - 1]?.pose.set === "hit"),
         )
         .map((r) => r.tick)
-    : carryMode
-      ? [1, 192, 198, 204, 312, 318, 324, 336, 432, 433, 437, 444, 463, 480]
-      : names) {
+    : ability
+      ? actualPlan.rows
+          .filter(
+            (r, i) =>
+              r.strike ||
+              i === 0 ||
+              (r.pose.set === "abilities" &&
+                r.speed === 0 &&
+                r.pose.frame !== actualPlan.rows[i - 1]?.pose.frame) ||
+              (r.pose.set !== "abilities" &&
+                actualPlan.rows[i - 1]?.pose.set === "abilities"),
+          )
+          .map((r) => r.tick)
+      : carryMode
+        ? [1, 192, 198, 204, 312, 318, 324, 336, 432, 433, 437, 444, 463, 480]
+        : names) {
     await page.evaluate(
       async ({ direction, eightViews }) => {
         const s = window.directionScene;
@@ -489,9 +676,9 @@ try {
     throw Error(native.renderer);
   if (eightViews && native.visited.length !== actualPlan.rows.length)
     throw Error("Incomplete actual staff plan playback");
-  if (ability) {
+  if (clip) {
     for (const target of actualPlan.rows
-      .filter((r) => r.strike)
+      .filter((r) => (reaction ? r.hit : r.strike))
       .map((r) => r.tick)) {
       await page.evaluate(async (target) => {
         const s = window.directionScene;
@@ -534,7 +721,7 @@ try {
       completeStaffConfiguration: false,
       producerSha256: hash(await readFile(new URL(import.meta.url))),
       inputs,
-      kind: ability ?? (carryMode ? "carry" : "primary"),
+      kind: clip ?? (carryMode ? "carry" : "primary"),
       logicalFrames: frames.length,
       uniqueRasters: rasters.length,
       guardAliases: Object.keys(aliases).length,
@@ -585,6 +772,18 @@ try {
             speeds: [0, 25, 60, 100],
             views: 8,
             independentGameplayCopies: 1,
+          }
+        : null,
+      reactionPlayback: reaction
+        ? {
+            actualPlanTicks: actualPlan.rows.length,
+            nativeVisitedPlanTicks: native.visited.length,
+            actualPlanSha256: hash(planBytes),
+            actualHitReactions: actualPlan.cases.length,
+            cases: actualPlan.cases,
+            verifiedContextFrames: verifiedContextFrames.size,
+            contextAtlases: contextAtlases.length,
+            fixtureLoadedAtlases: loadAtlases.length,
           }
         : null,
       renderer: native.renderer,

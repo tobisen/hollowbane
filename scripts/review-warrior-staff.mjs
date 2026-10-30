@@ -11,12 +11,14 @@ if (!process.argv[2] || !relative(process.cwd(), directory).startsWith(".."))
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex"),
   proof = JSON.parse(await readFile(resolve(directory, "staff.json"), "utf8"));
 const directions = [...new Set(proof.samples.map((s) => s.direction))];
+const motionCount = ["hit", "hit-extended"].includes(proof.clipAction) ? 6 : 12;
 if (
   proof.productionApproved ||
   (proof.carrySourceSha256
     ? proof.samples.length !== directions.length * 40 || directions.length > 8
     : proof.motionSha256
-      ? proof.samples.length !== directions.length * 12 || directions.length > 8
+      ? proof.samples.length !== directions.length * motionCount ||
+        directions.length > 8
       : proof.samples.length !== 12)
 )
   throw Error("Expected bounded unapproved staff poses");

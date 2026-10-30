@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "scope": "Original staff recoil from forward melee contact; existing hitstun only, not production approved",
+  "productionApproved": false,
+  "impactPose": 0,
+  "poseCount": 6,
+  "geometry": {
+    "shaftLength": 1.5,
+    "shaftCenter": 0.6,
+    "tailFerrule": -0.1,
+    "headFerrule": 1.25,
+    "cap": 1.35,
+    "tip": 1.4
+  },
+  "keys": [
+    {
+      "pose": 0,
+      "palm": [0.35, -0.42, 1.22],
+      "axis": [-0.25, -0.96, -0.1],
+      "lean": 0.39,
+      "yaw": 0.7,
+      "referenceLean": 0.39,
+      "referenceYaw": 0.7
+    },
+    {
+      "pose": 1,
+      "palm": [0.27, -0.41500000000000004, 1.1600000000000001],
+      "axis": [-0.365, -0.7849999999999999, 0.25],
+      "lean": 0.135,
+      "yaw": 0.455,
+      "referenceLean": 0.315,
+      "referenceYaw": 0.495
+    },
+    {
+      "pose": 2,
+      "palm": [0.19, -0.38, 1.12],
+      "axis": [-0.5, -0.6, 0.62],
+      "lean": 0.04000000000000001,
+      "yaw": 0.22,
+      "referenceLean": 0.2,
+      "referenceYaw": 0.25
+    },
+    {
+      "pose": 3,
+      "palm": [0.16, -0.365, 1.1],
+      "axis": [-0.5, -0.375, 0.735],
+      "lean": 0.08,
+      "yaw": 0.16499999999999998,
+      "referenceLean": 0.16,
+      "referenceYaw": 0.175
+    },
+    {
+      "pose": 4,
+      "palm": [0.13444444444444445, -0.3522222222222222, 1.0829629629629631],
+      "axis": [-0.5, -0.1833333333333333, 0.8329629629629629],
+      "lean": 0.10592592592592591,
+      "yaw": 0.1111111111111111,
+      "referenceLean": 0.1259259259259259,
+      "referenceYaw": 0.1111111111111111
+    },
+    {
+      "pose": 5,
+      "palm": [0.13, -0.35, 1.08],
+      "axis": [-0.5, -0.15, 0.85],
+      "lean": 0.12,
+      "yaw": 0.1,
+      "referenceLean": 0.12,
+      "referenceYaw": 0.1
+    }
+  ],
+  "followTorso": true
+}
