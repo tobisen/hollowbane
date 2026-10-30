@@ -142,7 +142,9 @@ were rejected internally as too flat; the next material pass was too uniformly
 spotted. Final reduced angular marks cluster near margins. All three stages are
 retained under `/private/tmp/act1-first-a.png`, `/private/tmp/act1-material-a.png`
 and `/private/tmp/act1-final-a.png`. This is provisional vector art, not a painted
-production biome. Near boundaries, permanent cutaways can read as felled trees.
+production biome. Near boundaries, permanent cutaways can read as felled trees. Geometric crowns,
+slab-like rocks and sparse olive ground still read as a composition blockout;
+gritty gothic material and structural identity remain unapproved visual criteria.
 
 G1 player/enemy sprites remain placeholders. Some walking/running phases visibly
 lift the feet above the fixed ground shadow; this inherited animation/contact
@@ -191,9 +193,10 @@ Review routes (publication must be verified below before claiming these serve th
 - [Existing first outdoor area](https://tobisen.github.io/hollowbane/?world=1&developer=1&worldPeaceful=1&worldArea=haunted-forest&worldSeed=42&quality=full)
 - [Existing dungeon study](https://tobisen.github.io/hollowbane/?d2slice=1)
 
-## Native local evidence
+## Initial candidate native local evidence
 
-Chromium156.0.8078.4, Apple M4/ANGLE Metal,1280×800/DPR1. Three fresh/cache-disabled
+Before the later shared navigation repair below: Chromium156.0.8078.4, Apple
+M4/ANGLE Metal,1280×800/DPR1. Three fresh/cache-disabled
 contexts per presentation,120 warmup ticks plus two36-tick input legs, then ten
 alternating36-tick horizontal legs. No screenshot/video or other local browser
 suite ran during these timing cohorts. All12 cohorts returned exactly to their
@@ -274,3 +277,54 @@ endpoint assertion and deadline remain. All five focused simulation units pass
 locally, with the loop taking2137ms; scoped format/lint pass. Production navigation
 and release asset bytes are unchanged. Exact successor Full CI, Pages, hosted
 acceptance and public bytes remain required; no gate is waived.
+
+### Long-route performance repair
+
+A follow-up request-time probe exposed a release blocker missed by the steady
+walking cohorts. On the sealed test-only successor49ff677, native M4/Metal
+start-to-shrine requests produced RAF maxima1133.2/1149.9/2000ms in A and
+1216.5/1200/1233.4ms in B. The original dungeon's obstructed request measured
+200/200/199.9ms. Direct outdoor requests were33.3–33.4ms; direct dungeon requests
+16.8–33.4ms. All pre/post windows returned to16.8ms maximum with no browser errors.
+The2s outlier is retained. These request-time results are separate from the
+earlier untraced walking table; that table does not establish hitch-free input.
+
+The shared logical segment sweep scanned every terrain cell for every A*edge.
+The repair restricts candidate cells to the segment's radius-expanded bounds
+plus a conservative one-cell margin, retaining all exact edge/object predicates,
+path ordering and collision rules. This changes shared navigation cost, not the
+generator, saved geometry or gameplay balance. Fifty focused navigation/sliding/
+replay/analog/movement/AI/area tests pass, including an exhaustive-sweep oracle
+across seeded terrain, negative origins, cell sizes0.125/0.5/1/1.75, tangencies,
+short/long/reversed/zero segments and large objects. The full-loop unit now takes
+81ms locally. Strict TypeScript, scoped lint/format and the production build pass.
+Baseline evidence: `/private/tmp/hollowbane-act1-local-clicks/`; steady movement
+profiles and instrumented recordings remain separately identified.
+
+Identical fifteen-request native rerun: all six A/B shrine requests now have
+83.3ms maximum RAF intervals (first motion91.5–92.8ms), with all pre/post windows
+at16.8ms maximum and zero errors. Dungeon obstructed requests now16.7–16.8ms;
+direct requests16.7–33.4ms. The dungeon direct median changed16.8→33.3ms across
+only three samples, within the original maximum; retain this variation rather
+than claiming every metric improved. The shrine still has a visible brief hitch;
+this repair does not establish hitch-free input. Four original path arrays and
+direct-route predicates match exactly. Separate cold Node timings were
+shrine1642.9→76.0ms and dungeon206.0→8.5ms; these are not RAF timings.
+
+Repaired request evidence: `/private/tmp/hollowbane-act1-local-clicks-repaired/`,
+including `route-equality.json` and `comparison.json`. Reproduce separately from
+steady walking/capture workloads:
+
+```sh
+node scripts/act1-navigation-profile.mjs /private/tmp/act1-requests http://127.0.0.1:4175/hollowbane/
+```
+
+All eight native Metal browser regressions pass83.8s: six study cases plus
+existing dungeon/forest checks, zero skipped/flaky/unexpected/errors and unchanged
+60s deadlines/assertions. New A start/combat and B shrine captures were reviewed;
+no gross visual regression, with the documented placeholder/contact limits
+unchanged. Evidence: `/private/tmp/hollowbane-act1-navigation-browser.json` and
+`hollowbane-act1-navigation-browser/`. Exact successor Full CI/Pages/hosted
+acceptance remains required before accepting this repaired runtime. Test-only49ff677 passed
+Full units/validators/tooling and compatibility in CI41094686460; it is superseded
+for the independently demonstrated request-time problem, not accepted as final.

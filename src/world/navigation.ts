@@ -242,10 +242,28 @@ export function areaNavigation(map: AreaMap): Navigation {
 }
 function logicalSegment(map: AreaMap, a: Point, b: Point): boolean {
   const t = map.terrain,
-    radius = WORLD_ACTOR_RADIUS;
+    radius = WORLD_ACTOR_RADIUS,
+    // Only cells intersecting the swept circle's bounds can affect its exact test.
+    // Keep an extra cell on each side for conservative boundary/rounding coverage.
+    left = Math.max(
+      0,
+      Math.floor((Math.min(a.x, b.x) - radius - t.origin.x) / t.cellSize) - 1,
+    ),
+    right = Math.min(
+      t.width - 1,
+      Math.floor((Math.max(a.x, b.x) + radius - t.origin.x) / t.cellSize) + 1,
+    ),
+    top = Math.max(
+      0,
+      Math.floor((Math.min(a.y, b.y) - radius - t.origin.y) / t.cellSize) - 1,
+    ),
+    bottom = Math.min(
+      t.height - 1,
+      Math.floor((Math.max(a.y, b.y) + radius - t.origin.y) / t.cellSize) + 1,
+    );
   // The rectangular outer boundary is convex; clear endpoints contain the sweep.
-  for (let row = 0; row < t.height; row++)
-    for (let col = 0; col < t.width; col++) {
+  for (let row = top; row <= bottom; row++)
+    for (let col = left; col <= right; col++) {
       if (t.cells[row * t.width + col] === "ground") continue;
       const x = t.origin.x + col * t.cellSize,
         y = t.origin.y + row * t.cellSize;
