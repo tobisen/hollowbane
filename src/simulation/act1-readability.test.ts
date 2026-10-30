@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
   areaNavigation,
-  findPath,
   segmentWalkable,
   slideMovement,
 } from "../world/navigation";
@@ -57,8 +56,8 @@ describe("isolated outdoor readability study", () => {
       nav = areaNavigation(map);
     let walker = createWalker(ACT1_START);
     for (const target of [...LOOP.slice(1), { x: 41.5, y: 12 }]) {
-      expect(findPath(nav, walker.position, target).length).toBeGreaterThan(0);
       walker = retarget(walker, nav, target);
+      expect(walker.route.length).toBeGreaterThan(0);
       for (let tick = 0; tick < 1500 && walker.route.length; tick++) {
         walker = moveTick(walker, nav);
         expect(areaWalkable(map, walker.position, WORLD_ACTOR_RADIUS)).toBe(

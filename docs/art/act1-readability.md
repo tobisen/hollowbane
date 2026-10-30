@@ -260,3 +260,17 @@ cohorts. It remains visible in the capture report, is excluded from the timing
 table, and is not claimed fixed or conclusively attributed to recording overhead.
 Instrumented A/B/dungeon maxima were16.8ms. Both visual encounter runs defeated
 the two real enemies and reached the shrine with278HP remaining.
+
+### CI repair checkpoint
+
+Candidate `155c6e71223ed4830b864c6c4f76e67b43fcb441` was committed/pushed.
+[CI41093055890](https://github.com/tobisen/hollowbane/actions/runs/41093055890)
+selected Full. Fast static/contracts/Chromium smoke and required cross-browser
+compatibility passed. Complete units failed because the new full-loop traversal
+unit exceeded its existing5000ms deadline. The fixture redundantly found each
+path before `retarget` found it again. The repair asserts the actual returned
+route and removes that duplicate computation; every leg, per-tick walkability,
+endpoint assertion and deadline remain. All five focused simulation units pass
+locally, with the loop taking2137ms; scoped format/lint pass. Production navigation
+and release asset bytes are unchanged. Exact successor Full CI, Pages, hosted
+acceptance and public bytes remain required; no gate is waived.
