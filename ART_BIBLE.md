@@ -1,5 +1,16 @@
 # Art bible — proposal, approval pending
 
+## Environment direction reset — 2026-10-30
+
+Warrior equipment expansion is paused for the user-authorized dungeon study.
+Prioritize broad chambers and connectors, grim coarse stone masses, restrained
+highlights, black void separation and calm scrolling. Avoid fine repeated texture
+contrast, delicate bright edges and animated atmospheric noise. The isolated
+`?d2slice=1` candidate uses original code-drawn flagstone/masonry and the existing
+G1 wanderer; these simplified environment forms are review placeholders, not
+approved final painted assets. See `docs/art/dungeon-slice.md`. Existing campaign
+art/layouts and historical production evidence below are retained.
+
 ## Q3 player production authorization — 2026-10-25
 
 Q3-A through Q3-E are authorized by the user, beginning with one reviewed player

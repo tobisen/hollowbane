@@ -1,3 +1,10 @@
+## Dungeon environment reset — local candidate (2026-10-30)
+
+- User reset pauses Warrior equipment expansion. Added isolated `?d2slice=1`: four10–12-cell chambers, four-cell connectors, loop/side chapel, sparse blocking props; saved campaign geometry and all persistence untouched. Original scoped DBL-035/370/377/379 follow-up; broader parents unchanged.
+- Original coarse flagstones/masonry, black void, cutaway walls and static amber pools; no new raster assets. Reused G1 player is a placeholder. Unit zoom/viewport resize/integer camera remove FIT/subpixel sampling in this study; existing centered60Hz movement and wall sliding preserved.
+- Three units/three Chromium scenarios pass; full real-click loop/chapel, keyboard/reset/blur/resize and virtual stick/menu resume. Strict TypeScript/scoped ESLint/format/build pass; screenshots reviewed. Native AppleM4 Metal30-frame scroll:29 intervals p95/max16.8ms, zero errors; translated180×80 floor patch0/43200 changed channels. Short bounded evidence only; no physical-controller/all-route flicker/performance or final painted-art approval.
+- Publication next: commit/push focused candidate, exact CI/Pages and hosted slice checks. Last public manifest verifiedc437335844e4f82e30b00da2967d4f64c9614a64; no new deployment claim. gh token invalid, SSH/public manifest reachable. Preserve all pre-existing local documentation edits. Resume docs/art/dungeon-slice.md; raw /private/tmp/hollowbane-dungeon-slice-final and ignored test-results. No next expansion/equipment work.
+
 ## Q3-B near-forward entry acceptance — reuse existing art (2026-10-30)
 
 - Replaced rejected standing-reaction death bridge with nearest approved guard/forward collapse0–3 and exact shared death4–15. All living entries fit unchanged0.882939752m envelope: no new reaction1–3 variants/renders needed. Observer remains offline/unwired; unknown corpse/default behavior preserved.

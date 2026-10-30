@@ -1,0 +1,45 @@
+main.dungeon-slice {
+  padding: 0;
+  max-width: none;
+  height: 100dvh;
+  background: #080807;
+}
+#world {
+  position: absolute;
+  inset: 0;
+  outline-offset: -3px;
+}
+.slice-caption {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  pointer-events: none;
+  text-shadow: 0 2px 3px #000;
+}
+.slice-caption h1 {
+  font-size: 25px;
+  margin: 3px 0;
+  color: #b8aa87;
+}
+.slice-caption p {
+  margin: 0;
+  font-size: 13px;
+  color: #a69c85;
+}
+.slice-controls {
+  position: absolute;
+  bottom: 16px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  font: 12px system-ui;
+  color: #b5aa94;
+}
+.slice-controls button,
+.slice-controls a {
+  padding: 7px 12px;
+  background: #171613;
+}
