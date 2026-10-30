@@ -884,6 +884,66 @@ Staff/bow/unarmed stay legacy, shipping delta0/0/0. Last verified public SHA rem
 **c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending. Preserve unrelated
 edits and recovery ancestry. No owned process remains at this session checkpoint.
 
+## Forward-held collapse — eight-direction checkpoint 2026-10-30
+
+Continued from `c444966`. The fully forward-held correction now covers all eight
+directions. Reused SE unchanged; rendered **only21 new images** (poses1–3 in the
+seven missing directions), with seven primary5 contacts and **84 byte-exact
+approved death4–15 images** reused. All112 new-direction logical samples pass
+the unchanged body/staff, grip, ground, alpha, root, feet and approved lower-body
+checks; maximum lower-body matrix error3.28e-7. No approved later fall, release
+(after5), floor settle or terminal image was rerendered.
+
+The collapse audit now groups source records by direction and checks the correct
+same-facing approved suffix. **189 directional evaluations** cover27 actual
+primary/Fan/immediate-hit→death simulation cases and2700 actual simulation ticks,
+reusing those plans across seven facings (18900 attachment evaluations, **not**
+189 independent gameplay runs). Maximum0.882939752m retains the original bound.
+The unchanged SE audit also passes27 cases/2700 ticks. The full792-case audit is
+still deferred until the remaining near-forward entries exist.
+
+`review-warrior-staff-directions.mjs --death-forward --primary-context <directory>`
+verifies/replays the accepted actual forward-death driver and hash-checked
+movement/primary context, instead of substituting death0 before the lethal event.
+It consumes the existing600-tick simulation plan: one actual death,16 poses,
+548 terminal samples inclusive of the30-tick fall boundary; eight visual views
+share one simulation. All128 CPU/GPU crop round trips pass. Three resource cycles
+return **16→10→16** textures; five context atlases are reused, not new art.
+Source early-collapse light/dark sheets and native gameplay-scale knee, release,
+landing and terminal captures reviewed across all eight facings.
+
+Native **Apple M4/ANGLE Metal**,960×520/DPR1:600 measured intervals,
+**p5016.7/p9517.6/p9917.7/max50.0ms,one>25ms**, zero runtime errors. Retain that
+single stall; this isolated playback is not matched campaign evidence and does
+not establish whether a campaign regression exists. One disposable corrected
+death atlas: **3835108PNG bytes/16MiB calculated RGBA**. Context atlas payload is
+reused separately; calculated RGBA is not measured GPU memory. **Shipping delta0**;
+production loading, switching and consolidation remain open.
+
+Twelve focused tests/three files, TypeScript, affected ESLint and formatting pass.
+Native Blender geometry/export required normal Metal access after sandbox startup
+crashed before work. No mechanics, renderer, player saves, production assets,
+full regression, CI, push or publication changed. This is a verified bounded
+session checkpoint; staff/bow/unarmed remain legacy.
+
+Reproduce the targeted/native evidence without rerendering:
+
+```sh
+node scripts/audit-warrior-staff-collapse.mjs /private/tmp/hollowbane-q3-staff-collapse/forward-seven-render /private/tmp/hollowbane-q3-staff-choreography/death-seven-render /private/tmp/hollowbane-q3-staff-collapse/forward-seven-targeted
+node scripts/review-warrior-staff-directions.mjs /private/tmp/hollowbane-q3-staff-collapse/final-se-render /private/tmp/hollowbane-q3-staff-collapse/forward-seven-render /private/tmp/hollowbane-q3-staff-collapse/forward-eight-native --death-forward --primary-context /private/tmp/hollowbane-q3-staff-choreography/eight-primary
+```
+
+Raw source/audits/captures: `/private/tmp/hollowbane-q3-staff-collapse/forward-*`.
+**Next:** required near-forward reaction entries1–3 using the same approved
+lower-body/spherical return, first SE geometry/timing then only missing-direction
+early images; keep all death4–15 exact. Then full792-case matrix plus movement,
+rapid facing, reset and actual equipment-switch acceptance, resource consolidation,
+existing developer arena, campaign/save/travel, matched native campaign profiling,
+and exact Release B then C. Neither full transition acceptance nor B/C is claimed.
+Last verified deployed SHA remains
+**c437335844e4f82e30b00da2967d4f64c9614a64**; no CI is pending. Preserve unrelated
+edits, recovery ancestry and rejected trials. No owned process remains.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing

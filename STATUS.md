@@ -1,3 +1,10 @@
+## Q3-B forward-held staff collapse — eight directions (2026-10-30)
+
+- Reused approved SE; rendered only21 missing early images (seven directions×poses1–3), reused seven primary5 contacts and84 byte-exact death4–15 suffix images.112 geometry samples pass unchanged body/grip/floor/root/feet/alpha/lower-body checks (max3.28e-7).
+- 189 directional attachment evaluations reuse27 actual simulation cases/2700 actual ticks, not189 independent runs; unchanged maximum0.882939752m. SE27-case regression passes.12 focused tests/three files, TypeScript/scoped lint/format pass. Full792 matrix deferred pending near-forward entries1–3.
+- Native M4/Metal actual600-tick forward-death plan, all16 poses/one death/548 inclusive terminal samples,128 CPU/GPU round trips and three16→10→16 cycles pass. Gameplay-scale light/dark early collapse/release/terminal reviewed.600 intervals p5016.7/p9517.6/p9917.7/max50ms,one>25,zero errors; isolated playback, not matched campaign performance. Diagnostic atlas3835108PNG bytes/16MiB calculated RGBA, not GPU memory; five context atlases reused. Shipping delta0.
+- Session-boundary checkpoint: near-forward reaction entries1–3 next (approved lower-body/spherical method, SE audit before missing directions), then full transition/equipment matrix, consolidation, developer arena, campaign/save/travel/performance and exact Release B/C gates. Staff/bow/unarmed still legacy. No CI/push/publication; last verified public c437335844e4f82e30b00da2967d4f64c9614a64. Scoped continuation authorized; preserve unrelated edits/recovery/rejected evidence. Resume docs/art/q3/warrior-equipment.md; raw /private/tmp/hollowbane-q3-staff-collapse/forward-*. No owned process remains.
+
 ## Q3-B forward-held SE death collapse recovery (2026-10-30)
 
 - Corrected the demonstrated early knee defect for the fully forward-held SE entry only: three new poses1–3; contact0 reuses primary5, approved death4–15 remains byte-exact. Original knee/hip drops, feet/root, release after5 and terminal hold retained. First correction rejected at0.975614m; spherical correction internal tip step0.669398m passes unchanged0.882940m envelope.

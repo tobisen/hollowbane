@@ -15,14 +15,21 @@ import {
 } from "./warrior-equipment-packing.mjs";
 
 const args = process.argv.slice(2),
-  abilityIndex = args.indexOf("--ability"),
+  forwardIndex = args.indexOf("--death-forward"),
+  forwardDeath = forwardIndex >= 0;
+if (forwardDeath) args.splice(forwardIndex, 1);
+const contextIndex = args.indexOf("--primary-context"),
+  primaryContext = contextIndex >= 0 ? args.splice(contextIndex, 2)[1] : null;
+if (forwardDeath !== Boolean(primaryContext))
+  throw Error("Forward death requires the reviewed primary context directory");
+const abilityIndex = args.indexOf("--ability"),
   ability = abilityIndex >= 0 ? args.splice(abilityIndex, 2)[1] : null,
   reactionIndex = args.indexOf("--reaction"),
   reaction = reactionIndex >= 0 ? args.splice(reactionIndex, 2)[1] : null,
   deathIndex = args.indexOf("--death"),
-  deathMode = deathIndex >= 0,
+  deathMode = deathIndex >= 0 || forwardDeath,
   carryMode = args.at(-1) === "--carry";
-if (deathMode) args.splice(deathIndex, 1);
+if (deathIndex >= 0) args.splice(deathIndex, 1);
 if (
   (abilityIndex >= 0 && !["iron-fan", "oath-echo"].includes(ability)) ||
   (reactionIndex >= 0 && !["hit", "hit-extended"].includes(reaction)) ||
@@ -49,7 +56,7 @@ if (
 await mkdir(output, { recursive: true });
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex"),
   source = await readFile(
-    `assets/source/q3/warrior-staff-se/${clip ?? "motion"}.json`,
+    `assets/source/q3/warrior-staff-se/${forwardDeath ? "death-forward" : (clip ?? "motion")}.json`,
   ),
   carrySource = carryMode
     ? await readFile("assets/source/q3/warrior-staff-se/carry.json")
@@ -236,23 +243,29 @@ const primaryBytes = carryMode
     ? await readFile(
         resolve(
           se,
-          deathMode
-            ? "../death-se-native/plan.json"
-            : reaction
-              ? "../hit-se-native/plan.json"
-              : ability
-                ? "../ability-native/plan.json"
-                : "../carry-native/plan.json",
+          forwardDeath
+            ? "../final-se-native/plan.json"
+            : deathMode
+              ? "../death-se-native/plan.json"
+              : reaction
+                ? "../hit-se-native/plan.json"
+                : ability
+                  ? "../ability-native/plan.json"
+                  : "../carry-native/plan.json",
         ),
       )
     : null,
   nativePrimary = carryMode ? JSON.parse(primaryMetadata) : null,
   actualPlan = eightViews ? JSON.parse(planBytes) : null;
 if (deathMode) {
+  const timingDirectory = resolve(
+    se,
+    forwardDeath ? "../final-se-native" : "../death-se-native",
+  );
   const prior = JSON.parse(
-      await readFile(resolve(se, "../death-se-native/review.json")),
+      await readFile(resolve(timingDirectory, "review.json")),
     ),
-    timingPath = resolve(se, "../death-se-native/timing.mjs");
+    timingPath = resolve(timingDirectory, "timing.mjs");
   if (hash(await readFile(timingPath)) !== prior.timingBundleSha256)
     throw Error("Changed accepted death simulation driver");
   const { plan } = await import(pathToFileURL(timingPath).href);
@@ -406,7 +419,7 @@ if (carryMode)
 const contextAtlases = [],
   contextTextures = {},
   verifiedContextFrames = new Set();
-if (reaction) {
+if (reaction || forwardDeath) {
   for (const [set, directory, files, count] of [
     [
       "movement",
@@ -425,7 +438,9 @@ if (reaction) {
       )
     )
       throw Error("Unsupported reaction context ability");
-    const folder = resolve(se, "../" + directory),
+    const folder = forwardDeath
+        ? resolve(primaryContext, "../" + directory)
+        : resolve(se, "../" + directory),
       prior = JSON.parse(await readFile(resolve(folder, "review.json"))),
       expected = new Map();
     if (
@@ -474,7 +489,9 @@ if (reaction) {
               (d) =>
                 d +
                 "-" +
-                (set === "abilities" ? r.pose.frame % 12 : r.pose.frame),
+                (["attacks", "abilities"].includes(set)
+                  ? r.pose.frame % 12
+                  : r.pose.frame),
             ),
           ),
       );
@@ -507,7 +524,9 @@ if (reaction) {
               ":" +
               d +
               "-" +
-              (set === "abilities" ? r.pose.frame % 12 : r.pose.frame)
+              (["attacks", "abilities"].includes(set)
+                ? r.pose.frame % 12
+                : r.pose.frame)
           ]
         )
           throw Error("Missing reaction context frame");
@@ -523,7 +542,7 @@ ${eightViews ? `this.views=names.map((name,i)=>{this.add.text(80+(i%4)*240,32+Ma
 this.rt=this.textures.addDynamicTexture('roundtrip',512,512);this.label=this.add.text(8,8,'',{fontSize:'14px'});this.i=0;this.d=0;this.playing=false;this.acc=0;this.visited=new Set();window.directionScene=this;window.directionReady=true;}
 draw(name){for(const v of this.views)v.setTexture(textureByFrame[name],name);this.label.setText('Staff primary '+name+' · gameplay1× / inspection2× · unapproved category');}
 update(time,delta){if(!this.playing)return;this.acc+=delta;while(this.acc>=1000/60){this.acc-=1000/60;const r=this.p[this.i];
-${deathMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='death'?r.pose.frame:0);this.views[j].setTexture(textureByFrame[frame],frame);}this.current=r;this.label.setText('Staff death · actual tick '+r.tick+' · gameplay1× · unapproved category');` : reaction ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:r.pose.frame),key=r.pose.set==='hit'?textureByFrame[frame]:contextTextures[r.pose.set+':'+frame];this.views[j].setTexture(key,frame);}this.current=r;this.label.setText('Staff ${reaction} · '+r.mode+' · tick '+r.tick+' · recovery '+r.bonus+' · gameplay1×');` : ability ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:0);this.views[j].setTexture(textureByFrame[frame],frame);}this.current=r;this.label.setText('Staff ${ability} · actual tick '+r.tick+' · speed '+r.speed+' · gameplay1× · unapproved category');` : carryMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+r.pose.frame;this.views[j].setTexture(r.pose.set==='movement'?textureByFrame[frame]:'accepted-primary',frame);}this.current=r;this.label.setText('Staff '+r.pose.clip+' · actual tick '+r.tick+' · gameplay1× · unapproved category');` : `this.draw(names[this.d]+'-'+(r.frame??0));this.current={direction:names[this.d],...r};`}
+${deathMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='death'?r.pose.frame:${forwardDeath} ? (r.pose.set==='attacks'?r.pose.frame%12:r.pose.frame):0),key=${forwardDeath}&&r.pose.set!=='death'?contextTextures[r.pose.set+':'+frame]:textureByFrame[frame];this.views[j].setTexture(key,frame);}this.current=r;this.label.setText('Staff death · actual tick '+r.tick+' · gameplay1× · unapproved category');` : reaction ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:r.pose.frame),key=r.pose.set==='hit'?textureByFrame[frame]:contextTextures[r.pose.set+':'+frame];this.views[j].setTexture(key,frame);}this.current=r;this.label.setText('Staff ${reaction} · '+r.mode+' · tick '+r.tick+' · recovery '+r.bonus+' · gameplay1×');` : ability ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:0);this.views[j].setTexture(textureByFrame[frame],frame);}this.current=r;this.label.setText('Staff ${ability} · actual tick '+r.tick+' · speed '+r.speed+' · gameplay1× · unapproved category');` : carryMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+r.pose.frame;this.views[j].setTexture(r.pose.set==='movement'?textureByFrame[frame]:'accepted-primary',frame);}this.current=r;this.label.setText('Staff '+r.pose.clip+' · actual tick '+r.tick+' · gameplay1× · unapproved category');` : `this.draw(names[this.d]+'-'+(r.frame??0));this.current={direction:names[this.d],...r};`}
 this.visited.add(this.i);this.i++;if(this.i===this.p.length){${deathMode ? "this.i=this.p.length-1;" : "this.i=0;this.d=(this.d+1)%8;"}}}}
 async snap(key,frame){this.rt.clear().stamp(key,frame,0,0,{originX:0,originY:0}).render();return new Promise(resolve=>this.rt.snapshotArea(0,0,512,512,image=>resolve(image.src)));}
 }
@@ -884,6 +903,9 @@ try {
             nativeVisitedPlanTicks: native.visited.length,
             actualPlanSha256: hash(planBytes),
             actualDeaths: actualPlan.deathEvents.length,
+            forwardHeldEntry: forwardDeath,
+            verifiedContextFrames: verifiedContextFrames.size,
+            contextAtlases: contextAtlases.length,
             deathAt: actualPlan.deathAt,
             terminalHoldTicks: actualPlan.rows.filter(
               (r) => r.tick >= actualPlan.deathAt + 30,
