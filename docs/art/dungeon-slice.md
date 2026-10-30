@@ -94,3 +94,19 @@ literal path is now quoted; no runtime, tests or acceptance thresholds changed.
 Full local lint passed; the other local format warnings are two pre-existing,
 uncommitted documentation edits and remain untouched. A successor exact release
 gate is required; the failed candidate is not a deployed slice.
+
+### Session boundary: exact successor pending
+
+Documentation-only repair `fd11b936988088a8a6d4d0296906f3bf2ecbb4d3` is
+committed/pushed; [exact CI41080721674](https://github.com/tobisen/hollowbane/actions/runs/41080721674)
+is in progress. Runtime source and the locally reviewed build are unchanged from
+93ae977. This local evidence checkpoint is intentionally not pushed over that run.
+
+Next action: inspect that run, repair only demonstrated failures, then verify
+Pages release.json/byte identity for fd11b93 and run
+`PLAYWRIGHT_BASE_URL=https://tobisen.github.io/hollowbane/ npx playwright test tests/e2e/dungeon-slice.spec.ts`.
+Repeat the bounded native probe with the hosted URL as its second positional
+argument, review captures and record the actual deployed SHA. Do not call the
+study released before those checks. Last verified deployed SHA remains
+`c437335844e4f82e30b00da2967d4f64c9614a64`. No physical-controller or final
+painted-art approval; no equipment or other expansion work.
