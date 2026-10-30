@@ -192,7 +192,7 @@ smaller interface as well as larger player presentation. This comparison is of
 the actual playable presentations, not a canopy-only controlled experiment or an
 equal-HUD workload. Original saved-Warrior presentation is separately preserved.
 
-Review routes (publication must be verified below before claiming these serve the candidate):
+Review routes (exact public candidate verified below):
 
 - [A: classic ground](https://tobisen.github.io/hollowbane/?act1readability=1&view=a)
 - [B: raised ground](https://tobisen.github.io/hollowbane/?act1readability=1&view=b)
@@ -251,11 +251,12 @@ node scripts/act1-readability-profile.mjs /private/tmp/act1-visual http://127.0.
 node scripts/act1-readability-pixels.mjs /private/tmp/act1-pixels http://127.0.0.1:4175/hollowbane/
 ```
 
-## Publication checkpoint
+## Initial publication checkpoint
 
-Local candidate is coherent and verified. Exact-commit required CI/Pages, hosted
-browser checks and byte-for-byte asset verification are pending; no new public
-release is claimed here. Last independently verified deployed SHA remains
+At this initial checkpoint, the local candidate was coherent and verified.
+Exact-commit required CI/Pages, hosted browser checks and byte-for-byte asset
+verification were pending; no new public release was claimed. The last
+independently verified deployed SHA was
 `fd11b936988088a8a6d4d0296906f3bf2ecbb4d3`. The stored gh token is invalid; SSH
 remote access and public HTTP are available. Import dry-run made no requests;
 no issue or milestone import was needed for this original scoped follow-up.
@@ -335,14 +336,12 @@ acceptance remains required before accepting this repaired runtime. Test-only49f
 Full units/validators/tooling and compatibility in CI41094686460; it is superseded
 for the independently demonstrated request-time problem, not accepted as final.
 
-### Final runtime publication in progress
+### Superseded runtime publication attempt
 
-Verified repair `94b054c77150ccea5ce5f8378238946048261227` is committed/pushed.
+Verified repair `94b054c77150ccea5ce5f8378238946048261227` was committed/pushed.
 [Exact CI41096426045](https://github.com/tobisen/hollowbane/actions/runs/41096426045)
-must pass required Full, Pages and hosted acceptance. The local sealed bundle has
-171 files. Last independently verified public release remains
-`fd11b936988088a8a6d4d0296906f3bf2ecbb4d3` until those checks and independent
-public verification finish. Artistic approval remains false.
+was rejected by the campaign reload failure documented below. Its local sealed
+bundle had171 files; it was not accepted as a public release.
 
 The local side-by-side viewer is
 `/private/tmp/hollowbane-act1-local-visual/review.html`: current forest, dungeon,
@@ -384,3 +383,91 @@ Only the test helper changed; runtime94b054c's171 build-file bytes are retained.
 Require a fresh exact successor Full/Pages/hosted release; no previous failed
 release is accepted. Public API status queries also returned two502s; curl
 recovered, and the original failed-gate result was retained honestly.
+
+### Repaired release candidate
+
+Test-only successor `c4f38010814b6ec39d489023f550f122c9b8fd99` is committed/pushed.
+[Exact CI41100773664](https://github.com/tobisen/hollowbane/actions/runs/41100773664)
+has passed Fast, full units/validators/tooling and15 compatibility cases. All four
+digest-verified Chromium reports pass:99+70+90+68=327 cases, zero skipped, flaky,
+unexpected or browser errors. All six outdoor cases and the repaired D14 journey
+are included. Required Pages and hosted acceptance subsequently passed; final
+independent evidence follows below.
+The sealed local manifest identifies this commit; all171 application file hashes
+exactly equal runtime94b054c. No redundant build or gameplay change was made.
+The public manifest still identified the previous release at18:13UTC, then the
+exact candidate at18:14:26UTC. Human visual approval remains pending.
+
+GitHub status queries intermittently returned HTTP502/504 and delayed job state,
+including queued Fast after its dependent Full jobs existed. No failure was
+inferred from transport errors and no success inferred merely from job creation.
+Digest-verified result archives established browser outcomes; later canonical
+job completion confirmed Fast, units and compatibility. Exact candidate artifacts
+are retained under `/private/tmp/hollowbane-act1-c4-*`; these external-status
+limitations do not waive required release gates.
+
+## Verified public candidate — human review pending
+
+Deployed SHA: `c4f38010814b6ec39d489023f550f122c9b8fd99`.
+[CI41100773664](https://github.com/tobisen/hollowbane/actions/runs/41100773664)
+completed successfully: all 11 required checks, including Full units/tooling,
+327 Chromium cases, 15 compatibility cases, verify, Pages, two hosted cases and
+Release acceptance. Final acceptance completed at 18:15:58 UTC. Digest-verified
+browser reports have zero skipped/flaky/unexpected cases or report errors.
+The intentionally unused integration/prepare jobs are distinct from test skips.
+Canonical run/check conclusions and artifact digests are retained in
+`/private/tmp/hollowbane-act1-c4/final-ci-verification.json`.
+
+Independently ran the existing release verifier: all 171 public files match the
+sealed local build byte for byte, with the exact manifest SHA. Eight additional
+hosted native Metal scenarios pass in 87.037 seconds, zero skipped/flaky/unexpected
+cases or errors: six outdoor cases plus existing dungeon and forest regressions.
+Real combat, both projections, virtual controller paths and exact save/registry
+preservation remain covered. Hosted A start/combat, B shrine, dungeon and forest
+captures were reviewed; the documented art/contact limitations remain.
+Evidence: `/private/tmp/hollowbane-act1-hosted-bytes.txt`,
+`hollowbane-act1-hosted-browser.json` and `hollowbane-act1-hosted-browser/`.
+
+Native Chromium 156.0.8078.4, Apple M4/ANGLE Metal, 1280×800/DPR1: repeated the same
+three rotated, fresh cache-disabled contexts per presentation, with no concurrent
+local browser/build/capture workload. Each mode has 1,077 walking intervals:
+p50/p95 16.7 ms, p99/max 16.8 ms, zero above 25 ms, zero zero/multiple-tick
+intervals or errors. All twelve runs return exactly to their initial position.
+
+| Presentation   | Hosted readiness range / median (ms) | Encoded resource bodies / count |
+| -------------- | ------------------------------------ | ------------------------------- |
+| Outdoor A      | 195.3–1001.8 / 921.8                 | 941052 bytes / 16               |
+| Outdoor B      | 177.4–296.1 / 177.7                  | 941052 bytes / 16               |
+| Dungeon        | 161.9–326.3 / 282.5                  | 911737 bytes / 12               |
+| Current forest | 597.4–1061.1 / 979.3                 | 4761121 bytes / 32              |
+
+Readiness includes network/order variation; these three-sample medians do not
+establish faster A startup or a B rendering advantage. Resource bodies exclude
+the document; A/B add 29315 bytes (3.2%) versus the dungeon. A/B retain one G1
+texture; decoded-size estimates remain distinct from measured GPU residency.
+The integer-camera modes alternate 4/5 px steps (p50/p95/p99/max 5 px); the forest
+uses 3.217689 CSS px at its lower zoom. Stable integer sampling is not a claim of
+uniform camera velocity or equal workloads. Raw cohorts and summary:
+`/private/tmp/hollowbane-act1-hosted-performance/`.
+
+Separately measured 15 real navigation requests. All six A/B shrine requests
+retain an 83.3–83.4 ms maximum interval and 88.8–92.9 ms first-motion delay.
+Direct outdoor/dungeon requests reach 33.3–33.4 ms; obstructed dungeon requests
+16.7–16.8 ms. Twelve request frames exceed 25 ms with multiple simulation ticks
+(up to five for the shrine, two for direct requests); there are no zero-tick
+frames or errors, and pre/post windows peak at 16.8 ms. This is the repaired
+behavior, not hitch-free input. Raw: `/private/tmp/hollowbane-act1-hosted-clicks/`.
+
+Final separately instrumented A/B pixel probes reproduce zero changed channels
+for ground (0/43200) and rock/shadow (0/22800), both after 30 stationary frames and
+a 136 px horizontal camera translation. Captures confirm real material/rock
+coverage; fixed DOM captions are hidden only for this diagnostic. This does not
+establish every foliage edge, animation, route, direction or physical display.
+Raw: `/private/tmp/hollowbane-act1-hosted-pixels/`.
+
+STOP for human atmosphere, readability and gameplay-feel review; approval is
+**false**. Provisional geometric art, the inherited G1 foot/shadow gap, B's baked
+sprite-viewpoint mismatch and residual request hitch remain explicit. No campaign
+migration or Warrior equipment expansion. Final evidence is committed locally;
+the verified public candidate remains the SHA above. All 17 pre-existing dirty
+files are preserved. Owned preview, browser and monitoring processes are stopped.
