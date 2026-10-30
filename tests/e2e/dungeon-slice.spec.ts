@@ -1,4 +1,7 @@
 import { test, expect } from "@playwright/test";
+import { characterApi } from "../fixtures/character-api";
+import { characterSlotFixture } from "../fixtures/character-slot";
+import { serializeCharacter } from "../../src/simulation/inventory-save";
 
 test("isolated dungeon slice supports real input, reset, resize and stable camera", async ({
   page,
@@ -133,4 +136,57 @@ test("standard virtual controller moves and menu resumes gameplay focus", async 
   await expect(page.locator("#controller-menu")).toBeVisible();
   await page.getByRole("button", { name: "Resume", exact: true }).click();
   await expect(page.locator("#world")).toBeFocused();
+});
+
+test("slice and rejected character links preserve complete campaign checkpoints", async ({
+  page,
+}) => {
+  await page.goto("./");
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  await characterApi(page);
+  const text = serializeCharacter(characterSlotFixture());
+  const id = await page.evaluate(async (text) => {
+    const api = window.characterStorageModule;
+    const storage = new api.CharacterStorage();
+    try {
+      return (
+        await storage.create("Slice isolation", api.deserializeCharacter(text))
+      ).id;
+    } finally {
+      storage.close();
+    }
+  }, text);
+  const snapshot = async () => {
+    await characterApi(page);
+    return page.evaluate(async (id) => {
+      const api = window.characterStorageModule,
+        storage = new api.CharacterStorage();
+      try {
+        const loaded = await storage.load(id);
+        if (loaded.kind !== "valid") throw Error("Campaign checkpoint lost");
+        return {
+          registry: await storage.list(),
+          text: api.serializeCharacter(loaded.session),
+        };
+      } finally {
+        storage.close();
+      }
+    }, id);
+  };
+  const before = await snapshot();
+  await page.goto("?d2slice=1");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneSlice?.tick ?? 0))
+    .toBeGreaterThan(2);
+  await page.keyboard.down("ArrowRight");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneSlice!.position.x))
+    .toBeGreaterThan(8.5);
+  await page.keyboard.up("ArrowRight");
+  expect(await snapshot()).toEqual(before);
+  await page.goto(`?d2slice=1&character=${id}`);
+  await expect(page.locator("#menu-status")).toContainText(
+    "unsupported options",
+  );
+  expect(await snapshot()).toEqual(before);
 });

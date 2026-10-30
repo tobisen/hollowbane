@@ -57,18 +57,28 @@ try {
     dy = afterCamera.y - beforeCamera.y;
   // A fixed world floor patch well below the animated actor, UI and cutaway walls.
   const patch = { left: 680, top: 510, width: 180, height: 80 };
-  const a = await sharp(before).extract(patch).removeAlpha().raw().toBuffer();
-  const b = await sharp(after)
-    .extract({ ...patch, left: patch.left - dx, top: patch.top - dy })
-    .removeAlpha()
-    .raw()
-    .toBuffer();
-  let absolute = 0,
-    changed = 0;
-  for (let i = 0; i < a.length; i++) {
-    absolute += Math.abs(a[i] - b[i]);
-    if (a[i] !== b[i]) changed++;
-  }
+  const compare = async (patch) => {
+    const a = await sharp(before).extract(patch).removeAlpha().raw().toBuffer();
+    const b = await sharp(after)
+      .extract({ ...patch, left: patch.left - dx, top: patch.top - dy })
+      .removeAlpha()
+      .raw()
+      .toBuffer();
+    let absolute = 0,
+      changed = 0;
+    for (let i = 0; i < a.length; i++) {
+      absolute += Math.abs(a[i] - b[i]);
+      if (a[i] !== b[i]) changed++;
+    }
+    return {
+      ...patch,
+      dx,
+      dy,
+      channels: a.length,
+      changed,
+      meanAbsoluteChannelDifference: absolute / a.length,
+    };
+  };
   const intervals = frames
     .slice(1)
     .map((r) => r.interval)
@@ -78,21 +88,21 @@ try {
     gpu,
     errors,
     frames,
-    floorPatch: {
-      ...patch,
-      dx,
-      dy,
-      channels: a.length,
-      changed,
-      meanAbsoluteChannelDifference: absolute / a.length,
-    },
+    floorPatch: await compare(patch),
+    wallPatch: await compare({ left: 300, top: 150, width: 160, height: 70 }),
+    lightingPatch: await compare({
+      left: 600,
+      top: 100,
+      width: 80,
+      height: 100,
+    }),
     raf: {
       count: intervals.length,
       p95: intervals[Math.floor(intervals.length * 0.95)],
       max: Math.max(...intervals),
     },
     limits:
-      "30-frame short native headless scroll; one translated floor patch only. No physical display/controller or campaign performance acceptance.",
+      "30-frame short native headless horizontal scroll; translated floor/wall/lighting patches only. No physical display/controller or campaign performance acceptance.",
   };
   await writeFile(
     join(output, "profile.json"),
@@ -100,7 +110,13 @@ try {
   );
   console.log(
     JSON.stringify(
-      { floorPatch: report.floorPatch, raf: report.raf, errors },
+      {
+        floorPatch: report.floorPatch,
+        wallPatch: report.wallPatch,
+        lightingPatch: report.lightingPatch,
+        raf: report.raf,
+        errors,
+      },
       null,
       2,
     ),
