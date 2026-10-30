@@ -726,6 +726,84 @@ staff/bow/unarmed remain legacy. Last verified public SHA remains
 edits and8a48dc9 ancestry; current authorization continues through B/C, and no
 new approval is needed for scoped staff continuation. No owned process remains.
 
+## Staff interruption matrix — attachment pass, death-body gate failed 2026-10-30
+
+Resumed from `b3f2b9a`; **no new artwork, production assets or campaign activation**.
+The isolated offline reviewer combines all832 approved logical staff frames from
+ten existing diagnostic atlases, verifying every restored CPU pixel hash and
+source/attachment proof before playback. No atlas is concatenated or promoted.
+
+`review-warrior-staff-transitions.mjs` replays **792 actual simulation cases /
+79,200 accepted ticks**, comparing each tick with an untouched copy: all12
+primary/Fan/Oath entry poses × four speeds × hit/death and three hit-recovery
+breakpoints (576), plus216 hit→death cases. Deterministic fixture seeds retain
+normal hit rolls; a guarded enemy fixture prevents Fan from cancelling the
+requested incoming strike. Real enemy strikes create the interruption/events.
+Existing12/9/6-tick recovery remains; repeated damage gives one stagger, skills
+release at most once, deaths once, and terminal corpses persist. Pure selector
+calls cannot execute gameplay. Separate tests cover every walk/run frame, eight
+facings, draw repetition and fresh resets.
+
+The old coarse observer/direct guarded death has a **1.872184m** maximum attachment
+step. Nearest reviewed reaction entries reduce the experimental matrix maximum
+to **0.882940m**, exactly the largest approved uninterrupted stroke; the envelope
+is calculated from the verified poses, not increased to accommodate failures.
+Both grip guides and the staff tip are measured. Released-staff guides describe
+the staff, not continued hand contact. The original guard-only1.57m hit snap is
+explicitly regressed; guarded entries retain the complete recoil rather than
+selecting an almost-settled frame. Current `warrior-staff-presentation.ts` is
+**not wired into campaign or the existing equipment showcase**.
+
+**Visual rejection:** reusing standing hit-recovery pictures for forward-held
+`death0..4` preserves the weapon but omits the approved knee collapse/hip drops
+0/.03/.09/.16/.20m, then abruptly joins death5. Example: primary4, native tick24.
+This is a demonstrated body transition defect despite the attachment pass.
+The bridge is now **disabled by default**, available only as an explicit offline
+probe. No complete transition/visual acceptance or staff support is claimed.
+Native light/dark captures of primary/Fan death and primary/Oath hit were reviewed
+at gameplay scale; do not treat the rejected death splice as approved artwork.
+
+Native M4/ANGLE Metal played **78 selected sequences in eight simultaneous views**
+of one gameplay plan each; zero runtime errors. Three registration cycles remain
+**19→9→19**. All ten existing diagnostic atlases total **23,543,339PNG bytes /
+144MiB calculated RGBA**; this is not an accepted production resource set or GPU
+residency measurement. Added shipping PNG/RGBA/textures: **0/0/0**. No new matched
+campaign performance/cold-load/switch-latency profile was performed; the previous
+isolated death p9518.0ms measurement remains historical, not a new campaign result.
+
+**24 focused tests/four files**, strict TypeScript, scoped ESLint and formatting
+pass. No release build/CI/publication. The final static audit repeats all792
+cases and832 source-pixel checks with the explicit rejected-probe flag. Native
+consumed driver/presentation/helper snapshots are retained; the final source adds
+the disabled-by-default safety switch and explicit unaccepted labels. Initial
+pre-step event-driver, WebGL-context-query and missed exact-tick capture failures
+remain retained. Capture now pauses on the requested authoritative tick inside
+the fixed-step playback loop, with bounded waits, instead of missing batched ticks.
+
+Reproduce (native command requires localhost/Metal access):
+
+```sh
+node scripts/review-warrior-staff-transitions.mjs /private/tmp/hollowbane-q3-staff-choreography /private/tmp/hollowbane-q3-staff-transitions/final-audit --audit
+node scripts/review-warrior-staff-transitions.mjs /private/tmp/hollowbane-q3-staff-choreography /private/tmp/hollowbane-q3-staff-transitions/native
+```
+
+Raw `/private/tmp/hollowbane-q3-staff-transitions/`: `visual-review.json`,
+`final-audit`, `native/{matrix.json,review.json,*.png}`, consumed source snapshots
+and rejected runs. Earlier source images/proofs are untouched.
+
+**Session checkpoint; Phase1 is incomplete. Exact next action:** implement a
+bounded SE forward-held early death entry on the **unchanged approved collapse
+lower-body matrices**, preserving the real30-tick fall and later release/floor/
+terminal poses. This narrowly justified correction addresses the visual failure
+above; do not mass-rerender approved states. Recheck load/Fan/hit interruption
+boundaries and body/grip continuity before missing-direction export. Then finish
+movement→action/permitted equipment/reset/rapid-facing interactive acceptance,
+consolidation, existing-showcase playability, campaign and exact B/C gates.
+Staff/bow/unarmed remain legacy; sword and sword/shield remain supported.
+Verified public SHA stays **c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending.
+Scoped continuation remains authorized. Preserve unrelated edits and8a48dc9.
+No owned process remains at the checkpoint.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing
