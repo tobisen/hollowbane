@@ -804,6 +804,86 @@ Verified public SHA stays **c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pe
 Scoped continuation remains authorized. Preserve unrelated edits and8a48dc9.
 No owned process remains at the checkpoint.
 
+## Forward-held SE collapse recovery — bounded checkpoint 2026-10-30
+
+Resumed from `99fbc6c`. **Only the fully forward-held SE entry is corrected**;
+Phase1 and full category/transition acceptance remain incomplete. Campaign and
+the equipment showcase are unchanged; the rejected standing-image bridge remains
+disabled by default. No production renderer or gameplay/save changes.
+
+`death-forward.json` and `probe-warrior-staff.py --motion --death --death-forward`
+reuse the approved lower-body matrices at each authoritative death pose. Early
+hip drops remain0/.03/.09/.16/.20m; maximum lower-body matrix error3.28e-7m.
+The forward grip starts at the exact primary5 image. Three new images1–3 blend
+the torso back while rotating the staff through equal spherical angular steps
+in the body frame, with the approved collapse transform applied. **Death4–15
+remain byte-exact to the approved images**, including release after5, landing
+and terminal aliases. No hidden/shortened collapse frames, root/camera fitting,
+new death duration. All16 sampled grip, reach,
+shaft/body/floor, root, feet and alpha-edge checks pass; held grip error≤1.79e-7m.
+
+Two distinct targeted approaches are preserved. Approach1 reused the reaction
+upper-body controls over the real collapse: knee motion returned, but the new
+first step0.975614m exceeded the unchanged0.882940m authored-stroke envelope.
+It is rejected, despite its isolated native run passing runtime/performance.
+Approach2's evenly spaced rotation has maximum internal tip step0.669398m;
+all27 targeted actual primary/Fan4–6 × four speeds and three immediate
+hit→death recovery cases pass over2700 ticks. Each tick retains the helper's
+untouched simulation comparison; one death/case and final pose15. The overall
+maximum0.882940m is the existing uninterrupted stroke, not a widened threshold.
+The original1.57m guarded-hit regression remains covered by focused tests.
+
+`audit-warrior-staff-collapse.mjs` validates source hashes, original hip drops,
+lower-body error, grip/release, all source PNG hashes, exact12-image suffix,
+targeted actual simulation entries and unchanged attachment bounds. It manually
+substitutes this SE entry for the targeted probe only; it does **not** wire or
+accept the general observer. No unnecessary full792-case rerun. A render-free
+default16-pose audit matches all original palm/axis/wrist/elbow/root/staff bounds/
+body-torso/floor metadata exactly. Existing approved sources remain untouched.
+
+Source light/dark sheets and native actual-timed gameplay1×/inspection2× captures
+reviewed: early knee bend/hip descent continues into the existing backward fall;
+release and terminal remain stable. Native actual primary4→lethal-hit plan visits
+all16 poses over600 ticks, exactly matches an untouched simulation and holds547
+ticks strictly after the30-tick boundary (548 inclusive samples). One death event;
+no presentation callbacks. **M4/ANGLE Metal600 intervals,p5016.7/p9516.8/p9917.6/
+max17.7ms,zero>25ms,zero runtime errors**. Three texture cycles **2→1→2** pass.
+These are isolated SE results, not matched campaign performance or an improvement
+claim. New temporary atlas including primary context: **824054PNG bytes /8MiB
+calculated RGBA**, one atlas; not production payload or measured GPU memory.
+Cold-load/switch latency and production resource consolidation remain unmeasured.
+
+Twelve focused staff-hit/presentation/death tests, TypeScript, scoped ESLint/
+Prettier, Python syntax and the targeted audit pass. No full regression, release
+build, new CI, push or deployment. Only local tools/controls are committed; raw
+images/proofs/captures remain outside the repository. Sandboxed Blender Metal
+startup failed before work; native execution passed. The first approach also
+caught a strict suffix hand-matrix mismatch from redundant normalization; the
+original suffix arithmetic was restored exactly. Initial partial source snapshots,
+semantic-format provenance and rejected evidence remain retained; finalized
+producer/control hashes match the final proof, with no repeated renders.
+
+Reproduce the final local proof without Blender exports:
+
+```sh
+node scripts/audit-warrior-staff-collapse.mjs /private/tmp/hollowbane-q3-staff-collapse/final-se-render /private/tmp/hollowbane-q3-staff-choreography/death-se-render /private/tmp/hollowbane-q3-staff-collapse/final-audit
+node scripts/profile-warrior-staff-carry.mjs /private/tmp/hollowbane-q3-staff-collapse/final-se-render /private/tmp/hollowbane-q3-staff-choreography/render /private/tmp/hollowbane-q3-staff-collapse/final-se-native --death-forward
+```
+
+Raw evidence: `/private/tmp/hollowbane-q3-staff-collapse/`, especially
+`final-se-render`, `final-audit/audit.json`, `final-se-native/{plan.json,review.json,
+native-*.png,video}`, `default-regression`, `approach1-*` and `approach2-*`.
+**Next executable action:** audit the required nearest-reaction entry1–3 on the
+same approved collapse with spherical grip return; these are necessary load/Fan/
+hit boundaries, not optional animation variants. Verify SE timing/body/grip before
+exporting affected missing directions only. Then close movement/rapid-facing/
+reset/equipment transitions, consolidation, existing showcase, campaign and exact
+B/C gates. No additional rejected approach beyond the user's two-approach stop
+policy is authorized if the corrected death remains visually unacceptable.
+Staff/bow/unarmed stay legacy, shipping delta0/0/0. Last verified public SHA remains
+**c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending. Preserve unrelated
+edits and recovery ancestry. No owned process remains at this session checkpoint.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing

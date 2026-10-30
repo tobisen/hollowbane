@@ -17,12 +17,15 @@ import {
 
 const abilities = process.argv.includes("--abilities"),
   hitMode = process.argv.includes("--hit"),
-  deathMode = process.argv.includes("--death");
+  forwardDeath = process.argv.includes("--death-forward"),
+  deathMode = process.argv.includes("--death") || forwardDeath;
 if ([abilities, hitMode, deathMode].filter(Boolean).length > 1)
   throw Error("Select one staff review mode");
 const [carry, primary, output] = process.argv
   .slice(2)
-  .filter((p) => !["--abilities", "--hit", "--death"].includes(p))
+  .filter(
+    (p) => !["--abilities", "--hit", "--death", "--death-forward"].includes(p),
+  )
   .map((p) => resolve(p));
 if (
   !carry ||
@@ -129,19 +132,23 @@ import {WarriorMotion,warriorPose} from './src/rendering/warrior-pose';
 import {createCharacterInventory} from './src/simulation/equipment';
 import {inventoryItem} from './src/simulation/inventory-test-helper';
 import {deriveEquipment,captureEquipmentBase,applyEquipment} from './src/simulation/equipment-stats';
+import {commandCombat} from './src/simulation/combat-targeting';
 export function plan(){
  const w=createCombat(42);w.hostilesActive=false;
  const a=w.actors[0],c=createCharacterInventory();c.equipment.main=inventoryItem('cinder-staff');applyEquipment(deriveEquipment(c,captureEquipmentBase(a)),a);
  const baseline=structuredClone(w),m=new WarriorMotion(),rows=[];m.observe(a,w.tick);let deathAt=null;
  for(let local=0;local<600;local++){
+  if(${forwardDeath}&&local===0)for(const x of [w,baseline])x.actors[0].controller=commandCombat(x.actors[0].controller,{kind:'attack',target:x.actors[1].id,repeat:false});
+  const incoming=warriorPose(a,w.tick,deathAt,null,m);
   stepCombat(w);stepCombat(baseline);
-  if(local===11){for(const x of [w,baseline])applyCombatHit(x,x.actors[1],x.actors[0],ARENA_NAV,{damage:10000,element:'physical',guaranteed:true});deathAt=w.tick;}
+  if(deathAt===null&&(${forwardDeath}?incoming.clip==='primary'&&incoming.frame%12===4:local===11)){for(const x of [w,baseline])applyCombatHit(x,x.actors[1],x.actors[0],ARENA_NAV,{damage:10000,element:'physical',guaranteed:true});deathAt=w.tick;}
   m.observe(a,w.tick);const pose=warriorPose(a,w.tick,deathAt,null,m);
   if(JSON.stringify(w)!==JSON.stringify(baseline))throw Error('Death presentation changed simulation');
-  rows.push({tick:w.tick,pose,frame:pose.set==='death'?'death-'+pose.frame:'attacks-0',position:{...a.controller.walker.position},strike:0,deathAt});
+  rows.push({tick:w.tick,pose,frame:pose.set==='death'?'death-'+pose.frame:'attacks-'+(${forwardDeath}&&pose.set==='attacks'?pose.frame%12:0),position:{...a.controller.walker.position},strike:0,deathAt});
  }
  if(new Set(rows.filter(r=>r.pose.set==='death').map(r=>r.pose.frame)).size!==16||rows.some(r=>r.tick>=deathAt+30&&r.pose.frame!==15)||w.events.filter(e=>e.kind==='death'&&e.target===a.id).length!==1)throw Error('Death clock, terminal hold or event changed');
- return {rows,rules:{weapon:a.weapon,range:a.range},deathAt,deathEvents:w.events.filter(e=>e.kind==='death')};
+ if(${forwardDeath}&&!rows.some(r=>r.pose.set==='attacks'&&r.pose.frame%12===4))throw Error('Missing demonstrated forward death entry');
+ return {rows,rules:{weapon:a.weapon,range:a.range},deathAt,forwardDeath:${forwardDeath},deathEvents:w.events.filter(e=>e.kind==='death')};
 }
 `
   : hitMode

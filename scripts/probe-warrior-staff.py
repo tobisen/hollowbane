@@ -8,6 +8,7 @@ direction. --motion --carry gives forty locomotion poses per selected direction.
 --motion --ability <iron-fan|oath-echo> gives twelve staff-specific ability poses.
 --motion --reaction hit gives six staff-compatible hit recovery poses.
 --motion --death reuses sixteen approved collapse poses with staff arm IK.
+--motion --death --death-forward corrects only the early forward-held entry.
 Uses the approved rig/materials/camera and hash-verified two-bone IK authoring.
 No blend/public writes, gameplay callbacks, mechanics or save changes.
 """
@@ -43,6 +44,8 @@ def main():
     parser.add_argument('--reaction', choices=['hit', 'hit-extended'], help='Existing six-pose hitstun presentation, with held-weapon entry')
     parser.add_argument('--reuse-prefix', type=Path, help='Prior death proof: reuse identical poses before release')
     parser.add_argument('--death', action='store_true', help='Staff over the approved sixteen grounded collapse poses')
+    parser.add_argument('--death-forward', action='store_true', help='Forward-held early collapse; reuse approved death from pose4')
+    parser.add_argument('--reuse-suffix', type=Path, help='Hash-verified approved death images from pose4 onward')
     parser.add_argument('--reuse-guards', type=Path, help='Reviewed primary source directory for exact ability guard aliases')
     parser.add_argument('--subframes', type=int, choices=[1, 8], default=1)
     parser.add_argument('--directions', nargs='+', choices=['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'])
@@ -54,17 +57,22 @@ def main():
     assert not options.reaction or (options.motion and not options.carry and not options.ability)
     assert not options.reuse_guards or ((options.ability or options.reaction or options.death) and not options.audit)
     assert not options.death or (options.motion and not options.carry and not options.ability and not options.reaction and options.subframes == 1)
+    assert not options.death_forward or options.death
+    assert not options.reuse_suffix or (options.death_forward and not options.audit)
     action = 'death' if options.death else options.ability or options.reaction or 'primary'
     motion_path = ROOT / ('assets/source/q3/warrior-staff-se/' + (action + '.json' if options.ability or options.reaction or options.death else 'motion.json'))
-    motion = json.loads(motion_path.read_text()) if options.motion else None
+    if options.death_forward:
+        motion_path = ROOT / 'assets/source/q3/warrior-staff-se/death-forward.json'
+    motion_bytes = motion_path.read_bytes() if options.motion else None
+    motion = json.loads(motion_bytes) if motion_bytes else None
     guard_source = None
     if options.reuse_guards:
         primary_path = ROOT / 'assets/source/q3/warrior-staff-se/motion.json'
         primary_controls = json.loads(primary_path.read_text())
         assert motion['geometry'] == primary_controls['geometry']
-        for endpoint in [0] if options.death else [-1] if options.reaction else [0, -1]:
+        for endpoint in [] if options.death_forward else [0] if options.death else [-1] if options.reaction else [0, -1]:
             assert {k:motion['keys'][endpoint][k] for k in ['palm','axis','lean','yaw']} == {k:primary_controls['keys'][endpoint][k] for k in ['palm','axis','lean','yaw']}
-        if action == 'hit-extended':
+        if action == 'hit-extended' or options.death_forward:
             active = next(k for k in primary_controls['keys'] if k['pose'] == 5)
             assert {k:motion['keys'][0][k] for k in ['palm','axis','lean','yaw']} == {k:active[k] for k in ['palm','axis','lean','yaw']}
         guard_bytes = (options.reuse_guards / 'staff.json').read_bytes()
@@ -102,6 +110,14 @@ def main():
         assert len(carry) == 40
     prefix = json.loads((options.reuse_prefix / 'staff.json').read_text()) if options.reuse_prefix else None
     assert prefix is None or (options.death and not options.audit and not prefix['productionApproved'])
+    suffix = None
+    if options.reuse_suffix:
+        suffix_bytes = (options.reuse_suffix / 'staff.json').read_bytes()
+        suffix = json.loads(suffix_bytes)
+        reviewed = json.loads((options.reuse_suffix / 'review.json').read_text())
+        assert not suffix['productionApproved'] and reviewed['sampledGeometryPassed']
+        assert reviewed['proofSha256'] == hashlib.sha256(suffix_bytes).hexdigest()
+        assert suffix['motionSha256'] == digest(ROOT / 'assets/source/q3/warrior-staff-se/death.json')
     death = []
     death_authoring = ROOT / 'assets/source/q3/warrior-death/render.py'
     death_manifest_path = ROOT / 'public/dev/warrior-death/warrior.json'
@@ -312,6 +328,11 @@ def main():
                                  for c in approved['contacts']}
             if options.death:
                 approved, original = death[ordinal]
+                local_across = Vector((0, 0, 1)).cross(axis)
+                if options.death_forward and ordinal < 4:
+                    # Corrected early poses use the palm's local basis. Keep
+                    # the original suffix arithmetic exact for image reuse.
+                    local_across.normalize()
                 operator = Matrix.Identity(4) if ordinal == 0 else original['torso'] @ neutral['torso'].inverted()
                 torso = operator @ torso
                 # Controls are in the original body frame. Torso-following
@@ -324,7 +345,7 @@ def main():
                 expected_feet = {side: original['foot' + side].translation for side in ['L', 'R']}
             for name in ['torso', 'head']:
                 rig.pose.bones[name].matrix = torso @ neutral[name]
-            across = ((operator.to_3x3() @ Vector((0, 0, 1)).cross(Vector(shaft).normalized())).normalized()
+            across = ((operator.to_3x3() @ local_across).normalized()
                       if options.death else Vector((0, 0, 1)).cross(axis).normalized())
             up = axis.cross(across).normalized()
             # A staff crosses the palm perpendicular to the wrist. The sword's
@@ -459,6 +480,8 @@ def main():
                               elbows={side: list(rig.pose.bones['fore' + side].head) for side in ['L', 'R']})
             if options.death:
                 record.update(lowerBodyMatrixMaximumError=lower_error, bodyGroundMinimum=body_minimum,
+                              approvedHipDrop=approved['hipDrop'],
+                              knees={side: list(rig.pose.bones['shin' + side].head) for side in ['L', 'R']},
                               staffFloorRoundoffCorrection=floor_correction,
                               staffReleased=released, gripRequired=not released,
                               approvedBodyPose=approved['name'],
@@ -469,7 +492,7 @@ def main():
                 if guard_source and index in ([0] if options.death else [0, 5] if action == 'hit-extended' else [5] if options.reaction else [0, 11]):
                     assert guard_source['rigSha256'] == digest(source)
                     assert guard_source['ikAuthoringSha256'] == digest(authoring)
-                    source_index = 5 if action == 'hit-extended' and index == 0 else 0
+                    source_index = 5 if (action == 'hit-extended' or options.death_forward) and index == 0 else 0
                     candidates = [s for s in guard_source['samples'] if s['direction'] == facing and s['index'] == source_index]
                     assert len(candidates) == 1
                     original = candidates[0]
@@ -481,13 +504,22 @@ def main():
                     shutil.copyfile(image, destination)
                     record['reusedPrimaryGuard'] = {'proofSha256': hashlib.sha256(guard_bytes).hexdigest(),
                                                   'name': original['name'], 'pngSha256': original['pngSha256']}
-                elif prefix is not None and ordinal <= motion['releasePose']:
+                elif prefix is not None and ordinal <= min(motion['releasePose'], len(prefix['samples']) - 1):
                     previous = prefix['samples'][ordinal]
                     assert all(previous[k] == record[k] for k in ['name', 'root', 'palmR', 'axis', 'wrists', 'elbows', 'staffBounds', 'bodyTorsoMatrix', 'bodyGroundMinimum'])
                     image = options.reuse_prefix / (previous['name'] + '.png')
                     assert digest(image) == previous['pngSha256']
                     shutil.copyfile(image, destination)
                     record['reusedDeathPrefix'] = {'proofSha256': digest(options.reuse_prefix / 'staff.json'), 'name': previous['name'], 'pngSha256': previous['pngSha256']}
+                elif suffix is not None and ordinal >= 4:
+                    candidates = [s for s in suffix['samples'] if s['direction'] == facing and s['index'] == ordinal]
+                    assert len(candidates) == 1
+                    previous = candidates[0]
+                    assert all(previous[k] == record[k] for k in ['name', 'root', 'palmR', 'axis', 'wrists', 'elbows', 'staffBounds', 'bodyTorsoMatrix', 'bodyGroundMinimum'])
+                    image = options.reuse_suffix / (previous['name'] + '.png')
+                    assert digest(image) == previous['pngSha256']
+                    shutil.copyfile(image, destination)
+                    record['reusedDeathSuffix'] = {'proofSha256': hashlib.sha256(suffix_bytes).hexdigest(), 'name': previous['name'], 'pngSha256': previous['pngSha256']}
                 elif options.death and ordinal >= 14:
                     original = records[-2]
                     assert original['direction'] == facing
@@ -504,7 +536,7 @@ def main():
         'ikAuthoringSha256': digest(authoring), 'blender': bpy.app.version_string,
         'provenance': 'Original primitive wood/bronze/amber staff; existing approved Warrior rig and materials',
         'productionApproved': False, 'genuineMotionQualityAccepted': False,
-        'motionSha256': digest(motion_path) if motion else None,
+        'motionSha256': hashlib.sha256(motion_bytes).hexdigest() if motion else None,
         'clipAction': action, 'poseCount': motion['poseCount'] if motion else None,
         'deathAuthoringSha256': digest(death_authoring) if options.death else None,
         'deathManifestSha256': digest(death_manifest_path) if options.death else None,
