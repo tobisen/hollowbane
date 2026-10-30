@@ -107,7 +107,7 @@ const cases = directions.flatMap((direction) =>
     const entry = c.rows.find((r) => r.pose.set === "death");
     if (
       !entry ||
-      entry.frame.clip !== "hit-extended" ||
+      entry.frame.clip !== "death-forward" ||
       entry.frame.frame !== 0 ||
       c.deathEvents !== 1
     )

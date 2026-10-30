@@ -61,15 +61,15 @@ function closestReaction(
 }
 /** Read-only candidate presentation: reuse reviewed reaction images to preserve
  * the incoming grip. Progress only with the authoritative hit/death pose; no
- * clock, gameplay callback, wall time or terminal restart. The optional death
- * bridge is a rejected visual probe: it omits early knee collapse. Keep it
- * disabled outside the offline matrix until a body-preserving entry exists.
+ * clock, gameplay callback, wall time or terminal restart. The optional forward
+ * collapse uses reviewed death images with the approved lower body, never
+ * standing reaction images. Enable only when that complete catalog is loaded.
  */
 export function observeStaffPresentation(
   previous: StaffPresentation | null,
   pose: Readonly<WarriorPose>,
   catalog: StaffAttachments,
-  deathBridgeProbe = false,
+  forwardCollapse = false,
 ): StaffPresentation {
   let entry: StaffFrame | null = null;
   let frame = staffLogicalFrame(pose);
@@ -85,22 +85,28 @@ export function observeStaffPresentation(
         clip: entry.clip,
         frame: entry.frame + Math.floor(((5 - entry.frame) * pose.frame) / 5),
       };
-  } else if (pose.set === "death" && deathBridgeProbe) {
+  } else if (pose.set === "death" && forwardCollapse) {
     entry =
       previous?.pose.set === "death"
         ? previous.entry
         : previous &&
-            (previous.pose.set === "attacks" ||
-              previous.pose.clip === "iron-fan" ||
-              previous.frame.clip === "hit-extended")
-          ? closestReaction(previous.frame, catalog)
+            staffAttachmentStep(
+              previous.frame,
+              { clip: "death-forward", frame: 0 },
+              catalog,
+            ) <
+              staffAttachmentStep(
+                previous.frame,
+                { clip: "death", frame: 0 },
+                catalog,
+              )
+          ? { clip: "death-forward", frame: 0 }
           : null;
-    // Near-guard deaths keep the approved collapse rather than adding recoil.
-    if (entry?.clip === "hit") entry = null;
-    if (entry && pose.frame < 5)
+    // Both entries share byte-identical fall/release/terminal images from4.
+    if (entry && pose.frame < 4)
       frame = {
         clip: entry.clip,
-        frame: entry.frame + Math.floor(((5 - entry.frame) * pose.frame) / 4),
+        frame: pose.frame,
       };
   }
   return { pose: { ...pose }, frame, entry };

@@ -12,6 +12,15 @@ import { createServer } from "node:http";
 const args = process.argv.slice(2),
   auditOnly = args.at(-1) === "--audit";
 if (auditOnly) args.pop();
+const movementIndex = args.indexOf("--movement"),
+  movementOnly = movementIndex >= 0;
+if (movementOnly) args.splice(movementIndex, 1);
+const forwardIndex = args.indexOf("--forward"),
+  forward = forwardIndex >= 0 ? args.splice(forwardIndex, 2)[1] : null;
+if (!forward || !relative(process.cwd(), resolve(forward)).startsWith(".."))
+  throw Error(
+    "Pass --forward with the reviewed eight-direction collapse directory",
+  );
 const [root, output] = args.map((p) => resolve(p));
 if (
   !root ||
@@ -29,10 +38,14 @@ await build({
   format: "esm",
   outfile: resolve(output, "matrix.mjs"),
 });
-const { staffTransitionMatrix, STAFF_TRANSITION_STEP_LIMIT } = await import(
-  pathToFileURL(resolve(output, "matrix.mjs")).href
-);
-const cases = staffTransitionMatrix();
+const {
+  staffTransitionMatrix,
+  staffMovementDeathMatrix,
+  STAFF_TRANSITION_STEP_LIMIT,
+} = await import(pathToFileURL(resolve(output, "matrix.mjs")).href);
+const cases = movementOnly
+  ? staffMovementDeathMatrix()
+  : staffTransitionMatrix();
 await writeFile(resolve(output, "matrix.json"), JSON.stringify(cases));
 const reachable = cases.filter((c) => c.appliedAt !== null);
 const failures = reachable.filter(
@@ -41,6 +54,12 @@ const failures = reachable.filter(
     STAFF_TRANSITION_STEP_LIMIT + 1e-12,
 );
 const summary = {
+  scope: movementOnly ? "movement-death" : "combat-interruptions",
+  sampledRows: cases.reduce((n, c) => n + c.rows.length, 0),
+  actualSimulationTicks: cases.reduce(
+    (n, c) => n + c.rows.length - (movementOnly ? 1 : 0),
+    0,
+  ),
   authoredMaximumStep: STAFF_TRANSITION_STEP_LIMIT,
   cases: cases.length,
   reachable: reachable.length,
@@ -54,7 +73,7 @@ const summary = {
   })),
   productionApproved: false,
   completeStaffConfiguration: false,
-  deathBridgeProbe: true,
+  deathBridgeProbe: false,
   deathBodyVisualAccepted: false,
 };
 await writeFile(
@@ -72,6 +91,10 @@ const catalog = JSON.parse(
   routes = new Map(),
   textures = {},
   resources = [];
+const approvedBody = JSON.parse(
+  await readFile("public/dev/warrior-death/warrior.json"),
+);
+let approvedDeathPixels;
 let verifiedFrames = 0;
 for (const [clip, folder, files] of [
   [
@@ -85,6 +108,7 @@ for (const [clip, folder, files] of [
   ["hit", "hit-eight-native", ["hit"]],
   ["hit-extended", "hit-extended-eight-native", ["hit-extended"]],
   ["death", "death-eight-native", ["death"]],
+  ["death-forward", resolve(forward), ["death"]],
 ]) {
   const directory = resolve(root, folder),
     prior = JSON.parse(await readFile(resolve(directory, "review.json"))),
@@ -130,12 +154,28 @@ for (const [clip, folder, files] of [
           )
             throw Error("Changed attachment vectors");
       }
-    for (const sample of proof.samples)
+    for (const sample of proof.samples) {
+      if (
+        clip === "death-forward" &&
+        (sample.lowerBodyMatrixMaximumError >= 1e-5 ||
+          sample.approvedHipDrop !==
+            approvedBody.views[sample.direction].frames[sample.index].hipDrop)
+      )
+        throw Error("Forward collapse lost approved lower-body motion");
       expected.set(
         sample.direction + "-" + (sample.ordinal ?? sample.index),
         review.reports.find((r) => r.name === sample.name).pixelSha256,
       );
+    }
   }
+  if (clip === "death") approvedDeathPixels = expected;
+  if (clip === "death-forward")
+    for (const [name, pixels] of expected)
+      if (
+        Number(name.split("-")[1]) >= 4 &&
+        approvedDeathPixels.get(name) !== pixels
+      )
+        throw Error("Forward collapse changed approved death suffix pixels");
   for (const file of files) {
     const png = await readFile(resolve(directory, file + ".png")),
       metadata = await readFile(resolve(directory, file + ".json")),
@@ -169,7 +209,7 @@ for (const [clip, folder, files] of [
     });
   }
 }
-if (verifiedFrames !== 832) throw Error("Incomplete staff states");
+if (verifiedFrames !== 960) throw Error("Incomplete staff states");
 if (auditOnly) {
   await writeFile(
     resolve(output, "audit.json"),
@@ -187,19 +227,24 @@ if (auditOnly) {
   );
   process.exit(0);
 }
-const selected = reachable.filter(
-    (c) =>
-      c.speed === 0 &&
-      c.recovery === 0 &&
-      (c.killFrame === null || (c.action === "primary" && c.targetFrame === 4)),
-  ),
+const selected = movementOnly
+    ? ["idle", "walk", "run", "rapid"].map((action) =>
+        reachable.find((c) => c.action === action),
+      )
+    : reachable.filter(
+        (c) =>
+          c.speed === 0 &&
+          c.recovery === 0 &&
+          (c.killFrame === null ||
+            (c.action === "primary" && c.targetFrame === 4)),
+      ),
   names = ["s", "sw", "w", "nw", "n", "ne", "e", "se"];
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;overflow:hidden}canvas{display:block}</style></head><body><script src="/phaser.js"></script><script>
 const plans=${JSON.stringify(selected)},textures=${JSON.stringify(textures)},resources=${JSON.stringify(resources)},names=${JSON.stringify(names)};
 class Review extends Phaser.Scene{
 preload(){for(const a of resources)this.load.atlas(a.key,'/'+a.key+'.png','/'+a.key+'.json');}
 create(){if(Phaser.VERSION!=='4.2.1'||resources.some(a=>!this.textures.exists(a.key)))throw Error('Missing candidate texture');this.views=names.map((d,i)=>{this.add.text(80+i%4*320,35+Math.floor(i/4)*280,d);return this.add.sprite(160+i%4*320,230+Math.floor(i/4)*280).setOrigin(.5,338/512).setScale(.5);});this.label=this.add.text(8,8,'',{fontSize:'14px'});this.case=0;this.i=0;this.acc=0;this.playing=false;this.old=false;window.staffReview=this;window.staffReady=true;}
-draw(r){for(let j=0;j<8;j++){const f=this.old?r.oldFrame:r.frame,t=textures[f.clip+':'+names[j]+'-'+f.frame];if(!t)throw Error('Missing pose');this.views[j].setTexture(t.key,t.frame);}const c=plans[this.case];this.label.setText(c.action+' '+c.targetFrame+' → '+c.effect+' · tick '+r.tick+' · '+(this.old?'previous selector':'body-unaccepted probe')+' · gameplay1×');this.current=r;}
+draw(r){for(let j=0;j<8;j++){const f=this.old?r.oldFrame:r.frame,t=textures[f.clip+':'+names[j]+'-'+f.frame];if(!t)throw Error('Missing pose');this.views[j].setTexture(t.key,t.frame);}const c=plans[this.case];this.label.setText(c.action+' '+c.targetFrame+' → '+c.effect+' · tick '+r.tick+' · '+(this.old?'previous selector':'collapse candidate')+' · gameplay1×');this.current=r;}
 update(t,delta){if(!this.playing)return;this.acc+=delta;while(this.acc>=1000/60){this.acc-=1000/60;const c=plans[this.case];this.draw(c.rows[this.i]);this.i++;if(this.captureTick===this.current.tick){this.playing=false;break;}if(this.i===c.rows.length){this.i=c.rows.length-1;this.playing=false;window.staffFinished=true;}}}
 }
 new Phaser.Game({type:Phaser.WEBGL,width:1280,height:640,backgroundColor:'#252c30',banner:false,scene:Review});
@@ -253,12 +298,19 @@ try {
     await page.waitForFunction(() => window.staffFinished);
   }
   // Captures replay real sequences around the demonstrated entry and landing.
-  for (const [action, targetFrame, effect] of [
-    ["primary", 4, "death"],
-    ["primary", 3, "hit"],
-    ["iron-fan", 4, "death"],
-    ["oath-echo", 5, "hit"],
-  ]) {
+  for (const [action, targetFrame, effect] of movementOnly
+    ? selected.map((c) => [c.action, c.targetFrame, c.effect])
+    : [
+        ["primary", 3, "death"],
+        ["primary", 4, "death"],
+        ["primary", 7, "death"],
+        ["primary", 3, "hit"],
+        ["iron-fan", 3, "death"],
+        ["iron-fan", 4, "death"],
+        ["iron-fan", 7, "death"],
+        ["oath-echo", 5, "death"],
+        ["oath-echo", 5, "hit"],
+      ]) {
     const index = selected.findIndex(
         (c) =>
           c.action === action &&
@@ -351,11 +403,12 @@ try {
         native,
         playedCases: selected.length,
         inventory,
-        actualSimulationTicks: cases.reduce((n, c) => n + c.rows.length, 0),
+        sampledRows: summary.sampledRows,
+        actualSimulationTicks: summary.actualSimulationTicks,
         errors,
         productionApproved: false,
         completeStaffConfiguration: false,
-        deathBridgeProbe: true,
+        deathBridgeProbe: false,
         deathBodyVisualAccepted: false,
       },
       null,

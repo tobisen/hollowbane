@@ -2,6 +2,7 @@ import { expect, it } from "vitest";
 import {
   staffTransitionCase,
   STAFF_TRANSITION_STEP_LIMIT,
+  staffMovementDeathMatrix,
 } from "../../tests/helpers/warrior-staff-transitions";
 import {
   observeStaffPresentation,
@@ -9,7 +10,7 @@ import {
 } from "./warrior-staff-presentation";
 import attachments from "../../tests/fixtures/warrior-staff-attachments.json";
 
-it("measures the forward-weapon teleport and an explicitly experimental death bridge without gameplay effects", () => {
+it("repairs the forward-weapon teleport with reviewed collapse images without gameplay effects", () => {
   for (const effect of ["hit", "death"] as const) {
     const c = staffTransitionCase("primary", 4, effect);
     expect(c.appliedAt).not.toBeNull();
@@ -124,7 +125,7 @@ it("retains the complete guarded recoil when the incoming weapon is already at g
   ).toEqual({ clip: "hit", frame: 0 });
 });
 
-it("keeps the approved collapse by default instead of silently enabling the rejected standing-body death bridge", () => {
+it("keeps the guard collapse by default and uses the reviewed forward collapse only when loaded", () => {
   const previous = observeStaffPresentation(
     null,
     { set: "attacks", clip: "primary", frame: 4 },
@@ -137,5 +138,65 @@ it("keeps the approved collapse by default instead of silently enabling the reje
   expect(
     observeStaffPresentation(previous, death, attachments.frames, true).frame
       .clip,
-  ).toBe("hit-extended");
+  ).toBe("death-forward");
+});
+
+it("uses only collapsing death images for every near-forward entry and keeps the exact authoritative pose", () => {
+  for (const clip of [
+    "primary",
+    "iron-fan",
+    "oath-echo",
+    "hit",
+    "hit-extended",
+    "movement",
+  ]) {
+    const count = clip === "movement" ? 40 : clip.startsWith("hit") ? 6 : 12;
+    for (let index = 0; index < count; index++) {
+      const incoming = {
+        set: "attacks",
+        clip: "primary",
+        frame: index,
+      } as const;
+      let view = {
+        pose: incoming,
+        frame: { clip, frame: index },
+        entry: null,
+      } as ReturnType<typeof observeStaffPresentation>;
+      for (let frame = 0; frame < 16; frame++) {
+        const next = observeStaffPresentation(
+          view,
+          { set: "death", clip: "death", frame },
+          attachments.frames,
+          true,
+        );
+        expect(next.frame.frame).toBe(frame);
+        expect(next.frame.clip).toBe(
+          frame < 4 && next.entry ? "death-forward" : "death",
+        );
+        expect(
+          staffAttachmentStep(view.frame, next.frame, attachments.frames),
+        ).toBeLessThanOrEqual(STAFF_TRANSITION_STEP_LIMIT + 1e-12);
+        expect(
+          observeStaffPresentation(next, next.pose, attachments.frames, true),
+        ).toEqual(next);
+        view = next;
+      }
+    }
+  }
+});
+
+it("preserves all movement death entries and final-tick facing changes through actual lethal events", () => {
+  const cases = staffMovementDeathMatrix();
+  expect(cases).toHaveLength(328);
+  for (const gait of ["idle", "walk", "run", "rapid"])
+    expect(
+      new Set(cases.filter((c) => c.action === gait).map((c) => c.direction))
+        .size,
+    ).toBe(8);
+  for (const c of cases) {
+    expect(c.deathEvents).toBe(1);
+    expect(Math.max(...c.rows.map((r) => r.step))).toBeLessThanOrEqual(
+      STAFF_TRANSITION_STEP_LIMIT + 1e-12,
+    );
+  }
 });

@@ -944,6 +944,79 @@ Last verified deployed SHA remains
 **c437335844e4f82e30b00da2967d4f64c9614a64**; no CI is pending. Preserve unrelated
 edits, recovery ancestry and rejected trials. No owned process remains.
 
+## Near-forward entry mapping — no new art, 2026-10-30
+
+Continued from `707a9d7`. **No additional death-entry variants are needed for the
+current candidate.** The earlier next-action prediction of new reaction1–3 art
+is superseded by measured entry coverage: every living staff attachment is within
+the unchanged0.882939752m envelope of either approved guard death0 or approved
+forward death0. The read-only candidate observer chooses the nearer entry once,
+uses the corresponding real collapse images0–3, then exact shared death4–15.
+It never substitutes standing reaction images, changes the authoritative pose
+index, restarts the death clock, or generates gameplay callbacks. Unknown corpses
+still settle directly; default behavior requires no forward catalog. Campaign and
+showcase have not enabled this observer. The rejected bridge was removed from
+executable code; prior consumed code and rejected visual evidence remain intact.
+
+**792/792 actual combat interruption cases /79200 ticks pass**, including every
+primary/Fan/Oath pose/speed/recovery breakpoint and216 hit→death cases. Maximum
+0.882939752m remains the original authored bound; old maximum1.872184423m and the
+original>1.5m guard-hit snap remain explicit regressions. The updated targeted
+forward audit passes27 cases/2700 ticks. A second **328-case movement/death matrix**
+covers every8 idle/16 walk/16 run entry in all eight real facings plus eight
+final-tick rapid-facing cases. It steps26240 lethal/corpse ticks, samples26568
+rows including328 initial living rows, compares untouched simulation copies and
+checks all16 death poses, no corpse movement/facing change and one death each.
+
+Native M4/Metal replays **78 combat sequences plus four representative movement
+sequences**, each drawn in eight views of one actual simulation. All960 logical
+source frames are CPU/hash checked, including the reused forward atlas and exact
+same-facing suffix pixels. Both runs retain three **20→9→20** texture cycles and
+zero runtime errors. Gameplay-scale dark/light near-entry primary/Fan/Oath,
+movement/rapid-facing, knee descent and terminal captures reviewed. The scripts
+keep automated `deathBodyVisualAccepted:false`; bounded manual visual acceptance
+is recorded separately in `collapse-visual-review.json`, never inferred from
+geometry alone. This does not close the entire playable transition matrix.
+
+Fourteen focused tests/three files, strict TypeScript, affected ESLint and
+formatting pass. Initial movement fixtures incorrectly missed the same-tick death
+cue, measured corpse position before the final living step and included idle
+frames reached after running into an obstacle. These preconditions were fixed;
+no simulation/geometry/continuity assertion or deadline was weakened. Failure
+logs remain. The native movement report's old `actualSimulationTicks:26568`
+label includes initial rows; final tooling/audit separates26240 steps from26568
+samples, retaining the raw report and its exact consumed driver.
+
+**Added art/shipping PNG/RGBA/atlases:0/0/0.** Diagnostic review reuses11 existing
+atlases totaling27378447PNG bytes/160MiB calculated base RGBA, not a proposed
+production set or measured GPU residency. This includes a deliberately duplicated
+forward diagnostic suffix; production consolidation must alias primary5 contacts
+and shared death4–15 rather than ship that duplicate atlas. Only24 unique early
+forward rasters across eight directions differ from the existing source set.
+No new native frame-distribution/campaign measurements were made. The prior
+isolated M4 p9517.6/max50ms/one>25 sample remains historical, not a regression or
+matched campaign result. No release build, CI, push or deployment.
+
+Commands (native runs need normal localhost/Metal access):
+
+```sh
+node scripts/review-warrior-staff-transitions.mjs /private/tmp/hollowbane-q3-staff-choreography /private/tmp/hollowbane-q3-staff-transitions/collapse-final-audit --forward /private/tmp/hollowbane-q3-staff-collapse/forward-eight-native --audit
+node scripts/review-warrior-staff-transitions.mjs /private/tmp/hollowbane-q3-staff-choreography /private/tmp/hollowbane-q3-staff-transitions/movement-final-audit --forward /private/tmp/hollowbane-q3-staff-collapse/forward-eight-native --movement --audit
+```
+
+Raw evidence: `/private/tmp/hollowbane-q3-staff-transitions/{collapse-*,movement-*}`;
+native captures/consumed plans live in `collapse-native` and `movement-native`.
+**Session checkpoint; next:** finish actual equipment-switch/reset/rapid-action,
+wall-slide/camera acceptance around the existing candidate, audit/pack the minimal
+shared-body staff resource set, then wire the existing developer arena. Keep
+production fallback until that complete configuration passes. Campaign/save/travel,
+matched M4 campaign profiling and exact Release B then C remain open. No more
+near-forward art absent a concrete new failing case. Staff/bow/unarmed remain
+legacy. Verified public SHA stays
+**c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending. Scoped continuation
+remains authorized; unrelated edits/recovery ancestry are preserved. No owned
+process remains at this checkpoint.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing
