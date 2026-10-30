@@ -408,6 +408,81 @@ staff/bow/unarmed remain legacy.** Last verified public remains
 Preserve unrelated edits and all local proof commits. No owned renderer/server
 remains after the checkpoint.
 
+## Eight-direction staff abilities — local proof complete 2026-10-30
+
+Sundering Fan and Oath now cover **192 logical frames**,12 poses × eight directions
+× two abilities. Reuse all24 accepted SE images and28 accepted directional primary
+guards/recoveries; render only **140 new poses**. `--reuse-guards` validates the
+reviewed primary proof, rig/IK/control/geometry hashes, exact palm/axis/wrist/elbow
+and projected bounds, then copies the hash-verified original PNG. Both endpoints
+match the accepted primary guard in every direction. The corrupt-cache fixture
+is rejected at its PNG hash before copying or rendering. No original Warrior,
+SE pilot, primary or carry image is rerendered.
+
+All168 additional logical poses pass the unchanged grip, body intersection,
+ground, connected-joint, foot/root and alpha/cell-edge checks. The prior1424 dense
+samples remain valid: ability controls/geometry are unchanged. All seven-direction
+source sheets for both abilities were inspected at gameplay scale on light/dark
+backgrounds, followed by actual-timed eight-view native windup/contact/recovery
+captures. Rear cloak occlusion, hands and stable feet are retained. These are
+accepted ability-direction proofs, not full staff category/production acceptance.
+
+`scripts/review-warrior-staff-directions.mjs --ability <id>` verifies reviewed
+source hashes and **192/192 CPU plus192/192 native GPU trim/root round trips**
+across both abilities. Each uses88 packed rasters and eight exact guard aliases;
+the separate proof atlases still duplicate their common cross-ability guards.
+Each viewer consumes the relevant300 rows from the accepted actual class-aware
+600-tick plan, covers all12 poses at0/25/60/100 speed and four authoritative skill
+releases at pose5. Eight simultaneous facings read one plan, adding no simulation
+copies, damage or effects. Idle deliberately holds the accepted guard; full
+movement/interruption/death integration is still outstanding.
+
+Native M4/ANGLE Metal,960×440/DPR1, eight gameplay1× views; Blender exports finish
+before native measurements. Each isolated run records600 frame intervals:
+
+| Ability | PNG bytes | Calculated base RGBA | p50 / p95 / p99 / maximum | >25ms |
+| ------- | --------: | -------------------: | ------------------------ | ----: |
+| Sundering Fan | 2706287 | 16MiB | 16.7 /17.1 /17.7 /17.7ms | 0/600 |
+| Oath | 2504087 | 16MiB | 16.7 /17.5 /17.7 /17.7ms | 0/600 |
+
+Both have zero runtime errors and three **11→10→11** texture release/reload cycles.
+Inventory includes nine diagnostic labels and the round-trip render target.
+These two2048² atlases total **5210374PNG bytes /32MiB calculated RGBA**; they are
+external full-body controls, not shipping assets or measured GPU residency.
+Earlier80MiB primary/carry proof is unchanged;112MiB is only the arithmetic
+combined diagnostic payload before hit/death, not an accepted production budget.
+Shared-body/attachment/patch optimization, load/switch measurements and matched
+campaign performance remain required. Production PNG/RGBA/code/save delta is0.
+
+Original primary mode also passes96 CPU/GPU round trips and three3→2→3 cycles.
+Its PNG and atlas JSON are byte-identical to the accepted eight-primary proof;
+600 native intervals p9516.9/max17.7ms,zero>25/errors. **Eight focused tests/three
+files**, TypeScript, scoped ESLint/Prettier, Python syntax and embedded native
+browser execution pass. No full campaign regression/build/CI/publication is
+claimed for this offline increment. All required release checks remain before B.
+
+Raw evidence: `/private/tmp/hollowbane-q3-staff-choreography/`:
+`ability-{iron-fan,oath-echo}-{seven-render,eight-native}`,
+`ability-eight-summary.json`, `ability-rejected-corrupt-guard.log` and
+`primary-ability-eight-followup`. Existing SE proof, consumed JSON equivalence
+and1424 dense samples remain preserved. Reproduce each completed native review:
+
+```sh
+node scripts/review-warrior-staff-directions.mjs /private/tmp/hollowbane-q3-staff-choreography/ability-iron-fan-render /private/tmp/hollowbane-q3-staff-choreography/ability-iron-fan-seven-render /private/tmp/hollowbane-q3-staff-choreography/ability-iron-fan-eight-native-repeat --ability iron-fan
+node scripts/review-warrior-staff-directions.mjs /private/tmp/hollowbane-q3-staff-choreography/ability-oath-echo-render /private/tmp/hollowbane-q3-staff-choreography/ability-oath-echo-seven-render /private/tmp/hollowbane-q3-staff-choreography/ability-oath-echo-eight-native-repeat --ability oath-echo
+```
+
+At the soft session boundary, next implement a **bounded SE six-pose staff hit
+reaction**, preserving the existing real hitstun duration/selector, two-hand grip,
+feet/root and exact guard recovery. Audit and review actual interruption timing
+before directional export. Then staff death with stable terminal pose, complete
+state mapping/resource reuse, campaign/save/equipment/travel and matched native
+acceptance, exact B release and C review. Do not rerender the accepted abilities.
+Only sword and sword/shield are production supported; **staff/bow/unarmed remain
+legacy**. B/C remain incomplete. Last verified deployed SHA remains
+**c437335844e4f82e30b00da2967d4f64c9614a64**, no CI pending. No owned renderer/server
+remains; preserve unrelated edits and recovery ancestry.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing

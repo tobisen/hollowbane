@@ -14,6 +14,7 @@ import ast
 import hashlib
 import json
 import math
+import shutil
 import sys
 from pathlib import Path
 
@@ -37,6 +38,7 @@ def main():
     parser.add_argument('--motion', action='store_true', help='Bounded SE primary choreography instead of legacy static study')
     parser.add_argument('--carry', action='store_true', help='Staff guard over approved forty movement poses')
     parser.add_argument('--ability', choices=['iron-fan', 'oath-echo'], help='Original staff-compatible assigned Warrior ability')
+    parser.add_argument('--reuse-guards', type=Path, help='Reviewed primary source directory for exact ability guard aliases')
     parser.add_argument('--subframes', type=int, choices=[1, 8], default=1)
     parser.add_argument('--directions', nargs='+', choices=['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'])
     options = parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
@@ -44,9 +46,27 @@ def main():
     assert options.directions is None or (options.motion and len(options.directions) == len(set(options.directions)))
     assert not options.carry or (options.motion and options.subframes == 1)
     assert not options.ability or (options.motion and not options.carry)
+    assert not options.reuse_guards or (options.ability and not options.audit)
     action = options.ability or 'primary'
     motion_path = ROOT / ('assets/source/q3/warrior-staff-se/' + (action + '.json' if options.ability else 'motion.json'))
     motion = json.loads(motion_path.read_text()) if options.motion else None
+    guard_source = None
+    if options.reuse_guards:
+        primary_path = ROOT / 'assets/source/q3/warrior-staff-se/motion.json'
+        primary_controls = json.loads(primary_path.read_text())
+        assert motion['geometry'] == primary_controls['geometry']
+        for endpoint in [0, -1]:
+            assert motion['keys'][endpoint] == primary_controls['keys'][endpoint]
+        guard_bytes = (options.reuse_guards / 'staff.json').read_bytes()
+        guard_source = json.loads(guard_bytes)
+        guard_review = json.loads((options.reuse_guards / 'review.json').read_text())
+        assert guard_review['sampledGeometryPassed']
+        assert guard_review['proofSha256'] == hashlib.sha256(guard_bytes).hexdigest()
+        assert not guard_source['productionApproved']
+        if guard_source['motionSha256'] != digest(primary_path):
+            consumed = options.reuse_guards.parent / 'motion-consumed.json'
+            assert digest(consumed) == guard_source['motionSha256']
+            assert json.loads(consumed.read_text()) == primary_controls
     output = options.output.resolve()
     assert not output.is_relative_to(ROOT)
     output.mkdir(parents=True, exist_ok=True)
@@ -312,8 +332,24 @@ def main():
                               elbows={side: list(rig.pose.bones['fore' + side].head) for side in ['L', 'R']})
             records.append(record)
             if not options.audit:
-                scene.render.filepath = str(output / (record['name'] + '.png'))
-                bpy.ops.render.render(write_still=True)
+                destination = output / (record['name'] + '.png')
+                if guard_source and index in [0, 11]:
+                    assert guard_source['rigSha256'] == digest(source)
+                    assert guard_source['ikAuthoringSha256'] == digest(authoring)
+                    candidates = [s for s in guard_source['samples'] if s['direction'] == facing and s['index'] == 0]
+                    assert len(candidates) == 1
+                    original = candidates[0]
+                    assert original['palmR'] == record['palmR'] and original['axis'] == record['axis']
+                    assert original['root'] == record['root'] and original['staffBounds'] == record['staffBounds']
+                    assert original['wrists'] == record['wrists'] and original['elbows'] == record['elbows']
+                    image = options.reuse_guards / (original['name'] + '.png')
+                    assert digest(image) == original['pngSha256']
+                    shutil.copyfile(image, destination)
+                    record['reusedPrimaryGuard'] = {'proofSha256': hashlib.sha256(guard_bytes).hexdigest(),
+                                                  'name': original['name'], 'pngSha256': original['pngSha256']}
+                else:
+                    scene.render.filepath = str(destination)
+                    bpy.ops.render.render(write_still=True)
                 record['pngSha256'] = digest(output / (record['name'] + '.png'))
             print('STAFF_PILOT', record['name'], intersections, minimum, flush=True)
     (output / 'staff.json').write_text(json.dumps({

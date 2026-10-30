@@ -1,4 +1,4 @@
-/** Pack/round-trip eight-direction primary or --carry; reuse reviewed SE pixels. */
+/** Eight-direction primary, --carry or --ability <id>; reuse reviewed SE pixels. */
 /* global window, document, requestAnimationFrame */
 import sharp from "sharp";
 import { chromium } from "@playwright/test";
@@ -14,8 +14,16 @@ import {
 } from "./warrior-equipment-packing.mjs";
 
 const args = process.argv.slice(2),
+  abilityIndex = args.indexOf("--ability"),
+  ability = abilityIndex >= 0 ? args.splice(abilityIndex, 2)[1] : null,
   carryMode = args.at(-1) === "--carry";
+if (
+  (abilityIndex >= 0 && !["iron-fan", "oath-echo"].includes(ability)) ||
+  (ability && carryMode)
+)
+  throw Error("Invalid staff review mode");
 if (carryMode) args.pop();
+const eightViews = carryMode || Boolean(ability);
 const [se, seven, output] = args.map((p) => resolve(p));
 if (
   !se ||
@@ -29,7 +37,9 @@ if (
   throw Error("Pass external SE, seven-direction and output directories");
 await mkdir(output, { recursive: true });
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex"),
-  source = await readFile("assets/source/q3/warrior-staff-se/motion.json"),
+  source = await readFile(
+    `assets/source/q3/warrior-staff-se/${ability ?? "motion"}.json`,
+  ),
   carrySource = carryMode
     ? await readFile("assets/source/q3/warrior-staff-se/carry.json")
     : null,
@@ -58,7 +68,12 @@ for (const directory of [se, seven]) {
     throw Error("Unreviewed directional inputs");
   if (proof.motionSha256 !== hash(source)) {
     const consumed = await readFile(
-      resolve(directory, "../motion-consumed.json"),
+      resolve(
+        directory,
+        ability
+          ? `../ability-${ability}-consumed.json`
+          : "../motion-consumed.json",
+      ),
     );
     if (
       hash(consumed) !== proof.motionSha256 ||
@@ -83,7 +98,8 @@ for (const directory of [se, seven]) {
       !names.includes(sample.direction) ||
       !Number.isInteger(index) ||
       index < 0 ||
-      index >= (carryMode ? 40 : 12)
+      index >= (carryMode ? 40 : 12) ||
+      (ability && sample.action !== ability)
     )
       throw Error("Duplicate/invalid directional pose");
     if (
@@ -131,7 +147,9 @@ for (const group of carryMode
     atlas = {
       frames: {},
       meta: {
-        image: carryMode ? `carry-${atlases.length}.png` : "primary.png",
+        image: carryMode
+          ? `carry-${atlases.length}.png`
+          : `${ability ?? "primary"}.png`,
         size: { w: packed.width, h: packed.height },
         scale: "1",
       },
@@ -155,7 +173,7 @@ for (const group of carryMode
       ? `carry-${atlases.length}`
       : "staff";
   }
-  const key = carryMode ? `carry-${atlases.length}` : "primary";
+  const key = carryMode ? `carry-${atlases.length}` : (ability ?? "primary");
   await writeFile(resolve(output, key + ".png"), png);
   await writeFile(resolve(output, key + ".json"), JSON.stringify(atlas));
   atlases.push({
@@ -175,11 +193,46 @@ const primaryBytes = carryMode
   primaryMetadata = carryMode
     ? await readFile(resolve(se, "../eight-primary/primary.json"))
     : null,
-  planBytes = carryMode
-    ? await readFile(resolve(se, "../carry-native/plan.json"))
+  planBytes = eightViews
+    ? await readFile(
+        resolve(
+          se,
+          ability ? "../ability-native/plan.json" : "../carry-native/plan.json",
+        ),
+      )
     : null,
   nativePrimary = carryMode ? JSON.parse(primaryMetadata) : null,
-  actualPlan = carryMode ? JSON.parse(planBytes) : null;
+  actualPlan = eightViews ? JSON.parse(planBytes) : null;
+if (ability) {
+  const prior = JSON.parse(
+    await readFile(resolve(se, "../ability-native/review.json")),
+  );
+  if (
+    prior.errors.length ||
+    prior.actualSkillEffects !== 8 ||
+    actualPlan.rows.length !== 600 ||
+    !prior.inputs.some((i) => i.proofSha256 === inputs[0].proofSha256)
+  )
+    throw Error("Missing accepted actual ability timing");
+  actualPlan.rows = actualPlan.rows.filter((r) => r.skill === ability);
+  if (
+    actualPlan.rows.length !== 300 ||
+    actualPlan.rows.reduce((n, r) => n + r.strike, 0) !== 4 ||
+    actualPlan.rows.some(
+      (r) => r.strike && (r.pose.clip !== ability || r.pose.frame % 12 !== 5),
+    )
+  )
+    throw Error("Changed actual ability plan");
+  for (const speed of [0, 25, 60, 100])
+    if (
+      new Set(
+        actualPlan.rows
+          .filter((r) => r.speed === speed && r.pose.set === "abilities")
+          .map((r) => r.pose.frame % 12),
+      ).size !== 12
+    )
+      throw Error("Incomplete ability timing coverage");
+}
 if (carryMode) {
   const previousReview = JSON.parse(
     await readFile(resolve(se, "../eight-primary/review.json")),
@@ -236,16 +289,16 @@ const loadAtlases = atlases.map((a) => ({ key: a.texture, file: a.key }));
 if (carryMode)
   loadAtlases.push({ key: "accepted-primary", file: "accepted-primary" });
 const html = `<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#252c30"><script src="/phaser.js"></script><script type="module">
-${carryMode ? "" : "import {plan}from'/timing.mjs';"}
+${eightViews ? "" : "import {plan}from'/timing.mjs';"}
 const names=${JSON.stringify(names)},loadAtlases=${JSON.stringify(loadAtlases)},textureByFrame=${JSON.stringify(textureByFrame)};
 class Review extends Phaser.Scene{
 preload(){for(const a of loadAtlases)this.load.atlas(a.key,'/'+a.file+'.png','/'+a.file+'.json');}
 create(){if(Phaser.VERSION!=='4.2.1')throw Error('Phaser version');for(const a of loadAtlases)if(!this.textures.exists(a.key))throw Error('Missing atlas '+a.key);
-${carryMode ? `this.views=names.map((name,i)=>{this.add.text(80+(i%4)*240,32+Math.floor(i/4)*210,name,{fontSize:'14px'});return this.add.sprite(120+(i%4)*240,205+Math.floor(i/4)*210,textureByFrame[name+'-0'],name+'-0').setOrigin(.5,338/512).setScale(.5);});this.p=${JSON.stringify(actualPlan.rows)};` : `this.sprite=this.add.sprite(240,280,'staff','s-0').setOrigin(.5,338/512).setScale(.5);this.large=this.add.sprite(680,330,'staff','s-0').setOrigin(.5,338/512);this.views=[this.sprite,this.large];this.p=plan(0).rows;`}
+${eightViews ? `this.views=names.map((name,i)=>{this.add.text(80+(i%4)*240,32+Math.floor(i/4)*210,name,{fontSize:'14px'});return this.add.sprite(120+(i%4)*240,205+Math.floor(i/4)*210,textureByFrame[name+'-0'],name+'-0').setOrigin(.5,338/512).setScale(.5);});this.p=${JSON.stringify(actualPlan.rows)};` : `this.sprite=this.add.sprite(240,280,'staff','s-0').setOrigin(.5,338/512).setScale(.5);this.large=this.add.sprite(680,330,'staff','s-0').setOrigin(.5,338/512);this.views=[this.sprite,this.large];this.p=plan(0).rows;`}
 this.rt=this.textures.addDynamicTexture('roundtrip',512,512);this.label=this.add.text(8,8,'',{fontSize:'14px'});this.i=0;this.d=0;this.playing=false;this.acc=0;this.visited=new Set();window.directionScene=this;window.directionReady=true;}
 draw(name){for(const v of this.views)v.setTexture(textureByFrame[name],name);this.label.setText('Staff primary '+name+' · gameplay1× / inspection2× · unapproved category');}
 update(time,delta){if(!this.playing)return;this.acc+=delta;while(this.acc>=1000/60){this.acc-=1000/60;const r=this.p[this.i];
-${carryMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+r.pose.frame;this.views[j].setTexture(r.pose.set==='movement'?textureByFrame[frame]:'accepted-primary',frame);}this.current=r;this.label.setText('Staff '+r.pose.clip+' · actual tick '+r.tick+' · gameplay1× · unapproved category');` : `this.draw(names[this.d]+'-'+(r.frame??0));this.current={direction:names[this.d],...r};`}
+${ability ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:0);this.views[j].setTexture(textureByFrame[frame],frame);}this.current=r;this.label.setText('Staff ${ability} · actual tick '+r.tick+' · speed '+r.speed+' · gameplay1× · unapproved category');` : carryMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+r.pose.frame;this.views[j].setTexture(r.pose.set==='movement'?textureByFrame[frame]:'accepted-primary',frame);}this.current=r;this.label.setText('Staff '+r.pose.clip+' · actual tick '+r.tick+' · gameplay1× · unapproved category');` : `this.draw(names[this.d]+'-'+(r.frame??0));this.current={direction:names[this.d],...r};`}
 this.visited.add(this.i);this.i++;if(this.i===this.p.length){this.i=0;this.d=(this.d+1)%8;}}}
 async snap(key,frame){this.rt.clear().stamp(key,frame,0,0,{originX:0,originY:0}).render();return new Promise(resolve=>this.rt.snapshotArea(0,0,512,512,image=>resolve(image.src)));}
 }
@@ -258,7 +311,7 @@ const routes = new Map([
     [await readFile("node_modules/phaser/dist/phaser.js"), "text/javascript"],
   ],
 ]);
-if (!carryMode)
+if (!eightViews)
   routes.set("/timing.mjs", [
     await readFile(resolve(se, "timing.mjs")),
     "text/javascript",
@@ -337,17 +390,30 @@ try {
       throw Error("GPU trim mismatch " + frame.name);
     results.push(frame.name);
   }
-  for (const direction of carryMode
-    ? [1, 192, 198, 204, 312, 318, 324, 336, 432, 433, 437, 444, 463, 480]
-    : names) {
+  for (const direction of ability
+    ? actualPlan.rows
+        .filter(
+          (r, i) =>
+            r.strike ||
+            i === 0 ||
+            (r.pose.set === "abilities" &&
+              r.speed === 0 &&
+              r.pose.frame !== actualPlan.rows[i - 1]?.pose.frame) ||
+            (r.pose.set !== "abilities" &&
+              actualPlan.rows[i - 1]?.pose.set === "abilities"),
+        )
+        .map((r) => r.tick)
+    : carryMode
+      ? [1, 192, 198, 204, 312, 318, 324, 336, 432, 433, 437, 444, 463, 480]
+      : names) {
     await page.evaluate(
-      async ({ direction, carryMode }) => {
+      async ({ direction, eightViews }) => {
         const s = window.directionScene;
         s.playing = true;
         await new Promise((resolve) => {
           const observe = () => {
             if (
-              carryMode
+              eightViews
                 ? s.current?.tick !== direction
                 : s.current?.direction !== direction || s.current.frame !== 5
             )
@@ -359,12 +425,12 @@ try {
           s.events.on("postupdate", observe);
         });
       },
-      { direction, carryMode },
+      { direction, eightViews },
     );
     await page.screenshot({
       path: resolve(
         output,
-        carryMode
+        eightViews
           ? "native-tick-" + direction + ".png"
           : "native-" + direction + "-impact.png",
       ),
@@ -421,8 +487,32 @@ try {
   }, loadAtlases);
   if (!/Metal Renderer: Apple M4/.test(native.renderer))
     throw Error(native.renderer);
-  if (carryMode && native.visited.length !== 600)
-    throw Error("Incomplete actual carry/primary plan playback");
+  if (eightViews && native.visited.length !== actualPlan.rows.length)
+    throw Error("Incomplete actual staff plan playback");
+  if (ability) {
+    for (const target of actualPlan.rows
+      .filter((r) => r.strike)
+      .map((r) => r.tick)) {
+      await page.evaluate(async (target) => {
+        const s = window.directionScene;
+        s.cameras.main.setBackgroundColor("#d9d6cd");
+        s.label.setColor("#111111");
+        s.playing = true;
+        await new Promise((resolve) => {
+          const observe = () => {
+            if (s.current?.tick !== target) return;
+            s.playing = false;
+            s.events.off("postupdate", observe);
+            s.game.events.once("postrender", resolve);
+          };
+          s.events.on("postupdate", observe);
+        });
+      }, target);
+      await page.screenshot({
+        path: resolve(output, "native-light-tick-" + target + ".png"),
+      });
+    }
+  }
   if (
     new Set(
       native.inventory
@@ -444,7 +534,7 @@ try {
       completeStaffConfiguration: false,
       producerSha256: hash(await readFile(new URL(import.meta.url))),
       inputs,
-      kind: carryMode ? "carry" : "primary",
+      kind: ability ?? (carryMode ? "carry" : "primary"),
       logicalFrames: frames.length,
       uniqueRasters: rasters.length,
       guardAliases: Object.keys(aliases).length,
@@ -481,6 +571,20 @@ try {
               (n, r) => n + r.strike,
               0,
             ),
+          }
+        : null,
+      abilityPlayback: ability
+        ? {
+            actualPlanTicks: actualPlan.rows.length,
+            nativeVisitedPlanTicks: native.visited.length,
+            actualPlanSha256: hash(planBytes),
+            actualSkillEffects: actualPlan.rows.reduce(
+              (n, r) => n + r.strike,
+              0,
+            ),
+            speeds: [0, 25, 60, 100],
+            views: 8,
+            independentGameplayCopies: 1,
           }
         : null,
       renderer: native.renderer,
