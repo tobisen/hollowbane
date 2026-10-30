@@ -1,7 +1,10 @@
 # Act 1 outdoor readability decision
 
-2026-10-30. Original scoped DBL-035/375/379 environment follow-up. This is an
-isolated presentation/layout experiment, not approval to migrate the campaign.
+2026-10-30. Original scoped DBL-035/375/379 environment follow-up. The user has
+now approved Variant B and authorized an opt-in real-campaign integration.
+See [the approved specification and rebase checkpoint](act1-visual-rebase.md).
+The assessment and review history below remain evidence of the isolated study;
+their earlier pending-review status and provisional A preference are superseded.
 Warrior equipment work remains paused; Phaser stays at 4.2.1.
 
 ## Assessment before implementation

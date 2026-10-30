@@ -3,17 +3,28 @@ import type { Point } from "./isometric";
 
 export type Act1Variant = "a" | "b";
 
-/** Ground-projection pilot. Camera zoom stays one in both variants. */
+/** Measured c4f3801 study settings. B is the approved outdoor direction.
+ * These are presentation units, never collision or persisted world coordinates.
+ */
+export const ACT1_PROJECTION = Object.freeze({
+  halfWidth: 64,
+  halfHeight: Object.freeze({ a: 32, b: 44 }),
+  origin: Object.freeze({ x: 768, y: 512 }),
+});
+
+/** Camera zoom stays one in both variants. */
 export function act1Project(point: Point, variant: Act1Variant): Point {
+  const { halfWidth, halfHeight, origin } = ACT1_PROJECTION;
   return {
-    x: (point.x - point.y) * 64 + 768,
-    y: (point.x + point.y) * (variant === "a" ? 32 : 44) + 512,
+    x: (point.x - point.y) * halfWidth + origin.x,
+    y: (point.x + point.y) * halfHeight[variant] + origin.y,
   };
 }
 
 export function act1Unproject(point: Point, variant: Act1Variant): Point {
-  const difference = (point.x - 768) / 64;
-  const sum = (point.y - 512) / (variant === "a" ? 32 : 44);
+  const { halfWidth, halfHeight, origin } = ACT1_PROJECTION;
+  const difference = (point.x - origin.x) / halfWidth;
+  const sum = (point.y - origin.y) / halfHeight[variant];
   return { x: (sum + difference) / 2, y: (sum - difference) / 2 };
 }
 
@@ -29,8 +40,8 @@ export function act1CanopyOverlapsGround(
 ): boolean {
   const center = act1Project(foot, variant),
     t = map.terrain,
-    halfY = (variant === "a" ? 32 : 44) * t.cellSize,
-    halfX = 64 * t.cellSize;
+    halfY = ACT1_PROJECTION.halfHeight[variant] * t.cellSize,
+    halfX = ACT1_PROJECTION.halfWidth * t.cellSize;
   for (let y = 0; y < t.height; y++)
     for (let x = 0; x < t.width; x++) {
       if (t.cells[y * t.width + x] !== "ground") continue;
