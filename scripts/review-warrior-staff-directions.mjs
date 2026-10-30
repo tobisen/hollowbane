@@ -1,4 +1,4 @@
-/** Eight-direction primary, --carry or --ability <id>; reuse reviewed SE pixels. */
+/** Eight-direction staff clips; reuse reviewed SE pixels and actual timing. */
 /* global window, document, requestAnimationFrame */
 import sharp from "sharp";
 import { chromium } from "@playwright/test";
@@ -6,6 +6,7 @@ import { Buffer } from "node:buffer";
 import { createHash } from "node:crypto";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve, relative } from "node:path";
+import { pathToFileURL } from "node:url";
 import { createServer } from "node:http";
 import {
   cropEquipmentRgba,
@@ -18,17 +19,21 @@ const args = process.argv.slice(2),
   ability = abilityIndex >= 0 ? args.splice(abilityIndex, 2)[1] : null,
   reactionIndex = args.indexOf("--reaction"),
   reaction = reactionIndex >= 0 ? args.splice(reactionIndex, 2)[1] : null,
+  deathIndex = args.indexOf("--death"),
+  deathMode = deathIndex >= 0,
   carryMode = args.at(-1) === "--carry";
+if (deathMode) args.splice(deathIndex, 1);
 if (
   (abilityIndex >= 0 && !["iron-fan", "oath-echo"].includes(ability)) ||
   (reactionIndex >= 0 && !["hit", "hit-extended"].includes(reaction)) ||
+  (deathMode && (ability || reaction || carryMode)) ||
   (ability && reaction) ||
   ((ability || reaction) && carryMode)
 )
   throw Error("Invalid staff review mode");
 if (carryMode) args.pop();
-const clip = ability ?? reaction,
-  frameCount = reaction ? 6 : 12,
+const clip = deathMode ? "death" : (ability ?? reaction),
+  frameCount = deathMode ? 16 : reaction ? 6 : 12,
   eightViews = carryMode || Boolean(clip);
 const [se, seven, output] = args.map((p) => resolve(p));
 if (
@@ -78,9 +83,11 @@ for (const directory of [se, seven]) {
         directory,
         ability
           ? `../ability-${ability}-consumed.json`
-          : reaction
-            ? `../${reaction}-consumed.json`
-            : "../motion-consumed.json",
+          : deathMode
+            ? "../death-consumed.json"
+            : reaction
+              ? `../${reaction}-consumed.json`
+              : "../motion-consumed.json",
       ),
     );
     if (
@@ -117,8 +124,17 @@ for (const directory of [se, seven]) {
       throw Error("Changed reviewed pixels");
     originals.set(name, { png, pixels });
     frames.push({ name, direction: sample.direction, index });
+    const terminal = originals.get(`${sample.direction}-13`);
     const guard = originals.get(`${sample.direction}-0`);
-    if (!carryMode && index === frameCount - 1 && guard?.pixels.equals(pixels))
+    if (deathMode && index >= 14) {
+      if (!terminal?.pixels.equals(pixels))
+        throw Error("Changed terminal death alias");
+      aliases[name] = `${sample.direction}-13`;
+    } else if (
+      !carryMode &&
+      index === frameCount - 1 &&
+      guard?.pixels.equals(pixels)
+    )
       aliases[name] = `${sample.direction}-0`;
     else rasters.push({ name, ...cropEquipmentRgba(pixels, 512, 512) });
   }
@@ -135,6 +151,20 @@ if (
 const byName = new Map(rasters.map((r) => [r.name, r])),
   textureByFrame = {},
   atlases = [];
+if (deathMode)
+  for (const frame of frames) {
+    const raster = byName.get(aliases[frame.name] ?? frame.name),
+      view = names.indexOf(frame.direction),
+      x = 120 + (view % 4) * 240 + (raster.left - 256) / 2,
+      y = 205 + Math.floor(view / 4) * 210 + (raster.top - 338) / 2;
+    if (
+      x < 0 ||
+      y < 0 ||
+      x + raster.width / 2 > 960 ||
+      y + raster.height / 2 > 520
+    )
+      throw Error("Death review viewport clips " + frame.name);
+  }
 // Explicit category split keeps each texture within the existing2048px cap.
 for (const group of carryMode
   ? [
@@ -206,16 +236,45 @@ const primaryBytes = carryMode
     ? await readFile(
         resolve(
           se,
-          reaction
-            ? "../hit-se-native/plan.json"
-            : ability
-              ? "../ability-native/plan.json"
-              : "../carry-native/plan.json",
+          deathMode
+            ? "../death-se-native/plan.json"
+            : reaction
+              ? "../hit-se-native/plan.json"
+              : ability
+                ? "../ability-native/plan.json"
+                : "../carry-native/plan.json",
         ),
       )
     : null,
   nativePrimary = carryMode ? JSON.parse(primaryMetadata) : null,
   actualPlan = eightViews ? JSON.parse(planBytes) : null;
+if (deathMode) {
+  const prior = JSON.parse(
+      await readFile(resolve(se, "../death-se-native/review.json")),
+    ),
+    timingPath = resolve(se, "../death-se-native/timing.mjs");
+  if (hash(await readFile(timingPath)) !== prior.timingBundleSha256)
+    throw Error("Changed accepted death simulation driver");
+  const { plan } = await import(pathToFileURL(timingPath).href);
+  if (JSON.stringify(plan()) !== JSON.stringify(actualPlan))
+    throw Error("Changed actual death simulation plan");
+  if (
+    prior.errors.length ||
+    prior.actualDeaths !== 1 ||
+    actualPlan.rows.length !== 600 ||
+    !prior.inputs.some((i) => i.proofSha256 === inputs[0].proofSha256) ||
+    actualPlan.deathEvents.length !== 1 ||
+    new Set(
+      actualPlan.rows
+        .filter((r) => r.pose.set === "death")
+        .map((r) => r.pose.frame),
+    ).size !== 16 ||
+    actualPlan.rows.some(
+      (r) => r.tick >= actualPlan.deathAt + 30 && r.pose.frame !== 15,
+    )
+  )
+    throw Error("Missing accepted actual death timing/terminal hold");
+}
 if (reaction) {
   const prior = JSON.parse(
     await readFile(resolve(se, "../hit-se-native/review.json")),
@@ -454,7 +513,7 @@ if (reaction) {
           throw Error("Missing reaction context frame");
   }
 }
-const html = `<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#252c30"><script src="/phaser.js"></script><script type="module">
+const html = `<!doctype html><html><head><meta charset="utf-8">${deathMode ? "<style>canvas{display:block}body{overflow:hidden}</style>" : ""}</head><body style="margin:0;background:#252c30"><script src="/phaser.js"></script><script type="module">
 ${eightViews ? "" : "import {plan}from'/timing.mjs';"}
 const names=${JSON.stringify(names)},loadAtlases=${JSON.stringify(loadAtlases)},textureByFrame=${JSON.stringify(textureByFrame)},contextTextures=${JSON.stringify(contextTextures)};
 class Review extends Phaser.Scene{
@@ -464,11 +523,11 @@ ${eightViews ? `this.views=names.map((name,i)=>{this.add.text(80+(i%4)*240,32+Ma
 this.rt=this.textures.addDynamicTexture('roundtrip',512,512);this.label=this.add.text(8,8,'',{fontSize:'14px'});this.i=0;this.d=0;this.playing=false;this.acc=0;this.visited=new Set();window.directionScene=this;window.directionReady=true;}
 draw(name){for(const v of this.views)v.setTexture(textureByFrame[name],name);this.label.setText('Staff primary '+name+' · gameplay1× / inspection2× · unapproved category');}
 update(time,delta){if(!this.playing)return;this.acc+=delta;while(this.acc>=1000/60){this.acc-=1000/60;const r=this.p[this.i];
-${reaction ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:r.pose.frame),key=r.pose.set==='hit'?textureByFrame[frame]:contextTextures[r.pose.set+':'+frame];this.views[j].setTexture(key,frame);}this.current=r;this.label.setText('Staff ${reaction} · '+r.mode+' · tick '+r.tick+' · recovery '+r.bonus+' · gameplay1×');` : ability ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:0);this.views[j].setTexture(textureByFrame[frame],frame);}this.current=r;this.label.setText('Staff ${ability} · actual tick '+r.tick+' · speed '+r.speed+' · gameplay1× · unapproved category');` : carryMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+r.pose.frame;this.views[j].setTexture(r.pose.set==='movement'?textureByFrame[frame]:'accepted-primary',frame);}this.current=r;this.label.setText('Staff '+r.pose.clip+' · actual tick '+r.tick+' · gameplay1× · unapproved category');` : `this.draw(names[this.d]+'-'+(r.frame??0));this.current={direction:names[this.d],...r};`}
-this.visited.add(this.i);this.i++;if(this.i===this.p.length){this.i=0;this.d=(this.d+1)%8;}}}
+${deathMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='death'?r.pose.frame:0);this.views[j].setTexture(textureByFrame[frame],frame);}this.current=r;this.label.setText('Staff death · actual tick '+r.tick+' · gameplay1× · unapproved category');` : reaction ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:r.pose.frame),key=r.pose.set==='hit'?textureByFrame[frame]:contextTextures[r.pose.set+':'+frame];this.views[j].setTexture(key,frame);}this.current=r;this.label.setText('Staff ${reaction} · '+r.mode+' · tick '+r.tick+' · recovery '+r.bonus+' · gameplay1×');` : ability ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+(r.pose.set==='abilities'?r.pose.frame%12:0);this.views[j].setTexture(textureByFrame[frame],frame);}this.current=r;this.label.setText('Staff ${ability} · actual tick '+r.tick+' · speed '+r.speed+' · gameplay1× · unapproved category');` : carryMode ? `for(let j=0;j<8;j++){const frame=names[j]+'-'+r.pose.frame;this.views[j].setTexture(r.pose.set==='movement'?textureByFrame[frame]:'accepted-primary',frame);}this.current=r;this.label.setText('Staff '+r.pose.clip+' · actual tick '+r.tick+' · gameplay1× · unapproved category');` : `this.draw(names[this.d]+'-'+(r.frame??0));this.current={direction:names[this.d],...r};`}
+this.visited.add(this.i);this.i++;if(this.i===this.p.length){${deathMode ? "this.i=this.p.length-1;" : "this.i=0;this.d=(this.d+1)%8;"}}}}
 async snap(key,frame){this.rt.clear().stamp(key,frame,0,0,{originX:0,originY:0}).render();return new Promise(resolve=>this.rt.snapshotArea(0,0,512,512,image=>resolve(image.src)));}
 }
-new Phaser.Game({type:Phaser.WEBGL,width:960,height:440,backgroundColor:'#252c30',banner:false,scene:Review});
+new Phaser.Game({type:Phaser.WEBGL,width:960,height:${deathMode ? 520 : 440},backgroundColor:'#252c30',banner:false,scene:Review});
 </script></body></html>`;
 const routes = new Map([
   ["/", [Buffer.from(html), "text/html"]],
@@ -524,7 +583,7 @@ try {
     args: ["--use-angle=metal"],
   });
   const page = await browser.newPage({
-      viewport: { width: 960, height: 440 },
+      viewport: { width: 960, height: deathMode ? 520 : 440 },
       deviceScaleFactor: 1,
     }),
     errors = [];
@@ -563,36 +622,47 @@ try {
       throw Error("GPU trim mismatch " + frame.name);
     results.push(frame.name);
   }
-  for (const direction of reaction
+  for (const direction of deathMode
     ? actualPlan.rows
         .filter(
           (r, i) =>
             i === 0 ||
-            r.hit ||
-            actualPlan.rows[i + 1]?.hit ||
-            (r.pose.set === "hit" &&
-              r.bonus === 0 &&
-              r.pose.frame !== actualPlan.rows[i - 1]?.pose.frame) ||
-            (r.pose.set !== "hit" &&
-              actualPlan.rows[i - 1]?.pose.set === "hit"),
+            (r.pose.set === "death" &&
+              (actualPlan.rows[i - 1]?.pose.set !== "death" ||
+                r.pose.frame !== actualPlan.rows[i - 1]?.pose.frame)) ||
+            r.tick === actualPlan.deathAt + 60,
         )
         .map((r) => r.tick)
-    : ability
+    : reaction
       ? actualPlan.rows
           .filter(
             (r, i) =>
-              r.strike ||
               i === 0 ||
-              (r.pose.set === "abilities" &&
-                r.speed === 0 &&
+              r.hit ||
+              actualPlan.rows[i + 1]?.hit ||
+              (r.pose.set === "hit" &&
+                r.bonus === 0 &&
                 r.pose.frame !== actualPlan.rows[i - 1]?.pose.frame) ||
-              (r.pose.set !== "abilities" &&
-                actualPlan.rows[i - 1]?.pose.set === "abilities"),
+              (r.pose.set !== "hit" &&
+                actualPlan.rows[i - 1]?.pose.set === "hit"),
           )
           .map((r) => r.tick)
-      : carryMode
-        ? [1, 192, 198, 204, 312, 318, 324, 336, 432, 433, 437, 444, 463, 480]
-        : names) {
+      : ability
+        ? actualPlan.rows
+            .filter(
+              (r, i) =>
+                r.strike ||
+                i === 0 ||
+                (r.pose.set === "abilities" &&
+                  r.speed === 0 &&
+                  r.pose.frame !== actualPlan.rows[i - 1]?.pose.frame) ||
+                (r.pose.set !== "abilities" &&
+                  actualPlan.rows[i - 1]?.pose.set === "abilities"),
+            )
+            .map((r) => r.tick)
+        : carryMode
+          ? [1, 192, 198, 204, 312, 318, 324, 336, 432, 433, 437, 444, 463, 480]
+          : names) {
     await page.evaluate(
       async ({ direction, eightViews }) => {
         const s = window.directionScene;
@@ -676,9 +746,30 @@ try {
     throw Error(native.renderer);
   if (eightViews && native.visited.length !== actualPlan.rows.length)
     throw Error("Incomplete actual staff plan playback");
+  if (deathMode) {
+    await page.evaluate(() => {
+      const s = window.directionScene;
+      if (s.current.pose.set !== "death" || s.current.pose.frame !== 15)
+        throw Error("Death playback restarted after terminal hold");
+      // Explicit inspection replay; ordinary playback holds the final corpse.
+      s.i = 0;
+      s.acc = 0;
+      s.playing = false;
+    });
+  }
   if (clip) {
     for (const target of actualPlan.rows
-      .filter((r) => (reaction ? r.hit : r.strike))
+      .filter((r) =>
+        deathMode
+          ? [
+              actualPlan.deathAt,
+              actualPlan.deathAt + 15,
+              actualPlan.deathAt + 30,
+            ].includes(r.tick)
+          : reaction
+            ? r.hit
+            : r.strike,
+      )
       .map((r) => r.tick)) {
       await page.evaluate(async (target) => {
         const s = window.directionScene;
@@ -724,7 +815,8 @@ try {
       kind: clip ?? (carryMode ? "carry" : "primary"),
       logicalFrames: frames.length,
       uniqueRasters: rasters.length,
-      guardAliases: Object.keys(aliases).length,
+      guardAliases: deathMode ? 0 : Object.keys(aliases).length,
+      terminalAliases: deathMode ? Object.keys(aliases).length : 0,
       cpuRoundTrips: frames.length,
       gpuRoundTrips: results.length,
       atlas: carryMode
@@ -784,6 +876,20 @@ try {
             verifiedContextFrames: verifiedContextFrames.size,
             contextAtlases: contextAtlases.length,
             fixtureLoadedAtlases: loadAtlases.length,
+          }
+        : null,
+      deathPlayback: deathMode
+        ? {
+            actualPlanTicks: actualPlan.rows.length,
+            nativeVisitedPlanTicks: native.visited.length,
+            actualPlanSha256: hash(planBytes),
+            actualDeaths: actualPlan.deathEvents.length,
+            deathAt: actualPlan.deathAt,
+            terminalHoldTicks: actualPlan.rows.filter(
+              (r) => r.tick >= actualPlan.deathAt + 30,
+            ).length,
+            views: 8,
+            independentGameplayCopies: 1,
           }
         : null,
       renderer: native.renderer,

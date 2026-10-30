@@ -645,6 +645,87 @@ remains **c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending. Preserve al
 unrelated edits and recovery ancestry. No new approval is needed to resume scoped
 staff work; bow/unarmed production remains outside scope.
 
+## Eight-direction staff death — local timed acceptance 2026-10-30
+
+Completed N/NE/E/S/SW/W/NW using the same approved rig, body collapse,
+staff attachment and release controls. **91 new renders**, seven exact primary
+initial guards and14 terminal copies supply112 added logical poses. The accepted
+SE16 images are untouched; a fresh SE audit reproduces every previous geometry
+field exactly, with no support-plane correction. Combined: **128 logical poses,
+112 unique rasters and16 terminal atlas aliases**. No mass880-frame export.
+
+All112 new sampled poses pass the unchanged grip, shaft/body intersection,
+ground, bone/joint, lower-body/root and alpha-edge checks. Lower-body maximum
+matrix error3.28e-7; approved rotated foot metadata maximum error1.03e-7m.
+The first audit caught terminal support-plane float roundoff in NE/E/SW
+(minimum−2.28e-7m). A bounded explicit mesh support correction, at most7.29e-7m,
+clears the plane; no threshold was relaxed, and SE is unchanged. The exporter
+also fixes a previously unexercised multi-direction terminal-copy index: aliases
+must reference the preceding pose **in the same facing**. All seven13/14/15
+source hashes match within each direction. Source sheets reviewed in all views.
+
+`review-warrior-staff-directions.mjs --death` now packs and verifies all128
+CPU/GPU round trips and re-executes the hash-verified accepted simulation driver
+before consuming its actual600-tick lethal-event plan. One real death at12;
+all16 poses appear in all eight views of **one** gameplay copy. At/after the
+30-tick fall boundary there are559 terminal samples (558 strictly after), and
+ordinary review playback holds its final corpse rather than wrapping. Replaying
+for light-background inspection requires an explicit cursor reset. This remains
+a guard-entry death fixture, **not** full attack/ability/hit death-entry acceptance.
+
+First native captures exposed lower-row corpse clipping in the review canvas.
+The corrected960×520 surface has an explicit every-pose visible-bounds check;
+all source images remain unchanged. Actual-timed release, occlusion, floor settle
+and terminal light/dark captures reviewed at gameplay scale after correction.
+The rejected960×440 capture/report is retained separately, not accepted evidence.
+
+Native M4/ANGLE Metal, DPR1,600 final intervals: **p5016.7/p9518.0/p9918.5,
+max18.7ms, zero>25ms and zero runtime errors**. Three balanced texture cycles
+remain **11→10→11**, including review labels/target. One disposable2048² death
+atlas costs **3,771,788PNG bytes /16MiB calculated base RGBA**, not measured GPU
+residency, shipping cost or campaign cold/switch performance. The accepted SE
+pilot atlas is not loaded alongside this consolidated directional diagnostic.
+Existing primary/carry/ability/hit resources and the full production reuse/budget
+remain separate work. Production asset delta is **zero**.
+
+Eight focused unit tests/three files, strict TypeScript, scoped lint, formatting
+and Python syntax pass. Primary-mode regression retains96 CPU/GPU round trips
+and exact accepted PNG/JSON bytes. Its timing run overlapped offline rendering,
+so it is not used for a performance comparison. A malformed initial generated
+viewer script was corrected before the passing primary/death runs; rejected log
+and HTML remain available. No release build, CI, publication or hosted acceptance
+is claimed for this tooling-only increment.
+
+Reproduce with the pinned Blender4.5.3LTS native executable:
+
+```sh
+Blender --background --python-exit-code 1 --python scripts/probe-warrior-staff.py -- /private/tmp/hollowbane-q3-staff-choreography/death-seven-audit-corrected --motion --death --audit --directions n ne e s sw w nw
+Blender --background --python-exit-code 1 --python scripts/probe-warrior-staff.py -- /private/tmp/hollowbane-q3-staff-choreography/death-seven-render --motion --death --directions n ne e s sw w nw --reuse-guards /private/tmp/hollowbane-q3-staff-choreography/seven-render
+node scripts/review-warrior-staff.mjs /private/tmp/hollowbane-q3-staff-choreography/death-seven-render
+node scripts/review-warrior-staff-directions.mjs /private/tmp/hollowbane-q3-staff-choreography/death-se-render /private/tmp/hollowbane-q3-staff-choreography/death-seven-render /private/tmp/hollowbane-q3-staff-choreography/death-eight-native --death
+```
+
+Raw evidence: `/private/tmp/hollowbane-q3-staff-choreography/`, especially
+`death-eight-summary.json`, `death-direction-foot-audit.json`,
+`death-seven-{audit,audit-corrected,render}`, `death-se-direction-followup`,
+`death-eight-native`, `death-eight-native-rejected-viewport`, and
+`primary-death-followup{,-corrected}`. The unchanged original SE pilot and all
+older rejected evidence remain intact.
+
+**Safe session checkpoint: Phase1 directional death accepted locally; Phases2–8
+remain incomplete.** Next execute the full actual movement/primary/Fan/Oath/hit/
+stagger/death transition matrix, including every important interruption phase,
+rapid facing changes, equipment switches and reload/reset. Measure entry weapon
+continuity before choosing any correction: a guard-entry death pilot does not
+prove forward-held interruption continuity. Then consolidate shared resources,
+integrate the complete category into the existing developer arena, and only after
+acceptance enable campaign staff and perform exact Release B/C gates. Do not
+promote incomplete staff art. Sword and sword/shield remain production supported;
+staff/bow/unarmed remain legacy. Last verified public SHA remains
+**c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending. Preserve unrelated
+edits and8a48dc9 ancestry; current authorization continues through B/C, and no
+new approval is needed for scoped staff continuation. No owned process remains.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing

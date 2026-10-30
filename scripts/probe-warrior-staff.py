@@ -376,6 +376,17 @@ def main():
             for obj in staff:
                 obj.matrix_world = transform
             bpy.context.view_layer.update()
+            floor_correction = 0
+            if released and ordinal >= 13:
+                # Resolve only sub-micron rotated-mesh roundoff at the support
+                # plane. Preserve the accepted SE transform when already clear.
+                floor = min((obj.matrix_world @ v.co).z for obj in staff for v in obj.data.vertices)
+                if floor < 0:
+                    assert floor > -1e-6
+                    floor_correction = -floor + 5e-7
+                    for obj in staff:
+                        obj.matrix_world.translation.z += floor_correction
+                    bpy.context.view_layer.update()
             if not released:
                 contact_errors = []
                 for side, palm in [('R', palm_r), ('L', palm_r + axis * .24)]:
@@ -448,6 +459,7 @@ def main():
                               elbows={side: list(rig.pose.bones['fore' + side].head) for side in ['L', 'R']})
             if options.death:
                 record.update(lowerBodyMatrixMaximumError=lower_error, bodyGroundMinimum=body_minimum,
+                              staffFloorRoundoffCorrection=floor_correction,
                               staffReleased=released, gripRequired=not released,
                               approvedBodyPose=approved['name'],
                               bodyTorsoMatrix=[list(row) for row in original['torso']])
@@ -477,7 +489,8 @@ def main():
                     shutil.copyfile(image, destination)
                     record['reusedDeathPrefix'] = {'proofSha256': digest(options.reuse_prefix / 'staff.json'), 'name': previous['name'], 'pngSha256': previous['pngSha256']}
                 elif options.death and ordinal >= 14:
-                    original = records[ordinal - 1]
+                    original = records[-2]
+                    assert original['direction'] == facing
                     assert all(record[k] == original[k] for k in ['palmR', 'axis', 'wrists', 'elbows', 'bodyTorsoMatrix'])
                     shutil.copyfile(output / (original['name'] + '.png'), destination)
                     record['reusedTerminal'] = original['name']
