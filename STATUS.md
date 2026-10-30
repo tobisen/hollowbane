@@ -1,3 +1,9 @@
+## Q3-B SE staff abilities / directional export next (2026-10-30)
+
+- New original12-pose Sundering Fan and Oath staff motions:1424 dense samples/eight directions pass unchanged grip/body/ground/root/fixed-feet checks (only SE rendered); both guard endpoints pixel-exact to primary.24 source poses and actual native light/dark release/recovery captures reviewed. Two real class-aware skills×four speeds visit all12 poses, release once at5;600 authoritative ticks equal untouched simulation copies.
+- Native M4/Metal600 intervals p9516.7/max17.7ms,zero>25/errors; three2→1→2 texture cycles stable. Disposable ability atlas600945PNG bytes/4MiB calculated RGBA, not production/GPU memory. Prior80MiB primary/carry diagnostic unchanged; resource optimization open. Extended carry mode PNG/JSON exact; one actual damage event, p9516.8/max17.6ms and stable cycles. Eight focused tests/three files, TypeScript/scoped lint/format/Python syntax pass.
+- Safe session checkpoint: next168 missing seven-direction ability renders after recorded dense audits; review native timing/occlusion before hit/death, resource plan and complete-category campaign integration/exact B/C releases. Staff/bow/unarmed stay legacy, production delta0. Verified public c437335844e4f82e30b00da2967d4f64c9614a64; no CI pending. Preserve unrelated edits/8a48dc9. Resume docs/art/q3/warrior-equipment.md; raw /private/tmp/hollowbane-q3-staff-choreography/ability-*. No owned background process.
+
 ## Q3-B staff carry eight directions / abilities next (2026-10-30)
 
 - Reused40 SE carry renders;280 missing facings only.320 sampled poses pass grip/body/ground/root/unchanged lower-body checks; seven-direction world-foot max1.93e-7m. Full source sheets and actual native gait/primary handoff reviewed.320 CPU/GPU trim round trips exact; reused primary96 hashes verified. Extended primary mode still96/96 and exact PNG/JSON.

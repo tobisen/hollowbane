@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "scope": "Original Southeast two-hand staff iron-fan pilot; not production approved",
+  "productionApproved": false,
+  "impactPose": 5,
+  "poseCount": 12,
+  "geometry": {
+    "shaftLength": 1.5,
+    "shaftCenter": 0.6,
+    "tailFerrule": -0.1,
+    "headFerrule": 1.25,
+    "cap": 1.35,
+    "tip": 1.4
+  },
+  "keys": [
+    {
+      "pose": 0,
+      "palm": [0.13, -0.35, 1.08],
+      "axis": [-0.5, -0.15, 0.85],
+      "lean": 0.12,
+      "yaw": 0.1
+    },
+    {
+      "pose": 2,
+      "palm": [0.24, -0.35, 1.18],
+      "axis": [-0.72, -0.12, 0.69],
+      "lean": 0.04,
+      "yaw": 0.18
+    },
+    {
+      "pose": 3,
+      "palm": [0.28, -0.36, 1.25],
+      "axis": [-0.5, -0.65, 0.58],
+      "lean": 0.12,
+      "yaw": 0.34
+    },
+    {
+      "pose": 4,
+      "palm": [0.34, -0.4, 1.27],
+      "axis": [-0.25, -0.96, 0.12],
+      "lean": 0.3,
+      "yaw": 0.6
+    },
+    {
+      "pose": 5,
+      "palm": [0.35, -0.43, 1.2],
+      "axis": [-0.22, -0.97, -0.12],
+      "lean": 0.4,
+      "yaw": 0.72
+    },
+    {
+      "pose": 6,
+      "palm": [0.34, -0.46, 1.18],
+      "axis": [-0.23, -0.97, -0.12],
+      "lean": 0.43,
+      "yaw": 0.74
+    },
+    {
+      "pose": 8,
+      "palm": [0.19, -0.38, 1.12],
+      "axis": [-0.5, -0.6, 0.62],
+      "lean": 0.2,
+      "yaw": 0.25
+    },
+    {
+      "pose": 11,
+      "palm": [0.13, -0.35, 1.08],
+      "axis": [-0.5, -0.15, 0.85],
+      "lean": 0.12,
+      "yaw": 0.1
+    }
+  ]
+}

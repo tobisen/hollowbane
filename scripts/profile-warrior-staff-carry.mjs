@@ -1,4 +1,4 @@
-/** Native SE carry/primary handoff, driven by actual simulation and pose selector. */
+/** Native SE carry/primary or assigned abilities, driven by actual simulation. */
 /* global window, document, requestAnimationFrame */
 import sharp from "sharp";
 import { chromium } from "@playwright/test";
@@ -15,7 +15,11 @@ import {
   equipmentFrame,
 } from "./warrior-equipment-packing.mjs";
 
-const [carry, primary, output] = process.argv.slice(2).map((p) => resolve(p));
+const abilities = process.argv.includes("--abilities");
+const [carry, primary, output] = process.argv
+  .slice(2)
+  .filter((p) => p !== "--abilities")
+  .map((p) => resolve(p));
 if (
   !carry ||
   !primary ||
@@ -31,10 +35,15 @@ await mkdir(output, { recursive: true });
 const hash = (b) => createHash("sha256").update(b).digest("hex"),
   rasters = [],
   inputs = [];
-for (const [set, directory, count] of [
-  ["movement", carry, 40],
-  ["attacks", primary, 12],
-]) {
+for (const [set, directory, count] of abilities
+  ? [
+      ["iron-fan", carry, 12],
+      ["oath-echo", primary, 12],
+    ]
+  : [
+      ["movement", carry, 40],
+      ["attacks", primary, 12],
+    ]) {
   const bytes = await readFile(resolve(directory, "staff.json")),
     proof = JSON.parse(bytes),
     reviewedBytes = await readFile(resolve(directory, "review.json")),
@@ -44,7 +53,11 @@ for (const [set, directory, count] of [
     review.proofSha256 !== hash(bytes) ||
     proof.productionApproved ||
     proof.samples.length !== count ||
-    proof.samples.some((s) => s.direction !== "se")
+    proof.samples.some(
+      (s, i) =>
+        s.direction !== "se" ||
+        (abilities && (s.action !== set || s.index !== i)),
+    )
   )
     throw Error("Unreviewed Southeast input");
   inputs.push({
@@ -89,7 +102,47 @@ const packed = packEquipmentRasters(rasters),
   };
 await writeFile(resolve(output, "carry.png"), png);
 await writeFile(resolve(output, "carry.json"), JSON.stringify(atlas));
-const entry = `
+const entry = abilities
+  ? `
+import { createCombat } from './src/simulation/combat';
+import { createMonsterExperience } from './src/simulation/monster-experience';
+import { DEFAULT_XP_CURVE } from './src/simulation/experience';
+import { createSkillProgression, allocateSkillRanks } from './src/simulation/skill-progression';
+import { createSkills, requestSkill, stepSkillCombat, actorSkill } from './src/simulation/skills';
+import { WarriorMotion, warriorPose } from './src/rendering/warrior-pose';
+import { createCharacterInventory } from './src/simulation/equipment';
+import { inventoryItem } from './src/simulation/inventory-test-helper';
+import { deriveEquipment, captureEquipmentBase, applyEquipment } from './src/simulation/equipment-stats';
+export function plan(){
+ const rows=[],cases=[];let rules;
+ for(const skill of ['iron-fan','oath-echo'])for(const speed of [0,25,60,100]){
+  const w=createCombat(42);w.hostilesActive=false;w.actors=w.actors.slice(0,2);
+  w.experience=createMonsterExperience(DEFAULT_XP_CURVE[11]);
+  w.experience.skills=allocateSkillRanks(createSkillProgression('warrior',12),12,{'warrior-arms-foundation':1,'warrior-resolve-foundation':1});
+  const a=w.actors[0],b=w.actors[1];b.controller.walker.position={x:a.controller.walker.position.x+.6,y:a.controller.walker.position.y};
+  const c=createCharacterInventory();c.equipment.main=inventoryItem('cinder-staff');applyEquipment(deriveEquipment(c,captureEquipmentBase(a)),a);a.attackSpeed=speed;
+  rules={weapon:a.weapon,range:a.range};
+  const runtime=createSkills(w);runtime.users[0].castSpeed=speed;
+  const definition=actorSkill(runtime,a.id,skill);
+  if(definition.shape!==(skill==='iron-fan'?'melee':'self') || (skill==='iron-fan'&&definition.maxTargets!==1))throw Error('Class ability rules changed');
+  const baseline=structuredClone(runtime),m=new WarriorMotion();m.observe(a,0);let count=0;
+  for(let local=0;local<75;local++){
+   if(local===12)for(const r of [runtime,baseline])requestSkill(r,{actor:a.id,skill,target:skill==='iron-fan'?b.id:null,direction:{x:1,y:0}});
+   stepSkillCombat(runtime);stepSkillCombat(baseline);m.observe(a,w.tick);
+   const pose=warriorPose(a,w.tick,null,runtime.users[0].cast,m);
+   if(!['movement','abilities'].includes(pose.set))throw Error('Unexpected interruption in isolated skill fixture');
+   if(JSON.stringify(runtime)!==JSON.stringify(baseline))throw Error('Presentation mutated simulation');
+   const release=runtime.events.filter(e=>e.tick===w.tick&&e.kind==='effect').length;count+=release;
+   if(release && (pose.set!=='abilities'||pose.frame%12!==5||pose.clip!==skill))throw Error('Release pose mismatch');
+   rows.push({tick:rows.length+1,localTick:w.tick,speed,skill,pose,frame:pose.set==='abilities'?pose.clip+'-'+pose.frame%12:'iron-fan-0',position:{x:0,y:0},phase:a.controller.timeline.phase,strike:release});
+  }
+  if(count!==1||runtime.users[0].cast!==null)throw Error('Skill did not complete exactly once');
+  cases.push({skill,speed,definition,effects:count,events:runtime.events,combatEvents:w.events,mana:runtime.users[0].mana,cooldowns:runtime.users[0].cooldowns});
+ }
+ return {rows,cases,rules};
+}
+`
+  : `
 import { createCombat, stepCombat } from './src/simulation/combat';
 import { commandCombat } from './src/simulation/combat-targeting';
 import { createWalker } from './src/simulation/locomotion';
@@ -126,15 +179,19 @@ const plan = (await import(pathToFileURL(bundle))).plan();
 if (
   plan.rules.weapon !== "melee" ||
   plan.rules.range !== 1.05 ||
-  plan.rows.some((r) => !atlas.frames[r.frame] || r.direction !== 7) ||
-  plan.rows.reduce((n, r) => n + r.strike, 0) !== 1
+  plan.rows.some(
+    (r) => !atlas.frames[r.frame] || (!abilities && r.direction !== 7),
+  ) ||
+  plan.rows.reduce((n, r) => n + r.strike, 0) !== (abilities ? 8 : 1)
 )
   throw Error("Real staff motion/timing contract changed");
-for (const [clip, count] of [
-  ["idle", 8],
-  ["walk", 16],
-  ["run", 16],
-])
+for (const [clip, count] of abilities
+  ? []
+  : [
+      ["idle", 8],
+      ["walk", 16],
+      ["run", 16],
+    ])
   if (
     new Set(plan.rows.filter((r) => r.pose.clip === clip).map((r) => r.frame))
       .size !== count
@@ -146,6 +203,7 @@ await writeFile(
 );
 const html = `<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0"><script src="/phaser.js"></script><script type="module">
 const rows=${JSON.stringify(plan.rows)};
+window.staffReviewAtlas=${JSON.stringify(atlas)};
 class Review extends Phaser.Scene{
  preload(){this.load.atlas('staff','/carry.png','/carry.json');}
  create(){if(Phaser.VERSION!=='4.2.1')throw Error('Phaser version');this.small=this.add.sprite(240,280,'staff',rows[0].frame).setOrigin(.5,338/512).setScale(.5);this.large=this.add.sprite(680,330,'staff',rows[0].frame).setOrigin(.5,338/512);this.grid=this.add.graphics();this.label=this.add.text(8,8,'',{fontSize:'14px'});this.i=0;this.acc=0;this.playing=false;this.seen=[];window.carryScene=this;window.carryReady=true;}
@@ -197,10 +255,22 @@ try {
     new Promise((_, reject) => page.once("pageerror", reject)),
   ]);
   // Pause only after the requested frame was selected by actual simulation.
-  for (const target of [
-    1, 96, 192, 198, 204, 216, 312, 318, 324, 336, 431, 432, 433, 437, 444, 463,
-    480,
-  ]) {
+  for (const target of abilities
+    ? plan.rows
+        .filter(
+          (r, i) =>
+            r.strike ||
+            i === 0 ||
+            (r.pose.set === "abilities" &&
+              plan.rows[i - 1]?.pose.set !== "abilities") ||
+            (r.pose.set !== "abilities" &&
+              plan.rows[i - 1]?.pose.set === "abilities"),
+        )
+        .map((r) => r.tick)
+    : [
+        1, 96, 192, 198, 204, 216, 312, 318, 324, 336, 431, 432, 433, 437, 444,
+        463, 480,
+      ]) {
     await page.evaluate(async (target) => {
       const s = window.carryScene;
       s.playing = true;
@@ -251,6 +321,60 @@ try {
     throw Error(native.renderer);
   if (new Set(native.seen).size !== 600)
     throw Error("Native playback did not complete actual 600-tick plan");
+  const lightTargets = abilities
+    ? plan.rows.filter((r) => r.strike).map((r) => r.tick)
+    : [];
+  for (const target of lightTargets) {
+    await page.evaluate(async (target) => {
+      const s = window.carryScene;
+      s.cameras.main.setBackgroundColor("#d9d6cd");
+      s.label.setColor("#111111");
+      s.playing = true;
+      await new Promise((resolve) => {
+        const observe = () => {
+          if (s.current?.tick !== target) return;
+          s.playing = false;
+          s.events.off("postupdate", observe);
+          s.game.events.once("postrender", resolve);
+        };
+        s.events.on("postupdate", observe);
+      });
+    }, target);
+    await page.screenshot({
+      path: resolve(output, "native-light-tick-" + target + ".png"),
+    });
+  }
+  const resourceCycles = await page.evaluate(() => {
+    const s = window.carryScene;
+    s.playing = false;
+    const source = s.textures.get("staff").getSourceImage(),
+      cycles = [];
+    for (let i = 0; i < 3; i++) {
+      const before = s.textures.getTextureKeys().length;
+      s.small.setTexture("__DEFAULT");
+      s.large.setTexture("__DEFAULT");
+      s.textures.remove("staff");
+      const released = s.textures.getTextureKeys().length;
+      s.textures.addAtlas("staff", source, window.staffReviewAtlas);
+      s.small.setTexture("staff", s.current.frame);
+      s.large.setTexture("staff", s.current.frame);
+      cycles.push({
+        before,
+        released,
+        reloaded: s.textures.getTextureKeys().length,
+      });
+    }
+    return cycles;
+  });
+  if (
+    resourceCycles.some(
+      (c) =>
+        c.before !== native.textures ||
+        c.released !== c.before - 1 ||
+        c.reloaded !== c.before,
+    )
+  )
+    throw Error("Staff texture inventory grew");
   const sorted = native.frames.toSorted((a, b) => a - b),
     q = (p) =>
       sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))];
@@ -262,9 +386,20 @@ try {
     timingBundleSha256: hash(await readFile(bundle)),
     rules: plan.rules,
     actualPlanTicks: plan.rows.length,
-    actualPrimaryDamageEvents: plan.rows.reduce((n, r) => n + r.strike, 0),
+    ...(abilities
+      ? {
+          actualSkillEffects: plan.rows.reduce((n, r) => n + r.strike, 0),
+          cases: plan.cases,
+        }
+      : {
+          actualPrimaryDamageEvents: plan.rows.reduce(
+            (n, r) => n + r.strike,
+            0,
+          ),
+        }),
     renderer: native.renderer,
     textures: native.textures,
+    resourceCycles,
     atlas: {
       width: packed.width,
       height: packed.height,

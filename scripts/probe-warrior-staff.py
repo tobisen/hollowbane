@@ -5,6 +5,7 @@ Blender --background --python-exit-code 1 --python scripts/probe-warrior-staff.p
 
 Default twelve static poses; --motion gives twelve primary poses per selected
 direction. --motion --carry gives forty locomotion poses per selected direction.
+--motion --ability <iron-fan|oath-echo> gives twelve staff-specific ability poses.
 Uses the approved rig/materials/camera and hash-verified two-bone IK authoring.
 No blend/public writes, gameplay callbacks, mechanics or save changes.
 """
@@ -35,13 +36,16 @@ def main():
     parser.add_argument('--audit', action='store_true')
     parser.add_argument('--motion', action='store_true', help='Bounded SE primary choreography instead of legacy static study')
     parser.add_argument('--carry', action='store_true', help='Staff guard over approved forty movement poses')
+    parser.add_argument('--ability', choices=['iron-fan', 'oath-echo'], help='Original staff-compatible assigned Warrior ability')
     parser.add_argument('--subframes', type=int, choices=[1, 8], default=1)
     parser.add_argument('--directions', nargs='+', choices=['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'])
     options = parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
     assert options.subframes == 1 or (options.audit and options.motion)
     assert options.directions is None or (options.motion and len(options.directions) == len(set(options.directions)))
     assert not options.carry or (options.motion and options.subframes == 1)
-    motion_path = ROOT / 'assets/source/q3/warrior-staff-se/motion.json'
+    assert not options.ability or (options.motion and not options.carry)
+    action = options.ability or 'primary'
+    motion_path = ROOT / ('assets/source/q3/warrior-staff-se/' + (action + '.json' if options.ability else 'motion.json'))
     motion = json.loads(motion_path.read_text()) if options.motion else None
     output = options.output.resolve()
     assert not output.is_relative_to(ROOT)
@@ -180,7 +184,7 @@ def main():
                     t = (index - a['pose']) / (b['pose'] - a['pose'])
                     t = t * t * (3 - 2 * t)
                     blend = lambda x, y: x + (y - x) * t
-                    return (f'primary-{index:06.3f}',
+                    return (f'{action}-{index:06.3f}',
                             [blend(x, y) for x, y in zip(a['palm'], b['palm'])],
                             [blend(x, y) for x, y in zip(a['axis'], b['axis'])],
                             blend(a['lean'], b['lean']), blend(a['yaw'], b['yaw']))
@@ -299,9 +303,9 @@ def main():
                               contacts=facing_contacts,
                               palmR=list(palm_r), axis=list(axis))
             elif motion:
-                index = float(phase.removeprefix('primary-'))
+                index = float(phase.removeprefix(action + '-'))
                 tip = palm_r + axis * geometry['tip']
-                record.update(action='primary', index=index,
+                record.update(action=action, index=index,
                               phase='windup' if index < 5 else 'active' if index == 5 else 'recovery',
                               palmR=list(palm_r), axis=list(axis), tip=list(tip),
                               wrists={side: list(rig.pose.bones['hand' + side].head) for side in ['L', 'R']},

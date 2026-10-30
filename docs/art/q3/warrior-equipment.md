@@ -330,6 +330,84 @@ node scripts/review-warrior-staff-directions.mjs /private/tmp/hollowbane-q3-staf
 No owned renderer/server remains active at the checkpoint. Preserve all local
 proof commits, `8a48dc9` recovery ancestry and unrelated documentation edits.
 
+## Southeast staff assigned abilities — local timed proof 2026-10-30
+
+New original12-pose `iron-fan.json` and `oath-echo.json` controls reuse the
+approved rig, sword-free body,1.55m staff and opposing two-hand grip. Sundering
+Fan uses a loaded descending forward strike; Oath raises a coordinated braced
+guard. Actual Warrior definitions remain authoritative: Fan is single-target
+melee (the class override), Oath is the existing self power/armor buff. This is
+an offline SE pilot, not a campaign/showcase category promotion. Primary and
+carry source pixels are not rerendered. Hit/death remain incomplete; the existing
+player has one hitstun state, not a separate invented heavy-stagger duration.
+
+Each SE ability passes89 continuous samples (**178 total**): original limb lengths,
+connected joints, fixed feet/root, exact opposing palm contact, zero shaft/body
+intersections and ground/cell clearance. Maximum palm error **1.49e-7m**. Both
+ability endpoints are pixel-exact to the accepted primary guard. All24 source
+poses and normal-timed native release/recovery captures were reviewed at gameplay
+1× and inspection2×, with light and dark backgrounds. No sword choreography or
+new spell/damage callback is used.
+
+`profile-warrior-staff-carry.mjs ... --abilities` now packs reviewed SE inputs
+and builds the **actual** class-aware `createSkills/requestSkill/stepSkillCombat`
+and `warriorPose` plan. Both skills at speeds0/25/60/100 visit all12 ability
+frames, release exactly once at pose5 and recover to guard. Every tick equals an
+untouched parallel simulation copy, including mana, cooldowns, damage/statuses
+and events; the viewer only consumes the plan. Eight casts/600 ticks are covered.
+This isolated viewer holds the accepted guard during idle; complete idle/move,
+hit/death, assigned-secondary and campaign transition acceptance remains open.
+
+Native M4/ANGLE Metal,960×440/DPR1,600 intervals: **p5016.7/p9516.7/p9916.8/
+max17.7ms,zero>25,zero runtime errors**. Three texture inventories stay **2→1→2**
+through release/reload. This is isolated two-scale playback, not a matched
+campaign benchmark, measured GPU residency or an improvement to known combat
+stalls. One disposable2048×512 atlas: **600945PNG bytes /4MiB calculated base
+RGBA**. It does not ship. Earlier primary/carry80MiB proof is unchanged; shared
+body/attachment optimization and a complete production before/after budget remain
+required. Exact guard reuse is established; this proof pack still stores logical
+endpoints separately and does not claim a production alias saving.
+
+The original carry mode also passes after extension: one authoritative primary
+damage event, all600 plan ticks,600 native intervals p9516.8/max17.6ms,zero>25
+or errors, three2→1→2 cycles. Its1,420,541-byte PNG, atlas JSON and8MiB calculated
+RGBA are identical to the previously accepted SE carry fixture. **Eight focused
+tests/three files**, TypeScript, scoped ESLint/Prettier, Python syntax and actual
+embedded-browser execution pass. No production code/assets/save changes; full
+release CI/build/hosted gates remain required before publication.
+
+Raw evidence is under `/private/tmp/hollowbane-q3-staff-choreography/`:
+`ability-{iron-fan,oath-echo}-{dense,render}`, `ability-native`,
+`ability-audit-summary.json`, `ability-input-equivalence.json` and
+`carry-ability-followup`. Formatting-only control changes preserve consumed JSON
+and verified parsed equivalence; retained manifests retain their original hashes.
+Sandboxed Blender crashed during Metal discovery before loading the rig; the
+pinned native4.5.3LTS runs above pass. The early Oath review command ran before
+its manifest existed; the completed export/review passed, without rerendering.
+
+Reproduce the SE native acceptance after the geometry/export review:
+
+```sh
+node scripts/profile-warrior-staff-carry.mjs /private/tmp/hollowbane-q3-staff-choreography/ability-iron-fan-render /private/tmp/hollowbane-q3-staff-choreography/ability-oath-echo-render /private/tmp/hollowbane-q3-staff-choreography/ability-native-repeat --abilities
+```
+
+The seven remaining directions also pass **623 dense samples per ability**,
+with unchanged palm/body/ground/root/feet and projected staff bounds. Across all
+eight directions, **1424 dense samples** pass. Raw manifests are
+`ability-{iron-fan,oath-echo}-seven-dense`; `ability-seven-summary.json` records
+the results. These are geometry-only audits; the seven directions are not yet
+rendered or visually accepted.
+
+Next: export only the168 missing seven-direction ability poses, reusing the24
+accepted SE images, then review directional native playback/occlusion. Follow with
+bounded staff hit/death authoring using the real reaction/death selectors, full
+resource plan and complete-category campaign/save/travel acceptance before exact
+B/C releases. **Sword and sword/shield remain the only production support;
+staff/bow/unarmed remain legacy.** Last verified public remains
+**c437335844e4f82e30b00da2967d4f64c9614a64**; no new CI or publication.
+Preserve unrelated edits and all local proof commits. No owned renderer/server
+remains after the checkpoint.
+
 ## Bounded shared sword-free body proof — 2026-10-29
 
 Local offline tooling now establishes a reusable **candidate**, without replacing
