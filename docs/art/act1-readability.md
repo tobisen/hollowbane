@@ -148,7 +148,13 @@ gritty gothic material and structural identity remain unapproved visual criteria
 
 G1 player/enemy sprites remain placeholders. Some walking/running phases visibly
 lift the feet above the fixed ground shadow; this inherited animation/contact
-limitation is not fixed by the new environment. Combat uses the existing motion
+limitation is not fixed by the new environment. A read-only64-frame alpha≥128
+audit at origin112/scale0.93 finds opaque bottom-edge gaps to the world root of
+0–10.23px standing and0–13.02px during locomotion; gaps above the shadow ellipse's
+geometric top reach6.23/9.02px, concentrated in west-facing frames. Other directions
+stay within0–0.93px of the root. Clothing or other pixels can determine the alpha
+bounds, so these are not semantic foot-contact measurements. Raw audit/reproducer:
+`/private/tmp/hollowbane-act1-contact-measure.json` and `.mjs`. Combat uses the existing motion
 cues and a restrained enemy tint. The new pointer target covers the full unit-zoom
 silhouette; the previous shared training region missed the top20–25px. The browser
 regression attacks a real enemy through its head before traversing the loop.
@@ -328,3 +334,53 @@ unchanged. Evidence: `/private/tmp/hollowbane-act1-navigation-browser.json` and
 acceptance remains required before accepting this repaired runtime. Test-only49ff677 passed
 Full units/validators/tooling and compatibility in CI41094686460; it is superseded
 for the independently demonstrated request-time problem, not accepted as final.
+
+### Final runtime publication in progress
+
+Verified repair `94b054c77150ccea5ce5f8378238946048261227` is committed/pushed.
+[Exact CI41096426045](https://github.com/tobisen/hollowbane/actions/runs/41096426045)
+must pass required Full, Pages and hosted acceptance. The local sealed bundle has
+171 files. Last independently verified public release remains
+`fd11b936988088a8a6d4d0296906f3bf2ecbb4d3` until those checks and independent
+public verification finish. Artistic approval remains false.
+
+The local side-by-side viewer is
+`/private/tmp/hollowbane-act1-local-visual/review.html`: current forest, dungeon,
+A/B screenshots and short25fps videos, with a toggle to actual1280px width. Those
+visual recordings predate the behavior-preserving navigation repair; the repaired
+A start/combat and B shrine browser captures were separately reviewed afterward.
+
+### Campaign reload gate failure
+
+Runtime94b054c exact CI41096426045 passed Fast, complete units/validators/tooling,
+compatibility and three Chromium shards including every new outdoor case. Shard1
+failed the existing D14 ranger return/claim/reload journey: after reloading, its
+helper pressedJ immediately after area metadata appeared, then waited on hidden
+`#quest-next` until the unchanged60s deadline. That shard recorded97 passed,1failed
+and1serially skipped. Verify rejected the release; Pages/hosted did not run.
+
+Public failure artifact12998795608 was retrieved anonymously via nightly.link and
+matched GitHub's published SHA256 exactly:
+`13cd7686415c1747fdc5d0e08edf42e84669754d04a750ff3befb24b8e7ab351`.
+Preserved D14 trace/screenshots/context: `/private/tmp/hollowbane-act1-ci-failure/`.
+Existing D12 already waits for the journal button enabled and loading dialog
+hidden before focusing gameplay, pressingJ and asserting the journal visible.
+D14 lacked these preconditions. The retained trace proves the actual race:
+at793163.049ms the inventory modal is open with “Loading character checkpoint…”,
+the journal button disabled and its title empty. TheJ action at793166.123ms is
+correctly rejected during restore. At793793.189ms restore has completed and the
+button is enabled, but the journal is still closed; the following next-quest click
+at793796.082ms cannot act on its hidden button. The repair waits on actual existing
+readiness, retains theJ input and adds visible-journal/finale-title assertions.
+Gameplay/save assertions and60s deadlines remain; no runtime change is needed.
+All seven original serial campaign cases pass184.4s on native M4/Metal1280×800,
+zero skipped/unexpected/flaky/errors, with unchanged60s deadlines and traces
+retained. The formerly failing ranger return/claim/reload passes18.8s; all three
+real fights, earned save/reward checks and final economy journey remain intact.
+Ranger completion capture reviewed. TypeScript and scoped lint/format pass.
+Evidence: `/private/tmp/hollowbane-act1-d14-browser.json`,
+`hollowbane-act1-d14-browser/`, and `hollowbane-act1-d14-trace-diagnosis.json`.
+Only the test helper changed; runtime94b054c's171 build-file bytes are retained.
+Require a fresh exact successor Full/Pages/hosted release; no previous failed
+release is accepted. Public API status queries also returned two502s; curl
+recovered, and the original failed-gate result was retained honestly.

@@ -56,7 +56,13 @@ async function openOrren(
   await page.locator(`#${action}`).click();
 }
 async function lastQuest(page: Page) {
+  // The initial area is published before asynchronous checkpoint restoration.
+  // Journal input is unavailable while the loading inventory owns the modal.
+  await expect(page.locator("#quest-journal-open")).toBeEnabled();
+  await expect(page.locator("#inventory-dialog")).not.toBeVisible();
+  await page.locator("#combat-world").focus();
   await page.keyboard.press("j");
+  await expect(page.locator("#quest-journal")).toBeVisible();
   for (
     let n = 0;
     n < 4 &&
@@ -64,6 +70,7 @@ async function lastQuest(page: Page) {
     n++
   )
     await page.locator("#quest-next").click();
+  await expect(page.locator("#quest-title")).toHaveText("A Lantern Unbound");
 }
 
 // Every leg consumes the preceding actual browser save in a fresh context. This
