@@ -109,9 +109,11 @@ character-route whitelist deliberately rejects developer modifiers.
 
 Next, in order:
 
-1. Measure extreme-pose alpha in a shared expanded camera window; prove a
-   bounded corrected-angle playable presentation with original timing. Keep
-   current proof pixels diagnostic and retain existing approved source art.
+1. Movement and the SE all-state window/proof below are verified locally. Next
+   extend the bounded visual proof to representative non-SE views with correct
+   live facing, contact/shadows, weapon alignment and transition review. Measure
+   those action-family bounds before assuming the common window contains them.
+   Preserve original timing/source art and reuse completed movement audits.
 2. Implement an explicitly versioned or separately owned opt-in first-forest
    layout using real `WorldSession`, with isolated storage and creation/load
    paths. Preserve default dispatch, old-version layout fingerprints and owner
@@ -145,3 +147,162 @@ behavior or shipped asset changed, so no browser release gate is claimed here.
 The last verified public runtime remains `c4f38010814b6ec39d489023f550f122c9b8fd99`
 with CI41100773664. The scope remains authorized across this safe session-budget
 checkpoint; it does not require another design approval to resume.
+
+## Continuation: shared movement export window corrected
+
+2026-10-30, scoped DBL-035/375/379. The user's continuation explicitly authorizes
+the padded-window repair and bounded all-state playable proof before campaign
+integration. This supersedes the earlier next-action description of an unresolved
+movement window; the integrated candidate remains incomplete.
+
+`scripts/act1_export_window.py` derives a deterministic shared rectangle from the
+retained640-pose bounds. It preserves the original256² canvas and extends only
+edges requiring space. The sampling apron is four export pixels: three for the
+Lanczos3 reduction support plus one for runtime linear sampling. At the measured
+bottom269.26993, ceil269.26993 +4 gives274. The result is **256×274**, root(128,210),
+display scale0.5, supersampling2×, no trimming or rotation. Only18 bottom rows are
+added,7.03125% more pixels per cell than the original square; no power-of-two
+rounding, arbitrary large padding or per-pose fitting. The helper also handles
+negative left/top bounds by moving the canvas origin and metadata root together.
+
+The Blender probe's `--window-from` option verifies retained source/manifest
+hashes, applies horizontal camera fitting and one shared camera translation,
+and revalidates all640 poses against the retained bounds. Actual outputs are
+512×548; orthographic horizontal sampling, source geometry and clip timing stay
+fixed. Both angles now have zero poses outside the padded window/filter apron,
+including the53 formerly overrun B poses. Maximum root error1.52588e-5 export
+pixels; maximum old-versus-padded bounds displacement9.91822e-5 pixels; maximum
+contact error1.34111e-7m. This is a necessary corrected-window revalidation, not a
+repeat of the original unchanged-angle investigation.
+
+`--render-extremes` selects the union of measured left/right/top/bottom extremes
+plus the earlier tight walk-W4 regression. Six unique poses per angle produce
+12 renders: idle-SE2, idle-SW2, run-S7, run-W7, run-E7 and walk-W4. Reviewed at
+128×137 displayed frame size on light and dark backgrounds, with root guides:
+body and sword tips are contained; natural higher-angle foreshortening remains.
+These stills do not establish animated continuity, semantic foot/shadow contact,
+full directional playback or combat/death acceptance.
+
+`scripts/pack-act1-projection-proof.mjs` verifies each render's hash and exact
+dimensions, downsamples without fitting, retains the common root and writes a
+bounded diagnostic atlas/metadata outside the repository. It retains the existing
+alpha≤4 cleanup convention. All12 filtered frames have at least5 transparent
+pixels of alpha>4 edge margin, exceeding the4px apron. All12 encoded-atlas
+extractions reproduce their exact RGBA hashes. Atlas1024×822,397515PNG bytes,
+3366912 calculated decoded RGBA bytes; this is not measured GPU memory. The
+manifest includes roots, rectangular frame coordinates, dimensions, untrimmed
+flags, source/image hashes, clip metadata and explicit diagnostic/non-production
+status. No shipping image or original source asset changed.
+
+Evidence: four focused Python edge cases pass (minimal bottom extension, negative
+extents/root shift, no unnecessary shrink/fit, invalid bounds); strict TypeScript,
+scoped ESLint/Prettier and Python syntax pass. Offline asset/tooling changes only;
+no browser implementation changed and no new browser, build, CI, native gameplay
+performance or hosted acceptance is claimed. Original17 dirty documentation files
+are preserved, including staging only this session's STATUS prefix.
+
+Raw evidence: `/private/tmp/hollowbane-act1-padded-window/projection.json`,12 PNGs,
+and `/private/tmp/hollowbane-act1-padded-atlas/{proof.json,proof.png,review-dark.png,review-light.png}`.
+These are diagnostic/test artifacts and are not committed. Reproduce using the
+previous retained audit, without rerendering the character's full animation set:
+
+```sh
+BLENDER --background --python-exit-code 1 --python scripts/probe-act1-projection.py -- /private/tmp/act1-padded --window-from /private/tmp/hollowbane-act1-rebase-projection-bounds/projection.json --render-extremes
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/test_act1_export_window.py
+node scripts/pack-act1-projection-proof.mjs /private/tmp/act1-padded /private/tmp/act1-padded-atlas
+```
+
+This movement correction was followed in the same session by the bounded
+all-state work below. The movement-only window must not be used for unmeasured
+sword sweeps or corpse poses.
+
+## Bounded all-state SE playable proof
+
+`scripts/export-act1-projection-proof.py` reuses the hash-verified movement/attack
+blends and original ability/hit/death authoring scripts, observing their poses
+without changing source files. Their legacy256/320/448px frame conventions are
+normalized to the same original horizontal sampling and root-relative coordinates.
+It measures only86 representative SE poses: idle8, walk16, run16, primary12,
+Sundering Fan12, hit6 and death16. The retained640 movement bounds are reused,
+not re-audited at the old angle. Original authored feet/bone validations run
+before the observer; original camera settings are restored after each capture.
+
+Combined bounds require **300×274**, canvas left−40/top0, root(168,210), scale0.5.
+The new SE action union reaches x−35.09454 to255.07111; measured bounds plus the
+same4px apron determine40 left/four right columns of padding. Height stays274.
+All640 retained movement boxes fit after the exact40px canvas translation.
+All86 action/movement poses were then revalidated in the common window and
+rendered once at600×548. Source models, clips, timing and equipment are unchanged.
+Every filtered frame has at least8px transparent margin;86 encoded-atlas RGBA
+round trips pass. Nine representative gameplay-scale static poses and the browser
+ability/death/menu captures were visually reviewed. No clipped body/sword is
+visible in those captures.
+
+New runtime proof assets are only `public/dev/act1-projection-proof/proof.png`
+and `proof.json`:2400×3014 atlas,2553986PNG bytes,28934400 calculated RGBA bytes
+(not measured GPU residency),86 frames plus two empty atlas cells. Metadata
+records the common root, exact frame rectangles, source/image hashes, source
+authoring hashes and non-production status. This is original project-source
+art, not externally generated/copied imagery. Full existing Warrior families
+were not rerendered; other views/equipment remain untouched.
+
+Local opt-in route: `?developer=1&act1Projection=1`. It uses the existing seeded
+Warrior arena, actual skill/combat stepping and shared read-only animation
+selectors. No new combat timing, balance, save or world authority. It deliberately
+displays **SE artwork for all logical facings**, labelled on screen, so this is
+an interactive animation-angle inspection rather than a complete directional
+character candidate. Input/picking use B projection; keyboard screen vectors use
+the existing32/44 adapter; unit-zoom camera rounds its center. The rectangular
+training field is disposable proof geometry, not the approved outdoor migration.
+Original G1 enemy placeholders retain their known viewpoint/contact defects.
+
+Keyboard/pad semantic actions are consumed once through the shared input hub.
+Pointer/UI buttons use their explicit handlers; mouse pulses cannot trigger a
+second attack. Shared controller-menu focus stops ticking; local Pause also
+stops it. Diagnostic hit/death buttons call the existing real damage resolver.
+The route remains behind the existing character-link rejection logic, cannot
+bind a character and never instantiates storage. Default campaign and other
+classes have no renderer/asset-selection changes.
+
+Verification:15 existing arena/projection units, four Python window edge cases,
+strict TypeScript, scoped ESLint/Prettier, Python syntax and production build
+pass. Two native-browser scenarios pass9.0s: all eight logical movement
+directions, walk/run, actual primary active pose, one ability effect, interrupted
+ability without an effect, hit recovery, all16 death poses/one death/terminal
+hold, virtual-pad movement, menu pause/resize/resume and rejected character
+binding. This is not physical-controller evidence or eight-direction art
+acceptance. Browser artifacts: `/private/tmp/hollowbane-act1-proof-browser-input/`
+and corresponding JSON. Source/audit evidence is in
+`hollowbane-act1-all-state-bounds/`, `hollowbane-act1-all-state-render/` and
+`hollowbane-act1-all-state-review.png` under `/private/tmp/`.
+
+Initial failures are retained: the first run exposed simulation continuing under
+the shared menu plus a test reading a pre-reset frame. The next run exposed a
+real double-consumed R action. Both input defects were repaired within this new
+proof; tests now wait for an observed reset generation. Original assertions and
+deadlines remain. Earlier failed reports under `hollowbane-act1-proof-browser/`
+and `hollowbane-act1-proof-browser-fixed/` are not passing evidence.
+
+One separate local cohort confirmed ANGLE Metal Renderer: Apple M4, macOS15.7.4,
+1280×800/DPR1. After120 warmup frames,300 RAF intervals during the live training
+encounter with stationary input measured p50/p95/p99/max16.7/16.7/16.8/16.8ms,
+zero>25ms and no browser errors. Observed readiness400.7ms includes the readiness
+poll and is not a repeated cold-load estimate. Raw frames/device data:
+`/private/tmp/hollowbane-act1-proof-native.json`. This is bounded proof smoke,
+not a matched walking/campaign comparison, shimmer test or physical display
+acceptance. The shrine navigation hitch remains uninvestigated in this increment.
+
+Remaining visual limits: fixed SE view does not face arbitrary live targets;
+directional runtime continuity is pending. The corpse currently retains a simple
+root ellipse rather than a body-shaped shadow; G1 enemy foot gaps remain visible.
+No claim of complete projection, depth/occlusion, animated contact or aesthetic
+acceptance across directions/classes. Do not render all remaining Warrior art
+or start equipment expansion based on this bounded proof alone.
+
+Session checkpoint: export-window correction and bounded SE playable work are
+verified. Finish representative directional/contact/shadow acceptance, then the
+isolated real forest migration, actual campaign/quest/save acceptance, shrine
+hitch diagnosis, matched M4/Metal shimmer/performance and broader exact-release
+gates. No push/CI/Pages or new public candidate in this session. Last verified
+deployment remains `c4f38010814b6ec39d489023f550f122c9b8fd99`, CI41100773664.
+The approved B link above still points to the earlier environment study.

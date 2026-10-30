@@ -25,6 +25,13 @@ if (invalidCharacterRoute) {
   await startMainMenu(
     "This character link includes unsupported options. Choose a character from the menu; no save was loaded.",
   );
+} else if (
+  query.get("developer") === "1" &&
+  query.get("act1Projection") === "1"
+) {
+  const { startAct1ProjectionProof } =
+    await import("./rendering/act1-projection-proof");
+  startAct1ProjectionProof();
 } else if (query.get("act1readability") === "1") {
   const { startAct1Readability } = await import("./rendering/act1-readability");
   startAct1Readability();
