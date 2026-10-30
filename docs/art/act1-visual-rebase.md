@@ -1,3 +1,7 @@
+> Superseded production direction (2026-10-30): the Classic Visual Reboot request
+> pauses campaign migration, full Warrior rerenders and equipment expansion.
+> Preserve this evidence; continue only the isolated slice in [classic-visual.md](classic-visual.md).
+
 # Act 1 Variant B visual rebase
 
 2026-10-30. Scoped DBL-035/375/379 continuation. The user personally approved B

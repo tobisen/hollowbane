@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "records": [
+    {
+      "name": "oak",
+      "width": 256,
+      "height": 256,
+      "pngBytes": 75413,
+      "decodedRgbaBytes": 262144,
+      "sourceSha256": "f5ac4c29446bd9af6688adb0713441332a1ac249b45e862f74fdad763b9698ad",
+      "sha256": "f9ecb05f4318a78b3f15d724a813a5f862ddd3c76ff0c96591867d3beca3d382"
+    },
+    {
+      "name": "bell",
+      "width": 256,
+      "height": 256,
+      "pngBytes": 71854,
+      "decodedRgbaBytes": 262144,
+      "sourceSha256": "0cdb9fe714f36b141662cde4fa3e57fe0c79975a95d0607222714695f6a4a64c",
+      "sha256": "da498833cd76dd85c09828957a97f7a7e10efab6cd96b8cd2f7c902027ce8d69"
+    },
+    {
+      "name": "earth",
+      "width": 512,
+      "height": 512,
+      "pngBytes": 406964,
+      "decodedRgbaBytes": 1048576,
+      "sourceSha256": "69e06b4ff5a9209464abc122bc2bf3a4a5aadc597e23e0df2be3a4a672636dbd",
+      "sha256": "45ae78fc22267c86ac127687bd62810729cc96f6375a9c88c74e71b1f60c0be3"
+    }
+  ]
+}

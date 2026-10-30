@@ -1,3 +1,18 @@
+## Classic visual reboot — 2026-10-30
+
+The latest user request supersedes Variant B campaign migration and full Warrior
+projection/equipment production. Prove one original classic-inspired outdoor
+slice at `?classicVisual=1`, then seek human visual approval. B supplies spatial
+reference only. Production, save schemas and prior assets remain intact.
+
+Shared target: muted olive earth, worn grey limestone, charcoal recesses and
+restrained warm actor accents; broad painterly forms, matte materials, soft
+upper-left light, stable contact shadows and quiet terrain. Start at128×88 ground,
+unit zoom and integer camera; generated asset angles are approximate, not measured
+projection acceptance. Fit actor and environment together before expanding art.
+The local environment checkpoint still uses G1 actor/rock placeholders. Full
+specification, source prompts, limitations and next actions: docs/art/classic-visual.md.
+
 # Art bible — proposal, approval pending
 
 ## Environment direction reset — 2026-10-30

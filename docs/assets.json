@@ -378,5 +378,32 @@
     "type": "developer-item-attachments",
     "preview": "public/dev/warrior-equipment/equipment.json",
     "provenance": "docs/art/q3/warrior-equipment.md"
+  },
+  {
+    "id": "classic-visual-oak-v1",
+    "source": "assets/source/classic-visual/oak.png",
+    "rights": "Original project prompt; built-in AI-generated painting; no external reference images; visual/provenance review pending",
+    "placeholder": true,
+    "type": "developer-environment-pilot",
+    "preview": "public/dev/classic-visual/oak.png",
+    "provenance": "docs/art/classic-visual.md"
+  },
+  {
+    "id": "classic-visual-bell-v1",
+    "source": "assets/source/classic-visual/bell.png",
+    "rights": "Original project prompt; built-in AI-generated painting; no external reference images; visual/provenance review pending",
+    "placeholder": true,
+    "type": "developer-environment-pilot",
+    "preview": "public/dev/classic-visual/bell.png",
+    "provenance": "docs/art/classic-visual.md"
+  },
+  {
+    "id": "classic-visual-earth-v1",
+    "source": "assets/source/classic-visual/earth.png",
+    "rights": "Original project prompt; built-in AI-generated painting; no external reference images; visual/provenance review pending",
+    "placeholder": true,
+    "type": "developer-environment-pilot",
+    "preview": "public/dev/classic-visual/earth.png",
+    "provenance": "docs/art/classic-visual.md"
   }
 ]

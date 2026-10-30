@@ -25,6 +25,9 @@ if (invalidCharacterRoute) {
   await startMainMenu(
     "This character link includes unsupported options. Choose a character from the menu; no save was loaded.",
   );
+} else if (query.get("classicVisual") === "1") {
+  const { startClassicVisual } = await import("./rendering/classic-visual");
+  startClassicVisual();
 } else if (
   query.get("developer") === "1" &&
   query.get("act1Projection") === "1"
