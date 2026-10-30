@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-31",
+  "tool": "built-in image_gen",
+  "references": {
+    "rocks": "assets/source/classic-visual/bell.png",
+    "undergrowth": "assets/source/classic-visual/oak.png"
+  },
+  "prompts": {
+    "rocks": "Use case: stylized-concept. The supplied original bell painting is a STYLE REFERENCE only. Create one NEW original game sprite: three large touching rough weathered limestone boulders with sparse muted moss. Match reference painting's coarse matte stone, muted grey-olive palette and soft upper-left light, at orthographic43-degree elevated camera. Low wide silhouette, ample empty margin, complete rocks, bottom centre ground contact. Actual transparent cutout background, clean alpha directly outside the stone silhouette. Absolutely no surrounding halo, haze, blur, glow, cast shadow, vignette, floor or backdrop. No bell, arch, decoration, tiny pebbles, hairline cracks, text or fine noisy textures. Broad asymmetrical worn stone forms for120px gameplay width, painterly not smooth shaded low-poly geometry.",
+    "undergrowth": "Use case: stylized-concept. The supplied original oak painting is a STYLE REFERENCE only. Create one NEW original game sprite: a small low broad woodland shrub, a single irregular flat clump of muted olive-brown bramble leaves with a few broad dry leaves at its base. Match reference painting's coarse brushwork and muted palette, soft upper-left light, camera looking down43 degrees orthographic. Dense broad foliage masses, no individually outlined leaves, thin twigs, flowers, tall trunk or stones. Low asymmetrical wide silhouette with generous empty margins, whole clump shown. Actual transparent cutout background immediately outside vegetation, no floor tile, shadows, haze, glow, matte or text. Designed for80px gameplay width; quiet painterly dark Gothic woodland growth."
+  }
+}

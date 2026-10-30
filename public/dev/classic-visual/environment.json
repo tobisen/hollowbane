@@ -27,6 +27,24 @@
       "decodedRgbaBytes": 1048576,
       "sourceSha256": "69e06b4ff5a9209464abc122bc2bf3a4a5aadc597e23e0df2be3a4a672636dbd",
       "sha256": "45ae78fc22267c86ac127687bd62810729cc96f6375a9c88c74e71b1f60c0be3"
+    },
+    {
+      "name": "rocks",
+      "width": 256,
+      "height": 256,
+      "pngBytes": 67068,
+      "decodedRgbaBytes": 262144,
+      "sourceSha256": "fbef8ce6df4a6409befa32af918e1c3b8bd54bf9cffd93d7afee9b466d5a7271",
+      "sha256": "c5d2bd33898be8836d1f31848814bdf763df72515fa8770a88652fc91a76a36e"
+    },
+    {
+      "name": "undergrowth",
+      "width": 128,
+      "height": 128,
+      "pngBytes": 11635,
+      "decodedRgbaBytes": 65536,
+      "sourceSha256": "691fa28e7f4665e91b0f03153c9a98a802cf4327cb61ec818f160d14e68fa1b5",
+      "sha256": "96933f69b964abfc3fd7e490d43b09d37dcfe094efe97f8b0510202de4668f18"
     }
   ]
 }

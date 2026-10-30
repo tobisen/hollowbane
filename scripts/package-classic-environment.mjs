@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 const source = "assets/source/classic-visual";
 const output = "public/dev/classic-visual";
 const records = [];
-for (const name of ["oak", "bell", "earth"]) {
+for (const name of ["oak", "bell", "earth", "rocks", "undergrowth"]) {
   const original = await readFile(`${source}/${name}.png`);
   let png;
   if (name === "earth") {
@@ -32,7 +32,11 @@ for (const name of ["oak", "bell", "earth"]) {
       .toBuffer();
   } else {
     png = await sharp(original)
-      .resize(232, 232, { fit: "contain", background: "#00000000" })
+      .resize(
+        name === "undergrowth" ? 104 : 232,
+        name === "undergrowth" ? 104 : 232,
+        { fit: "contain", background: "#00000000" },
+      )
       .extend({
         top: 12,
         bottom: 12,

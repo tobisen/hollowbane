@@ -51,7 +51,7 @@ describe("classic environment pilot", () => {
           }
         }
     }
-    expect(bytes).toBeLessThan(600000);
-    expect(decoded).toBe(1572864);
+    expect(bytes).toBeLessThan(750000);
+    expect(decoded).toBe(1900544);
   });
 });

@@ -62,7 +62,7 @@ export function startClassicVisual(): Phaser.Game {
     private residual = 0;
     private environment!: ReturnType<typeof drawClassicEnvironment>;
     preload(): void {
-      for (const key of ["oak", "bell", "earth"])
+      for (const key of ["oak", "bell", "earth", "rocks", "undergrowth"])
         this.load.image(
           `classic-${key}`,
           import.meta.env.BASE_URL + `dev/classic-visual/${key}.png`,

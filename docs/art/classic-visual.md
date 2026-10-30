@@ -1,3 +1,45 @@
+# Classic visual completion — composition increment
+
+2026-10-31, scoped DBL-035/375/379. Latest completion request authorizes the
+remaining scene and public review release, preserving campaign/default artwork.
+Painted rocks and low undergrowth now replace primitive rock geometry, matching
+the original bell/oak style references. Exact built-in imagegen prompts and source
+references: `assets/source/classic-visual/completion-prompts.json`; source PNGs
+and runtime PNGs are retained beside the existing environment assets. No external
+art references or copied assets. A procedural Blender prop attempt was rejected
+as overly faceted: raw/script retained under `/private/tmp/hollowbane-classic-props-v2/`
+and `/private/tmp/hollowbane-classic-rejected-source/`, never loaded by the scene.
+
+The original broad clearings/collision remain intact. Grove bands, deterministic
+position jitter and restrained uniform scale variation break the old tree rows.
+Small low growth replaces some unsafe crowns without covering actor upper bodies.
+Four broad worn paths connect existing spaces; floor texture contrast drops from
+0.38 to0.24 and its repetition period grows. Repetition and the large empty centre
+still need judgment with final actors. A shared128×64 soft contact texture replaces
+hard nested ellipse rings on trees/rocks/landmark. G1 actor shadow remains pending.
+
+Added rocks67068PNG bytes/262144RGBA bytes and undergrowth11635/65536: incremental
+78703PNG/327680RGBA bytes. Environment total632934PNG/1900544RGBA bytes; generated
+shadow adds32768RGBA bytes. Six file image textures including G1 plus one generated
+shadow texture. Calculated payload is not GPU memory. Original three asset hashes
+are unchanged. Nine focused units, TypeScript/scoped lint/build and two native
+browser cases pass24.8s; real movement/combat, edge/bell travel and save protection.
+Start/edge/bell captures inspected; source silhouettes are clean, gameplay remains
+open. No current performance claim while Blender is running. Browser evidence:
+`/private/tmp/hollowbane-classic-composition-browser/` and sibling JSON.
+
+Next increment is the bounded Warrior/two-enemy pilot, then complete scene,
+controller/contact/motion comparison and release gates. Six opposed actor stills
+were inspected at gameplay scale; the flat-material attempt was rejected as
+clay-like. Revised broad pigment, muted steel/red Warrior, broader pale/brown
+raider and narrower olive runner are provisional. A312-pose conservative audit
+caught a raised-sword top overrun; common360×344/root180,234 now contains all
+selected poses. No full library/equipment expansion or default campaign change.
+Last verified public SHA remains `c4f38010814b6ec39d489023f550f122c9b8fd99`;
+no new CI/Pages/release is claimed by this increment.
+
+---
+
 # Classic visual reboot — environment checkpoint
 
 2026-10-30, scoped DBL-035/375/379. The latest user request supersedes B

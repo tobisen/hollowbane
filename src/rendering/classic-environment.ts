@@ -46,13 +46,61 @@ export function drawClassicEnvironment(
       .fillPoints(projected, true);
     earthBase.lineStyle(24, 0x303628, 0.4).strokePoints(projected, true);
   }
+  // Broad worn paths join authored spaces without adding decorative collision.
+  const roads = [
+    [
+      { x: 4, y: 29 },
+      { x: 12, y: 30 },
+      { x: 21, y: 31 },
+      { x: 29, y: 29 },
+    ],
+    [
+      { x: 29, y: 29 },
+      { x: 35, y: 24 },
+      { x: 42, y: 14 },
+    ],
+    [
+      { x: 42, y: 14 },
+      { x: 32, y: 12 },
+      { x: 23, y: 11 },
+    ],
+    [
+      { x: 23, y: 11 },
+      { x: 17, y: 19 },
+      { x: 12, y: 30 },
+    ],
+  ];
+  for (const road of roads) {
+    const points = road.map((p) => {
+      const at = act1Project(p, "b");
+      return new Phaser.Math.Vector2(at.x, at.y);
+    });
+    earthBase.lineStyle(104, 0x494333, 0.18).strokePoints(points, false);
+    earthBase.lineStyle(64, 0x514735, 0.16).strokePoints(points, false);
+  }
   // One restrained world-fixed painted layer, no mask seams or dynamic alpha.
   scene.add
     .tileSprite(768, 2800, 10000, 8000, "classic-earth")
-    .setTileScale(2)
+    .setTileScale(2.7)
     .setDepth(-998)
-    .setAlpha(0.38);
-  const shadows = scene.add.graphics().setDepth(-997);
+    .setAlpha(0.24);
+  if (!scene.textures.exists("classic-contact")) {
+    const texture = scene.textures.createCanvas("classic-contact", 128, 64)!;
+    const context = texture.context;
+    context.scale(1, 0.5);
+    const gradient = context.createRadialGradient(64, 64, 0, 64, 64, 60);
+    gradient.addColorStop(0, "rgba(9,12,8,0.55)");
+    gradient.addColorStop(0.5, "rgba(9,12,8,0.24)");
+    gradient.addColorStop(1, "rgba(9,12,8,0)");
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 128, 128);
+    texture.refresh();
+  }
+  const shadow = (x: number, y: number, width: number, height: number) =>
+    scene.add
+      .image(x, y, "classic-contact")
+      .setDisplaySize(width, height)
+      .setDepth(-997);
   const report: Act1EnvironmentReport = {
     treeCount: 0,
     fullCanopies: 0,
@@ -76,33 +124,38 @@ export function drawClassicEnvironment(
         )
       )
         continue;
-      const foot = { x: x + 0.5, y: y + 0.5 },
+      // Broad bands form deliberate groves; jitter breaks the old equal-spacing rows.
+      if (Math.sin(x * 0.43) + Math.cos(y * 0.38) < -0.35) continue;
+      const scale = 0.82 + (hash % 5) * 0.045;
+      const foot = {
+          x: x + 0.28 + (hash % 43) / 100,
+          y: y + 0.28 + ((hash >>> 8) % 43) / 100,
+        },
         p = act1Project(foot, "b");
       report.treeCount++;
       // Conservative full sprite envelope, not a runtime opacity switch.
-      if (act1CanopyOverlapsGround(map, foot, "b", 256, 244)) {
+      if (act1CanopyOverlapsGround(map, foot, "b", 256 * scale, 244 * scale)) {
         report.cutawayTrees++;
+        if (hash % 3 === 0)
+          scene.add
+            .image(p.x, p.y, "classic-undergrowth")
+            .setOrigin(0.5, 0.75)
+            .setScale(0.7)
+            .setDepth(-996);
         continue;
       }
       report.fullCanopies++;
-      shadows
-        .fillStyle(0x13160f, 0.18)
-        .fillEllipse(p.x + 12, p.y + 3, 100, 36)
-        .fillStyle(0x13160f, 0.22)
-        .fillEllipse(p.x + 8, p.y + 2, 70, 24);
+      shadow(p.x + 8, p.y + 2, 100 * scale, 36 * scale);
       scene.add
         .image(p.x, p.y, "classic-oak")
         .setOrigin(0.5, 0.91)
+        .setScale(scale)
         .setDepth(p.y);
     }
   for (const object of map.objects) {
     const p = act1Project(object.position, "b"),
       width = object.radius * 128 * Math.SQRT2;
-    shadows
-      .fillStyle(0x141710, 0.18)
-      .fillEllipse(p.x + 10, p.y + 4, width * 1.2, width * 0.6)
-      .fillStyle(0x141710, 0.23)
-      .fillEllipse(p.x + 7, p.y + 3, width, width * 0.42);
+    shadow(p.x + 7, p.y + 3, width * 1.15, width * 0.5);
     if (object.appearance.includes("shrine")) {
       scene.add
         .image(p.x, p.y, "classic-bell")
@@ -110,27 +163,16 @@ export function drawClassicEnvironment(
         .setScale(0.8)
         .setDepth(p.y);
     } else {
-      // Explicit retained geometry placeholder; generated rock variants failed halo review.
-      const ink = scene.add.graphics().setDepth(p.y);
-      ink.fillStyle(0x515145).fillPoints(
-        [
-          { x: p.x - width / 2, y: p.y },
-          { x: p.x - width * 0.3, y: p.y - 43 },
-          { x: p.x + width * 0.2, y: p.y - 53 },
-          { x: p.x + width / 2, y: p.y - 7 },
-          { x: p.x + width * 0.15, y: p.y + 24 },
-        ].map((p) => new Phaser.Math.Vector2(p.x, p.y)),
-        true,
-      );
-      ink.fillStyle(0x3b3e34).fillPoints(
-        [
-          { x: p.x - width / 2, y: p.y },
-          { x: p.x - width * 0.3, y: p.y - 43 },
-          { x: p.x, y: p.y - 12 },
-          { x: p.x + width * 0.15, y: p.y + 24 },
-        ].map((p) => new Phaser.Math.Vector2(p.x, p.y)),
-        true,
-      );
+      scene.add
+        .image(p.x, p.y, "classic-rocks")
+        .setOrigin(0.5, 0.75)
+        .setScale(0.65)
+        .setDepth(p.y);
+      scene.add
+        .image(p.x - width * 0.4, p.y + 14, "classic-undergrowth")
+        .setOrigin(0.5, 0.75)
+        .setScale(0.65)
+        .setDepth(-996);
     }
   }
   return report;

@@ -405,5 +405,23 @@
     "type": "developer-environment-pilot",
     "preview": "public/dev/classic-visual/earth.png",
     "provenance": "docs/art/classic-visual.md"
+  },
+  {
+    "id": "classic-visual-rocks-v1",
+    "source": "assets/source/classic-visual/rocks.png",
+    "rights": "Original project prompt; built-in AI-generated painting using original oak/bell style reference only; human review pending",
+    "placeholder": true,
+    "type": "developer-environment-pilot",
+    "preview": "public/dev/classic-visual/rocks.png",
+    "provenance": "docs/art/classic-visual.md"
+  },
+  {
+    "id": "classic-visual-undergrowth-v1",
+    "source": "assets/source/classic-visual/undergrowth.png",
+    "rights": "Original project prompt; built-in AI-generated painting using original oak/bell style reference only; human review pending",
+    "placeholder": true,
+    "type": "developer-environment-pilot",
+    "preview": "public/dev/classic-visual/undergrowth.png",
+    "provenance": "docs/art/classic-visual.md"
   }
 ]

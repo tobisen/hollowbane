@@ -1,3 +1,9 @@
+## Classic completion — composition increment (2026-10-31)
+
+- Scoped DBL-035/375/379: original painted rocks/low growth, grouped/jittered boundary trees, four worn paths, quieter/larger-period floor and shared soft prop shadows. Broad collision/layout unchanged. Added78703PNG/327680RGBA bytes; environment total632934PNG/1900544RGBA bytes plus32768 generated shadow bytes, not GPU memory. Original three asset hashes preserved; faceted Blender prop attempt rejected and retained outside repo.
+- Nine units, TypeScript/scoped lint/build and two native browser checks pass24.8s; screenshots inspected. Actual combat/travel/save isolation retained. Full composition remains provisional with G1 actors; no new performance/CI/publication claim. Six original-rig actor stills reviewed; revised broad materials and distinct Warrior/raider/runner silhouettes selected for bounded motion proof.312 selected pose bounds audited; raised-sword overrun corrected with common360×344/root180,234. Actor integration is the next increment; no full library or campaign migration.
+- Continue docs/art/classic-visual.md: bounded four-facing actor pilot, complete scene/contact/controller/comparison/native profiling, then exact CI/Pages/hosted release and human review. Last verified public c4f38010814b6ec39d489023f550f122c9b8fd99/CI41100773664. Preserve all17 unrelated edits. Raw composition browser evidence and actor sources under /private/tmp/hollowbane-classic-*; no background continuation claim.
+
 ## Classic visual reboot — local environment checkpoint (2026-10-31)
 
 - Latest request supersedes B campaign migration/full Warrior projection/equipment production. Scoped DBL-035/375/379; Phaser4.2.1 retained. New isolated ?classicVisual=1 uses actual B movement/combat/AI with no save owner. Production and all17 pre-existing dirty documents preserved.
