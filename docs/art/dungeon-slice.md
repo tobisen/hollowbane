@@ -83,3 +83,14 @@ verified deployed SHA before this candidate:
 Do not label this candidate hosted until its exact release SHA and focused hosted
 slice scenarios pass. No second expansion or equipment continuation is authorized
 by this checkpoint.
+
+### First candidate: static formatting blocked publication
+
+Candidate `93ae977ddc3ae64a888da0ff0bd348fc2d3b9ebe` was pushed. Exact
+[CI41080322980](https://github.com/tobisen/hollowbane/actions/runs/41080322980)
+failed static checks before browser/deploy. The committed STATUS.md contained an
+unquoted inherited staff-evidence glob which Prettier rewrote as emphasis. The
+literal path is now quoted; no runtime, tests or acceptance thresholds changed.
+Full local lint passed; the other local format warnings are two pre-existing,
+uncommitted documentation edits and remain untouched. A successor exact release
+gate is required; the failed candidate is not a deployed slice.
