@@ -11,7 +11,12 @@ if (!process.argv[2] || !relative(process.cwd(), directory).startsWith(".."))
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex"),
   proof = JSON.parse(await readFile(resolve(directory, "staff.json"), "utf8"));
 const directions = [...new Set(proof.samples.map((s) => s.direction))];
-const motionCount = ["hit", "hit-extended"].includes(proof.clipAction) ? 6 : 12;
+const motionCount =
+  proof.clipAction === "death"
+    ? 16
+    : ["hit", "hit-extended"].includes(proof.clipAction)
+      ? 6
+      : 12;
 if (
   proof.productionApproved ||
   (proof.carrySourceSha256
@@ -105,9 +110,17 @@ for (const [index, sample] of proof.samples.entries()) {
       bounds[1] === 0 ||
       bounds[2] === 511 ||
       bounds[3] === 511,
-    contactError: Math.max(...sample.contactErrors),
+    contactError:
+      sample.gripRequired === false ? null : Math.max(...sample.contactErrors),
     staffBodyIntersections: sample.staffBodyIntersections,
     staffGroundMinimum: sample.staffGroundMinimum,
+    ...(proof.clipAction === "death"
+      ? {
+          bodyGroundMinimum: sample.bodyGroundMinimum,
+          gripRequired: sample.gripRequired,
+          lowerBodyMatrixMaximumError: sample.lowerBodyMatrixMaximumError,
+        }
+      : {}),
   });
 }
 const groups =
@@ -149,7 +162,10 @@ const rejected = reports.filter(
       r.alphaTouchesCellEdge ||
       r.contactError > 1e-6 ||
       r.staffBodyIntersections.length ||
-      r.staffGroundMinimum < 0,
+      r.staffGroundMinimum < 0 ||
+      (proof.clipAction === "death" &&
+        (r.bodyGroundMinimum < -0.001 ||
+          !(r.lowerBodyMatrixMaximumError < 1e-5))),
   ),
   result = {
     producerSha256: hash(await readFile(new URL(import.meta.url))),

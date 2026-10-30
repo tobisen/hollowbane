@@ -440,10 +440,10 @@ movement/interruption/death integration is still outstanding.
 Native M4/ANGLE Metal,960×440/DPR1, eight gameplay1× views; Blender exports finish
 before native measurements. Each isolated run records600 frame intervals:
 
-| Ability | PNG bytes | Calculated base RGBA | p50 / p95 / p99 / maximum | >25ms |
-| ------- | --------: | -------------------: | ------------------------ | ----: |
-| Sundering Fan | 2706287 | 16MiB | 16.7 /17.1 /17.7 /17.7ms | 0/600 |
-| Oath | 2504087 | 16MiB | 16.7 /17.5 /17.7 /17.7ms | 0/600 |
+| Ability       | PNG bytes | Calculated base RGBA | p50 / p95 / p99 / maximum | >25ms |
+| ------------- | --------: | -------------------: | ------------------------- | ----: |
+| Sundering Fan |   2706287 |                16MiB | 16.7 /17.1 /17.7 /17.7ms  | 0/600 |
+| Oath          |   2504087 |                16MiB | 16.7 /17.5 /17.7 /17.7ms  | 0/600 |
 
 Both have zero runtime errors and three **11→10→11** texture release/reload cycles.
 Inventory includes nine diagnostic labels and the round-trip render target.
@@ -523,10 +523,10 @@ reuse and independently verify184/160 context frames against reviewed source
 pixel hashes (primary/carry or Oath/carry), loading only used categories. Combined
 **96 CPU and96 GPU round trips** pass; eight views read one authoritative plan.
 
-| Native M4/Metal fixture | PNG bytes | Calculated RGBA | p50 / p95 / p99 / max | >25ms |
-| ---------------------- | --------: | --------------: | -------------------- | ----: |
-| Guard entry,9 cases/450 unique ticks | 1369056 | 8MiB | 16.7 /18.0 /18.5 /18.6ms | 0/600 |
-| Forward entry,3 cases/150 unique ticks | 1530328 | 8MiB | 16.7 /18.1 /18.5 /66.7ms | 1/600 |
+| Native M4/Metal fixture                | PNG bytes | Calculated RGBA | p50 / p95 / p99 / max    | >25ms |
+| -------------------------------------- | --------: | --------------: | ------------------------ | ----: |
+| Guard entry,9 cases/450 unique ticks   |   1369056 |            8MiB | 16.7 /18.0 /18.5 /18.6ms | 0/600 |
+| Forward entry,3 cases/150 unique ticks |   1530328 |            8MiB | 16.7 /18.1 /18.5 /66.7ms | 1/600 |
 
 Three **16→10→16** texture cycles pass per fixture: one new reaction atlas plus
 five reused context atlases, nine labels and a round-trip target. The66.7ms tail
@@ -553,6 +553,97 @@ native acceptance before exact B release and C review. Staff/bow/unarmed remain
 legacy; sword and sword/shield remain supported. Verified deployed SHA is still
 **c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending. No owned process remains
 at this checkpoint. Preserve unrelated edits and recovery ancestry.
+
+## Southeast staff death — local timed pilot 2026-10-30
+
+`probe-warrior-staff.py --motion --death` observes all16 approved collapse poses
+**after** their original assertions, using the same hash-verified AST observation
+pattern as the shield proof. The existing authoring code, rig, camera world scale
+and simulation are unchanged. Cache exact SE lower-body matrices and floor/foot
+resolution before reopening the approved rig. The body guard unwinds its existing
+lean/yaw over the first four poses; this is not a claim that all body pixels equal
+the sword death. Lower-body matrix maximum error is **3.28e-7**. No new death rule,
+root displacement, character scale or body-wide export.
+
+Original `assets/source/q3/warrior-staff-se/death.json` holds the staff with both
+hands through pose5, releases during the backward fall, blends arms back to the
+approved landing over four poses, and settles the staff alongside the body at13.
+The final14/15 images are exact aliases of13;0 reuses the accepted primary guard.
+There are **16 logical poses,14 unique images,13 new final pose images**. Prefix
+reuse verifies old file hashes and current root/palm/axis/wrist/elbow/staff bounds/
+body anchors; rejected late art cannot silently authorize changed early poses.
+
+All16 sampled poses pass unchanged non-hand shaft/body intersections, ground,
+bone-length/joint/root/feet and alpha-edge checks. After release, hands are also
+included in shaft/body collision checks and no grip assertion is claimed. Held
+palm maximum error **1.56e-7m**; body minimum **0.0020m**, staff floor clearance at
+rest **9.81e-8m** (contact within float precision). Settled13–15 PNGs are identical;
+all silhouettes fit512² with combined bounds64,120–319,360. These are sampled
+surface checks, not continuous physical collision or gravity simulation.
+
+Retained rejected trials: world-up grip became unreachable during the fall;
+explicit torso-following grip fixes that. Released-arm interpolation initially
+read stale evaluated matrices, corrected by using explicit current held matrices.
+The first loose-staff path crossed armor, then a cleared path clipped the cell.
+Only affected poses were rerendered. A later timed review measured a **1.0581m**
+adjacent tip step; spherical interpolation across the remaining landing replaces
+that turn. Final maximum adjacent tip step is **0.4744m**, with exact terminal hold.
+This measures this new collapse only; it does not replace the earlier hit-entry
+1.5667m regression evidence or close all interruption/entry boundaries.
+
+Source sheets and actual-timed gameplay1×/inspection2× light/dark captures reviewed.
+`profile-warrior-staff-carry.mjs ... --death` equips the real staff, applies one
+actual lethal hit at12, reads existing `WarriorMotion`/`warriorPose`/30-tick death
+selection and holds through600 authoritative ticks. All16 selected poses appear;
+**558 ticks after the fall boundary** remain terminal. Every tick matches an
+untouched simulation copy. No callbacks, saves, restart or damage/cooldown changes.
+The static pre-death guard is a pilot context, not full carry/attack/ability/hit
+entry acceptance. Final capture driver also observes the set change into death0,
+even when the previous idle pose has the same numeric index.
+
+Native M4/ANGLE Metal after Blender exits: **600 intervals,p5016.7/p9516.8/
+p9917.2/max17.7ms,zero>25,zero runtime errors**. Three **2→1→2** texture cycles
+pass. One temporary2048×1024 atlas contains death plus reused SE primary context:
+**821120PNG bytes /8MiB calculated RGBA**. It is diagnostic full-body packing,
+not the complete staff resource plan, shipping payload, measured GPU memory or a
+matched campaign improvement. The previous forward-hit66.7ms outlier, slow cold
+transfer and existing combat stalls remain separate and unresolved.
+
+**Eight focused tests/three files**, strict TypeScript, scoped ESLint/Prettier and
+Python execution/syntax pass. An additional **89-sample dense SE primary audit**
+passes with evaluated hand-contact checks, preserving the existing motion. No new
+runtime/public asset, build, release CI or hosted acceptance is claimed. Sandboxed
+Blender Metal initialization and localhost binding fail before work; approved
+native runs complete. Final source/control hashes match the render proof exactly.
+The earlier clipped output retains its consumed source snapshot/provenance
+correction and original generated proof; no rejected image is relabeled a pass.
+
+Reproduce with the pinned Blender4.5.3LTS executable (see pipeline-recovery.md):
+
+```sh
+Blender --background --python-exit-code 1 --python scripts/probe-warrior-staff.py -- /private/tmp/hollowbane-q3-staff-choreography/death-se-render --motion --death --reuse-guards /private/tmp/hollowbane-q3-staff-choreography/render --reuse-prefix /private/tmp/hollowbane-q3-staff-choreography/death-se-rejected-tip-step
+node scripts/review-warrior-staff.mjs /private/tmp/hollowbane-q3-staff-choreography/death-se-render
+node scripts/profile-warrior-staff-carry.mjs /private/tmp/hollowbane-q3-staff-choreography/death-se-render /private/tmp/hollowbane-q3-staff-choreography/render /private/tmp/hollowbane-q3-staff-choreography/death-se-native --death
+```
+
+Raw evidence: `/private/tmp/hollowbane-q3-staff-choreography/death-*`, especially
+`death-summary.json`, `death-se-render`, `death-se-native` and retained
+`death-se-rejected-{clipped,tip-step}`, `death-se-native-rejected-tip-step`,
+`death-se-audit-{v1,v2,release-v1,release-v2,release-v3,final}`. No owned process
+remains. Original controls/approved carry/primary/abilities/hit images are intact.
+
+**SE death pilot accepted for directional continuation only.** Next audit the
+seven remaining facings, compare actual directional foot/root metadata and alpha
+bounds, then export only **91 missing unique death images** (reuse seven primary
+guards and14 terminal aliases). Extend directional packing/playback to the actual
+16-pose death contract and review occlusion at real timing before closing the
+complete transition matrix, shared-resource plan, developer arena and campaign/
+save/equipment/travel acceptance. Continue toward B/C under current authorization;
+this safe bounded session checkpoint does not claim category or release acceptance.
+Staff/bow/unarmed stay legacy; production asset delta0. Last verified public SHA
+remains **c437335844e4f82e30b00da2967d4f64c9614a64**; no CI pending. Preserve all
+unrelated edits and recovery ancestry. No new approval is needed to resume scoped
+staff work; bow/unarmed production remains outside scope.
 
 ## Bounded shared sword-free body proof — 2026-10-29
 

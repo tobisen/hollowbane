@@ -1,3 +1,9 @@
+## Q3-B SE staff death pilot / directional death next (2026-10-30)
+
+- Sixteen SE death poses:13 new pose images, exact primary guard and two terminal aliases. Approved collapse/lower-body reuse, two-hand hold→release→floor settle; sampled grip/body/ground/root/feet/alpha checks pass. Clipped/tip-step failures retained; corrected maximum adjacent tip step0.4744m. Timed light/dark captures reviewed.
+- Actual lethal event/30-tick selector and558 post-fall hold ticks;600 ticks equal untouched simulation. Native M4/Metal600 intervals p9516.8/max17.7ms,zero>25/errors; three2→1→2 cycles. Diagnostic atlas821120PNG bytes/8MiB calculated RGBA, not production/GPU memory. Eight focused tests/three files, TypeScript/scoped lint/format pass; unchanged primary89-sample audit passes.
+- Safe bounded checkpoint: next seven-direction death audit and91 missing unique renders, then full transition/resource/showcase/campaign and exact B/C gates. Staff/bow/unarmed remain legacy; production delta0. Verified public c437335844e4f82e30b00da2967d4f64c9614a64; no CI pending. Preserve unrelated edits/8a48dc9 and rejected evidence. Resume docs/art/q3/warrior-equipment.md; raw /private/tmp/hollowbane-q3-staff-choreography/death-*. No owned background process.
+
 ## Q3-B staff hit/recovery candidate / death next (2026-10-30)
 
 - Guard and forward-held hit entries now96 logical poses/eight directions:72 new renders,24 primary contact/guard images reused.656 dense samples and96 CPU/GPU round trips pass original grip/reach/body/ground/root/feet checks. Guard-only active-entry snap1.5667m rejected; forward entry exactly reuses primary5, then coordinated recoil/exact guard. Actual timed eight-view poses and light/dark captures reviewed. Pure candidate observer is not wired into campaign; full Fan/load/recovery boundary matrix remains open.

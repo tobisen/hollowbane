@@ -16,11 +16,13 @@ import {
 } from "./warrior-equipment-packing.mjs";
 
 const abilities = process.argv.includes("--abilities"),
-  hitMode = process.argv.includes("--hit");
-if (abilities && hitMode) throw Error("Select one staff review mode");
+  hitMode = process.argv.includes("--hit"),
+  deathMode = process.argv.includes("--death");
+if ([abilities, hitMode, deathMode].filter(Boolean).length > 1)
+  throw Error("Select one staff review mode");
 const [carry, primary, output] = process.argv
   .slice(2)
-  .filter((p) => p !== "--abilities" && p !== "--hit")
+  .filter((p) => !["--abilities", "--hit", "--death"].includes(p))
   .map((p) => resolve(p));
 if (
   !carry ||
@@ -37,23 +39,28 @@ await mkdir(output, { recursive: true });
 const hash = (b) => createHash("sha256").update(b).digest("hex"),
   rasters = [],
   inputs = [];
-for (const [set, directory, count] of hitMode
+for (const [set, directory, count] of deathMode
   ? [
-      ["hit", carry, 6],
-      ["hit-extended", resolve(carry, "../hit-extended-se-render"), 6],
+      ["death", carry, 16],
       ["attacks", primary, 12],
-      ["oath-echo", resolve(primary, "../ability-oath-echo-render"), 12],
-      ["movement", resolve(primary, "../carry-render"), 40],
     ]
-  : abilities
+  : hitMode
     ? [
-        ["iron-fan", carry, 12],
-        ["oath-echo", primary, 12],
-      ]
-    : [
-        ["movement", carry, 40],
+        ["hit", carry, 6],
+        ["hit-extended", resolve(carry, "../hit-extended-se-render"), 6],
         ["attacks", primary, 12],
-      ]) {
+        ["oath-echo", resolve(primary, "../ability-oath-echo-render"), 12],
+        ["movement", resolve(primary, "../carry-render"), 40],
+      ]
+    : abilities
+      ? [
+          ["iron-fan", carry, 12],
+          ["oath-echo", primary, 12],
+        ]
+      : [
+          ["movement", carry, 40],
+          ["attacks", primary, 12],
+        ]) {
   const bytes = await readFile(resolve(directory, "staff.json")),
     proof = JSON.parse(bytes),
     reviewedBytes = await readFile(resolve(directory, "review.json")),
@@ -66,7 +73,9 @@ for (const [set, directory, count] of hitMode
     proof.samples.some(
       (s, i) =>
         s.direction !== "se" ||
-        ((abilities || (hitMode && set.startsWith("hit"))) &&
+        ((abilities ||
+          (deathMode && set === "death") ||
+          (hitMode && set.startsWith("hit"))) &&
           (s.action !== set || s.index !== i)),
     )
   )
@@ -113,8 +122,30 @@ const packed = packEquipmentRasters(rasters),
   };
 await writeFile(resolve(output, "carry.png"), png);
 await writeFile(resolve(output, "carry.json"), JSON.stringify(atlas));
-const entry = hitMode
+const entry = deathMode
   ? `
+import {createCombat,applyCombatHit,stepCombat,ARENA_NAV} from './src/simulation/combat';
+import {WarriorMotion,warriorPose} from './src/rendering/warrior-pose';
+import {createCharacterInventory} from './src/simulation/equipment';
+import {inventoryItem} from './src/simulation/inventory-test-helper';
+import {deriveEquipment,captureEquipmentBase,applyEquipment} from './src/simulation/equipment-stats';
+export function plan(){
+ const w=createCombat(42);w.hostilesActive=false;
+ const a=w.actors[0],c=createCharacterInventory();c.equipment.main=inventoryItem('cinder-staff');applyEquipment(deriveEquipment(c,captureEquipmentBase(a)),a);
+ const baseline=structuredClone(w),m=new WarriorMotion(),rows=[];m.observe(a,w.tick);let deathAt=null;
+ for(let local=0;local<600;local++){
+  stepCombat(w);stepCombat(baseline);
+  if(local===11){for(const x of [w,baseline])applyCombatHit(x,x.actors[1],x.actors[0],ARENA_NAV,{damage:10000,element:'physical',guaranteed:true});deathAt=w.tick;}
+  m.observe(a,w.tick);const pose=warriorPose(a,w.tick,deathAt,null,m);
+  if(JSON.stringify(w)!==JSON.stringify(baseline))throw Error('Death presentation changed simulation');
+  rows.push({tick:w.tick,pose,frame:pose.set==='death'?'death-'+pose.frame:'attacks-0',position:{...a.controller.walker.position},strike:0,deathAt});
+ }
+ if(new Set(rows.filter(r=>r.pose.set==='death').map(r=>r.pose.frame)).size!==16||rows.some(r=>r.tick>=deathAt+30&&r.pose.frame!==15)||w.events.filter(e=>e.kind==='death'&&e.target===a.id).length!==1)throw Error('Death clock, terminal hold or event changed');
+ return {rows,rules:{weapon:a.weapon,range:a.range},deathAt,deathEvents:w.events.filter(e=>e.kind==='death')};
+}
+`
+  : hitMode
+    ? `
 import {createCombat, applyCombatHit, ARENA_NAV} from './src/simulation/combat';
 import {commandCombat} from './src/simulation/combat-targeting';
 import {createMonsterExperience} from './src/simulation/monster-experience';
@@ -159,8 +190,8 @@ export function plan(){
  return {rows,cases,rules};
 }
 `
-  : abilities
-    ? `
+    : abilities
+      ? `
 import { createCombat } from './src/simulation/combat';
 import { createMonsterExperience } from './src/simulation/monster-experience';
 import { DEFAULT_XP_CURVE } from './src/simulation/experience';
@@ -199,7 +230,7 @@ export function plan(){
  return {rows,cases,rules};
 }
 `
-    : `
+      : `
 import { createCombat, stepCombat } from './src/simulation/combat';
 import { commandCombat } from './src/simulation/combat-targeting';
 import { createWalker } from './src/simulation/locomotion';
@@ -238,13 +269,14 @@ if (
   plan.rules.range !== 1.05 ||
   plan.rows.some(
     (r) =>
-      !atlas.frames[r.frame] || (!abilities && !hitMode && r.direction !== 7),
+      !atlas.frames[r.frame] ||
+      (!abilities && !hitMode && !deathMode && r.direction !== 7),
   ) ||
   plan.rows.reduce((n, r) => n + r.strike, 0) !==
-    (hitMode ? 0 : abilities ? 8 : 1)
+    (hitMode || deathMode ? 0 : abilities ? 8 : 1)
 )
   throw Error("Real staff motion/timing contract changed");
-for (const [clip, count] of abilities || hitMode
+for (const [clip, count] of abilities || hitMode || deathMode
   ? []
   : [
       ["idle", 8],
@@ -314,36 +346,48 @@ try {
     new Promise((_, reject) => page.once("pageerror", reject)),
   ]);
   // Pause only after the requested frame was selected by actual simulation.
-  for (const target of hitMode
+  for (const target of deathMode
     ? plan.rows
         .filter(
           (r, i) =>
             i === 0 ||
-            plan.rows[i + 1]?.hit ||
-            r.hit ||
-            (r.pose.set === "hit" &&
-              r.mode === "weapon" &&
-              r.bonus === 0 &&
-              r.pose.frame !== plan.rows[i - 1]?.pose.frame) ||
-            (r.pose.set !== "hit" && plan.rows[i - 1]?.pose.set === "hit"),
+            r.tick === plan.deathAt - 1 ||
+            (r.pose.set === "death" &&
+              (plan.rows[i - 1]?.pose.set !== "death" ||
+                r.pose.frame !== plan.rows[i - 1]?.pose.frame)) ||
+            r.tick === plan.deathAt + 60,
         )
         .map((r) => r.tick)
-    : abilities
+    : hitMode
       ? plan.rows
           .filter(
             (r, i) =>
-              r.strike ||
               i === 0 ||
-              (r.pose.set === "abilities" &&
-                plan.rows[i - 1]?.pose.set !== "abilities") ||
-              (r.pose.set !== "abilities" &&
-                plan.rows[i - 1]?.pose.set === "abilities"),
+              plan.rows[i + 1]?.hit ||
+              r.hit ||
+              (r.pose.set === "hit" &&
+                r.mode === "weapon" &&
+                r.bonus === 0 &&
+                r.pose.frame !== plan.rows[i - 1]?.pose.frame) ||
+              (r.pose.set !== "hit" && plan.rows[i - 1]?.pose.set === "hit"),
           )
           .map((r) => r.tick)
-      : [
-          1, 96, 192, 198, 204, 216, 312, 318, 324, 336, 431, 432, 433, 437,
-          444, 463, 480,
-        ]) {
+      : abilities
+        ? plan.rows
+            .filter(
+              (r, i) =>
+                r.strike ||
+                i === 0 ||
+                (r.pose.set === "abilities" &&
+                  plan.rows[i - 1]?.pose.set !== "abilities") ||
+                (r.pose.set !== "abilities" &&
+                  plan.rows[i - 1]?.pose.set === "abilities"),
+            )
+            .map((r) => r.tick)
+        : [
+            1, 96, 192, 198, 204, 216, 312, 318, 324, 336, 431, 432, 433, 437,
+            444, 463, 480,
+          ]) {
     await page.evaluate(async (target) => {
       const s = window.carryScene;
       s.playing = true;
@@ -394,11 +438,13 @@ try {
     throw Error(native.renderer);
   if (new Set(native.seen).size !== 600)
     throw Error("Native playback did not complete actual 600-tick plan");
-  const lightTargets = hitMode
-    ? plan.rows.filter((r) => r.hit).map((r) => r.tick)
-    : abilities
-      ? plan.rows.filter((r) => r.strike).map((r) => r.tick)
-      : [];
+  const lightTargets = deathMode
+    ? [plan.deathAt, plan.deathAt + 15, plan.deathAt + 30]
+    : hitMode
+      ? plan.rows.filter((r) => r.hit).map((r) => r.tick)
+      : abilities
+        ? plan.rows.filter((r) => r.strike).map((r) => r.tick)
+        : [];
   for (const target of lightTargets) {
     await page.evaluate(async (target) => {
       const s = window.carryScene;
@@ -461,19 +507,25 @@ try {
     timingBundleSha256: hash(await readFile(bundle)),
     rules: plan.rules,
     actualPlanTicks: plan.rows.length,
-    ...(hitMode
-      ? { actualHitReactions: plan.cases.length, cases: plan.cases }
-      : abilities
-        ? {
-            actualSkillEffects: plan.rows.reduce((n, r) => n + r.strike, 0),
-            cases: plan.cases,
-          }
-        : {
-            actualPrimaryDamageEvents: plan.rows.reduce(
-              (n, r) => n + r.strike,
-              0,
-            ),
-          }),
+    ...(deathMode
+      ? {
+          actualDeaths: plan.deathEvents.length,
+          deathAt: plan.deathAt,
+          terminalHoldTicks: plan.rows.length - plan.deathAt - 30,
+        }
+      : hitMode
+        ? { actualHitReactions: plan.cases.length, cases: plan.cases }
+        : abilities
+          ? {
+              actualSkillEffects: plan.rows.reduce((n, r) => n + r.strike, 0),
+              cases: plan.cases,
+            }
+          : {
+              actualPrimaryDamageEvents: plan.rows.reduce(
+                (n, r) => n + r.strike,
+                0,
+              ),
+            }),
     renderer: native.renderer,
     textures: native.textures,
     resourceCycles,
