@@ -1,0 +1,99 @@
+main.act1-readability {
+  padding: 0;
+  max-width: none;
+  height: 100dvh;
+  background: #131a16;
+}
+.act1-readability #world {
+  position: absolute;
+  inset: 0;
+  outline-offset: -3px;
+  outline-color: #8c8266;
+}
+.act1-caption {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  pointer-events: none;
+  text-shadow: 0 2px 4px #000;
+}
+.act1-caption h1 {
+  font-size: 26px;
+  margin: 5px 0;
+  color: #d2c4a3;
+}
+.act1-caption p {
+  margin: 0;
+  color: #bcb399;
+  font: 12px system-ui;
+  letter-spacing: 0.03em;
+}
+.act1-compare {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 340px;
+}
+.act1-readability button,
+.act1-readability a {
+  background: #191c17e8;
+  color: #c2b79c;
+  border: 1px solid #555440;
+  padding: 7px 11px;
+  font: 12px system-ui;
+  text-decoration: none;
+  border-radius: 2px;
+}
+.act1-readability button[aria-pressed="true"] {
+  background: #494735;
+  color: #eee0bd;
+  border-color: #b1a178;
+}
+.act1-compare span {
+  width: 100%;
+  text-align: right;
+  color: #c2b79c;
+  font: 11px system-ui;
+  text-shadow: 0 2px 4px #000;
+}
+.act1-controls {
+  position: absolute;
+  bottom: 18px;
+  left: 24px;
+  right: 24px;
+  color: #c2b79c;
+  font: 11px system-ui;
+  text-shadow: 0 2px 3px #000;
+}
+.act1-controls div {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+@media (max-width: 760px) {
+  .act1-caption {
+    left: 12px;
+    top: 12px;
+  }
+  .act1-caption h1 {
+    font-size: 20px;
+  }
+  .act1-caption p {
+    font-size: 10px;
+  }
+  .act1-compare {
+    top: 90px;
+    right: 12px;
+    max-width: 300px;
+  }
+  .act1-controls {
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
+  }
+}

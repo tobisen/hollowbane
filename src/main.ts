@@ -25,6 +25,9 @@ if (invalidCharacterRoute) {
   await startMainMenu(
     "This character link includes unsupported options. Choose a character from the menu; no save was loaded.",
   );
+} else if (query.get("act1readability") === "1") {
+  const { startAct1Readability } = await import("./rendering/act1-readability");
+  startAct1Readability();
 } else if (query.get("d2slice") === "1") {
   const { startDungeonSlice } = await import("./rendering/dungeon-slice");
   startDungeonSlice();
