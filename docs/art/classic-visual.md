@@ -1,4 +1,24 @@
-# Classic visual review — published candidate
+# Classic Visual Act 1 production — authorized foundation
+
+2026-10-31 · DBL-035/375/379. The user explicitly approved the visual identity of
+`65e49feab52a072dfc00fa6a4d7b29800b431f0a` and authorized Deliverables A/B/C through
+an opt-in first-outdoor release candidate. This supersedes the visual-approval
+stop below; historical release evidence remains unchanged. No default campaign
+switch, other-area migration or Warrior equipment expansion is authorized.
+
+Reusable measured specification, minimum animation coverage and campaign/save
+boundary audit: [Classic foundation](classic-foundation.md). The foundation
+increment adds read-only Warrior cast selection using existing approved poses;
+zero asset growth. Actual campaign skills/effects, ranged enemy readability,
+map/quest integration and matched native integrated performance remain B/C work.
+Local foundation validation:13 focused tests, TypeScript/scoped lint/assets/build
+and3 Chromium software scenarios pass29.3s. Screenshots reviewed. Release A must
+pass exact-commit CI/Pages/hosted/public integrity before B starts; no new native
+performance claim. All17 unrelated edits remain preserved.
+
+---
+
+# Classic visual review — published candidate (historical)
 
 2026-10-31. [Play Classic](https://tobisen.github.io/hollowbane/?classicVisual=1).
 Exact verified deployed SHA: `65e49feab52a072dfc00fa6a4d7b29800b431f0a`.

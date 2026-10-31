@@ -1,3 +1,10 @@
+## Classic Act 1 production — Release A foundation checkpoint (2026-10-31)
+
+- User approved Classic release65e49fe and authorizes A/B/C through an opt-in first-outdoor candidate; prior visual-approval stop is superseded. Default campaign/saves/other areas and Phaser4.2.1 protected; Q3-B remains paused.
+- DBL-035/375/379: measured reusable art bible and projection/contact/depth/coverage audit in docs/art/classic-foundation.md. Read-only Warrior cast selection reuses existing four-facing body poses for both abilities; no new art/asset bytes. Three actors/312 poses,9 textures,3409658PNG/42348544 calculated RGBA bytes unchanged; not GPU memory.
+  -13 focused tests, TypeScript/scoped lint/assets/build pass. Three Chromium software cases pass29.3s: movement/combat/camera/navigation, exact existing save isolation and virtual controller focus/pause/resize. Screenshots reviewed. Native baseline remains historical540 intervals16.7/16.7/16.8/16.8ms, zero>25; shrine50–66.6ms still open. No integrated performance/physical claim.
+- Campaign audit: actual forest has ranged roles; preserve them. Reuse existing combat/WorldSession infrastructure, isolated candidate ownership and map-bound snapshots; no normal save substitution. B/C not implemented. Next: push coherent Release A candidate, require selected exact-commit CI/Pages/hosted and sealed public integrity before B. Last verified deployed65e49feab52a072dfc00fa6a4d7b29800b431f0a/CI41154541089. All17 prior dirty files preserved; only this STATUS prefix belongs to the increment.
+
 ## Classic visual completion — published, human review pending (2026-10-31)
 
 - Verified public SHA65e49feab52a072dfc00fa6a4d7b29800b431f0a: CI41154541089 Full/static/units/tooling,332 Chromium,15 compatibility, Pages/hosted/final acceptance pass. All189 public files independently byte-verified against the identical sealed manifest. Review https://tobisen.github.io/hollowbane/?classicVisual=1 . Four additional hosted native Metal cases pass40.608s, zero skipped/flaky/errors; screenshots reviewed. Exact save protection, rejected owner modifiers, virtual controller and original production Warrior creation retained.

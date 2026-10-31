@@ -1,4 +1,5 @@
 import type { CombatActor } from "../simulation/combat";
+import type { Cast } from "../simulation/skills";
 import { WarriorMotion, warriorPose } from "./warrior-pose";
 
 export type ClassicActorKind = "warrior" | "raider" | "runner";
@@ -46,14 +47,17 @@ export function classicActorFrame(
   deathAt: number | null,
   motion: WarriorMotion,
   kind: ClassicActorKind,
+  cast: Cast | null = null,
 ) {
-  const pose = warriorPose(actor, tick, deathAt, null, motion);
+  // Share approved body poses for both Warrior abilities. The cast and effect
+  // renderer remain authoritative; this selector never emits gameplay events.
+  const pose = warriorPose(actor, tick, deathAt, cast, motion);
   const clip =
     pose.set === "movement"
       ? actor.controller.walker.walking
         ? "walk"
         : "idle"
-      : pose.set === "attacks"
+      : pose.set === "attacks" || pose.set === "abilities"
         ? "primary"
         : pose.set === "hit"
           ? "hit"
@@ -63,7 +67,9 @@ export function classicActorFrame(
   const index =
     pose.set === "movement" && clip === "walk"
       ? pose.frame - (actor.controller.walker.gait === "run" ? 24 : 8)
-      : pose.frame;
+      : pose.set === "abilities"
+        ? pose.frame % 12
+        : pose.frame;
   const sampled =
     CLASSIC_SAMPLES[clip].filter((sample) => sample <= index).at(-1) ?? 0;
   const view = CLASSIC_VIEWS[actor.controller.walker.direction]!;
