@@ -16,6 +16,26 @@ and3 Chromium software scenarios pass29.3s. Screenshots reviewed. Release A must
 pass exact-commit CI/Pages/hosted/public integrity before B starts; no new native
 performance claim. All17 unrelated edits remain preserved.
 
+Release A candidate: `954032834f88ea2cc02570851ecca3d56f30e391`, pushed normally
+following a successful dry-run. Required Full
+[CI41228393310](https://github.com/tobisen/hollowbane/actions/runs/41228393310)
+is pending at this session checkpoint (last observation: dependency installation).
+No new Pages/hosted/public integrity acceptance is claimed. Last verified public
+SHA remains `65e49feab52a072dfc00fa6a4d7b29800b431f0a`/CI41154541089.
+
+Resume release verification only before B: inspect that exact run and resolve any
+actual failure; require successful Full/verify/deploy/hosted/release jobs. Download
+its `release-bundle` into `/private/tmp/hollowbane-classic-foundation-release`,
+verify its sealed SHA with `tools/ci/release_artifact.py verify`, then run that
+script's `hosted` command against the public URL to compare all published bytes.
+Run the four additional hosted Classic/default-Warrior checks using
+`/private/tmp/hollowbane-classic-foundation-hosted.config.mjs`; inspect captures.
+Raw local browser evidence: `/private/tmp/hollowbane-classic-foundation-browser/`.
+CI observation and selected Full reasons: `/private/tmp/hollowbane-classic-foundation-ci.json`
+and `hollowbane-classic-foundation-plan.log`. After Release A acceptance, implement
+B using the existing campaign and a disposable ownership boundary described in
+`classic-foundation.md`. No background work or integrated-campaign completion claim.
+
 ---
 
 # Classic visual review — published candidate (historical)
