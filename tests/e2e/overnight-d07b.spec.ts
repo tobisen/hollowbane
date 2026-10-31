@@ -153,6 +153,22 @@ test("virtual controller locks and damages the campaign miniboss with the normal
   await page.screenshot({
     path: testInfo.outputPath("cairnwarden-warning.png"),
   });
+  // A single normal skill tap can legitimately be interrupted by the strike
+  // whose warning we just captured. Test controller damage in its recovery
+  // window, after the player's hitstun, without changing either combatant.
+  await expect
+    .poll(() =>
+      page.evaluate((id) => {
+        const actors = window.hollowbaneCombat!.actors;
+        const boss = actors.find((actor) => actor.id === id)!;
+        return (
+          boss.phase === "recovery" &&
+          boss.remaining >= 30 &&
+          actors[0]!.phase === "idle"
+        );
+      }, fixture.id),
+    )
+    .toBe(true);
   await pressVirtualButton(page, 0);
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneBoss?.health), {

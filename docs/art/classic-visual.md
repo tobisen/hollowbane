@@ -145,7 +145,23 @@ passes twice59.6s. TypeScript/scoped lint/format pass. Runtime bytes are unchang
 Raw failures: shard4-annotations.json; local replays: ab-repair* in the review
 folder. No failed CI gate was bypassed.
 
-Next: publish the verified browser setup repair, run required exact-commit Full CI, verify
+Candidate97d9cc9/CI41151682120 passed the repaired A/B shard and the Classic
+cases, static, units/tooling and compatibility, but two other campaign checks
+failed: D07b's single controller skill tap left the miniboss at360HP; D10 read
+the old bag after a confirmed stash transfer. Pages correctly remained blocked.
+D10 reproduced twice locally with the software renderer; its copied stash status
+could report a prior save before the authoritative inventory status completed the
+current write. The test helper now waits on the authoritative status first,
+retaining the exact saved item, embedded identity, ownership and revision checks.
+D07b passed both original local replays; interruption is a timing hypothesis,
+consistent with unchanged skill hitstun/rejection rules. Its damage check now
+waits for the actual boss recovery/player idle window after capturing the warning,
+then uses the same single controller tap. No health, timing, balance, timeout,
+save or runtime code changes. Raw evidence: final-candidate-jobs.json,
+failure-*.json, campaign-blockers-before.json and campaign-blockers-repaired.json
+under the review directory. Final replay counts are recorded in STATUS.
+
+Next: publish the verified campaign replay repair, require exact-commit Full CI, verify
 Pages/hosted Classic and campaign protection, independently verify public bytes,
 then stop for user visual approval. Last verified public deployment remains
 `c4f38010814b6ec39d489023f550f122c9b8fd99`/CI41100773664 until that verification.

@@ -58,6 +58,11 @@ async function openStash(page: Page) {
   await expect(page.locator("#camp-stash")).toBeVisible();
 }
 async function saved(page: Page) {
+  // The stash mirrors this status on the next render frame and can still show
+  // the previous successful save while the current transfer is being written.
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint saved locally.",
+  );
   await expect(page.locator("#stash-save-status")).toHaveText(
     "Character checkpoint saved locally.",
   );

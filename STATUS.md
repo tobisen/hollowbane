@@ -1,3 +1,10 @@
+## Classic release gate — campaign replay synchronization (2026-10-31)
+
+- DBL-035/375/379:97d9cc9/CI41151682120 passed repaired A/B and Classic cases, static/units/tooling/compatibility; two other campaign cases blocked publication. D07b's one controller skill tap left boss360HP; D10 read the pre-transfer saved bag. Verified public remainsc4f38010814b6ec39d489023f550f122c9b8fd99/CI41100773664; no hosted Classic claim.
+- D10 failure reproduced twice locally: stash status mirrors the previous save until a render frame; authoritative inventory status was still writing. Test helper now waits on the authoritative status before the mirror and exact saved identity/ownership checks. D07b did not fail in two original local replays; valid hitstun/interruption is a timing hypothesis. Test now waits for actual boss recovery/player idle after the warning capture before the unchanged single controller tap. No runtime, save, combat, timeout or CI-tier changes.
+- Six repaired software replays pass57.5s (miniboss and both stash flows twice); TypeScript/scoped lint/format pass. Raw failures/replays and exact interpretation in docs/art/classic-visual.md and /private/tmp/hollowbane-classic-review/. Runtime/assets remain byte-identical to the locally reviewed candidate.
+- Next: push this verified test-only increment; require exact-commit Full CI, Pages, hosted Classic/default/save checks and189-file sealed integrity before declaring public review. Preserve17 unrelated edits; human art approval pending, no mass production/Q3-B/campaign migration. Local comparison /private/tmp/hollowbane-classic-review/review.html.
+
 ## Classic release gate — A/B browser synchronization repair (2026-10-31)
 
 - DBL-035/375/379: runtime candidate9f60cc4 unchanged. First CI41148758459 stopped on one STATUS separator; repaired3489feb/CI41148980813 passed static, all units/validators/tooling,15 compatibility cases and three Chromium shards. Shard4 failed two existing A/B browser checks; deployment correctly blocked. Verified public remainsc4f38010814b6ec39d489023f550f122c9b8fd99/CI41100773664.
