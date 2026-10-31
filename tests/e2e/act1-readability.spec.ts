@@ -120,7 +120,15 @@ test("outdoor A/B retains eight-direction input, exact reset, stable camera and 
       path: testInfo.outputPath(`outdoor-${variant}-start.png`),
     });
   }
+  // Hold the existing blur pause across the scene restart. Otherwise patrols
+  // advance between snapshots and the comparison measures different ticks.
+  await page.locator("#world").evaluate((element) => {
+    const field = element as HTMLElement;
+    field.addEventListener("focus", () => field.blur(), { once: true });
+    field.blur();
+  });
   const before = await page.evaluate(() => ({
+    tick: window.hollowbaneAct1!.tick,
     position: window.hollowbaneAct1!.position,
     actors: window.hollowbaneAct1!.actors,
   }));
@@ -130,6 +138,7 @@ test("outdoor A/B retains eight-direction input, exact reset, stable camera and 
     .toBe("a");
   expect(
     await page.evaluate(() => ({
+      tick: window.hollowbaneAct1!.tick,
       position: window.hollowbaneAct1!.position,
       actors: window.hollowbaneAct1!.actors,
     })),
@@ -167,16 +176,27 @@ test("outdoor A supports real combat and the complete clearing loop by ground cl
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneAct1!.position.x))
     .toBeGreaterThan(24);
-  const ids = await page.evaluate(() =>
-    window.hollowbaneAct1!.actors.filter((a) => a.id !== 0).map((a) => a.id),
-  );
+  // Stop the running camera through the real focus gate before aiming. Pick
+  // the uppermost head so another actor's body cannot cover the click region.
+  await page
+    .locator("#world")
+    .evaluate((element) => (element as HTMLElement).blur());
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneAct1!.moving))
+    .toBe(false);
+  const canvas = await page.locator("canvas").boundingBox();
+  if (!canvas) throw Error("Missing outdoor combat canvas");
+  // Pointerdown resumes the field after the paused coordinates are consumed.
+  const initial = await page.evaluate(() => window.hollowbaneAct1!);
+  const ids = initial.actors
+    .filter((a) => a.id !== 0)
+    .sort((a, b) => a.position.x + a.position.y - (b.position.x + b.position.y))
+    .map((a) => a.id);
   for (const [index, id] of ids.entries()) {
     if (index === 0) {
-      const state = await page.evaluate(() => window.hollowbaneAct1!);
+      const state = initial;
       const actor = state.actors.find((actor) => actor.id === id)!;
       const point = act1Project(actor.position, state.variant);
-      const canvas = await page.locator("canvas").boundingBox();
-      if (!canvas) throw Error("Missing outdoor combat canvas");
       // Actual head-region click: the shared short-body picker missed this art.
       await page.mouse.click(
         canvas.x + canvas.width / 2 + point.x - state.camera.x,

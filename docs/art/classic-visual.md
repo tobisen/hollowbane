@@ -93,6 +93,24 @@ claimed. Raw conditions/positions/timestamps: `profile.json` and
 `production-warrior/profile.json` in the review directory. Separate recording
 cohorts are excluded from these figures.
 
+## Additional live checks
+
+Additional local release evidence (2026-10-31): real-input361-frame boundary
+audit stays walkable at the unchanged actor radius and deflects1.0 world unit
+from the requested unobstructed diagonal. Actual Warrior hit poses and both
+enemies' six death samples are observed; texture count remains9; player survives
+with250HP. Native check passes25.0s. The first additional driver assumed a fixed
+kill order after allowing an enemy hit; it was corrected to observe the existing
+nearest-target behavior, without changing runtime, deadlines or assertions about
+pose coverage. Failed evidence remains in contact-test/.
+
+Separate real-navigation request profile: three repetitions each of edge,
+clearing and shrine,34 measured RAF intervals per request. Edge/clearing maxima
+16.8ms with zero>25ms. Shrine maxima66.6/50.0/66.6ms, one>25ms each; zero errors.
+This retains the known long-route pathfinding hitch and is excluded from the
+steady horizontal movement table. No claim that every gameplay frame stays
+below25ms. Raw contact.json and click-profile.json in the review directory.
+
 ## Validation and release state
 
 Thirteen focused units pass, including all atlas/source identities, pixel borders,
@@ -113,7 +131,21 @@ join; corrected without touching unrelated working changes. Changed committed
 files otherwise pass formatting; nine release-tooling contracts also pass. No
 threshold, assertion or CI tier changed.
 
-Next: publish the formatting repair, run required exact-commit Full CI, verify
+Candidate3489feb/CI41148980813 passed static, all units/validators/tooling,
+compatibility and three Chromium shards; shard4 failed two existing A/B study
+checks, so Pages remained blocked. One compared patrolling enemies across
+unequal ticks; the other sampled a running camera and clicked a head that could
+be covered by the other enemy. The repair holds the existing blur pause through
+the presentation restart, adds tick equality to the unchanged complete-state
+assertion, and keeps the camera/enemies paused until an actual uppermost-head
+pointer click resumes play. Both enemy-death assertions and all deadlines remain;
+no runtime/simulation change. The first repaired software replay passes both
+cases twice (four passes,1.4m); final paused-pointer combat/loop verification also
+passes twice59.6s. TypeScript/scoped lint/format pass. Runtime bytes are unchanged.
+Raw failures: shard4-annotations.json; local replays: ab-repair* in the review
+folder. No failed CI gate was bypassed.
+
+Next: publish the verified browser setup repair, run required exact-commit Full CI, verify
 Pages/hosted Classic and campaign protection, independently verify public bytes,
 then stop for user visual approval. Last verified public deployment remains
 `c4f38010814b6ec39d489023f550f122c9b8fd99`/CI41100773664 until that verification.
