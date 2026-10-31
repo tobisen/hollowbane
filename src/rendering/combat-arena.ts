@@ -1,3 +1,8 @@
+import type { ClassicCampaign } from "./classic-campaign";
+import { classicCheckpoint } from "./classic-checkpoint";
+import { classicCampaignLayout } from "../simulation/classic-act1-layout";
+import { worldLayout } from "../simulation/world-layout";
+import { act1Project, act1Unproject } from "../world/act1-view";
 import { bossHooks } from "../simulation/boss";
 import { installBossTrial } from "../simulation/boss-trial";
 import { installCryptBossTrial } from "../simulation/crypt-boss";
@@ -102,7 +107,10 @@ import {
 } from "../simulation/combat";
 import { commandCombat, hoverTarget } from "../simulation/combat-targeting";
 import { movementFrame } from "../simulation/locomotion";
-import { fromGround, onGround } from "../world/navigation";
+import {
+  fromGround as normalFromGround,
+  onGround as normalOnGround,
+} from "../world/navigation";
 import { clientToGround } from "../world/view";
 import type { Point } from "../world/isometric";
 const percentile = (values: readonly number[], p: number): number => {
@@ -161,6 +169,8 @@ declare global {
       seed: number;
       contentVersion: number;
       fingerprint: string;
+      textures?: number;
+      decodedRgbaBytes?: number;
       routeToExit?: (id: string) => Point[];
       routeToObjective?: () => Point[];
       routeToWaypoint?: () => Point[];
@@ -220,10 +230,22 @@ declare global {
     };
   }
 }
-export function startCombatArena(monsters = false): Phaser.Game {
+export function startCombatArena(
+  monsters = false,
+  classicPresentation?: typeof ClassicCampaign,
+): Phaser.Game {
   const query = new URLSearchParams(location.search);
-  const exploring = query.has("world");
-  const developerWorld = exploring && query.get("developer") === "1";
+  const classicAct1 = query.get("classicAct1") === "1";
+  if (classicAct1 && !classicPresentation)
+    throw Error("Classic presentation module was not initialized");
+  const playerControls = classicAct1 || query.has("character");
+  const layouts = classicAct1 ? classicCampaignLayout : worldLayout;
+  const candidateClass = CLASS_IDS.includes(query.get("class") as ClassId)
+    ? (query.get("class") as ClassId)
+    : "warrior";
+  const exploring = classicAct1 || query.has("world");
+  const developerWorld =
+    classicAct1 || (exploring && query.get("developer") === "1");
   const cryptBossTrial = developerWorld && query.has("cryptBossTrial");
   const peacefulWorld =
     developerWorld && !cryptBossTrial && query.get("worldPeaceful") === "1";
@@ -237,9 +259,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
       : 42;
   const testArea = cryptBossTrial
     ? "ancient-crypt"
-    : AREA_IDS.includes(query.get("worldArea") as AreaId)
-      ? (query.get("worldArea") as AreaId)
-      : "ashen-refuge";
+    : classicAct1
+      ? "haunted-forest"
+      : AREA_IDS.includes(query.get("worldArea") as AreaId)
+        ? (query.get("worldArea") as AreaId)
+        : "ashen-refuge";
   const testRun = /^\d{1,9}$/.test(query.get("expedition") ?? "")
     ? query.get("expedition")!
     : "0";
@@ -252,9 +276,16 @@ export function startCombatArena(monsters = false): Phaser.Game {
         developerWorld ? testSeed : 42,
         2,
         developerWorld ? testArea : "ashen-refuge",
+        layouts,
       )
     : null;
   let travel = worldSession?.travel ?? null;
+  const classicForest = () =>
+    classicAct1 && travel?.state.area === "haunted-forest";
+  const onGround = (p: Point): Point =>
+    classicForest() ? act1Project(p, "b") : normalOnGround(p);
+  const fromGround = (p: Point): Point =>
+    classicForest() ? act1Unproject(p, "b") : normalFromGround(p);
   const labId = query.get("classLab");
   const classLab =
     !exploring &&
@@ -279,6 +310,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     : monsters
       ? ENCOUNTER_NAV
       : ARENA_NAV;
+  if (classicAct1) nav.layouts = layouts;
   const root = document.querySelector("main")!;
   root.className = "combat-arena";
   root.innerHTML = `<div id="combat-world" tabindex="0" role="application" aria-label="Combat arena. Click targets to attack, hold to repeat. Click ground or WASD to move. Space stops queued actions."></div><header class="arena-header"><p>HOLLOWBANE / PHASE III</p><h1>The Ashwood Trial</h1><a href="?cloister=1">Return to the cloister</a></header><aside class="arena-panel"><h2>Combat laboratory</h2><label>Weapon <select id="combat-weapon"><option value="melee">Melee blade</option><option value="projectile">Training bolt</option></select></label><label>Attack speed <select id="combat-speed"><option value="0">+0</option><option value="20">+20</option><option value="50">+50</option><option value="90">+90</option></select></label><label>Hit recovery <select id="combat-recovery"><option value="0">+0</option><option value="25">+25</option><option value="60">+60</option></select></label><label>Hostile sentinel <input id="combat-hostile" type="checkbox" checked></label><label>Impact sound <input id="combat-sound" type="checkbox" checked></label><button id="combat-reset">Reset trial</button><button id="combat-pause" aria-pressed="false">Pause</button><output id="combat-diagnostics" aria-live="off">Preparing trial…</output></aside><footer class="arena-footer"><strong>CLICK TARGET · HOLD TO REPEAT</strong> / CLICK GROUND OR WASD TO MOVE / SPACE TO STOP<br>Movement waits for attack recovery. Bolts can miss moving targets. Reset restores the same seed.<div id="combat-log" role="status">Select a target to begin.</div></footer>`;
@@ -331,7 +363,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
   const hostile = document.querySelector<HTMLInputElement>("#combat-hostile")!;
   const sound = document.querySelector<HTMLInputElement>("#combat-sound")!;
   if (classLab) hostile.checked = false;
-  if (developerWorld) {
+  if (developerWorld && !classicAct1) {
     const controls = document.createElement("form");
     controls.className = "world-developer";
     controls.style.cssText =
@@ -348,7 +380,35 @@ export function startCombatArena(monsters = false): Phaser.Game {
     };
     root.append(controls);
   }
+  if (classicAct1) {
+    root.classList.add("classic-act1");
+    const title = root.querySelector<HTMLAnchorElement>(".arena-header > a");
+    if (title) {
+      title.href = "./";
+      title.textContent = "Return to title";
+    }
+    root.insertAdjacentHTML(
+      "beforeend",
+      '<nav id="classic-act1-tools" style="position:fixed;bottom:8px;right:10px;z-index:45;background:#181d15dc;color:#dccba8;padding:5px;font-size:11px"><span id="classic-act1-indicator" hidden>CLASSIC ACT 1 · isolated save</span> · <a href="?classicAct1=1&amp;class=warrior">Warrior</a> · <a href="?classicAct1=1&amp;class=sorcerer">Sorcerer</a> · <a href="?classicAct1=1&amp;class=ranger">Ranger</a> · <a href="./">Title</a></nav>',
+    );
+    window.addEventListener("error", (event) => {
+      delete document.documentElement.dataset.classicAct1;
+      const indicator = root.querySelector<HTMLElement>(
+        "#classic-act1-indicator",
+      );
+      if (indicator) indicator.hidden = true;
+      const error = document.createElement("p");
+      error.setAttribute("role", "alert");
+      error.id = "classic-act1-error";
+      error.style.cssText =
+        "position:fixed;top:10px;left:10px;z-index:100;background:#341f16;padding:12px;color:white";
+      error.textContent = `Classic Act 1 initialization/runtime failed: ${event.message}`;
+      root.append(error);
+    });
+  }
   class Arena extends Phaser.Scene {
+    private classic: ClassicCampaign | null = null;
+    private classicLayoutReady = false;
     private warrior: WarriorProduction | null = null;
     private warriorMotion = new WarriorMotion();
     private worldEncounter: WorldEncounterRuntime | null = null;
@@ -412,7 +472,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
     private guidanceCollected = false;
     private balancedDetail = false;
     private automaticDetail = false;
-    private presentation = query.has("character")
+    private presentation = playerControls
       ? loadPresentation()
       : readPresentation(null);
     private playerBindings = safePlayerBindings(
@@ -554,11 +614,58 @@ export function startCombatArena(monsters = false): Phaser.Game {
           target,
         );
       };
+      if (classicAct1) {
+        const active = Boolean(
+          this.classicLayoutReady && this.inventoryView?.worldReady,
+        );
+        root.querySelector<HTMLElement>("#classic-act1-indicator")!.hidden =
+          !active;
+        document.documentElement.dataset.classicAct1 = active
+          ? "active"
+          : "loading";
+        if (active)
+          window.hollowbaneClassicAct1 = {
+            area: travel.state.area,
+            groundCells: travel.layout.map.terrain.cells.filter(
+              (c) => c === "ground",
+            ).length,
+            actorTextures: [...this.sprites].map(([id, sprite]) => ({
+              id,
+              texture: sprite.texture.key,
+              frame: sprite.frame.name,
+            })),
+            textures: this.textures.getTextureKeys(),
+            classId: this.world.experience.skills.classId,
+          };
+        else delete window.hollowbaneClassicAct1;
+      }
       window.hollowbaneWorld = {
         area: travel.state.area,
         seed: travel.state.seed,
         contentVersion: worldSession!.contentVersion,
         fingerprint: layoutFingerprint(travel.layout),
+        textures: this.textures.getTextureKeys().length,
+        decodedRgbaBytes: this.textures
+          .getTextureKeys()
+          .reduce(
+            (sum, key) =>
+              sum +
+              this.textures
+                .get(key)
+                .source.reduce(
+                  (bytes, source) =>
+                    bytes +
+                    (source.image instanceof HTMLImageElement
+                      ? source.image.naturalWidth * source.image.naturalHeight
+                      : source.image instanceof HTMLCanvasElement
+                        ? source.image.width * source.image.height
+                        : Math.ceil(source.width * source.resolution) *
+                          Math.ceil(source.height * source.resolution)) *
+                      4,
+                  0,
+                ),
+            0,
+          ),
         camera: {
           x: this.cameras.main.worldView.x,
           y: this.cameras.main.worldView.y,
@@ -627,7 +734,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
           ? root.querySelector(".skill-bar")!.getBoundingClientRect().top
           : null,
       );
-      this.cameras.main.setZoom(framing.scale * size.ratio);
+      this.cameras.main.setZoom(
+        classicForest() ? size.ratio : framing.scale * size.ratio,
+      );
       this.cameras.main.centerOn(framing.center.x, framing.center.y);
     };
     private applyPlayerSettings = (): void => {
@@ -652,6 +761,12 @@ export function startCombatArena(monsters = false): Phaser.Game {
         ),
         "KeyR",
       ]);
+      if (classicAct1) {
+        const notice = root.querySelector("#inventory-laboratory-notice");
+        if (notice)
+          notice.textContent =
+            "Classic Act 1 · isolated developer checkpoint · item requirements apply.";
+      }
     };
     private renderAt = 0;
     private inputAt: number | null = null;
@@ -670,6 +785,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       if (values.length > 300) values.shift();
     }
     preload(): void {
+      if (classicAct1) classicPresentation!.preload(this);
       const base = import.meta.env.BASE_URL + "assets/";
       this.load.image("arena-plate", base + "cloister.webp");
       if (exploring) {
@@ -688,7 +804,24 @@ export function startCombatArena(monsters = false): Phaser.Game {
       });
     }
     create(): void {
-      if (exploring) this.warrior = new WarriorProduction(this, root);
+      if (classicAct1) {
+        try {
+          this.classic = new classicPresentation!(this);
+        } catch (error) {
+          delete document.documentElement.dataset.classicAct1;
+          const message = document.createElement("p");
+          message.id = "classic-act1-error";
+          message.setAttribute("role", "alert");
+          message.style.cssText =
+            "position:fixed;top:10px;left:10px;z-index:100;background:#341f16;color:white;padding:12px";
+          message.textContent = `Classic Act 1 initialization failed: ${String(error)}`;
+          root.append(message);
+          this.scene.stop();
+          return;
+        }
+      }
+      if (exploring && !classicAct1)
+        this.warrior = new WarriorProduction(this, root);
       if (loot)
         this.lootView = new LootView(
           root,
@@ -701,6 +834,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               ? EQUIPMENT_CONTENT
               : undefined,
           itemLab ? 40 : 12,
+          onGround,
         );
       if (inventory && this.lootView)
         this.inventoryRuntime = new InventoryRuntime(
@@ -722,7 +856,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
                     this.lootView!.world,
                   ),
                 prepare: (session) => {
-                  const restored = new WorldSession(session.exploration);
+                  const restored = new WorldSession(
+                    session.exploration,
+                    42,
+                    2,
+                    "ashen-refuge",
+                    layouts,
+                  );
                   const candidateNav = areaNavigation(
                     restored.travel.layout.map,
                   );
@@ -772,9 +912,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
           }),
           itemLab,
           testStorage,
-          query.has("character")
-            ? new CharacterCheckpoint(query.get("character")!, exploring)
-            : undefined,
+          classicAct1
+            ? classicCheckpoint(nav, candidateClass)
+            : query.has("character")
+              ? new CharacterCheckpoint(query.get("character")!, exploring)
+              : undefined,
         );
       controllerInput.movementKeys = new Set([
         "KeyW",
@@ -823,8 +965,11 @@ export function startCombatArena(monsters = false): Phaser.Game {
         this.events.once("shutdown", () => this.minimap?.destroy());
       }
       if (travel)
-        this.containerView = new ContainerView(this, root, (id) =>
-          this.openContainer(id),
+        this.containerView = new ContainerView(
+          this,
+          root,
+          (id) => this.openContainer(id),
+          onGround,
         );
       if (travel) {
         this.world.actors = [this.world.actors[0]!];
@@ -945,6 +1090,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               this.inventoryRuntime!.session(),
               intent,
               waypointContext(),
+              layouts,
             );
             if (!result.ok) return { ok: false, message: result.reason };
             // Keep the same self-applied effects as ordinary area transitions.
@@ -1048,7 +1194,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
       } else this.balancedDetail = true;
       this.automaticDetail = this.balancedDetail;
       const resize = this.syncResolution;
-      if (query.has("character")) {
+      if (playerControls) {
         this.applyPlayerSettings();
         this.applyKeyboardSettings();
         window.addEventListener(
@@ -1078,6 +1224,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
               alive: a.hp > 0,
             })),
           onGround,
+          classicForest() ? { width: 28, height: 54, offset: 46 } : undefined,
         );
       const down = (event: PointerEvent) => {
         if (
@@ -1163,7 +1310,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
         if (polish && sound.checked && !event.repeat)
           void this.soundBank.unlock();
-        if (query.has("character")) {
+        if (playerControls) {
           if (this.playerBindings.stop.includes(event.code)) {
             event.preventDefault();
             stop();
@@ -1208,9 +1355,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         }
       };
       const keyup = (event: KeyboardEvent) =>
-        this.keys.delete(
-          query.has("character") ? event.code : event.key.toLowerCase(),
-        );
+        this.keys.delete(playerControls ? event.code : event.key.toLowerCase());
       const context = (e: Event) => {
         if (skills) e.preventDefault();
       };
@@ -1280,7 +1425,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         pause.textContent = this.paused ? "Resume" : "Pause";
         pause.setAttribute("aria-pressed", String(this.paused));
       };
-      const playerMenu = query.has("character")
+      const playerMenu = playerControls
         ? new PlayerMenu(
             root,
             () => Boolean(this.inventoryView?.worldReady),
@@ -1320,7 +1465,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         root.querySelector(".polish-navigation")!.append(audioButton);
         audioButton.onclick = () => {
           const status = this.soundBank.status();
-          if (query.has("character")) {
+          if (playerControls) {
             const muted = status.state === "running" && !status.muted;
             savePresentation({ ...this.presentation, muted });
             if (!muted) void this.soundBank.unlock();
@@ -1336,7 +1481,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           }
         };
         sound.onchange = () => {
-          if (query.has("character"))
+          if (playerControls)
             savePresentation({ ...this.presentation, muted: !sound.checked });
           else this.soundBank.setMuted(!sound.checked);
           if (sound.checked) void this.soundBank.unlock();
@@ -1361,7 +1506,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           "hollowbane-keyboard-change",
           this.applyKeyboardSettings,
         );
-        if (query.has("character")) controllerInput.movementKeys.clear();
+        if (playerControls) controllerInput.movementKeys.clear();
         window.removeEventListener("keydown", keydown);
         window.removeEventListener("keyup", keyup);
         window.removeEventListener("blur", stop);
@@ -1710,6 +1855,18 @@ export function startCombatArena(monsters = false): Phaser.Game {
                 )[brain.role],
           );
       }
+      if (classicForest())
+        this.classic?.actor(
+          a,
+          this.world.tick,
+          this.motion[a.id]?.deathAt ?? null,
+          this.abilities?.users.find((u) => u.actor === a.id)?.cast ?? null,
+          p,
+          sprite,
+          this.contactShadows.get(a.id),
+          brain?.role,
+          this.world.experience.skills.classId,
+        );
       if (
         this.boss?.definition.id === "cairnwarden-rhusk" &&
         this.boss.state.actor === a.id
@@ -1906,7 +2063,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
         shouldBalanceDetail(
           this.frames,
           start - this.startedAt,
-          query.has("character") && this.presentation.quality !== "auto",
+          playerControls && this.presentation.quality !== "auto",
         )
       ) {
         this.balancedDetail = true;
@@ -1948,7 +2105,7 @@ export function startCombatArena(monsters = false): Phaser.Game {
           return;
         }
       }
-      const keys = query.has("character")
+      const keys = playerControls
         ? movementVector(this.keys, this.playerBindings)
         : {
             x:
@@ -2196,6 +2353,9 @@ export function startCombatArena(monsters = false): Phaser.Game {
               this.world.tick,
             );
           if (this.warrior) this.warriorMotion.observe(player, this.world.tick);
+          if (classicForest())
+            for (const a of this.world.actors)
+              this.classic?.observe(a, this.world.tick);
           for (const event of this.world.events)
             if (event.tick === this.world.tick) {
               this.feedback(event);
@@ -2248,9 +2408,27 @@ export function startCombatArena(monsters = false): Phaser.Game {
           this.accumulator = 0;
         }
         if (this.worldFloor && this.drawnLayout !== travel.layout) {
-          drawWorldFloor(this.worldFloor, travel.layout);
+          this.worldFloor.clear();
+          if (!classicForest()) drawWorldFloor(this.worldFloor, travel.layout);
           this.campEnvironment?.draw(travel.layout);
-          this.environment?.draw(travel.layout);
+          this.environment?.draw(
+            classicForest()
+              ? layouts("ashen-refuge", travel.state.seed, 2)
+              : travel.layout,
+          );
+          this.classic?.draw(travel.layout, classicForest());
+          this.classicLayoutReady = Boolean(
+            this.classic &&
+            layoutFingerprint(travel.layout) ===
+              layoutFingerprint(
+                layouts(
+                  travel.state.area,
+                  travel.state.seed,
+                  worldSession!.contentVersion,
+                ),
+              ),
+          );
+          if (classicAct1) this.syncResolution();
           this.drawnLayout = travel.layout;
         }
         const expedition = worldSession!.expedition;
@@ -2329,10 +2507,13 @@ export function startCombatArena(monsters = false): Phaser.Game {
           root.querySelector(".skill-bar")!.getBoundingClientRect().top,
         );
         const focus = onGround(player.controller.walker.position);
-        this.cameras.main.centerOn(
-          focus.x,
-          focus.y + (innerHeight - framing.playBottom) / (2 * framing.scale),
-        );
+        if (classicForest())
+          this.cameras.main.centerOn(Math.round(focus.x), Math.round(focus.y));
+        else
+          this.cameras.main.centerOn(
+            focus.x,
+            focus.y + (innerHeight - framing.playBottom) / (2 * framing.scale),
+          );
         root.querySelector(".arena-header h1")!.textContent = areaDefinition(
           travel.state.area,
         ).name;
@@ -2701,8 +2882,14 @@ export function startCombatArena(monsters = false): Phaser.Game {
     scene: Arena,
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
     banner: false,
-    render: { antialias: true, roundPixels: false },
+    render: { antialias: true, roundPixels: classicAct1 },
   });
+  if (classicAct1)
+    game.events.once(Phaser.Core.Events.DESTROY, () => {
+      root.querySelector("#classic-act1-tools")?.remove();
+      delete document.documentElement.dataset.classicAct1;
+      delete window.hollowbaneClassicAct1;
+    });
   if (developerWorld && query.get("profile") === "1") {
     window.hollowbaneProfileGame = game;
     game.events.once(Phaser.Core.Events.DESTROY, () => {

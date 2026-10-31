@@ -1,0 +1,22 @@
+.classic-act1 #classic-act1-tools {
+  top: 12px;
+  left: 50%;
+  right: auto !important;
+  bottom: auto !important;
+  width: max-content;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font:
+    11px Georgia,
+    serif;
+}
+.classic-act1 #classic-act1-tools a {
+  display: inline-block;
+  margin: 0 2px;
+  padding: 3px 6px;
+  font-size: 11px;
+  min-height: 0;
+}
+.classic-act1 .polish-navigation > a {
+  display: none;
+}

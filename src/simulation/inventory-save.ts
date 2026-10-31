@@ -80,9 +80,10 @@ function validateBody(
   exploration = false,
 ): InventorySession {
   const b = record(value);
+  const layouts = nav?.layouts ?? worldLayout;
   const world =
     exploration && b.exploration !== undefined
-      ? validateExploration(b.exploration)
+      ? validateExploration(b.exploration, layouts)
       : undefined;
   keys(
     b,
@@ -228,7 +229,7 @@ function validateBody(
     session,
     world
       ? areaNavigation(
-          worldLayout(world.area, world.seed, world.contentVersion).map,
+          layouts(world.area, world.seed, world.contentVersion).map,
         )
       : nav,
   );

@@ -21,6 +21,18 @@ const nav: Navigation = {
 };
 const target = { id: 1, position: { x: 3, y: 0 }, alive: true };
 describe("targeting and commitment", () => {
+  it("selects the taller Classic head envelope without changing legacy hover or dead-target exclusion", () => {
+    const head = { x: 3, y: -88 };
+    const region = { width: 28, height: 54, offset: 46 };
+    expect(hoverTarget(head, [target], (p) => p)).toBeNull();
+    expect(hoverTarget(head, [target], (p) => p, region)).toBe(1);
+    expect(
+      hoverTarget({ x: 3, y: -108 }, [target], (p) => p, region),
+    ).toBeNull();
+    expect(
+      hoverTarget(head, [{ ...target, alive: false }], (p) => p, region),
+    ).toBeNull();
+  });
   it("approaches a reachable graveyard target when its ideal melee stopping point is obstructed", () => {
     const navigation = areaNavigation(
       worldLayout("forgotten-graveyard", 42, 2).map,

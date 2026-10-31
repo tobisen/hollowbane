@@ -59,16 +59,17 @@ export class WorldSession {
     seed = 42,
     contentVersion = GENERATED_WORLD_VERSION,
     initialArea: AreaId = "ashen-refuge",
+    private readonly layouts = worldLayout,
   ) {
     this.snapshot = snapshot
-      ? validateExploration(snapshot)
+      ? validateExploration(snapshot, this.layouts)
       : {
           version: 2,
           containers: { version: 1, gold: 0, opened: [] },
           contentVersion,
           seed,
           area: initialArea,
-          position: worldLayout(initialArea, seed, contentVersion).spawn,
+          position: this.layouts(initialArea, seed, contentVersion).spawn,
           visited: [initialArea],
           areas: AREA_IDS.map((id) => ({
             id,
@@ -76,7 +77,7 @@ export class WorldSession {
             ...(contentVersion === 2
               ? {
                   layoutFingerprint: layoutFingerprint(
-                    worldLayout(id, seed, contentVersion),
+                    this.layouts(id, seed, contentVersion),
                   ),
                 }
               : {}),
@@ -100,7 +101,7 @@ export class WorldSession {
           discovery: {
             version: 1,
             fingerprint: layoutFingerprint(
-              worldLayout(
+              this.layouts(
                 a.id,
                 this.snapshot.seed,
                 this.snapshot.contentVersion,
@@ -131,9 +132,9 @@ export class WorldSession {
     s.expedition = migrateExpedition(s.expedition!);
     this.travel = new WorldTravel(
       s.seed,
-      worldLayout(s.area, s.seed, s.contentVersion),
+      this.layouts(s.area, s.seed, s.contentVersion),
     );
-    this.travel.setPosition(restoredPosition(s));
+    this.travel.setPosition(restoredPosition(s, this.layouts));
   }
   get expedition() {
     return { ...migrateExpedition(this.snapshot.expedition!) };
@@ -475,16 +476,19 @@ export class WorldSession {
   capture(position: WorldPoint, loot: LootWorld): ExplorationSnapshot {
     if (!this.travel.setPosition(position))
       throw Error("Invalid live exploration position");
-    return validateExploration({
-      ...this.snapshot,
-      area: this.travel.state.area,
-      position,
-      areas: this.snapshot.areas.map((a) =>
-        a.id === this.travel.state.area
-          ? { ...a, deaths: [...loot.deaths] }
-          : a,
-      ),
-    });
+    return validateExploration(
+      {
+        ...this.snapshot,
+        area: this.travel.state.area,
+        position,
+        areas: this.snapshot.areas.map((a) =>
+          a.id === this.travel.state.area
+            ? { ...a, deaths: [...loot.deaths] }
+            : a,
+        ),
+      },
+      this.layouts,
+    );
   }
   restoreDeaths(loot: LootWorld, world?: CombatWorld): void {
     if (this.snapshot.contentVersion === 2)
@@ -500,7 +504,14 @@ export class WorldSession {
   }
   transition(world: CombatWorld, loot: LootWorld): boolean {
     const before = this.travel.state.area;
-    if (!stepWorldTravel(this.travel, world, this.snapshot.contentVersion))
+    if (
+      !stepWorldTravel(
+        this.travel,
+        world,
+        this.snapshot.contentVersion,
+        this.layouts,
+      )
+    )
       return false;
     const after = this.travel.state.area;
     this.questEvent({ kind: "travel", area: after, id: after });

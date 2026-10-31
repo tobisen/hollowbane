@@ -8,6 +8,8 @@ export interface Obstacle {
   ry: number;
 }
 export interface Navigation {
+  /** Explicit opt-in map policy; never inferred from persisted data. */
+  layouts?: typeof import("../simulation/world-layout").worldLayout;
   /** Logical maps bypass the legacy ground-image collision representation. */
   logicalMap?: AreaMap;
   boundary: Point[];

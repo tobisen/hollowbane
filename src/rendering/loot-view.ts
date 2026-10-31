@@ -79,6 +79,7 @@ export class LootView {
     private cue: (quality: Quality) => void,
     private content: ItemContent = ITEM_CONTENT,
     level = 12,
+    private project: (p: Point) => Point = onGround,
   ) {
     this.world = createLootWorld(seed);
     this.world.areaLevel = this.world.monsterLevel = level;
@@ -311,9 +312,9 @@ export class LootView {
     if (nearest) {
       this.selected =
         [...this.world.drops].sort((a, b) => {
-          const p = onGround(this.player),
-            x = onGround(a.position),
-            y = onGround(b.position);
+          const p = this.project(this.player),
+            x = this.project(a.position),
+            y = this.project(b.position);
           return (
             Math.hypot(x.x - p.x, x.y - p.y) -
               Math.hypot(y.x - p.x, y.y - p.y) ||
@@ -370,7 +371,7 @@ export class LootView {
         Number(a.item.id === this.selected),
     );
     for (const d of drops.slice(0, 32)) {
-      const p = onGround(d.position);
+      const p = this.project(d.position);
       let x = rect.x + ((p.x - view.x) / view.width) * rect.width,
         y = rect.y + ((p.y - view.y) / view.height) * rect.height - 24;
       if (x < rect.left || x > rect.right || y < 80 || y > bottom) continue;
@@ -493,7 +494,7 @@ export class LootView {
       blocked: this.world.blocked,
       selected: this.selected,
       drops: this.world.drops.map((d) => ({
-        ...onGround(d.position),
+        ...this.project(d.position),
         id: d.item.id,
         quality: d.item.quality,
         name: inspectItem(d.item).name,

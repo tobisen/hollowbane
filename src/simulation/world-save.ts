@@ -84,7 +84,10 @@ function area(v: unknown): AreaId {
     );
   return v as AreaId;
 }
-export function validateExploration(value: unknown): ExplorationSnapshot {
+export function validateExploration(
+  value: unknown,
+  layouts = worldLayout,
+): ExplorationSnapshot {
   const w = record(value);
   keys(w, [
     "version",
@@ -175,7 +178,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       a.deaths.length > 4096
     )
       throw Error("Invalid exploration area state");
-    const layout = worldLayout(id, seed, contentVersion);
+    const layout = layouts(id, seed, contentVersion);
     const fingerprint = layoutFingerprint(layout);
     if (contentVersion === 2 && a.layoutFingerprint !== fingerprint)
       throw Error("World layout fingerprint mismatch; original retained");
@@ -246,7 +249,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   if (
     new Set(areas.map((a) => a.id)).size !== 4 ||
     !areaWalkable(
-      worldLayout(current, seed, contentVersion).map,
+      layouts(current, seed, contentVersion).map,
       position,
       WORLD_ACTOR_RADIUS,
     )
@@ -266,9 +269,7 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
       throw Error("Invalid container state");
     const valid = new Set(
       AREA_IDS.flatMap((id) =>
-        planWorldContainers(worldLayout(id, seed, contentVersion)).map(
-          (c) => c.id,
-        ),
+        planWorldContainers(layouts(id, seed, contentVersion)).map((c) => c.id),
       ),
     );
     const opened = c.opened.map((v) => integer(v));
@@ -382,11 +383,10 @@ export function validateExploration(value: unknown): ExplorationSnapshot {
   };
 }
 /** Recover under the saved layout rules; never restart on an exit interaction zone. */
-export function restoredPosition(snapshot: ExplorationSnapshot): WorldPoint {
-  const layout = worldLayout(
-    snapshot.area,
-    snapshot.seed,
-    snapshot.contentVersion,
-  );
+export function restoredPosition(
+  snapshot: ExplorationSnapshot,
+  layouts = worldLayout,
+): WorldPoint {
+  const layout = layouts(snapshot.area, snapshot.seed, snapshot.contentVersion);
   return exitNear(layout, snapshot.position) ? layout.spawn : snapshot.position;
 }

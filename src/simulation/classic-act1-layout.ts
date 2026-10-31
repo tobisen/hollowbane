@@ -1,6 +1,7 @@
 import { act1ReadabilityMap, ACT1_START } from "./act1-readability";
 import type { AreaLayout } from "./area-anchors";
-import { areaSeed } from "./world";
+import { areaSeed, type AreaId } from "./world";
+import { worldLayout } from "./world-layout";
 
 /** Bounded candidate geography, derived from the approved four-clearing pilot.
  * Deliberately not dispatched by worldLayout: normal map versions/saves stay pinned.
@@ -24,4 +25,15 @@ export function classicAct1Layout(worldSeed: number): AreaLayout {
       },
     ],
   };
+}
+
+/** Explicit developer policy; every other area/version retains its pinned layout. */
+export function classicCampaignLayout(
+  area: AreaId,
+  seed: number,
+  version: number,
+): AreaLayout {
+  return area === "haunted-forest" && version === 2
+    ? classicAct1Layout(seed)
+    : worldLayout(area, seed, version);
 }

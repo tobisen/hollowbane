@@ -106,13 +106,16 @@ export function hoverTarget(
   point: Point,
   targets: readonly Target[],
   project: (p: Point) => Point,
+  region = { width: 22, height: 40, offset: 28 },
 ): number | null {
   let selected: number | null = null,
     nearest = Infinity;
   for (const target of targets) {
     if (!target.alive) continue;
     const p = project(target.position);
-    const d = ((point.x - p.x) / 22) ** 2 + ((point.y - (p.y - 28)) / 40) ** 2;
+    const d =
+      ((point.x - p.x) / region.width) ** 2 +
+      ((point.y - (p.y - region.offset)) / region.height) ** 2;
     if (d <= 1 && d < nearest) {
       selected = target.id;
       nearest = d;

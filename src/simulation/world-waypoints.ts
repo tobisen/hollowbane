@@ -55,6 +55,7 @@ export function travelByWaypoint(
   s: InventorySession,
   intent: WaypointIntent,
   context: WaypointContext,
+  layouts = worldLayout,
 ): InventoryResult<InventorySession> {
   const w = s.exploration;
   if (!w || w.version !== 6 || !context.alive || !context.idle || !context.safe)
@@ -83,7 +84,7 @@ export function travelByWaypoint(
       !state.unlocked.includes(intent.destination) ||
       !w.visited.includes(intent.destination) ||
       !waypointAreaAvailable(intent.destination, w.contentVersion) ||
-      !nearWaypoint(worldLayout(w.area, w.seed, w.contentVersion), w.position)
+      !nearWaypoint(layouts(w.area, w.seed, w.contentVersion), w.position)
     )
       return {
         ok: false,
@@ -93,7 +94,7 @@ export function travelByWaypoint(
     const target = w.areas.find((a) => a.id === intent.destination);
     if (!target)
       return { ok: false, reason: "Destination unavailable; world unchanged." };
-    const layout = worldLayout(intent.destination, w.seed, w.contentVersion);
+    const layout = layouts(intent.destination, w.seed, w.contentVersion);
     const expedition = migrateExpedition(w.expedition!);
     const candidate = reserveOwned({
       ...s,

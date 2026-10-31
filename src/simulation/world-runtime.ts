@@ -10,6 +10,7 @@ export function stepWorldTravel(
   travel: WorldTravel,
   world: CombatWorld,
   contentVersion = 1,
+  layouts = worldLayout,
 ): boolean {
   const player = world.actors[0]!;
   if (
@@ -32,7 +33,7 @@ export function stepWorldTravel(
     return false;
   const prepared = travel.prepare(
     edge.id,
-    worldLayout(edge.destination, travel.state.seed, contentVersion),
+    layouts(edge.destination, travel.state.seed, contentVersion),
   );
   if (!prepared || !travel.commit(prepared)) return false;
   player.controller = commandCombat(player.controller, { kind: "stop" });

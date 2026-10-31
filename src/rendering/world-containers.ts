@@ -15,6 +15,7 @@ export class ContainerView {
     private scene: Phaser.Scene,
     root: HTMLElement,
     private open: (id: number) => boolean,
+    private project: (p: WorldPoint) => WorldPoint = onGround,
   ) {
     this.panel = document.createElement("div");
     this.panel.className = "world-treasure";
@@ -41,7 +42,7 @@ export class ContainerView {
       this.graphics.forEach((g) => g.destroy());
       this.layout = world.travel.layout;
       this.graphics = plan.map((c) =>
-        this.scene.add.graphics().setDepth(onGround(c.position).y),
+        this.scene.add.graphics().setDepth(this.project(c.position).y),
       );
     }
     const state = world.containerState;
@@ -62,7 +63,7 @@ export class ContainerView {
     if (this.label.textContent !== text) this.label.textContent = text;
     plan.forEach((c, i) => {
       const g = this.graphics[i]!,
-        p = onGround(c.position),
+        p = this.project(c.position),
         opened = state.opened.includes(c.id);
       g.clear();
       g.fillStyle(0x080b0a, 0.4).fillEllipse(p.x, p.y + 2, 48, 18);

@@ -25,6 +25,32 @@ if (invalidCharacterRoute) {
   await startMainMenu(
     "This character link includes unsupported options. Choose a character from the menu; no save was loaded.",
   );
+} else if (query.has("classicAct1")) {
+  try {
+    if (
+      query.get("classicAct1") !== "1" ||
+      query.getAll("classicAct1").length !== 1 ||
+      [...query.keys()].some((k) => k !== "classicAct1" && k !== "class") ||
+      query.getAll("class").length > 1 ||
+      (query.has("class") &&
+        !["warrior", "sorcerer", "ranger"].includes(query.get("class")!))
+    )
+      throw Error(
+        "Use ?classicAct1=1 with an optional supported class. Production character binding is unavailable.",
+      );
+    await import("./rendering/combat.css");
+    const { startCombatArena } = await import("./rendering/combat-arena");
+    const { ClassicCampaign } = await import("./rendering/classic-campaign");
+    startCombatArena(false, ClassicCampaign);
+  } catch (error) {
+    const main = document.querySelector("main")!;
+    main.replaceChildren();
+    const message = document.createElement("p");
+    message.setAttribute("role", "alert");
+    message.id = "classic-act1-error";
+    message.textContent = `Classic Act 1 unavailable: ${String(error)}`;
+    main.append(message);
+  }
 } else if (query.get("classicVisual") === "1") {
   const { startClassicVisual } = await import("./rendering/classic-visual");
   startClassicVisual();
