@@ -107,7 +107,13 @@ TypeScript, full lint, asset validation, build and changed-file formatting pass.
 Repository-wide formatting flags only preserved unrelated edits in STATUS,
 menu/experience and quality/early-game; committed STATUS is formatted.
 
-Next: commit this verified candidate, run required exact-commit Full CI, verify
+Candidate9f60cc4/CI41148758459 stopped in static checks. A committed STATUS
+format audit reproduces one missing blank line at the selectively staged prefix
+join; corrected without touching unrelated working changes. Changed committed
+files otherwise pass formatting; nine release-tooling contracts also pass. No
+threshold, assertion or CI tier changed.
+
+Next: publish the formatting repair, run required exact-commit Full CI, verify
 Pages/hosted Classic and campaign protection, independently verify public bytes,
 then stop for user visual approval. Last verified public deployment remains
 `c4f38010814b6ec39d489023f550f122c9b8fd99`/CI41100773664 until that verification.
