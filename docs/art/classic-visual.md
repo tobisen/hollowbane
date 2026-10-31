@@ -1,40 +1,26 @@
-# Classic Visual Act 1 production — authorized foundation
+# Classic Visual Act 1 — foundation released, integration started
 
-2026-10-31 · DBL-035/375/379. The user explicitly approved the visual identity of
-`65e49feab52a072dfc00fa6a4d7b29800b431f0a` and authorized Deliverables A/B/C through
-an opt-in first-outdoor release candidate. This supersedes the visual-approval
-stop below; historical release evidence remains unchanged. No default campaign
-switch, other-area migration or Warrior equipment expansion is authorized.
-
-Reusable measured specification, minimum animation coverage and campaign/save
-boundary audit: [Classic foundation](classic-foundation.md). The foundation
-increment adds read-only Warrior cast selection using existing approved poses;
-zero asset growth. Actual campaign skills/effects, ranged enemy readability,
-map/quest integration and matched native integrated performance remain B/C work.
-Local foundation validation:13 focused tests, TypeScript/scoped lint/assets/build
-and3 Chromium software scenarios pass29.3s. Screenshots reviewed. Release A must
-pass exact-commit CI/Pages/hosted/public integrity before B starts; no new native
-performance claim. All17 unrelated edits remain preserved.
-
-Release A candidate: `954032834f88ea2cc02570851ecca3d56f30e391`, pushed normally
-following a successful dry-run. Required Full
+2026-10-31 · DBL-035/375/379. User-approved visual identity and authorized A/B/C
+scope remain active. Verified Release A: `954032834f88ea2cc02570851ecca3d56f30e391`.
 [CI41228393310](https://github.com/tobisen/hollowbane/actions/runs/41228393310)
-is pending at this session checkpoint (last observation: dependency installation).
-No new Pages/hosted/public integrity acceptance is claimed. Last verified public
-SHA remains `65e49feab52a072dfc00fa6a4d7b29800b431f0a`/CI41154541089.
+passed Full/static/715 unit/validator/tooling gates, all332 Chromium,15 compatibility,
+verify, Pages, hosted and final acceptance. All189 public files independently
+match the sealed CI artifact. Four additional hosted native Metal cases pass34.4s,
+zero skipped/flaky/failed/errors; screenshots reviewed. Default production Warrior,
+existing saves and virtual controller retained. No new native performance claim.
 
-Resume release verification only before B: inspect that exact run and resolve any
-actual failure; require successful Full/verify/deploy/hosted/release jobs. Download
-its `release-bundle` into `/private/tmp/hollowbane-classic-foundation-release`,
-verify its sealed SHA with `tools/ci/release_artifact.py verify`, then run that
-script's `hosted` command against the public URL to compare all published bytes.
-Run the four additional hosted Classic/default-Warrior checks using
-`/private/tmp/hollowbane-classic-foundation-hosted.config.mjs`; inspect captures.
-Raw local browser evidence: `/private/tmp/hollowbane-classic-foundation-browser/`.
-CI observation and selected Full reasons: `/private/tmp/hollowbane-classic-foundation-ci.json`
-and `hollowbane-classic-foundation-plan.log`. After Release A acceptance, implement
-B using the existing campaign and a disposable ownership boundary described in
-`classic-foundation.md`. No background work or integrated-campaign completion claim.
+[Foundation specification](classic-foundation.md) preserves the approved art.
+[Integration checkpoint](classic-act1.md) records evidence and exact next work.
+B0 adds only a local bounded layout using the approved four clearings, existing
+encounter/container planners and camp/graveyard exit contracts. Five focused
+layout/pinned-save/travel tests, TypeScript/scoped lint pass. No runtime dispatch,
+new route, presentation change or new asset payload. B/C playable acceptance,
+isolated ownership/save integration and matched performance remain pending.
+All17 unrelated edits preserved. No default migration, other-area redesign,
+Warrior equipment expansion or additional class art. Session checkpoint is local;
+public review remains [Classic Visual](https://tobisen.github.io/hollowbane/?classicVisual=1).
+Raw release record: `/private/tmp/hollowbane-classic-foundation-public-verification.json`;
+hosted report/captures and exact downloaded artifact share that prefix.
 
 ---
 

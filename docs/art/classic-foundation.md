@@ -89,11 +89,12 @@ the owner. No schema or world-generator rewrite is justified by this audit.
 - A6: commit/push, required risk-based CI, exact-SHA Pages/hosted checks and
   sealed public-byte verification are mandatory before B. Record results in
   `classic-visual.md` and STATUS; a queued/pending run is not acceptance.
-- A6 checkpoint: candidate `954032834f88ea2cc02570851ecca3d56f30e391` pushed;
-  required Full CI41228393310 pending. Pages/hosted/public-byte checks remain
-  pending. See `classic-visual.md` for exact resumption commands/artifact paths.
-- B/C: not implemented by this foundation increment. No default/campaign/save
-  migration, new art library or balance change.
+- A6 complete: `954032834f88ea2cc02570851ecca3d56f30e391` passed Full
+  CI41228393310, Pages, hosted/final acceptance and all 189 public-file byte checks.
+  Four additional hosted native Metal cases pass34.4s; captures reviewed.
+- B started with a bounded layout and deterministic reachability/travel checks;
+  runtime/save/render integration and C remain pending. See [integration checkpoint](classic-act1.md).
+  No default/campaign/save migration, new art library or balance change.
 
 Approved baseline cost: 3,409,658 PNG bytes, 42,348,544 calculated decoded RGBA
 bytes including contact shadow (40.39 MiB), nine textures. Incremental asset cost
