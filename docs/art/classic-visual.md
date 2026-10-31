@@ -1,3 +1,50 @@
+# Classic visual review — published candidate
+
+2026-10-31. [Play Classic](https://tobisen.github.io/hollowbane/?classicVisual=1).
+Exact verified deployed SHA: `65e49feab52a072dfc00fa6a4d7b29800b431f0a`.
+[CI41154541089](https://github.com/tobisen/hollowbane/actions/runs/41154541089)
+passed required Full/static/unit/validator/tooling gates, all332 Chromium cases,
+15 compatibility cases, Pages, hosted smoke and final release acceptance. No
+skipped/failed/flaky browser results are allowed by the existing report gate.
+The local sealed manifest equals the hosted one, and all189 published files were
+independently verified byte for byte. Raw final record:
+`/private/tmp/hollowbane-classic-review/final-public-verification.json`.
+
+Four additional hosted native Metal cases pass40.608s, zero skipped/flaky/errors:
+Classic eight-direction traversal/four art views, actual combat/deaths, edge/shrine
+navigation/reset, rounded camera; exact existing checkpoint/registry protection
+and rejected character binding; virtual controller focus/pause/resize/resume;
+normal new Warrior creation loading only the original production assets.
+Hosted combat/edge/bell captures inspected; all three actor roles and original
+painted props are present. Campaign/default artwork, maps, balance and saves
+remain unchanged. Physical-controller/display acceptance is not claimed.
+
+The complete bounded pilot uses312 frames across three actors, five environment
+PNGs and one generated contact shadow:3409658PNG bytes,42348544 calculated RGBA
+bytes/40.39MiB, nine named textures; not measured GPU memory. Native local M4
+steady movement p50/p95/p99 is16.7/16.7/16.8ms with zero>25ms in540 intervals.
+Separate shrine path requests still produce50–66.6ms frames; that known hitch is
+not hidden in the steady-motion figure. Local cold-load and unequal production
+comparison conditions are retained below.
+
+The player is readable, brown raider/olive runner silhouettes are distinct and
+sampled motion shows no obvious flashing. Painted scenery/rendered actors still
+need human judgment; four-facing turns, one idle pose, sparse repeated floor and
+approximate corpse shadows remain provisional. Ground translation changed only
+3/21600 sampled channels, but this is not all-route shimmer clearance. Comparable
+production/B/Classic screenshots and recordings:
+`/private/tmp/hollowbane-classic-review/review.html`. Raw hosted evidence is in
+`hosted-browser/` and `hosted-browser.json` beside that viewer.
+
+**Stop for user visual approval.** Approval remains false. No full asset library,
+Q3-B continuation, other classes, mass monsters or campaign migration is authorized
+by this candidate. All17 pre-existing local edits are preserved. Final evidence
+is a local documentation checkpoint; the verified public runtime remains the SHA
+above. Earlier failures and bounded repairs are retained below; no CI tier,
+assertion or timeout was waived. Local preview/render/monitor processes stopped.
+
+---
+
 # Classic visual completion — actor and scene candidate
 
 2026-10-31, DBL-035/375/379. The isolated `?classicVisual=1` now combines the
