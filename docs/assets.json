@@ -423,5 +423,32 @@
     "type": "developer-environment-pilot",
     "preview": "public/dev/classic-visual/undergrowth.png",
     "provenance": "docs/art/classic-visual.md"
+  },
+  {
+    "id": "classic-visual-warrior-v1",
+    "source": "scripts/render-classic-actors.py",
+    "rights": "Original project Warrior source rig and authored motion; Blender 4.5.3 LTS, four geometry-rotated facings, simplified materials and role silhouettes; no external art or mocap",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/classic-visual/warrior.png",
+    "provenance": "docs/art/classic-visual.md"
+  },
+  {
+    "id": "classic-visual-raider-v1",
+    "source": "scripts/render-classic-actors.py",
+    "rights": "Original project Warrior source rig and authored motion; Blender 4.5.3 LTS, four geometry-rotated facings, simplified materials and role silhouettes; no external art or mocap",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/classic-visual/raider.png",
+    "provenance": "docs/art/classic-visual.md"
+  },
+  {
+    "id": "classic-visual-runner-v1",
+    "source": "scripts/render-classic-actors.py",
+    "rights": "Original project Warrior source rig and authored motion; Blender 4.5.3 LTS, four geometry-rotated facings, simplified materials and role silhouettes; no external art or mocap",
+    "placeholder": true,
+    "type": "developer-character-pilot",
+    "preview": "public/dev/classic-visual/runner.png",
+    "provenance": "docs/art/classic-visual.md"
   }
 ]

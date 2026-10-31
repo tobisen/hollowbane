@@ -6,7 +6,13 @@ import {
   stepAct1Encounter,
 } from "../simulation/act1-readability";
 import { commandCombat } from "../simulation/combat-targeting";
-import { movementFrame } from "../simulation/locomotion";
+import actorAssets from "../../public/dev/classic-visual/actors.json";
+import { WarriorMotion } from "./warrior-pose";
+import {
+  classicActorFrame,
+  observeClassicMotion,
+  type ClassicActorKind,
+} from "./classic-actor-frame";
 import { areaNavigation } from "../world/navigation";
 import type { Point } from "../world/isometric";
 import {
@@ -15,7 +21,7 @@ import {
   type Act1Variant,
 } from "../world/act1-view";
 import { drawClassicEnvironment } from "./classic-environment";
-import { combatPose, recordMotion, type MotionCues } from "./combat-motion";
+import { recordMotion, type MotionCues } from "./combat-motion";
 import { controllerInput } from "./controller-input";
 import "./act1-readability.css";
 
@@ -28,7 +34,17 @@ declare global {
       camera: Point;
       moving: boolean;
       hp: number;
-      actors: { id: number; position: Point; hp: number; phase: string }[];
+      actors: {
+        id: number;
+        position: Point;
+        hp: number;
+        phase: string;
+        clip: string;
+        frame: number;
+        view: string;
+        kind: string;
+      }[];
+      seenFrames: string[];
       environment: ReturnType<typeof drawClassicEnvironment>;
       textures: number;
     };
@@ -40,7 +56,7 @@ export function startClassicVisual(): Phaser.Game {
   const root = document.querySelector("main")!;
   root.className = "act1-readability";
   root.innerHTML = `<div id="world" tabindex="0" role="application" aria-label="Act 1 classic environment pilot"></div>
-    <header class="act1-caption"><p>HOLLOWBANE · CLASSIC ENVIRONMENT · ACTOR PILOTS PENDING</p><h1 id="act1-place">Ashen March</h1><p id="act1-status"></p></header>
+    <header class="act1-caption"><p>HOLLOWBANE · CLASSIC VISUAL PILOT</p><h1 id="act1-place">Ashen March</h1><p id="act1-status"></p></header>
     <nav class="act1-compare" aria-label="Viewpoint comparison"><a href="?act1readability=1&amp;view=b">Variant B</a><span id="act1-view-label"></span></nav>
     <footer class="act1-controls"><span>WASD / arrows / left stick · Click to walk or attack · X / pad primary to attack · R to run · P to pause</span><div><button id="act1-reset">Return to march</button><button id="act1-meadow">Walk to clearing</button><button id="act1-shrine">Walk to shrine</button><button id="classic-edge">Woodland edge</button><a href="?world=1&amp;developer=1&amp;worldPeaceful=1&amp;worldArea=haunted-forest&amp;worldSeed=42&amp;quality=full">Current forest</a><a href="?d2slice=1">Dungeon study</a><a href="?">Menu</a></div></footer>`;
   document.title = "Hollowbane · Classic visual pilot";
@@ -49,12 +65,37 @@ export function startClassicVisual(): Phaser.Game {
     nav = areaNavigation(map);
   let encounter = createAct1Encounter();
   let motion: MotionCues = {};
+  const animationMemory = new Map<number, WarriorMotion>();
+  const seenFrames = new Set<string>();
+  const frames = new Map(
+    actorAssets.frames.map((frame) => [frame.name, frame]),
+  );
+  const kindOf = (id: number): ClassicActorKind =>
+    id === 0
+      ? "warrior"
+      : encounter.brains.find((brain) => brain.id === id)?.role === "flanker"
+        ? "runner"
+        : "raider";
+  const animation = (actor: (typeof encounter.combat.actors)[number]) => {
+    let memory = animationMemory.get(actor.id);
+    if (!memory) {
+      memory = new WarriorMotion();
+      animationMemory.set(actor.id, memory);
+    }
+    return classicActorFrame(
+      actor,
+      encounter.combat.tick,
+      motion[actor.id]?.deathAt ?? null,
+      memory,
+      kindOf(actor.id),
+    );
+  };
   class Act1 extends Phaser.Scene {
     private views = new Map<
       number,
       {
         sprite: Phaser.GameObjects.Sprite;
-        shadow: Phaser.GameObjects.Ellipse;
+        shadow: Phaser.GameObjects.Image;
         bar: Phaser.GameObjects.Graphics;
       }
     >();
@@ -67,15 +108,26 @@ export function startClassicVisual(): Phaser.Game {
           `classic-${key}`,
           import.meta.env.BASE_URL + `dev/classic-visual/${key}.png`,
         );
-      if (!this.textures.exists("act1-wanderer"))
-        this.load.spritesheet(
-          "act1-wanderer",
-          import.meta.env.BASE_URL + "assets/wanderer.webp",
-          { frameWidth: 128, frameHeight: 128 },
+      for (const atlas of actorAssets.atlases)
+        this.load.image(
+          `classic-${atlas.kind}`,
+          import.meta.env.BASE_URL + `dev/classic-visual/${atlas.file}`,
         );
     }
     create(): void {
       this.views.clear();
+      for (const frame of actorAssets.frames) {
+        const texture = this.textures.get(`classic-${frame.kind}`);
+        if (!texture.has(frame.name))
+          texture.add(
+            frame.name,
+            0,
+            frame.x,
+            frame.y,
+            frame.width,
+            frame.height,
+          );
+      }
       this.environment = drawClassicEnvironment(this, map);
       const field = document.querySelector<HTMLElement>("#world")!;
       const player = () => encounter.combat.actors[0]!;
@@ -140,6 +192,8 @@ export function startClassicVisual(): Phaser.Game {
           clear();
           encounter = createAct1Encounter();
           motion = {};
+          animationMemory.clear();
+          seenFrames.clear();
           field.focus();
         };
       for (const [id, target] of [
@@ -156,7 +210,7 @@ export function startClassicVisual(): Phaser.Game {
         };
       }
       document.querySelector("#act1-view-label")!.textContent =
-        "Environment checkpoint · G1 actors provisional";
+        "Four facing pilot · original Warrior and two enemy roles";
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
         window.removeEventListener("keydown", down);
         window.removeEventListener("keyup", up);
@@ -219,6 +273,15 @@ export function startClassicVisual(): Phaser.Game {
             encounter.combat.events,
             encounter.combat.tick,
           );
+          for (const actor of encounter.combat.actors) {
+            let memory = animationMemory.get(actor.id);
+            if (!memory) {
+              memory = new WarriorMotion();
+              animationMemory.set(actor.id, memory);
+            }
+            observeClassicMotion(memory, actor, encounter.combat.tick);
+            seenFrames.add(animation(actor).name);
+          }
           this.residual -= 1000 / 60;
         }
       } else {
@@ -240,27 +303,39 @@ export function startClassicVisual(): Phaser.Game {
         if (!view) {
           view = {
             sprite: this.add
-              .sprite(0, 0, "act1-wanderer")
-              .setOrigin(0.5, 112 / 128),
-            shadow: this.add.ellipse(0, 0, 32, 12, 0x080a08, 0.65),
+              .sprite(0, 0, `classic-${kindOf(actor.id)}`)
+              .setOrigin(
+                actorAssets.root[0]! / actorAssets.cell.width,
+                actorAssets.root[1]! / actorAssets.cell.height,
+              ),
+            shadow: this.add
+              .image(0, 0, "classic-contact")
+              .setDisplaySize(38, 16),
             bar: this.add.graphics(),
           };
           this.views.set(actor.id, view);
         }
         const at = act1Project(actor.controller.walker.position, variant),
-          pose = combatPose(actor, motion[actor.id], encounter.combat.tick);
+          pose = animation(actor),
+          frame = frames.get(pose.name);
+        if (!frame) throw Error(`Missing classic actor frame ${pose.name}`);
         view.sprite
-          .setPosition(at.x + pose.x, at.y + pose.y)
-          .setFrame(movementFrame(actor.controller.walker, false))
-          .setScale(0.93, 0.93 * pose.scaleY)
-          .setAngle(pose.angle)
-          .setAlpha(pose.alpha)
+          .setTexture(`classic-${pose.kind}`, pose.name)
+          .setPosition(at.x, at.y)
           .setDepth(at.y + (actor.id === 0 ? 0.01 : 0));
-        view.sprite.setTint(actor.id === 0 ? 0xffffff : 0xb28468);
+        const fallen = pose.clip === "death" && pose.frame >= 9;
+        const [minX, , maxX, maxY] = frame.alphaBounds;
         view.shadow
-          .setPosition(at.x, at.y + 2)
+          .setPosition(
+            at.x + (fallen ? (minX! + maxX!) / 2 - frame.root[0]! : 0),
+            at.y + (fallen ? maxY! - frame.root[1]! - 4 : 2),
+          )
+          .setDisplaySize(
+            fallen ? Math.max(38, (maxX! - minX!) * 0.8) : 38,
+            fallen ? 24 : 16,
+          )
           .setDepth(at.y - 1)
-          .setAlpha(actor.hp > 0 ? 0.65 : 0.35);
+          .setAlpha(fallen ? 0.7 : 1);
         view.bar.clear().setDepth(at.y + 1);
         if (actor.id !== 0 && actor.hp > 0)
           view.bar
@@ -293,7 +368,9 @@ export function startClassicVisual(): Phaser.Game {
           position: { ...a.controller.walker.position },
           hp: a.hp,
           phase: a.controller.timeline.phase,
+          ...animation(a),
         })),
+        seenFrames: [...seenFrames],
         environment: this.environment,
         textures: this.textures.getTextureKeys().length,
       };

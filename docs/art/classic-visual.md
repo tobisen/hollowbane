@@ -1,3 +1,119 @@
+# Classic visual completion — actor and scene candidate
+
+2026-10-31, DBL-035/375/379. The isolated `?classicVisual=1` now combines the
+painted environment with an original Warrior, Cinder raider and Thorn runner.
+Campaign maps, default artwork, saves, balance and Phaser4.2.1 remain unchanged.
+Human visual approval is pending. This is a bounded review candidate, not a full
+character/monster library or authorization for Q3-B production.
+
+## Art and animation
+
+The original project rig supplies four genuine geometry-rotated diagonal views,
+without mirroring. Eight logical movement directions select the nearest available
+view. Each actor has one idle, eight walk, eight attack, three hit and six death
+poses per view:104 frames each,312 total. Running reuses distance-driven walk
+poses at the actual movement cadence. Existing attack timing, active pose5,
+hitstun,30-tick death and terminal hold remain authoritative; presentation only
+observes copies of simulation state. No new combat or AI behavior.
+
+Shared43.43253656° camera, fixed root and uniform scale replace the old viewpoint
+mismatch. Muted steel/red identifies the Warrior; broader brown/pale raider and
+narrower olive runner distinguish the two existing roles. Micro-rivets, hair
+strands and selected armor detail are removed. Broad stable pigment, roughness0.83
+and a warm soft key replace the rejected flat/clay stills. Feet share a soft
+contact texture with the environment; corpse shadows approximate the settled
+silhouette. Painted props remain more textured than the rendered actors, and
+four-facing turns, single idle, sparse floor repetition and simple corpse shadows
+remain visible pilot limitations.
+
+Reproduction: Blender4.5.3 LTS executes `scripts/render-classic-actors.py -- OUT`
+(with Blender's normal `--background --python-exit-code 1 --python` prefix), then
+`node scripts/package-classic-actors.mjs OUT`. Original rig/authoring hashes and
+renderer identity are retained in `public/dev/classic-visual/actors.json` and
+`docs/assets.json`. All312 selected bounds were audited before rendering. The
+measured common360×344/root180,234 window fixes the raised-sword overrun; final
+184×176 cells include two packing pixels and have at least six transparent pixels
+around actual content.312 PNG-to-atlas RGBA round trips pass. Original sources
+are unchanged. Raw render/audit/stills live under `/private/tmp/hollowbane-classic-*`.
+
+## Scene and comparison
+
+The scene retains1083 ground cells, four large clearings, loop/branches and five
+existing blockers.72 grouped boundary placements comprise26 full trees and46
+permanent canopy omissions; low growth occupies selected safe boundary positions.
+Open centres, four quiet paths, coarse rocks and the bell preserve traversal
+space. No per-frame foliage fades or animated ground detail.
+
+1280×800/DPR1 screenshots and short videos compare the actual production Warrior
+in a fresh isolated forest character fixture, approved B and Classic. B/Classic
+share the authored map, start and unit zoom. Production uses its existing map,
+zoom, UI and supported40-texture Warrior, so apparent scale and workload differ.
+The earlier legacy developer-forest capture is retained separately and is not
+substituted for the production Warrior. Actual attacks/hits/enemy deaths, edge
+navigation, shrine travel and reset are covered. Start/encounter/corpse/edge/bell
+screenshots and timed movement samples were inspected: player visible, role
+silhouettes distinct, smaller foot-shadow gap than G1, no obvious flashing in the
+sampled motion. This is not human art approval or physical-display acceptance.
+
+A translated120×60 ground patch changes3/21600 RGB channels in Classic over81px,
+versus0/21600 in B over82px. This bounded result does not establish all-route
+foliage/actor shimmer clearance. The first comparison driver used stale camera
+coordinates after reset and timed out; the corrected driver waits for the actual
+reset frame without changing gameplay or deadlines. Failed capture retained.
+Review files: `/private/tmp/hollowbane-classic-review/`, especially `review.html`,
+`capture-v2/` and `production-warrior/`; recordings remain outside the repository.
+
+## Budget and native performance
+
+| Asset set               | PNG bytes | Calculated RGBA bytes |
+| ----------------------- | --------: | --------------------: |
+| Five environment images |    632934 |               1900544 |
+| Warrior104 frames       |   1003011 |              13471744 |
+| Raider104 frames        |    975843 |              13471744 |
+| Runner104 frames        |    797870 |              13471744 |
+| Total file textures     |   3409658 |              42315776 |
+
+The generated contact shadow adds32768RGBA bytes: total42348544bytes/40.39MiB,
+nine named textures. This is calculated texture payload, **not measured GPU
+memory**. Three actors add2.78MB PNG/38.54MiB RGBA versus the environment-only
+checkpoint in exchange for actual distinct locomotion/attack/hit/death coverage.
+No full880-frame library; no default-campaign texture increase.
+
+Native Apple M4/ANGLE Metal, Chromium,1280×800/DPR1, three fresh contexts per mode,
+30 warm and180 measured RAF intervals per cohort; no video recording during
+profiling. B and Classic each540 measured intervals: p50/p95/p99/max
+16.7/16.7/16.8/16.8ms, zero>25ms, zero missed/doubled simulation ticks, integer
+camera centres, zero errors. Local cold-readiness medians B179.2ms (177.1–193.0),
+Classic209.1ms (208.6–209.8). Actual production Warrior also540 intervals at
+16.7/16.7/16.8/16.8ms, zero>25/errors; readiness1663.1ms (1544.1–1727.4).
+Its narrow corridor blocks the horizontal input after36 of181 sampled positions
+per cohort; this mixes walking and held-against-wall frames, unlike the open
+Classic/B path. Neither equal-work nor universal startup-speed superiority is
+claimed. Raw conditions/positions/timestamps: `profile.json` and
+`production-warrior/profile.json` in the review directory. Separate recording
+cohorts are excluded from these figures.
+
+## Validation and release state
+
+Thirteen focused units pass, including all atlas/source identities, pixel borders,
+actual strike timing, interrupt/death hold and distance-driven gait selection.
+The first pixel audit exceeded5s because it made an assertion for every border
+pixel; it now aggregates the same checks once per frame and finishes under1s,
+with unchanged timeout and bounds. Three native browser scenarios pass27.97s:
+eight directions/four art views, actual encounter/deaths, rounded camera,
+edge/shrine/reset, exact save/registry protection and rejected character binding,
+virtual-controller focus/pause/resize/resume. Physical controller not tested.
+TypeScript, full lint, asset validation, build and changed-file formatting pass.
+Repository-wide formatting flags only preserved unrelated edits in STATUS,
+menu/experience and quality/early-game; committed STATUS is formatted.
+
+Next: commit this verified candidate, run required exact-commit Full CI, verify
+Pages/hosted Classic and campaign protection, independently verify public bytes,
+then stop for user visual approval. Last verified public deployment remains
+`c4f38010814b6ec39d489023f550f122c9b8fd99`/CI41100773664 until that verification.
+
+---
+
 # Classic visual completion — composition increment
 
 2026-10-31, scoped DBL-035/375/379. Latest completion request authorizes the

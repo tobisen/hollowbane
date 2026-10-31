@@ -2,6 +2,10 @@ import { expect, test } from "@playwright/test";
 import { act1Project } from "../../src/world/act1-view";
 import { serializeCharacter } from "../../src/simulation/inventory-save";
 import { characterApi } from "../fixtures/character-api";
+import {
+  installVirtualController,
+  pressVirtualButton,
+} from "./virtual-controller";
 import { characterSlotFixture } from "../fixtures/character-slot";
 
 test("classic environment supports eight directions, camera, actual combat and reset", async ({
@@ -14,6 +18,7 @@ test("classic environment supports eight directions, camera, actual combat and r
     .poll(() => page.evaluate(() => window.hollowbaneClassic?.tick ?? 0))
     .toBeGreaterThan(2);
   await page.screenshot({ path: info.outputPath("classic-start.png") });
+  const views = new Set<string>();
   for (const keys of [
     ["ArrowUp"],
     ["ArrowUp", "ArrowRight"],
@@ -39,9 +44,12 @@ test("classic environment supports eight directions, camera, actual combat and r
       .poll(() => page.evaluate(() => window.hollowbaneClassic!.moving))
       .toBe(false);
     const s = await page.evaluate(() => window.hollowbaneClassic!);
+    views.add(s.actors[0]!.view);
+    expect(s.actors[0]!.kind).toBe("warrior");
     const p = act1Project(s.position, "b");
     expect(s.camera).toEqual({ x: Math.round(p.x), y: Math.round(p.y) });
   }
+  expect([...views].sort()).toEqual(["ne", "nw", "se", "sw"]);
   await page.locator("#act1-meadow").click();
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneClassic!.position.x), {
@@ -63,6 +71,10 @@ test("classic environment supports eight directions, camera, actual combat and r
       )
       .toBeLessThanOrEqual(0);
   }
+  const seen = await page.evaluate(() => window.hollowbaneClassic!.seenFrames);
+  expect(seen.some((name) => /^warrior-primary-.+-05$/.test(name))).toBe(true);
+  expect(seen.some((name) => name.startsWith("raider-death-"))).toBe(true);
+  expect(seen.some((name) => name.startsWith("runner-death-"))).toBe(true);
   await page.screenshot({ path: info.outputPath("classic-combat.png") });
   expect(
     await page.evaluate(() => window.hollowbaneClassic!.hp),
@@ -148,4 +160,44 @@ test("classic route preserves an existing checkpoint and rejects character bindi
     "unsupported options",
   );
   expect(await snapshot()).toEqual(before);
+});
+
+test("classic virtual controller retains focus, pause and camera resize", async ({
+  page,
+}) => {
+  await installVirtualController(page, "Classic virtual standard");
+  await page.goto("?classicVisual=1");
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneInput?.armed))
+    .toBe(true);
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneClassic?.tick ?? 0))
+    .toBeGreaterThan(2);
+  await page.evaluate(() => {
+    window.virtualPads[0]!.axes = [0.7, 0, 0, 0];
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneClassic!.position.x))
+    .toBeGreaterThan(12.5);
+  await page.evaluate(() => {
+    window.virtualPads[0]!.axes = [0, 0, 0, 0];
+  });
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneClassic!.moving))
+    .toBe(false);
+  await pressVirtualButton(page, 9);
+  await expect(page.locator("#controller-menu")).toBeVisible();
+  const before = await page.evaluate(() => window.hollowbaneClassic!.tick);
+  await page.setViewportSize({ width: 1100, height: 720 });
+  await expect
+    .poll(() => page.locator("canvas").getAttribute("width"))
+    .toBe("1100");
+  expect(await page.evaluate(() => window.hollowbaneClassic!.tick)).toBe(
+    before,
+  );
+  await page.getByRole("button", { name: "Resume", exact: true }).click();
+  await expect(page.locator("#world")).toBeFocused();
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneClassic!.tick))
+    .toBeGreaterThan(before);
 });
