@@ -1,16 +1,24 @@
-# Classic Act 1 — playable integration candidate
+# Classic Act 1 — published; stop for human review
 
 2026-11-01 · DBL-035/375/379 · opt-in only
 
-The reported URL fell through to the main menu because `main.ts` did not have a
-Classic Act 1 route. The local candidate now launches real campaign gameplay at
-`?classicAct1=1`, with optional `&class=warrior`, `sorcerer` or `ranger`.
-Verified deployed runtime: `3d54dc6765047e9ea992174273ee9d640d2a42d5`,
-CI41259279768 Full722 units/343 Chromium/15 compatibility, Pages, hosted critical
-flow and release acceptance pass. All191 public files independently match the
-sealed artifact. All11 additional native Metal hosted cases pass2.1m using the
-existing run control for traversal. A test-only strategy follow-up is being
-committed through the normal risk policy; final hosted comparison remains due.
+[Play Classic Act 1](https://tobisen.github.io/hollowbane/?classicAct1=1).
+Verified deployed SHA: `9ce92f1d9d946b1d5b7ff96eb9ca8f8f97646e1b`.
+The previously ignored flag now launches a real four-clearing campaign. Optional
+`&class=warrior`, `sorcerer` or `ranger` selects its separate developer checkpoint.
+The normal campaign remains the default.
+
+| Release evidence                                                                                         | Result                                                                                         |
+| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Runtime Full baseline3d54dc6 / CI41259279768                                                             | 722 units,343 Chromium,15 compatibility; Pages/hosted/release accepted                         |
+| Final test-only9ce92f1 / [CI41261598409](https://github.com/tobisen/hollowbane/actions/runs/41261598409) | Policy-selected Integration11, static/contracts, Fast2, Pages, hosted2, final release accepted |
+| Public integrity                                                                                         | Exact sealed manifest/SHA and all191 files independently byte-verified                         |
+| Additional final hosted native Metal acceptance                                                          | 11/11 in127.141s; quest journey55.0s; zero skipped/failed/flaky                                |
+| Final hosted M4 comparison                                                                               | 1/1 in66.406s; images, video and timed frames inspected                                        |
+
+The final191 payload files are byte-identical to the accepted Full baseline and
+the local native-profile build. The final follow-up changes test input strategy
+and documentation only; it did not lower the existing risk policy.
 
 ## Runtime and isolation
 
@@ -64,8 +72,8 @@ campaign behavior and raster payload are untouched. Read-only observations expos
 the actual shadow key, and all three class browser cases require valid contact
 textures. Nine targeted units, TypeScript/build/scoped lint, five browser checks
 (three movement/save, missing-asset, original pilot combat) pass39.9s. Corrected
-Sorcerer/Ranger screenshots were inspected. This final visual fix supersedes the
-pending de99c30/CI41256403152 candidate and requires a new Full release gate.
+Sorcerer/Ranger screenshots were inspected. This visual fix superseded de99c30/CI41256403152; the subsequent runtime Full
+gate passed on3d54dc6.
 
 ## Local acceptance
 
@@ -114,8 +122,8 @@ health, map or balance change. Reproduced return now passes27.1s; full Classic
 quest/loot/save journey passes twice3.1m; existing normal forest/rearm/return
 checks pass2/2 in37.2s. TypeScript/scoped lint/format pass. Failure logs/traces and
 replays remain under `/private/tmp/hollowbane-classic-act1-ci-failure/` and
-`/private/tmp/hollowbane-classic-long-leg/`. A new exact-commit Full release is
-required; the blocked run is not publication acceptance.
+`/private/tmp/hollowbane-classic-long-leg/`. The rejected run was replaced by the accepted3d54dc6 Full baseline; the blocked
+run is not publication acceptance.
 
 ## Release-gate merchant synchronization repair
 
@@ -131,8 +139,8 @@ merchant's render-frame mirror, matching the earlier stash synchronization
 repair. All item identities, atomic gold/stock/ownership, buy/sell/reload and
 deadline assertions remain unchanged. All four merchant cases pass twice:
 8/8 in41.5s, including controller/cancel/rejection flows. TypeScript/scoped lint/
-format pass. Runtime and artwork are byte-identical; a new exact-commit Full,
-Pages, hosted and complete-public-byte gate remains mandatory. Evidence:
+format pass. Runtime and artwork are byte-identical; the repaired3d54dc6 release subsequently
+passed Full, Pages, hosted and complete-public-byte gates. Evidence:
 `/private/tmp/hollowbane-classic-merchant-repair/`, before/after logs alongside it
 and `/private/tmp/hollowbane-classic-act1-final-ci-failure/`.
 
@@ -148,8 +156,9 @@ suite passes11/11 in2.1m; the actual quest journey passes54.4s. TypeScript/scope
 lint/format pass. Before/after reports and screenshots remain in
 `/private/tmp/hollowbane-classic-act1-hosted/`, including
 `hosted-browser-walking-failure.json` and `browser-results-walking-failure/`.
-Runtime/artwork are unchanged. This test-only follow-up must pass the selected
-risk gate against the newly accepted3d54dc6 baseline before final publication.
+Runtime/artwork are unchanged. The test-only follow-up passed the selected Integration11 gate against accepted
+3d54dc6 and was published as9ce92f1. Final hosted native11/11 passes127.141s,
+including the unchanged complete quest journey in55.0s.
 
 ## Native M4 and asset evidence
 
@@ -188,13 +197,61 @@ Classic409.4/403.1/396.3ms (median403.1). Final native cache-cold plus movement/
 recording checks pass2/2 in43.2s, zero skipped/flaky/errors. Raw conditions are
 kept with the viewer.
 
-## Release gate and exact next action
+## Final hosted comparison and performance
 
-Commit/push only this coherent candidate. Require exact-commit Full CI, Pages,
-hosted acceptance, dedicated Classic URL checks and normal/save protection.
-Download its sealed `release-bundle` and use `tools/ci/release_artifact.py verify`
-and `hosted` against that artifact for every public file. Run the focused Classic
-suite against the hosted base URL, then capture hosted normal/Classic comparison.
-Record exact run and SHA in STATUS and this page. Pending/failed jobs are not
-acceptance. Stop for integrated human review after verification; never switch the
-normal campaign default or migrate other areas. Preserve all17 unrelated edits.
+Viewer and movement recordings:
+`/private/tmp/hollowbane-classic-act1-hosted/review.html`.
+Static export: `hosted-comparison.png`; original `{normal,classic}-{start,move}.png`,
+`{normal,classic}-movement.webm` and timed `motion-{1,2,3}.png` are alongside it.
+The open painted candidate, larger clear player and reduced foreground tree
+obstruction are visibly different from the dense normal forest. Camp/other areas
+retain their existing presentation. Native Sorcerer/Ranger contact and the actual
+claimed Edda reward were also inspected. Human art approval remains pending.
+
+Native Chromium/Apple M4/ANGLE Metal,1280×800/DPR1, three fresh contexts each,
+30 warm and180 measured RAF intervals; the fourth recording cohort is excluded:
+
+| Measured item                                  | Normal production Warrior  | Classic candidate    |
+| ---------------------------------------------- | -------------------------- | -------------------- |
+| Layout fingerprint                             | 323b57eb                   | 00b39633             |
+| Intervals                                      | 540                        | 540                  |
+| Frame p50/p95/p99/max, ms                      | 16.7/16.8/16.8/16.8        | 16.7/16.7/16.8/16.8  |
+| Frames above25ms                               | 0                          | 0                    |
+| Distinct positions per cohort                  | 41/42/41, corridor-blocked | 181/181/181          |
+| Integer camera coordinates                     | Existing fractional camera | All measured samples |
+| Starting named textures                        | 69                         | 34                   |
+| Calculated source RGBA bytes                   | 397794332                  | 73847884             |
+| Observed encoded image bytes                   | 27675071                   | 7626134              |
+| Observed encoded resources, excluding document | 28223757                   | 8219178              |
+
+Maps, zoom, UI and AI workload differ; this is matched display/input evidence,
+not equal work or a universal improvement claim. RGBA totals use physical source
+sizes and are not measured GPU memory. The original Classic subset remains
+3409658PNG/42348544 calculated RGBA bytes; incremental raster asset bytes:zero.
+
+Hosted observed readiness was normal7019.2/4400.2/5157.2ms and
+Classic1389.0/1617.1/1382.7ms. Both modes await actual network-idle asset completion
+and their unchanged readiness marker before recording; these values include that
+prerequisite. The first temporary probe hit its default five-second marker wait
+while normal atlases were loading and produced no valid motion cohort; its
+report/trace are retained. The corrected probe awaits the actual dependency in
+both modes. These hosted observations are separate from the HTTP-cache-cold local
+measurements above; OS/GPU cold cache is not claimed.
+
+Raw accepted evidence: `release-verification.json`, `final-ci-state.json`,
+`final-public-byte-verification.log`, `hosted-browser.json`,
+`hosted-profile-results.json`, `final-native-summary.json`, `profile.json` and
+failure/prerelease reports in the same folder. CI reports are retained in
+`/private/tmp/hollowbane-classic-act1-final-accepted-ci-results/`; Full baseline
+reports in `hollowbane-classic-act1-accepted-ci-results/`. The sealed final build
+is `/private/tmp/hollowbane-classic-act1-release-9ce92f1/`.
+
+## Review stop
+
+Technical opt-in release is complete. Stop for human review; approval remains
+false. Static idle/four-facing turns, shared ability/ranged body art, legacy class
+differences, repeated ground, approximate corpse contact and historical shrine
+request hitches remain. No universal shimmer or physical-controller acceptance.
+Do not enable by default, migrate other areas, resume Q3-B or start new class/
+monster art. All17 unrelated edits are preserved. This final documentation
+checkpoint stays local; published runtime and test source are the exact SHA above.

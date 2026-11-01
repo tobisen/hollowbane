@@ -1,33 +1,42 @@
-# Classic Act 1 — playable public candidate; final comparison pending
+# Classic Act 1 — published; human review pending
 
-2026-11-01 · DBL-035/375/379. Verified public runtime
-`3d54dc6765047e9ea992174273ee9d640d2a42d5`, CI41259279768: Full722 units/
-343 Chromium/15 compatibility, Pages, hosted critical flow and release acceptance
-pass. All191 public files independently match the sealed artifact.
+2026-11-01 · DBL-035/375/379.
+[Play Classic Act 1](https://tobisen.github.io/hollowbane/?classicAct1=1).
+Verified deployed SHA: `9ce92f1d9d946b1d5b7ff96eb9ca8f8f97646e1b`.
+[CI41261598409](https://github.com/tobisen/hollowbane/actions/runs/41261598409)
+passes its unchanged policy-selected Integration11, static/contracts, Fast2,
+Pages, hosted2 and release acceptance. Accepted runtime Full baseline3d54dc6/
+CI41259279768 passes722 units/343 Chromium/15 compatibility. Final191 payload
+files are byte-identical and independently verified on the public site.
 
-The previously ignored `?classicAct1=1` launches the real campaign using approved
-four-clearing geography/presentation, existing quests/combat/AI/loot/containers/
-waypoints/progression, isolated class checkpoints and a readiness-backed indicator.
-Normal maps, owner saves and save schemas remain protected; Phaser4.2.1 retained.
-Reused312 original poses and painted scenery, no raster asset growth. Sorcerer/
-Ranger and unsupported states keep legacy art, now with valid shared contact.
+The previously ignored flag launches the genuine four-clearing forest using real
+combat/AI, quests/NPCs, loot/containers, waypoints, transitions and progression.
+Candidate class checkpoints are isolated; normal maps/schemas/owner bytes and
+Phaser4.2.1 remain protected.312 original poses/painted scenery reused; zero
+raster growth. All candidate classes have valid shared contact shadows.
 
-All11 native Metal hosted checks pass2.1m, including actual class combat/death,
-movement/save, production-owner protection and Edda quest/reward/loot/graveyard/
-save/re-entry. The journey uses existing L3 run control; initial slow-walking
-failure10/11 is retained. A test-only strategy follow-up requires its selected
-risk gate against the accepted3d54dc6 baseline. Final hosted comparison is pending.
+Final hosted native Metal acceptance11/11 passes127.141s, including class combat/
+death, movement/save, remapping, failures, normal/save protection and the complete
+Edda quest→two kills→four clearings→container/backpack→reward→graveyard→save/
+re-entry journey. It uses actual L3 run after combat. Earlier walking death,
+long-leg and merchant synchronization failures are retained and explained in
+[the integration record](classic-act1.md); no balance or assertion weakening.
 
-Native local M4/Metal540 intervals per mode: p50/p95/p99/max
-16.7/16.7/16.8/16.8ms, zero>25. Different maps/zoom/workloads are explicit; no
-universal performance/shimmer claim. Local comparison/recordings:
-`/private/tmp/hollowbane-classic-integrated-native/review.html`.
+Final hosted M4/Metal540 intervals per mode: Classic p50/p95/p99/max
+16.7/16.7/16.8/16.8ms, normal16.7/16.8/16.8/16.8ms, zero>25 each. Maps/zoom/
+workload differ; source RGBA is not GPU memory. Starting Classic34 textures/
+73847884 calculated RGBA bytes,7626134 encoded image bytes. Local HTTP-cache-cold
+Classic median403.1ms is separate from hosted network-idle readiness.
 
-[Integration, exact evidence and release action](classic-act1.md),
-[art bible](classic-foundation.md). Four-facing turns, static idle/shared ability
-motion, legacy class differences, repeated ground, approximate corpse contact
-and historical shrine hitches remain. No default migration, equipment expansion,
-new class/monster art or physical-controller claim. All17 unrelated edits retained.
+Hosted side-by-side screenshots, movement recordings and timed frames inspected:
+`/private/tmp/hollowbane-classic-act1-hosted/review.html` and
+`hosted-comparison.png`. The candidate is visibly open and painted with a clear
+player; normal keeps its dense forest. [Art bible](classic-foundation.md) remains
+the baseline. Stop for human review; approval false. Four-facing/static-idle/
+shared body motion, legacy Sorcerer/Ranger differences, sparse repetition,
+approximate corpses and historical shrine hitches remain. No default migration,
+Q3-B, new class/monster art or physical-controller claim. All17 unrelated edits
+retained. Final evidence checkpoint is local; public runtime is the exact SHA above.
 
 ---
 
