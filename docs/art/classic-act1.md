@@ -115,6 +115,25 @@ replays remain under `/private/tmp/hollowbane-classic-act1-ci-failure/` and
 `/private/tmp/hollowbane-classic-long-leg/`. A new exact-commit Full release is
 required; the blocked run is not publication acceptance.
 
+## Release-gate merchant synchronization repair
+
+Runtime4607c102cb367157474c13d410caf4d66c2fc058/CI41257333413 passed all11
+Classic cases,722 units,15 compatibility cases and static/tooling gates. Shard3
+blocked publication on an existing D09 merchant check: the trade UI showed its
+new gold/stock while the mirrored save status still represented the preceding
+checkpoint. Reading IndexedDB then returned the pre-purchase bag. The same
+failure reproduced locally once in three unchanged replays.
+
+The test-only helper now waits on authoritative `inventory-status` before the
+merchant's render-frame mirror, matching the earlier stash synchronization
+repair. All item identities, atomic gold/stock/ownership, buy/sell/reload and
+deadline assertions remain unchanged. All four merchant cases pass twice:
+8/8 in41.5s, including controller/cancel/rejection flows. TypeScript/scoped lint/
+format pass. Runtime and artwork are byte-identical; a new exact-commit Full,
+Pages, hosted and complete-public-byte gate remains mandatory. Evidence:
+`/private/tmp/hollowbane-classic-merchant-repair/`, before/after logs alongside it
+and `/private/tmp/hollowbane-classic-act1-final-ci-failure/`.
+
 ## Native M4 and asset evidence
 
 Chromium/Apple M4/ANGLE Metal,1280×800/DPR1, three fresh contexts per mode,

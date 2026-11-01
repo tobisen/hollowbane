@@ -31,6 +31,10 @@ CI41228393310 (Full715/332 Chromium/15 compatibility,189 public bytes verified,
 four additional hosted native checks). Do not claim the integrated URL is deployed
 until the new gate passes. All17 unrelated edits preserved; no default migration,
 equipment expansion or new class/monster art.
+Latest runtime4607c10 passed all11 Classic cases in CI41257333413, but an
+existing merchant stale-save-status assertion blocked Full publication. The
+reproduced test-only synchronization repair passes8/8 merchant replays; new
+exact-commit Full/Pages/hosted gates remain required. Runtime/artwork unchanged.
 
 ---
 

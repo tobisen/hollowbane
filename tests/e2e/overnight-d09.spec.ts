@@ -35,6 +35,11 @@ async function openMerchant(page: Page) {
   await expect(page.locator("#camp-merchant")).toBeVisible();
 }
 async function saved(page: Page) {
+  // This mirror can retain the previous save until the next render frame.
+  // Wait on the authoritative current write before reading the atomic record.
+  await expect(page.locator("#inventory-status")).toHaveText(
+    "Character checkpoint saved locally.",
+  );
   await expect(page.locator("#merchant-save-status")).toHaveText(
     "Character checkpoint saved locally.",
   );
