@@ -555,6 +555,10 @@ test("Classic actual campaign reaches NPC quest, clearings, combat, loot, contai
     await page.mouse.up();
   }
   await page.screenshot({ path: info.outputPath("classic-actual-combat.png") });
+  // Traverse the hostile clearings using the player's existing run toggle.
+  // Slow walking past every remaining pack can legitimately kill this fresh hero.
+  await neutralQuestController(page);
+  await pressVirtualButton(page, 10);
   // Follow actual pathfinder turns through real stick input, never moving live actors directly.
   for (const destination of [
     { x: 12, y: 30 },

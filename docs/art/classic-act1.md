@@ -5,10 +5,12 @@
 The reported URL fell through to the main menu because `main.ts` did not have a
 Classic Act 1 route. The local candidate now launches real campaign gameplay at
 `?classicAct1=1`, with optional `&class=warrior`, `sorcerer` or `ranger`.
-Publication is a mandatory pending gate; the last verified deployed SHA remains
-`954032834f88ea2cc02570851ecca3d56f30e391` (Release A/CI41228393310).
-Do not treat the historical public URL as this integrated candidate until exact
-CI/Pages/hosted and public-byte verification pass.
+Verified deployed runtime: `3d54dc6765047e9ea992174273ee9d640d2a42d5`,
+CI41259279768 Full722 units/343 Chromium/15 compatibility, Pages, hosted critical
+flow and release acceptance pass. All191 public files independently match the
+sealed artifact. All11 additional native Metal hosted cases pass2.1m using the
+existing run control for traversal. A test-only strategy follow-up is being
+committed through the normal risk policy; final hosted comparison remains due.
 
 ## Runtime and isolation
 
@@ -133,6 +135,21 @@ format pass. Runtime and artwork are byte-identical; a new exact-commit Full,
 Pages, hosted and complete-public-byte gate remains mandatory. Evidence:
 `/private/tmp/hollowbane-classic-merchant-repair/`, before/after logs alongside it
 and `/private/tmp/hollowbane-classic-act1-final-ci-failure/`.
+
+## Native hosted traversal strategy
+
+The initial native hosted replay passed10 cases but its fresh Warrior died while
+slow-walking all four clearings past the remaining hostiles after two required
+kills. That is retained as real gameplay evidence, not hidden by changed health,
+AI, speed, damage or timeouts. The journey now uses the existing standard L3 run
+control after those fights. Every combat, survival, clearing, loot, quest, reward,
+next-area and persistence assertion remains intact. The complete public native
+suite passes11/11 in2.1m; the actual quest journey passes54.4s. TypeScript/scoped
+lint/format pass. Before/after reports and screenshots remain in
+`/private/tmp/hollowbane-classic-act1-hosted/`, including
+`hosted-browser-walking-failure.json` and `browser-results-walking-failure/`.
+Runtime/artwork are unchanged. This test-only follow-up must pass the selected
+risk gate against the newly accepted3d54dc6 baseline before final publication.
 
 ## Native M4 and asset evidence
 

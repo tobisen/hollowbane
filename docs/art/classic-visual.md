@@ -1,40 +1,33 @@
-# Classic Act 1 — real campaign candidate, release gate pending
+# Classic Act 1 — playable public candidate; final comparison pending
 
-2026-11-01 · DBL-035/375/379. The previously ignored `?classicAct1=1` now has a
-real local campaign route: approved four-clearings geography/presentation,
-existing gameplay/quests/loot/NPCs/containers/waypoints/progression, isolated class
-checkpoints and a readiness-backed indicator. Missing assets/options fail
-explicitly. Default campaign/maps/schemas/owner saves remain protected.
+2026-11-01 · DBL-035/375/379. Verified public runtime
+`3d54dc6765047e9ea992174273ee9d640d2a42d5`, CI41259279768: Full722 units/
+343 Chromium/15 compatibility, Pages, hosted critical flow and release acceptance
+pass. All191 public files independently match the sealed artifact.
 
-[Integration and exact release action](classic-act1.md) records architecture,
-acceptance, limitations and native comparison. [Art bible](classic-foundation.md)
-remains the visual baseline. Reused312 original poses; no raster asset growth.
-Sorcerer/Ranger and unsupported states retain legacy art. Local actual-input
-coverage includes all classes' ability/combat/death, eight-direction Warrior,
-real Edda quest/reward/loot/next-area/save journey and production-owner byte checks.
-Final fallback screenshot review repaired a missing legacy contact texture using
-the same shared Classic shadow for all candidate actors. Three class movement/
-save, missing-asset and original pilot combat cases pass5/5; corrected captures
-reviewed. Pending de99c30 release is superseded by this final visual fix.
+The previously ignored `?classicAct1=1` launches the real campaign using approved
+four-clearing geography/presentation, existing quests/combat/AI/loot/containers/
+waypoints/progression, isolated class checkpoints and a readiness-backed indicator.
+Normal maps, owner saves and save schemas remain protected; Phaser4.2.1 retained.
+Reused312 original poses and painted scenery, no raster asset growth. Sorcerer/
+Ranger and unsupported states keep legacy art, now with valid shared contact.
 
-Native M4/Metal recorded steady samples:540 per mode, p50/p95/p99/max
-16.7/16.7/16.8/16.8ms, zero>25. Different maps/zoom/workload and corridor blocking
-are explicit; no universal improvement/shimmer/GPU-memory claim. Comparison and
-movement recordings: `/private/tmp/hollowbane-classic-integrated-native/review.html`.
+All11 native Metal hosted checks pass2.1m, including actual class combat/death,
+movement/save, production-owner protection and Edda quest/reward/loot/graveyard/
+save/re-entry. The journey uses existing L3 run control; initial slow-walking
+failure10/11 is retained. A test-only strategy follow-up requires its selected
+risk gate against the accepted3d54dc6 baseline. Final hosted comparison is pending.
 
-First integration CI41254452130 blocked Pages on one reproduced navigation-driver
-long-leg deadline (722 units/342 browser/15 compatibility pass); bounded checkpoint
-repair passes repeated Classic and normal journeys. Required new exact candidate
-CI/Pages/hosted/public integrity is pending. Last verified
-public remains Release A `954032834f88ea2cc02570851ecca3d56f30e391`,
-CI41228393310 (Full715/332 Chromium/15 compatibility,189 public bytes verified,
-four additional hosted native checks). Do not claim the integrated URL is deployed
-until the new gate passes. All17 unrelated edits preserved; no default migration,
-equipment expansion or new class/monster art.
-Latest runtime4607c10 passed all11 Classic cases in CI41257333413, but an
-existing merchant stale-save-status assertion blocked Full publication. The
-reproduced test-only synchronization repair passes8/8 merchant replays; new
-exact-commit Full/Pages/hosted gates remain required. Runtime/artwork unchanged.
+Native local M4/Metal540 intervals per mode: p50/p95/p99/max
+16.7/16.7/16.8/16.8ms, zero>25. Different maps/zoom/workloads are explicit; no
+universal performance/shimmer claim. Local comparison/recordings:
+`/private/tmp/hollowbane-classic-integrated-native/review.html`.
+
+[Integration, exact evidence and release action](classic-act1.md),
+[art bible](classic-foundation.md). Four-facing turns, static idle/shared ability
+motion, legacy class differences, repeated ground, approximate corpse contact
+and historical shrine hitches remain. No default migration, equipment expansion,
+new class/monster art or physical-controller claim. All17 unrelated edits retained.
 
 ---
 
