@@ -5,7 +5,11 @@
 [Classic Act 1](https://tobisen.github.io/hollowbane/?classicAct1=1) is intended
 to open the normal title/character-selection UI. Select an existing character or
 create a Warrior, Sorcerer or Ranger. Normal campaign remains the default.
-Startup-recovery candidate is locally implemented; release verification is pending.
+Verified deployed repair: `0dd061d298e2fd4020c8c65c3f364b30156c561c`.
+[Full CI41351228972](https://github.com/tobisen/hollowbane/actions/runs/41351228972),
+Pages, hosted smoke and final release acceptance all pass. All191 public files
+independently match the sealed CI artifact and locally tested build byte for byte.
+Additional public acceptance:21/21 pass in228.666s, zero failed/skipped/flaky.
 Last verified deployment before recovery: `9ce92f1d9d946b1d5b7ff96eb9ca8f8f97646e1b`.
 
 ## Startup failure and repair
@@ -68,7 +72,38 @@ real-IndexedDB readiness case passes separately (6.3s): it holds the actual open
 completion, checks inactive indicator/disabled saves, then releases without sleeps.
 Thus all14 current Classic acceptance cases have local passing evidence.
 Release coverage346 cases has no gaps/overlap. Selection/gameplay/clearing captures
-were reviewed. Exact-commit CI/Pages/hosted/published-byte verification is pending.
+were reviewed. Exact-commit Full CI passes346 Chromium cases (93/79/89/85),
+including all14 Classic cases, with zero failures/skips/flaky results; required15
+compatibility cases, full units/tooling, static checks, Fast2, Pages, hosted2 and
+final release acceptance pass.
+
+## Public recovery acceptance
+
+The exact deployed SHA above passed an additional fresh-context software Chromium
+suite:14 Classic,3 Classic Visual and4 normal startup/creation/combat cases,
+21/21 in228.666s, zero failed/skipped/flaky. Fresh and existing owners, all three
+classes, held IndexedDB readiness, missing-owner/asset errors, direct refresh,
+Save & Exit/Continue/title return, same-class isolation, actual movement/combat,
+all four clearings, NPC quest/reward, container/loot and next-area travel pass.
+Raw normal registry/character/previous/archive records are unchanged by Classic
+entry/play/save. Existing equipment, progression, socketed backpack item and stash
+are retained in the isolated copy. Normal campaign startup and geometry remain
+unchanged. No manual class parameter is needed for the player-facing route.
+
+Evidence: `/private/tmp/hollowbane-startup-recovery/` contains `ci-final.json`,
+four `ci-results/` reports, `ci-browser-summary.json`, sealed `release-bundle/`,
+`public-integrity.log`, `hosted-browser.json` and `hosted-results/` captures.
+Public menu/creation and all three class/gameplay screenshots were reviewed;
+background/portrait image decoding is awaited for final menu captures, rather
+than imposing a fixed delay. All191 public bytes were independently checked.
+The initial local Ranger failure remains in `local-browser.json` and its trace;
+the unchanged case passes in exact-commit Full CI and the final public suite.
+No retries, deadline increases, weakened assertions or mandatory-gate reductions.
+
+The repair is technically delivered. Human Classic art/campaign review remains
+pending; no Q3-B/new sprites/balance/other maps or phase continuation. Existing
+hardware/art/performance follow-ups remain open. Final evidence-only documentation
+commit stays local; the public runtime is the exact verified SHA above.
 
 ## Historical release evidence
 
@@ -84,7 +119,10 @@ The final191 payload files are byte-identical to the accepted Full baseline and
 the local native-profile build. The final follow-up changes test input strategy
 and documentation only; it did not lower the existing risk policy.
 
-## Runtime and isolation
+## Original release runtime and isolation
+
+The original entry/ownership description below is historical; startup recovery
+above supersedes it. Map, mechanics, art and save-codec evidence remain applicable.
 
 The candidate uses `startCombatArena`, `WorldSession`, `WorldTravel`, encounters,
 skills, loot, inventory, quests, dialogue, containers, waypoints and progression.
