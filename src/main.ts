@@ -3,9 +3,9 @@ import { controllerInput } from "./rendering/controller-input";
 controllerInput.start();
 import "./style.css";
 const query = new URLSearchParams(location.search);
-// Only the existing world and inventory entry shapes can bind a real owner.
+// Only the explicit campaign and inventory entry shapes can bind a real owner.
 // Developer modifiers and duplicate parameters fail closed before gameplay.
-const slotModes = [["world"], ["inventory", "advanced"]];
+const slotModes = [["world"], ["inventory", "advanced"], ["classicAct1"]];
 const slotMode = slotModes.some(
   (keys) =>
     keys.every(
@@ -30,18 +30,26 @@ if (invalidCharacterRoute) {
     if (
       query.get("classicAct1") !== "1" ||
       query.getAll("classicAct1").length !== 1 ||
-      [...query.keys()].some((k) => k !== "classicAct1" && k !== "class") ||
+      [...query.keys()].some(
+        (k) => !["classicAct1", "class", "character"].includes(k),
+      ) ||
       query.getAll("class").length > 1 ||
+      (query.has("class") && query.has("character")) ||
       (query.has("class") &&
         !["warrior", "sorcerer", "ranger"].includes(query.get("class")!))
     )
       throw Error(
-        "Use ?classicAct1=1 with an optional supported class. Production character binding is unavailable.",
+        "Use ?classicAct1=1 to choose a character, or an optional supported class for the developer shortcut.",
       );
-    await import("./rendering/combat.css");
-    const { startCombatArena } = await import("./rendering/combat-arena");
-    const { ClassicCampaign } = await import("./rendering/classic-campaign");
-    startCombatArena(false, ClassicCampaign);
+    if (!query.has("character") && !query.has("class")) {
+      const { startMainMenu } = await import("./rendering/main-menu");
+      await startMainMenu(undefined, true);
+    } else {
+      await import("./rendering/combat.css");
+      const { startCombatArena } = await import("./rendering/combat-arena");
+      const { ClassicCampaign } = await import("./rendering/classic-campaign");
+      startCombatArena(false, ClassicCampaign);
+    }
   } catch (error) {
     const main = document.querySelector("main")!;
     main.replaceChildren();

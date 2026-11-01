@@ -41,7 +41,10 @@ const className = (id: ClassId | null) =>
 const portraitPath = (id: ClassId, thumbnail = false) =>
   `${import.meta.env.BASE_URL}assets/menu-${id}${thumbnail ? "-thumb" : ""}-v1.webp`;
 
-export async function startMainMenu(entryError?: string): Promise<void> {
+export async function startMainMenu(
+  entryError?: string,
+  classicAct1 = false,
+): Promise<void> {
   const root = document.querySelector<HTMLElement>("main")!;
   root.className = "main-menu";
   root.innerHTML = `<section class="menu-panel" aria-labelledby="menu-title"><p class="eyebrow">BEYOND THE LAST WATCHFIRE</p><h1 id="menu-title">HOLLOWBANE</h1><p class="menu-subtitle">The light endures. So must you.</p><nav aria-label="Main menu"><button id="menu-continue" disabled>Continue Game</button><button id="menu-new" hidden>New Game</button><button id="menu-load" hidden>Load Character</button><button id="menu-settings">Settings</button><button id="menu-recovery" hidden>Review save recovery</button><button id="menu-retry" hidden>Retry storage</button></nav><p id="menu-status" role="status" aria-live="polite">Checking your saved adventure…</p><p class="menu-controls">Arrow keys / D-pad: navigate · Enter / A / Cross: select · Escape / B / Circle: back</p></section><footer class="menu-footer">An original dark fantasy adventure <span>ASHEN REFUGE AWAITS</span></footer>
@@ -52,6 +55,17 @@ export async function startMainMenu(entryError?: string): Promise<void> {
   <dialog id="menu-legacy-dialog" aria-labelledby="menu-legacy-title"><h2 id="menu-legacy-title">Bring your saved adventure</h2><p id="menu-legacy-detail"></p><p>Import a validated copy into its own character slot. Original save and recovery records remain intact. Existing class, items and campaign are preserved.</p><p data-menu-message role="status"></p><div class="menu-actions"><button id="menu-migrate">Import and Play Legacy Adventurer</button><button data-menu-back>Back</button></div></dialog>
   <dialog id="menu-settings-dialog" aria-labelledby="menu-settings-title"><h2 id="menu-settings-title">Settings</h2><button data-menu-back>Back to Main Menu</button><section id="player-settings-host"></section></dialog>`;
   document.title = "Hollowbane · Main Menu";
+  if (classicAct1) {
+    document.title = "Hollowbane · Classic Act 1 · Character selection";
+    root.querySelector(".menu-subtitle")!.textContent =
+      "Classic Act 1 · choose a character for an isolated adventure. Your normal campaign is retained.";
+    root.querySelector("#menu-confirm-dialog > p:nth-of-type(2)")!.textContent =
+      "Create your level-1 character, then explore Classic Act 1 with separate progress. The normal campaign checkpoint is retained.";
+    const normal = document.createElement("a");
+    normal.href = "./";
+    normal.textContent = "Normal campaign";
+    root.querySelector(".menu-footer")!.append(normal);
+  }
   const button = (id: string) =>
     root.querySelector<HTMLButtonElement>(`#${id}`)!;
   const dialog = (id: string) =>
@@ -229,7 +243,15 @@ export async function startMainMenu(entryError?: string): Promise<void> {
     updateSelection();
   };
   const refresh = async () => {
-    [registry, recent] = await Promise.all([store.list(), store.recent()]);
+    registry = await store.list();
+    const classicRecent = classicAct1
+      ? localStorage.getItem("hollowbane.classic-act1.recent")
+      : null;
+    recent = classicRecent
+      ? registry.characters.some((c) => c.id === classicRecent)
+        ? await store.load(classicRecent)
+        : null
+      : await store.recent();
     if (disposed) return;
     renderSlots();
     button("menu-load").hidden = registry.characters.length === 0;
@@ -297,11 +319,17 @@ export async function startMainMenu(entryError?: string): Promise<void> {
       );
       return;
     }
+    if (classicAct1 && !loaded.metadata.classId)
+      throw Error(
+        "Classic Act 1 requires a Warrior, Sorcerer or Ranger. Choose or create a supported character",
+      );
     message(`Opening ${loaded.metadata.name}…`);
     hub.clear();
-    const route = loaded.session.exploration
-      ? "world=1"
-      : "inventory=1&advanced=1";
+    const route = classicAct1
+      ? "classicAct1=1"
+      : loaded.session.exploration
+        ? "world=1"
+        : "inventory=1&advanced=1";
     location.assign(`?${route}&character=${encodeURIComponent(id)}`);
   };
   const reviewLegacy = () => {
@@ -344,6 +372,12 @@ export async function startMainMenu(entryError?: string): Promise<void> {
       renderSlots();
       show(selection);
     } else {
+      if (classicAct1) {
+        message(
+          "Review legacy recovery from Normal campaign, then return to Classic character selection. No save was changed.",
+        );
+        return;
+      }
       hub.clear();
       location.assign(
         checkpoint?.kind === "recoverable" && !checkpoint.session.exploration

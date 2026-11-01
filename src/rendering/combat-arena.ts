@@ -384,12 +384,12 @@ export function startCombatArena(
     root.classList.add("classic-act1");
     const title = root.querySelector<HTMLAnchorElement>(".arena-header > a");
     if (title) {
-      title.href = "./";
+      title.href = "?classicAct1=1";
       title.textContent = "Return to title";
     }
     root.insertAdjacentHTML(
       "beforeend",
-      '<nav id="classic-act1-tools" style="position:fixed;bottom:8px;right:10px;z-index:45;background:#181d15dc;color:#dccba8;padding:5px;font-size:11px"><span id="classic-act1-indicator" hidden>CLASSIC ACT 1 · isolated save</span> · <a href="?classicAct1=1&amp;class=warrior">Warrior</a> · <a href="?classicAct1=1&amp;class=sorcerer">Sorcerer</a> · <a href="?classicAct1=1&amp;class=ranger">Ranger</a> · <a href="./">Title</a></nav>',
+      '<nav id="classic-act1-tools" style="position:fixed;bottom:8px;right:10px;z-index:45;background:#181d15dc;color:#dccba8;padding:5px;font-size:11px"><span id="classic-act1-indicator" hidden>CLASSIC ACT 1 · isolated save</span> · <a href="?classicAct1=1">Character selection</a> · <a href="./">Normal campaign</a></nav>',
     );
     window.addEventListener("error", (event) => {
       delete document.documentElement.dataset.classicAct1;
@@ -637,6 +637,7 @@ export function startCombatArena(
             })),
             textures: this.textures.getTextureKeys(),
             classId: this.world.experience.skills.classId,
+            ownerId: query.get("character"),
           };
         else delete window.hollowbaneClassicAct1;
       }
@@ -766,7 +767,7 @@ export function startCombatArena(
         const notice = root.querySelector("#inventory-laboratory-notice");
         if (notice)
           notice.textContent =
-            "Classic Act 1 · isolated developer checkpoint · item requirements apply.";
+            "Classic Act 1 · isolated character checkpoint · item requirements apply.";
       }
     };
     private renderAt = 0;
@@ -914,7 +915,11 @@ export function startCombatArena(
           itemLab,
           testStorage,
           classicAct1
-            ? classicCheckpoint(nav, candidateClass)
+            ? classicCheckpoint(
+                nav,
+                candidateClass,
+                query.get("character") ?? undefined,
+              )
             : query.has("character")
               ? new CharacterCheckpoint(query.get("character")!, exploring)
               : undefined,

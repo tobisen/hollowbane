@@ -12,6 +12,10 @@ export class PlayerMenu {
   private exited = false;
   private home: HTMLElement;
   private settings: HTMLElement;
+  private readonly titleRoute =
+    new URLSearchParams(location.search).get("classicAct1") === "1"
+      ? "?classicAct1=1"
+      : "./";
   constructor(
     root: HTMLElement,
     private ready: () => boolean,
@@ -35,7 +39,7 @@ export class PlayerMenu {
     window.addEventListener(
       "pageshow",
       (event) => {
-        if (event.persisted && this.exited) location.replace("./");
+        if (event.persisted && this.exited) location.replace(this.titleRoute);
       },
       { signal: this.abort.signal },
     );
@@ -197,7 +201,7 @@ export class PlayerMenu {
       if (this.abort.signal.aborted) return;
       status.textContent = "Adventure saved. Returning to the main menu…";
       this.exited = true;
-      location.assign("./");
+      location.assign(this.titleRoute);
     } catch (error) {
       this.exited = false;
       this.busy = false;

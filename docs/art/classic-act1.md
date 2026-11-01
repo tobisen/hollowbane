@@ -1,12 +1,76 @@
-# Classic Act 1 — published; stop for human review
+# Classic Act 1 — public startup recovery
 
 2026-11-01 · DBL-035/375/379 · opt-in only
 
-[Play Classic Act 1](https://tobisen.github.io/hollowbane/?classicAct1=1).
-Verified deployed SHA: `9ce92f1d9d946b1d5b7ff96eb9ca8f8f97646e1b`.
-The previously ignored flag now launches a real four-clearing campaign. Optional
-`&class=warrior`, `sorcerer` or `ranger` selects its separate developer checkpoint.
-The normal campaign remains the default.
+[Classic Act 1](https://tobisen.github.io/hollowbane/?classicAct1=1) is intended
+to open the normal title/character-selection UI. Select an existing character or
+create a Warrior, Sorcerer or Ranger. Normal campaign remains the default.
+Startup-recovery candidate is locally implemented; release verification is pending.
+Last verified deployment before recovery: `9ce92f1d9d946b1d5b7ff96eb9ca8f8f97646e1b`.
+
+## Startup failure and repair
+
+The user-reported production-binding error is authoritative failure evidence.
+The exact bare public URL was checked first in a fresh Chromium context. At this
+observation the literal error did **not** reproduce: HTTP200 launched an anonymous
+Warrior developer checkpoint, with no selection/menu and no production owner.
+That result still violates the required public flow; it does not disprove the
+user's report. Raw capture: `/private/tmp/hollowbane-startup-recovery/public-before.json`
+and `public-before.png`. The original readiness wait for that error timed out;
+a second fresh run captured actual error-or-game readiness without fixed sleeps.
+
+Root cause in the previous implementation: `main.ts` dispatched every valid
+Classic flag directly to `startCombatArena`; route validation rejected every
+Classic `character` binding. `classicCheckpoint` supported only class-wide
+anonymous slots. The optional class default was already Warrior; requiring a
+manual class URL would not repair the lifecycle. Title and Save & Exit also
+removed the opt-in, and prior tests treated owner rejection as correct behavior.
+No evidence identifies the exact browser/query state behind the reported message.
+
+The bare flag now opens the existing awaited character menu. Genuine creation,
+selection and Continue navigate to `?classicAct1=1&character={uuid}`. The scene's
+existing inventory-readiness barrier waits for the real CharacterStorage load,
+then restores that character's equipment, progression and stash into a distinct
+Classic campaign. Missing/corrupt owners stop readiness and saving and offer
+character selection. Invalid modifiers still fail closed. Class validation,
+normal routes, Classic Visual and Phaser4.2.1 are preserved.
+
+Each owner has its own `hollowbane-classic-act1-owner-v1-{uuid}` InventoryStorage
+checkpoint. First entry copies real character state into a fresh four-clearing
+campaign; normal world drops/deaths/quests/position do not enter a different map.
+The stash, equipment, backpack, progression and loot stream are retained. Normal
+records are read only during Classic entry/play/save; normal recent-owner metadata
+is untouched. Fresh creation creates its normal level-1 starter checkpoint once,
+then Classic writes exclusively to its separate copy. Existing anonymous class
+databases remain accessible through explicit `&class=warrior|sorcerer|ranger`
+developer shortcuts and are never adopted as an owner's save. No codec/schema
+migration. Normal-codec candidate-fingerprint rejection remains unchanged.
+
+Save & Exit, recovery links and Return to title retain `?classicAct1=1`.
+Classic's recent-owner pointer is separate from the normal registry. An explicit
+Normal campaign link leaves the opt-in. The active indicator still requires actual
+layout/presentation/storage readiness and exposes the bound owner read only.
+
+Browser acceptance now starts at the exact bare URL for all three real creation
+flows and for existing-owner selection. It checks fresh refresh, bound reload,
+Save & Exit/Continue, owner/class/1083-cell/fingerprint agreement, real movement,
+actual combat and the complete quest/clearing/container/loot/next-area journey.
+Additional cases compare every raw normal registry/character/previous/archive
+record, protect same-class owner separation and retain existing equipment,
+progression and stash. Missing-owner and missing-asset failures remain explicit.
+Local check:722 units, TypeScript/lint/assets/backlog/build and30 focused units
+pass. The expanded browser run passes all13 Classic cases,3 Classic Visual and14
+normal menu cases; one unchanged normal Ranger route-arrival assertion failed
+once at its original5s deadline. That unmodified case then passes on both the prior
+public deployment (13.9s) and a local isolated replay (8.6s). The initial failure
+trace/report is retained, not counted as a passing broad run. The additional
+real-IndexedDB readiness case passes separately (6.3s): it holds the actual open
+completion, checks inactive indicator/disabled saves, then releases without sleeps.
+Thus all14 current Classic acceptance cases have local passing evidence.
+Release coverage346 cases has no gaps/overlap. Selection/gameplay/clearing captures
+were reviewed. Exact-commit CI/Pages/hosted/published-byte verification is pending.
+
+## Historical release evidence
 
 | Release evidence                                                                                         | Result                                                                                         |
 | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |

@@ -3,6 +3,7 @@ import { classicAct1Layout } from "../../src/simulation/classic-act1-layout";
 import { layoutFingerprint } from "../../src/simulation/world-layout";
 import { worldLayout } from "../../src/simulation/world-layout";
 import { characterApi } from "../fixtures/character-api";
+import { characterSlotFixture } from "../fixtures/character-slot";
 import { serializeCharacter } from "../../src/simulation/inventory-save";
 import { newCharacter } from "../../src/simulation/new-character";
 import {
@@ -17,6 +18,24 @@ import {
 import { act1Unproject } from "../../src/world/act1-view";
 import { areaNavigation, findPath } from "../../src/world/navigation";
 import { defaultPreferences } from "../../src/simulation/input";
+
+async function createClassicCharacter(page: Page, classId: string) {
+  await page.goto("?classicAct1=1");
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  await expect(page.locator("#classic-act1-error")).toHaveCount(0);
+  await expect(page.locator(".menu-subtitle")).toContainText("Classic Act 1");
+  await page.screenshot({
+    path: test.info().outputPath("classic-character-selection.png"),
+  });
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  await page.locator("#menu-new").click();
+  await page.locator(`[data-class="${classId}"]`).click();
+  await page.getByLabel("Character name").fill(`Classic ${classId}`);
+  await page.getByRole("button", { name: "Review character" }).click();
+  await page.locator("#menu-create-confirm").click();
+  await expect(page).toHaveURL(/\?classicAct1=1&character=[0-9a-f-]+$/);
+}
 
 async function approachHostile(page: Page, id: number) {
   await neutralQuestController(page);
@@ -198,12 +217,15 @@ for (const classId of ["warrior", "sorcerer", "ranger"] as const)
   }, info) => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
-    await page.goto(`?classicAct1=1&class=${classId}`);
+    await createClassicCharacter(page, classId);
     await expect(page.locator("html")).toHaveAttribute(
       "data-classic-act1",
       "active",
     );
     await expect(page.locator("#classic-act1-indicator")).toBeVisible();
+    expect(
+      await page.evaluate(() => window.hollowbaneClassicAct1!.ownerId),
+    ).toBe(new URL(page.url()).searchParams.get("character"));
     await expect
       .poll(() => page.evaluate(() => window.hollowbaneWorld?.fingerprint))
       .toBe(layoutFingerprint(classicAct1Layout(42)));
@@ -312,6 +334,17 @@ for (const classId of ["warrior", "sorcerer", "ranger"] as const)
     expect(
       await page.evaluate(() => document.documentElement.dataset.classicAct1),
     ).toBeUndefined();
+    await page.locator("#menu-continue").click();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-classic-act1",
+      "active",
+    );
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneClassicAct1?.classId))
+      .toBe(classId);
+    expect(await page.evaluate(() => window.hollowbaneWorld!.position)).toEqual(
+      position,
+    );
     expect(errors).toEqual([]);
   });
 
@@ -330,7 +363,7 @@ test("missing Classic scenery stops initialization with an explicit error and no
   page,
 }) => {
   await page.route("**/dev/classic-visual/earth.png", (route) => route.abort());
-  await page.goto("?classicAct1=1");
+  await page.goto("?classicAct1=1&class=warrior");
   await expect(page.locator("#classic-act1-error")).toContainText(
     "Classic scenery unavailable: earth",
   );
@@ -354,7 +387,7 @@ test("Classic uses the same saved movement bindings as the normal player session
       ),
     preferences,
   );
-  await page.goto("?classicAct1=1");
+  await page.goto("?classicAct1=1&class=warrior");
   await expect(page.locator("html")).toHaveAttribute(
     "data-classic-act1",
     "active",
@@ -401,7 +434,7 @@ test("Classic campaign retains production owner bytes and normal forest geometry
         storage.close();
       }
     },
-    serializeCharacter(newCharacter("warrior")),
+    serializeCharacter(characterSlotFixture("warrior")),
   );
   const snapshot = async () => {
     await characterApi(page);
@@ -414,6 +447,28 @@ test("Classic campaign retains production owner bytes and normal forest geometry
         return {
           registry: await storage.list(),
           text: api.serializeCharacter(loaded.session),
+          records: await new Promise<unknown[]>((resolve, reject) => {
+            const r = indexedDB.open("hollowbane-characters-v1");
+            r.onerror = () => reject(r.error);
+            r.onsuccess = () => {
+              const db = r.result;
+              const tx = db.transaction(
+                ["registry", "characters", "previous", "archives"],
+                "readonly",
+              );
+              const requests = Array.from(tx.objectStoreNames).map((name) =>
+                tx.objectStore(name).getAll(),
+              );
+              tx.oncomplete = () => {
+                db.close();
+                resolve(requests.map((request) => request.result));
+              };
+              tx.onabort = () => {
+                db.close();
+                reject(tx.error);
+              };
+            };
+          }),
         };
       } finally {
         storage.close();
@@ -422,6 +477,10 @@ test("Classic campaign retains production owner bytes and normal forest geometry
   };
   const before = await snapshot();
   await page.goto("?classicAct1=1");
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  await page.locator("#menu-load").click();
+  await page.locator(`[data-character-id="${id}"]`).click();
+  await page.locator("#menu-play").click();
   await expect(page.locator("html")).toHaveAttribute(
     "data-classic-act1",
     "active",
@@ -433,10 +492,31 @@ test("Classic campaign retains production owner bytes and normal forest geometry
   );
   expect(await snapshot()).toEqual(before);
   await page.goto(`?classicAct1=1&character=${id}`);
-  await expect(page.locator("#menu-status")).toContainText(
-    "unsupported options",
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-classic-act1",
+    "active",
   );
   expect(await snapshot()).toEqual(before);
+  await page
+    .getByRole("link", { name: "Return to title", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\?classicAct1=1$/);
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  await page.locator("#menu-continue").click();
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-classic-act1",
+    "active",
+  );
+  expect(await snapshot()).toEqual(before);
+  await page.goto(`?world=1&character=${id}`);
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-combat-ready",
+    "true",
+  );
+  await expect
+    .poll(() => page.evaluate(() => window.hollowbaneWorld?.area))
+    .toBe("ashen-refuge");
+  expect((await snapshot()).text).toBe(before.text);
   await page.goto(
     "?world=1&developer=1&worldArea=haunted-forest&worldPeaceful=1",
   );
@@ -456,7 +536,7 @@ test("Classic actual campaign reaches NPC quest, clearings, combat, loot, contai
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await installVirtualController(page, "Classic campaign virtual standard");
-  await page.goto("?classicAct1=1");
+  await createClassicCharacter(page, "warrior");
   await expect(page.locator("html")).toHaveAttribute(
     "data-classic-act1",
     "active",
@@ -639,6 +719,8 @@ test("Classic actual campaign reaches NPC quest, clearings, combat, loot, contai
   await page.locator("#player-save-exit").click();
   await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
   await page.goto("?classicAct1=1");
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  await page.locator("#menu-continue").click();
   await expect(page.locator("html")).toHaveAttribute(
     "data-classic-act1",
     "active",
@@ -655,4 +737,225 @@ test("Classic actual campaign reaches NPC quest, clearings, combat, loot, contai
   await expect(page.locator("#quest-status")).toContainText("claimed");
   await page.locator("#quest-journal-close").click();
   expect(errors).toEqual([]);
+});
+
+test("existing same-class owners keep separate Classic saves and retain their actual equipment, progression and stash", async ({
+  page,
+}) => {
+  await page.goto("./");
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  await characterApi(page);
+  const owners = await page.evaluate(
+    async (texts) => {
+      const api = window.characterStorageModule;
+      const store = new api.CharacterStorage();
+      try {
+        const owners = [];
+        for (const [index, text] of texts.entries()) {
+          const metadata = await store.create(
+            `Existing journey ${index + 1}`,
+            api.deserializeCharacter(text),
+          );
+          owners.push({ id: metadata.id, body: JSON.parse(text).body });
+        }
+        return owners;
+      } finally {
+        store.close();
+      }
+    },
+    [
+      serializeCharacter(characterSlotFixture("warrior", 42)),
+      serializeCharacter(newCharacter("warrior", 51)),
+    ],
+  );
+  const positions = [];
+  for (const owner of owners) {
+    await page.goto("?classicAct1=1");
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-menu-ready",
+      "true",
+    );
+    await page.locator("#menu-load").click();
+    await page.locator(`[data-character-id="${owner.id}"]`).click();
+    await page.locator("#menu-play").click();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-classic-act1",
+      "active",
+    );
+    expect(
+      await page.evaluate(() => window.hollowbaneClassicAct1!.ownerId),
+    ).toBe(owner.id);
+    await page.locator("#combat-world").focus();
+    const from = await page.evaluate(() => window.hollowbaneWorld!.position);
+    await page.keyboard.down("ArrowRight");
+    await expect
+      .poll(() =>
+        page.evaluate(
+          (from) => window.hollowbaneWorld!.position.x - from.x,
+          from,
+        ),
+      )
+      .toBeGreaterThan(0.5);
+    await page.keyboard.up("ArrowRight");
+    await expect
+      .poll(() => page.evaluate(() => window.hollowbaneWorld!.walking))
+      .toBe(false);
+    positions.push(await page.evaluate(() => window.hollowbaneWorld!.position));
+    await page.locator("#player-pause-open").click();
+    await page.locator("#player-save-exit").click();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-menu-ready",
+      "true",
+    );
+    const saved = await page.evaluate(async (id) => {
+      const db = await new Promise<IDBDatabase>((resolve, reject) => {
+        const r = indexedDB.open(`hollowbane-classic-act1-owner-v1-${id}`);
+        r.onsuccess = () => resolve(r.result);
+        r.onerror = () => reject(r.error);
+      });
+      try {
+        return await new Promise<{ text: string }>((resolve, reject) => {
+          const tx = db.transaction("snapshots", "readonly");
+          const r = tx.objectStore("snapshots").get("current");
+          tx.oncomplete = () => resolve(r.result);
+          tx.onabort = () => reject(tx.error);
+        });
+      } finally {
+        db.close();
+      }
+    }, owner.id);
+    const body = JSON.parse(saved.text).body;
+    expect(body.character).toEqual(owner.body.character);
+    expect(body.progression).toEqual(owner.body.progression);
+    expect(body.exploration.stash).toEqual(owner.body.exploration.stash);
+    expect(body.exploration.area).toBe("haunted-forest");
+    // Return via the exact bare entry and Continue, then refresh the bound owner.
+    await page.goto("?classicAct1=1");
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-menu-ready",
+      "true",
+    );
+    await page.locator("#menu-continue").click();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-classic-act1",
+      "active",
+    );
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-classic-act1",
+      "active",
+    );
+    expect(await page.evaluate(() => window.hollowbaneWorld!.position)).toEqual(
+      positions.at(-1),
+    );
+  }
+  await page.goto(`?classicAct1=1&character=${owners[0]!.id}`);
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-classic-act1",
+    "active",
+  );
+  expect(await page.evaluate(() => window.hollowbaneWorld!.position)).toEqual(
+    positions[0],
+  );
+});
+
+test("missing Classic owner blocks readiness and saving with actionable selection recovery", async ({
+  page,
+}) => {
+  await page.goto(
+    "?classicAct1=1&character=10000000-0000-4000-8000-000000000099",
+  );
+  await expect(page.locator("#inventory-status")).toContainText(
+    "no longer exists",
+  );
+  await expect(page.locator("#inventory-save")).toBeDisabled();
+  await expect(page.locator("#classic-act1-indicator")).not.toBeVisible();
+  expect(
+    await page.evaluate(() => window.hollowbaneClassicAct1),
+  ).toBeUndefined();
+  await page
+    .getByRole("link", { name: "Return to character selection" })
+    .click();
+  await expect(page).toHaveURL(/\?classicAct1=1$/);
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+});
+
+test("Classic waits for IndexedDB owner readiness before activating the campaign", async ({
+  page,
+}) => {
+  await page.goto("./");
+  await expect(page.locator("html")).toHaveAttribute("data-menu-ready", "true");
+  await characterApi(page);
+  const id = await page.evaluate(
+    async (text) => {
+      const api = window.characterStorageModule;
+      const store = new api.CharacterStorage();
+      try {
+        return (
+          await store.create("Awaited Ranger", api.deserializeCharacter(text))
+        ).id;
+      } finally {
+        store.close();
+      }
+    },
+    serializeCharacter(newCharacter("ranger")),
+  );
+  await page.addInitScript(() => {
+    const open = IDBFactory.prototype.open;
+    const success = Object.getOwnPropertyDescriptor(
+      IDBRequest.prototype,
+      "onsuccess",
+    )!;
+    const pending: (() => void)[] = [];
+    let released = false;
+    window.addEventListener("release-classic-owner-storage", () => {
+      released = true;
+      for (const ready of pending.splice(0)) ready();
+    });
+    IDBFactory.prototype.open = function (name, version) {
+      const request =
+        version === undefined
+          ? open.call(this, name)
+          : open.call(this, name, version);
+      if (name === "hollowbane-characters-v1")
+        Object.defineProperty(request, "onsuccess", {
+          set(handler: (this: IDBOpenDBRequest, event: Event) => void) {
+            success.set!.call(request, (event: Event) => {
+              if (released) handler.call(request, event);
+              else {
+                pending.push(() => handler.call(request, event));
+                document.documentElement.dataset.classicOwnerWaiting = "true";
+              }
+            });
+          },
+        });
+      return request;
+    };
+  });
+  await page.goto(`?classicAct1=1&character=${id}`);
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-classic-owner-waiting",
+    "true",
+  );
+  await expect(page.locator("#inventory-save")).toBeDisabled();
+  await expect(page.locator("#classic-act1-indicator")).not.toBeVisible();
+  expect(
+    await page.evaluate(() => window.hollowbaneClassicAct1),
+  ).toBeUndefined();
+  await page.evaluate(() =>
+    window.dispatchEvent(new Event("release-classic-owner-storage")),
+  );
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-classic-act1",
+    "active",
+  );
+  expect(await page.evaluate(() => window.hollowbaneClassicAct1!.ownerId)).toBe(
+    id,
+  );
+  expect(await page.evaluate(() => window.hollowbaneClassicAct1!.classId)).toBe(
+    "ranger",
+  );
+  expect(await page.evaluate(() => window.hollowbaneWorld!.fingerprint)).toBe(
+    layoutFingerprint(classicAct1Layout(42)),
+  );
 });

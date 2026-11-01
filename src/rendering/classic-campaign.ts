@@ -25,6 +25,7 @@ declare global {
       }[];
       textures: string[];
       classId: string | null;
+      ownerId: string | null;
     };
   }
 }
