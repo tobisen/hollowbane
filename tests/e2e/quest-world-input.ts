@@ -163,6 +163,22 @@ export async function driveQuestPoints(
   precision = 0.1,
 ) {
   if (!points.length) return;
+  // Open maps can compress a walk into one leg longer than the ten-second
+  // arrival deadline. Keep every pathfinder turn and require bounded progress
+  // through real input, without extending the deadline or skipping arrivals.
+  let from = await page.evaluate(() => window.hollowbaneWorld!.position);
+  points = points.flatMap((to) => {
+    const count = Math.max(
+      1,
+      Math.ceil(Math.hypot(to.x - from.x, to.y - from.y) / 6),
+    );
+    const checkpoints = Array.from({ length: count }, (_, i) => ({
+      x: from.x + ((to.x - from.x) * (i + 1)) / count,
+      y: from.y + ((to.y - from.y) * (i + 1)) / count,
+    }));
+    from = to;
+    return checkpoints;
+  });
   // Host polling can miss arrival while a stale held direction overshoots.
   // Advance waypoints beside rendering too: host round trips must not insert
   // idle time between every short segment on a slower browser.

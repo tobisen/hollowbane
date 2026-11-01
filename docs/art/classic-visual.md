@@ -18,7 +18,10 @@ Native M4/Metal recorded steady samples:540 per mode, p50/p95/p99/max
 are explicit; no universal improvement/shimmer/GPU-memory claim. Comparison and
 movement recordings: `/private/tmp/hollowbane-classic-integrated-native/review.html`.
 
-Required exact candidate CI/Pages/hosted/public integrity is pending. Last verified
+First integration CI41254452130 blocked Pages on one reproduced navigation-driver
+long-leg deadline (722 units/342 browser/15 compatibility pass); bounded checkpoint
+repair passes repeated Classic and normal journeys. Required new exact candidate
+CI/Pages/hosted/public integrity is pending. Last verified
 public remains Release A `954032834f88ea2cc02570851ecca3d56f30e391`,
 CI41228393310 (Full715/332 Chromium/15 compatibility,189 public bytes verified,
 four additional hosted native checks). Do not claim the integrated URL is deployed

@@ -56,8 +56,8 @@ no class/monster/equipment art production or additional raster payload.
 
 ## Local acceptance
 
-Full units:721 pass before the final pointer-envelope addition; final targeting/
-candidate subset:11 pass, including that new case. TypeScript, lint, asset/backlog
+Full units:722 pass in exact-commit CI; final targeting/candidate subset:11
+pass, including the new pointer-envelope case. TypeScript, lint, asset/backlog
 validation, build, scoped formatting and release-coverage planning pass. The
 existing risk policy must run Full for these public/map/save contracts.
 
@@ -83,6 +83,26 @@ keyboard-facing casting as mouse targeting, and counting occupied grid cells as
 separate items. Drivers now import the actual API after navigation, identify
 player/tick, use explicit pointer casts and count the item tile. Real game rules
 were preserved. Valid interruptions may be retried through actual input.
+
+## Release-gate navigation repair
+
+Integration1652eb39105653748e68b8b551ffd99652797fd0/CI41254452130 passed
+722 units,342/343 Chromium cases,15 compatibility cases and static/tooling gates.
+Pages was correctly blocked by one real-input journey failure: a compressed
+straight return-to-camp leg exceeded the shared driver's ten-second per-point
+arrival deadline while the live player was still walking toward it. The same
+failure reproduced locally from x34.9 to the camp exit at x4 with default walk
+speed3; the route alone takes more than ten seconds.
+
+The test-only driver repair subdivides long segments into at-most-six-unit
+checkpoints. Every original turn, arrival assertion, ten-second deadline, real
+controller input and full journey objective is retained. No gameplay, speed,
+health, map or balance change. Reproduced return now passes27.1s; full Classic
+quest/loot/save journey passes twice3.1m; existing normal forest/rearm/return
+checks pass2/2 in37.2s. TypeScript/scoped lint/format pass. Failure logs/traces and
+replays remain under `/private/tmp/hollowbane-classic-act1-ci-failure/` and
+`/private/tmp/hollowbane-classic-long-leg/`. A new exact-commit Full release is
+required; the blocked run is not publication acceptance.
 
 ## Native M4 and asset evidence
 
