@@ -208,6 +208,18 @@ for (const classId of ["warrior", "sorcerer", "ranger"] as const)
       .poll(() => page.evaluate(() => window.hollowbaneWorld?.fingerprint))
       .toBe(layoutFingerprint(classicAct1Layout(42)));
     await expect(page.locator("#classic-act1-error")).toHaveCount(0);
+    expect(
+      await page.evaluate(() =>
+        window.hollowbaneClassicAct1!.actorTextures.map((a) => a.shadow),
+      ),
+    ).toEqual(expect.arrayContaining(["classic-contact"]));
+    expect(
+      await page.evaluate(() =>
+        window.hollowbaneClassicAct1!.actorTextures.every(
+          (a) => a.shadow === "classic-contact",
+        ),
+      ),
+    ).toBe(true);
     await expect
       .poll(() =>
         page.evaluate(() => window.hollowbaneClassicAct1?.groundCells),

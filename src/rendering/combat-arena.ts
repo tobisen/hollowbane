@@ -633,6 +633,7 @@ export function startCombatArena(
               id,
               texture: sprite.texture.key,
               frame: sprite.frame.name,
+              shadow: this.contactShadows.get(id)?.texture.key ?? "",
             })),
             textures: this.textures.getTextureKeys(),
             classId: this.world.experience.skills.classId,
@@ -1650,7 +1651,13 @@ export function startCombatArena(
         if (polish)
           this.contactShadows.set(
             actor.id,
-            this.add.image(0, 0, "sable-contact-shadow").setDepth(-100),
+            this.add
+              .image(
+                0,
+                0,
+                classicAct1 ? "classic-contact" : "sable-contact-shadow",
+              )
+              .setDepth(-100),
           );
         this.labels.set(
           actor.id,

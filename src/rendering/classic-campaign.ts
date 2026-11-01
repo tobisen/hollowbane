@@ -4,7 +4,10 @@ import type { AreaLayout } from "../simulation/area-anchors";
 import type { CombatActor } from "../simulation/combat";
 import type { Cast } from "../simulation/skills";
 import type { Point } from "../world/isometric";
-import { drawClassicEnvironment } from "./classic-environment";
+import {
+  createClassicContact,
+  drawClassicEnvironment,
+} from "./classic-environment";
 import { classicActorFrame, observeClassicMotion } from "./classic-actor-frame";
 import { WarriorMotion } from "./warrior-pose";
 import "./classic-act1.css";
@@ -14,7 +17,12 @@ declare global {
     hollowbaneClassicAct1?: {
       area: string;
       groundCells: number;
-      actorTextures: { id: number; texture: string; frame: string }[];
+      actorTextures: {
+        id: number;
+        texture: string;
+        frame: string;
+        shadow: string;
+      }[];
       textures: string[];
       classId: string | null;
     };
@@ -27,6 +35,7 @@ export class ClassicCampaign {
   private memory = new Map<number, WarriorMotion>();
   private frames = new Map(actors.frames.map((f) => [f.name, f]));
   constructor(private scene: Phaser.Scene) {
+    createClassicContact(scene);
     for (const name of ["oak", "bell", "earth", "rocks", "undergrowth"])
       if (!scene.textures.exists(`classic-${name}`))
         throw Error(`Classic scenery unavailable: ${name}`);

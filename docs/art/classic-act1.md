@@ -54,6 +54,17 @@ projectiles using runner body art. Static idle, four-facing turns, shared abilit
 body motion, repeated ground and approximate corpse contact remain limitations;
 no class/monster/equipment art production or additional raster payload.
 
+Final three-class screenshot review caught an invalid legacy shadow texture under
+Sorcerer/Ranger. Candidate actors now initialize and use the existing shared
+Classic contact texture before actor creation, including legacy fallback states
+and other candidate areas. Original pilot generation is reused unchanged; default
+campaign behavior and raster payload are untouched. Read-only observations expose
+the actual shadow key, and all three class browser cases require valid contact
+textures. Nine targeted units, TypeScript/build/scoped lint, five browser checks
+(three movement/save, missing-asset, original pilot combat) pass39.9s. Corrected
+Sorcerer/Ranger screenshots were inspected. This final visual fix supersedes the
+pending de99c30/CI41256403152 candidate and requires a new Full release gate.
+
 ## Local acceptance
 
 Full units:722 pass in exact-commit CI; final targeting/candidate subset:11
@@ -108,7 +119,7 @@ required; the blocked run is not publication acceptance.
 
 Chromium/Apple M4/ANGLE Metal,1280×800/DPR1, three fresh contexts per mode,
 30 warm/180 measured RAF intervals each:540 per mode. Normal production Warrior
-and Classic both p50/p95/p99/max16.7/16.8/16.8/16.8ms, zero above25ms in the
+and Classic both p50/p95/p99/max16.7/16.7/16.8/16.8ms, zero above25ms in the
 recorded steady samples. Classic camera coordinates stay integral;181 distinct
 positions per cohort. Normal corridor blocks input after41–42 distinct positions,
 so these are matched display/input conditions with different geography, zoom,
@@ -136,9 +147,9 @@ and hashes remain in the existing manifests.
 Cold-readiness measurements explicitly clear browser HTTP cache before each
 navigation in both modes after fixture preparation. OS/filesystem/GPU caches are
 not reset; the values are observed playable readiness including test polling.
-Final cache-cold readiness cohorts: normal1098.5/962.8/961.8ms (median962.8),
-Classic401.0/394.9/395.1ms (median395.1). Final native cache-cold plus movement/
-recording checks pass2/2 in42.4s, zero skipped/flaky/errors. Raw conditions are
+Final cache-cold readiness cohorts: normal1079.5/964.8/964.2ms (median964.8),
+Classic409.4/403.1/396.3ms (median403.1). Final native cache-cold plus movement/
+recording checks pass2/2 in43.2s, zero skipped/flaky/errors. Raw conditions are
 kept with the viewer.
 
 ## Release gate and exact next action

@@ -12,9 +12,13 @@ remains the visual baseline. Reused312 original poses; no raster asset growth.
 Sorcerer/Ranger and unsupported states retain legacy art. Local actual-input
 coverage includes all classes' ability/combat/death, eight-direction Warrior,
 real Edda quest/reward/loot/next-area/save journey and production-owner byte checks.
+Final fallback screenshot review repaired a missing legacy contact texture using
+the same shared Classic shadow for all candidate actors. Three class movement/
+save, missing-asset and original pilot combat cases pass5/5; corrected captures
+reviewed. Pending de99c30 release is superseded by this final visual fix.
 
 Native M4/Metal recorded steady samples:540 per mode, p50/p95/p99/max
-16.7/16.8/16.8/16.8ms, zero>25. Different maps/zoom/workload and corridor blocking
+16.7/16.7/16.8/16.8ms, zero>25. Different maps/zoom/workload and corridor blocking
 are explicit; no universal improvement/shimmer/GPU-memory claim. Comparison and
 movement recordings: `/private/tmp/hollowbane-classic-integrated-native/review.html`.
 

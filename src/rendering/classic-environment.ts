@@ -8,6 +8,21 @@ import {
 import { appearanceHash } from "../world/environment-view";
 import type { Act1EnvironmentReport } from "./act1-environment";
 
+/** Shared by scenery and every candidate class, before any actor is created. */
+export function createClassicContact(scene: Phaser.Scene): void {
+  if (scene.textures.exists("classic-contact")) return;
+  const texture = scene.textures.createCanvas("classic-contact", 128, 64)!;
+  const context = texture.context;
+  context.scale(1, 0.5);
+  const gradient = context.createRadialGradient(64, 64, 0, 64, 64, 60);
+  gradient.addColorStop(0, "rgba(9,12,8,0.55)");
+  gradient.addColorStop(0.5, "rgba(9,12,8,0.24)");
+  gradient.addColorStop(1, "rgba(9,12,8,0)");
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, 128, 128);
+  texture.refresh();
+}
+
 /** Opt-in painted environment. No dynamic alpha, foliage motion or point lights. */
 export function drawClassicEnvironment(
   scene: Phaser.Scene,
@@ -84,18 +99,7 @@ export function drawClassicEnvironment(
     .setTileScale(2.7)
     .setDepth(-998)
     .setAlpha(0.24);
-  if (!scene.textures.exists("classic-contact")) {
-    const texture = scene.textures.createCanvas("classic-contact", 128, 64)!;
-    const context = texture.context;
-    context.scale(1, 0.5);
-    const gradient = context.createRadialGradient(64, 64, 0, 64, 64, 60);
-    gradient.addColorStop(0, "rgba(9,12,8,0.55)");
-    gradient.addColorStop(0.5, "rgba(9,12,8,0.24)");
-    gradient.addColorStop(1, "rgba(9,12,8,0)");
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, 128, 128);
-    texture.refresh();
-  }
+  createClassicContact(scene);
   const shadow = (x: number, y: number, width: number, height: number) =>
     scene.add
       .image(x, y, "classic-contact")
