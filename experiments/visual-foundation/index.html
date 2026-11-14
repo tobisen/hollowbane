@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hollowbane · Woodland boundary study</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, sans-serif;
+        background: #101310;
+        color: #d9d8ca;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 32px 24px 48px;
+      }
+      main {
+        max-width: 1280px;
+        margin: auto;
+      }
+      header {
+        margin-bottom: 22px;
+      }
+      .eyebrow {
+        color: #a6ac94;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 8px 0 12px;
+        font:
+          400 34px Georgia,
+          serif;
+        color: #e1ddc9;
+      }
+      h2 {
+        font:
+          400 24px Georgia,
+          serif;
+        margin: 30px 0 10px;
+      }
+      h3 {
+        font-size: 15px;
+        font-weight: 500;
+        margin: 12px 0 8px;
+      }
+      p {
+        max-width: 78ch;
+        line-height: 1.6;
+        color: #b8bcb0;
+      }
+      a {
+        color: #d2cfac;
+        text-underline-offset: 4px;
+      }
+      .tools {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin: 18px 0;
+        font-size: 14px;
+      }
+      label {
+        cursor: pointer;
+      }
+      input {
+        accent-color: #adad86;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+      .world-scroll {
+        overflow: auto;
+        max-width: 100%;
+      }
+      .stage {
+        width: 1280px;
+        height: 800px;
+        position: relative;
+        overflow: hidden;
+        background: #282b1d;
+      }
+      .stage > img {
+        display: block;
+        width: 1280px;
+        height: 800px;
+        object-fit: cover;
+      }
+      .scale-guide {
+        display: none;
+        position: absolute;
+        left: 622px;
+        top: 405px;
+        width: 30px;
+        height: 90px;
+      }
+      #scale:checked ~ .world-scroll .scale-guide {
+        display: block;
+      }
+      .guide-label {
+        display: none;
+        font-size: 13px;
+        color: #b8bcb0;
+      }
+      #scale:checked ~ .guide-label {
+        display: block;
+      }
+      .scale-toggle {
+        font-size: 14px;
+        display: inline-block;
+        margin: 0 0 16px 4px;
+      }
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 400px);
+        gap: 24px;
+        overflow-x: auto;
+      }
+      figure {
+        margin: 0;
+      }
+      .crop {
+        width: 400px;
+        height: 280px;
+        overflow: hidden;
+        position: relative;
+        background: #282b1d;
+      }
+      .crop img {
+        position: absolute;
+        width: 1280px;
+        height: 800px;
+        max-width: none;
+        object-fit: cover;
+      }
+      #terrain img {
+        left: -355px;
+        top: -385px;
+      }
+      #roots img {
+        left: 0;
+        top: -160px;
+      }
+      #ruin img {
+        left: -780px;
+        top: -85px;
+      }
+      figcaption {
+        max-width: 400px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #aeb4a6;
+      }
+      footer {
+        border-top: 1px solid #333a2e;
+        margin-top: 36px;
+        padding-top: 14px;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="eyebrow">Hollowbane · Static art-direction study · 01</div>
+        <h1>The woodland boundary</h1>
+        <p>
+          A worn path beside a small ruined stone enclosure. One original
+          composition for visual review.
+        </p>
+        <nav class="tools" aria-label="Artwork views">
+          <a href="source/environment.png">Full original image · 1586 × 992</a>
+          <a href="#details">Terrain and structure details</a>
+          <a href="README.md">Preview instructions and limitations</a>
+        </nav>
+      </header>
+      <h2>Gameplay viewport · 1280 × 800</h2>
+      <p>
+        The image below stays at its actual gameplay display size. On smaller
+        windows, scroll to inspect it.
+      </p>
+      <input id="scale" type="checkbox" />
+      <label class="scale-toggle" for="scale"
+        >Show a neutral 90 px human scale guide</label
+      >
+      <div
+        class="world-scroll"
+        tabindex="0"
+        role="region"
+        aria-label="Actual-size environment, horizontally scrollable on smaller screens"
+      >
+        <div class="stage" id="environment">
+          <img
+            src="source/environment.png"
+            width="1280"
+            height="800"
+            alt="A narrow earth path through uneven olive grass, between rooted woodland and a small mossy ruined stone enclosure, with a dark foreground oak."
+          />
+          <svg
+            class="scale-guide"
+            viewBox="0 0 30 90"
+            aria-label="Neutral human scale guide, 90 pixels tall"
+            role="img"
+          >
+            <path
+              d="M15 0a6 6 0 1 0 0 12a6 6 0 1 0 0-12M10 14h10l4 24-5 15 4 37h-7l-2-33-3 33H4l5-38-3-14Z"
+              fill="#8b8d83"
+            />
+            <path
+              d="M9 17 2 44M21 17l7 27"
+              stroke="#8b8d83"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+      </div>
+      <p class="guide-label">
+        Flat measurement guide only; this does not demonstrate character art,
+        perspective matching or gameplay integration.
+      </p>
+      <section id="details" aria-labelledby="details-heading">
+        <h2 id="details-heading">Detail crops · same display scale</h2>
+        <div class="detail-grid">
+          <figure>
+            <div class="crop" id="terrain">
+              <img
+                src="source/environment.png"
+                alt="Irregular worn soil with grass intruding along the path edge."
+              />
+            </div>
+            <figcaption>
+              <h3>Grass → soil → worn path</h3>
+              Uneven material boundaries and flattened growth organize the
+              ground without repeated tile stamps.
+            </figcaption>
+          </figure>
+          <figure>
+            <div class="crop" id="roots">
+              <img
+                src="source/environment.png"
+                alt="Tree trunks rooted into darker soil and leaf litter beside open grass."
+              />
+            </div>
+            <figcaption>
+              <h3>Woodland → roots → field</h3>
+              Grouped trunks meet the ground through exposed roots, darker earth
+              and leaf litter.
+            </figcaption>
+          </figure>
+          <figure>
+            <div class="crop" id="ruin">
+              <img
+                src="source/environment.png"
+                alt="Broken stone enclosure with moss, fallen stones and a worn approach."
+              />
+            </div>
+            <figcaption>
+              <h3>Stone → moss → earth</h3>
+              A modest ruin belongs to the field through its footing, rubble and
+              worn threshold.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+      <footer>
+        <p>
+          Original AI-generated raster artwork. Static visual candidate;
+          artistic approval pending. No movement or campaign integration.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

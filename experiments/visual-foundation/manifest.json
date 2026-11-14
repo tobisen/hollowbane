@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "date": "2026-11-14",
+  "scope": "one original static environment; no gameplay or production entrypoints",
+  "artisticApproval": false,
+  "viewport": {
+    "width": 1280,
+    "height": 800,
+    "dpr": 1,
+    "scaling": "aspect-preserving cover; approx 0.605 display pixels total vertical crop"
+  },
+  "sourceTool": "built-in image_gen.imagegen",
+  "sourcePrompt": "source/generation.json",
+  "referenceImagesSupplied": 0,
+  "independentEnvironmentDepthLayers": 0,
+  "records": [
+    {
+      "file": "source/environment.png",
+      "width": 1586,
+      "height": 992,
+      "pngBytes": 3418150,
+      "sha256": "a447e1fe94f69a121bd5e85608ba2332106e1ddba5ef29fd1e3eb3d003762129",
+      "calculatedRgbaBytes": 6293248
+    },
+    {
+      "file": "review/actual-1280x800.png",
+      "width": 1280,
+      "height": 800,
+      "pngBytes": 1888475,
+      "sha256": "c4c39c505631ad26e5ec400d060bce158d32b56ade80a8e650c64cac0b880589",
+      "calculatedRgbaBytes": 4096000
+    },
+    {
+      "file": "review/scale-reference-1280x800.png",
+      "width": 1280,
+      "height": 800,
+      "pngBytes": 1888115,
+      "sha256": "821dcc3917d1bdc5732e176ad56b379ef849f049fe02307d54741e75413c884a",
+      "calculatedRgbaBytes": 4096000
+    },
+    {
+      "file": "review/terrain-transition.png",
+      "width": 400,
+      "height": 280,
+      "pngBytes": 204423,
+      "sha256": "82d8a6546923736993fa31a49e3b92fc16345cc510f5931b05786a1daf7f4595",
+      "calculatedRgbaBytes": 448000
+    },
+    {
+      "file": "review/woodland-roots.png",
+      "width": 400,
+      "height": 280,
+      "pngBytes": 209906,
+      "sha256": "5e5e5b97e589cd13f40fba9fc4173dfd2c901a69d908c4992f1df26241abe581",
+      "calculatedRgbaBytes": 448000
+    },
+    {
+      "file": "review/ruin-footing.png",
+      "width": 400,
+      "height": 280,
+      "pngBytes": 218277,
+      "sha256": "0151d69671e78efe49a90aca7888ac2a12f6f6fde6a7b86f64a5ba8b06f9f0cf",
+      "calculatedRgbaBytes": 448000
+    }
+  ],
+  "accounting": {
+    "sourceDownloadBytes": 3418150,
+    "sourceCalculatedRgbaBytes": 6293248,
+    "sourceRgbaMiB": 6.001708984375,
+    "totalReviewPackageRasterBytes": 7827346,
+    "gpuMemoryMeasured": false
+  },
+  "verification": {
+    "browser": "Chromium headless, DPR1",
+    "previewLoad": "pass",
+    "imageDecode": "all four image elements pass",
+    "viewport": "1280x800 pass; smaller window scrolls without resizing",
+    "neutralScaleGuide": "90 CSS pixels high; off by default",
+    "externalRequests": 0,
+    "pageErrors": 0,
+    "failedResponses": 0,
+    "storageWrites": 0,
+    "artworkAndCropsInspected": true,
+    "performance": "not measured; static review only",
+    "detailPixels": "three crops equal exact actual-size image pixels"
+  }
+}
