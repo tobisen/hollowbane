@@ -12,7 +12,7 @@ production save ownership remain unchanged.
 
 Local: `npm run build`, then `npm run preview -- --host 127.0.0.1` and open
 `http://127.0.0.1:4173/hollowbane/?visualPlayable=1`.
-Public after verified deployment:
+**Verified public prototype:**
 <https://tobisen.github.io/hollowbane/?visualPlayable=1>.
 
 The default review canvas is at most960×600 inside the browser viewport, always
@@ -118,7 +118,9 @@ input showed legitimate shared sliding: a90-tick upward hold from(908,291)
 deflects right along the west wall toward(1028,212). The corrected assertion
 requires navigability, rightward deflection and clearance below that sloped
 footing; it does not disable collision or weaken the source-image comparison.
-The first failed run/trace remains local diagnostic evidence.
+The initial failure is not counted as a passing run. Its transient Playwright
+archive was replaced by later runs; `collision-diagnostic.json` retains the
+observed tick/position trace and original failed assertion, not that archive.
 
 ## Verification and performance
 
@@ -129,6 +131,8 @@ The first failed run/trace remains local diagnostic evidence.
   anchors, actual behind/front pixel ordering and wall sliding, strict error
   routes, actual normal-character/raw-registry/checkpoint isolation and normal
   campaign startup. The strengthened raw-record case passes separately.
+- Four additional Firefox/WebKit cases pass: exact full RGB and eight-direction/
+  camera-crop contracts on each engine. These are local compatibility samples.
 - TypeScript, full lint and production build pass. No existing mandatory release
   coverage or timeouts were reduced. The normal/Classic suites remain required
   through exact-commit CI; local focused cases are not a substitute for that gate.
@@ -163,7 +167,34 @@ verification is outside this prototype and remains unclaimed.
 
 ## Release checkpoint
 
-Local implementation verified. Commit/push and exact-commit required CI, Pages,
-hosted prototype/save/normal checks and sealed public-byte verification are next.
-No public availability claim yet. Human playable visual approval remains false;
-stop after this bounded release and review, without automatic further development.
+Verified deployed **`aefe578fa26e675e74e25051ce29ed22ca8356c8`**.
+[CI43637850526](https://github.com/tobisen/hollowbane/actions/runs/43637850526)
+passes static/Fast2,727 units/validators, all351 Chromium cases
+(98+91+91+71, zero failed/skipped/flaky),15 required compatibility cases,
+verify, Pages deployment7793767040, hosted2 and final release acceptance.
+The final91-case shard took23.6 minutes of browser execution; it passed without
+retries or assertion/deadline changes. All196 sealed artifact files equal the
+locally tested native build, and all196 public files independently match the
+sealed artifact byte for byte.
+
+Five additional hosted prototype cases pass in35.0s with zero failures/skips/
+flaky results: exact full/camera pixels, eight directions, actual behind/front
+occlusion and wall sliding, strict errors and raw normal-character isolation/
+normal startup. A separate native hosted Chrome/M4/Metal check confirms real
+behind-foliage traversal and zero hidden-Warrior RGB differences. Classic Visual,
+bare Classic Act1 selection and normal selection also open correctly, with zero
+page errors. Hosted screenshots were inspected. This does not claim a hosted
+quest/combat replay beyond the existing CI contracts.
+
+Raw final evidence: `ci-final.json`, `ci-browser-summary.json`, the sealed
+`release-bundle/`, `build-identity.json`, `public-integrity.log`,
+`hosted-browser.json`, `hosted-native.json`, `pages-status.json` and screenshots
+in the temporary evidence directory above. Final documentation checkpoint stays
+local; public runtime remains the exact SHA above. Production saves and all17
+prior unrelated edits are preserved. Native/other hardware follow-ups remain
+scoped as described; no physical-controller acceptance is claimed.
+
+**STOP for human playable visual approval.** Static-art approval does not imply
+approval of the Warrior, conservative mattes, physical presence or moving camera.
+No more gameplay, art production, map growth or campaign integration is authorized
+by the successful technical release. No automatic continuation.

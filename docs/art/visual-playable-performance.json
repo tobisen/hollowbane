@@ -130,5 +130,44 @@
       }
     ]
   },
-  "errors": []
+  "errors": [],
+  "releaseVerification": {
+    "sha": "aefe578fa26e675e74e25051ce29ed22ca8356c8",
+    "ciRun": 43637850526,
+    "ciResult": "success",
+    "pagesDeployment": 7793767040,
+    "publicPayloadFilesVerified": 196,
+    "allPublicBytesEqualSealedAndLocallyTestedBuild": true,
+    "hostedPrototype": {
+      "startTime": "2026-11-14T20:58:41.434Z",
+      "duration": 35042.238,
+      "expected": 5,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "nativeHosted": {
+      "sha": "aefe578fa26e675e74e25051ce29ed22ca8356c8",
+      "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+      "prototype": "ready; real behind-foliage traversal; no native pixel differences",
+      "pixelDifferences": 0,
+      "preservedRoutes": [
+        {
+          "route": "Classic Visual",
+          "ready": true
+        },
+        {
+          "route": "Classic Act 1 selection",
+          "ready": true,
+          "subtitle": "Classic Act 1 \u00b7 choose a character for an isolated adventure. Your normal campaign is retained."
+        },
+        {
+          "route": "Normal selection",
+          "ready": true,
+          "subtitle": "The light endures. So must you."
+        }
+      ],
+      "errors": []
+    }
+  }
 }
