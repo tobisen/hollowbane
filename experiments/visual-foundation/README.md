@@ -1,6 +1,11 @@
 # Woodland boundary — static visual candidate
 
-2026-11-14 · DBL-035/375/379 · user art-direction review pending
+2026-11-14 · DBL-035/375/379 · static composition approved by user
+
+The user subsequently approved this exact still and authorized a bounded playable
+prototype. See [playable review and evidence](../../docs/art/visual-playable.md).
+The original static artifacts and generation-time metadata below are preserved;
+this page remains the static comparison, without movement or campaign integration.
 
 One original outdoor composition: an earth path through uneven grass, a grouped
 woodland boundary, and a small ruined stone enclosure. The foreground oak/root

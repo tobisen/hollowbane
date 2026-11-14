@@ -1,0 +1,134 @@
+{
+  "gpu": {
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+    "vendor": "Google Inc. (Apple)",
+    "maxTexture": 16384,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+    "dpr": 1
+  },
+  "mode": "local production build; 960x600 native image-scale review camera inside1280x800 CSS viewport; DPR1; warmed movement",
+  "repetitions": [
+    {
+      "timing": {
+        "n": 540,
+        "p50": 16.69999999999891,
+        "p95": 16.700000000000728,
+        "p99": 16.80000000000109,
+        "max": 16.80000000000109,
+        "above25": 0
+      },
+      "integerCamera": true,
+      "boundedCamera": true
+    },
+    {
+      "timing": {
+        "n": 540,
+        "p50": 16.69999999999891,
+        "p95": 16.799999999999272,
+        "p99": 16.80000000000109,
+        "max": 16.80000000000291,
+        "above25": 0
+      },
+      "integerCamera": true,
+      "boundedCamera": true
+    },
+    {
+      "timing": {
+        "n": 540,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "p99": 16.799999999999272,
+        "max": 16.80000000000291,
+        "above25": 0
+      },
+      "integerCamera": true,
+      "boundedCamera": true
+    }
+  ],
+  "state": {
+    "tick": 2281,
+    "position": {
+      "x": -2.359375,
+      "y": -4.546875
+    },
+    "root": {
+      "x": 908,
+      "y": 291
+    },
+    "camera": {
+      "x": 0,
+      "y": 0
+    },
+    "viewport": {
+      "x": 1280,
+      "y": 800
+    },
+    "walking": false,
+    "direction": "e",
+    "frame": 0,
+    "scale": 0.5,
+    "depth": 291.001,
+    "hidden": false,
+    "paused": false,
+    "layers": [
+      {
+        "id": "left-trunk",
+        "depth": 385
+      },
+      {
+        "id": "left-oak",
+        "depth": 286
+      },
+      {
+        "id": "ruin-west",
+        "depth": 265
+      },
+      {
+        "id": "ruin-corner",
+        "depth": 202
+      },
+      {
+        "id": "ruin-east",
+        "depth": 245
+      },
+      {
+        "id": "foreground-foliage",
+        "depth": 640
+      },
+      {
+        "id": "foreground-trunk",
+        "depth": 652
+      },
+      {
+        "id": "ruin-rock",
+        "depth": 329
+      }
+    ],
+    "textures": 17,
+    "pngBytes": 9826668,
+    "decodedRgbaBytes": 91259816,
+    "readyMs": 326.69999999925494,
+    "renderer": "WebGL"
+  },
+  "coldStart": {
+    "condition": "fresh browser contexts, local HTTP cache cold; OS/GPU cache not cold",
+    "samples": [
+      {
+        "sceneReadyMs": 244.59999999962747,
+        "navigationMs": 592.3000000007451,
+        "pngBytes": 9826668
+      },
+      {
+        "sceneReadyMs": 256,
+        "navigationMs": 408.59999999962747,
+        "pngBytes": 9826668
+      },
+      {
+        "sceneReadyMs": 238,
+        "navigationMs": 392.09999999962747,
+        "pngBytes": 9826668
+      }
+    ]
+  },
+  "errors": []
+}

@@ -1,0 +1,49 @@
+main.visual-playable {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  box-sizing: border-box;
+  min-height: 100vh;
+  background: #101310;
+  color: #c9c9b6;
+  padding: 12px;
+  font:
+    13px system-ui,
+    sans-serif;
+}
+.visual-playable header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto 10px;
+}
+.visual-playable button,
+.visual-playable a {
+  font: inherit;
+  color: #d5d0af;
+  background: #20251f;
+  border: 1px solid #535943;
+  padding: 6px 9px;
+  text-decoration: none;
+}
+.visual-playable .visual-scroll {
+  max-width: 100%;
+  overflow: auto;
+}
+#visual-stage {
+  margin: auto;
+  outline: none;
+}
+#visual-stage:focus-visible {
+  outline: 1px solid #b5b59a;
+}
+.visual-playable footer {
+  max-width: 1280px;
+  margin: 10px auto 0;
+  line-height: 1.7;
+}
+.visual-playable footer button {
+  margin: 4px 6px 0 0;
+}

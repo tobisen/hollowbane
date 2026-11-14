@@ -20,7 +20,26 @@ const invalidCharacterRoute =
   ) ||
     query.getAll("character").length !== 1 ||
     !slotMode);
-if (invalidCharacterRoute) {
+if (query.has("visualPlayable")) {
+  try {
+    if (
+      query.get("visualPlayable") !== "1" ||
+      query.getAll("visualPlayable").length !== 1 ||
+      [...query.keys()].some((key) => key !== "visualPlayable")
+    )
+      throw Error(
+        "Use only ?visualPlayable=1. This prototype cannot load a character or campaign.",
+      );
+    const { startVisualPlayable } = await import("./rendering/visual-playable");
+    startVisualPlayable();
+  } catch (error) {
+    const message = document.createElement("p");
+    message.id = "visual-playable-error";
+    message.setAttribute("role", "alert");
+    message.textContent = `Visual prototype unavailable: ${String(error)}`;
+    document.querySelector("main")!.replaceChildren(message);
+  }
+} else if (invalidCharacterRoute) {
   const { startMainMenu } = await import("./rendering/main-menu");
   await startMainMenu(
     "This character link includes unsupported options. Choose a character from the menu; no save was loaded.",
@@ -147,5 +166,9 @@ if (invalidCharacterRoute) {
   await startMainMenu();
 }
 
-if (!document.querySelector("main.main-menu, main.warrior-pilot"))
+if (
+  !document.querySelector(
+    "main.main-menu, main.warrior-pilot, main.visual-playable",
+  )
+)
   installControllerUI();
