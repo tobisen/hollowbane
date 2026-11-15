@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "date": "2026-11-15",
+  "scope": "prototype-only reprocessing of192 existing idle/walk cells; zero new poses",
+  "source": "public/dev/warrior-directions",
+  "root": [128, 210],
+  "cell": [256, 264],
+  "scale": 0.5,
+  "alpha": "unchanged exactly",
+  "curve": [
+    [0, 12],
+    [20, 32],
+    [50, 62],
+    [80, 86],
+    [120, 115],
+    [180, 151],
+    [255, 178]
+  ],
+  "chroma": {
+    "cool": 0.38,
+    "warm": 0.65
+  },
+  "bias": [3, 1, -4],
+  "lightingLimit": "RGB treatment cannot rotate baked lights or alter geometry/physical roughness",
+  "records": [
+    {
+      "direction": "s",
+      "file": "processed/s.png",
+      "sourceSha256": "65d6c44b712295a269f18134e500e62e878d3df666ac09ce7d8f1b9835a7209e",
+      "sha256": "841ca39e009de47ef417e9f7c4b2e05af0bb6d2ebcaf209b78324e58c47ccfbf",
+      "width": 2048,
+      "height": 792,
+      "bytes": 678581,
+      "decodedRgbaBytes": 6488064
+    },
+    {
+      "direction": "sw",
+      "file": "processed/sw.png",
+      "sourceSha256": "cbd2c9a5f51cc3c1c4ab7c78aabb6dcb6dec2df416a99c8a4508f5cdfb43efba",
+      "sha256": "5ba2761cbe3eda7aee1d6e3e44f44eee18692a66fec3a20c6bb10c777c441f0d",
+      "width": 2048,
+      "height": 792,
+      "bytes": 641955,
+      "decodedRgbaBytes": 6488064
+    },
+    {
+      "direction": "w",
+      "file": "processed/w.png",
+      "sourceSha256": "86e0d3054c6893ac85c28e594b61b6448dc897dbf4cc12b843b2994e12c0eafc",
+      "sha256": "55ade0d1a417a48435bc0aa77f81dc6a2a0bd1fccf4322e089f6554040d2960d",
+      "width": 2048,
+      "height": 792,
+      "bytes": 513967,
+      "decodedRgbaBytes": 6488064
+    },
+    {
+      "direction": "nw",
+      "file": "processed/nw.png",
+      "sourceSha256": "52c4d5285ef8324e851b7594986751c0278d2565c103954f17b4977515b6dc78",
+      "sha256": "526dc4177d0a9c88ca1336a28d1eeee6c87e533b6e16784f63effe1caeaaab1c",
+      "width": 2048,
+      "height": 792,
+      "bytes": 570406,
+      "decodedRgbaBytes": 6488064
+    },
+    {
+      "direction": "n",
+      "file": "processed/n.png",
+      "sourceSha256": "f210d6de3ba84457b8d71b369f5df6dcfd26a0bb7ce12ca234e264a561744f25",
+      "sha256": "05f3ec8d06e202f9302d47566b9fd93748c52837c8f69a2ba67efd49af5c9403",
+      "width": 2048,
+      "height": 792,
+      "bytes": 571888,
+      "decodedRgbaBytes": 6488064
+    },
+    {
+      "direction": "ne",
+      "file": "processed/ne.png",
+      "sourceSha256": "ce6bdc2c291813c38c2bcd36e1c4b11288e87f469cb617898bcf80fb0dbe4577",
+      "sha256": "cf61aca659cb5983c8294c8d74fd1fe63032a7c70471abe33cc0cb7d8b5b59ae",
+      "width": 2048,
+      "height": 792,
+      "bytes": 551015,
+      "decodedRgbaBytes": 6488064
+    },
+    {
+      "direction": "e",
+      "file": "processed/e.png",
+      "sourceSha256": "b44f5d1160087cf03bc7072f6301317b38f74fc36033d71fcb4274d214aea561",
+      "sha256": "b4fc4dc4007a0c9d0508ea1474cb3b8cd45d6b0f37cfdbd0a8a6a234a75b4719",
+      "width": 2048,
+      "height": 792,
+      "bytes": 493729,
+      "decodedRgbaBytes": 6488064
+    },
+    {
+      "direction": "se",
+      "file": "processed/se.png",
+      "sourceSha256": "0cf51edc8899d3e934c7059c736baeb54aa169a6eb519fcb5bb5b5868afa04bc",
+      "sha256": "54ab9487d3f8fbe8a18caa3fe40d2cb847cf169b5dd1b8473cdad2a4fbdde6f4",
+      "width": 2048,
+      "height": 792,
+      "bytes": 650299,
+      "decodedRgbaBytes": 6488064
+    }
+  ]
+}

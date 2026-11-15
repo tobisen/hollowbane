@@ -10,6 +10,7 @@ import {
 import { characterApi } from "../fixtures/character-api";
 import { characterSlotFixture } from "../fixtures/character-slot";
 import { serializeCharacter } from "../../src/simulation/inventory-save";
+import { visualMovement } from "../../src/world/visual-warrior-motion";
 
 async function ready(page: Page) {
   await page.goto("?visualPlayable=1");
@@ -195,7 +196,7 @@ test("real traversal draws Warrior behind foliage and in front of the foreground
   await page.keyboard.down("ArrowUp");
   await expect
     .poll(() => page.evaluate(() => window.hollowbaneVisualPlayable!.tick))
-    .toBeGreaterThan(tick + 90);
+    .toBeGreaterThan(tick + Math.ceil((90 * 3) / visualMovement.walkSpeed));
   await page.keyboard.up("ArrowUp");
   const collision = await page.evaluate(() => window.hollowbaneVisualPlayable!);
   expect(canWalk(visualNavigation, collision.position)).toBe(true);
@@ -300,4 +301,90 @@ test("isolated movement preserves an actual normal character checkpoint and norm
   expect(
     await page.evaluate(() => window.hollowbaneVisualPlayable),
   ).toBeUndefined();
+});
+
+test("calibrated movement keeps source-aligned diagonals, opaque body and shared contact roots", async ({
+  page,
+}) => {
+  await ready(page);
+  await page.locator("#visual-stage").focus();
+  await page.keyboard.down("ArrowRight");
+  const before = await page.evaluate(() => window.hollowbaneVisualPlayable!);
+  await page.waitForFunction(
+    (t) => window.hollowbaneVisualPlayable!.tick >= t + 60,
+    before.tick,
+  );
+  await page.keyboard.up("ArrowRight");
+  const after = await page.evaluate(() => window.hollowbaneVisualPlayable!);
+  expect(after.root.x - before.root.x).toBeCloseTo(
+    ((after.tick - before.tick) / 60) *
+      visualMovement.walkSpeed *
+      Math.SQRT2 *
+      64,
+    3,
+  );
+  expect(after.walkCycles).toBe(1.2);
+  expect(after.actorAlpha).toBe(1);
+  expect(after.shadow.x).toBeCloseTo(after.root.x + 4, 6);
+  expect(after.shadow.y).toBeCloseTo(after.root.y + 2, 6);
+  expect(after.shadow.depth).toBeLessThan(after.depth);
+  await page.locator("#visual-reset").click();
+  await page.locator("#visual-stage").focus();
+  await page.keyboard.down("ArrowUp");
+  await page.keyboard.down("ArrowRight");
+  const start = await page.evaluate(() => window.hollowbaneVisualPlayable!);
+  await page.waitForFunction(
+    (t) => window.hollowbaneVisualPlayable!.tick >= t + 30,
+    start.tick,
+  );
+  const diagonal = await page.evaluate(() => window.hollowbaneVisualPlayable!);
+  expect(
+    (diagonal.root.y - start.root.y) / (diagonal.root.x - start.root.x),
+  ).toBeCloseTo(-0.5, 5);
+  expect(diagonal.direction).toBe("ne");
+  await page.keyboard.up("ArrowUp");
+  await page.keyboard.up("ArrowRight");
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const s = window.hollowbaneVisualPlayable!;
+        return {
+          walking: s.walking,
+          transition: s.transition,
+          previousRoot: s.previousRoot,
+        };
+      }),
+    )
+    .toEqual({ walking: false, transition: 0, previousRoot: null });
+});
+
+test("published comparison retains exact matched review pixels and movement recording", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1200 });
+  await page.goto("experiments/warrior-integration/");
+  for (const [id, file] of [
+    ["empty", "experiments/visual-foundation/review/actual-1280x800.png"],
+    ["before", "experiments/warrior-integration/review/baseline.png"],
+    ["after", "experiments/warrior-integration/review/improved.png"],
+  ]) {
+    await page.locator(`#${id}`).check();
+    await expect(
+      page.locator(`.scene .${id === "empty" ? "empty" : id}`),
+    ).toBeVisible();
+    await page
+      .locator(".scene img")
+      .evaluateAll((images) =>
+        Promise.all(
+          images.map((image) => (image as HTMLImageElement).decode()),
+        ),
+      );
+    expect(await rgb(await page.locator(".scene").screenshot())).toEqual(
+      await rgb(readFileSync(file!)),
+    );
+  }
+  await expect(page.locator("video")).toHaveAttribute(
+    "src",
+    /movement.*\.webm/,
+  );
 });

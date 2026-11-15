@@ -1,0 +1,147 @@
+{
+  "date": "2026-11-15",
+  "baselineSha": "aefe578fa26e675e74e25051ce29ed22ca8356c8",
+  "condition": "local production build; 960x600 native image-scale review camera inside1280x800 CSS viewport; DPR1; warmed movement",
+  "gpu": {
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Unspecified Version)",
+    "vendor": "Google Inc. (Apple)",
+    "maxTexture": 16384,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+    "dpr": 1
+  },
+  "method": "RAF intervals, not GPU completion times. Same browser, native viewport, key/tick trace and three540-interval warmed samples. Slower calibrated gait changes positions/pose workload; not an isolated material benchmark. Fresh contexts are HTTP-cache-cold, not OS/GPU cold.",
+  "baseline": {
+    "repetitions": [
+      {
+        "timing": {
+          "n": 540,
+          "p50": 16.699999999999818,
+          "p95": 16.799999999999272,
+          "p99": 16.800000000000182,
+          "max": 16.80000000000109,
+          "above25": 0
+        },
+        "integerCamera": true,
+        "boundedCamera": true
+      },
+      {
+        "timing": {
+          "n": 540,
+          "p50": 16.69999999999891,
+          "p95": 16.799999999999272,
+          "p99": 16.80000000000109,
+          "max": 16.80000000000291,
+          "above25": 0
+        },
+        "integerCamera": true,
+        "boundedCamera": true
+      },
+      {
+        "timing": {
+          "n": 540,
+          "p50": 16.700000000000728,
+          "p95": 16.700000000000728,
+          "p99": 16.799999999999272,
+          "max": 16.80000000000291,
+          "above25": 0
+        },
+        "integerCamera": true,
+        "boundedCamera": true
+      }
+    ],
+    "coldStart": {
+      "condition": "fresh browser contexts, local HTTP cache cold; OS/GPU cache not cold",
+      "samples": [
+        {
+          "sceneReadyMs": 192,
+          "navigationMs": 389.80000000447035,
+          "pngBytes": 9826668
+        },
+        {
+          "sceneReadyMs": 178.39999999850988,
+          "navigationMs": 321.8999999985099,
+          "pngBytes": 9826668
+        },
+        {
+          "sceneReadyMs": 175.5,
+          "navigationMs": 311,
+          "pngBytes": 9826668
+        }
+      ]
+    }
+  },
+  "candidate": {
+    "repetitions": [
+      {
+        "timing": {
+          "n": 540,
+          "p50": 16.69999999999891,
+          "p95": 16.799999999999272,
+          "p99": 16.80000000000109,
+          "max": 16.80000000000109,
+          "above25": 0
+        },
+        "integerCamera": true,
+        "boundedCamera": true
+      },
+      {
+        "timing": {
+          "n": 540,
+          "p50": 16.69999999999891,
+          "p95": 16.700000000000728,
+          "p99": 16.80000000000109,
+          "max": 16.80000000000291,
+          "above25": 0
+        },
+        "integerCamera": true,
+        "boundedCamera": true
+      },
+      {
+        "timing": {
+          "n": 540,
+          "p50": 16.69999999999709,
+          "p95": 16.799999999999272,
+          "p99": 16.80000000000291,
+          "max": 16.80000000000291,
+          "above25": 0
+        },
+        "integerCamera": true,
+        "boundedCamera": true
+      }
+    ],
+    "coldStart": {
+      "condition": "fresh browser contexts, local HTTP cache cold; OS/GPU cache not cold",
+      "samples": [
+        {
+          "sceneReadyMs": 100.5,
+          "navigationMs": 222.30000000447035,
+          "pngBytes": 6560315
+        },
+        {
+          "sceneReadyMs": 98.39999999850988,
+          "navigationMs": 225.10000000149012,
+          "pngBytes": 6560315
+        },
+        {
+          "sceneReadyMs": 96.69999999552965,
+          "navigationMs": 224.89999999850988,
+          "pngBytes": 6560315
+        }
+      ]
+    }
+  },
+  "assets": {
+    "baseline": {
+      "textures": 17,
+      "pngBytes": 9826668,
+      "decodedRgbaBytes": 91259816
+    },
+    "candidate": {
+      "textures": 18,
+      "pngBytes": 6560315,
+      "decodedRgbaBytes": 56665000
+    }
+  },
+  "limits": "Calculated RGBA bytes are not measured GPU residency. Review images/video are separately loaded on the comparison page and excluded from playable-route totals. No physical-controller or universal performance/artistic acceptance.",
+  "errors": []
+}

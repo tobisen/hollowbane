@@ -1,6 +1,7 @@
 import { fromGround, onGround, type Navigation } from "./navigation";
 import type { Point } from "./isometric";
 import type { Walker } from "../simulation/locomotion";
+import { VISUAL_WALK_STRIDE } from "./visual-warrior-motion";
 
 export const VISUAL_SIZE = { x: 1280, y: 800 };
 export const VISUAL_SPAWN = { x: 620, y: 495 };
@@ -270,7 +271,7 @@ export function visualCamera(target: Point, viewport: Point): Point {
 
 export function visualActorFrame(walker: Walker, idleStart: number): number {
   return walker.walking
-    ? 8 + Math.floor(((walker.distance / 1.0417198071343716) % 1) * 16)
+    ? 8 + Math.floor(((walker.distance / VISUAL_WALK_STRIDE) % 1) * 16)
     : Math.floor((walker.tick - idleStart) / 24) % 8;
 }
 

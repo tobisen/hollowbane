@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hollowbane · Warrior integration comparison</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font:
+          14px/24px system-ui,
+          sans-serif;
+        background: #101310;
+        color: #d4d4c2;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px;
+      }
+      main {
+        max-width: 1280px;
+        margin: auto;
+      }
+      h1 {
+        font:
+          400 30px/36px Georgia,
+          serif;
+        margin: 6px 0 14px;
+      }
+      p {
+        max-width: 85ch;
+        color: #b7bdac;
+      }
+      a {
+        color: #dbd5b5;
+        text-underline-offset: 4px;
+      }
+      label {
+        display: inline-block;
+        padding: 7px 12px;
+        margin: 0 12px 16px 0;
+        border: 1px solid #5e6551;
+        cursor: pointer;
+      }
+      input {
+        accent-color: #bec39f;
+      }
+      .viewport {
+        overflow: auto;
+        max-width: 100%;
+      }
+      .scene {
+        position: relative;
+        width: 1280px;
+        height: 800px;
+      }
+      .scene img {
+        position: absolute;
+        inset: 0;
+        width: 1280px;
+        height: 800px;
+      }
+      #empty:checked ~ .viewport .before,
+      #empty:checked ~ .viewport .after,
+      #before:checked ~ .viewport .after {
+        display: none;
+      }
+      h2 {
+        font:
+          400 23px/28px Georgia,
+          serif;
+        margin-top: 30px;
+      }
+      video {
+        display: block;
+        width: 100%;
+        max-width: 1280px;
+        height: auto;
+        background: #101310;
+      }
+      .details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+      }
+      figure {
+        margin: 0;
+      }
+      .details img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      small {
+        color: #a8af9d;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>HOLLOWBANE · WARRIOR INTEGRATION · REVIEW CANDIDATE</p>
+      <h1>Same woodland. Same pose and scale.</h1>
+      <p>
+        Compare the original character against the targeted material and contact
+        treatment. Both stills use the same 1280×800 canvas, root (620,495),
+        South idle 0 and authored scale 0.5. On smaller screens, scroll across
+        the image.
+      </p>
+      <p><a href="../../?visualPlayable=1">Open the playable prototype</a></p>
+      <input id="empty" type="radio" name="view" /><label for="empty"
+        >Approved environment</label
+      >
+      <input id="before" type="radio" name="view" /><label for="before"
+        >Baseline · aefe578</label
+      >
+      <input id="after" type="radio" name="view" checked /><label for="after"
+        >Integration candidate</label
+      >
+      <div class="viewport">
+        <div class="scene">
+          <img
+            class="empty"
+            src="../visual-foundation/review/actual-1280x800.png"
+            alt="Approved woodland without Warrior"
+          />
+          <img
+            class="before"
+            src="./review/baseline.png"
+            alt="Original Warrior in the unchanged woodland"
+          />
+          <img
+            class="after"
+            src="./review/improved.png"
+            alt="Warrior with softer earthy tonal treatment and contact shadow"
+          />
+        </div>
+      </div>
+      <h2>Real movement through the scene</h2>
+      <p>
+        Open a still to inspect native pixels. Foliage, front-of-trunk and ruin
+        captures use the full 1280×800 composition; the path capture uses the
+        960×600 follow camera. All come from actual movement, without
+        repositioning the actor.
+      </p>
+      <div class="details">
+        <figure>
+          <a href="./review/path.png"
+            ><img src="./review/path.png" alt="Walking south along the path"
+          /></a>
+          <figcaption>Path · walking south</figcaption>
+        </figure>
+        <figure>
+          <a href="./review/behind.png"
+            ><img
+              src="./review/behind.png"
+              alt="Warrior occluded behind foliage"
+          /></a>
+          <figcaption>Behind foliage · root(1070,491)</figcaption>
+        </figure>
+        <figure>
+          <a href="./review/front.png"
+            ><img
+              src="./review/front.png"
+              alt="Warrior in front of the foreground trunk"
+          /></a>
+          <figcaption>In front · root(1032,690)</figcaption>
+        </figure>
+        <figure>
+          <a href="./review/ruin.png"
+            ><img
+              src="./review/ruin.png"
+              alt="Warrior beside the ruined wall and rocks"
+          /></a>
+          <figcaption>Ruin · root(908,291)</figcaption>
+        </figure>
+      </div>
+      <h2>Eight-direction movement</h2>
+      <p>
+        Real keyboard movement in a continuous eight-direction route. The
+        recording shows the 960×600 source-scale canvas in a 1280×800 browser.
+        The live prototype provides the full-size comparison and real path,
+        woodland, foliage and ruin walks.
+      </p>
+      <video
+        controls
+        preload="none"
+        poster="./review/path.png"
+        src="./review/movement.webm"
+        aria-label="Native M4 eight-direction movement recording"
+      ></video>
+      <p>
+        <small
+          >No new poses or environment pixels. Existing idle/walk pixels receive
+          a deterministic tonal treatment. Walking cadence and diagonal steering
+          are calibrated only in the prototype. Baked light direction,
+          eight-view turn coverage and conservative foliage masks remain
+          limitations. Artistic acceptance remains yours.</small
+        >
+      </p>
+    </main>
+  </body>
+</html>

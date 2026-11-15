@@ -1,6 +1,14 @@
 import Phaser from "phaser";
 import approvedImage from "../../experiments/visual-foundation/review/actual-1280x800.png?url";
-import movementAssets from "./warrior-assets.json";
+import movementAssets from "../../experiments/warrior-integration/manifest.json";
+import { visualWarriorImages } from "./visual-warrior-assets";
+import {
+  visualMovement,
+  visualSteering,
+  VISUAL_TRANSITION_SECONDS,
+  VISUAL_WALK_CYCLES,
+  visualFacingIndex,
+} from "../world/visual-warrior-motion";
 import { WARRIOR_DIRECTIONS } from "./warrior-pose";
 import {
   createWalker,
@@ -45,6 +53,12 @@ declare global {
       readyMs: number;
       frames: number[];
       renderer: string;
+      movementSpeed: number;
+      walkCycles: number;
+      transition: number;
+      actorAlpha: number;
+      previousRoot: { x: number; y: number; depth: number } | null;
+      shadow: { x: number; y: number; depth: number };
     };
   }
 }
@@ -58,6 +72,7 @@ export function startVisualPlayable(): Phaser.Game {
     <button id="visual-hide" aria-pressed="false">Hide Warrior</button>
     <button id="visual-pause" aria-pressed="false">Pause</button>
     <button id="visual-reset">Reset</button>
+    <a href="${import.meta.env.BASE_URL}experiments/warrior-integration/">Before / after</a>
     <a href="${approvedImage}" target="_blank" rel="noopener">Approved still</a><a href="./">Normal Hollowbane</a></header>
     <div class="visual-scroll"><div id="visual-stage" tabindex="0" role="application" aria-label="Playable woodland visual foundation"></div></div>
     <footer>WASD / arrows · Click ground to walk · Fixed artwork scale, bounded camera · No saves
@@ -88,7 +103,11 @@ export function startVisualPlayable(): Phaser.Game {
   class VisualScene extends Phaser.Scene {
     private walker = createWalker(visualFromGround(VISUAL_SPAWN));
     private actor!: Phaser.GameObjects.Sprite;
-    private shadow!: Phaser.GameObjects.Ellipse;
+    private shadow!: Phaser.GameObjects.Image;
+    private previousActor!: Phaser.GameObjects.Sprite;
+    private actorState = "idle-s";
+    private facing = 0;
+    private transition = 0;
     private held = new Set<string>();
     private residual = 0;
     private idleStart = 0;
@@ -107,8 +126,7 @@ export function startVisualPlayable(): Phaser.Game {
       for (const direction of WARRIOR_DIRECTIONS)
         this.load.spritesheet(
           `visual-warrior-${direction}`,
-          import.meta.env.BASE_URL +
-            movementAssets.movement.views[direction].file,
+          visualWarriorImages[direction],
           { frameWidth: 256, frameHeight: 264 },
         );
     }
@@ -168,12 +186,26 @@ export function startVisualPlayable(): Phaser.Game {
         texture.refresh();
         this.add.image(x, y, texture.key).setOrigin(0).setDepth(layer.anchor.y);
       }
-      this.shadow = this.add.ellipse(0, 0, 34, 12, 0x12170d, 0.36);
+      const contact = this.textures.createCanvas("visual-contact", 64, 32)!;
+      const c = contact.context;
+      c.scale(1, 0.5);
+      const gradient = c.createRadialGradient(32, 32, 0, 32, 32, 30);
+      gradient.addColorStop(0, "rgba(18,23,13,0.32)");
+      gradient.addColorStop(0.45, "rgba(18,23,13,0.18)");
+      gradient.addColorStop(1, "rgba(18,23,13,0)");
+      c.fillStyle = gradient;
+      c.fillRect(0, 0, 64, 64);
+      contact.refresh();
+      this.shadow = this.add.image(0, 0, contact.key).setDisplaySize(34, 14);
       this.actor = this.add
         .sprite(0, 0, "visual-warrior-s", 0)
         .setOrigin(128 / 256, 210 / 264)
+        .setScale(VISUAL_SCALE);
+      this.previousActor = this.add
+        .sprite(0, 0, "visual-warrior-s", 0)
+        .setOrigin(128 / 256, 210 / 264)
         .setScale(VISUAL_SCALE)
-        .setTint(0xc8c8bf);
+        .setVisible(false);
       const clear = () => {
         this.held.clear();
         this.walker = stopWalker(this.walker);
@@ -249,6 +281,9 @@ export function startVisualPlayable(): Phaser.Game {
         this.walker = createWalker(visualFromGround(VISUAL_SPAWN));
         this.center = { ...VISUAL_SPAWN };
         this.idleStart = 0;
+        this.actorState = "idle-s";
+        this.facing = 0;
+        this.transition = 0;
         this.draw(0);
       };
       root
@@ -289,14 +324,19 @@ export function startVisualPlayable(): Phaser.Game {
         this.residual += Math.min(100, delta);
         while (this.residual >= 1000 / 60) {
           const wasWalking = this.walker.walking;
-          this.walker = moveTick(this.walker, visualNavigation, {
-            x:
-              Number(this.held.has("KeyD") || this.held.has("ArrowRight")) -
-              Number(this.held.has("KeyA") || this.held.has("ArrowLeft")),
-            y:
-              Number(this.held.has("KeyS") || this.held.has("ArrowDown")) -
-              Number(this.held.has("KeyW") || this.held.has("ArrowUp")),
-          });
+          this.walker = moveTick(
+            this.walker,
+            visualNavigation,
+            visualSteering({
+              x:
+                Number(this.held.has("KeyD") || this.held.has("ArrowRight")) -
+                Number(this.held.has("KeyA") || this.held.has("ArrowLeft")),
+              y:
+                Number(this.held.has("KeyS") || this.held.has("ArrowDown")) -
+                Number(this.held.has("KeyW") || this.held.has("ArrowUp")),
+            }),
+            visualMovement,
+          );
           if (wasWalking && !this.walker.walking)
             this.idleStart = this.walker.tick;
           this.residual -= 1000 / 60;
@@ -309,7 +349,25 @@ export function startVisualPlayable(): Phaser.Game {
       if (!this.actor) return;
       const p = visualOnGround(this.walker.position);
       const frame = visualActorFrame(this.walker, this.idleStart);
-      const direction = WARRIOR_DIRECTIONS[this.walker.direction]!;
+      this.facing = visualFacingIndex(this.walker.velocity, this.facing);
+      const direction = WARRIOR_DIRECTIONS[this.facing]!;
+      const state = `${this.walker.walking ? "walk" : "idle"}-${direction}`;
+      if (state !== this.actorState) {
+        this.previousActor.setTexture(
+          this.actor.texture.key,
+          this.actor.frame.name,
+        );
+        this.transition = VISUAL_TRANSITION_SECONDS;
+        this.actorState = state;
+      }
+      this.transition = Math.max(0, this.transition - delta / 1000);
+      // Opaque current body remains underneath the fading previous pose; the
+      // actor does not fade through the terrain during a start/stop/turn.
+      this.previousActor
+        .setPosition(p.x, p.y)
+        .setDepth(p.y + 0.002)
+        .setAlpha(this.transition / VISUAL_TRANSITION_SECONDS)
+        .setVisible(!hidden && this.transition > 0);
       this.actor
         .setPosition(p.x, p.y)
         .setTexture(`visual-warrior-${direction}`, frame)
@@ -339,11 +397,7 @@ export function startVisualPlayable(): Phaser.Game {
         layers: visualOccluders.map((l) => ({ id: l.id, depth: l.anchor.y })),
         textures: this.textures.getTextureKeys().length,
         pngBytes:
-          1888475 +
-          Object.values(movementAssets.movement.views).reduce(
-            (n, a) => n + a.bytes,
-            0,
-          ),
+          1888475 + movementAssets.records.reduce((n, a) => n + a.bytes, 0),
         decodedRgbaBytes:
           visualOccluders.reduce(
             (n, layer) => {
@@ -356,14 +410,27 @@ export function startVisualPlayable(): Phaser.Game {
                   4
               );
             },
-            1280 * 800 * 4,
+            1280 * 800 * 4 + 64 * 32 * 4,
           ) +
-          Object.values(movementAssets.movement.views).reduce(
-            (n, a) => n + a.decodedBytes,
-            0,
-          ),
+          movementAssets.records.reduce((n, a) => n + a.decodedRgbaBytes, 0),
         readyMs: this.readyMs,
         frames: this.samples,
+        movementSpeed: visualMovement.walkSpeed,
+        walkCycles: VISUAL_WALK_CYCLES,
+        transition: this.transition,
+        actorAlpha: this.actor.alpha,
+        previousRoot: this.previousActor.visible
+          ? {
+              x: this.previousActor.x,
+              y: this.previousActor.y,
+              depth: this.previousActor.depth,
+            }
+          : null,
+        shadow: {
+          x: this.shadow.x,
+          y: this.shadow.y,
+          depth: this.shadow.depth,
+        },
         renderer: this.game.renderer.type === Phaser.WEBGL ? "WebGL" : "Canvas",
       };
     }

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "date": "2026-11-15",
+  "scope": "single material-treatment proof",
+  "source": "public/dev/warrior-directions",
+  "root": [128, 210],
+  "cell": [256, 264],
+  "scale": 0.5,
+  "alpha": "unchanged exactly",
+  "curve": [
+    [0, 12],
+    [20, 32],
+    [50, 62],
+    [80, 86],
+    [120, 115],
+    [180, 151],
+    [255, 178]
+  ],
+  "chroma": {
+    "cool": 0.38,
+    "warm": 0.65
+  },
+  "bias": [3, 1, -4],
+  "lightingLimit": "RGB treatment cannot rotate baked lights or alter geometry/physical roughness",
+  "records": [
+    {
+      "direction": "s",
+      "file": "proof/s.png",
+      "sourceSha256": "65d6c44b712295a269f18134e500e62e878d3df666ac09ce7d8f1b9835a7209e",
+      "sha256": "5ad986f41fd717fae8e8cfff9386655a92dad69545088869344fdd2abedb67a5",
+      "width": 256,
+      "height": 264,
+      "bytes": 38887,
+      "decodedRgbaBytes": 270336
+    }
+  ]
+}

@@ -9,6 +9,7 @@ export default defineConfig({
       input: {
         index: "index.html",
         "character-storage": "src/rendering/character-storage.ts",
+        "warrior-review": "experiments/warrior-integration/index.html",
       },
       preserveEntrySignatures: "strict",
     },
